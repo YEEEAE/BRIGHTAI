@@ -1,12 +1,16 @@
+import { randomUUID } from 'node:crypto';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { selectMembership, requireRole, workspaceName, productStates, roleLabel, auditActionLabel } from '../src/server/kernel/core.mjs';
 import { authenticate } from '../src/server/kernel/auth.mjs';
 test('tenant selection cannot manufacture membership', () => {
-  const rows = [{tenant_id:'a',role:'MEMBER'}];
-  assert.equal(selectMembership(rows,'a').role,'MEMBER');
-  assert.throws(()=>selectMembership(rows,'b'),{status:403});
+  const a=randomUUID(), b=randomUUID();
+  const rows = [{tenant_id:a,role:'MEMBER'}];
+  assert.equal(selectMembership(rows,a).role,'MEMBER');
+  assert.throws(()=>selectMembership(rows,b),{status:403});
   assert.equal(selectMembership([],null),null);
+  for (const value of ['a', [a], '', 42]) assert.throws(()=>selectMembership(rows,value),{status:400});
+  assert.throws(()=>selectMembership([],b),{status:403});
 });
 test('role guard rejects member escalation',()=>{
   assert.throws(()=>requireRole({role:'MEMBER'},['OWNER','ADMIN']),{status:403});
@@ -21,12 +25,12 @@ test('product state comes from the access row, not the interface',()=>{
   assert.equal(enabled.length,5);
   assert.equal(enabled[0].state,'ENABLED'); assert.equal(enabled[0].enabled,true);
   assert.equal(enabled[0].label,'مفعّل للمؤسسة'); assert.equal(enabled[0].href,'/app/firewall/');
-  assert.equal(enabled[1].state,'FOUNDATION'); assert.equal(enabled[1].enabled,false);
-  assert.equal(enabled[1].label,'قيد التأسيس'); assert.equal(enabled[1].href,'/app/ledger/');
+  assert.equal(enabled[1].state,'NOT_CONFIGURED'); assert.equal(enabled[1].enabled,false);
+  assert.equal(enabled[1].label,'غير مهيأ — لا قرار إتاحة'); assert.equal(enabled[1].href,'/app/ledger/');
   const disabled=productStates([{product_slug:'ledger',status:'DISABLED'}]);
-  assert.equal(disabled[1].href,null); assert.equal(disabled[1].label,'معطّل من المشغّل');
+  assert.equal(disabled[1].href,null); assert.equal(disabled[1].label,'معطّل');
   const unknown=productStates([{product_slug:'not-a-product',status:'ENABLED'}]);
-  assert.ok(unknown.every(p=>p.state==='FOUNDATION'&&p.enabled===false));
+  assert.ok(unknown.every(p=>p.state==='NOT_CONFIGURED'&&p.enabled===false));
 });
 test('labels never expose a raw role or audit code to the interface',()=>{
   assert.equal(roleLabel('OWNER'),'مالك'); assert.equal(roleLabel('ADMIN'),'مدير'); assert.equal(roleLabel('MEMBER'),'عضو');
@@ -46,9 +50,12 @@ import { verifyIdentity } from '../src/server/kernel/auth.mjs';
 test('signed identity verifies signature, issuer, expiry and anonymous denial', async()=>{
   const {privateKey,publicKey}=await generateKeyPair('EdDSA');
   const other=await generateKeyPair('EdDSA');
-  const sign=(claims={},issuer='https://auth.example.test',exp='5m')=>new SignJWT(claims).setProtectedHeader({alg:'EdDSA'}).setIssuer(issuer).setSubject('test-user').setIssuedAt().setExpirationTime(exp).sign(privateKey);
+  const userId=randomUUID();
+  const sign=(claims={},issuer='https://auth.example.test',exp='5m')=>new SignJWT(claims).setProtectedHeader({alg:'EdDSA'}).setIssuer(issuer).setSubject(claims.sub ?? userId).setIssuedAt().setExpirationTime(exp).sign(privateKey);
   const token=await sign();
-  assert.deepEqual(await verifyIdentity(token,publicKey,'https://auth.example.test'),{userId:'test-user'});
+  assert.deepEqual(await verifyIdentity(token,publicKey,'https://auth.example.test'),{userId});
+  await assert.rejects(verifyIdentity(await sign({is_anonymous:true}),publicKey,'https://auth.example.test'));
+  await assert.rejects(verifyIdentity(await sign({sub:'test-user'}),publicKey,'https://auth.example.test'));
   await assert.rejects(verifyIdentity(token,other.publicKey,'https://auth.example.test'));
   await assert.rejects(verifyIdentity(token,publicKey,'https://other.example.test'));
   await assert.rejects(verifyIdentity(await sign({},undefined,'-1s'),publicKey,'https://auth.example.test'));

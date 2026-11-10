@@ -1,10 +1,12 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-10 VERIFIED LOCAL: HEAD `57257276d68129e4d3d5849cc50571eca74e01b0` + working tree؛ AR02/AR03: unit31/combined36 PASS،0 FAIL/0 SKIP؛ DB18.6 بخمس قواعد ودورruntime/NOBYPASSRLS؛ build/routes55 PASS؛ مرجع `Audit/ar02-ar03-2026-11-10/REPORT.md`؛ لا إطلاق.
+- العقد المحلي يتطلب `0028` لقفل العضوية/المنح دون صلاحيات تعديل إضافية، و`0029` لمنع مرجعLedger الاصطناعيnull؛ طُبقتا في fixtures مؤقتة فقط؛ أي تطبيق خارجي يحتاج مراجعة وتفويضًا مستقلًا.
 - التقرير له قارئHTML مستقل دون شبكة: `Audit/final-360-2026-11-10/FINAL-360-AUDIT.html`؛ يولد بـbuild-report.mjs؛76 متطلبًا و25 برومبتًا؛ Chromium360/390/768/1440 والبحث/النسخ/CSV وتهيئة الطباعة PASS؛ بيانات التدقيق لم تتغير.
 - توجيه المستخدم2026-11-10: لا سقف15 لبرومبتات الإغلاق؛ الخطة الحالية25 بتقسيم تخصصي وتبعيات مفحوصة في `Audit/final-360-2026-11-10/EXECUTION-PROMPTS.md`؛ أرقام التدقيق وNO-GO دون تغيير.
-- 2026-11-10 VERIFIED: HEAD `7b1f533f71c7b1f41884790366a4d5967c85a87b` يطابق Render live deploy `dep-dbpg8kgae00c73easjr0`؛ الخدمة `srv-d7m5bcjbc2fs73826v20` هي static_site وتنشر dist/client؛ app/Auth sign-up/API حية404؛ Beta/Commercial NO-GO.
-- 2026-11-10: build PASS؛ Node tests 18 PASS/9 FAIL/5 DB SKIP؛ Firewall harness 8/8 LOCAL PASS؛ 55 صفحة عامة200؛ لا عمليات منتج حية مثبتة. مرجع: `Audit/final-360-2026-11-10/FINAL-360-AUDIT.md`.
+- 2026-11-10 HISTORICAL LIVE CHECK: SHA `7b1f533f71c7b1f41884790366a4d5967c85a87b` طابق Render deploy `dep-dbpg8kgae00c73easjr0`؛ الخدمة `srv-d7m5bcjbc2fs73826v20` static_site/dist/client وapp/Auth/API404؛ لم يُعد فحصها بجولةAR02/AR03؛ Beta/Commercial NO-GO.
+- تدقيق360 تاريخي: tests18 PASS/9 FAIL/5 SKIP تجاوزتها نتائجAR02/AR03 المحلية أعلاه؛ Firewall harness8/8 و55 صفحة حية200 دليل مؤرخ في `Audit/final-360-2026-11-10/FINAL-360-AUDIT.md`، دون عمليات منتج حية مثبتة.
 - المراقبة: اعتماد مستقل لكل طبقة + SHA كامل؛ PostHog staging/beta فقط؛ واجهة App/Auth ترسل رموزًا ثابتة عبر same-origin relay؛ لا SDK أو stack؛ خطة التحقق O1–O8 غير منفذة.
 
 ## Open Issues / Blockers
@@ -12,6 +14,13 @@
 - Sentry projects=[] ضمن الاتصال؛ PostHog720936 ingested_event=false وإعدادات خصوصية تحتاج مراجعة؛ لا وجهة معتمدة، وحد الخطة التاريخي لم يُعد التحقق منه. Bootstrap/RLS وtrial/purge وموافقات المزودين والـUAT ما زالت مفتوحة.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-10] — إغلاق عقود الوحدة وتكامل DB18 محليًا
+- **تم:** تصحيحfixtures والعقود، Human Gate list، Risk shadowing/audit mapping، وقفلRLS محدود ومرجعLedgernull؛ لا تخفيفguards أو كتابة خارجية.
+- **التحقق:** PASS — unit31/combined36،0 FAIL/0 SKIP؛ خمسDB18 بدورruntime؛ عزل/رفض/سباقات/rollback وLedgerCLI؛ build/routes55 PASS.
+- **الحالة:** DONE LOCAL — لاRuntime/Approval/Release؛ P16خارج النطاق.
+- **ملفات:** `Audit/ar02-ar03-2026-11-10/REPORT.md`، `scripts/verify-contracts-local.mjs`، `docs/KERNEL-DEVELOPMENT.md`.
+- **مفتوح:** مراجعة وترحيل0028/0029 على هدف معتمد مستقلًا؛ bootstrap وبقية مساراتRLS غير مغطاة بهذا الإغلاق.
 
 ## [2026-11-10] — تدقيق 360 ومصفوفة أدلة حالية
 - **تم:** إثبات Render static/deploy/SHA بقراءة MCP بعد اختيار المستخدم؛ جرد Neon والمراقبة وزحف55 صفحة؛ مصفوفة76 متطلبًا ومواصفات تجربة و15 برومبت إغلاق.

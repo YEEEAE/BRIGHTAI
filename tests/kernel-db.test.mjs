@@ -1,17 +1,14 @@
+import { localDatabaseUrl, installSchema, grantProduct, runtime } from './helpers/database.mjs';
 // Explicit disposable localhost DB only. Never load .env or write to Neon.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import pg from 'pg';
 import { randomUUID } from 'node:crypto';
-import { readFile } from 'node:fs/promises';
-const url = process.env.KERNEL_TEST_DATABASE_URL;
-if (url && !['localhost', '127.0.0.1'].includes(new URL(url).hostname)) throw new Error('Disposable localhost DB required');
+const url=localDatabaseUrl('KERNEL_TEST_DATABASE_URL');
 test('Kernel DB: real product state, tenant-scoped totals, activity and member roles', { skip: !url }, async () => {
   const pool = new pg.Pool({ connectionString: url, max: 5 });
   try {
-    await pool.query('CREATE SCHEMA neon_auth');
-    await pool.query('CREATE TABLE neon_auth."user"(id uuid PRIMARY KEY, name text NOT NULL, email text NOT NULL, banned boolean, role text)');
-    await pool.query(await readFile(new URL('../migrations/0001_aigas_kernel.sql', import.meta.url), 'utf8'));
+    await installSchema(pool);
     const owner = randomUUID(), admin = randomUUID(), member = randomUUID(), outsider = randomUUID(), banned = randomUUID();
     const a = randomUUID(), b = randomUUID();
     for (const [id, name, email] of [[owner, 'Synthetic Owner', 'owner@example.test'], [admin, 'Synthetic Admin', 'admin@example.test'], [member, 'Synthetic Member', 'member@example.test'], [outsider, 'Synthetic Outsider', 'outsider@example.test'], [banned, 'Synthetic Banned', 'banned@example.test']]) {
@@ -25,7 +22,33 @@ test('Kernel DB: real product state, tenant-scoped totals, activity and member r
     await pool.query("INSERT INTO aigas_product_access(tenant_id,product_slug,status) SELECT $1, unnest($2::text[]), unnest($3::text[])", [b, ['firewall', 'ledger', 'human-gate', 'risk-engine', 'secure-chat'], ['FOUNDATION', 'FOUNDATION', 'FOUNDATION', 'FOUNDATION', 'FOUNDATION']]);
     await pool.query("INSERT INTO aigas_audit_events(id,tenant_id,actor_user_id,action) VALUES($1,$2,$3,'workspace.created'),($4,$2,$5,'firewall.rule.created')", [randomUUID(), a, owner, randomUUID(), admin]);
     await pool.query("INSERT INTO aigas_audit_events(id,tenant_id,actor_user_id,action) VALUES($1,$2,$3,'workspace.created')", [randomUUID(), b, outsider]);
-    process.env.DATABASE_URL = url;
+    await grantProduct(pool,a,'firewall');
+    // Regression: real runtime locks work without self-mutation or foreign visibility.
+    const locked=await pool.connect(), contender=await pool.connect();
+    try {
+      await locked.query('BEGIN'); await runtime(locked);
+      assert.equal((await locked.query('SELECT * FROM public.aigas_lock_member($1,$2)',[a,owner])).rowCount,0);
+      await locked.query("SELECT set_config('aigas.user_id',$1,true)",[owner]);
+      assert.equal((await locked.query('SELECT * FROM public.aigas_lock_member($1,$2)',[a,owner])).rows[0].role,'OWNER');
+      assert.equal((await locked.query('SELECT * FROM public.aigas_lock_member($1,$2)',[b,outsider])).rowCount,0);
+      await locked.query("SELECT set_config('aigas.tenant_id',$1,true)",[a]);
+      assert.equal((await locked.query("UPDATE aigas_memberships SET role='MEMBER' WHERE tenant_id=$1 AND user_id=$2 RETURNING role",[a,owner])).rowCount,0);
+      assert.equal((await locked.query('SELECT * FROM public.aigas_locked_product_grants($1)',[b])).rowCount,0);
+      await contender.query('BEGIN'); await contender.query("SET LOCAL lock_timeout='100ms'");
+      await assert.rejects(contender.query("UPDATE aigas_memberships SET role='ADMIN' WHERE tenant_id=$1 AND user_id=$2",[a,owner]),{code:'55P03'});
+      await contender.query('ROLLBACK');
+      assert.equal((await locked.query('SELECT * FROM public.aigas_locked_product_grants($1)',[a])).rowCount,1);
+      await contender.query('BEGIN'); await contender.query("SET LOCAL lock_timeout='100ms'");
+      await assert.rejects(contender.query("UPDATE aigas_product_grants SET revoked_at=now() WHERE tenant_id=$1",[a]),{code:'55P03'});
+      await contender.query('ROLLBACK'); await locked.query('ROLLBACK');
+      assert.equal((await pool.query('SELECT role FROM aigas_memberships WHERE tenant_id=$1 AND user_id=$2',[a,owner])).rows[0].role,'OWNER');
+      await locked.query('BEGIN'); await locked.query('SET LOCAL ROLE authenticated');
+      await assert.rejects(locked.query('SELECT * FROM public.aigas_lock_member($1,$2)',[a,owner]),{code:'42501'});
+      await locked.query('ROLLBACK');
+    } finally { await locked.query('ROLLBACK'); await contender.query('ROLLBACK'); locked.release(); contender.release(); }
+    const runtimeUrl=new URL(url);runtimeUrl.username='aigas_runtime';
+    process.env.DATABASE_URL = runtimeUrl.href;
+    process.env.AIGAS_REQUIRE_RLS='true';
     delete process.env.NEON_AUTH_BASE_URL; delete process.env.NEON_AUTH_URL;
     delete process.env.NEON_AUTH_JWKS_URL; delete process.env.NEON_JWKS_URL;
     const { dashboard, tenantMembers, operationalHealth } = await import('../src/server/kernel/service.mjs');
@@ -39,11 +62,11 @@ test('Kernel DB: real product state, tenant-scoped totals, activity and member r
     assert.equal(firewall.state, 'ENABLED'); assert.equal(firewall.enabled, true);
     assert.equal(firewall.label, 'مفعّل للمؤسسة'); assert.equal(firewall.href, '/app/firewall/');
     assert.equal(seen.products.find(p => p.slug === 'human-gate').href, null);
-    assert.equal(seen.products.find(p => p.slug === 'ledger').state, 'FOUNDATION');
+    assert.equal(seen.products.find(p => p.slug === 'ledger').state, 'NOT_CONFIGURED');
     // Audit rows never cross the tenant boundary, and display names replace raw ids.
     assert.equal(seen.activity.length, 2);
     assert.ok(seen.activity.every(row => ['workspace.created', 'firewall.rule.created'].includes(row.action)));
-    assert.ok(seen.activity.some(row => row.actor === 'Synthetic Admin' && row.label === 'إضافة قاعدة جدار حماية'));
+    assert.ok(seen.activity.every(row=>row.actor===null), 'Activity must not disclose actor names');
     const asMember = await dashboard({ userId: member });
     assert.equal(asMember.canManageMembers, false);
     assert.equal(asMember.summary.members, 3);
@@ -60,7 +83,7 @@ test('Kernel DB: real product state, tenant-scoped totals, activity and member r
     await pool.query("INSERT INTO neon_auth.\"user\"(id,name,email,banned) VALUES($1,'Synthetic New','new@example.test',false)", [userOnly]);
     const fresh = await dashboard({ userId: userOnly });
     assert.equal(fresh.tenant, null); assert.equal(fresh.summary, null); assert.equal(fresh.activity.length, 0);
-    assert.ok(fresh.products.every(p => p.href === null || p.state === 'FOUNDATION'));
+    assert.ok(fresh.products.every(p => p.href === null || p.state === 'NOT_CONFIGURED'));
     const roster = await tenantMembers({ userId: owner });
     assert.equal(roster.members.length, 3);
     assert.equal(roster.members[0].role, 'OWNER'); assert.equal(roster.members[0].roleLabel, 'مالك');
@@ -73,7 +96,7 @@ test('Kernel DB: real product state, tenant-scoped totals, activity and member r
     const health = await operationalHealth();
     assert.equal(health.checks.database, 'READY'); assert.equal(health.checks.schema, 'READY');
     assert.equal(health.checks.auth, 'AUTH_SETUP_REQUIRED'); assert.equal(health.status, 'degraded');
-    await pool.query('DROP TABLE public.aigas_audit_events');
+    await pool.query('ALTER TABLE public.aigas_audit_events RENAME TO fixture_unavailable_audit_events');
     const missing = await operationalHealth();
     assert.equal(missing.checks.schema, 'SCHEMA_MISSING'); assert.equal(missing.status, 'degraded');
   } finally {

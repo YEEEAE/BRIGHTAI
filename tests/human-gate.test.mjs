@@ -1,14 +1,19 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { createHumanGateService } from '../src/server/human-gate/service.mjs';
 import { createHandler } from '../src/server/human-gate/http.mjs';
 import { exact,text,decisionAllowed } from '../src/server/human-gate/core.mjs';
 test('Human Gate input and separation of duties',()=>{
  for(const value of [null,[],{tenant_id:'forged'}])assert.throws(()=>exact(value,['title']));
  for(const value of ['',null,'x','x'.repeat(501),'test\u0000'])assert.throws(()=>text(value));
  assert.equal(text(' Test '),'Test');
- for(const role of ['OWNER','ADMIN']){assert.equal(decisionAllowed({role},{requester_id:'a',status:'PENDING'},'b'),true);assert.equal(decisionAllowed({role},{requester_id:'a',status:'PENDING'},'a'),false);}
- assert.equal(decisionAllowed({role:'MEMBER'},{requester_id:'a',status:'PENDING'},'b'),false);
- assert.equal(decisionAllowed({role:'ADMIN'},{requester_id:'a',status:'APPROVED'},'b'),false);
+ const pending={requester_id:'a',status:'PENDING'};
+ assert.equal(decisionAllowed(pending,'b',{}, {allowed:true}),true);
+ assert.equal(decisionAllowed(pending,'a',{}, {allowed:true}),false);
+ assert.equal(decisionAllowed(pending,'b',{}, {allowed:false}),false);
+ assert.equal(decisionAllowed(pending,'b',{}),false);
+ assert.equal(decisionAllowed({...pending,status:'APPROVED'},'b',{}, {allowed:true}),false);
+ assert.equal(decisionAllowed(pending,'a',{separation_of_duties:false},{allowed:true}),true);
 });
 test('Human Gate HTTP: auth first, origin, size, JSON and private errors',async()=>{
  let calls=0;const service=async()=>{calls++;return {persisted:true};};
@@ -26,4 +31,12 @@ test('Human Gate reports missing schema and database privilege without leaking d
   const response=await handler(new Request('https://local/'),'list');const data=await response.json();
   assert.equal(response.status,503);assert.equal(data.code,code);assert.match(data.message,/Human Gate|runtime/u);assert.doesNotMatch(JSON.stringify(data),/private database detail/u);
  }
+});
+
+test('Human Gate list is routed to the transaction and rejects injected fields',async()=>{
+ const sentinel=new Error('transaction reached');let calls=0;
+ const service=createHumanGateService(async()=>{calls++;throw sentinel;});
+ await assert.rejects(service({userId:'synthetic'},null,'list'),error=>error===sentinel);
+ await assert.rejects(service({userId:'synthetic'},null,'list',{tenant_id:'forged'}),{code:'INVALID_BODY'});
+ assert.equal(calls,1);
 });

@@ -9,7 +9,8 @@ test('Risk Engine: every draft matrix cell and untrusted fields',()=>{
  for(const v of [0,4,1.5,'1',null,NaN])assert.throws(()=>evaluate(v,1));
  for(const v of [0,-1,'1',null,1.5])assert.throws(()=>version(v));
  for(const body of [null,[],{tenant_id:'x'},{risk_level:'LOW'},{evaluator_id:'x'},{asset_snapshot:{}}])assert.throws(()=>exact(body,['likelihood']));
- const a={name:'Synthetic asset',owner:'Synthetic team',purpose:'Synthetic use',data_classification:'PUBLIC'};assert.deepEqual(assetInput(a),a);
+ const a={name:'Synthetic asset',owner:'Synthetic team',purpose:'Synthetic use',data_classification:'PUBLIC'};assert.deepEqual(assetInput(a),{...a,data_context:'',provider_reference:'',model_reference:'',model_version:'',approval_status:'',lifecycle_status:'ACTIVE'});
+ assert.throws(()=>assetInput({...a,lifecycle_status:'APPROVED'}),{code:'INVALID_ASSET_STATUS'});
  for(const bad of [{...a,name:''},{...a,owner:'a'},{...a,purpose:'x\u0000'},{...a,data_classification:'OTHER'}])assert.throws(()=>assetInput(bad));
  const assessment={asset_version:1,likelihood:3,impact:3,likelihood_reason:'Synthetic reason',impact_reason:'Synthetic impact',controls_reason:'Synthetic controls'};
  assert.equal(assessmentInput(assessment).risk_level,'HIGH');for(const key of ['likelihood_reason','impact_reason','controls_reason'])assert.throws(()=>assessmentInput({...assessment,[key]:''}));
@@ -25,4 +26,12 @@ test('Risk Engine HTTP: auth before data, origin, JSON limit, private failure',a
  let calls=0;const handler=createHandler(async()=>({userId:'synthetic'}),async()=>{calls++;return {persisted:true};});
  for(const [headers,body,expected]of [[{},'{}',403],[{origin:'https://evil','content-type':'application/json'},'{}',403],[{origin:'https://local','content-type':'text/plain'},'{}',415],[{origin:'https://local','content-type':'application/json'},'{',400],[{origin:'https://local','content-type':'application/json'},'x'.repeat(8200),413]]){const r=await handler(new Request(request,{method:'POST',headers,body}),'assess');assert.equal(r.status,expected);assert.match(r.headers.get('cache-control'),/no-store/);}
  assert.equal(calls,0);const broken=createHandler(async()=>({userId:'synthetic'}),async()=>{throw new Error('SECRET');});const r=await broken(request,'history');assert.equal(r.status,503);assert.doesNotMatch(await r.text(),/SECRET/);
+});
+
+test('audit constraint failures are dependency failures, never bad user input',async()=>{
+ const handler=createHandler(async()=>({userId:'synthetic'}),async()=>{
+  const error=new Error('private SQL details');error.code='23514';error.table='aigas_audit_events';throw error;
+ });
+ const response=await handler(new Request('https://local/app/api/risk-engine/assets/'),'list');
+ assert.equal(response.status,503);assert.equal((await response.json()).code,'RISK_ENGINE_UNAVAILABLE');
 });

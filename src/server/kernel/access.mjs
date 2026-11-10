@@ -27,8 +27,8 @@ export function grantKindClass(kind) {
 export async function productGrants(db, tenantId, slug = null) {
   if (!isUuid(tenantId)) throw new KernelError(400, 'INVALID_WORKSPACE', 'حدد مؤسسة صالحة.');
   const rows = (await db.query(`SELECT product_slug,access_kind,approval_reference,approved_at,expires_at,revoked_at,
-    clock_timestamp() AS checked_at FROM public.aigas_product_grants
-    WHERE tenant_id=$1 AND ($2::text IS NULL OR product_slug=$2) FOR SHARE`, [tenantId, slug])).rows;
+    clock_timestamp() AS checked_at FROM public.aigas_locked_product_grants($1)
+    WHERE tenant_id=$1 AND ($2::text IS NULL OR product_slug=$2)`, [tenantId, slug])).rows;
   return rows.map(raw => {
     const { approval_reference, ...rest } = raw;
     const grant = {
@@ -121,7 +121,7 @@ export function resolveProductAccess({ storedStatus, grant, trial }) {
 // from a request body; the user comes from the verified bearer token.
 export async function assertTenantMembership(db, identity, tenantId) {
   if (!isUuid(tenantId) || typeof identity?.userId !== 'string' || !isUuid(identity.userId)) throw new KernelError(400, 'INVALID_WORKSPACE', 'حدد مؤسسة صالحة.');
-  const member = (await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR SHARE', [tenantId, identity.userId])).rows[0];
+  const member = (await db.query('SELECT role FROM public.aigas_lock_member($1,$2)', [tenantId, identity.userId])).rows[0];
   requireRole(member, ['OWNER', 'ADMIN', 'MEMBER']);
   return member;
 }

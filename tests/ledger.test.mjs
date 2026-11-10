@@ -1,14 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
-import { hashEvent, verifyEvent, filters } from '../src/server/ledger/core.mjs';
+import { hashEvent, verifyEvent, filters, profile } from '../src/server/ledger/core.mjs';
 import { createHandler } from '../src/server/ledger/http.mjs';
 import { KernelError } from '../src/server/kernel/core.mjs';
-const sample=()=>({event_id:randomUUID(),tenant_id:randomUUID(),source:'ledger.synthetic-lab',event_type:'synthetic.test.created',policy_version:'foundation-v1',metadata_json:{synthetic:true,scenario:'integrity-check',outcome:'RECORDED',decision_ref:randomUUID()},created_at:'2026-11-01T00:00:00.123Z',created_by:randomUUID()});
+const sample=()=>({hash_profile:profile,sequence_no:'1',previous_hash:null,idempotency_key:'synthetic:integrity:1',event_id:randomUUID(),tenant_id:randomUUID(),source:'ledger.synthetic-lab',event_type:'synthetic.test.created',policy_version:'foundation-v1',metadata_json:{synthetic:true,scenario:'integrity-check',outcome:'RECORDED',decision_ref:randomUUID()},created_at:'2026-11-01T00:00:00.123Z',created_by:randomUUID()});
 test('canonical digest survives DB time/JSON ordering; detects changes to each covered field',()=>{
  const e=sample();e.integrity_hash=hashEvent(e);
  assert.equal(verifyEvent({...e,created_at:new Date(e.created_at),metadata_json:Object.fromEntries(Object.entries(e.metadata_json).reverse())}),'MATCH');
- for(const changed of [{event_id:randomUUID()},{tenant_id:randomUUID()},{created_by:randomUUID()},{created_at:'2026-11-01T00:00:01.123Z'},{event_type:'synthetic.review.recorded'},{metadata_json:{...e.metadata_json,outcome:'REVIEWED'}}])assert.equal(verifyEvent({...e,...changed}),'MISMATCH');
+ for(const changed of [{sequence_no:'2'},{previous_hash:'a'.repeat(64)},{idempotency_key:'synthetic:integrity:2'},{event_id:randomUUID()},{tenant_id:randomUUID()},{created_by:randomUUID()},{created_at:'2026-11-01T00:00:01.123Z'},{event_type:'synthetic.review.recorded'},{metadata_json:{...e.metadata_json,outcome:'REVIEWED'}}])assert.equal(verifyEvent({...e,...changed}),'MISMATCH');
+ assert.equal(verifyEvent({...e,hash_profile:'unsupported'}),'INDETERMINATE');
+ assert.equal(verifyEvent({...e,sequence_no:0}),'INDETERMINATE');
  assert.equal(verifyEvent({...e,source:'unknown'}),'INDETERMINATE');
  assert.equal(verifyEvent({...e,integrity_hash:'invalid'}),'INDETERMINATE');
  const {tenant_id,integrity_hash,...candidate}=e;

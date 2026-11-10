@@ -30,7 +30,7 @@ export async function tenantGuard(identity, requested, db = database()) {
   return { memberships: rows, tenant };
 }
 async function lockMember(db, identity, tenant) {
-  const member = (await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR SHARE', [tenant.tenant_id, identity.userId])).rows[0];
+  const member = (await db.query('SELECT role FROM public.aigas_lock_member($1,$2)', [tenant.tenant_id, identity.userId])).rows[0];
   requireRole(member, ['OWNER','ADMIN','MEMBER']);
   return { ...tenant, role: member.role };
 }
@@ -156,7 +156,7 @@ export async function audit(db, identity, tenantId, action, context = {}) {
     return auditId;
   }
   if (idempotencyKey) {
-    const member = (await db.query('SELECT 1 FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR SHARE', [tenantId, identity.userId])).rows[0];
+    const member = (await db.query('SELECT 1 FROM public.aigas_lock_member($1,$2)', [tenantId, identity.userId])).rows[0];
     if (!member) throw new KernelError(403, 'FORBIDDEN', 'صلاحياتك لا تسمح بهذه العملية.');
     const previous = (await db.query('SELECT id,actor_user_id,action,correlation_id,policy_version FROM public.aigas_audit_events WHERE tenant_id=$1 AND idempotency_key=$2 FOR SHARE', [tenantId, idempotencyKey])).rows[0];
     if (previous && previous.actor_user_id === identity.userId && previous.action === action && previous.correlation_id === correlationId && previous.policy_version === policyVersion) return previous.id;

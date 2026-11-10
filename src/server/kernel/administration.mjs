@@ -10,7 +10,7 @@ export async function adminScope(db, identity, requested, roles = ['OWNER','ADMI
   if (!requested) throw new KernelError(400, 'WORKSPACE_REQUIRED', 'حدد المؤسسة قبل تنفيذ العملية.');
   const scope = await tenantGuard(identity, uuid(requested), db);
   requireRole(scope.tenant, roles);
-  const member = (await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR SHARE', [scope.tenant.tenant_id, identity.userId])).rows[0];
+  const member = (await db.query('SELECT role FROM public.aigas_lock_member($1,$2)', [scope.tenant.tenant_id, identity.userId])).rows[0];
   requireRole(member, roles);
   return scope;
 }

@@ -15,7 +15,7 @@ export async function appendEvent(db, identity, tenantId, input) {
   // accepted from a request body. Reject malformed envelope values early so a
   // database constraint never has to absorb them silently.
   if (typeof input.policy_version!=='string' || !/^[a-zA-Z0-9_.:-]{1,120}$/.test(input.policy_version) || typeof input.idempotency_key!=='string' || !/^[a-zA-Z0-9_.:-]{1,180}$/.test(input.idempotency_key)) throw new KernelError(400,'INVALID_EVENT','مرجع العملية أو نسخة السياسة غير صالح.');
-  const member = (await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR SHARE',[tenantId,identity.userId])).rows[0];
+  const member = (await db.query('SELECT role FROM public.aigas_lock_member($1,$2)',[tenantId,identity.userId])).rows[0];
   requireRole(member,['OWNER','ADMIN','MEMBER']);
 // All appends in this implementation serialize per tenant until COMMIT. The
 // transaction-scoped lock covers tail read, sequence increment, idempotency
@@ -87,7 +87,7 @@ export async function recordProductEvent(db, identity, tenantId, input) {
   // tenant is still the one derived from tenantGuard, never a request body.
   await assertTenantMembership(db, identity, tenantId);
   const ready = (await db.query("SELECT to_regclass('public.aigas_ld_evidence_requirements') IS NOT NULL AS requirements, to_regclass('public.aigas_ld_events') IS NOT NULL AS events, to_regclass('public.aigas_product_access') IS NOT NULL AS access, to_regclass('public.aigas_product_grants') IS NOT NULL AS grants")).rows[0];
-  const requirement = ready.requirements ? (await db.query('SELECT policy_version FROM public.aigas_ld_evidence_requirements WHERE tenant_id=$1 AND source=$2 AND event_type=$3 FOR SHARE',[tenantId,envelope.source,envelope.eventType])).rows[0] : null;
+  const requirement = ready.requirements ? (await db.query('SELECT policy_version FROM public.aigas_locked_evidence_requirements($1) WHERE tenant_id=$1 AND source=$2 AND event_type=$3',[tenantId,envelope.source,envelope.eventType])).rows[0] : null;
   const mandatoryFailure = status => new KernelError(503,'MANDATORY_EVIDENCE_UNAVAILABLE','السياسة المعتمدة تشترط دليلًا لهذه العملية؛ تعذر تأكيد Ledger. لم تكتمل العملية.',status);
   await db.query('SAVEPOINT aig_optional_ledger_event');
   try {

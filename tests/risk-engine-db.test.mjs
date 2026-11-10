@@ -1,28 +1,27 @@
+import { localDatabaseUrl, installSchema, grantProduct, runtime } from './helpers/database.mjs';
 // Explicit disposable localhost DB only. Never load .env or write to Neon.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import pg from 'pg';
 import { randomUUID } from 'node:crypto';
-import { readFile } from 'node:fs/promises';
 import { createRiskEngineService } from '../src/server/risk-engine/service.mjs';
 import { createHandler } from '../src/server/risk-engine/http.mjs';
-const url=process.env.RISK_ENGINE_TEST_DATABASE_URL;
-if(url&&!['localhost','127.0.0.1'].includes(new URL(url).hostname))throw new Error('Disposable localhost DB required');
+const url=localDatabaseUrl('RISK_ENGINE_TEST_DATABASE_URL');
 test('Risk Engine DB: persistence, version history, tenant/role rejection, races and atomic audit',{skip:!url},async()=>{
  const pool=new pg.Pool({connectionString:url,max:5});
  try{
-  await pool.query('CREATE SCHEMA neon_auth; CREATE TABLE neon_auth."user"(id uuid PRIMARY KEY,banned boolean)');
-  for(const file of ['0001_aigas_kernel.sql','0005_aigas_risk_engine.sql'])await pool.query(await readFile(new URL(`../migrations/${file}`,import.meta.url),'utf8'));
-  const owner={userId:randomUUID()},admin={userId:randomUUID()},member={userId:randomUUID()},outsider={userId:randomUUID()},tenant=randomUUID(),other=randomUUID();
+  await installSchema(pool);
+    const owner={userId:randomUUID()},admin={userId:randomUUID()},member={userId:randomUUID()},outsider={userId:randomUUID()},tenant=randomUUID(),other=randomUUID();
   for(const user of [owner,admin,member,outsider])await pool.query('INSERT INTO neon_auth."user"(id) VALUES($1)',[user.userId]);
   await pool.query("INSERT INTO aigas_tenants(id,name) VALUES($1,'Synthetic A'),($2,'Synthetic B')",[tenant,other]);
   for(const [u,t,r]of [[owner,tenant,'OWNER'],[admin,tenant,'ADMIN'],[member,tenant,'MEMBER'],[outsider,other,'OWNER']])await pool.query('INSERT INTO aigas_memberships(tenant_id,user_id,role) VALUES($1,$2,$3)',[t,u.userId,r]);
-  const transact=async work=>{const c=await pool.connect();try{await c.query('BEGIN');const result=await work(c);await c.query('COMMIT');return result;}catch(e){await c.query('ROLLBACK');throw e;}finally{c.release();}};
+ await grantProduct(pool,tenant,'risk-engine'); await grantProduct(pool,other,'risk-engine');
+  const transact=async work=>{const c=await pool.connect();try{await c.query('BEGIN');await runtime(c);const result=await work(c);await c.query('COMMIT');return result;}catch(e){await c.query('ROLLBACK'); throw e;}finally{c.release();}};
   const send=async(user,op='list',body={},id,scope=tenant,page=1,filters={})=>{
    // Inject verified identity only in this harness; production handler keeps JWT verification.
    const handler=createHandler(async()=>user,createRiskEngineService(transact)),method=['list','history','revisions'].includes(op)?'GET':op==='update'?'PATCH':'POST';
    const query=new URLSearchParams({workspace:scope,page:String(page),...filters});
-   const r=await handler(new Request(`https://local/app/api/risk-engine/assets/?${query}`,{method,headers:{origin:'https://local','content-type':'application/json'},...(method!=='GET'?{body:JSON.stringify(body)}:{})}),op,id);return {status:r.status,data:await r.json()};
+   const r=await handler(new Request(`https://local/app/api/risk-engine/assets/?${query}`,{method,headers:{origin:'https://local','content-type':'application/json'},...(method!=='GET'?{body:JSON.stringify({...body,synthetic_data_confirmed:true})}:{})}),op,id);return {status:r.status,data:await r.json()};
   };
   const a={name:'Synthetic use',owner:'Synthetic team',purpose:'Public summaries',data_classification:'PUBLIC'};
   const assessment={asset_version:1,likelihood:1,impact:2,likelihood_reason:'Limited synthetic use',impact_reason:'Reversible synthetic impact',controls_reason:'Manual review and data minimization'};

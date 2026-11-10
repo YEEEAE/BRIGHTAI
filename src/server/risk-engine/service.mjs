@@ -40,8 +40,8 @@ export function createRiskEngineService(transact=transaction) {
   if(classification&&!classifications.includes(classification))throw new KernelError(400,'INVALID_CLASSIFICATION','مرشح تصنيف البيانات غير صالح.');
   const riskLevel=params.get('risk_level')||'';
   if(riskLevel&&!['LOW','MEDIUM','HIGH'].includes(riskLevel))throw new KernelError(400,'INVALID_RISK_LEVEL','مرشح مستوى المخاطر غير صالح.');
-  const assessmentStatus=params.get('assessment_status')||'';
-  if(assessmentStatus&&!['NOT_ASSESSED','REASSESSMENT_REQUIRED','ASSESSED'].includes(assessmentStatus))throw new KernelError(400,'INVALID_ASSESSMENT_STATUS','مرشح حالة التقييم غير صالح.');
+  const assessmentStatusFilter=params.get('assessment_status')||'';
+  if(assessmentStatusFilter&&!['NOT_ASSESSED','REASSESSMENT_REQUIRED','ASSESSED'].includes(assessmentStatusFilter))throw new KernelError(400,'INVALID_ASSESSMENT_STATUS','مرشح حالة التقييم غير صالح.');
   const treatmentStatus=params.get('treatment_status')||'';
   if(treatmentStatus&&!treatmentStatuses.includes(treatmentStatus))throw new KernelError(400,'INVALID_TREATMENT_STATUS','مرشح حالة المعالجة غير صالح.');
   const dueOnly=params.get('due')==='1';
@@ -50,7 +50,7 @@ export function createRiskEngineService(transact=transaction) {
    if(!scope.tenant)throw new KernelError(403,'NO_WORKSPACE','أنشئ مساحة عمل من Kernel أولًا.');
    const tenantId=scope.tenant.tenant_id;
    await requireProductAccess(db,identity,tenantId,'risk-engine');
-   const member=(await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR SHARE',[tenantId,identity.userId])).rows[0];
+   const member=(await db.query('SELECT role FROM public.aigas_lock_member($1,$2)',[tenantId,identity.userId])).rows[0];
    requireRole(member,['OWNER','ADMIN','MEMBER']);
    const canWrite=['OWNER','ADMIN'].includes(member.role);
    if(['create','update','assess','save-treatment','archive','export'].includes(operation))requireRole(member,['OWNER','ADMIN']);
@@ -127,8 +127,8 @@ export function createRiskEngineService(transact=transaction) {
       WHERE a.tenant_id=$1 AND ($2='' OR a.name ILIKE '%'||$2||'%' OR a.owner ILIKE '%'||$2||'%' OR a.purpose ILIKE '%'||$2||'%' OR a.provider_reference ILIKE '%'||$2||'%' OR a.model_reference ILIKE '%'||$2||'%')
       AND ($3='' OR a.data_classification=$3) AND ($4='' OR (s.asset_version=a.version AND s.risk_level=$4))
       AND ($6='' OR $6=CASE WHEN s.id IS NULL THEN 'NOT_ASSESSED' WHEN s.asset_version<>a.version THEN 'REASSESSMENT_REQUIRED' ELSE 'ASSESSED' END)
-      ORDER BY a.created_at DESC,a.id DESC LIMIT 26 OFFSET $5`,[tenantId,search,classification,riskLevel,(page-1)*25,assessmentStatus])).rows;
-    const filteredTotal=(await db.query(`SELECT count(*)::int AS total FROM public.aigas_re_assets a LEFT JOIN LATERAL(SELECT id,risk_level,asset_version FROM public.aigas_re_assessments WHERE tenant_id=a.tenant_id AND asset_id=a.id ORDER BY created_at DESC,id DESC LIMIT 1)s ON true WHERE a.tenant_id=$1 AND ($2='' OR a.name ILIKE '%'||$2||'%' OR a.owner ILIKE '%'||$2||'%' OR a.purpose ILIKE '%'||$2||'%' OR a.provider_reference ILIKE '%'||$2||'%' OR a.model_reference ILIKE '%'||$2||'%') AND ($3='' OR a.data_classification=$3) AND ($4='' OR (s.asset_version=a.version AND s.risk_level=$4)) AND ($5='' OR $5=CASE WHEN s.id IS NULL THEN 'NOT_ASSESSED' WHEN s.asset_version<>a.version THEN 'REASSESSMENT_REQUIRED' ELSE 'ASSESSED' END)`,[tenantId,search,classification,riskLevel,assessmentStatus])).rows[0].total;
+      ORDER BY a.created_at DESC,a.id DESC LIMIT 26 OFFSET $5`,[tenantId,search,classification,riskLevel,(page-1)*25,assessmentStatusFilter])).rows;
+    const filteredTotal=(await db.query(`SELECT count(*)::int AS total FROM public.aigas_re_assets a LEFT JOIN LATERAL(SELECT id,risk_level,asset_version FROM public.aigas_re_assessments WHERE tenant_id=a.tenant_id AND asset_id=a.id ORDER BY created_at DESC,id DESC LIMIT 1)s ON true WHERE a.tenant_id=$1 AND ($2='' OR a.name ILIKE '%'||$2||'%' OR a.owner ILIKE '%'||$2||'%' OR a.purpose ILIKE '%'||$2||'%' OR a.provider_reference ILIKE '%'||$2||'%' OR a.model_reference ILIKE '%'||$2||'%') AND ($3='' OR a.data_classification=$3) AND ($4='' OR (s.asset_version=a.version AND s.risk_level=$4)) AND ($5='' OR $5=CASE WHEN s.id IS NULL THEN 'NOT_ASSESSED' WHEN s.asset_version<>a.version THEN 'REASSESSMENT_REQUIRED' ELSE 'ASSESSED' END)`,[tenantId,search,classification,riskLevel,assessmentStatusFilter])).rows[0].total;
     return {tenant:{...scope.tenant,role:member.role},memberships:scope.memberships,canWrite,assets:rows.slice(0,25),hasMore:rows.length>25,page,summary,filteredTotal,method:METHOD,contract_version:HTTP_CONTRACT_VERSION};
    }
    // Read paths share-lock so a saved revision cannot tear a multi-query view;

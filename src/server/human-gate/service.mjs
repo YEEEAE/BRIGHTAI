@@ -14,6 +14,7 @@ const assertTransition=(from,to)=>{
  if(!canTransition(from,to)) throw new KernelError(409,'INVALID_TRANSITION','حالة الطلب لا تسمح بهذا الانتقال؛ حدّث الصفحة قبل الإجراء.');
 };
 const bodyKeys={
+ list:[],
  create:['title','description','reason','operation_type','new_name','synthetic_confirmed'],
  decide:['decision','reason'],
  execute:[],
@@ -37,7 +38,7 @@ export function createHumanGateService(transact=transaction) {
    if(!scope.tenant) throw new KernelError(403,'NO_WORKSPACE','أنشئ مساحة عمل من Kernel أولًا.');
    const tenantId=scope.tenant.tenant_id;
    const member=await requireProductAccess(db,identity,tenantId,'human-gate');
-   const caller=(await db.query('SELECT id FROM neon_auth."user" WHERE id=$1 AND banned IS NOT TRUE FOR SHARE',[identity.userId])).rows[0];
+   const caller=(await db.query('SELECT id FROM neon_auth."user" WHERE id=$1 AND banned IS NOT TRUE',[identity.userId])).rows[0];
    if(!caller) throw new KernelError(401,'UNAUTHORIZED','انتهت صلاحية الحساب.');
    // One order for policy, delegation, request transitions and lazy expiry within this tenant.
    await db.query("SELECT pg_advisory_xact_lock(hashtextextended('human-gate:' || $1,0))",[tenantId]);
@@ -167,7 +168,7 @@ export function createHumanGateService(transact=transaction) {
     if(!uuid(body.delegatee_id)||!operations.includes(body.operation_type)||!reviewLevels.includes(body.level)) throw new KernelError(400,'INVALID_DELEGATION','حدد عضوًا وعملية ومستوى تفويض صالحًا.');
     if(body.delegatee_id===identity.userId) throw new KernelError(400,'INVALID_DELEGATION','لا يمكن تفويض نفسك.');
     if(roleRank[body.level]>roleRank[member.role]) throw new KernelError(403,'DELEGATION_EXCEEDS_AUTHORITY','لا يمكن منح مستوى أعلى من صلاحيتك الحالية.');
-    const delegatee=(await db.query('SELECT m.role,u.name FROM public.aigas_memberships m JOIN neon_auth."user" u ON u.id=m.user_id WHERE m.tenant_id=$1 AND m.user_id=$2 AND u.banned IS NOT TRUE FOR SHARE OF m,u',[tenantId,body.delegatee_id])).rows[0];
+    const delegatee=(await db.query('SELECT role,name FROM public.aigas_lock_member($1,$2)',[tenantId,body.delegatee_id])).rows[0];
     if(!delegatee) throw new KernelError(400,'USER_NOT_MEMBER','العضو المفوّض ليس عضوًا نشطًا في هذه المؤسسة.');
     const reason=text(body.reason),duration=minutes(body.minutes);
     const delegation=(await db.query('INSERT INTO public.aigas_hg_delegations(id,tenant_id,delegator_id,delegatee_id,operation_type,level,delegator_role,reason,expires_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8,clock_timestamp()+make_interval(mins=>$9)) RETURNING *',[randomUUID(),tenantId,identity.userId,body.delegatee_id,body.operation_type,body.level,member.role,reason,duration])).rows[0];
@@ -203,7 +204,7 @@ export function createHumanGateService(transact=transaction) {
     try { digestValid=!!request.payload_digest&&binding(request)===request.payload_digest; } catch { digestValid=false; }
     if(!policy?.enabled||policy.version!==request.policy_version||!digestValid) return false;
     if((request.provider_ref??providerFor(request.operation_type))!==providerFor(request.operation_type)) return false;
-    const requester=(await db.query('SELECT m.role FROM public.aigas_memberships m JOIN neon_auth."user" u ON u.id=m.user_id WHERE m.tenant_id=$1 AND m.user_id=$2 AND u.banned IS NOT TRUE FOR SHARE OF m,u',[tenantId,request.requester_id])).rows[0];
+    const requester=(await db.query('SELECT role FROM public.aigas_lock_member($1,$2)',[tenantId,request.requester_id])).rows[0];
     if(!requester||(request.operation_type==='KERNEL_WORKSPACE_RENAME'&&!admin(requester))) return false;
     if(request.operation_type==='KERNEL_WORKSPACE_RENAME'){
      const target=(await db.query('SELECT name,profile_version FROM public.aigas_tenants WHERE id=$1 FOR SHARE',[tenantId])).rows[0];
@@ -330,11 +331,15 @@ export function createHumanGateService(transact=transaction) {
    if(!permit.active) throw new KernelError(410,'PERMIT_EXPIRED','انتهت صلاحية إذن التنفيذ قبل الاستخدام.');
    // The permit may shorten but never outlive the approved request window.
    if(new Date(permit.expires_at).getTime()>new Date(request.expires_at).getTime()) throw new KernelError(409,'BINDING_INVALID','صلاحية إذن التنفيذ تتجاوز المهمة المعتمدة؛ يلزم اعتماد جديد.');
-   const approval=(await db.query("SELECT * FROM public.aigas_hg_decisions WHERE tenant_id=$1 AND request_id=$2 AND decision='APPROVE' FOR SHARE",[tenantId,id])).rows[0];
+   const approval=(await db.query("SELECT * FROM public.aigas_hg_decisions WHERE tenant_id=$1 AND request_id=$2 AND decision='APPROVE'",[tenantId,id])).rows[0];
    const selfApproval=approval?.reviewer_id===identity.userId;
    if(!approval||(selfApproval&&((policy?.separation_of_duties!==false)||request.operation_type==='KERNEL_WORKSPACE_RENAME'))||approval.payload_digest!==request.payload_digest||approval.policy_version!==request.policy_version||permit.payload_digest!==request.payload_digest||permit.policy_version!==request.policy_version||permit.subject_ref!==request.subject_ref||permit.operation_type!==request.operation_type||permit.requester_id!==request.requester_id||permit.reviewer_id!==approval.reviewer_id) throw new KernelError(409,'APPROVAL_REQUIRED','الموافقة أو إذن التنفيذ لا يطابق المهمة الحالية.');
    // Lock both identities and memberships until COMMIT; re-check the reviewer now.
-   const principals=(await db.query('SELECT m.user_id,m.role FROM public.aigas_memberships m JOIN neon_auth."user" u ON u.id=m.user_id WHERE m.tenant_id=$1 AND m.user_id=ANY($2::uuid[]) AND u.banned IS NOT TRUE ORDER BY m.user_id FOR SHARE OF m,u',[tenantId,[request.requester_id,approval.reviewer_id]])).rows;
+   const principals=[];
+   for(const userId of [...new Set([request.requester_id,approval.reviewer_id])].sort()){
+    const principal=(await db.query('SELECT role FROM public.aigas_lock_member($1,$2)',[tenantId,userId])).rows[0];
+    if(principal) principals.push({...principal,user_id:userId});
+   }
    const requester=principals.find(p=>p.user_id===request.requester_id);
    if(!requester||(request.operation_type==='KERNEL_WORKSPACE_RENAME'&&!admin(requester))||!(await reviewerStillAuthorized(db,tenantId,request,policy))){
     await expire(request,'AUTHORITY_CHANGED');
@@ -366,9 +371,9 @@ export function createHumanGateService(transact=transaction) {
 }
 async function reviewerStillAuthorized(db,tenantId,request,policy){
  const required=policy?.review_level??'ADMIN';
- const approval=(await db.query("SELECT reviewer_id,delegation_id FROM public.aigas_hg_decisions WHERE tenant_id=$1 AND request_id=$2 AND decision='APPROVE' FOR SHARE",[tenantId,request.id])).rows[0];
+ const approval=(await db.query("SELECT reviewer_id,delegation_id FROM public.aigas_hg_decisions WHERE tenant_id=$1 AND request_id=$2 AND decision='APPROVE'",[tenantId,request.id])).rows[0];
  if(!approval) return false;
- const reviewer=(await db.query('SELECT m.role FROM public.aigas_memberships m JOIN neon_auth."user" u ON u.id=m.user_id WHERE m.tenant_id=$1 AND m.user_id=$2 AND u.banned IS NOT TRUE FOR SHARE OF m,u',[tenantId,approval.reviewer_id])).rows[0];
+ const reviewer=(await db.query('SELECT role FROM public.aigas_lock_member($1,$2)',[tenantId,approval.reviewer_id])).rows[0];
  if(!reviewer) return false;
  if(approval.delegation_id){
   const delegation=(await db.query(`SELECT d.level,dm.role AS delegator_role FROM public.aigas_hg_delegations d

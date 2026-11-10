@@ -8,15 +8,15 @@ const rule = overrides => ({ ...rules[2], ...overrides });
 
 test('synthetic outcomes, denial precedence and priority within the winning action', () => {
   assert.equal(evaluate('معلومة عامة', rules).action, 'ALLOW');
-  assert.equal(evaluate('DEMO-ID-1234', rules).output, '[معرّف منقّح]');
-  assert.equal(evaluate('معلومة عامة DEMO-BLOCK DEMO-ID-1234', rules).action, 'BLOCK');
+  assert.equal(evaluate('DEMO-ID-1234', rules).output, '[نص منقّح]');
+  assert.equal(evaluate('معلومة عامة DEMO-BLOCK DEMO-ID-1234', rules).action, 'DENY');
   assert.equal(evaluate('معلومة عامة DEMO-ID-1234', rules).action, 'REDACT');
-  assert.equal(evaluate('demo-id-1234 / DEMO-ID-1234', rules).output, '[معرّف منقّح] / [معرّف منقّح]');
+  assert.equal(evaluate('demo-id-1234 / DEMO-ID-1234', rules).output, '[نص منقّح] / [نص منقّح]');
   // An ALLOW rule can never outrank BLOCK, whatever its priority.
   const permissive = rule({ id: '00000000-0000-4000-8000-000000000099', name: 'سماح بأولوية عليا', pattern: 'DEMO-BLOCK', action: 'ALLOW', priority: 1 });
-  assert.equal(evaluate('DEMO-BLOCK', [...rules, permissive]).action, 'BLOCK');
+  assert.equal(evaluate('DEMO-BLOCK', [...rules, permissive]).action, 'DENY');
   // Priority only selects which matching BLOCK rule is cited.
-  const earlier = rule({ id: '00000000-0000-4000-8000-000000000098', name: 'حجب أولوية 5', pattern: 'demo-block', action: 'BLOCK', priority: 5 });
+  const earlier = rule({ id: '00000000-0000-4000-8000-000000000098', name: 'حجب أولوية 5', pattern: 'demo-block', action: 'DENY', priority: 5 });
   const cited = evaluate('DEMO-BLOCK', [...rules, earlier]);
   assert.equal(cited.rule_name, 'حجب أولوية 5');
   assert.equal(cited.rule_version, 1);
@@ -28,7 +28,7 @@ test('literal patterns are never compiled; corrupt policy and empty policy fail 
   const result = evaluate('x (a+)+$ y', [literal]);
   assert.equal(result.action, 'ALLOW');
   assert.ok(Date.now() - started < 1000, 'literal matching must not backtrack');
-  assert.equal(evaluate('text', []).action, 'BLOCK');
+  assert.equal(evaluate('text', []).action, 'DENY');
   assert.equal(evaluate('text', [rule({ version: 0 })]).reason, 'INVALID_POLICY');
   assert.equal(evaluate('text', [rule({ action: 'DELETE' })]).reason, 'INVALID_POLICY');
   assert.equal(evaluate('text', [rule({ match_type: 'REGEX' })]).reason, 'INVALID_POLICY');
@@ -45,7 +45,8 @@ test('server-side rule validation stays literal and bounded', () => {
   assert.throws(() => rulePattern(''), error => error.code === 'INVALID_RULE_PATTERN');
   assert.throws(() => rulePattern('x'.repeat(81)), error => error.code === 'INVALID_RULE_PATTERN');
   assert.throws(() => rulePattern('line\u0000break'), error => error.code === 'INVALID_RULE_PATTERN');
-  assert.equal(ruleAction('BLOCK'), 'BLOCK');
+  assert.equal(ruleAction('DENY'), 'DENY');
+  assert.throws(() => ruleAction('BLOCK'), error => error.code === 'INVALID_RULE_ACTION');
   assert.throws(() => ruleAction('DROP'), error => error.code === 'INVALID_RULE_ACTION');
   assert.equal(rulePriority(undefined), 100);
   assert.throws(() => rulePriority(0), error => error.code === 'INVALID_RULE_PRIORITY');
@@ -59,7 +60,7 @@ test('HTTP rejects missing identity, cross origin, tenant injection, unknown fie
   const request = (body, origin = 'http://localhost') => new Request('http://localhost/app/api/firewall/rules/', { method: 'POST', headers: { origin, 'content-type': 'application/json' }, body: JSON.stringify(body) });
   assert.equal((await authenticated(request({ template: 'public' }, 'https://other.example'), 'create')).status, 403);
   assert.equal((await authenticated(request({ template: 'public', tenant_id: 'other' }), 'create')).status, 400);
-  assert.equal((await authenticated(request({ id: 'x', version: 1, action: 'BLOCK', role: 'OWNER' }), 'update')).status, 400);
+  assert.equal((await authenticated(request({ id: 'x', version: 1, action: 'DENY', role: 'OWNER' }), 'update')).status, 400);
   assert.equal((await authenticated(request({ text: 'x'.repeat(19000) }), 'evaluate')).status, 413);
 });
 
