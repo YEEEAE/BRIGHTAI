@@ -115,13 +115,34 @@ test('AU02/AU05/AU06/AU07 runtime: identity-scoped memberships, member races and
     await assert.rejects(productAccess({ userId: ids.member1 }, a, 'firewall'), { status: 403, code: 'PRODUCT_NOT_ENABLED' });
 
     const activateTrial = async (tenant, requestedBy, decidedBy, start, end) => {
+      // P06-A: activation needs a verified environment/release plus an approved
+      // readiness and quota row for the exact product. These are local synthetic
+      // fixtures for an isolation test, not a product readiness result.
+      const release = 'b'.repeat(40);
       const trialId = randomUUID();
-      await pool.query(`INSERT INTO aigas_trial_requests(id,tenant_id,requested_by,requested_products,deployment_mode,business_goal)
-        VALUES($1,$2,$3,ARRAY['human-gate'],'SAAS','Synthetic local entitlement fixture for Kernel access separation')`, [trialId, tenant, requestedBy]);
-      await pool.query("UPDATE aigas_trial_requests SET state='ELIGIBILITY_REVIEW' WHERE id=$1 AND tenant_id=$2", [trialId, tenant]);
-      await pool.query("UPDATE aigas_trial_requests SET state='APPROVED',decided_by=$3,decided_at=clock_timestamp() WHERE id=$1 AND tenant_id=$2", [trialId, tenant, decidedBy]);
-      await pool.query(`UPDATE aigas_trial_requests SET state='ACTIVATED',decision_source='OPERATOR',decided_by=$3,decided_at=clock_timestamp(),activated_at=$4,expires_at=$5 WHERE id=$1 AND tenant_id=$2`, [trialId, tenant, decidedBy, start, end]);
-      await pool.query("INSERT INTO aigas_trial_entitlements(trial_id,tenant_id,product_slug,status,starts_at,ends_at) VALUES($1,$2,'human-gate','ACTIVE',$3,$4)", [trialId, tenant, start, end]);
+      const client = await pool.connect();
+      try {
+        await client.query('BEGIN');
+        await client.query("SELECT set_config('aigas.environment','local',true),set_config('aigas.release_sha',$1,true)", [release]);
+        await client.query(`INSERT INTO aigas_release_readiness
+          (environment,release_sha,product_slug,status,verified_at,verified_by,evidence_reference,expires_at)
+          VALUES('local',$1,'human-gate','PASS',now(),$2,'LOCAL_SYNTHETIC_READINESS',now()+interval '1 hour')
+          ON CONFLICT DO NOTHING`, [release, decidedBy]);
+        await client.query(`INSERT INTO aigas_trial_quota_limits
+          (product_slug,limit_units,approval_reference,approved_by,effective_from)
+          VALUES('human-gate',10,'LOCAL_SYNTHETIC_QUOTA',$1,now()-interval '1 minute')
+          ON CONFLICT (product_slug) DO NOTHING`, [decidedBy]);
+        await client.query(`INSERT INTO aigas_trial_requests(id,tenant_id,requested_by,requested_products,deployment_mode,business_goal)
+          VALUES($1,$2,$3,ARRAY['human-gate'],'SAAS','Synthetic local entitlement fixture for Kernel access separation')`, [trialId, tenant, requestedBy]);
+        await client.query("UPDATE aigas_trial_requests SET state='ELIGIBILITY_REVIEW' WHERE id=$1 AND tenant_id=$2", [trialId, tenant]);
+        await client.query("UPDATE aigas_trial_requests SET state='APPROVED',decided_by=$3,decided_at=clock_timestamp() WHERE id=$1 AND tenant_id=$2", [trialId, tenant, decidedBy]);
+        await client.query(`UPDATE aigas_trial_requests SET state='ACTIVATED',decision_source='OPERATOR',decided_by=$3,decided_at=clock_timestamp(),activated_at=$4,expires_at=$5 WHERE id=$1 AND tenant_id=$2`, [trialId, tenant, decidedBy, start, end]);
+        await client.query("INSERT INTO aigas_trial_entitlements(trial_id,tenant_id,product_slug,status,starts_at,ends_at) VALUES($1,$2,'human-gate','ACTIVE',$3,$4)", [trialId, tenant, start, end]);
+        await client.query('COMMIT');
+      } catch (error) {
+        await client.query('ROLLBACK').catch(() => {});
+        throw error;
+      } finally { client.release(); }
       return trialId;
     };
     const activeStart = new Date(Date.now() - 3_600_000), activeEnd = new Date(activeStart.getTime() + 48 * 3_600_000);

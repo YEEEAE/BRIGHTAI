@@ -7,6 +7,7 @@
 - العقد المحلي يتطلب `0028` لقفل العضوية/المنح دون صلاحيات تعديل إضافية، و`0029` لمنع مرجعLedger الاصطناعيnull؛ طُبقتا ضمن 25/25 على staging المعزول؛ أي تطبيق على الإنتاج يحتاج مراجعة وتفويضًا مستقلًا.
 - التقرير له قارئHTML مستقل دون شبكة: `Audit/final-360-2026-11-10/FINAL-360-AUDIT.html`؛ يولد بـbuild-report.mjs؛76 متطلبًا و25 برومبتًا؛ Chromium360/390/768/1440 والبحث/النسخ/CSV وتهيئة الطباعة PASS؛ بيانات التدقيق لم تتغير.
 - توجيه المستخدم2026-11-10: لا سقف15 لبرومبتات الإغلاق؛ الخطة الحالية25 بتقسيم تخصصي وتبعيات مفحوصة في `Audit/final-360-2026-11-10/EXECUTION-PROMPTS.md`؛ أرقام التدقيق وNO-GO دون تغيير.
+- 2026-11-10 VERIFIED LOCAL (P06-A): HEAD `7d7be00`+working tree؛ دورة Trial خادمية بقناة مشغّل وبوابة جاهزية/حصة؛ contracts46/46، `0030` fresh+delta، build/routes55؛ التفعيل مغلق وP06-B BLOCKED؛ `Audit/p06-trial-2026-11-10/REPORT.md`.
 - 2026-11-10 HISTORICAL LIVE CHECK: SHA `7b1f533f71c7b1f41884790366a4d5967c85a87b` طابق Render deploy `dep-dbpg8kgae00c73easjr0`؛ الخدمة `srv-d7m5bcjbc2fs73826v20` static_site/dist/client وapp/Auth/API404؛ لم يُعد فحصها بجولةAR02/AR03؛ Beta/Commercial NO-GO.
 - تدقيق360 تاريخي: tests18 PASS/9 FAIL/5 SKIP تجاوزتها نتائجAR02/AR03 المحلية أعلاه؛ Firewall harness8/8 و55 صفحة حية200 دليل مؤرخ في `Audit/final-360-2026-11-10/FINAL-360-AUDIT.md`، دون عمليات منتج حية مثبتة.
 - 2026-11-10 VERIFIED LOCAL (P04): HEAD `655a8b9` (ملفاتP04 مطابقة للمرجع `7b1f533`)؛ `/healthz/` عام 200/503 يفحص DB/schema/auth/portal بلا أسرار، و`dist/server/version.json`+readback يربطان service/deploy/SHA/artifact مع `consistent`؛ `healthCheckPath=/healthz/`؛ دليل `Audit/p04-node-ssr-2026-11-10/REPORT.md`.
@@ -15,6 +16,7 @@
 - المراقبة: اعتماد مستقل لكل طبقة + SHA كامل؛ PostHog staging/beta فقط؛ واجهة App/Auth ترسل رموزًا ثابتة عبر same-origin relay؛ لا SDK أو stack؛ خطة التحقق O1–O8 غير منفذة.
 
 ## Open Issues / Blockers
+- 2026-11-10 BLOCKED (P06-B): التفعيل التجريبي يحتاج نتيجة readiness PASS لكل منتج لنفس SHA/البيئة واعتماد الحصص/المدة/الاحتفاظ ونجاح P07–P11؛ لا صفوف جاهزية/حصة ولا مشغّل في أي بيئة، و`0030` غير مطبق خارجيًا.
 - 2026-11-10 BLOCKED (P04): تغييرات P04+إصلاح الربط غير مرفوعة؛ `push` ممنوع على الوكيل ⇒ خدمة `brightai-staging-node` لم تصبح live بعد. بعد push المالك تُثبت الحالات الحية.
 - 2026-11-10 BLOCKED (P04): Render MCP غير مخوّل (`list_workspaces`=`unauthorized`) — الوصول عبر CLI/لوحة فقط؛ قراءة `static_site` المرجعية تبقى HISTORICAL وليست في workspace الـCLI.
 - 2026-11-10 BLOCKED (P05): AU03/AU04 نجاحًا يحتاجان قناة P19؛ تحت runtime `createWorkspace`/`accept` يفشلان 503، ودعوات invited غير مرئية قبل bootstrap. 5 هويات staging اصطناعية بلا جلسات؛ حذفها يحتاج تفويضًا مستقلًا.
@@ -31,6 +33,14 @@
 - Sentry projects=[] ضمن الاتصال؛ PostHog720936 ingested_event=false وإعدادات خصوصية تحتاج مراجعة؛ لا وجهة معتمدة، وحد الخطة التاريخي لم يُعد التحقق منه. Bootstrap/RLS وtrial/purge وموافقات المزودين والـUAT ما زالت مفتوحة.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-10] — P06-A: دورة Trial الخادمية وقناة المشغّل
+- **تم:** `0030` (مشغّلون، جاهزية لكل منتج/إصدار/بيئة، حصص معتمدة، RLS لكل فعل) + خدمة الطلب/المراجعة/القرار/التفعيل المغلق/الانتهاء + API وصفحة مشغّل.
+- **تم:** التفعيل يرفض بلا جاهزية/حصة/إقرار، ويُعاد فرضه بـtrigger؛ دور المؤسسة لا يكتب قرارًا أو حدث `OPERATOR`.
+- **التحقق:** PASS محليًا على PG18.6 — contracts46/46، `0030` في rehearsal fresh+delta، build55، routes55؛ readback staging: 25 مطبقًا و`0030=0` و0023 موجود.
+- **الحالة:** P06-A DONE LOCAL؛ P06-B BLOCKED (P07–P11 والحصص/الاحتفاظ).
+- **ملفات:** `migrations/0030_aigas_trial_server_cycle.sql`، `src/server/kernel/trial-service.mjs`، `Audit/p06-trial-2026-11-10/REPORT.md`.
+- **مفتوح:** تطبيق `0030` على بيئة معتمدة، اعتماد الحصص/الاحتفاظ، وتفعيل بعد readiness — كلها تحتاج تفويضًا مستقلًا.
 
 ## [2026-11-10] — P05: Auth والعضويات والسياسات
 - **تم:** إصلاح قفل العضوية الذاتية عبر `aigas_lock_member` في `manageMember`/`policies`، ورفض self-role/revoke قبل القراءة، وتغليف 42501 في `createWorkspace`.

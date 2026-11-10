@@ -6,7 +6,7 @@ import { spawn } from 'node:child_process';
 import pg from 'pg';
 import { localDatabaseUrl } from '../tests/helpers/database.mjs';
 
-const names=['KERNEL','FIREWALL','HUMAN_GATE','LEDGER','RISK_ENGINE','KERNEL_IDENTITY','KERNEL_INVITATION'];
+const names=['KERNEL','FIREWALL','HUMAN_GATE','LEDGER','RISK_ENGINE','KERNEL_IDENTITY','KERNEL_INVITATION','KERNEL_TRIAL'];
 const env={PATH:process.env.PATH,TMPDIR:process.env.TMPDIR,LANG:'en_US.UTF-8',TZ:'Asia/Riyadh',AIGAS_REQUIRE_DB_TESTS:'true',AIGAS_REQUIRE_RLS:'true',NODE_OPTIONS:`--import=${new URL('../tests/helpers/no-egress.mjs',import.meta.url).href}`};
 const urls=names.map(name=>{
   const key=`${name}_TEST_DATABASE_URL`;

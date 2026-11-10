@@ -50,6 +50,10 @@ const auditLabels = {
   'risk-engine.asset.created': 'تسجيل أصل مخاطر',
   'risk-engine.asset.updated': 'تحديث أصل مخاطر',
   'risk-engine.assessment.created': 'تقييم مخاطر',
+  'trial.request.created': 'طلب تجربة مؤسسية',
+  'trial.request.submitted': 'إحالة طلب التجربة للمراجعة',
+  'trial.request.cancelled': 'إلغاء طلب تجربة',
+  'trial.quota.consumed': 'استهلاك حصة تجربة',
   'secure-chat.message.rejected': 'رفض إرسال محادثة',
 };
 export const auditActionLabel = action => {

@@ -1,0 +1,22 @@
+---
+import AppLayout from '../../../../layouts/AppLayout.astro';
+import { authConfig } from '../../../../server/kernel/auth.mjs';
+export const prerender = false;
+const config = authConfig();
+---
+<AppLayout title="قناة المشغل — التجارب">
+  <section class="kernel" data-operator-trials data-auth-url={config?.base ?? ''}>
+    <div class="page-heading"><div><p class="overline">OPERATOR / TRIAL CYCLE</p><h1>قناة المشغل<span>قرارات التجربة لا تمنحها الواجهة.</span></h1><p class="intro">هذه القناة لهويات المشغّل المسجّلة في قاعدة البيانات فقط. الطلب والموافقة والتفعيل خطوات منفصلة، والتفعيل يبقى مغلقًا حتى توجد نتيجة جاهزية حديثة للمنتج نفسه على الإصدار والبيئة نفسيهما، مع حصة معتمدة.</p></div><span class="connection">مشغّل معتمد</span></div>
+
+    <section class="panel" aria-labelledby="op-title">
+      <div class="section-heading"><div><p class="overline">01 / REQUESTS</p><h2 id="op-title">طلبات التجربة</h2></div><button type="button" data-op-refresh>تحديث القائمة</button></div>
+      <p data-op-state role="status" aria-live="polite">تُحمّل القائمة بعد التحقق من صلاحية المشغّل.</p>
+      <div data-op-list></div>
+      <p class="health-note">لا تعرض هذه القناة محتوى عميل ولا مفاتيح. الموافقة لا تبدأ عدّاد التجربة، والتفعيل وحده يثبت <bdi>activated_at</bdi> لمدة <bdi>172800</bdi> ثانية. لا دفع ولا تجديد ولا تحويل تلقائي، والتصدير والحذف والاحتفاظ مسؤولية مستقلة.</p>
+      {!config && <p class="health-error">لم يُهيأ Neon Auth على هذا التشغيل؛ سجّل الدخول من <a href="/app/kernel/">نواة المنظومة</a> بعد التهيئة.</p>}
+    </section>
+
+    <noscript><p class="notice">يلزم JavaScript للتحقق من جلسة المشغّل.</p></noscript>
+  </section>
+</AppLayout>
+<script src="../../../../scripts/operator-trials.ts"></script>

@@ -258,7 +258,7 @@ async function main() {
     ledger: (await withClient(guards.database, c => c.query('SELECT filename, status FROM ops.aigas_migration_ledger ORDER BY filename'))).rows,
   };
   // Complete the guards database so post-0025 suppression can be observed.
-  for (const key of ['0025', '0026', '0027', '0028', '0029', '0024']) {
+  for (const key of ['0025', '0026', '0027', '0028', '0029', '0030', '0024']) {
     await withClient(guards.database, async client => {
       const result = await applyFile(client, byKey(key));
       await recordLedger(client, byKey(key), result);
