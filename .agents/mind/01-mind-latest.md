@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-10 VERIFIED LOCAL+STAGING-READONLY (P03): HEAD `9f70334`؛ مصفوفة RLS 69/69 محليًا (owner0 لـruntime، صفر منح عميل، A/B CRUD، GUC، COPY، DB07)؛ staging 9/9 قراءة (36 جدول/77 سياسة/25 دالة)؛ contracts36/36؛ دليل `Audit/p03-runtime-rls-2026-11-10/REPORT.md`.
 - 2026-11-10 VERIFIED LOCAL: HEAD `60777c9739d5584360e57bd5238d3a075b06c09a` + working tree؛ AR02/AR03 (مقيسة على `5725727`): unit31/combined36 PASS،0 FAIL/0 SKIP؛ DB18.6 بخمس قواعد ودورruntime/NOBYPASSRLS؛ build/routes55 PASS؛ مرجع `Audit/ar02-ar03-2026-11-10/REPORT.md`؛ لا إطلاق.
 - 2026-11-10 VERIFIED STAGING `lucky-salad-43566291`/`br-rough-wind-bdkmg13n`/`neondb` (بُني مرتين؛ الثاني بعد تحصين B9): 25/25 APPLIED، ledger hashes == repo، 36 جدولًا/RLS36/FORCE2/77 سياسة/25 دالة، 0 منح لـ`authenticated`/`anonymous`، `aigas_runtime` NOBYPASSRLS بـ34 منحة وصفر على جداول المتن، chain guard+append_only+no_truncate، 9 جداول `neon_auth`، 0 صفوف؛ parity=`PARITY`، posture 8/8.
 - العقد المحلي يتطلب `0028` لقفل العضوية/المنح دون صلاحيات تعديل إضافية، و`0029` لمنع مرجعLedger الاصطناعيnull؛ طُبقتا ضمن 25/25 على staging المعزول؛ أي تطبيق على الإنتاج يحتاج مراجعة وتفويضًا مستقلًا.
@@ -18,9 +19,18 @@
 - 2026-11-10 PREREQ: أي بيئة جديدة تفشل على `0001` بـ`3F000 schema "neon_auth" does not exist` إن لم تُهيّأ Neon Auth أولًا؛ متطلب غير موثق في migrations، يجب أن ينتقل إلى runbook النشر.
 - 2026-11-10 GOTCHA: منصة Neon تمنح الأدوار المُنشأة `ADMIN TRUE/INHERIT FALSE/SET FALSE` من `cloud_admin` ⇒ `SET ROLE` يفشل 42501 رغم `pg_has_role`; يلزم `GRANT … WITH SET TRUE` **بعد** الترحيلات (يتكرر بعد كل `CREATE ROLE`). الإنتاج يستلمها من `neon_service` بـSET TRUE.
 - 2026-11-10 INFO: بين `0018` و`0025` تُنشئ `0023` دالتي trigger تحصلان على `EXECUTE` لـPUBLIC (`authenticated_can_execute=true`)؛ `0025` تسحبهما. أي توقف عند `0024` يترك النافذة مفتوحة.
+- 2026-11-10 VERIFIED: إعادة `0025` على `aigas_runtime` موجود تفشل `42501` عند `ALTER ROLE … NOSUPERUSER` بلا superuser؛ مسار `CREATE ROLE` الأول سليم. لا تُعدّل الترحيل المطبّق؛ أصلح في ملف لاحق/runbook.
+- 2026-11-10 VERIFIED: Data API على production `active` و`db_schemas=["public"]` (`anonymous`, aggregates=true)؛ staging بلا Data API؛ الإغلاق يحتاج تفويض control plane (خيار A/B في `docs/DATA-API-EXPOSURE-DECISION.md`).
 - Sentry projects=[] ضمن الاتصال؛ PostHog720936 ingested_event=false وإعدادات خصوصية تحتاج مراجعة؛ لا وجهة معتمدة، وحد الخطة التاريخي لم يُعد التحقق منه. Bootstrap/RLS وtrial/purge وموافقات المزودين والـUAT ما زالت مفتوحة.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-10] — P03: Runtime RLS وData API
+- **تم:** سكربت مصفوفة RLS (69 فحصًا على PG18 مؤقت) وسكربت لقطة قراءة فقط؛ مصفوفة صلاحيات وقرار Data API A/B/C.
+- **التحقق:** PASS — DB04–DB07 محليًا 69/69؛ staging 9/9 كتالوج؛ contracts36/36؛ صفر كتابة/منح/تغيير على Neon.
+- **الحالة:** DONE للمعزول والقراءة؛ PARTIAL لـcutover وbootstrap وإغلاق Data API.
+- **ملفات:** `Audit/p03-runtime-rls-2026-11-10/REPORT.md`، `docs/RUNTIME-RLS-PERMISSION-MATRIX.md`، `scripts/verify-runtime-rls.mjs`.
+- **مفتوح:** F1 `ALTER ROLE … NOSUPERUSER`؛ ELSE CRUD على 7 جداول؛ Data API `public`؛ bootstrap P05.
 
 ## [2026-11-10] — B9: تحصين 0018/0025/0028 وإعادة بناء الهدف
 - **تم:** استبدال كل `REVOKE … FROM authenticated/anonymous` غير المحروس بـ`IF to_regrole(...)` في ثلاثة ملفات، بلا تغيير أي منح.

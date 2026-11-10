@@ -4,6 +4,8 @@
 > جرد 2026-11-03 HISTORICAL. آخر تحقق: 2026-11-09 عبر Neon MCP قراءة فقط على مشروع `young-frog-60183055` / فرع `production` (`br-young-bird-b43proeb`) / قاعدة `neondb`؛ لا كتابة ولا migrations ولا تغيير إعدادات. HEAD المحلي `aef462c3b1a26430813b3557145c7031c31d465a` (`main`).
 > **الحالة الراهنة (2026-11-09):** الاتصال المستخدم للفحص `current_user=neondb_owner` مع `rolsuper=false` و`rolbypassrls=true` وعضوية في `authenticated`. 31/31 جدول AIGAS عليه RLS و`relforcerowsecurity=false`، وسياستان فقط (`aigas_sc_requests`, `aigas_sc_cancellations`) تعتمدان `aigas.sc_*` بلا عضوية. `authenticated` يملك 124 منح DML (4 × 31 جدولًا) وEXECUTE على 10 دوال `aigas_*`، منها `aigas_sc_usage_window` (SECURITY DEFINER). `anonymous` بلا منح. Default ACL لـ`neondb_owner`: `authenticated=arwd` على الجداول و`X` على الدوال و`U` على التسلسلات. `aigas_runtime` غير موجود. Data API `active` على `public` مع `db_anon_role=anonymous` ومخططات متاحة `auth`, `neon_auth`, `public`. كل جداول AIGAS و`neon_auth.user/session/organization/member/invitation` بلا سجلات في العينة. دور اتصال خدمة Node الحية `NOT_VERIFIED`؛ وجود `neondb_owner` لا يثبت أنه المستخدم.
 > النطاق: `pg_roles`، `role_table_grants`، `pg_policies`، `pg_class.relrowsecurity`، `pg_default_acl`، `pg_proc`، `pg_namespace`، وإعداد Neon Data API. كل استعلامات Neon كانت للقراءة فقط.
+>
+> **تحديث P03 (2026-11-10، HEAD `9f70334`):** المصدر لم يُطبَّق على production. نُفِّذت مصفوفة RLS كاملة على عنقود PG18.6 محلي (69/69) ولقطة وضع على `aigas-staging` بقراءة فقط (9/9: 36 جدولًا، RLS 36، FORCE 2، 77 سياسة، صفر منح للعميل، `aigas_runtime` NOBYPASSRLS بلا ملكية). التفصيل: `Audit/p03-runtime-rls-2026-11-10/REPORT.md` و`docs/RUNTIME-RLS-PERMISSION-MATRIX.md`. عيب مفتوح: إعادة تطبيق `0025` على دور موجود تفشل بـ`42501` عند `ALTER ROLE … NOSUPERUSER` بلا superuser (F1). Data API على production ما زال `active` على `public` (خيارات الإغلاق في `docs/DATA-API-EXPOSURE-DECISION.md`).
 
 ---
 
@@ -122,7 +124,7 @@
 
 ---
 
-## 7. خطة التحقق المستقبلية (غير منفذة)
+## 7. خطة التحقق المستقبلية (نُفّذت محليًا في P03؛ لم تُنفّذ على production)
 
 1. على فرع معزول: تطبيق `0018` ثم `0022` ثم `0025` ثم `0027`، والتأكد من `pg_policies` و`relrowsecurity` و`relforcerowsecurity` و`pg_default_acl` و`role_table_grants`. **لا يُطبق `0019`** بعد `0025`.
 2. `SET ROLE aigas_runtime; SELECT set_config('aigas.user_id',...,true), set_config('aigas.tenant_id',...,true);` ثم قراءة جدول مؤسسة أخرى → صفر صفوف.
