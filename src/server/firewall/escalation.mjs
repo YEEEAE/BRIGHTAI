@@ -82,6 +82,7 @@ export function verifyHumanApproval(escalation, expected) {
   if (!approval) return { state: 'NONE', reason: 'NO_BOUND_APPROVAL' };
   const expires = typeof approval.expires_at === 'string' ? Date.parse(approval.expires_at) : NaN;
   const bound = approval.tenant_id === expected.tenantId
+    && approval.decision_id === expected.decisionId
     && approval.status === 'ACTIVE'
     && approval.decision === 'APPROVE'
     && approval.request_ref === expected.requestId

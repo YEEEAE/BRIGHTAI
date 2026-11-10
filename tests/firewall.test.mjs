@@ -2,9 +2,17 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { evaluate, templates, inputText, ruleName, rulePattern, rulePriority, ruleAction } from '../src/server/firewall/core.mjs';
 import { createHandler } from '../src/server/firewall/http.mjs';
+import { verifyHumanApproval } from '../src/server/firewall/escalation.mjs';
 
 const rules = Object.values(templates).map((template, index) => ({ ...template, id: `00000000-0000-4000-8000-00000000000${index}`, enabled: true, version: 1 }));
 const rule = overrides => ({ ...rules[2], ...overrides });
+
+test('human approval cannot be reused for another decision', () => {
+  const expected = { tenantId: 'tenant', decisionId: 'decision-a', requestId: 'request', policyVersion: 'v1', requestFingerprint: 'fingerprint' };
+  const approval = { tenant_id: expected.tenantId, decision_id: 'decision-b', status: 'ACTIVE', decision: 'APPROVE', request_ref: expected.requestId, policy_version: expected.policyVersion, request_fingerprint: expected.requestFingerprint, expires_at: '2999-01-01T00:00:00Z' };
+  assert.equal(verifyHumanApproval({ approval }, expected).state, 'INVALID');
+  assert.equal(verifyHumanApproval({ approval: { ...approval, decision_id: expected.decisionId } }, expected).state, 'BOUND');
+});
 
 test('synthetic outcomes, denial precedence and priority within the winning action', () => {
   assert.equal(evaluate('معلومة عامة', rules).action, 'ALLOW');

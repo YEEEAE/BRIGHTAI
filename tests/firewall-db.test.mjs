@@ -5,6 +5,8 @@ import assert from 'node:assert/strict';
 import pg from 'pg';
 import { randomUUID } from 'node:crypto';
 import { createFirewallService } from '../src/server/firewall/service.mjs';
+import { createHandler } from '../src/server/firewall/http.mjs';
+import { MAX_EVALUATIONS_PER_WINDOW } from '../src/server/firewall/core.mjs';
 
 const url=localDatabaseUrl('FIREWALL_TEST_DATABASE_URL');
 test('Postgres: policy CRUD, priority, tenant isolation, permissions, metadata privacy and fail-closed log', { skip: !url }, async () => {
@@ -19,6 +21,14 @@ test('Postgres: policy CRUD, priority, tenant isolation, permissions, metadata p
  await grantProduct(db,tenant,'firewall'); await grantProduct(db,other,'firewall');
     const service = createFirewallService(async work => { await db.query('BEGIN'); await runtime(db); try { const result = await work(db); await db.query('COMMIT'); return result; } catch (error) { await db.query('ROLLBACK'); throw error; } });
     const operate=(user,scope,op,body={},query)=>service(user,scope,op,op==='evaluate'?{...body,synthetic:true}:body,query);
+    const handler = createHandler(async () => owner, service);
+    const post = async (scope, body, operation = 'evaluate') => {
+      const request = new Request(`http://localhost/app/api/firewall/evaluate/?workspace=${scope}`, {
+        method: 'POST', headers: { origin: 'http://localhost', 'content-type': 'application/json' }, body: JSON.stringify(body),
+      });
+      const response = await handler(request, operation);
+      return { status: response.status, data: await response.json() };
+    };
 
     assert.equal((await operate(owner, tenant, 'evaluate', { text: 'معلومة عامة' })).reason, 'NO_ACTIVE_POLICY');
     for (const template of ['public', 'identifier', 'prohibited']) await operate(owner, tenant, 'create', { template });
@@ -28,6 +38,33 @@ test('Postgres: policy CRUD, priority, tenant isolation, permissions, metadata p
     assert.equal((await operate(member, tenant, 'evaluate', { text: 'معلومة عامة' })).action, 'ALLOW');
     assert.equal((await operate(member, tenant, 'evaluate', { text: 'secret synthetic DEMO-ID-1234' })).action, 'REDACT');
     assert.equal((await operate(owner, tenant, 'evaluate', { text: 'DEMO-BLOCK' })).action, 'DENY');
+
+    // Five actual handler outcomes and matching persisted decision/audit references.
+    for (const [action, pattern] of [['WARN', 'CASE-WARN'], ['ESCALATE', 'CASE-ESCALATE']]) {
+      await operate(owner, tenant, 'create', { name: `قاعدة ${action}`, pattern, action, priority: 15 });
+    }
+    for (const [action, text] of [['ALLOW', 'معلومة عامة'], ['DENY', 'DEMO-BLOCK'], ['REDACT', 'DEMO-ID-1234'], ['WARN', 'CASE-WARN'], ['ESCALATE', 'CASE-ESCALATE']]) {
+      const result = await post(tenant, { text, synthetic: true });
+      assert.equal(result.status, 200);
+      assert.equal(result.data.action, action);
+      assert.equal(result.data.reason, `RULE_${action}`);
+      assert.equal(result.data.rule_version, 1);
+      const saved = (await db.query('SELECT action,reason,rule_id,rule_version,policy_version FROM aigas_fw_decisions WHERE id=$1 AND tenant_id=$2', [result.data.id, tenant])).rows[0];
+      assert.deepEqual(saved, { action, reason: result.data.reason, rule_id: result.data.rule_id, rule_version: 1, policy_version: result.data.policy_version });
+      const evidence = await db.query('SELECT 1 FROM aigas_audit_events WHERE tenant_id=$1 AND correlation_id=$2 AND policy_version=$3', [tenant, result.data.id, result.data.policy_version]);
+      assert.equal(evidence.rowCount, 1);
+    }
+    assert.equal((await post(other, { text: 'معلومة عامة', synthetic: true })).status, 403);
+    // Even a denied guarded request is single-use; replay must not write twice.
+    const requestId = randomUUID();
+    const guarded = { text: 'معلومة عامة', synthetic: true, request_id: requestId };
+    const first = await post(tenant, guarded, 'enforce');
+    assert.equal(first.status, 403);
+    assert.equal(first.data.decision.reason, 'KERNEL_POLICY_DENIED');
+    const replay = await post(tenant, guarded, 'enforce');
+    assert.equal(replay.status, 409);
+    assert.equal(replay.data.code, 'REQUEST_ALREADY_EVALUATED');
+    assert.equal((await db.query('SELECT count(*)::int AS count FROM aigas_fw_decisions WHERE tenant_id=$1 AND request_id=$2', [tenant, requestId])).rows[0].count, 1);
 
     // Custom literal rules are saved, priority-ordered and cited by the decision.
     await operate(owner, tenant, 'create', { name: 'حجب مخصص', pattern: 'DEMO-CUSTOM', action: 'DENY', priority: 5 });
@@ -85,9 +122,21 @@ test('Postgres: policy CRUD, priority, tenant isolation, permissions, metadata p
     const columns = (await db.query("SELECT column_name FROM information_schema.columns WHERE table_name='aigas_fw_decisions'")).rows.map(column => column.column_name);
     assert.ok(!columns.some(column => /text|prompt|output|content/.test(column)));
 
+    const beforeAuditFailure = (await db.query('SELECT count(*)::int AS count FROM aigas_fw_decisions')).rows[0].count;
+    await db.query('ALTER TABLE aigas_audit_events ADD CONSTRAINT firewall_synthetic_failure CHECK (false) NOT VALID');
+    const failedAudit = await post(tenant, { text: 'معلومة عامة', synthetic: true });
+    assert.equal(failedAudit.status, 503);
+    assert.equal((await db.query('SELECT count(*)::int AS count FROM aigas_fw_decisions')).rows[0].count, beforeAuditFailure);
+    await db.query('ALTER TABLE aigas_audit_events DROP CONSTRAINT firewall_synthetic_failure');
     const beforeFailure = (await db.query('SELECT count(*)::int AS count FROM aigas_fw_decisions')).rows[0].count;
     await db.query('ALTER TABLE aigas_fw_decisions ADD CONSTRAINT synthetic_failure CHECK (false) NOT VALID');
     await assert.rejects(operate(owner, tenant, 'evaluate', { text: 'معلومة عامة' }));
     assert.equal((await db.query('SELECT count(*)::int AS count FROM aigas_fw_decisions')).rows[0].count, beforeFailure);
+    await db.query('ALTER TABLE aigas_fw_decisions DROP CONSTRAINT synthetic_failure');
+    const recent = (await db.query("SELECT count(*)::int AS count FROM aigas_fw_decisions WHERE tenant_id=$1 AND created_at > now() - interval '60 seconds'", [tenant])).rows[0].count;
+    for (let i = recent; i < MAX_EVALUATIONS_PER_WINDOW; i++) assert.equal((await post(tenant, { text: 'معلومة عامة', synthetic: true })).status, 200);
+    const limited = await post(tenant, { text: 'معلومة عامة', synthetic: true });
+    assert.equal(limited.status, 429);
+    assert.equal(limited.data.code, 'RATE_LIMITED');
   } finally { await db.end(); }
 });

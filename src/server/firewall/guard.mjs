@@ -55,7 +55,7 @@ export async function enforceDecision({ decision, tenantId, actorUserId, request
     // Even a supplied approval is only usable if it is bound to this exact request,
     // policy version, fingerprint and tenant and is still active. A mismatch is a
     // refusal, never a silent allow.
-    const approval = verifyHumanApproval(escalation, { tenantId, requestId, policyVersion, requestFingerprint });
+    const approval = verifyHumanApproval(escalation, { tenantId, decisionId: decision.id, requestId, policyVersion, requestFingerprint });
     if (approval.state === 'INVALID') {
       return { ...base, httpStatus: 409, code: 'HUMAN_APPROVAL_BINDING_INVALID',
         execution_status: 'BLOCKED', blocked_reason: approval.reason, approval_bound: false,
