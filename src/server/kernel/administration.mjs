@@ -44,12 +44,18 @@ export async function manageMember(identity, requested, body) {
   } else { exact(body, ['operation','userId']); uuid(body.userId); }
   return transaction(async db => {
     if (!requested) throw new KernelError(400, 'WORKSPACE_REQUIRED', 'حدد المؤسسة قبل تنفيذ العملية.');
+    // Self-service role and membership changes are rejected before any row lookup.
+    // Under the NOBYPASSRLS runtime role the UPDATE policy hides the actor's own row,
+    // so a self-revoke would otherwise be reported as a false "unchanged" success.
+    if (body.userId === identity.userId) throw new KernelError(409, body.operation === 'revoke' ? 'SELF_REVOCATION_REJECTED' : 'SELF_ROLE_CHANGE_REJECTED', body.operation === 'revoke' ? 'لا يمكن سحب عضويتك من هذه الشاشة. اطلب من مالك آخر إدارة عضويتك.' : 'لا يمكنك تغيير دورك بنفسك. اطلب من مالك أو مدير آخر إدارة دورك.');
     const scope = await tenantGuard(identity, uuid(requested), db);
     const tenant = scope.tenant;
     if (!tenant) throw new KernelError(403, 'FORBIDDEN', 'ليس لديك عضوية في المؤسسة المحددة.');
     // Lock tenant before member rows so concurrent changes serialize without stale authority.
     await db.query('SELECT id FROM public.aigas_tenants WHERE id=$1 FOR UPDATE', [tenant.tenant_id]);
-    const actor = (await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR UPDATE', [tenant.tenant_id, identity.userId])).rows[0];
+    // The actor row is locked through the reviewed SECURITY DEFINER helper: the runtime
+    // role may read its own membership but must not need UPDATE rights on it.
+    const actor = (await db.query('SELECT role FROM public.aigas_lock_member($1,$2)', [tenant.tenant_id, identity.userId])).rows[0];
     requireRole(actor, ['OWNER','ADMIN']);
     const target = (await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR UPDATE', [tenant.tenant_id, body.userId])).rows[0];
     if (!target && body.operation === 'revoke') return { persisted: true, unchanged: true };

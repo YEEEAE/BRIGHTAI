@@ -52,7 +52,10 @@ const signedFields = (conditions,effect,obligations,mandatory) => ({conditions,e
 async function scoped(db, identity, workspace, roles = ['OWNER']) {
   const result = await tenantGuard(identity, workspace, db);
   if (!result.tenant) throw new KernelError(403,'NO_WORKSPACE','أنشئ مساحة عمل من Kernel أولًا.');
-  const member = (await db.query('SELECT role FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 FOR UPDATE', [result.tenant.tenant_id, identity.userId])).rows[0];
+  // Lock the actor membership through the reviewed helper. A direct FOR UPDATE on the
+  // caller's own row is filtered out by the runtime UPDATE policy (user_id <> actor),
+  // which would make every policy operation fail closed with a false 403.
+  const member = (await db.query('SELECT role FROM public.aigas_lock_member($1,$2)', [result.tenant.tenant_id, identity.userId])).rows[0];
   requireRole(member, roles);
   return result.tenant;
 }

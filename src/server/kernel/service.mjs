@@ -172,20 +172,20 @@ export async function createWorkspace(identity, name) {
     await db.query('SELECT pg_advisory_xact_lock(hashtextextended($1, 0))', [identity.userId]);
     // Actor scope is required before reading membership rows under the runtime RLS policy.
     await setActorScope(db, identity.userId);
-    // The account must still exist and be active; the token alone is not the directory.
-    const account = await db.query('SELECT id FROM neon_auth."user" WHERE id=$1 AND banned IS NOT TRUE FOR SHARE', [identity.userId]);
-    if (!account.rowCount) throw new KernelError(401, 'UNAUTHORIZED', 'يلزم حساب مستخدم موثّق.');
-    // Serialized by the advisory lock so concurrent requests cannot both pass the ceiling.
-    const owned = (await db.query("SELECT count(*)::int AS count FROM public.aigas_memberships WHERE user_id=$1 AND role='OWNER'", [identity.userId])).rows[0].count;
-    if (owned >= MAX_WORKSPACES_PER_USER) throw new KernelError(409, 'WORKSPACE_LIMIT', 'بلغت الحد الأقصى للمؤسسات التي تملكها بهذا الحساب؛ تواصل مع مشغّل المنصة.');
-    // A new workspace always starts with its creator as the only OWNER. Existing members,
-    // policies, invitations and product approvals are never copied from another tenant.
-    // No role, tenant id or membership is accepted from the request body; the role below
-    // is a server literal. Under the NOBYPASSRLS runtime role this path has no INSERT
-    // policy by design: first workspace provisioning must run through an approved
-    // privileged path, not a self-grant.
-    const id = randomUUID();
     try {
+      // The account must still exist and be active; the token alone is not the directory.
+      const account = await db.query('SELECT id FROM neon_auth."user" WHERE id=$1 AND banned IS NOT TRUE FOR SHARE', [identity.userId]);
+      if (!account.rowCount) throw new KernelError(401, 'UNAUTHORIZED', 'يلزم حساب مستخدم موثّق.');
+      // Serialized by the advisory lock so concurrent requests cannot both pass the ceiling.
+      const owned = (await db.query("SELECT count(*)::int AS count FROM public.aigas_memberships WHERE user_id=$1 AND role='OWNER'", [identity.userId])).rows[0].count;
+      if (owned >= MAX_WORKSPACES_PER_USER) throw new KernelError(409, 'WORKSPACE_LIMIT', 'بلغت الحد الأقصى للمؤسسات التي تملكها بهذا الحساب؛ تواصل مع مشغّل المنصة.');
+      // A new workspace always starts with its creator as the only OWNER. Existing members,
+      // policies, invitations and product approvals are never copied from another tenant.
+      // No role, tenant id or membership is accepted from the request body; the role below
+      // is a server literal. Under the NOBYPASSRLS runtime role this path has no INSERT
+      // policy by design: first workspace provisioning must run through an approved
+      // privileged path, not a self-grant.
+      const id = randomUUID();
       // The generated tenant must not already exist and must receive exactly one
       // membership — the caller as OWNER — before anything else is written.
       const collision = await db.query('SELECT 1 FROM public.aigas_tenants WHERE id=$1', [id]);

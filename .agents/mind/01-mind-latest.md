@@ -10,14 +10,14 @@
 - 2026-11-10 HISTORICAL LIVE CHECK: SHA `7b1f533f71c7b1f41884790366a4d5967c85a87b` طابق Render deploy `dep-dbpg8kgae00c73easjr0`؛ الخدمة `srv-d7m5bcjbc2fs73826v20` static_site/dist/client وapp/Auth/API404؛ لم يُعد فحصها بجولةAR02/AR03؛ Beta/Commercial NO-GO.
 - تدقيق360 تاريخي: tests18 PASS/9 FAIL/5 SKIP تجاوزتها نتائجAR02/AR03 المحلية أعلاه؛ Firewall harness8/8 و55 صفحة حية200 دليل مؤرخ في `Audit/final-360-2026-11-10/FINAL-360-AUDIT.md`، دون عمليات منتج حية مثبتة.
 - 2026-11-10 VERIFIED LOCAL (P04): HEAD `655a8b9` (ملفاتP04 مطابقة للمرجع `7b1f533`)؛ `/healthz/` عام 200/503 يفحص DB/schema/auth/portal بلا أسرار، و`dist/server/version.json`+readback يربطان service/deploy/SHA/artifact مع `consistent`؛ `healthCheckPath=/healthz/`؛ دليل `Audit/p04-node-ssr-2026-11-10/REPORT.md`.
+- 2026-11-10 VERIFIED LOCAL+LIVE (P05): HEAD `7954bb6f` + working tree؛ إصلاح قفل الفاعل في `manageMember`/`policies` عبر `aigas_lock_member` ورفض self-role/revoke مبكرًا وتغليف 42501 في `createWorkspace`؛ contracts42/42 وbuild55 PASS؛ live Auth staging PASS (signup/login/restore/sign-out؛ JWT EdDSA/iss/ttl900؛ 5 هويات اصطناعية/0 جلسات/0 tenants)؛ دليل `Audit/p05-auth-identity-2026-11-10/REPORT.md`.
 - 2026-11-10 STAGING FREE (Render): `brightai-staging-node`=`srv-dbpj8jajnfac739je6lg` خطة free/oregon، auto-deploy من `main`، بلا دومين؛ كشف أول نشر أن `scripts/server.mjs` يستمع على loopback ⇒ صار الافتراضي `0.0.0.0`. الخدمة المرجعية `srv-d7m5bcjbc2fs73826v20` ليست في workspace الـCLI (`tea-dade102fngtc739064v0`).
 - المراقبة: اعتماد مستقل لكل طبقة + SHA كامل؛ PostHog staging/beta فقط؛ واجهة App/Auth ترسل رموزًا ثابتة عبر same-origin relay؛ لا SDK أو stack؛ خطة التحقق O1–O8 غير منفذة.
-- 2026-11-10 VERIFIED LOCAL: `~/.config/opencode/opencode.json` فيه provider `explabs` (openai-compatible→`api.experientiallabs.ai/v1`، مفتاح من `secrets/explabs-api-key` بصلاحية600) بثمانية نماذج؛ `/v1/models` 200 (306 slugs) لكن كل completion يفشل 402/429 من جهة الحساب.
 
 ## Open Issues / Blockers
-- 2026-11-10 BLOCKED (explabs): بوابة Experiential Labs ترفض completions بحالة الحساب (`card_required` على `deepseek-v4.1-flash`، `insufficient_quota` على `claude-sonnet-4.5`/`gpt-5.1-codex`)؛ لا توجيه فعلي قبل توثيق بطاقة من `platform.experientiallabs.ai/credits`.
 - 2026-11-10 BLOCKED (P04): تغييرات P04+إصلاح الربط غير مرفوعة؛ `push` ممنوع على الوكيل ⇒ خدمة `brightai-staging-node` لم تصبح live بعد. بعد push المالك تُثبت الحالات الحية.
 - 2026-11-10 BLOCKED (P04): Render MCP غير مخوّل (`list_workspaces`=`unauthorized`) — الوصول عبر CLI/لوحة فقط؛ قراءة `static_site` المرجعية تبقى HISTORICAL وليست في workspace الـCLI.
+- 2026-11-10 BLOCKED (P05): AU03/AU04 نجاحًا يحتاجان قناة P19؛ تحت runtime `createWorkspace`/`accept` يفشلان 503، ودعوات invited غير مرئية قبل bootstrap. 5 هويات staging اصطناعية بلا جلسات؛ حذفها يحتاج تفويضًا مستقلًا.
 - 2026-11-10 INVARIANT: `healthCheckPath=/healthz/` في blueprint؛ نشر بلا DB/Auth صالحين لا يصبح healthy (مقصود). `AIGAS_HEALTH_AUTH_PROBE=true` هو الفحص الوحيد الذي يخرج من الخدمة.
 - 2026-11-10 VERIFIED: Neon production وحيد غير محمي؛ 31 جدولًا/RLS31/سياسات2/FORCE0؛ runtime role وmigration ledger غائبان؛ لا استعادة مقاسة.
 - 2026-11-10 VERIFIED: الفرع الحي على `0001`–`0012`+`0015` فقط؛ `aigas_ld_events_chain_guard` (دالة+trigger) غائب فسلسلة Ledger غير مفروضة في DB؛ يحتاج `0013`+`0024`.
@@ -32,12 +32,17 @@
 
 ## Ledger (الأحدث أولًا)
 
-## [2026-11-10] — ربط OpenCode ببوابة Experiential Labs
-- **تم:** provider `explabs` عام في `~/.config/opencode/opencode.json` (baseURL + `{file:...}`) بثمانية نماذج، وملف مفتاح 600، ونسخة `.bak-before-explabs`.
-- **التحقق:** PASS للمصادقة (`/v1/models` 200، 306 slugs)؛ FAIL للـcompletion — 402 `card_required` و429 `insufficient_quota` من الحساب لا من الإعداد.
-- **الحالة:** PARTIAL — الإعداد مكتمل، والتوجيه الفعلي ينتظر توثيق وسيلة دفع.
-- **ملفات:** `~/.config/opencode/opencode.json`، `~/.config/opencode/secrets/explabs-api-key`.
-- **مفتوح:** توثيق الدفع ثم إعادة اختبار completion والتحقق من التتبع.
+## [2026-11-10] — P05: Auth والعضويات والسياسات
+- **تم:** إصلاح قفل العضوية الذاتية عبر `aigas_lock_member` في `manageMember`/`policies`، ورفض self-role/revoke قبل القراءة، وتغليف 42501 في `createWorkspace`.
+- **تم:** 3 ملفات اختبار (unit/runtime/invitation) وتوسيع harness العقود إلى 7 قواعد معزولة.
+- **التحقق:** PASS محليًا — contracts42/42، build55؛ PASS حي على staging — Auth signup/login/restore/revoke وJWT EdDSA، 0 جلسات/0 tenants.
+- **الحالة:** PARTIAL — AU03/AU04 الحي BLOCKED حتى P19.
+- **ملفات:** `Audit/p05-auth-identity-2026-11-10/REPORT.md`، `tests/identity*.test.mjs`.
+
+## [2026-11-10] — إزالة ربط Experiential Labs من OpenCode
+- **تم:** حذف `providers.explabs` وملف `secrets/explabs-api-key`، وإعادة `opencode.json` لحالة ما قبل الربط؛ `opencode.jsonc` بلا أي مدخل Experiential Labs.
+- **التحقق:** PASS — الإعداد مطابق للنسخة الاحتياطية (880B، مفاتيح `$schema/mcp/plugin` فقط)، و`opencode models` بلا `explabs`.
+- **الحالة:** DONE — لا أثر للاتصال.
 
 ## [2026-11-10] — P04: readiness وتتبع الإصدار لخدمة Node
 - **تم:** `/healthz/` عام (200/503؛ DB/schema/auth/portal؛ `no-store`/`noindex`) وخارج بوابة `/app`، و`version.json`+readback لـservice/deploy/SHA/digest مع `consistent`.
