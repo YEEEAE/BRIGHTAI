@@ -14,7 +14,7 @@
 - 2026-11-10 VERIFIED LOCAL (P04): HEAD `655a8b9` (ملفاتP04 مطابقة للمرجع `7b1f533`)؛ `/healthz/` عام 200/503 يفحص DB/schema/auth/portal بلا أسرار، و`dist/server/version.json`+readback يربطان service/deploy/SHA/artifact مع `consistent`؛ `healthCheckPath=/healthz/`؛ دليل `Audit/p04-node-ssr-2026-11-10/REPORT.md`.
 - 2026-11-10 VERIFIED LOCAL+LIVE (P05): HEAD `7954bb6f` + working tree؛ إصلاح قفل الفاعل في `manageMember`/`policies` عبر `aigas_lock_member` ورفض self-role/revoke مبكرًا وتغليف 42501 في `createWorkspace`؛ contracts42/42 وbuild55 PASS؛ live Auth staging PASS (signup/login/restore/sign-out؛ JWT EdDSA/iss/ttl900؛ 5 هويات اصطناعية/0 جلسات/0 tenants)؛ دليل `Audit/p05-auth-identity-2026-11-10/REPORT.md`.
 - 2026-11-10 STAGING FREE (Render): `brightai-staging-node`=`srv-dbpj8jajnfac739je6lg` خطة free/oregon، auto-deploy من `main`، بلا دومين؛ كشف أول نشر أن `scripts/server.mjs` يستمع على loopback ⇒ صار الافتراضي `0.0.0.0`. الخدمة المرجعية `srv-d7m5bcjbc2fs73826v20` ليست في workspace الـCLI (`tea-dade102fngtc739064v0`).
-- المراقبة: اعتماد مستقل لكل طبقة + SHA كامل؛ PostHog staging/beta فقط؛ واجهة App/Auth ترسل رموزًا ثابتة عبر same-origin relay؛ لا SDK أو stack؛ خطة التحقق O1–O8 غير منفذة.
+- 2026-11-10 PARTIAL (P13): HEAD `c5ef5547` + working tree؛ اختبارات المحولات 16/16 محليًا؛ مسودة URL غير معتمدة وغير كافية، وGA4 network غير مختبر؛ لا وجهة أو ingestion؛ `Audit/p13-observability-2026-11-10/REPORT.md`.
 
 ## Open Issues / Blockers
 - 2026-11-10 BLOCKED (P06-B): التفعيل التجريبي يحتاج نتيجة readiness PASS لكل منتج لنفس SHA/البيئة واعتماد الحصص/المدة/الاحتفاظ ونجاح P07–P11؛ لا صفوف جاهزية/حصة ولا مشغّل في أي بيئة، و`0030` غير مطبق خارجيًا.
@@ -31,9 +31,17 @@
 - 2026-11-10 INFO: بين `0018` و`0025` تُنشئ `0023` دالتي trigger تحصلان على `EXECUTE` لـPUBLIC (`authenticated_can_execute=true`)؛ `0025` تسحبهما. أي توقف عند `0024` يترك النافذة مفتوحة.
 - 2026-11-10 VERIFIED: إعادة `0025` على `aigas_runtime` موجود تفشل `42501` عند `ALTER ROLE … NOSUPERUSER` بلا superuser؛ مسار `CREATE ROLE` الأول سليم. لا تُعدّل الترحيل المطبّق؛ أصلح في ملف لاحق/runbook.
 - 2026-11-10 VERIFIED: Data API على production `active` و`db_schemas=["public"]` (`anonymous`, aggregates=true)؛ staging بلا Data API؛ الإغلاق يحتاج تفويض control plane (خيار A/B في `docs/DATA-API-EXPOSURE-DECISION.md`).
-- Sentry projects=[] ضمن الاتصال؛ PostHog720936 ingested_event=false وإعدادات خصوصية تحتاج مراجعة؛ لا وجهة معتمدة، وحد الخطة التاريخي لم يُعد التحقق منه. Bootstrap/RLS وtrial/purge وموافقات المزودين والـUAT ما زالت مفتوحة.
+- 2026-11-10 BLOCKED (P13): لا وجهة معتمدة — Sentry صفر مشاريع، وPostHog مشروع واحد `720936` على حد الخطة (free، أحداث 0/1M) وإعداداته (IP غير مجهول/console/perf/retention12m) غير معتمدة؛ P21 بلا وثيقة URL؛ لا ingestion/تنبيهات (P22).
+- 2026-11-10 OPEN: Bootstrap/RLS وtrial/purge وموافقات المزودين والـUAT ما زالت مفتوحة.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-10] — P13: عقد المراقبة والحمولة
+- **تم:** مسودة URL/referrer غير معتمدة؛ معاينة payload واختبارات محولات محلية؛ لا دليل منع تسرب GA4.
+- **التحقق:** PASS محليًا — 15/15، 70 اختبارًا (61 PASS/9 SKIP)، build55، 55/55 مسارًا، relay 403/415/413/400/429؛ وجهة/إرسال NOT RUN.
+- **الحالة:** PARTIAL — الوجهة والاعتماد وP21 وingestion مفتوحة؛ لا commit/push.
+- **ملفات:** `Audit/p13-observability-2026-11-10/REPORT.md`، `src/server/observability/url-policy.mjs`، `tests/observability.test.mjs`.
+- **مفتوح:** اختيار/ترقية وجهة Sentry وPostHog، اعتماد الحمولة والإعدادات، P21.
 
 ## [2026-11-10] — P12: رحلة المنتجات وتصميم القسم
 - **تم:** روابط التفاصيل والدخول والعودة والتواصل؛ returnTo محصور ويعتمد قرار Dashboard؛ لا شارات إتاحة عامة بتوجيه المستخدم.
@@ -119,4 +127,3 @@
 - **الحالة:** PARTIAL — SOURCE_PRESENT؛ CONFIGURED/RUNTIME_VERIFIED/APPROVED غير مثبتة؛ G8/G9 دون ترقية.
 - **ملفات:** `docs/MONITORING-AND-ANALYTICS-WIRING.md`، `docs/beta/MONITORING-READONLY-STATUS-2026-11-10.md`.
 - **مفتوح:** المالك طلب مشروع PostHog جديد؛ لم يُحاول الإنشاء لبلوغ السعة، ولا ترقية مدفوعة أو تعديل للموجود.
-

@@ -79,21 +79,38 @@ const websiteSchema = {
       window.dataLayer = window.dataLayer || [];
       function gtag(){window.dataLayer.push(arguments);}
       gtag('js', new Date());
-      function analyticsLocation(value) {
+      // Mirrors src/server/observability/url-policy.mjs: allowlist, not a filter
+      // that forwards whatever is left. Unknown query keys and the whole
+      // fragment are dropped; an unknown referrer host is omitted entirely.
+      const analyticsQueryAllowlist = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+      const analyticsReferrerHosts = ['brightai.live', 'www.brightai.live'];
+      function analyticsUrl(value, base) {
         try {
-          const url = new URL(value, window.location.href);
-          if (/^\/(?:docs|knowledge)(?:\/|$)/.test(url.pathname)) {
-            for (const key of [...url.searchParams.keys()]) {
-              if (['q', 'from'].includes(key.toLowerCase())) url.searchParams.delete(key);
-            }
+          const url = new URL(value, base);
+          if (!/^https?:$/.test(url.protocol) || url.username || url.password) return null;
+          const out = new URL(url.protocol + '//' + url.host + url.pathname);
+          for (const key of analyticsQueryAllowlist) {
+            const candidate = url.searchParams.get(key);
+            if (candidate !== null && /^[A-Za-z0-9._~-]{1,64}$/.test(candidate)) out.searchParams.set(key, candidate);
           }
-          return url.href;
+          return out.href;
         } catch {
-          return value;
+          return null;
         }
       }
-      const analyticsPage = { page_location: analyticsLocation(window.location.href) };
-      if (document.referrer) analyticsPage.page_referrer = analyticsLocation(document.referrer);
+      function analyticsReferrer(value) {
+        try {
+          const url = new URL(value);
+          if (!/^https?:$/.test(url.protocol) || url.username || url.password) return null;
+          if (url.origin !== window.location.origin && !analyticsReferrerHosts.includes(url.hostname.toLowerCase())) return null;
+          return url.protocol + '//' + url.host + url.pathname;
+        } catch {
+          return null;
+        }
+      }
+      const analyticsPage = { page_location: analyticsUrl(window.location.href, window.location.href) || (window.location.origin + window.location.pathname) };
+      const pageReferrer = document.referrer ? analyticsReferrer(document.referrer) : null;
+      if (pageReferrer) analyticsPage.page_referrer = pageReferrer;
       gtag('config', 'G-9LMB4PGTWJ', analyticsPage);
     </script>
     <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />

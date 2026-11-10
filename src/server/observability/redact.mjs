@@ -18,11 +18,18 @@ const SECTIONS = new Set(['public', 'portal', 'kernel', 'firewall', 'ledger', 'h
 const ACTION_CATEGORIES = new Set(['policy_publish', 'policy_update', 'decision', 'delegation', 'execution', 'revoke']);
 
 // Route labels never contain IDs, query strings, fragments, or user input.
+// A caller that passes a raw href is normalized here so a query can never
+// change which fixed label is chosen.
+function barePath(value) {
+  return typeof value === 'string' ? value.split(/[?#]/, 1)[0] : value;
+}
+
 export function safeRoute(pathname) {
-  if (typeof pathname !== 'string') return 'unknown';
+  const path = barePath(pathname);
+  if (typeof path !== 'string') return 'unknown';
   for (const [prefix, label] of ROUTES) {
-    if (pathname === prefix || pathname.startsWith(prefix)) {
-      if (label === 'app.api.ledger' && pathname.endsWith('/verify')) return 'app.api.ledger.verify';
+    if (path === prefix || path.startsWith(prefix)) {
+      if (label === 'app.api.ledger' && path.endsWith('/verify')) return 'app.api.ledger.verify';
       return label;
     }
   }
@@ -54,19 +61,21 @@ export function safeBooleanTag(value) {
 // A slug is derived from the pathname or a fixed product identifier, never
 // from a request body, header, or user field.
 export function productSlug(pathname) {
-  if (typeof pathname !== 'string') return null;
-  const match = pathname.match(/^\/app\/(kernel|firewall|ledger|human-gate|risk-engine|secure-chat)(?:\/|$)/);
+  const path = barePath(pathname);
+  if (typeof path !== 'string') return null;
+  const match = path.match(/^\/app\/(kernel|firewall|ledger|human-gate|risk-engine|secure-chat)(?:\/|$)/);
   return match && PRODUCT_SLUGS.has(match[1]) ? match[1] : null;
 }
 
 export function sectionFor(pathname) {
-  if (typeof pathname !== 'string') return null;
-  if (pathname.startsWith('/auth/')) return 'auth';
-  if (pathname === '/app' || pathname === '/app/') return 'portal';
-  const slug = productSlug(pathname);
+  const path = barePath(pathname);
+  if (typeof path !== 'string') return null;
+  if (path.startsWith('/auth/')) return 'auth';
+  if (path === '/app' || path === '/app/') return 'portal';
+  const slug = productSlug(path);
   if (slug) return slug;
-  if (pathname.startsWith('/app/')) return 'portal';
-  if (pathname.startsWith('/')) return 'public';
+  if (path.startsWith('/app/')) return 'portal';
+  if (path.startsWith('/')) return 'public';
   return null;
 }
 

@@ -1,14 +1,29 @@
 # المراقبة والتحليلات — ربط محلي اختياري
 
-> مراجعة 2026-11-10؛ أساس HEAD `00d6de9197836179ecebcca46a2c731cc961a260` (`main`) مع تعديلات محلية غير ملتزمة. ليست نسخة منشورة أو artifact معتمدًا.
-> `SOURCE_PRESENT=YES`؛ `SCHEMA_PRESENT=N/A` للربط؛ `CONFIGURED=NOT_VERIFIED`؛ `RUNTIME_VERIFIED=NO`؛ `APPROVED=NO`.
-> لم يُشغّل test/build/lint/typecheck/Playwright أو خادم، ولم يُرسل حدث. اتصال MCP لا يعني تفعيل SDK. G8=`BLOCKED`، G9=`NOT_VERIFIED`، القرار `NO-GO`.
+> **تصحيح P13:** سياسة URL أدناه مسودة غير معتمدة وغير كافية لإثبات الخصوصية: مسارات وقيم UTM حرة قد تحمل بيانات حساسة، ولا يثبت حذف `page_referrer` منع إرسال GA4 للقيمة الافتراضية. لم يُختبر SDK أو الشبكة بمتصفح؛ لا تعتمد ادعاءات منع URL/referrer أدناه إلى حين P21 واختبار النقل الفعلي.
+
+> تحديث 2026-11-10 (P13)؛ أساس HEAD `c5ef5547143c4acb35b568a350e9ae4aa019a184` (`main`، شجرة عمل معدّلة محليًا). المرجع التاريخي `00d6de9` لم يعد أساس القراءة.
+> `SOURCE_PRESENT=YES`؛ `SCHEMA_PRESENT=N/A` للربط؛ `CONFIGURED=NOT_VERIFIED` (لا وجهة معتمدة، لا أسرار)؛ `RUNTIME_VERIFIED=NO` (لا إرسال خارجي)؛ `ADAPTER_VERIFIED=LOCAL PASS`؛ `APPROVED=NO`.
+> نُفّذ محليًا بلا شبكة خارجية: 15/15 اختبار عقد، build، 55 مسارًا عامًا، واستقبال `POST /api/observability/` بالحالات السلبية. لم يُرسل حدث خارجي. G8=`BLOCKED`، G9=`NOT_VERIFIED`، القرار `NO-GO`.
+
+## 0. حصيلة P13 — ما هو مثبت وما هو غير مثبت
+
+| البند | الحالة | الدليل |
+|---|---|---|
+| بوابات الطبقتين وكيل الإيقاف | LOCAL PASS | `tests/observability.test.mjs` (15/15) |
+| منع URL/query/fragment/referrer غير المعتمد | LOCAL PASS — قائمة سماح واحدة | `src/server/observability/url-policy.mjs` + اختباراتها |
+| الحمولة: لا chat/body/token/SQL/docs ولا stack أو replay | LOCAL PASS | معاينة `Audit/p13-observability-2026-11-10/payload-preview.json` |
+| استقبال الواجهة والرفض | LOCAL PASS | 403/415/413/400/429 على `127.0.0.1` |
+| الوجهة والاعتماد والتكلفة | BLOCKED | لا مشروع Sentry، ومشروع PostHog الوحيد بلغ حد الخطة |
+| الوصول الفعلي (ingestion) وrelease/environment | NOT RUN | يحتاج تفويضًا بعد مراجعة الحمولة |
 
 ## 1. الواقع والحدود
 
 - `package-lock.json`: Astro **6.4.8**، adapter Node **10.1.4**؛ `astro.config.mjs`: Node standalone. عقد Node `22.x`؛ لا ادعاء إصدار runtime منشور.
 - لا حزم `@sentry/*` أو `posthog-js/node` في manifest. حافظنا على محولات `fetch` الموجودة، بلا تثبيت SDK أو تعديل lockfile.
-- [جرد MCP المؤرخ](beta/MONITORING-READONLY-STATUS-2026-11-10.md): Sentry بلا مشاريع؛ PostHog متصل لكن إضافة مشروع تتجاوز حد الخطة الحالي. لا مشروع معتمد لأي طبقة، ولا أسرار مقروءة أو محملة.
+- جرد القراءة الحالي (MCP، 2026-11-10): Sentry منظمة واحدة `659ec3bf0cec` في `us.sentry.io` و**صفر مشاريع** ⇒ لا DSN موجود. PostHog منظمة واحدة ومشروع واحد `720936` (Default project)، وحد الخطة `organizations_projects=1`؛ الخطة `free`، أحداث الشهر `0/1,000,000`. لا وجهة معتمدة لأي طبقة، ولا تُختار نيابة عن المالك.
+- إعدادات مشروع PostHog الحالي لا تصلح للإرسال كما هي: `anonymize_ips=false`، `capture_console_log_opt_in=true`، `capture_performance_opt_in=true`، الاحتفاظ الافتراضي 12 شهرًا. `session_recording_opt_in=false` حاليًا، لكن هذا إعداد مشروع لا يمنع autocapture من SDK آخر. أي تغيير إعداد يحتاج تفويضًا مستقلًا بعد اعتماد الحمولة.
+- تقسيم GA4: وسم `G-9LMB4PGTWJ` العام في `BaseLayout` **مستقل تمامًا** عن بوابات PostHog؛ لا يقرأ أي `AIGAS_*` ولا يتوقف معها. P13 لا يفعّله ولا يعطله، ويقيّد فقط ما يرسله من URL/referrer عبر قائمة السماح المشتركة.
 - لم يُختر Organization/project للإرسال، ولم تُعدّل Render/Neon/Secrets/MCP أو إعدادات مشروع خارجي.
 - الهيدر والهيرو وConstellation والشعار وأقسام الموقع العام محفوظة. الربط الجديد للمتصفح في AppLayout وصفحة Auth الديناميكية فقط؛ لا تغطية لأخطاء JavaScript في صفحات التسويق.
 
@@ -32,6 +47,17 @@
 | `AIGAS_POSTHOG_KILL_SWITCH` | `true` يمنع الإرسال مستقلًا عن Sentry |
 
 القيم الفعلية تُضبط لاحقًا بواسطة المشغّل في Secret/Config المعتمد، ولا تضاف إلى `.env*` أو `render.yaml` في هذه الدفعة. مرجع ذو صيغة صالحة ليس إثبات توقيع؛ التحقق من قرار صاحب السلطة إلزام تشغيلي. لا تعتمد أي بوابة قياس على `AIGAS_APP_ENABLED`.
+
+### 2.1 قرار الوجهة والتكلفة — غير محسوم
+
+| السؤال | الواقع | القرار المطلوب من المالك |
+|---|---|---|
+| Sentry destination | صفر مشاريع؛ لا DSN | إنشاء مشروع staging/beta (أو ربط مشروع قائم) قبل توليد DSN |
+| PostHog destination | مشروع واحد `720936` وحد الخطة 1 | إعادة استخدام Default project مع خلط بيئات، أو ترقية مدفوعة لمشروع مستقل |
+| PostHog settings | IP غير مجهول، console/performance مفعّلان، retention 12 شهرًا | اعتماد القيم المستهدفة قبل أول إرسال |
+| الحجم المتوقع | أحداث صريحة فقط (page/product/login/policy/quota) | تقدير Beta منخفض؛ لا حجز مدفوع تلقائي |
+
+لا تُرقّى أي خطة تلقائيًا، ولا يُنشأ مشروع أو مفتاح أو إعداد قبل تفويض هذه العملية نفسها. حدّ الخطة الحالي يجعل «مشروع PostHog staging مستقل» ترقيةً مدفوعة، لا خطوة مجانية.
 
 الإيقاف: ضبط kill switch المعني ثم إعادة تشغيل الخدمة بالطريقة المعتمدة. يعاد فحص البوابات عند كل إرسال؛ تبويب قديم لا يستطيع تجاوز إيقاف الخادم. لا ادعاء أن تغيير متغير في Render يغيّر بيئة process قائم فورًا؛ لا يمكن سحب حدث أُرسل أو طلب قيد التنفيذ.
 
@@ -65,6 +91,18 @@
 - status 200 يصف نتيجة نداء Auth فقط، لا نجاح عضوية/session؛ تحدي MFA يصنف 409، والفشل بلا status رقمي 400، والاستثناء 503. لا يقيس wrapper رحلة جلسة مكتملة.
 - page views الخادمية قد تشمل bots/prefetch/صفحة دخول بلا جلسة؛ لا تعتبر مستخدمين فريدين أو دليل تفاعل بشري.
 
+### عقد URL وreferrer — قائمة سماح واحدة
+
+`src/server/observability/url-policy.mjs` هو التمثيل الوحيد المسموح لقناة ترسل عنوانًا. القاعدة: إمّا أصل ومسار مع مفاتيح استعلام مسموحة، أو لا يُرسل الحقل. لا يوجد فرع «نحذف q/from ونمرّر الباقي».
+
+| الحقل | المسموح | المرفوض |
+|---|---|---|
+| `page_location` | `origin + pathname` + `utm_source/medium/campaign/term/content` بقيمة `[A-Za-z0-9._~-]{1,64}` | أي مفتاح آخر، fragment، credentials، non-http(s) |
+| `page_referrer` | نفس الأصل، أو `brightai.live`/`www.brightai.live`، ثم `origin + pathname` فقط | أي مضيف آخر يُحذف الحقل بالكامل |
+| Sentry/PostHog | لا حقل URL إطلاقًا؛ route label ثابت من `redact.mjs` | query، fragment، ID، بريد، token |
+
+ملاك القرار: P21 (عقد خصوصية URL). لم يُنتج P21 وثيقة بعد؛ القائمة أعلاه هي الافتراضي المحلي، وتوسيعها قرار خصوصية لا تغيير كود. `BaseLayout` يطبّق نفس القائمة على وسم GA4 العام، و`tests/observability.test.mjs` يثبت السلوك.
+
 ### نقطة استقبال الواجهة
 
 `POST /api/observability/` تعمل خارج portal gate حتى تخدم Auth، لكنها تفحص موافقات القياس وkill switches بنفسها. المتصفح يرسل JSON صغيرًا من ثوابت + رقم إلى نفس الأصل، `credentials=omit` و`referrerPolicy=no-referrer`؛ لا مفاتيح تظهر في DOM.
@@ -83,7 +121,7 @@
 - Incident commander، on-call، جهات البريد وفق القرارين 96/97، توقيت التصعيد وrollback authority: غير معيّنة، لا تنبيه Live.
 - عند حادث: إثبات environment/release أولًا، حفظ رموز ووقت فقط، احتواء بإذن صاحب السلطة، تصعيد للأمن/القانوني، إخطار عبر قناة معتمدة، ثم RCA/CAPA. لا إرسال بيانات عميل أو تدريب عليها.
 
-## 5. خطة Staging القابلة للتنفيذ — NOT RUN
+## 5. خطة Staging القابلة للتنفيذ — O1–O5 LOCAL، O6–O8 NOT RUN
 
 هذه الخطة تحتاج تفويضًا جديدًا؛ لا تشغيل ضمن هذه الدفعة. كل بياناتها اصطناعية، لا نسخ production. يسجل المشغّل SHA النهائي وpatch/artifact manifest وUTC والمضيف والنسخ والنتيجة والتوقيعات تحت `audit/observability/<final-sha>/` بلا أسرار.
 
@@ -96,89 +134,28 @@
 7. **O7 مسارات الاستخدام:** بجلسات اصطناعية، AppLayout يرسل portal/product فقط؛ Auth نداء ناجح/مرفوض/MFA/استثناء يرسل status فقط دون تغيير النتيجة الأصلية؛ Human Gate success/failure يرسل category/status؛ quota يرسل product فقط. لا أحداث marketing أو replay أو form/console/network capture. افحص أحداث الخادم Auth/Invite/RLS/Ledger/provider timeout ببدائل محلية دون إرسال AI خارجي.
 8. **O8 إرسال مخوّل وتوجيه:** لا ينفذ إلا بعد تعيين مشروعات معتمدة وأسرار خادمية وسياسة retention ومراجعة payload. أرسل حدثًا اصطناعيًا محددًا لكل طبقة، وأثبت وجوده في المشروع الصحيح وrelease الصحيح وعدم profile/PII، ثم اختبر الإيقاف لكل طبقة. فحص `/` منفصل عن Health JSON و503 البوابة؛ اعتمد قواعد التنبيه والوجهات أولًا، ثم نفذ تمرين alert acknowledgment/escalation/rollback بتفويض منفصل. سجّل مستقلًا نتيجة النقل والوصول والتنبيه وتوقيع المشغّل.
 
-**مصفوفة التنفيذ:** O1–O8 كلها `NOT RUN`. لا يغلق G8 إلا دليل استقبال وتنبيه وإيقاف فعلي وتوقيع العمليات/الأمن؛ G9 يبقى `NOT_VERIFIED` حتى توقيع صاحب السلطة. لا تعديل للختم اليدوي أو نسبة GO.
+**مصفوفة التنفيذ (P13، 2026-11-10):** O1 `PASS LOCAL` (build + خادم loopback)؛ O2–O5 `PASS LOCAL` بلا شبكة عبر `tests/observability.test.mjs` و`scripts/preview-observability-payload.mjs`؛ O6 `PARTIAL` — استقبال `/api/observability/` على loopback PASS (403/415/413/400/429) وBrowser/JS error NOT RUN؛ O7–O8 `NOT RUN`. لا يغلق G8 إلا دليل استقبال وتنبيه وإيقاف فعلي وتوقيع العمليات/الأمن؛ G9 يبقى `NOT_VERIFIED` حتى توقيع صاحب السلطة. لا تعديل للختم اليدوي أو نسبة GO.
 
-### أمر معزول جاهز لـO2–O5 — لم يُشغّل
-
-ينفذه المشغّل فقط بعد التفويض ومن جذر checkout المعتمد، داخل sandbox يمنع الشبكة. `fetch` مستبدل قبل الاستيراد؛ كل القيم اصطناعية، ولا تُقرأ ملفات أسرار. هذه فحوص محولات فقط؛ لا تستبدل O6–O8 أو تثبت SDK/تنبيه Live.
+### أوامر O2–O5 المنفذة — بلا شبكة
 
 ```bash
-node --input-type=module <<'NODE'
-import assert from 'node:assert/strict';
-for (const key of Object.keys(process.env)) {
-  if (/^AIGAS_(MONITORING|SENTRY|POSTHOG|ANALYTICS)_/.test(key)) delete process.env[key];
-}
-const calls = [];
-globalThis.fetch = async (url, init) => {
-  assert.equal(new URL(url).hostname, 'collector.invalid');
-  calls.push(JSON.parse(init.body.split('\n').at(-1)));
-  return new Response(null, { status: 200 });
-};
-const { captureServerFailure } = await import('./src/server/observability/sentry.mjs');
-const { captureProductEvent, buildProductEvent } = await import('./src/server/observability/posthog.mjs');
-const failure = () => captureServerFailure(new Error('SYNTHETIC_SECRET_MARKER'), {
-  code: 'KERNEL_DB_PRIVILEGE', status: 503, surface: 'kernel',
-  pathname: '/app/api/kernel/?secret=SYNTHETIC_SECRET_MARKER',
-  dependency: 'SYNTHETIC_SECRET_MARKER', operation: 'SYNTHETIC_SECRET_MARKER',
-});
-const usage = () => captureProductEvent('login_flow_result', { status_code: 200 });
-assert.equal(await failure(), false);
-assert.equal(await usage(), false);
-assert.equal(calls.length, 0);
-Object.assign(process.env, {
-  AIGAS_MONITORING_APPROVAL_REF: 'SYNTHETIC-OPS',
-  AIGAS_MONITORING_ENVIRONMENT: 'staging',
-  AIGAS_MONITORING_RELEASE: '0'.repeat(40),
-  AIGAS_SENTRY_ENABLED: 'true',
-  AIGAS_SENTRY_APPROVAL_REF: 'SYNTHETIC-ERRORS',
-  AIGAS_SENTRY_DSN: `https://${'a'.repeat(32)}@collector.invalid/1`,
-  AIGAS_SENTRY_APPROVED_ORIGIN: 'https://collector.invalid',
-  AIGAS_POSTHOG_ENABLED: 'true',
-  AIGAS_POSTHOG_API_KEY: `phc_${'b'.repeat(32)}`,
-  AIGAS_POSTHOG_HOST: 'https://collector.invalid',
-});
-// An error-tracking approval never authorizes analytics.
-assert.equal(await usage(), false);
-process.env.AIGAS_ANALYTICS_APPROVAL_REF = 'SYNTHETIC-ANALYTICS';
-assert.equal(await failure(), true);
-assert.equal(await usage(), true);
-assert.equal(calls[0].exception.values[0].value, 'RLS_DENIED');
-assert.equal(calls[0].exception.values[0].stacktrace, undefined);
-assert.equal(JSON.stringify(calls).includes('SYNTHETIC_SECRET_MARKER'), false);
-for (const key of ['request', 'user', 'extra', 'breadcrumbs', 'message']) assert.equal(calls[0][key], undefined);
-assert.equal(calls[1].properties.$process_person_profile, false);
-assert.equal(calls[1].properties.$geoip_disable, true);
-assert.equal(buildProductEvent('__proto__', {}), null);
-assert.equal(buildProductEvent('constructor', {}), null);
-assert.equal(buildProductEvent('login_flow_result', { status_code: 200, user_id: 'synthetic' }), null);
-process.env.AIGAS_MONITORING_ENVIRONMENT = 'production';
-assert.equal(await usage(), false);
-process.env.AIGAS_MONITORING_ENVIRONMENT = 'staging';
-process.env.AIGAS_SENTRY_KILL_SWITCH = 'true';
-assert.equal(await failure(), false);
-assert.equal(await usage(), true);
-process.env.AIGAS_SENTRY_KILL_SWITCH = 'false';
-process.env.AIGAS_POSTHOG_KILL_SWITCH = 'true';
-assert.equal(await usage(), false);
-assert.equal(await failure(), true);
-process.env.AIGAS_POSTHOG_KILL_SWITCH = 'false';
-globalThis.fetch = async () => new Response(null, { status: 503 });
-assert.equal(await failure(), false);
-assert.equal(await usage(), false);
-globalThis.fetch = async () => { throw new Error('SYNTHETIC_NETWORK_FAILURE'); };
-assert.equal(await failure(), false);
-assert.equal(await usage(), false);
-console.log('Adapter checks PASS — mocked transport only');
-NODE
+node --import ./tests/helpers/no-egress.mjs --test tests/observability.test.mjs
+node --import ./tests/helpers/no-egress.mjs scripts/preview-observability-payload.mjs
 ```
+
+النتيجة: 15/15 PASS، وملف معاينة `Audit/p13-observability-2026-11-10/payload-preview.json` يحتوي 6/6 حمولات Sentry و6/6 أحداث PostHog و7 حالات سلبية موثقة. `fetch` مستبدل والبيئة اصطناعية، ولم يُقرأ أي ملف أسرار. هذه فحوص محولات فقط؛ لا تستبدل O6–O8 أو تثبت SDK/تنبيه Live.
 
 ## 6. مصفوفة الحالة النهائية
 
-| النطاق | SOURCE_PRESENT | SCHEMA_PRESENT | CONFIGURED | RUNTIME_VERIFIED | APPROVED |
-|---|---|---|---|---|---|
-| Sentry server + browser relay | YES | N/A | NOT_VERIFIED | NO | NO |
-| PostHog explicit events + login result | YES | N/A | NOT_VERIFIED | NO | NO |
-| Alert/on-call plan | YES (مسودة) | N/A | NO | NO | NO |
-| مشروعات/retention وقنوات خارجية | N/A | N/A | NOT_VERIFIED | NO | NO |
+| النطاق | SOURCE_PRESENT | SCHEMA_PRESENT | CONFIGURED | LOCAL_ADAPTER | RUNTIME_VERIFIED | APPROVED |
+|---|---|---|---|---|---|---|
+| Sentry server + browser relay | YES | N/A | NOT_VERIFIED | PASS (15/15 tests) | NO | NO |
+| PostHog explicit events + login result | YES | N/A | NOT_VERIFIED | PASS (15/15 tests) | NO | NO |
+| URL/referrer allowlist | YES | N/A | NOT_VERIFIED (P21 بلا وثيقة) | PASS | NOT VERIFIED خارجيًا | NO |
+| Alert/on-call plan | YES (مسودة) | N/A | NO | N/A | NO | NO |
+| مشروعات/retention وقنوات خارجية | N/A | N/A | NOT_VERIFIED | N/A | NO | NO |
+
+`CONFIGURED` يبقى `NOT_VERIFIED` لأن كل الاختبارات استخدمت بيئة اصطناعية وقيمًا وهمية؛ لا مشروع أو DSN أو مفتاح حقيقي. `RUNTIME_VERIFIED=NO` يعني عدم وجود دليل ingestion، وليس صفر أحداث: الإرسال لم يُفعّل أصلًا، فلا يجوز استنتاج «لا أحداث» من تعطيل البوابة. إغلاق التنبيهات وack وrunbook مسؤولية P22.
+
 
 مراجع البيانات: [PostHog capture API](https://posthog.com/docs/api/capture#single-event)، [الأحداث المجهولة](https://posthog.com/docs/product-analytics/capture-events#advanced-anonymous-vs-identified-events)، [Sentry data collection](https://docs.sentry.io/platforms/javascript/guides/connect/configuration/options). راجعت الوثائق عبر MCP؛ لا SDK مثبت أو مفعل من ذلك.
