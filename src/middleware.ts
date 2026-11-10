@@ -217,5 +217,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const response = destination && ['GET', 'HEAD'].includes(context.request.method)
     ? context.redirect(`${destination}${context.url.search}`, 301)
     : await next();
-  return harden(response, { portal: false, secureTransport });
+  const authPage = normalizedPath === '/auth' || normalizedPath.startsWith('/auth/');
+  return harden(response, { portal: authPage, secureTransport });
 });

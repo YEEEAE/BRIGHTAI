@@ -1,4 +1,5 @@
 ---
+import ProductJourney from '../../components/ProductJourney.astro';
 import ProductContentExtension from '../../components/ProductContentExtension.astro';
 import PageShell from '../../components/PageShell.astro';
 import ProductExperience from '../../components/ProductExperience.astro';
@@ -21,7 +22,7 @@ const searchTopics: Record<string, string> = {
   ledger: 'سجل تدقيق الذكاء الاصطناعي',
   'secure-chat': 'محادثة ذكاء اصطناعي مؤسسية',
 };
-const description = `${searchTopics[slug]} للمنشآت السعودية: ${purpose} المنتج مخطط وإتاحته التشغيلية غير متحققة.`;
+const description = `${searchTopics[slug]} للمنشآت السعودية: ${purpose}`;
 const productSchema = {
   '@context': 'https://schema.org',
   '@type': 'Product',
@@ -34,12 +35,13 @@ const productSchema = {
 ---
 <PageShell title={`${searchTopics[slug]} | ${name} — BRIGHTAI`} description={description} crumbs={[{ name: 'المنتجات', href: '/products/' }, { name }]} structuredData={productSchema}>
   <div class="product-intro">
-    <div><p class="eyebrow"><bdi dir="ltr">AIGAS</bdi> / تصور المنتج</p><h1><bdi dir="ltr" style={`view-transition-name:product-${slug}`}>{name}</bdi></h1><p class="product-role">{roles[slug]}</p><p class="lead">{purpose}</p></div>
-    <aside class="product-meta"><span class="product-mark"><ProductIcon kind={slug}/></span><div><p>منتج مستقل ضمن المنظومة</p><p class="tag">مخطط · غير متحقق تشغيلياً</p><a class="ghost" href="/products/">كل المنتجات ←</a></div></aside>
+    <div><p class="eyebrow"><bdi dir="ltr">AIGAS</bdi> / جرّب إمكانيات المنتج</p><h1><bdi dir="ltr" style={`view-transition-name:product-${slug}`}>{name}</bdi></h1><p class="product-role">{roles[slug]}</p><p class="lead">{purpose}</p></div>
+    <aside class="product-meta"><span class="product-mark"><ProductIcon kind={slug}/></span><div><p>منتج مستقل ضمن المنظومة</p><a class="ghost" href="/products/">كل المنتجات ←</a></div></aside>
   </div>
   <ProductExperience kind={slug}/>
   <p class="note">المخططات تعليمية وتصف نطاقاً مستهدفاً وفق Blueprint. لا تثبت وجود خدمة عاملة أو تكامل أو مستوى حماية أو اعتماد. لا توجد أسعار نهائية معتمدة.</p>
   <section class="block review-questions"><div><p class="eyebrow">قبل أي استخدام فعلي</p><h2>ثلاثة أسئلة<br/>تستحق المراجعة.</h2></div><ol>{questions.map((question: string) => <li>{question}</li>)}</ol></section>
-  <section class="block"><h2>مكان المنتج في التصور</h2><p><bdi dir="ltr">AIGAS Kernel</bdi> مكوّن مشترك يوفر الحد الأدنى اللازم للمنتجات، ولا يُباع كمنتج مرخص مستقل. أما المنتجات الخمسة فتُصمم كوحدات مستقلة وظيفياً وتجارياً وفق الـBlueprint؛ وهذا لا يعني أنها متاحة حالياً.</p><div class="actions"><a class="button" href="/contact/">اطلب معلومات أو عرض سعر</a><a class="ghost" href="/products/">استعراض المنتجات</a></div></section>
+  <section class="block"><h2>مكان المنتج في التصور</h2><p><bdi dir="ltr">AIGAS Kernel</bdi> مكوّن مشترك يوفر الحد الأدنى اللازم للمنتجات، ولا يُباع كمنتج مرخص مستقل. أما المنتجات الخمسة فتُصمم كوحدات مستقلة وظيفياً وتجارياً وفق الـBlueprint.</p><div class="actions"><a class="button" href="/contact/">اطلب معلومات أو عرض سعر</a><a class="ghost" href="/products/">استعراض المنتجات</a></div></section>
+  <ProductJourney slug={slug} />
   <ProductContentExtension kind={slug}/>
 </PageShell>

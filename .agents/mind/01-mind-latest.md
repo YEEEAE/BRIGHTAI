@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-10 VERIFIED LOCAL (P12): تنقل موحد للمنتجات وreturnTo بقائمة سماح؛ الكتالوج بلا شارات إتاحة بتوجيه المستخدم، بتصميم تحريري ورسوم وحركة تدريجية؛ build55/routes55/unit17 وChrome360/390/768/1440 وreduced-motion/no-JS PASS؛ الرحلة المخولة والعمليات/الحصص والنشر NOT VERIFIED؛ `Audit/p12-product-journey-2026-11-10/REPORT.md`.
 - 2026-11-10 VERIFIED LOCAL+STAGING-READONLY (P03): HEAD `9f70334`؛ مصفوفة RLS 69/69 محليًا (owner0 لـruntime، صفر منح عميل، A/B CRUD، GUC، COPY، DB07)؛ staging 9/9 قراءة (36 جدول/77 سياسة/25 دالة)؛ contracts36/36؛ دليل `Audit/p03-runtime-rls-2026-11-10/REPORT.md`.
 - 2026-11-10 VERIFIED LOCAL: HEAD `60777c9739d5584360e57bd5238d3a075b06c09a` + working tree؛ AR02/AR03 (مقيسة على `5725727`): unit31/combined36 PASS،0 FAIL/0 SKIP؛ DB18.6 بخمس قواعد ودورruntime/NOBYPASSRLS؛ build/routes55 PASS؛ مرجع `Audit/ar02-ar03-2026-11-10/REPORT.md`؛ لا إطلاق.
 - 2026-11-10 VERIFIED STAGING `lucky-salad-43566291`/`br-rough-wind-bdkmg13n`/`neondb` (بُني مرتين؛ الثاني بعد تحصين B9): 25/25 APPLIED، ledger hashes == repo، 36 جدولًا/RLS36/FORCE2/77 سياسة/25 دالة، 0 منح لـ`authenticated`/`anonymous`، `aigas_runtime` NOBYPASSRLS بـ34 منحة وصفر على جداول المتن، chain guard+append_only+no_truncate، 9 جداول `neon_auth`، 0 صفوف؛ parity=`PARITY`، posture 8/8.
@@ -33,6 +34,13 @@
 - Sentry projects=[] ضمن الاتصال؛ PostHog720936 ingested_event=false وإعدادات خصوصية تحتاج مراجعة؛ لا وجهة معتمدة، وحد الخطة التاريخي لم يُعد التحقق منه. Bootstrap/RLS وtrial/purge وموافقات المزودين والـUAT ما زالت مفتوحة.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-10] — P12: رحلة المنتجات وتصميم القسم
+- **تم:** روابط التفاصيل والدخول والعودة والتواصل؛ returnTo محصور ويعتمد قرار Dashboard؛ لا شارات إتاحة عامة بتوجيه المستخدم.
+- **تم:** قسم تحريري متجاوب ورسوم SVG وتفاعل مؤشر وكشف نصوص؛ لا اعتماديات إنتاج جديدة ولا تغيير للهيدر/Constellation.
+- **التحقق:** PASS محليًا — unit17، build55/routes55، Chrome بأربعة مقاسات وreduced-motion/no-JS؛ تحذير native view-transition موثق.
+- **الحالة:** DONE LOCAL للربط والتصميم؛ PARTIAL للرحلة المخولة وعمليات Trial/Nشر؛ لا تفعيل أو كتابة خارجية.
+- **ملفات:** `Audit/p12-product-journey-2026-11-10/REPORT.md`.
 
 ## [2026-11-10] — P09: Human Gate محليًا
 - **تم:** إصلاح فحص التفويض تحت runtime وتصنيف تغير هدف rename؛ استهلاك permit والأثر والتدقيق في معاملة واحدة.

@@ -1,0 +1,96 @@
+---
+import { productNavigation } from '../shared/product-navigation.mjs';
+import ProductJourney from './ProductJourney.astro';
+import ProductSchematic from './ProductSchematic.astro';
+import ProductIcon from './ProductIcon.astro';
+const order = ['firewall', 'risk-engine', 'human-gate', 'ledger', 'secure-chat'];
+const products = [...productNavigation].sort((a,b) => order.indexOf(a.slug)-order.indexOf(b.slug));
+const labels = { firewall: 'حماية الطلب', 'risk-engine': 'فهم المخاطر', 'human-gate': 'قرار بشري', ledger: 'أثر قابل للفحص', 'secure-chat': 'محادثة محكومة' };
+---
+<section class="block product-showcase" aria-labelledby="catalog-title" data-product-showcase>
+  <div class="showcase-heading">
+    <div><p class="eyebrow">دليل المنتجات / <bdi dir="ltr">01–05</bdi></p><h2 id="catalog-title" aria-label="ابدأ بالدور الذي تحتاجه."><span data-text-reveal aria-hidden="true">ابدأ بالدور</span> <span class="showcase-heading-accent" data-text-reveal aria-hidden="true">الذي تحتاجه.</span></h2></div>
+    <span class="showcase-edition" aria-hidden="true"><bdi dir="ltr">AIGAS<br/>PRODUCT COLLECTION / 05</bdi><span></span></span>
+  </div>
+  <nav class="product-index" aria-label="انتقل إلى منتج">
+    {products.map((p,i) => <a href={`#catalog-${p.slug}`}><bdi class="index-number" dir="ltr">0{i+1}</bdi><bdi dir="ltr">{p.name}</bdi></a>)}
+  </nav>
+  <div class="product-gallery">
+    {products.map(({slug,name,summary},i) => <article class:list={['catalog-item','product-card',`card-${slug}`,{ 'card-featured': i===0 }]} id={`catalog-${slug}`} data-product-card>
+      <span class="card-spotlight" aria-hidden="true"></span>
+      <div class="card-inner">
+        <div class="card-identity"><span><ProductIcon kind={slug} size={20}/><span>{labels[slug]}</span></span><bdi dir="ltr">0{i+1} / 05</bdi></div>
+        <a class="catalog-row" href={`/products/${slug}/`} aria-labelledby={`product-title-${slug}`} aria-describedby={`product-description-${slug}`}>
+          <div class="catalog-copy"><span class="product-overline" aria-hidden="true">AIGAS</span><h3 id={`product-title-${slug}`} style={`view-transition-name:product-${slug}`}><bdi dir="ltr">{name}</bdi></h3><p id={`product-description-${slug}`}>{summary}</p><span class="product-explore">استكشف المنتج <span class="explore-arrow" aria-hidden="true">↖</span></span></div>
+          <div class="card-illustration"><ProductSchematic kind={slug}/></div>
+        </a>
+        <ProductJourney slug={slug} compact />
+      </div>
+    </article>)}
+  </div>
+</section>
+<script>
+  import '../scripts/product-showcase';
+</script>
+<style>
+  .product-showcase { padding-block: clamp(48px,7vw,96px); --product-accent: var(--ui-violet); }
+  .showcase-heading { display:flex; justify-content:space-between; align-items:end; gap:32px; margin-block-end:32px; }
+  .showcase-heading h2 { font-size:clamp(2rem,4.8vw,4.5rem); line-height:1.4; margin:16px 0 0; max-inline-size:16ch; }
+  .showcase-heading h2 span { display:inline-block; }
+  .showcase-heading-accent { color:var(--ui-amber); }
+  .showcase-edition { display:grid; gap:16px; flex-shrink:0; font:11px/1.9 ui-monospace,monospace; color:var(--ui-muted); text-align:end; }
+  .showcase-edition>span { block-size:2px; background:var(--ui-amber); inline-size:48px; justify-self:end; }
+  .product-index { display:flex; flex-wrap:wrap; gap:8px; margin-block:32px 40px; }
+  .product-index a { display:flex; align-items:center; gap:10px; padding:10px 16px; min-block-size:44px; border:1px solid var(--ui-line); border-radius:99px; color:var(--ui-ink); background:#ffffff03; font-size:14px; }
+  .index-number { color:var(--ui-amber); font:11px ui-monospace,monospace; }
+  .product-index a[aria-current="location"] { background:#d0b5ff13; border-color:var(--ui-violet); }
+  .product-gallery { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; }
+  .product-card { position:relative; isolation:isolate; min-inline-size:0; padding:5px; border-radius:24px; background:linear-gradient(145deg,#ffffff14,#ffffff03 45%,#b999ff12); scroll-margin-block-start:100px; }
+  .card-inner { position:relative; block-size:100%; border-radius:20px; padding:clamp(22px,3vw,40px); background:#0c0a10; box-shadow:inset 0 1px 0 #ffffff0b; }
+  .card-featured { grid-column:1 / -1; --product-accent: var(--ui-amber); }
+  .card-identity { display:flex; align-items:center; justify-content:space-between; gap:16px; color:var(--ui-muted); font-size:13px; }
+  .card-identity>span { display:flex; align-items:center; gap:10px; }
+  .card-identity :global(.product-icon) { color:var(--product-accent); }
+  .card-identity>bdi { font:12px ui-monospace,monospace; color:var(--product-accent); }
+  .product-gallery .catalog-row { display:flex; flex-direction:column-reverse; align-items:stretch; gap:12px; border:0; padding:0; margin-block:8px 28px; border-radius:12px; background:none; box-shadow:none; color:inherit; text-decoration:none; }
+  .product-gallery .catalog-row:is(:hover,:focus-visible) { padding:0; background:none; box-shadow:none; }
+  .catalog-copy { min-inline-size:0; }
+  .product-overline { font:11px ui-monospace,monospace; letter-spacing:.2em; color:var(--ui-muted); }
+  .product-gallery .catalog-row h3 { font-size:clamp(1.8rem,3.5vw,3rem); line-height:1.25; margin-block:8px 16px; color:var(--ui-ink); letter-spacing:-.035em; }
+  .product-gallery .catalog-row p { color:var(--ui-muted); font-size:16px; line-height:1.9; max-inline-size:42ch; margin:0; }
+  .product-explore { display:flex; inline-size:fit-content; align-items:center; gap:18px; margin-block-start:24px; color:var(--product-accent); font-size:14px; }
+  .explore-arrow { display:grid; place-items:center; inline-size:36px; block-size:36px; border:1px solid #ffffff20; border-radius:50%; }
+  .card-illustration { align-self:center; inline-size:min(100%,360px); pointer-events:none; }
+  .card-featured .catalog-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:48px; align-items:center; margin-block:24px 32px; }
+  .card-featured .catalog-row h3 { font-size:clamp(2.6rem,5.2vw,5rem); }
+  .card-featured .card-illustration { inline-size:100%; max-inline-size:440px; justify-self:center; }
+  .card-spotlight { position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:-1; opacity:0; background:radial-gradient(circle at center, #e9cf9e80, #c1a4ff40 25%,transparent 64%); }
+  .card-inner :global(.product-journey.compact) { padding:24px 0 0; margin:0; border:0; border-block-start:1px solid #ffffff0e; border-radius:0; }
+  .card-inner :global(.product-journey.compact>p) { font-size:14px; max-inline-size:52ch; color:var(--ui-muted); margin-block-end:20px; }
+  .card-inner :global(.product-journey .actions) { gap:12px; }
+  .product-showcase a:focus-visible { outline:3px solid var(--ui-focus); outline-offset:6px; }
+  @media (prefers-reduced-motion:no-preference) {
+    .card-inner, .explore-arrow, .product-index a { transition:transform var(--motion-state) var(--ease-out); }
+    .card-spotlight { transition:opacity var(--motion-state) var(--ease-out); }
+    .product-index a:active { transform:scale(.98); }
+    .catalog-row:active .explore-arrow { transform:scale(.96); }
+    @media (hover:hover) and (pointer:fine) {
+      .product-card:hover .card-inner { transform:translateY(-2px); }
+      .product-card:hover .card-spotlight { opacity:1; }
+      .product-card:hover .explore-arrow { transform:translate(-3px,-3px); }
+      .product-index a:hover { transform:translateY(-2px); }
+    }
+  }
+  @media(max-width:767px) {
+    .showcase-heading { align-items:start; gap:16px; }
+    .showcase-edition { display:none; }
+    .product-gallery { grid-template-columns:minmax(0,1fr); gap:20px; }
+    .card-featured { grid-column:auto; }
+    .card-featured .catalog-row { display:flex; gap:12px; margin-block:8px 28px; }
+    .card-featured .catalog-row h3 { font-size:clamp(2rem,8vw,3rem); }
+    .card-illustration, .card-featured .card-illustration { max-inline-size:310px; }
+    .product-index { gap:8px; margin-block-end:28px; }
+    .product-index a { padding-inline:12px; font-size:13px; }
+    .product-showcase { padding-block:40px; }
+  }
+</style>

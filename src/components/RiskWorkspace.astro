@@ -1,4 +1,5 @@
 ---
+import { productEntryPath } from '../shared/product-navigation.mjs';
 import AppLayout from '../layouts/AppLayout.astro';
 import { authConfig } from '../server/kernel/auth.mjs';
 import { evaluate } from '../server/risk-engine/core.mjs';
@@ -10,7 +11,7 @@ const levels={LOW:'منخفض',MEDIUM:'متوسط',HIGH:'مرتفع'};
 <AppLayout title="تقييم المخاطر Risk Engine">
  <section class="kernel risk-engine" data-risk-engine data-detail-asset={assetId} data-auth-url={config?.base??''}>
   <div class="page-heading"><div><p class="overline">05 / RISK ENGINE</p><h1>افهم الخطر.<span>ووثّق سببه.</span></h1><p class="intro">سجل حالات استخدام الذكاء الاصطناعي وتقييم أولي بقواعد معلنة. النتيجة مسودة تقدير بشرية المدخلات؛ ليست شهادة امتثال أو قرار حظر أو تصريح تشغيل.</p></div><span class="connection">قواعد حتمية · دون نموذج AI</span></div>
-  <section class="notice"><div><h2>حالة الوصول</h2><p data-status role="status" aria-live="polite">{config?'جارٍ التحقق من الدخول…':'يلزم إعداد الدخول عبر Neon Auth.'}</p><a href="/app/kernel/">الدخول وإدارة المؤسسة عبر Kernel ←</a></div><button type="button" data-reload>تحديث الحالات</button></section>
+  <section class="notice"><div><h2>حالة الوصول</h2><p data-status role="status" aria-live="polite">{config?'جارٍ التحقق من الدخول…':'يلزم إعداد الدخول عبر Neon Auth.'}</p><a href={productEntryPath('risk-engine')}>الدخول وإدارة المؤسسة عبر Kernel ←</a></div><button type="button" data-reload>تحديث الحالات</button></section>
   <noscript><p class="notice">يلزم JavaScript لاستعادة الجلسة وعرض بيانات المؤسسة. القواعد موضحة أدناه.</p></noscript>
   <section class="panel" data-method><h2>مسودة المنهج: احتمال × أثر</h2><p>الاحتمال: 1 غير مرجح، 2 ممكن، 3 مرجح. الأثر: 1 محدود وقابل للتدارك، 2 مؤثر ويتطلب معالجة، 3 جسيم على الحقوق أو السلامة أو العمل. هذه أوصاف أولية وليست نسبًا إحصائية مقاسة.</p><p>النتيجة 1–2 منخفضة، 3–4 متوسطة، 6–9 مرتفعة. قيَم 5 و7 و8 لا تنتج من المصفوفة. نسخة المنهج <bdi>draft-likelihood-impact-v1</bdi>؛ لا عتبات تنظيمية معتمدة.</p>
    <div class="re-table" tabindex="0" role="region" aria-label="مصفوفة احتمال × أثر، يمكن تمريرها أفقيًا"><table class="re-matrix"><caption>مصفوفة تعليمية غير محفوظة — الصفوف احتمال الحدوث، والأعمدة شدة الأثر</caption><thead><tr><th scope="col">الاحتمال / الأثر</th>{[1,2,3].map(i=><th scope="col">أثر {i}</th>)}</tr></thead><tbody>{[1,2,3].map(l=><tr><th scope="row">احتمال {l}</th>{[1,2,3].map(i=>{const r=evaluate(l,i);return <td class={`re-${r.risk_level}`} data-cell={`${l}-${i}`} data-result={r.explanation} data-control={r.suggested_control}><strong>{levels[r.risk_level]}</strong><small>تصنيف المسودة</small></td>})}</tr>)}</tbody></table></div>

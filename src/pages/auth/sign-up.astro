@@ -1,4 +1,5 @@
 ---
+import { productForReturnTo, productEntryPath } from '../../shared/product-navigation.mjs';
 import PageShell from '../../components/PageShell.astro';
 import MonitoringGate from '../../components/MonitoringGate.astro';
 import { env, isPortalEnabled } from '../../server/kernel/env.mjs';
@@ -6,6 +7,8 @@ import { env, isPortalEnabled } from '../../server/kernel/env.mjs';
 export const prerender = false;
 const authUrl = env('NEON_AUTH_BASE_URL') ?? '';
 const portalEnabled = isPortalEnabled();
+const intendedProduct = productForReturnTo(Astro.url.searchParams.get('returnTo'));
+const workspacePath = intendedProduct ? productEntryPath(intendedProduct.slug) : '/app/kernel/';
 Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
 ---
 
@@ -21,7 +24,7 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
   <p class="lead">سجّل بالبريد الإلكتروني وكلمة المرور. تُدار بيانات الدخول عبر Neon Managed Auth.</p>
 
   {authUrl ? (
-    <section class="card auth-card" data-auth-url={authUrl} aria-labelledby="auth-heading">
+    <section class="card auth-card" data-auth-url={authUrl} data-workspace-path={workspacePath} data-product-intent={!!intendedProduct} data-portal-enabled={portalEnabled} aria-labelledby="auth-heading">
       <div data-auth-form-view>
         <h2 id="auth-heading">إنشاء حساب</h2>
         <form data-auth-form>
@@ -52,7 +55,7 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
         <h2>أنت مسجل دخول</h2>
         <p>الحساب الحالي: <bdi data-current-user></bdi></p>
         {portalEnabled ? (
-          <a class="button" href="/app/kernel/">فتح مساحة العمل</a>
+          <a class="button" href={workspacePath}>فتح مساحة العمل</a>
         ) : (
           <p role="status">بوابة مساحة العمل غير متاحة حاليًا. <a href="/contact/?topic=بوابة%20مساحة%20العمل">استفسر عن إتاحتها</a></p>
         )}
@@ -132,6 +135,7 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
       formView.hidden = true;
       sessionView.hidden = false;
       setStatus('عُثر على جلسة لدى Neon Auth. يتحقق الخادم من الهوية والعضوية عند فتح مساحة العمل.');
+      if (card?.dataset.productIntent === 'true' && card.dataset.portalEnabled === 'true' && card.dataset.workspacePath) location.replace(card.dataset.workspacePath);
     };
 
     const showForm = () => {

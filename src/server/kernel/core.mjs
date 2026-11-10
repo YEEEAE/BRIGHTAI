@@ -20,13 +20,8 @@ export function dependencyStatusForError(error) {
   if (dependencyStatusSet.has(error?.dependencyStatus)) return error.dependencyStatus;
   return error?.status >= 500 ? 'temporarily unavailable' : null;
 }
-export const products = [
-  { slug: 'firewall', name: 'Firewall', wave: 1, benefit: 'تطبيق سياسات الحماية على حركة الذكاء الاصطناعي المتكاملة.' },
-  { slug: 'ledger', name: 'Ledger', wave: 1, benefit: 'تنظيم الأدلة التشغيلية والتحقق منها.' },
-  { slug: 'human-gate', name: 'Human Gate', wave: 1, benefit: 'إحالة القرارات الحساسة إلى موافقة بشرية.' },
-  { slug: 'risk-engine', name: 'Risk Engine', wave: 2, benefit: 'تسجيل استخدامات الذكاء الاصطناعي وتقييم مخاطرها.' },
-  { slug: 'secure-chat', name: 'Secure Chat', wave: 2, benefit: 'مساحة محادثة مؤسسية محكومة بالسياسات.' },
-];
+export { productNavigation as products } from '../../shared/product-navigation.mjs';
+import { productNavigation as products } from '../../shared/product-navigation.mjs';
 // Register only routes whose page and API enforce Kernel identity and membership server-side.
 // A separate DB access record still decides whether the product is enabled for the tenant.
 const implementedRoutes = new Set(['firewall', 'ledger', 'human-gate', 'risk-engine', 'secure-chat']);

@@ -1,4 +1,5 @@
 ---
+import { productEntryPath } from '../../../shared/product-navigation.mjs';
 import AppLayout from '../../../layouts/AppLayout.astro';
 import { authConfig } from '../../../server/kernel/auth.mjs';
 import '../../../styles/firewall.css';
@@ -8,7 +9,7 @@ const config = authConfig();
 <AppLayout title="جدار حماية AI — سياسات وفحص">
  <section class="kernel firewall" data-firewall data-auth-url={config?.base ?? ''}>
   <div class="page-heading"><div><p class="overline">02 / AIGAS FIREWALL</p><h1>اضبط السياسة.<span>واحكم مسار الطلب.</span></h1><p class="intro">قواعد حرفية محفوظة وتقييم من الخادم بخمس حالات: ALLOW وWARN وREDACT وESCALATE وDENY، مع مسار تنفيذ مستقل يفرض الحجب والتصعيد والتنقيح قبل أي اتصال بمزود معتمد. النصوص الاصطناعية فقط في هذه النسخة.</p></div><span class="connection">تنفيذ محلي · غير منشور</span></div>
-  <section class="notice"><div><h2>حالة الوصول</h2><p data-status role="status" aria-live="polite">{config ? 'جارٍ التحقق من الدخول…' : 'يلزم إعداد الدخول عبر Neon Auth.'}</p><a href="/app/kernel/">الدخول وإدارة مساحة العمل عبر Kernel ←</a></div><button type="button" data-reload>تحديث</button></section>
+  <section class="notice"><div><h2>حالة الوصول</h2><p data-status role="status" aria-live="polite">{config ? 'جارٍ التحقق من الدخول…' : 'يلزم إعداد الدخول عبر Neon Auth.'}</p><a href={productEntryPath('firewall')}>الدخول وإدارة مساحة العمل عبر Kernel ←</a></div><button type="button" data-reload>تحديث</button></section>
   <noscript><p class="notice">يلزم JavaScript لاستعادة جلسة Kernel؛ لا تُعرض بيانات خاصة بدونه.</p></noscript>
   <section class="notice" data-setup-panel hidden><div><h2>التهيئة غير مكتملة</h2><p data-setup-message role="alert"></p><p>لم تُعرض أي بيانات ولم يصدر أي قرار. طبّق ترحيل Firewall المعتمد في بيئة معتمدة ثم أعد التحميل؛ غياب البيانات ليس سماحًا.</p></div></section>
   <div data-private hidden>

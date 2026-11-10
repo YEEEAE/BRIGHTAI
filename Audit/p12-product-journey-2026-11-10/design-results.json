@@ -1,0 +1,33 @@
+{
+  "results": [
+    {
+      "name": "visual layout, reveal, touch targets 360px",
+      "status": "PASS"
+    },
+    {
+      "name": "visual layout, reveal, touch targets 390px",
+      "status": "PASS"
+    },
+    {
+      "name": "visual layout, reveal, touch targets 768px",
+      "status": "PASS"
+    },
+    {
+      "name": "visual layout, reveal, touch targets 1440px",
+      "status": "PASS"
+    },
+    {
+      "name": "Pointer illustration feedback",
+      "status": "PASS"
+    },
+    {
+      "name": "Reduced motion: no spatial or running showcase animation",
+      "status": "PASS"
+    },
+    {
+      "name": "No JavaScript: all cards visible and details navigate",
+      "status": "PASS"
+    }
+  ],
+  "errors": []
+}

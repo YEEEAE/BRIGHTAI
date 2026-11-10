@@ -1,0 +1,37 @@
+---
+import { productForSlug, productEntryPath, productContactPath } from '../shared/product-navigation.mjs';
+const { slug, compact = false } = Astro.props;
+const product = productForSlug(slug);
+---
+{product && <section class:list={['product-journey', { compact }]} aria-label={`مسار AIGAS ${product.name}`}>
+  {!compact && <h2>خطوتك التالية مع <bdi dir="ltr">{product.name}</bdi></h2>}
+  <p>{product.scope}</p>
+  <div class="actions">
+    <a class="journey-entry" href={productEntryPath(slug)} aria-label={`الدخول إلى مساحة ${product.name}`}><span>{compact ? 'الدخول' : 'الدخول إلى المساحة'}</span><span class="journey-arrow" aria-hidden="true">↖</span></a>
+    <a class="journey-contact" href={productContactPath(slug)} aria-label={`طلب تقييم ${product.name}`}>طلب تقييم <span aria-hidden="true">←</span></a>
+  </div>
+  {!compact && <p>حدد هدفك ببيانات اصطناعية. طلب الاشتراك مستقل، والتكامل مع المنتجات الأخرى اختياري. <a href={productContactPath(slug, true)}>تواصل بشأن الاشتراك</a></p>}
+</section>}
+<style>
+  .product-journey { margin-block:32px; padding:clamp(24px,4vw,40px); border-radius:20px; background:#ffffff04; box-shadow:inset 0 1px 0 #ffffff10; }
+  .product-journey.compact { margin:0; padding:24px 0 0; background:none; box-shadow:none; }
+  .product-journey p { margin-block:0 20px; line-height:1.9; }
+  .product-journey h2 { margin-block-end:20px; }
+  .actions { display:flex; flex-wrap:wrap; align-items:center; gap:12px 24px; }
+  .actions a { display:inline-flex; align-items:center; justify-content:center; gap:20px; min-block-size:48px; overflow-wrap:anywhere; font-size:14px; text-decoration:none; }
+  .journey-entry { padding:6px 6px 6px 22px; border-radius:99px; color:#100d16; background:#e8d9ff; font-weight:600; }
+  .journey-arrow { display:grid; place-items:center; inline-size:34px; block-size:34px; flex-shrink:0; border-radius:50%; background:#120b1910; font-size:19px; }
+  .journey-contact { color:var(--ui-ink,#f4f1f8); }
+  .journey-contact>span { color:var(--ui-violet,#c7adff); }
+  .product-journey:not(.compact)>p:last-child { margin-block:24px 0; font-size:14px; color:var(--ui-muted,#b9b3c4); }
+  a:focus-visible { outline:3px solid var(--ui-focus,#f5b544); outline-offset:4px; }
+  @media (prefers-reduced-motion:no-preference) {
+    .actions a, .journey-arrow { transition:transform var(--motion-hover) var(--ease-out); }
+    .actions a:active { transform:scale(.98); }
+    @media (hover:hover) and (pointer:fine) {
+      .journey-entry:hover .journey-arrow { transform:translate(-2px,-2px); }
+      .journey-contact:hover>span { transform:translateX(-3px); }
+    }
+  }
+  @media(max-width:390px) { .actions { gap:12px 20px; } .actions a { gap:12px; } }
+</style>

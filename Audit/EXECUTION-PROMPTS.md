@@ -2,22 +2,6 @@
 
 
 
-## P13 — تهيئة Sentry وPostHog وعقد الأحداث
-
-أنت Observability/Privacy SRE وتعمل داخل `/Users/yzydalshmry/Desktop/BRIGHTAI`. الهدف: إغلاق النطاق التالي بدليل فعلي، دون الادعاء بإطلاق المنتج.
-- **الحالة المرجعية:** SHA `7b1f533f71c7b1f41884790366a4d5967c85a87b` وتقرير `Audit/final-360-2026-11-10/FINAL-360-AUDIT.md` ومصفوفته. أعد فحص HEAD والانحراف؛ لا تعامل التقرير القديم كحقيقة حالية.
-- **قبل التنفيذ:** اقرأ `.agents/mind/01-mind-latest.md` كاملًا وAGENTS المنطبقة، واكتشف المهارات والأدوات المرتبطة. حافظ على تغييرات المستخدم. لا تستخدم شبكة أو أسرار إنتاج لاختبار محلي.
-- **الملفات والمتطلبات:** MO01–MO03/PR04؛ observability/*، MonitoringGate/relay، BaseLayout، MONITORING-AND-ANALYTICS-WIRING.md.
-- **الأدوات/MCP:** Sentry/PostHog MCP قراءة، Browser على المعزول، Node.
-- **التحليل والنواقص:** أعد جرد المشاريع؛ لا تختَر وجهة نيابة عن المالك. افصل GA4 العام عن بوابات PostHog وراجع URL/referrer بقائمة سماح لا query حر.
-- **خطوات التنفيذ:** جهز وجهة وpayload منقحًا وقرار تكلفة قبل التفعيل. بعد الإذن أثبت ingestion لأخطاءAuth/DB/AI والمنتجات وأحداث الرحلة بrelease/environment وkill switches. استهلك عقد خصوصيةURL منP21؛ قواعد التنبيه وack وrunbook مسؤوليةP22.
-- **الاعتماديات:** P05–P12 وP21 لعقد الخصوصية وقرار وجهة معتمد؛ تجهيز العقد محليًا لا ينتظر تكامل الواجهة.
-- **الأسرار المطلوبة بأسمائها فقط:** AIGAS_SENTRY_DSN/APPROVED_ORIGIN، AIGAS_POSTHOG_API_KEY/HOST، AIGAS_MONITORING_APPROVAL_REF/RELEASE/ENVIRONMENT ومراجع وأعلام الطبقات الموثقة كاملة في config.mjs.
-- **حدود الأمان:** لا قيم مفاتيح أو tokens أو محتوى عميل في الكود أو التقارير أو أدوات غير معنية. لا commit/push/merge أو نشر أو رسوم أو تغيير موارد خارجية دون تفويض العملية نفسها. صلاحية الأداة ليست تفويضًا.
-- **معيار القبول:** أحداث مسموحة واصلة وkill switches مثبتة، دون chat/body/token/SQL/docs أو replay/autocapture. لا تستنتج صفر أحداث منflag؛ إغلاق التنبيهات منفصل فيP22.
-- **الدليل النهائي:** SHA وبيئة ووقت وأوامر ونتائج، readback وnegative cases حيث تنطبق، diff محدود، وحالة DONE/PARTIAL/BLOCKED. ميّز المحلي من runtime والاعتماد؛ حدّث العقل بإيجاز فقط إذا تغيرت حقيقة مفيدة.
-- **حالة المنع/الموافقة:** إنشاء مشروع أو تغيير إعداد أو تفعيل أو إرسال حدث يحتاج إذنًا بعد مراجعة payload؛ لا ترقية مدفوعة تلقائيًا.
-- **خطة التراجع:** kill switch مستقل دون إغلاق Portal.
 
 ## P14 — روابط SEO وCanonical وSchema
 

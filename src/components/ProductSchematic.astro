@@ -1,0 +1,71 @@
+---
+import ProductIcon from './ProductIcon.astro';
+const { kind } = Astro.props;
+---
+<div class={`product-schematic schematic-${kind}`} aria-hidden="true">
+  <svg class="schematic-drawing" viewBox="0 0 360 220" fill="none">
+    <path class="schematic-grid" d="M0 55H360M0 110H360M0 165H360M60 0V220M120 0V220M180 0V220M240 0V220M300 0V220" />
+    {kind === 'firewall' && <>
+      <path class="schematic-line" d="M16 66H84L125 110M16 110H124M16 154H84L125 110M235 110L276 66H344M236 110H344M235 110L276 154H344" />
+      <path class="schematic-accent" d="M180 27L241 51V104C241 146 218 176 180 192C142 176 119 146 119 104V51Z" />
+      <path class="schematic-line" d="M180 40L228 59V104C228 139 210 165 180 179C150 165 132 139 132 104V59Z" />
+      <g class="schematic-packets"><rect x="45" y="62" width="8" height="8" rx="2"/><rect x="69" y="106" width="8" height="8" rx="2"/><rect x="273" y="150" width="8" height="8" rx="2"/></g>
+    </>}
+    {kind === 'risk-engine' && <>
+      <path class="schematic-line" d="M94 32V187H281"/>
+      {[0,1,2].flatMap(row => [0,1,2].map(column => <rect class:list={['matrix-tile', {'matrix-accent': row + column === 2}]} x={111+column*46} y={40+row*46} width="36" height="36" rx="5" style={`--tile:${row+column}`}/>))}
+      <path class="schematic-accent" d="M47 171L99 137L141 149L204 76L254 48L308 26"/>
+      <circle class="schematic-point" cx="204" cy="76" r="5"/>
+    </>}
+    {kind === 'human-gate' && <>
+      <path class="schematic-line" d="M55 110H305M180 49V171"/>
+      <circle class="schematic-line" cx="180" cy="110" r="77"/>
+      <circle class="schematic-accent" cx="180" cy="110" r="62" stroke-dasharray="3 8"/>
+      <rect class="schematic-node" x="30" y="85" width="50" height="50" rx="13"/>
+      <rect class="schematic-node" x="280" y="85" width="50" height="50" rx="13"/>
+      <path class="schematic-accent" d="M44 110H66M55 99V121M294 110L302 118L317 102"/>
+    </>}
+    {kind === 'ledger' && <>
+      <g class="schematic-sheet sheet-back"><rect x="123" y="27" width="134" height="151" rx="13"/><path d="M146 58H230M146 77H211M146 96H230M146 139H185"/></g>
+      <g class="schematic-sheet sheet-front"><rect x="91" y="48" width="134" height="151" rx="13"/><path d="M114 79H198M114 98H179M114 117H198M114 159H153"/></g>
+      <path class="schematic-accent" d="M43 176H91M225 72H317"/><circle class="schematic-point" cx="43" cy="176" r="4"/><circle class="schematic-point" cx="317" cy="72" r="4"/>
+    </>}
+    {kind === 'secure-chat' && <>
+      <rect class="chat-outline" x="47" y="36" width="235" height="94" rx="22"/>
+      <path class="schematic-line" d="M75 65H215M75 86H194M75 107H150"/>
+      <rect class="chat-reply" x="138" y="108" width="177" height="75" rx="22"/>
+      <path class="schematic-accent" d="M162 137H286M162 157H254"/>
+      <path class="schematic-line" d="M68 130V152L96 130M292 183V200L269 183"/>
+    </>}
+  </svg>
+  {kind !== 'risk-engine' && kind !== 'ledger' && kind !== 'secure-chat' && <span class="schematic-core"><ProductIcon kind={kind} size={40}/></span>}
+</div>
+<style>
+  .product-schematic { position: relative; inline-size: 100%; aspect-ratio: 18 / 11; color: var(--product-accent, #c7adff); }
+  .schematic-drawing { inline-size: 100%; block-size: 100%; overflow: visible; }
+  .schematic-grid { stroke: currentColor; opacity: .055; stroke-width: .6; }
+  .schematic-line { stroke: currentColor; opacity: .3; stroke-width: 1; }
+  .schematic-accent { stroke: currentColor; stroke-width: 1.5; }
+  .schematic-point, .schematic-packets { fill: currentColor; }
+  .schematic-node { fill: var(--color-deep-void, #08070a); stroke: currentColor; stroke-opacity: .5; }
+  .schematic-core { position: absolute; inset: 0; display: grid; place-items: center; }
+  .schematic-core :global(.product-icon) { color: inherit; inline-size: 52px; block-size: 52px; }
+  .matrix-tile { fill: currentColor; fill-opacity: .04; stroke: currentColor; stroke-opacity: .2; }
+  .matrix-accent { fill-opacity: .18; stroke-opacity: .6; }
+  .schematic-sheet { fill: #100d16; stroke: currentColor; stroke-width: 1; }
+  .sheet-back { opacity: .4; }
+  .sheet-front { opacity: .85; }
+  .chat-outline { stroke: currentColor; stroke-opacity: .4; fill: #0e0c12; }
+  .chat-reply { stroke: currentColor; stroke-opacity: .6; fill: #17111f; }
+  @media (prefers-reduced-motion: no-preference) {
+    .sheet-front, .sheet-back, .chat-reply, .matrix-tile, .schematic-core { transition: transform var(--motion-state) var(--ease-out); transform-box: fill-box; transform-origin: center; }
+    :global(.product-card:focus-within) .sheet-front { transform: translate(-4px, 4px); }
+    @media (hover: hover) and (pointer: fine) {
+      :global(.product-card:hover) .sheet-front { transform: translate(-8px, 6px) rotate(-3deg); }
+      :global(.product-card:hover) .sheet-back { transform: translate(8px, -3px) rotate(3deg); }
+      :global(.product-card:hover) .chat-reply { transform: translate(-6px, -5px); }
+      :global(.product-card:hover) .matrix-tile { transform: translateY(calc(var(--tile) * -2px)); }
+      :global(.product-card:hover) .schematic-core { transform: scale(1.05); }
+    }
+  }
+</style>

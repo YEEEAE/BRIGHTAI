@@ -1,4 +1,5 @@
 ---
+import { productNavigation, productEntryPath, productContactPath } from '../shared/product-navigation.mjs';
 import BrandLogo from '../components/BrandLogo.astro';
 import MonitoringGate from '../components/MonitoringGate.astro';
 import { captureProductEvent } from '../server/observability/index.mjs';
@@ -6,6 +7,9 @@ import { productSlug, sectionFor } from '../server/observability/redact.mjs';
 import '../styles/variables.css';
 import '../styles/kernel.css';
 const { title = 'مساحة العمل' } = Astro.props;
+const currentProduct = productNavigation.find(product => Astro.url.pathname.startsWith(product.workspacePath));
+const intendedProduct = productNavigation.find(product => Astro.url.searchParams.get('returnTo') === product.workspacePath);
+const selectedProduct = currentProduct ?? intendedProduct;
 // Server-side, explicit, and disabled unless the analytics approval gates are
 // satisfied. Only a fixed section slug and product slug are sent: no user,
 // tenant, workspace, email, query string, or page content.
@@ -25,8 +29,24 @@ Astro.response.headers.set('Referrer-Policy', 'no-referrer');
   <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="robots" content="noindex,nofollow" /><title>{title} | BRIGHTAI</title><link rel="icon" href="/favicon.png" /></head>
   <body><MonitoringGate /><a class="skip" href="#main">انتقل للمحتوى</a>
     <div class="app-frame">
-      <aside class="app-nav"><BrandLogo /><span class="overline">AIGAS / WORKSPACE</span><nav aria-label="تنقل النظام"><a href="/app/kernel/" aria-current={Astro.url.pathname === '/app/kernel/' ? 'page' : undefined}><span aria-hidden="true">◈</span> نواة المنظومة <bdi>Kernel</bdi></a><a href="/app/firewall/" aria-current={Astro.url.pathname === '/app/firewall/' ? 'page' : undefined}>مختبر <bdi>Firewall Starter</bdi></a><a href="/app/ledger/" aria-current={Astro.url.pathname === "/app/ledger/" ? "page" : undefined}>سجل الأدلة <bdi>Ledger</bdi></a><a href="/app/human-gate/" aria-current={Astro.url.pathname === "/app/human-gate/" ? "page" : undefined}>المراجعة البشرية <bdi>Human Gate</bdi></a><a href="/app/risk-engine/" aria-current={Astro.url.pathname === "/app/risk-engine/" ? "page" : undefined}>تقييم المخاطر <bdi>Risk Engine</bdi></a><a href="/app/secure-chat/" aria-current={Astro.url.pathname === '/app/secure-chat/' ? 'page' : undefined}>محادثة <bdi>Secure Chat</bdi></a></nav><p>الهوية والمؤسسة والوصول.<br />أساس مشترك للمنتجات الخمسة.</p><a class="site-link" href="/">الموقع العام <span aria-hidden="true">↗</span></a></aside>
-      <div class="app-body"><header class="app-top"><span><span>مساحة العمل</span><span class="app-breadcrumb-separator" aria-hidden="true">/</span><bdi class="app-page-title" dir="auto">{title}</bdi><span class="tag">مرحلة التأسيس</span></span><bdi dir="ltr">BRIGHTAI / AIGAS</bdi></header><main id="main" tabindex="-1"><slot /></main><footer class="app-footer">Kernel مكوّن مشترك ضمن المنظومة؛ ليس منتجًا سادسًا مدفوعًا.</footer></div>
+      <aside class="app-nav"><BrandLogo /><span class="overline">AIGAS / WORKSPACE</span><nav aria-label="تنقل النظام"><a href="/app/kernel/" aria-current={Astro.url.pathname === '/app/kernel/' ? 'page' : undefined}><span aria-hidden="true">◈</span> نواة المنظومة <bdi>Kernel</bdi></a>{productNavigation.map(product => <a href={product.workspacePath} aria-current={Astro.url.pathname.startsWith(product.workspacePath) ? 'page' : undefined}><bdi dir="ltr">{product.name}</bdi></a>)}</nav><p>الهوية والمؤسسة والوصول.<br />أساس مشترك للمنتجات الخمسة.</p><a class="site-link" href="/">الموقع العام <span aria-hidden="true">↗</span></a></aside>
+      <div class="app-body"><header class="app-top"><span><span>مساحة العمل</span><span class="app-breadcrumb-separator" aria-hidden="true">/</span><bdi class="app-page-title" dir="auto">{title}</bdi><span class="tag">مرحلة التأسيس</span></span><bdi dir="ltr">BRIGHTAI / AIGAS</bdi></header><main id="main" tabindex="-1">
+        <nav class="journey-nav" aria-label="مسار المنتج">
+          <a href="/products/">المنتجات</a><span aria-hidden="true">/</span>
+          {selectedProduct && <><a href={selectedProduct.publicPath}>عن <bdi dir="ltr">{selectedProduct.name}</bdi></a><span aria-hidden="true">/</span></>}
+          <a href="/app/kernel/" aria-current={!currentProduct ? 'page' : undefined}>لوحة البوابة</a>
+          {currentProduct && <><span aria-hidden="true">/</span><span aria-current="page"><bdi dir="ltr">{currentProduct.name}</bdi></span><a href={productEntryPath(currentProduct.slug)}>الدخول بحسابك</a></>}
+        </nav>
+        <slot />
+        {selectedProduct && <section class="journey-nav" aria-label="الخطوة التالية"><a href={selectedProduct.publicPath}>تفاصيل <bdi dir="ltr">{selectedProduct.name}</bdi></a><a href={productContactPath(selectedProduct.slug, true)}>طلب اشتراك مستقل</a><a href={productContactPath(selectedProduct.slug)}>تواصل بشأن التقييم</a></section>}
+      </main><footer class="app-footer">Kernel مكوّن مشترك ضمن المنظومة؛ ليس منتجًا سادسًا مدفوعًا.</footer></div>
     </div>
   </body>
 </html>
+
+<style>
+  .journey-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; padding-block: 16px; margin-block-end: 18px; border-block-end: 1px solid #302a39; line-height: 1.8; }
+  .journey-nav a { display: inline-flex; align-items: center; min-block-size: 44px; overflow-wrap: anywhere; }
+  .journey-nav [aria-current="page"] { font-weight: 700; text-decoration: underline; text-underline-offset: 5px; }
+  .journey-nav a:focus-visible { outline: 3px solid #f5b544; outline-offset: 4px; }
+</style>

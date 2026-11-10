@@ -1,3 +1,4 @@
+import { productNavigation, authorizedProductDestination } from '../shared/product-navigation.mjs';
 import { createWorkspaceAuth as createAuthClient, getWorkspaceSession, appFetch, selectedWorkspace, setWorkspace } from './workspace-context';
 import { observeLogin } from './monitoring';
 const root = document.querySelector<HTMLElement>('[data-kernel]')!;
@@ -43,7 +44,7 @@ const incomingPanel = root.querySelector<HTMLElement>('[data-incoming-panel]')!;
 const departmentsPanel = root.querySelector<HTMLElement>('[data-departments-panel]')!;
 const departmentsList = root.querySelector<HTMLElement>('[data-departments]')!;
 const departmentsState = root.querySelector<HTMLElement>('[data-departments-state]')!;
-const productSlugs = ['firewall', 'ledger', 'human-gate', 'risk-engine', 'secure-chat'];
+const productSlugs = productNavigation.map(product => product.slug);
 const roleNames: Record<string,string> = { OWNER: 'مالك', ADMIN: 'مدير', MEMBER: 'عضو' };
 const healthNames: Record<string, string> = { auth: 'إعداد Neon Auth', database: 'اتصال قاعدة البيانات', schema: 'مخطط Kernel', administration: 'إدارة Kernel', policyEngine:'مخطط السياسات المركزية', configuration_auth: 'تهيئة Auth على الخادم', configuration_database: 'تهيئة قاعدة البيانات على الخادم', configuration_schema: 'تهيئة المخطط', configuration_administration: 'تهيئة الإدارة', configuration_policyEngine:'تهيئة السياسات المركزية' };
 const healthStates: Record<string, { text: string; tone: string }> = {
@@ -348,6 +349,10 @@ function renderActivity(rows: any[]) {
   }
 }
 function render(data: any) {
+  const intent = root.querySelector<HTMLElement>('[data-product-intent]');
+  if (intent) intent.textContent = data.tenant
+    ? 'راجع صلاحيات المنتج مع مسؤول المؤسسة، أو اختر مؤسسة أخرى من قائمتك، أو تواصل لطلب تقييم.'
+    : 'اطلب الانضمام إلى مؤسسة من مسؤولها؛ إنشاء الحساب وحده لا يمنح وصولًا إلى المنتج.';
   dashboardError.hidden = true; dashboardErrorType.textContent = '';
   currentTenant = data.tenant;
   if (data.tenant) setWorkspace(data.tenant.tenant_id);
@@ -519,6 +524,9 @@ async function load(workspace?: string) {
   if (session.error) { const error = new Error('تعذر استعادة جلسة الدخول؛ سجّل الدخول مجددًا أو أعد المحاولة.'); Object.assign(error, { unauthorized: true }); throw error; }
   if (!session.data?.user) { showError('سجّل الدخول بحسابك لعرض مساحة العمل.', true); logout.hidden = true; return; }
   const data = await api('GET', undefined, workspace);
+  if (authorizedProductDestination(root.dataset.returnTo, data)) {
+    location.replace(authorizedProductDestination(root.dataset.returnTo, data)!); return;
+  }
   render(data);
   await loadIncoming();
   let policyTeam:any=null;

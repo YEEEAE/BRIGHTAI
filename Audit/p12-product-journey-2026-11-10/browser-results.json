@@ -1,0 +1,97 @@
+{
+  "environment": "local Node22 / Chrome headless / no DB or Auth configuration",
+  "results": [
+    {
+      "name": "RTL click/reload/back/return five products 360px",
+      "status": "PASS"
+    },
+    {
+      "name": "RTL click/reload/back/return five products 390px",
+      "status": "PASS"
+    },
+    {
+      "name": "RTL click/reload/back/return five products 768px",
+      "status": "PASS"
+    },
+    {
+      "name": "RTL click/reload/back/return five products 1440px",
+      "status": "PASS"
+    },
+    {
+      "name": "Rendered same-origin link scan",
+      "status": "PASS",
+      "checked": 31
+    },
+    {
+      "name": "Five API guards: missing credentials 401; token without Auth configuration 503 (not a signed expiry test)",
+      "status": "PASS"
+    },
+    {
+      "name": "External returnTo ignored; keyboard Enter opens product",
+      "status": "PASS"
+    }
+  ],
+  "transitionWarnings": [
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled"
+  ],
+  "links": {
+    "/products/": 200,
+    "/": 200,
+    "/services/": 200,
+    "/pricing/": 200,
+    "/docs/": 200,
+    "/contact/": 200,
+    "/products/firewall/": 200,
+    "/products/risk-engine/": 200,
+    "/products/human-gate/": 200,
+    "/products/ledger/": 200,
+    "/products/secure-chat/": 200,
+    "/app/kernel/": 200,
+    "/kernel/": 200,
+    "/pillars/safety/": 200,
+    "/pillars/transparency/": 200,
+    "/pillars/privacy/": 200,
+    "/compliance/": 200,
+    "/about/": 200,
+    "/trust/": 200,
+    "/privacy/": 200,
+    "/terms/": 200,
+    "/knowledge/prompt-injection/": 200,
+    "/knowledge/protect-company-data-chatgpt/": 200,
+    "/app/firewall/": 200,
+    "/app/ledger/": 200,
+    "/app/human-gate/": 200,
+    "/app/risk-engine/": 200,
+    "/app/secure-chat/": 200,
+    "/downloads/aigas-ledger-verifier.mjs": 200,
+    "/knowledge/ai-use-policy-employees/": 200,
+    "/knowledge/ai-risk-assessment/": 200
+  },
+  "authenticatedBrowser": "NOT RUN: no authorized session in isolated local environment",
+  "signedExpiredSession": "NOT RUN: invalid-token rejection is separate evidence",
+  "liveDeployment": "NOT RUN"
+}
