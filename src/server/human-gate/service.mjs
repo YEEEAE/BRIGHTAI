@@ -131,15 +131,13 @@ export function createHumanGateService(transact=transaction) {
     if(!policy?.delegation_enabled) return {allowed:false,delegated:false,delegation_id:null,level:null};
     // Delegation is bounded by an active server date window, one operation scope,
     // and the delegator's current role. It never exceeds the delegator's authority.
-    const delegation=(await db.query(`SELECT d.id,d.level,dm.role AS delegator_role
+    const delegation=(await db.query(`SELECT d.id,d.level,d.delegator_id
       FROM public.aigas_hg_delegations d
-      JOIN public.aigas_memberships dm ON dm.tenant_id=d.tenant_id AND dm.user_id=d.delegator_id
-      JOIN neon_auth."user" u ON u.id=d.delegator_id
       WHERE d.tenant_id=$1 AND d.delegatee_id=$2 AND d.operation_type=$3
        AND d.revoked_at IS NULL AND d.starts_at<=clock_timestamp() AND d.expires_at>clock_timestamp()
-       AND u.banned IS NOT TRUE
-      ORDER BY d.expires_at DESC,d.created_at DESC LIMIT 1 FOR SHARE OF d,dm,u`,[tenantId,identity.userId,request.operation_type])).rows[0];
-    if(!delegation||!admin({role:delegation.delegator_role})||!meetsLevel(delegation.delegator_role,delegation.level)||!meetsLevel(delegation.level,required)) return {allowed:false,delegated:false,delegation_id:null,level:null};
+      ORDER BY d.expires_at DESC,d.created_at DESC LIMIT 1 FOR SHARE OF d`,[tenantId,identity.userId,request.operation_type])).rows[0];
+    const delegator=delegation&&(await db.query('SELECT role FROM public.aigas_lock_member($1,$2)',[tenantId,delegation.delegator_id])).rows[0];
+    if(!delegation||!admin(delegator)||!meetsLevel(delegator.role,delegation.level)||!meetsLevel(delegation.level,required)) return {allowed:false,delegated:false,delegation_id:null,level:null};
     return {allowed:true,delegated:true,delegation_id:delegation.id,level:delegation.level};
    };
    if(operation==='create'){
@@ -207,7 +205,9 @@ export function createHumanGateService(transact=transaction) {
     const requester=(await db.query('SELECT role FROM public.aigas_lock_member($1,$2)',[tenantId,request.requester_id])).rows[0];
     if(!requester||(request.operation_type==='KERNEL_WORKSPACE_RENAME'&&!admin(requester))) return false;
     if(request.operation_type==='KERNEL_WORKSPACE_RENAME'){
-     const target=(await db.query('SELECT name,profile_version FROM public.aigas_tenants WHERE id=$1 FOR SHARE',[tenantId])).rows[0];
+     // A delegated MEMBER can read the target but cannot acquire an UPDATE-policy
+     // row lock. Execution rechecks and locks the target before changing it.
+     const target=(await db.query('SELECT name,profile_version FROM public.aigas_tenants WHERE id=$1',[tenantId])).rows[0];
      if(request.subject_ref!==tenantId||target?.name!==request.payload.expected_name||String(target?.profile_version)!==request.payload.expected_version) return false;
     }
     return true;
@@ -296,7 +296,12 @@ export function createHumanGateService(transact=transaction) {
     return {request:cancelled,persisted:true};
    }
    if(!(await eligible(request))){
-    if(['PENDING','APPROVED'].includes(request.status)) await expire(request,'AUTHORITY_CHANGED');
+    let terminal='AUTHORITY_CHANGED';
+    if(request.operation_type==='KERNEL_WORKSPACE_RENAME'){
+     const target=(await db.query('SELECT name,profile_version FROM public.aigas_tenants WHERE id=$1',[tenantId])).rows[0];
+     if(request.subject_ref!==tenantId||target?.name!==request.payload?.expected_name||String(target?.profile_version)!==request.payload?.expected_version) terminal='TARGET_CHANGED';
+    }
+    if(['PENDING','APPROVED'].includes(request.status)) await expire(request,terminal);
     return failure(409,'BINDING_INVALID','تغير الهدف أو السياسة أو الصلاحية؛ يلزم طلب جديد.');
    }
    if(operation==='decide'){
@@ -376,13 +381,12 @@ async function reviewerStillAuthorized(db,tenantId,request,policy){
  const reviewer=(await db.query('SELECT role FROM public.aigas_lock_member($1,$2)',[tenantId,approval.reviewer_id])).rows[0];
  if(!reviewer) return false;
  if(approval.delegation_id){
-  const delegation=(await db.query(`SELECT d.level,dm.role AS delegator_role FROM public.aigas_hg_delegations d
-    JOIN public.aigas_memberships dm ON dm.tenant_id=d.tenant_id AND dm.user_id=d.delegator_id
-    JOIN neon_auth."user" u ON u.id=d.delegator_id
+  const delegation=(await db.query(`SELECT d.level,d.delegator_id FROM public.aigas_hg_delegations d
     WHERE d.id=$1 AND d.tenant_id=$2 AND d.delegatee_id=$3 AND d.operation_type=$4
-     AND d.revoked_at IS NULL AND d.starts_at<=clock_timestamp() AND d.expires_at>clock_timestamp() AND u.banned IS NOT TRUE
-    FOR SHARE OF d,dm,u`,[approval.delegation_id,tenantId,approval.reviewer_id,request.operation_type])).rows[0];
-  return !!delegation&&admin({role:delegation.delegator_role})&&meetsLevel(delegation.delegator_role,delegation.level)&&meetsLevel(delegation.level,required);
+     AND d.revoked_at IS NULL AND d.starts_at<=clock_timestamp() AND d.expires_at>clock_timestamp()
+    FOR SHARE OF d`,[approval.delegation_id,tenantId,approval.reviewer_id,request.operation_type])).rows[0];
+  const delegator=delegation&&(await db.query('SELECT role FROM public.aigas_lock_member($1,$2)',[tenantId,delegation.delegator_id])).rows[0];
+  return !!delegation&&admin(delegator)&&meetsLevel(delegator.role,delegation.level)&&meetsLevel(delegation.level,required);
  }
  return admin(reviewer)&&meetsLevel(reviewer.role,required);
 }

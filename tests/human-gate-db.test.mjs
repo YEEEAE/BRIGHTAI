@@ -60,15 +60,81 @@ test('Human Gate: durable decisions, independent reviewer, isolation, concurrenc
  await pool.query("UPDATE aigas_memberships SET role='MEMBER' WHERE tenant_id=$1 AND user_id=$2",[tenant,reviewer.userId]);
  const pending=await create();assert.equal((await send(reviewer,'decide',{decision:'APPROVE',reason:'Revoked role'},pending)).status,404);
  await pool.query("UPDATE aigas_memberships SET role='ADMIN' WHERE tenant_id=$1 AND user_id=$2",[tenant,reviewer.userId]);
+ // Real Kernel effect: two independent transactions compete for the same permit.
+ const rename=async(name)=>{
+  const result=await send(owner,'create',{...input,operation_type:'KERNEL_WORKSPACE_RENAME',new_name:name});
+  assert.equal(result.status,201,JSON.stringify(result.data));
+  return result.data.request.id;
+ };
+ const approve=async requestId=>assert.equal((await send(reviewer,'decide',{decision:'APPROVE',reason:'Independent synthetic approval'},requestId)).status,200);
+ const renameId=await rename('Synthetic renamed');
+ await approve(renameId);
+ const executions=await Promise.all([send(owner,'execute',{},renameId),send(owner,'execute',{},renameId)]);
+ assert.deepEqual(executions.map(r=>r.status).sort(),[200,409]);
+ const readback=(await pool.query(`SELECT t.name,t.profile_version,r.status,r.payload,r.execution_result,
+   d.decision,d.reason,d.reviewer_id,d.payload_digest AS decision_digest,d.policy_version AS decision_policy,
+   r.payload_digest,r.policy_version,g.status AS grant_status,g.consumed_by,
+   (SELECT count(*)::int FROM aigas_hg_events e WHERE e.request_id=r.id AND e.event_type='EXECUTED') AS executed_events,
+   (SELECT count(*)::int FROM aigas_audit_events a WHERE a.action='human_gate.request.executed:'||r.id::text) AS executed_audits
+   FROM aigas_hg_requests r JOIN aigas_tenants t ON t.id=r.tenant_id
+   JOIN aigas_hg_decisions d ON d.request_id=r.id JOIN aigas_hg_grants g ON g.request_id=r.id WHERE r.id=$1`,[renameId])).rows[0];
+ assert.equal(readback.name,'Synthetic renamed');assert.equal(readback.status,'EXECUTED');
+ assert.equal(readback.payload.new_name,readback.name);assert.equal(readback.execution_result.subject_ref,tenant);
+ assert.equal(readback.execution_result.profile_version,String(readback.profile_version));
+ assert.equal(readback.decision,'APPROVE');assert.equal(readback.reason,'Independent synthetic approval');
+ assert.equal(readback.reviewer_id,reviewer.userId);assert.equal(readback.decision_digest,readback.payload_digest);
+ assert.equal(readback.decision_policy,readback.policy_version);assert.equal(readback.grant_status,'CONSUMED');
+ assert.equal(readback.consumed_by,owner.userId);assert.equal(readback.executed_events,1);assert.equal(readback.executed_audits,1);
+ const lost=await rename('Denied after reviewer revocation');await approve(lost);
+ await pool.query("UPDATE aigas_memberships SET role='MEMBER' WHERE tenant_id=$1 AND user_id=$2",[tenant,reviewer.userId]);
+ assert.equal((await send(owner,'execute',{},lost)).status,403);
+ assert.equal((await pool.query('SELECT name FROM aigas_tenants WHERE id=$1',[tenant])).rows[0].name,'Synthetic renamed');
+ await pool.query("UPDATE aigas_memberships SET role='ADMIN' WHERE tenant_id=$1 AND user_id=$2",[tenant,reviewer.userId]);
+ const changed=await rename('Denied after target changed');await approve(changed);
+ await pool.query("UPDATE aigas_tenants SET name='Synthetic externally changed' WHERE id=$1",[tenant]);
+ assert.equal((await send(owner,'execute',{},changed)).status,409);
+ assert.equal((await pool.query('SELECT terminal_reason FROM aigas_hg_requests WHERE id=$1',[changed])).rows[0].terminal_reason,'TARGET_CHANGED');
+ const cancelled=await rename('Cancelled rename');await approve(cancelled);
+ assert.equal((await send(owner,'cancel',{reason:'Synthetic cancellation'},cancelled)).status,200);
+ assert.equal((await send(owner,'execute',{},cancelled)).status,409);
+ const policyChange=await rename('Denied after policy change');await approve(policyChange);
+ const currentPolicy=(await pool.query('SELECT version FROM aigas_hg_policies WHERE tenant_id=$1',[tenant])).rows[0];
+ assert.equal((await send(owner,'policy',{version:currentPolicy.version,pending_minutes:60,approval_minutes:30,enabled:true,delegation_enabled:true})).status,200);
+ assert.equal((await send(owner,'execute',{},policyChange)).status,410);
+ // Delegated review ceases to authorize execution immediately after revocation.
+ const delegation=await send(reviewer,'delegate',{delegatee_id:member.userId,operation_type:'KERNEL_WORKSPACE_RENAME',level:'ADMIN',minutes:30,reason:'Synthetic delegation'});
+ assert.equal(delegation.status,200,JSON.stringify(delegation.data));
+ const delegated=await rename('Denied after delegation revoked');
+ const delegatedDecision=await send(member,'decide',{decision:'APPROVE',reason:'Delegated synthetic review'},delegated);
+ assert.equal(delegatedDecision.status,200,JSON.stringify(delegatedDecision.data));
+ assert.equal((await send(reviewer,'revoke-delegation',{reason:'Synthetic revocation'},delegation.data.delegation.id)).status,200);
+ assert.equal((await send(owner,'execute',{},delegated)).status,403);
+ const validDelegation=await send(reviewer,'delegate',{delegatee_id:member.userId,operation_type:'INTERNAL_DEMO_NOTE',level:'ADMIN',minutes:30,reason:'Synthetic valid delegation'});
+ assert.equal(validDelegation.status,200);
+ const delegatedNote=await create();
+ assert.equal((await send(member,'decide',{decision:'APPROVE',reason:'Valid delegated review'},delegatedNote)).status,200);
+ assert.equal((await send(owner,'execute',{},delegatedNote)).status,200);
+ const policyBeforeExpiry=(await pool.query('SELECT version FROM aigas_hg_policies WHERE tenant_id=$1',[tenant])).rows[0];
+ assert.equal((await send(owner,'policy',{version:policyBeforeExpiry.version,pending_minutes:1,approval_minutes:1,enabled:true})).status,200);
+ const expired=await rename('Denied after expiry');await approve(expired);
+ await new Promise(resolve=>setTimeout(resolve,61000));
+ assert.equal((await send(owner,'execute',{},expired)).status,410);
+ const expiryReadback=(await pool.query('SELECT r.status,r.terminal_reason,g.status AS grant_status,t.name FROM aigas_hg_requests r JOIN aigas_hg_grants g ON g.request_id=r.id JOIN aigas_tenants t ON t.id=r.tenant_id WHERE r.id=$1',[expired])).rows[0];
+ assert.deepEqual(expiryReadback,{status:'EXPIRED',terminal_reason:'TIMEOUT',grant_status:'REVOKED',name:'Synthetic externally changed'});
+ const rollbackRename=await rename('Must roll back rename');await approve(rollbackRename);
  // Audit failure must roll back request, decision, and demo completion separately.
+ const auditPending=await create();
  const approved=await create();await send(reviewer,'decide',{decision:'APPROVE',reason:'Ready for rollback test'},approved);
  await pool.query('ALTER TABLE aigas_audit_events ADD CONSTRAINT synthetic_failure CHECK(false) NOT VALID');
  const count=Number((await pool.query('SELECT count(*) AS n FROM aigas_hg_requests')).rows[0].n);
  assert.equal((await send(owner,'create',input)).status,503);assert.equal(Number((await pool.query('SELECT count(*) AS n FROM aigas_hg_requests')).rows[0].n),count);
- assert.equal((await send(reviewer,'decide',{decision:'APPROVE',reason:'Must roll back'},pending)).status,503);
- assert.equal((await pool.query('SELECT status FROM aigas_hg_requests WHERE id=$1',[pending])).rows[0].status,'PENDING');
- assert.equal((await pool.query('SELECT id FROM aigas_hg_decisions WHERE request_id=$1',[pending])).rowCount,0);
+ assert.equal((await send(reviewer,'decide',{decision:'APPROVE',reason:'Must roll back'},auditPending)).status,503);
+ assert.equal((await pool.query('SELECT status FROM aigas_hg_requests WHERE id=$1',[auditPending])).rows[0].status,'PENDING');
+ assert.equal((await pool.query('SELECT id FROM aigas_hg_decisions WHERE request_id=$1',[auditPending])).rowCount,0);
  assert.equal((await send(owner,'execute',{},approved)).status,503);assert.equal((await pool.query('SELECT completed_at FROM aigas_hg_requests WHERE id=$1',[approved])).rows[0].completed_at,null);
+ assert.equal((await send(owner,'execute',{},rollbackRename)).status,503);
+ const rollback=(await pool.query(`SELECT t.name,r.status,g.status AS grant_status FROM aigas_hg_requests r JOIN aigas_tenants t ON t.id=r.tenant_id JOIN aigas_hg_grants g ON g.request_id=r.id WHERE r.id=$1`,[rollbackRename])).rows[0];
+ assert.deepEqual(rollback,{name:'Synthetic externally changed',status:'APPROVED',grant_status:'ACTIVE'});
  await pool.query('UPDATE neon_auth."user" SET banned=true WHERE id=$1',[owner.userId]);assert.equal((await send(owner)).status,401);
  }finally{await pool.end();}
 });

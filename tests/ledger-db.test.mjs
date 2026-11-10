@@ -11,6 +11,7 @@ import { randomUUID } from 'node:crypto';
 import { createLedgerService } from '../src/server/ledger/service.mjs';
 import { createHandler } from '../src/server/ledger/http.mjs';
 import { hashEvent, eventFields } from '../src/server/ledger/core.mjs';
+import { recordProductEvent } from '../src/server/ledger/writer.mjs';
 import { audit, tenantGuard } from '../src/server/kernel/service.mjs';
 const url=localDatabaseUrl('LEDGER_TEST_DATABASE_URL');
 test('Postgres + HTTP: durable event, readback, integrity/tamper, tenant isolation, roles, privacy, paging and rollback',{skip:!url},async()=>{
@@ -73,9 +74,35 @@ test('Postgres + HTTP: durable event, readback, integrity/tamper, tenant isolati
  assert.equal((await send(owner,'list',{},undefined,tenant,'type=synthetic.test.created&period=30')).data.events.length,1);
  assert.equal((await send(owner,'verify',{},id)).data.result,'MATCH');
  assert.doesNotMatch(JSON.stringify((await db.query('SELECT metadata_json FROM aigas_ld_events')).rows),/synthetic-secret|prompt|conversation/);
+ // Concurrent transactions use separate connections and the runtime role.
+ const transactSeparate=async work=>{const client=new pg.Client({connectionString:url});await client.connect();try{await client.query('BEGIN');await runtime(client);const value=await work(client);await client.query('COMMIT');return value;}catch(error){await client.query('ROLLBACK');throw error;}finally{await client.end();}};
+ const concurrent=createLedgerService(transactSeparate);
+ const writes=await Promise.all(Array.from({length:8},()=>concurrent(owner,tenant,'create',{...input,idempotency_key:randomUUID()})));
+ assert.equal(new Set(writes.map(x=>x.event.sequence_no)).size,8);
+ const newest=writes.reduce((a,b)=>BigInt(a.event.sequence_no)>BigInt(b.event.sequence_no)?a:b);
+ const full=await concurrent(owner,tenant,'export',{},new URLSearchParams(),newest.event.event_id);
+ assert.equal(full.verification.result,'MATCH');assert.equal(full.entries.length,36);
+ for(let i=0;i<full.entries.length;i++){assert.equal(String(full.entries[i].event.sequence_no),String(i+1));assert.equal(full.entries[i].event.previous_hash,i?full.entries[i-1].event.integrity_hash:null);}
+ const portable2=await mkdtemp(join(tmpdir(),'aigas-ledger-prefix-'));
+ try {
+  const file=join(portable2,'bundle.json');
+  const check=async bundle=>{await writeFile(file,JSON.stringify(bundle));const child=spawnSync(process.execPath,[new URL('../public/downloads/aigas-ledger-verifier.mjs',import.meta.url).pathname,file],{encoding:'utf8',env:{PATH:process.env.PATH,NODE_OPTIONS:process.env.NODE_OPTIONS}});return {status:child.status,result:JSON.parse(child.stdout).result};};
+  assert.deepEqual(await check(full),{status:0,result:'MATCH'});
+  const changes={event_id:randomUUID(),tenant_id:randomUUID(),source:'other',event_type:'synthetic.review.recorded',policy_version:'changed',metadata_json:{...full.entries[0].event.metadata_json,outcome:'REVIEWED'},created_at:'2026-01-01T00:00:00.000Z',created_by:randomUUID(),hash_profile:'unsupported',sequence_no:'2',previous_hash:'a'.repeat(64),idempotency_key:'changed',integrity_hash:'b'.repeat(64)};
+  for(const [field,value] of Object.entries(changes)){const altered=structuredClone(full);altered.entries[0].event[field]=value;const result=await check(altered);assert.notEqual(result.status,0,field);assert.notEqual(result.result,'MATCH',field);}
+  for(const mutate of [b=>b.entries.splice(1,1),b=>b.entries.reverse(),b=>b.entries.pop(),b=>delete b.entries[0].event.metadata_json]){const altered=structuredClone(full);mutate(altered);const result=await check(altered);assert.notEqual(result.status,0);assert.notEqual(result.result,'MATCH');}
+ } finally {await rm(portable2,{recursive:true});}
  // Kernel basic audit has no Ledger table or product-license dependency.
  await transact(async c=>{await tenantGuard(owner,tenant,c);return audit(c,owner,tenant,'kernel.synthetic.test');});
  assert.ok((await db.query("SELECT id FROM aigas_audit_events WHERE action='kernel.synthetic.test'")).rowCount);
+ // A synthetic policy requires evidence; unavailable Ledger aborts the caller's transaction.
+ await db.query("INSERT INTO aigas_ld_evidence_requirements(tenant_id,source,event_type,policy_version,approval_reference,approved_by) VALUES($1,'kernel','kernel.audit.recorded','fixture-v1','SYNTHETIC-ONLY',$2)",[tenant,owner.userId]);
+ await db.query("UPDATE aigas_product_access SET status='FOUNDATION' WHERE tenant_id=$1 AND product_slug='ledger'",[tenant]);
+ const beforeMandatory=Number((await db.query("SELECT count(*) AS n FROM aigas_audit_events WHERE action='kernel.synthetic.mandatory'")).rows[0].n);
+ const ref=randomUUID();
+ await assert.rejects(transact(async c=>{await tenantGuard(owner,tenant,c);await audit(c,owner,tenant,'kernel.synthetic.mandatory');await recordProductEvent(c,owner,tenant,{source:'kernel',event_type:'kernel.audit.recorded',correlation_id:ref,decision_id:ref,policy_version:'fixture-v1',idempotency_key:'mandatory:fixture',metadata_json:{synthetic:false,audit_ref:ref,action:'kernel.synthetic.mandatory'}});}),{code:'MANDATORY_EVIDENCE_UNAVAILABLE'});
+ assert.equal(Number((await db.query("SELECT count(*) AS n FROM aigas_audit_events WHERE action='kernel.synthetic.mandatory'")).rows[0].n),beforeMandatory);
+ await db.query("UPDATE aigas_product_access SET status='ENABLED' WHERE tenant_id=$1 AND product_slug='ledger'",[tenant]);
  await db.query("UPDATE aigas_memberships SET role='MEMBER' WHERE tenant_id=$1 AND user_id=$2",[tenant,admin.userId]);
  assert.equal((await send(admin,'export',{},id)).status,403);
  await db.query('DELETE FROM aigas_memberships WHERE tenant_id=$1 AND user_id=$2',[tenant,member.userId]);

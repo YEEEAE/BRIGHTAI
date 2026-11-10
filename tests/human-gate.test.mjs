@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHumanGateService } from '../src/server/human-gate/service.mjs';
 import { createHandler } from '../src/server/human-gate/http.mjs';
-import { exact,text,decisionAllowed } from '../src/server/human-gate/core.mjs';
+import { exact,text,decisionAllowed,binding } from '../src/server/human-gate/core.mjs';
 test('Human Gate input and separation of duties',()=>{
  for(const value of [null,[],{tenant_id:'forged'}])assert.throws(()=>exact(value,['title']));
  for(const value of ['',null,'x','x'.repeat(501),'test\u0000'])assert.throws(()=>text(value));
@@ -39,4 +39,13 @@ test('Human Gate list is routed to the transaction and rejects injected fields',
  await assert.rejects(service({userId:'synthetic'},null,'list'),error=>error===sentinel);
  await assert.rejects(service({userId:'synthetic'},null,'list',{tenant_id:'forged'}),{code:'INVALID_BODY'});
  assert.equal(calls,1);
+});
+
+test('rename approval binding changes with its principal, policy, target and effect',()=>{
+ const request={tenant_id:'tenant',requester_id:'requester',operation_type:'KERNEL_WORKSPACE_RENAME',provider_ref:'aigas-kernel',subject_ref:'workspace',policy_version:'policy-1',payload:{expected_name:'Before',expected_version:'1',new_name:'After'}};
+ const original=binding(request);
+ for(const change of [{tenant_id:'other'},{requester_id:'other'},{provider_ref:'other'},{subject_ref:'other'},{policy_version:'policy-2'},...Object.entries({expected_name:'Changed',expected_version:'2',new_name:'Different'}).map(([key,value])=>({payload:{...request.payload,[key]:value}}))]){
+  assert.notEqual(binding({...request,...change}),original);
+ }
+ assert.throws(()=>binding({...request,payload:{...request.payload,extra:'unexpected'}}));
 });
