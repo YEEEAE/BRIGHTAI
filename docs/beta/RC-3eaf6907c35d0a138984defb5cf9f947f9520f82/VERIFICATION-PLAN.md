@@ -1,6 +1,7 @@
 # خطة التحقق الحاكمة — Beta RC-3eaf6907
 
 > **الحالة:** `PLAN ONLY — NOT EXECUTED`
+> **امتداد المراقبة 2026-11-10:** V15 أصبح يشير إلى O1–O8 في `docs/MONITORING-AND-ANALYTICS-WIRING.md`، على أساس `00d6de9197836179ecebcca46a2c731cc961a260` + patch محلي غير ملتزم. SHA المرشح القديم أدناه تاريخي؛ أي تشغيل جديد يحتاج artifact/manifest معتمدًا للنسخة النهائية، لا ينسب دليل المرشح القديم للنسخة الحالية.
 > **المرشح:** `BRIGHTAI-AIGAS-RC-3eaf6907c35d0a138984defb5cf9f947f9520f82`
 > **الـSHA:** `3eaf6907c35d0a138984defb5cf9f947f9520f82`
 > **التاريخ:** 2026-11-09
@@ -439,6 +440,8 @@ select schemaname, tablename, policyname, permissive, roles, cmd from pg_policie
 ---
 
 ## V15 — Monitoring opt-in (Sentry/PostHog)
+
+**المراجعة الحالية:** نفّذ O1–O8 في `docs/MONITORING-AND-ANALYTICS-WIRING.md` بعد تفويض منفصل فقط. تشمل موافقة تحليلات مستقلة، رفض production لـPostHog، SHA كامل، رفض بيانات/أكواد/وجهات غير معتمدة، فشل collector، استقبال متصفح محدود، نتائج الدخول، وإيقاف الطبقتين مستقلًا. الأوامر والخطوات السابقة أدناه أصل تاريخي؛ ليست كافية وحدها لإغلاق G8. الحالة `NOT RUN`.
 
 **الهدف:** إثبات أن الطبقتين مطفأتان افتراضيًا، وأن الإرسال المخوّل خالٍ من PII، وأن مفتاح الإيقاف مستقل عن البوابة.
 

@@ -256,10 +256,11 @@ G4 Privacy approval:   retention & deletion matrix version / approver / date
 
 ### 10.1 الفصل الملزم
 
-1. **Sentry** = تتبع أخطاء الخادم فقط. لا بيانات عملاء، لا متن محادثة، لا أجسام طلبات، لا هوية.
+1. **Sentry** = تتبع أخطاء الخادم وإشارات ثابتة للواجهة في App/Auth خلف علم متصفح إضافي؛ لا SDK ولا stack أو بيانات عملاء أو أجسام طلبات أو هوية. `SOURCE_PRESENT` فقط.
 2. **PostHog** = أحداث استخدام صريحة فقط. لا auto-capture، لا replay، لا heatmaps، لا person profiles، لا tenant/user ID.
 3. **مفتاح إيقاف مستقل** لكل طبقة (`AIGAS_SENTRY_KILL_SWITCH` / `AIGAS_POSTHOG_KILL_SWITCH`) ولا يعتمد على `AIGAS_APP_ENABLED`.
 4. **صحة CDN/Render على `/`** لا تثبت `/app/api/kernel/health/`؛ يجب مراقبة المسارين منفصلين.
+5. **مراجعة 2026-11-10:** اعتماد منفصل لكل طبقة وrelease SHA كامل؛ PostHog في staging/beta فقط. مسودة إعدادات التوجيه والتصعيد في `docs/beta/MONITORING-OPERATIONS-PLAN.yaml`، بلا وجهات أو توقيعات. الجرد الفعلي في `docs/beta/MONITORING-READONLY-STATUS-2026-11-10.md`؛ لا monitoring Live أو إثبات نشر.
 
 ### 10.2 بوابات التفعيل (كلها مغلقة الآن)
 

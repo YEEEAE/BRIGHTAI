@@ -30,13 +30,15 @@ function sanitizeProperty(name, value) {
 // Returns the accepted property set; unknown events or properties are dropped
 // entirely rather than partially forwarded.
 export function buildProductEvent(name, properties = {}) {
+  if (!Object.hasOwn(EVENT_RULES, name) || !properties || typeof properties !== 'object' || Array.isArray(properties)) return null;
   const allowed = EVENT_RULES[name];
   if (!allowed) return null;
   const safe = {};
   for (const [key, value] of Object.entries(properties)) {
-    if (!allowed.has(key)) continue;
+    if (!allowed.has(key)) return null;
     const sanitized = sanitizeProperty(key, value);
-    if (sanitized !== null && sanitized !== undefined) safe[key] = sanitized;
+    if (sanitized === null || sanitized === undefined) return null;
+    safe[key] = sanitized;
   }
   return Object.keys(safe).length ? { event: name, properties: safe } : null;
 }
@@ -45,14 +47,14 @@ async function send(settings, payload) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
-    await fetch(settings.endpoint, {
+    const response = await fetch(settings.endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         api_key: settings.apiKey,
+        distinct_id: randomUUID(),
         event: payload.event,
         properties: {
-          distinct_id: randomUUID(),
           // No person profile and no GeoIP enrichment. No tenant/user ID.
           $process_person_profile: false,
           $geoip_disable: true,
@@ -65,7 +67,7 @@ async function send(settings, payload) {
       signal: controller.signal,
       redirect: 'error',
     });
-    return true;
+    return response.ok;
   } catch {
     return false;
   } finally {

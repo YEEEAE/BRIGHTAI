@@ -1,0 +1,91 @@
+# Draft only. No external routing, paging, uptime monitor or SLA is configured.
+status: DRAFT_NOT_APPROVED
+review_base_sha: 00d6de9197836179ecebcca46a2c731cc961a260
+review_date: "2026-11-10"
+source_present: true
+schema_present: NOT_APPLICABLE
+configured: false
+runtime_verified: false
+approved: false
+authority: docs/PRE-BETA-SECURITY-AND-OPERATIONS-RUNBOOK.md#5
+incident_commander: null
+on_call_roster: null
+security_email_route_decision_97: null
+outage_email_route_decision_96: null
+escalation_schedule: null
+notification_window_legal_approval: null
+rollback_owner: null
+retention_approval: null
+rules:
+  - id: server_5xx
+    source: sentry_server_only
+    condition: "status_code >= 500; browser signals excluded"
+    threshold: null
+    suggested_roles: [Operations, Platform]
+    destination: null
+  - id: browser_failure
+    source: untrusted_browser_relay
+    condition: "CLIENT_ERROR / CLIENT_REJECTION / CLIENT_AUTH_FAILURE; triage before escalation"
+    threshold: null
+    suggested_roles: [Platform]
+    destination: null
+  - id: auth_invite
+    source: sentry_server_only
+    codes: [AUTH_UNAVAILABLE, AUTH_SETUP_REQUIRED, INVITATION_FAILURE]
+    threshold: null
+    suggested_roles: [Security, Platform]
+    destination: null
+  - id: rls_denial
+    source: sentry_server_only
+    codes: [RLS_DENIED]
+    threshold: null
+    suggested_roles: [Security]
+    destination: null
+  - id: ledger_integrity
+    source: sentry_server_only
+    codes: [LEDGER_VERIFICATION_MISMATCH]
+    threshold: "any signal; confirm integrity evidence before classifying breach"
+    suggested_roles: [Security, Compliance]
+    destination: null
+  - id: ai_provider_timeout
+    source: sentry_server_only
+    codes: [PROVIDER_TIMEOUT]
+    threshold: null
+    suggested_roles: [Product, Operations]
+    destination: null
+probes:
+  - id: public_edge
+    path: /
+    proves: public_site_availability_only
+    configured: false
+    interval: null
+  - id: portal_gate
+    path: /app/
+    expected_when_closed: "503; no-store; noindex"
+    configured: false
+    interval: null
+  - id: kernel_health
+    path: /app/api/kernel/health
+    expected: "JSON setup-state codes; never infer readiness from public_edge"
+    configured: false
+    interval: null
+  - id: latency_p95
+    source: operator_probe_metrics_not_this_adapter
+    budget: null
+    configured: false
+incident_steps:
+  - Verify release SHA, environment and signal source; browser input is untrusted.
+  - Keep time and sanitized codes only; never copy customer content or credentials.
+  - Contain and roll back only under the named authority and approved window.
+  - Escalate to Security and Legal when data impact is established.
+  - Notify via approved decision 96/97 routes only; then record RCA and CAPA.
+activation_requires:
+  - Named project, approved retention and signed privacy scope for each layer.
+  - Named commander, on-call roster, destinations, thresholds and rollback owner.
+  - Authorized staging payload, independent kill-switch and notification drill evidence.
+  - Independent operator signature; no unresolved required P0 gate.
+signoff:
+  operations: null
+  security: null
+  privacy_legal: null
+  platform_owner: null

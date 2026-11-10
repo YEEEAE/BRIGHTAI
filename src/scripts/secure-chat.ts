@@ -1,4 +1,5 @@
 import { createWorkspaceAuth as createAuthClient, getWorkspaceSession, appFetch, setWorkspace } from './workspace-context';
+import { observeLogin } from './monitoring';
 
 const root = document.querySelector<HTMLElement>('[data-secure-chat]')!;
 const status = root.querySelector<HTMLElement>('[data-status]')!;
@@ -300,7 +301,7 @@ login.addEventListener('submit', event => {
   event.preventDefault();
   const values = new FormData(login);
   void run(async () => {
-    const result = await auth!.signIn.email({ email: String(values.get('email')), password: String(values.get('password')) });
+    const result = await observeLogin(() => auth!.signIn.email({ email: String(values.get('email')), password: String(values.get('password')) }));
     login.reset();
     if (result.error) {
       const error = new Error('تعذر تسجيل الدخول. تحقق من بيانات الحساب وإعداد Neon Auth.');

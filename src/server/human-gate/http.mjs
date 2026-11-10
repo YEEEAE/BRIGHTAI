@@ -40,6 +40,8 @@ export function createHandler(auth=authenticate, service=operate) {
       const setup=known?null:setupError(error);
       const dependencyStatus=known?dependencyStatusForError(error):setup?.code==='HUMAN_GATE_SCHEMA_MISSING'?'not configured':setup?'access denied':'temporarily unavailable';
       const status=known?error.status:503;
+      const category={policy:'policy_update',decide:'decision',execute:'execution',delegate:'delegation','revoke-delegation':'revoke'}[operation];
+      if(category) void captureProductEvent('policy_action_result',{action_category:category,status_code:status});
       void captureServerFailure(error,{surface:'human-gate',code:known?error.code:setup?.code||'HUMAN_GATE_UNAVAILABLE',status,pathname:new URL(request.url).pathname,dependency:dependencyStatus,operation:'POST'});
        return Response.json(errorBody({code:known?error.code:setup?.code||'HUMAN_GATE_UNAVAILABLE',message:known?error.message:setup?.message||'تعذر إكمال العملية؛ تحقق من اتصال القاعدة وترحيل Human Gate. لم يُؤكد الحفظ أو التنفيذ.',dependencyStatus}),{status,headers});
     }

@@ -2,6 +2,7 @@ import { defineMiddleware } from 'astro:middleware';
 import { redirects } from '../redirects.json';
 import { env, isPortalEnabled } from './server/kernel/env.mjs';
 import { portalUnavailableJson, portalUnavailablePage } from './server/kernel/unavailable.mjs';
+import { captureServerFailure } from './server/observability/index.mjs';
 
 // Node web services do not consume redirects.json automatically.
 const destinations = new Map(redirects.map(({ source, destination }) => [source, destination]));
@@ -185,11 +186,23 @@ export const onRequest = defineMiddleware(async (context, next) => {
     // The gate runs before any route, redirect or static asset resolution:
     // a disabled portal answers 503 here and never renders app pages or APIs.
     const isApi = isApiPath(isPortalPath(normalizedPath) ? normalizedPath : path);
-    const response = isPortalEnabled()
-      ? await next()
-      : isApi
-        ? portalUnavailableJson()
-        : portalUnavailablePage(context.request);
+    let response: Response;
+    if (!isPortalEnabled()) {
+      response = isApi ? portalUnavailableJson() : portalUnavailablePage(context.request);
+    } else {
+      try {
+        response = await next();
+        // API handlers report their own failures; health and page responses
+        // need a fallback. Expected closed-portal 503s are never incidents.
+        if (response.status >= 500 && (!isApi || /^\/app\/api\/kernel\/health\/?$/.test(normalizedPath))) {
+          void captureServerFailure(null, { status: response.status, surface: 'server', pathname: normalizedPath, operation: context.request.method });
+        }
+      } catch (error) {
+        void captureServerFailure(null, { status: 500, surface: 'server', pathname: normalizedPath, operation: context.request.method });
+        // Preserve Astro's error handling without reading exception contents.
+        throw error;
+      }
+    }
     return harden(response, { portal: true, secureTransport });
   }
 

@@ -8,13 +8,11 @@
 // The layer stays inert unless config.mjs reports all approval gates satisfied.
 import { randomUUID } from 'node:crypto';
 import { sentrySettings } from './config.mjs';
-import { safeCode, safeRoute, safeStatus, sanitizeStack } from './redact.mjs';
+import { safeCode, safeRoute, safeStatus } from './redact.mjs';
 
 const CLIENT = 'aigas-server/1.0';
 const TIMEOUT_MS = 2000;
-const CAPTURE_PREFIXES = ['AUTH_UNAVAILABLE', 'AUTH_SETUP_REQUIRED', 'INVITATION_', 'TENANT_', 'RLS_'];
-const CAPTURE_SUFFIXES = ['_DB_PRIVILEGE', '_SCHEMA_MISSING', '_INTEGRITY_INVALID', '_VERIFICATION_FAILED'];
-const CAPTURE_CODES = new Set(['PROVIDER_TIMEOUT', 'LEDGER_VERIFICATION_MISMATCH']);
+const CAPTURE_CODES = new Set(['AUTH_UNAVAILABLE', 'AUTH_SETUP_REQUIRED', 'INVITATION_FAILURE', 'PROVIDER_TIMEOUT', 'LEDGER_VERIFICATION_MISMATCH', 'RLS_DENIED', 'SCHEMA_MISSING', 'CLIENT_ERROR', 'CLIENT_REJECTION', 'CLIENT_AUTH_FAILURE']);
 
 // A 5xx is always a server failure. 4xx is not sent by default: expired tokens
 // and ordinary validation noise would bury real incidents. Auth setup, invite
@@ -25,22 +23,20 @@ export function shouldCaptureFailure(code, status) {
   if (normalizedStatus && normalizedStatus >= 500) return true;
   const normalizedCode = safeCode(code);
   if (!normalizedCode) return false;
-  if (CAPTURE_CODES.has(normalizedCode)) return true;
-  if (CAPTURE_PREFIXES.some(prefix => normalizedCode.startsWith(prefix))) return true;
-  return CAPTURE_SUFFIXES.some(suffix => normalizedCode.endsWith(suffix));
+  return CAPTURE_CODES.has(normalizedCode);
 }
 
 function normalizeSurface(value) {
-  return typeof value === 'string' && /^[a-z][a-z0-9-]{1,40}$/.test(value) ? value : 'server';
+  return ['kernel', 'firewall', 'ledger', 'human-gate', 'risk-engine', 'secure-chat', 'browser', 'server'].includes(value) ? value : 'server';
 }
 
-function buildEvent(settings, { code, status, surface, pathname, dependency, operation, stack }) {
+function buildEvent(settings, { code, status, surface, pathname, dependency, operation }) {
+  const eventCode = safeCode(code) ?? 'UNEXPECTED_FAILURE';
   const route = safeRoute(pathname);
   const statusCode = safeStatus(status);
   const safeSurface = normalizeSurface(surface);
-  const safeOperation = typeof operation === 'string' && /^[A-Z]{3,8}$/.test(operation) ? operation : null;
-  const safeDependency = typeof dependency === 'string' && /^[a-z -]{2,32}$/.test(dependency) ? dependency : null;
-  const frames = sanitizeStack(stack);
+  const safeOperation = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'].includes(operation) ? operation : null;
+  const safeDependency = ['not configured', 'access denied', 'temporarily unavailable', 'available'].includes(dependency) ? dependency : null;
 
   const tags = { surface: safeSurface };
   if (statusCode) tags.status_code = String(statusCode);
@@ -50,20 +46,19 @@ function buildEvent(settings, { code, status, surface, pathname, dependency, ope
   const event = {
     event_id: randomUUID().replace(/-/g, ''),
     timestamp: Date.now() / 1000,
-    platform: 'node',
+    platform: safeSurface === 'browser' ? 'javascript' : 'node',
     level: statusCode && statusCode >= 500 ? 'error' : 'warning',
     logger: 'aigas.server',
     environment: settings.environment,
     transaction: route,
-    fingerprint: ['aigas', safeSurface, code ?? 'UNEXPECTED_FAILURE'],
+    fingerprint: ['aigas', safeSurface, eventCode],
     tags,
     // Only a stable machine code. Never error.message, SQL text, a URL, a
     // header, a cookie, a token, a provider body, or a chat message.
     exception: {
       values: [{
         type: `Aigas${safeSurface.replace(/(^|-)([a-z])/g, (_m, _d, c) => c.toUpperCase())}Error`,
-        value: code ?? 'UNEXPECTED_FAILURE',
-        ...(frames.length ? { stacktrace: { frames } } : {}),
+        value: eventCode,
       }],
     },
   };
@@ -80,7 +75,7 @@ async function sendEvent(settings, event) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
-    await fetch(settings.dsn.endpoint, {
+    const response = await fetch(settings.dsn.endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-sentry-envelope',
@@ -90,7 +85,7 @@ async function sendEvent(settings, event) {
       signal: controller.signal,
       redirect: 'error',
     });
-    return true;
+    return response.ok;
   } catch {
     // Monitoring must never break the request it observes.
     return false;
@@ -114,7 +109,8 @@ export async function captureServerFailure(error, context = {}) {
     pathname: context.pathname,
     dependency: context.dependency,
     operation: context.operation,
-    stack: error?.stack,
+    // Do not inspect error properties, including stack/file names, which can
+    // contain customer text or connection credentials.
   });
   return sendEvent(settings, event);
 }
@@ -131,7 +127,6 @@ export async function captureIntegritySignal(context = {}) {
     pathname: context.pathname,
     dependency: null,
     operation: context.operation,
-    stack: null,
   });
   return sendEvent(settings, event);
 }
@@ -141,5 +136,5 @@ export async function captureIntegritySignal(context = {}) {
 export function describeSentryEventForTest(input) {
   const settings = sentrySettings();
   if (!settings.enabled) return null;
-  return buildEvent(settings, { ...input, stack: null });
+  return buildEvent(settings, input);
 }

@@ -1,6 +1,6 @@
 # BRIGHTAI / AIGAS — Go/No-Go Gates
 # Release candidate: RC-3eaf6907c35d0a138984defb5cf9f947f9520f82
-# Prepared: 2026-11-09
+# Prepared: 2026-11-09; source-only review: 2026-11-10
 # This file records evidence state, not permission to deploy.
 # Allowed status values: PASS | BLOCKED | NOT_VERIFIED
 
@@ -9,7 +9,7 @@ release_candidate:
   commit: 3eaf6907c35d0a138984defb5cf9f947f9520f82
   branch: main
   commit_date: "2026-11-08T23:59:24+03:00"
-  worktree: clean
+  worktree: "historical candidate was clean; current review has uncommitted changes"
   deployed: false
   previous_prompt_sha: 7994d3ce9df4797630d4dc9a2c51d2c141dedcab
   observed_head_2026_11_09: 9bee68f450a55396528819d738e728b438475973
@@ -17,9 +17,23 @@ release_candidate:
   evidence_basis: "No operational evidence has been produced on 9bee68f. Gate states below are carried from the 3eaf6907 candidate and the dated 2026-11-08/09 observations; they are not re-attributed to 9bee68f."
   note: "Previous SHA is historical and is not attributed to the current tree."
 
+review_target:
+  observed_at: "2026-11-10T14:37:28+03:00"
+  base_commit: 00d6de9197836179ecebcca46a2c731cc961a260
+  branch: main
+  worktree: modified
+  scope: "Current base HEAD plus uncommitted local observability changes; not a signed release candidate"
+  source_present: true
+  schema_present: "NOT_RECHECKED; only Neon branch inventory refreshed"
+  configured: NOT_VERIFIED
+  runtime_verified: false
+  approved: false
+  evidence_basis: "Read-only MCP discovery and source/diff review only. Historical runtime evidence is not attributed to this HEAD or its patch. No test/build/lint/typecheck/Playwright/server/event send."
+  evidence_document: docs/beta/MONITORING-READONLY-STATUS-2026-11-10.md
+
 decision:
   status: NO-GO
-  condition: "No GO until every required P0 gate is verified with dated evidence on this SHA and signed by its owner."
+  condition: "No GO until every required P0 gate is verified with dated evidence on the final owner-approved SHA/artifact based on review_target, and signed by its owner. Historical candidate evidence does not verify the current patch."
   signed_by: null
   signed_on: null
 
@@ -40,6 +54,7 @@ gates:
       - "Browser scan 2026-11-08: 15/15 public routes returned 200"
       - "No evidence that the responding artifact matches this release candidate"
       - "No public-route scan was re-run on observed head 9bee68f during the 2026-11-09 monitoring task"
+      - "2026-11-10: public routes were not rechecked; PASS remains narrow historical evidence, not a verification of review_target"
     limitations:
       - "Does not prove the deployed artifact equals this SHA; that is G2."
       - "Does not open /app/*; that is G3."
@@ -56,7 +71,7 @@ gates:
       - "Platform Owner"
       - "Deploy Operator"
     evidence_required:
-      - "Deployed commit SHA equals 3eaf6907c35d0a138984defb5cf9f947f9520f82"
+      - "Deployed commit/artifact equals the owner-approved final revision based on review_target.base_commit; uncommitted changes must be captured in its manifest"
       - "Deploy ID, build logs, artifact/image digest"
       - "Origin response proving the request reaches the Node service"
       - "Domain and CDN mapping recorded"
@@ -229,6 +244,10 @@ gates:
       - "2026-11-09: Sentry organization 659ec3bf0cec has zero projects; no DSN or approved project"
       - "2026-11-09: PostHog has one Default project (720936) with ingested_event=false; no owner-approved project"
       - "2026-11-09: no event has been sent; no SDK/package installed; no alert route or on-call created"
+      - "2026-11-10: Sentry organization/project listing succeeds; organization 659ec3bf0cec still has zero projects"
+      - "2026-11-10: PostHog organization-get succeeds; active organization has one non-demo project and organizations_projects limit=1; requested new project is BLOCKED by plan capacity, creation not attempted"
+      - "2026-11-10: separate analytics approval, full release SHA, browser fixed-code relay and login result wiring added locally; SOURCE_PRESENT only"
+      - "2026-11-10: Render workspace listing now succeeds; no workspace selected or service/deploy inspected; no runtime proof"
     missing_evidence:
       - "Roster"
       - "Alert configuration evidence"
@@ -291,4 +310,4 @@ beta_scope:
     auto_conversion: false
     billing: false
 
-final_condition: "NO-GO until all required P0 gates are verified with dated evidence on this SHA and signed by their owners."
+final_condition: "NO-GO until all required P0 gates are verified with dated evidence on the final approved SHA/artifact for review_target and signed by their owners; the current worktree is uncommitted and unverified."

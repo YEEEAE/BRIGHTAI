@@ -1,5 +1,6 @@
 ---
 import BrandLogo from '../components/BrandLogo.astro';
+import MonitoringGate from '../components/MonitoringGate.astro';
 import { captureProductEvent } from '../server/observability/index.mjs';
 import { productSlug, sectionFor } from '../server/observability/redact.mjs';
 import '../styles/variables.css';
@@ -22,7 +23,7 @@ Astro.response.headers.set('Referrer-Policy', 'no-referrer');
 <!doctype html>
 <html lang="ar-SA" dir="rtl">
   <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="robots" content="noindex,nofollow" /><title>{title} | BRIGHTAI</title><link rel="icon" href="/favicon.png" /></head>
-  <body><a class="skip" href="#main">انتقل للمحتوى</a>
+  <body><MonitoringGate /><a class="skip" href="#main">انتقل للمحتوى</a>
     <div class="app-frame">
       <aside class="app-nav"><BrandLogo /><span class="overline">AIGAS / WORKSPACE</span><nav aria-label="تنقل النظام"><a href="/app/kernel/" aria-current={Astro.url.pathname === '/app/kernel/' ? 'page' : undefined}><span aria-hidden="true">◈</span> نواة المنظومة <bdi>Kernel</bdi></a><a href="/app/firewall/" aria-current={Astro.url.pathname === '/app/firewall/' ? 'page' : undefined}>مختبر <bdi>Firewall Starter</bdi></a><a href="/app/ledger/" aria-current={Astro.url.pathname === "/app/ledger/" ? "page" : undefined}>سجل الأدلة <bdi>Ledger</bdi></a><a href="/app/human-gate/" aria-current={Astro.url.pathname === "/app/human-gate/" ? "page" : undefined}>المراجعة البشرية <bdi>Human Gate</bdi></a><a href="/app/risk-engine/" aria-current={Astro.url.pathname === "/app/risk-engine/" ? "page" : undefined}>تقييم المخاطر <bdi>Risk Engine</bdi></a><a href="/app/secure-chat/" aria-current={Astro.url.pathname === '/app/secure-chat/' ? 'page' : undefined}>محادثة <bdi>Secure Chat</bdi></a></nav><p>الهوية والمؤسسة والوصول.<br />أساس مشترك للمنتجات الخمسة.</p><a class="site-link" href="/">الموقع العام <span aria-hidden="true">↗</span></a></aside>
       <div class="app-body"><header class="app-top"><span><span>مساحة العمل</span><span class="app-breadcrumb-separator" aria-hidden="true">/</span><bdi class="app-page-title" dir="auto">{title}</bdi><span class="tag">مرحلة التأسيس</span></span><bdi dir="ltr">BRIGHTAI / AIGAS</bdi></header><main id="main" tabindex="-1"><slot /></main><footer class="app-footer">Kernel مكوّن مشترك ضمن المنظومة؛ ليس منتجًا سادسًا مدفوعًا.</footer></div>

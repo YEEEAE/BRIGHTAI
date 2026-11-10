@@ -31,7 +31,15 @@ export function safeRoute(pathname) {
 
 // Sentry tag values and stable product codes share one strict shape.
 export function safeCode(value) {
-  return typeof value === 'string' && /^[A-Z][A-Z0-9_]{1,63}$/.test(value) ? value : null;
+  if (typeof value !== 'string') return null;
+  if (['AUTH_UNAVAILABLE', 'AUTH_SETUP_REQUIRED', 'PROVIDER_TIMEOUT', 'LEDGER_VERIFICATION_MISMATCH', 'SCHEMA_MISSING', 'CLIENT_ERROR', 'CLIENT_REJECTION', 'CLIENT_AUTH_FAILURE'].includes(value)) return value;
+  // Emit constant categories, never arbitrary uppercase strings supplied by an
+  // exception/provider. Shape validation alone can still leak a secret.
+  if (value.startsWith('INVITATION_')) return 'INVITATION_FAILURE';
+  if (value.startsWith('TENANT_') || value.startsWith('RLS_') || value.endsWith('_DB_PRIVILEGE')) return 'RLS_DENIED';
+  if (value.endsWith('_SCHEMA_MISSING')) return 'SCHEMA_MISSING';
+  if (value.endsWith('_INTEGRITY_INVALID') || value.endsWith('_VERIFICATION_FAILED')) return 'LEDGER_VERIFICATION_MISMATCH';
+  return null;
 }
 
 export function safeStatus(value) {

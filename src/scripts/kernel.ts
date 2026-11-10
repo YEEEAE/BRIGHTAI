@@ -1,4 +1,5 @@
 import { createWorkspaceAuth as createAuthClient, getWorkspaceSession, appFetch, selectedWorkspace, setWorkspace } from './workspace-context';
+import { observeLogin } from './monitoring';
 const root = document.querySelector<HTMLElement>('[data-kernel]')!;
 const status = root.querySelector<HTMLElement>('[data-status]')!;
 const title = root.querySelector<HTMLElement>('[data-state-title]')!;
@@ -729,7 +730,7 @@ if (url) {
       loginPasswordToggle.textContent = visible ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور'; loginPasswordToggle.setAttribute('aria-pressed', String(visible));
     });
     login.addEventListener('submit', event => { event.preventDefault(); if (!validateLogin()) { (loginEmail.validity.valid ? loginPassword : loginEmail).focus(); login.reportValidity(); return; } const form = new FormData(login); void run(async () => {
-      const result = await auth.signIn.email({ email: String(form.get('email')).trim(), password: String(form.get('password')) });
+      const result = await observeLogin(() => auth.signIn.email({ email: String(form.get('email')).trim(), password: String(form.get('password')) }));
       // One generic message for every credential failure: no account enumeration.
       if (result.error) { setLoginError(loginPassword, loginPasswordError, 'تعذر تسجيل الدخول. تحقق من البريد وكلمة المرور وحاول مرة ثانية.'); const e = new Error('تعذر تسجيل الدخول. تحقق من بياناتك وحاول مرة ثانية.'); Object.assign(e,{unauthorized:true}); throw e; }
       // A second-factor challenge is real provider state, but this portal has no

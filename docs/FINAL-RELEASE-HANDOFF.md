@@ -13,6 +13,8 @@
 
 ## 0. كيف تُقرأ هذه الحزمة
 
+> **مراجعة مراقبة 2026-11-10:** أساس HEAD `00d6de9197836179ecebcca46a2c731cc961a260` (`main`) مع patch محلي غير ملتزم وتغييرات عقل موجودة قبل المهمة. `SOURCE_PRESENT` لربط Sentry الخادم/App/Auth وPostHog الصريح؛ `SCHEMA_PRESENT=N/A` للربط؛ `CONFIGURED=NOT_VERIFIED`؛ `RUNTIME_VERIFIED=NO`؛ `APPROVED=NO`. Sentry متصل بلا مشاريع؛ PostHog متصل لكن إنشاء مشروع جديد محجوب بسعة الخطة (1/1)، ولم يحاول الإنشاء. Render workspace listing أصبح متاحًا دون اختيار خدمة أو إثبات نشر؛ Neon ما زال بفرع وحيد غير محمي. لم تُشغّل اختبارات/build/lint/typecheck/Playwright أو خادم ولم يُرسل حدث. الجرد في `docs/beta/MONITORING-READONLY-STATUS-2026-11-10.md` وخطة O1–O8 في `docs/MONITORING-AND-ANALYTICS-WIRING.md`. G1 PASS ضيق تاريخيًا، G2–G8 BLOCKED وG9 NOT_VERIFIED؛ التوقيعات أدناه محفوظة بلا تعديل.
+
 > **لقطة superseding بتاريخ 2026-11-08:** المتصفح أعاد HTTP 404 بلا تحويل لكل `/app/`, `/app/kernel/`, `/app/firewall/`, `/app/ledger/`, `/app/human-gate/`, `/app/risk-engine/`, `/app/secure-chat/` و`/app/api/kernel/health`. Neon أعاد 31 جدول AIGAS، RLS على 31، سياستين على جدولين، و124 منحة DML لـ`authenticated`; الجداول التشغيلية الأساسية ومستخدمو/جلسات Auth كلها صفر. `0013` جزئي وغير متكامل، و`0015`,`0020`,`0021` موجودة، والفجوات الأخرى موضحة في `Audit/outhers/RELEASE-TRACEABILITY-BASELINE-2026-11-08.md`. جداول الحالة في الأقسام 1–10 تاريخية من 2026-11-03 ما لم تحمل تحديثًا بتاريخ 2026-11-08؛ المرجع الأحدث للحالة التفصيلية هو ملف التتبع.
 
 | التصنيف | المعنى في هذا المستند |

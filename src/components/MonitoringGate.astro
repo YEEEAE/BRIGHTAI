@@ -1,0 +1,11 @@
+---
+import { sentrySettings, posthogSettings } from '../server/observability/config.mjs';
+import { env } from '../server/kernel/env.mjs';
+const sentry = sentrySettings().enabled && env('AIGAS_SENTRY_BROWSER_ENABLED') === 'true';
+const analytics = posthogSettings().enabled;
+---
+{(sentry || analytics) && <span hidden data-monitoring-gate data-errors={String(sentry)} data-analytics={String(analytics)} />}
+<script>
+  import { installErrorObserver } from '../scripts/monitoring';
+  installErrorObserver();
+</script>

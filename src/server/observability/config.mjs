@@ -1,10 +1,12 @@
 // Monitoring configuration is resolved at request time from the runtime only.
 // Nothing here is baked into the build, and nothing enables itself by default.
 //
-// Three independent gates must all be true before either layer can send:
+// Approval gates must all be true before either layer can send:
 //   1. AIGAS_MONITORING_APPROVAL_REF names an approved privacy/analytics decision.
 //   2. AIGAS_MONITORING_ENVIRONMENT is one of the approved environment names.
-//   3. The layer's own ENABLED flag is true and its credential is valid.
+//   3. Full release SHA, separate layer approval, ENABLED flag and credential.
+// PostHog is limited to approved staging/Beta. Sentry additionally requires an
+// approved ingestion origin and a separate opt-in for browser signals.
 // In addition, each layer has its own kill switch. Neither switch reads
 // AIGAS_APP_ENABLED: monitoring can be stopped without closing the portal, and
 // opening the portal never turns monitoring on.
@@ -25,11 +27,10 @@ export function monitoringEnvironment() {
   return APPROVED_ENVIRONMENTS.has(value) ? value : null;
 }
 
-// Optional release label (for example a short commit SHA). Strictly bounded so
-// a misconfiguration cannot turn into free-form metadata.
+// Mandatory full release SHA; never accept a free-form metadata label.
 export function monitoringRelease() {
   const value = (env('AIGAS_MONITORING_RELEASE') ?? '').trim();
-  return /^[A-Za-z0-9._-]{1,80}$/.test(value) ? value : null;
+  return /^[a-f0-9]{40}$/.test(value) ? value : null;
 }
 
 // Parses a Sentry DSN without ever returning or logging the credential. HTTPS
@@ -38,7 +39,7 @@ export function parseSentryDsn(raw) {
   if (typeof raw !== 'string' || raw.length > 512) return null;
   let url;
   try { url = new URL(raw); } catch { return null; }
-  if (url.protocol !== 'https:' || !url.username) return null;
+  if (url.protocol !== 'https:' || !url.username || url.password || url.port) return null;
   if (!/^\/\d+$/.test(url.pathname)) return null;
   const publicKey = url.username;
   if (!/^[A-Za-z0-9]{16,64}$/.test(publicKey)) return null;
@@ -48,12 +49,18 @@ export function parseSentryDsn(raw) {
     endpoint: `${url.origin}/api/${projectId}/envelope/`,
     publicKey,
     projectId,
+    origin: url.origin,
   };
 }
 
 function commonGate() {
   if (!approvalReference() || !monitoringEnvironment()) return 'APPROVAL_REQUIRED';
+  if (!monitoringRelease()) return 'RELEASE_REQUIRED';
   return null;
+}
+
+function layerApproved(name) {
+  return /^[A-Za-z0-9][A-Za-z0-9._/-]{2,119}$/.test(env(name) ?? '');
 }
 
 export function sentrySettings() {
@@ -61,8 +68,10 @@ export function sentrySettings() {
   const gate = commonGate();
   if (gate) return { enabled: false, reason: gate };
   if (env('AIGAS_SENTRY_ENABLED') !== TRUE) return { enabled: false, reason: 'DISABLED' };
+  if (!layerApproved('AIGAS_SENTRY_APPROVAL_REF')) return { enabled: false, reason: 'SENTRY_APPROVAL_REQUIRED' };
   const dsn = parseSentryDsn(env('AIGAS_SENTRY_DSN'));
   if (!dsn) return { enabled: false, reason: 'DSN_INVALID' };
+  if (env('AIGAS_SENTRY_APPROVED_ORIGIN') !== dsn.origin) return { enabled: false, reason: 'DESTINATION_NOT_APPROVED' };
   return {
     enabled: true,
     dsn,
@@ -76,6 +85,8 @@ export function posthogSettings() {
   const gate = commonGate();
   if (gate) return { enabled: false, reason: gate };
   if (env('AIGAS_POSTHOG_ENABLED') !== TRUE) return { enabled: false, reason: 'DISABLED' };
+  if (!layerApproved('AIGAS_ANALYTICS_APPROVAL_REF')) return { enabled: false, reason: 'ANALYTICS_APPROVAL_REQUIRED' };
+  if (!['staging', 'beta'].includes(monitoringEnvironment())) return { enabled: false, reason: 'BETA_SCOPE_REQUIRED' };
   const key = (env('AIGAS_POSTHOG_API_KEY') ?? '').trim();
   // PostHog project API keys are public identifiers with this prefix. The value
   // is still treated as configuration and never logged by this module.
@@ -83,13 +94,13 @@ export function posthogSettings() {
   const rawHost = (env('AIGAS_POSTHOG_HOST') ?? '').trim();
   let host;
   try { host = new URL(rawHost); } catch { return { enabled: false, reason: 'HOST_INVALID' }; }
-  if (host.protocol !== 'https:' || host.username || host.password || host.search || host.hash) {
+  if (host.protocol !== 'https:' || host.username || host.password || host.search || host.hash || host.port || host.pathname !== '/') {
     return { enabled: false, reason: 'HOST_INVALID' };
   }
   return {
     enabled: true,
     apiKey: key,
-    endpoint: `${host.origin.replace(/\/$/, '')}/capture/`,
+    endpoint: `${host.origin}/i/v0/e/`,
     environment: monitoringEnvironment(),
     release: monitoringRelease(),
   };
@@ -100,9 +111,13 @@ export const monitoringGates = Object.freeze({
   approval: 'AIGAS_MONITORING_APPROVAL_REF',
   environment: 'AIGAS_MONITORING_ENVIRONMENT',
   sentryEnabled: 'AIGAS_SENTRY_ENABLED',
+  sentryApproval: 'AIGAS_SENTRY_APPROVAL_REF',
+  sentryOrigin: 'AIGAS_SENTRY_APPROVED_ORIGIN',
+  sentryBrowser: 'AIGAS_SENTRY_BROWSER_ENABLED',
   sentryDsn: 'AIGAS_SENTRY_DSN',
   sentryKillSwitch: 'AIGAS_SENTRY_KILL_SWITCH',
   posthogEnabled: 'AIGAS_POSTHOG_ENABLED',
+  analyticsApproval: 'AIGAS_ANALYTICS_APPROVAL_REF',
   posthogKey: 'AIGAS_POSTHOG_API_KEY',
   posthogHost: 'AIGAS_POSTHOG_HOST',
   posthogKillSwitch: 'AIGAS_POSTHOG_KILL_SWITCH',
