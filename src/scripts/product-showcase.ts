@@ -24,17 +24,6 @@ if (showcase) {
       });
     }, { threshold: .12 });
     showcase.querySelectorAll<HTMLElement>('[data-text-reveal], [data-product-card]').forEach(node => entrances.observe(node));
-    const links = [...showcase.querySelectorAll<HTMLAnchorElement>('.product-index a')];
-    const visible = new Map<string, number>();
-    const locationObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => visible.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0));
-      const active = [...visible].sort((a,b) => b[1]-a[1])[0];
-      links.forEach(link => {
-        if (active?.[1] && link.hash === `#${active[0]}`) link.setAttribute('aria-current','location');
-        else link.removeAttribute('aria-current');
-      });
-    }, { threshold:[0,.25,.5,.75] });
-    cards.forEach(card => locationObserver.observe(card));
   }
   cards.forEach(card => {
     const light = card.querySelector<HTMLElement>('.card-spotlight');

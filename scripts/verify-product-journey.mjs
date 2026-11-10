@@ -33,6 +33,14 @@ try {
     assert.equal(await page.locator('.catalog-item a a, .catalog-item a button, .catalog-item .catalog-availability').count(), 0);
     assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `Catalog overflow ${width}`);
     for (const product of productNavigation) {
+      const indexLink = page.locator('.product-index a').filter({ hasText: product.name });
+      assert.equal(await indexLink.getAttribute('href'), productEntryPath(product.slug));
+      assert.equal(await page.locator(`#catalog-${product.slug} .journey-entry`).getAttribute('href'), productEntryPath(product.slug));
+      await indexLink.click();
+      await page.waitForURL(`${base}${productEntryPath(product.slug)}`);
+      assert.equal(await page.locator('[data-kernel]').getAttribute('data-return-to'), product.workspacePath);
+      await page.goBack();
+      await page.waitForURL(`${base}/products/`);
       await page.locator(`.catalog-row[href="${product.publicPath}"]`).click();
       await page.waitForURL(`${base}${product.publicPath}`);
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${product.slug} overflow ${width}`);

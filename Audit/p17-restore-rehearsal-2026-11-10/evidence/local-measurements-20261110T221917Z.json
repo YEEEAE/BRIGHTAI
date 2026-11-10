@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-11-10T22:20:06Z",
+  "method": "logical backup (pg_dump custom) -> fresh PG18 cluster (pg_restore)",
+  "sourceEnv": "DATABASE_URL_UNPOOLED",
+  "target": "127.0.0.1:55417/neondb (throwaway, destroyed)",
+  "backupSeconds": 32,
+  "restoreMilliseconds": 149,
+  "dumpBytes": 173987,
+  "restoreExitCode": 1,
+  "neonExtensionGaps": 4,
+  "verifyExit": 1,
+  "scope": "logical restore only; no Neon point-in-time restore, no RPO measurement"
+}

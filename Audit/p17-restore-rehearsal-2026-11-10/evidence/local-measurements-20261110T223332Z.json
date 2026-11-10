@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-11-10T22:34:32.793Z",
+  "method": "logical backup (pg_dump custom) -> fresh PG18 cluster (pg_restore)",
+  "sourceEnv": "AIGAS_STAGING_DATABASE_URL_UNPOOLED",
+  "target": "127.0.0.1:55417/neondb (throwaway, destroyed)",
+  "backupSeconds": 40,
+  "restoreMilliseconds": 155,
+  "dumpBytes": 280704,
+  "restoreExitCode": 0,
+  "neonExtensionGapLines": 0,
+  "verifyExit": 0,
+  "scope": "logical restore only; no Neon point-in-time restore, no RPO measurement"
+}

@@ -1,0 +1,503 @@
+{
+  "generatedAt": "2026-11-10T22:20:06.054Z",
+  "sourceEnv": "DATABASE_URL_UNPOOLED",
+  "targetEnv": "RESTORE_DATABASE_URL",
+  "server": {
+    "source": "18.6 (ac70818)",
+    "target": "18.6 (Homebrew)"
+  },
+  "summary": {
+    "checks": 22,
+    "passed": 11,
+    "failed": 11
+  },
+  "versionGate": {
+    "repoHead": "0031_aigas_risk_treatment_runtime_lock.sql",
+    "restoredHead": null,
+    "pending": [
+      "0001_aigas_kernel.sql",
+      "0002_aigas_firewall.sql",
+      "0003_aigas_ledger.sql",
+      "0004_aigas_human_gate.sql",
+      "0005_aigas_risk_engine.sql",
+      "0006_aigas_kernel_administration.sql",
+      "0007_aigas_human_gate_enforcement.sql",
+      "0008_aigas_risk_engine_lifecycle.sql",
+      "0009_aigas_secure_chat.sql",
+      "0010_aigas_kernel_policy_hierarchy.sql",
+      "0011_aigas_firewall_execution_binding.sql",
+      "0012_aigas_firewall_five_state_upgrade.sql",
+      "0013_aigas_ledger_five_state_and_chain_guard.sql",
+      "0014_aigas_human_gate_cancellation_delegation_and_grant.sql",
+      "0015_aigas_risk_engine_asset_context_residual_risk.sql",
+      "0016_aigas_sc_user_token_quota.sql",
+      "0017_aigas_kernel_audit_context.sql",
+      "0018_aigas_data_api_grant_hardening.sql",
+      "0019_aigas_runtime_least_privilege.sql",
+      "0020_aigas_kernel_policy_review_requirements.sql",
+      "0021_aigas_risk_engine_acceptance_guard.sql",
+      "0022_aigas_reference_scope_guard.sql",
+      "0023_aigas_enterprise_trial_lifecycle.sql",
+      "0024_aigas_catalog_parity_repair.sql",
+      "0025_aigas_tenant_isolation_closure.sql",
+      "0026_aigas_risk_engine_residual_and_acceptance_policy.sql",
+      "0027_aigas_sc_content_participant_only.sql",
+      "0028_aigas_runtime_membership_lock.sql",
+      "0029_aigas_ledger_required_reference.sql",
+      "0030_aigas_trial_server_cycle.sql",
+      "0031_aigas_risk_treatment_runtime_lock.sql"
+    ]
+  },
+  "checks": [
+    {
+      "id": "catalog.tables",
+      "passed": true,
+      "detail": {
+        "sourceCount": 40,
+        "targetCount": 40,
+        "missing": [],
+        "extra": [],
+        "changed": []
+      }
+    },
+    {
+      "id": "catalog.columns",
+      "passed": true,
+      "detail": {
+        "sourceCount": 287,
+        "targetCount": 287,
+        "missing": [],
+        "extra": [],
+        "changed": []
+      }
+    },
+    {
+      "id": "catalog.constraints",
+      "passed": false,
+      "detail": {
+        "sourceCount": 511,
+        "targetCount": 511,
+        "missing": [],
+        "extra": [],
+        "changed": [
+          "public.aigas_fw_rules.aigas_fw_rules_name_check",
+          "public.aigas_fw_rules.aigas_fw_rules_pattern_check"
+        ]
+      }
+    },
+    {
+      "id": "catalog.indexes",
+      "passed": true,
+      "detail": {
+        "sourceCount": 75,
+        "targetCount": 75,
+        "missing": [],
+        "extra": [],
+        "changed": []
+      }
+    },
+    {
+      "id": "catalog.policies",
+      "passed": true,
+      "detail": {
+        "sourceCount": 2,
+        "targetCount": 2,
+        "missing": [],
+        "extra": [],
+        "changed": []
+      }
+    },
+    {
+      "id": "catalog.functions",
+      "passed": true,
+      "detail": {
+        "sourceCount": 10,
+        "targetCount": 10,
+        "missing": [],
+        "extra": [],
+        "changed": []
+      }
+    },
+    {
+      "id": "catalog.triggers",
+      "passed": true,
+      "detail": {
+        "sourceCount": 15,
+        "targetCount": 15,
+        "missing": [],
+        "extra": [],
+        "changed": []
+      }
+    },
+    {
+      "id": "catalog.roles",
+      "passed": false,
+      "detail": {
+        "sourceCount": 2,
+        "targetCount": 3,
+        "missing": [],
+        "extra": [
+          "aigas_runtime"
+        ],
+        "changed": []
+      }
+    },
+    {
+      "id": "rows.counts",
+      "passed": true,
+      "detail": {
+        "mismatched": [],
+        "tables": {
+          "neon_auth.account": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "neon_auth.invitation": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "neon_auth.jwks": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "neon_auth.member": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "neon_auth.organization": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "neon_auth.project_config": {
+            "source": 1,
+            "target": 1,
+            "delta": 0
+          },
+          "neon_auth.session": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "neon_auth.user": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "neon_auth.verification": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_audit_events": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_auth_organizations": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_department_events": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_department_memberships": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_departments": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_fw_decisions": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_fw_rules": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_hg_decisions": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_hg_events": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_hg_policies": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_hg_requests": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_kernel_policy_decisions": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_ld_events": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_ld_evidence_requirements": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_member_invitations": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_memberships": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_policies": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_policy_approvals": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_policy_delegations": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_policy_versions": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_product_access": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_product_grants": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_re_assessments": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_re_asset_revisions": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_re_assets": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_re_treatment_revisions": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_sc_cancellations": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_sc_conversations": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_sc_messages": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_sc_requests": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_tenants": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "ledger.source.present",
+      "passed": false,
+      "detail": "ops.aigas_migration_ledger is missing"
+    },
+    {
+      "id": "ledger.target.present",
+      "passed": false,
+      "detail": "ops.aigas_migration_ledger is missing"
+    },
+    {
+      "id": "ledger.restored_matches_source",
+      "passed": true,
+      "detail": {
+        "source": 0,
+        "target": 0
+      }
+    },
+    {
+      "id": "privileges.grants_match",
+      "passed": true,
+      "detail": {
+        "source": [
+          {
+            "grantee": "authenticated",
+            "n": 124
+          },
+          {
+            "grantee": "neondb_owner",
+            "n": 217
+          }
+        ],
+        "target": [
+          {
+            "grantee": "authenticated",
+            "n": 124
+          },
+          {
+            "grantee": "neondb_owner",
+            "n": 217
+          }
+        ]
+      }
+    },
+    {
+      "id": "privileges.no_client_grants_widened",
+      "passed": false,
+      "detail": {
+        "clientTableGrants": 124
+      }
+    },
+    {
+      "id": "privileges.public_execute_count",
+      "passed": true,
+      "detail": {
+        "publicRoutineGrants": 0
+      }
+    },
+    {
+      "id": "privileges.rls_matches_source",
+      "passed": true,
+      "detail": {
+        "enabled": 31,
+        "forced": 0,
+        "total": 31
+      }
+    },
+    {
+      "id": "negative.authenticated_cannot_read_tenants",
+      "passed": false,
+      "detail": {
+        "value": 0
+      }
+    },
+    {
+      "id": "negative.runtime_default_deny",
+      "passed": false,
+      "detail": {
+        "code": "42501",
+        "message": "permission denied for table aigas_tenants"
+      }
+    },
+    {
+      "id": "negative.ledger_forged_link_rejected",
+      "passed": false,
+      "detail": {
+        "code": "25P02",
+        "message": "current transaction is aborted, commands ignored until end of transaction block"
+      }
+    },
+    {
+      "id": "negative.expired_trial_cannot_reactivate",
+      "passed": false,
+      "detail": {
+        "code": "42P01",
+        "message": "relation \"public.aigas_trial_requests\" does not exist"
+      }
+    },
+    {
+      "id": "negative.trial_cannot_insert_activated",
+      "passed": false,
+      "detail": {
+        "code": "25P02",
+        "message": "current transaction is aborted, commands ignored until end of transaction block"
+      }
+    },
+    {
+      "id": "version.repo_head_matches_restored",
+      "passed": false,
+      "detail": {
+        "repoHead": "0031_aigas_risk_treatment_runtime_lock.sql",
+        "restoredHead": null,
+        "pending": [
+          "0001_aigas_kernel.sql",
+          "0002_aigas_firewall.sql",
+          "0003_aigas_ledger.sql",
+          "0004_aigas_human_gate.sql",
+          "0005_aigas_risk_engine.sql",
+          "0006_aigas_kernel_administration.sql",
+          "0007_aigas_human_gate_enforcement.sql",
+          "0008_aigas_risk_engine_lifecycle.sql",
+          "0009_aigas_secure_chat.sql",
+          "0010_aigas_kernel_policy_hierarchy.sql",
+          "0011_aigas_firewall_execution_binding.sql",
+          "0012_aigas_firewall_five_state_upgrade.sql",
+          "0013_aigas_ledger_five_state_and_chain_guard.sql",
+          "0014_aigas_human_gate_cancellation_delegation_and_grant.sql",
+          "0015_aigas_risk_engine_asset_context_residual_risk.sql",
+          "0016_aigas_sc_user_token_quota.sql",
+          "0017_aigas_kernel_audit_context.sql",
+          "0018_aigas_data_api_grant_hardening.sql",
+          "0019_aigas_runtime_least_privilege.sql",
+          "0020_aigas_kernel_policy_review_requirements.sql",
+          "0021_aigas_risk_engine_acceptance_guard.sql",
+          "0022_aigas_reference_scope_guard.sql",
+          "0023_aigas_enterprise_trial_lifecycle.sql",
+          "0024_aigas_catalog_parity_repair.sql",
+          "0025_aigas_tenant_isolation_closure.sql",
+          "0026_aigas_risk_engine_residual_and_acceptance_policy.sql",
+          "0027_aigas_sc_content_participant_only.sql",
+          "0028_aigas_runtime_membership_lock.sql",
+          "0029_aigas_ledger_required_reference.sql",
+          "0030_aigas_trial_server_cycle.sql",
+          "0031_aigas_risk_treatment_runtime_lock.sql"
+        ],
+        "verdict": "BLOCKED"
+      }
+    }
+  ]
+}

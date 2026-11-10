@@ -1,0 +1,562 @@
+{
+  "generatedAt": "2026-11-10T22:31:09.834Z",
+  "sourceEnv": "AIGAS_STAGING_DATABASE_URL_UNPOOLED",
+  "targetEnv": "REHEARSAL_TARGET_URL",
+  "server": {
+    "source": "18.6 (ac70818)",
+    "target": "18.6 (Homebrew)"
+  },
+  "summary": {
+    "checks": 28,
+    "passed": 26,
+    "failed": 2
+  },
+  "versionGate": {
+    "repoHead": "0031_aigas_risk_treatment_runtime_lock.sql",
+    "restoredHead": "0029_aigas_ledger_required_reference.sql",
+    "pending": [
+      "0030_aigas_trial_server_cycle.sql",
+      "0031_aigas_risk_treatment_runtime_lock.sql"
+    ]
+  },
+  "checks": [
+    {
+      "id": "catalog.tables",
+      "passed": true,
+      "detail": {
+        "sourceCount": 46,
+        "targetCount": 46,
+        "missing": [],
+        "extra": [],
+        "changed": [],
+        "changedDetail": []
+      }
+    },
+    {
+      "id": "catalog.columns",
+      "passed": true,
+      "detail": {
+        "sourceCount": 373,
+        "targetCount": 373,
+        "missing": [],
+        "extra": [],
+        "changed": [],
+        "changedDetail": []
+      }
+    },
+    {
+      "id": "catalog.constraints",
+      "passed": false,
+      "detail": {
+        "sourceCount": 642,
+        "targetCount": 642,
+        "missing": [],
+        "extra": [],
+        "changed": [
+          "public.aigas_fw_rules.aigas_fw_rules_name_check",
+          "public.aigas_fw_rules.aigas_fw_rules_pattern_check"
+        ],
+        "changedDetail": [
+          {
+            "name": "public.aigas_fw_rules.aigas_fw_rules_name_check",
+            "source": "{\"name\":\"public.aigas_fw_rules.aigas_fw_rules_name_check\",\"def\":\"CHECK ((((char_length(btrim(name)) >= 2) AND (char_length(btrim(name)) <= 60)) AND (name !~ '[\\u0001-\\u001f]'::text)))\"}",
+            "target": "{\"name\":\"public.aigas_fw_rules.aigas_fw_rules_name_check\",\"def\":\"CHECK (((char_length(btrim(name)) >= 2) AND (char_length(btrim(name)) <= 60) AND (name !~ '[\\u0001-\\u001f]'::text)))\"}"
+          },
+          {
+            "name": "public.aigas_fw_rules.aigas_fw_rules_pattern_check",
+            "source": "{\"name\":\"public.aigas_fw_rules.aigas_fw_rules_pattern_check\",\"def\":\"CHECK ((((char_length(pattern) >= 1) AND (char_length(pattern) <= 80)) AND (pattern !~ '[\\u0001-\\u001f]'::text)))\"}",
+            "target": "{\"name\":\"public.aigas_fw_rules.aigas_fw_rules_pattern_check\",\"def\":\"CHECK (((char_length(pattern) >= 1) AND (char_length(pattern) <= 80) AND (pattern !~ '[\\u0001-\\u001f]'::text)))\"}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "catalog.indexes",
+      "passed": true,
+      "detail": {
+        "sourceCount": 92,
+        "targetCount": 92,
+        "missing": [],
+        "extra": [],
+        "changed": [],
+        "changedDetail": []
+      }
+    },
+    {
+      "id": "catalog.policies",
+      "passed": true,
+      "detail": {
+        "sourceCount": 77,
+        "targetCount": 77,
+        "missing": [],
+        "extra": [],
+        "changed": [],
+        "changedDetail": []
+      }
+    },
+    {
+      "id": "catalog.functions",
+      "passed": true,
+      "detail": {
+        "sourceCount": 25,
+        "targetCount": 25,
+        "missing": [],
+        "extra": [],
+        "changed": [],
+        "changedDetail": []
+      }
+    },
+    {
+      "id": "catalog.triggers",
+      "passed": true,
+      "detail": {
+        "sourceCount": 21,
+        "targetCount": 21,
+        "missing": [],
+        "extra": [],
+        "changed": [],
+        "changedDetail": []
+      }
+    },
+    {
+      "id": "catalog.roles",
+      "passed": true,
+      "detail": {
+        "sourceCount": 3,
+        "targetCount": 3,
+        "missing": [],
+        "extra": [],
+        "changed": [],
+        "changedDetail": []
+      }
+    },
+    {
+      "id": "catalog.trialStates",
+      "passed": true,
+      "detail": {
+        "sourceCount": 0,
+        "targetCount": 0,
+        "missing": [],
+        "extra": [],
+        "changed": [],
+        "changedDetail": []
+      }
+    },
+    {
+      "id": "catalog.entitlementStatus",
+      "passed": true,
+      "detail": {
+        "sourceCount": 0,
+        "targetCount": 0,
+        "missing": [],
+        "extra": [],
+        "changed": [],
+        "changedDetail": []
+      }
+    },
+    {
+      "id": "rows.counts",
+      "passed": true,
+      "detail": {
+        "mismatched": [],
+        "tables": {
+          "neon_auth.account": {
+            "source": 5,
+            "target": 5,
+            "delta": 0
+          },
+          "neon_auth.invitation": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "neon_auth.jwks": {
+            "source": 1,
+            "target": 1,
+            "delta": 0
+          },
+          "neon_auth.member": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "neon_auth.organization": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "neon_auth.project_config": {
+            "source": 1,
+            "target": 1,
+            "delta": 0
+          },
+          "neon_auth.session": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "neon_auth.user": {
+            "source": 5,
+            "target": 5,
+            "delta": 0
+          },
+          "neon_auth.verification": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "ops.aigas_migration_ledger": {
+            "source": 25,
+            "target": 25,
+            "delta": 0
+          },
+          "public.aigas_audit_events": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_auth_organizations": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_department_events": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_department_memberships": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_departments": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_fw_decisions": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_fw_rules": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_hg_decisions": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_hg_delegations": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_hg_events": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_hg_grants": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_hg_policies": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_hg_requests": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_kernel_policy_decisions": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_ld_events": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_ld_evidence_requirements": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_member_invitations": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_memberships": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_policies": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_policy_approvals": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_policy_delegations": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_policy_versions": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_product_access": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_product_grants": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_re_assessments": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_re_asset_revisions": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_re_assets": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_re_treatment_revisions": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_sc_cancellations": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_sc_conversations": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_sc_messages": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_sc_requests": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_tenants": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_trial_entitlements": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_trial_events": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          },
+          "public.aigas_trial_requests": {
+            "source": 0,
+            "target": 0,
+            "delta": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "ledger.source.present",
+      "passed": true,
+      "detail": {
+        "rows": 25
+      }
+    },
+    {
+      "id": "ledger.source.hashes",
+      "passed": true,
+      "detail": {
+        "mismatched": [],
+        "unknown": [],
+        "notApplied": []
+      }
+    },
+    {
+      "id": "ledger.source.head",
+      "passed": true,
+      "detail": {
+        "head": "0029_aigas_ledger_required_reference.sql",
+        "count": 25
+      }
+    },
+    {
+      "id": "ledger.target.present",
+      "passed": true,
+      "detail": {
+        "rows": 25
+      }
+    },
+    {
+      "id": "ledger.target.hashes",
+      "passed": true,
+      "detail": {
+        "mismatched": [],
+        "unknown": [],
+        "notApplied": []
+      }
+    },
+    {
+      "id": "ledger.target.head",
+      "passed": true,
+      "detail": {
+        "head": "0029_aigas_ledger_required_reference.sql",
+        "count": 25
+      }
+    },
+    {
+      "id": "ledger.restored_matches_source",
+      "passed": true,
+      "detail": {
+        "source": 25,
+        "target": 25
+      }
+    },
+    {
+      "id": "privileges.grants_match",
+      "passed": true,
+      "detail": {
+        "source": [
+          {
+            "grantee": "aigas_runtime",
+            "n": 87
+          },
+          {
+            "grantee": "neondb_owner",
+            "n": 252
+          }
+        ],
+        "target": [
+          {
+            "grantee": "aigas_runtime",
+            "n": 87
+          },
+          {
+            "grantee": "neondb_owner",
+            "n": 252
+          }
+        ]
+      }
+    },
+    {
+      "id": "privileges.no_client_grants_widened",
+      "passed": true,
+      "detail": {
+        "clientTableGrants": 0
+      }
+    },
+    {
+      "id": "privileges.public_execute_count",
+      "passed": true,
+      "detail": {
+        "publicRoutineGrants": 0
+      }
+    },
+    {
+      "id": "privileges.rls_matches_source",
+      "passed": true,
+      "detail": {
+        "enabled": 36,
+        "forced": 2,
+        "total": 36
+      }
+    },
+    {
+      "id": "negative.authenticated_cannot_read_tenants",
+      "passed": true,
+      "detail": {
+        "code": "42501",
+        "message": "permission denied for table aigas_tenants"
+      }
+    },
+    {
+      "id": "negative.runtime_default_deny",
+      "passed": true,
+      "detail": {
+        "value": 0
+      }
+    },
+    {
+      "id": "negative.ledger_forged_link_rejected",
+      "passed": true,
+      "detail": {
+        "code": "P0001",
+        "message": "Ledger sequence gap or wrong previous hash"
+      }
+    },
+    {
+      "id": "negative.expired_trial_cannot_reactivate",
+      "passed": true,
+      "detail": {
+        "code": "P0001",
+        "message": "Trial must start in REQUESTED"
+      }
+    },
+    {
+      "id": "negative.trial_cannot_insert_activated",
+      "passed": true,
+      "detail": {
+        "code": "P0001",
+        "message": "Trial must start in REQUESTED"
+      }
+    },
+    {
+      "id": "version.repo_head_matches_restored",
+      "passed": false,
+      "detail": {
+        "repoHead": "0031_aigas_risk_treatment_runtime_lock.sql",
+        "restoredHead": "0029_aigas_ledger_required_reference.sql",
+        "pending": [
+          "0030_aigas_trial_server_cycle.sql",
+          "0031_aigas_risk_treatment_runtime_lock.sql"
+        ],
+        "notInLedger": [
+          "0011_aigas_firewall_execution_binding.sql",
+          "0012_aigas_firewall_five_state_upgrade.sql",
+          "0013_aigas_ledger_five_state_and_chain_guard.sql",
+          "0019_aigas_runtime_least_privilege.sql",
+          "0030_aigas_trial_server_cycle.sql",
+          "0031_aigas_risk_treatment_runtime_lock.sql"
+        ],
+        "verdict": "BLOCKED"
+      }
+    }
+  ]
+}

@@ -62,10 +62,10 @@
 npm ci
 npm run build
 # .env محلي غير متتبع يحتوي قيم تطوير معتمدة
-AIGAS_APP_ENABLED=true npm run start:local
+npm run start:trial
 ```
 
-بدون `AIGAS_APP_ENABLED=true` تبقى البوابة مغلقة عند `start:local`. أما `astro dev` فتبقى مفتوحة ما لم يُضبط العلم صراحةً بـ`false`.
+`npm run start:trial` يفتح بوابة الدخول على `127.0.0.1` فقط ويحمّل `.env`، ولا يمنح عضوية أو استحقاقًا ولا يفعّل مزود AI. `npm start` و`start:local` يحتفظان ببوابة الإغلاق؛ بدون `AIGAS_APP_ENABLED=true` تبقى البوابة مغلقة عند `start:local`. أما `astro dev` فتبقى مفتوحة ما لم يُضبط العلم صراحةً بـ`false`.
 
 ## 6. مصفوفة سلوك البوابة
 
