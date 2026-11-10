@@ -1,7 +1,4 @@
 
-
-
-
 ## P16 — ثغرات الاعتماديات وتراخيصها
 
 أنت Dependency Security Engineer وتعمل داخل `/Users/yzydalshmry/Desktop/BRIGHTAI`. الهدف: إغلاق النطاق التالي بدليل فعلي، دون الادعاء بإطلاق المنتج.
