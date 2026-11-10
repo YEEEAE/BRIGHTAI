@@ -13,6 +13,11 @@ import { reserve, settleUnknown, cancel, cancellationRequested } from './request
 import { uuid } from '../kernel/http.mjs';
 
 export const HARD_MAX_MESSAGE_LENGTH = 4000;
+// Secure Chat does not yet have a bound Kernel/Firewall decision for every
+// message in the outgoing context. A model approval alone must not enable egress.
+export function requireChatPolicyIntegration() {
+  throw new KernelError(503, 'CHAT_POLICY_INTEGRATION_REQUIRED', 'تكامل سياسات Kernel وFirewall للمحادثة غير مهيأ؛ الإرسال موقوف ولم يُرسل أي محتوى.', 'not configured');
+}
 export function configuredMessageLimit(raw = env('AIGAS_SC_MAX_MESSAGE_CHARS')) {
   if (typeof raw !== 'string' || !/^\d{1,4}$/.test(raw)) return HARD_MAX_MESSAGE_LENGTH;
   const value = Number(raw);
@@ -58,7 +63,7 @@ export async function listModels(request) {
   }
   // An approved model without an approved quota is not sendable: it would meter
   // nothing. The gate stays closed until both are configured and reviewed.
-  const sendable = ready.length > 0 && quota.approved && usageQuotaReady;
+  const sendable = false; // Kept closed until the mandatory policy integration is verified.
   const models = sendable ? ready.map(({ model }) => ({ id: model.id, label: model.label, region: model.region, ready: true, state: 'READY' })) : [];
   const available = sendable;
   const allExpired = states.length > 0 && states.every(item => item.state === 'EXPIRED');
@@ -72,7 +77,7 @@ export async function listModels(request) {
         : states.some(item => item.state === 'PROVIDER_NOT_CONFIGURED') ? 'PROVIDER_NOT_CONFIGURED'
           : 'NO_APPROVED_MODEL')
         : !quota.approved ? quota.code
-          : 'USAGE_POLICY_NOT_READY';
+          : !usageQuotaReady ? 'USAGE_POLICY_NOT_READY' : 'CHAT_POLICY_INTEGRATION_REQUIRED';
   const unavailableMessage = availabilityCode === 'PROVIDER_NOT_CONFIGURED'
     ? 'الموصل إلى المزود المعتمد غير مهيأ على الخادم؛ لم يُرسل أي محتوى.'
     : availabilityCode === 'MODEL_APPROVAL_EXPIRED'
@@ -83,7 +88,9 @@ export async function listModels(request) {
           ? 'إعداد حصة الاستخدام غير صالح؛ الإرسال موقوف ولم يُرسل أي محتوى.'
           : availabilityCode === 'USAGE_POLICY_NOT_READY'
             ? 'سياسة الحصة معتمدة لكن مكوّن قياسها غير مهيأ على قاعدة البيانات؛ الإرسال موقوف.'
-            : 'لا يوجد نموذج معتمد ومهيأ لهذه المؤسسة؛ لم يُرسل أي محتوى إلى مزود AI.';
+            : availabilityCode === 'CHAT_POLICY_INTEGRATION_REQUIRED'
+              ? 'تكامل سياسات Kernel وFirewall للمحادثة غير مهيأ؛ الإرسال موقوف ولم يُرسل أي محتوى.'
+              : 'لا يوجد نموذج معتمد ومهيأ لهذه المؤسسة؛ لم يُرسل أي محتوى إلى مزود AI.';
   return {
     models, available, dependencyStatus, availabilityCode, tenant: { id: tenant.tenant_id, name: tenant.name },
     conversationMode: 'EPHEMERAL_TAB_ONLY',
@@ -146,6 +153,7 @@ export async function sendMessage(request, body) {
     await auditBlocked(identity,tenant.tenant_id,error?.code === 'PROVIDER_NOT_CONFIGURED' ? 'secure_chat.blocked_provider_not_configured' : 'secure_chat.blocked_no_approved_model',requestId);
     throw error;
   }
+  requireChatPolicyIntegration();
   let protectedInput;
   try {
     protectedInput = validateMessages(body.message,body.history ?? [],model);

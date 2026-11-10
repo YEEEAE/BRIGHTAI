@@ -659,6 +659,12 @@ async function behavioral() {
   out = await content(OWNER_A, A, 'SELECT content FROM public.aigas_sc_messages ORDER BY content');
   record('DB07', 'other-participant-isolated', 'another participant in the same tenant cannot read it', out,
     out.ok && out.value.length === 1 && out.value[0].content === 'owner-a-secret');
+  out = await as('p03_content_probe', async c => {
+    await scope(c, A, OWNER_A);
+    return (await c.query('SELECT count(*)::int AS n FROM public.aigas_sc_messages WHERE conversation_id=$1', [CONV_A])).rows[0].n;
+  });
+  record('DB07', 'non-participant-owner-blocked', 'tenant OWNER cannot read a conversation they did not participate in', out,
+    out.ok && out.value === 0);
   out = await content(ADMIN_A, A, 'SELECT content FROM public.aigas_sc_messages');
   record('DB07', 'non-participant-admin-blocked', 'a non-participant ADMIN reads 0 rows of chat content', out,
     out.ok && out.value.length === 0);

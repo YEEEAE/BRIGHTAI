@@ -1,12 +1,33 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { APPROVED_MODELS, findApprovedModel, listApprovedModels } from '../src/server/secure-chat/models.mjs';
-import { configuredMessageLimit, errorResponse, HARD_MAX_MESSAGE_LENGTH } from '../src/server/secure-chat/service.mjs';
+import { configuredMessageLimit, errorResponse, HARD_MAX_MESSAGE_LENGTH, requireChatPolicyIntegration } from '../src/server/secure-chat/service.mjs';
+import { approvedEgress, protectText, usagePolicy } from '../src/server/secure-chat/policy.mjs';
 
 test('Secure Chat remains fail-closed while no provider approval exists', () => {
   assert.deepEqual(APPROVED_MODELS, []);
   assert.deepEqual(listApprovedModels(), []);
   assert.equal(findApprovedModel('arbitrary-client-model'), null);
+});
+
+test('missing Kernel and Firewall integration refuses dispatch with a server error', () => {
+  assert.throws(() => requireChatPolicyIntegration(), error =>
+    error.status === 503 && error.code === 'CHAT_POLICY_INTEGRATION_REQUIRED');
+});
+
+test('baseline blocks synthetic secrets and redacts every outgoing history item', () => {
+  assert.throws(() => protectText('password: synthetic-secret-value'), e => e.code === 'SENSITIVE_CONTENT_BLOCKED');
+  const result = approvedEgress([
+    { role: 'user', content: 'mail synthetic@example.invalid' },
+    { role: 'assistant', content: 'contact synthetic@example.invalid' },
+  ]);
+  assert.ok(result.every(item => !item.content.includes('synthetic@example.invalid')));
+  assert.ok(result.every(item => item.content.includes('[بيانات منقحة]')));
+  assert.throws(() => approvedEgress([{ role: 'system', content: 'text' }]), e => e.code === 'SENSITIVE_CONTENT_BLOCKED');
+});
+
+test('unapproved quota fails closed', () => {
+  assert.throws(() => usagePolicy(), e => e.code === 'USAGE_POLICY_NOT_CONFIGURED');
 });
 
 test('configured message size accepts only bounded integer limits', () => {
