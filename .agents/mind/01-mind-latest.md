@@ -1,6 +1,8 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-10 VERIFIED LOCAL (P16/AR04): HEAD `9628162`؛ 4 حزم/12 advisory (critical AVIF واحد، 2 high)؛ `sharp` اختياري بلا أثر في `dist` و`esbuild` build-only؛ الحزمان القابلان للاستغلال في `@astrojs/node` (Host مشوّه ⇒ 500، backslash ⇒ 301 protocol-relative) أُغلقا في `scripts/server.mjs` وأُثبتا قبل/بعد؛ 11 استثناءً موقّعًا حتى `2027-02-08`؛ الحرجة بلا تنازل (تحتاج موافقة المؤسس)؛ `Audit/p16-dependency-security-2026-11-10/REPORT.md`.
+- 2026-11-10 INVARIANT (P16): الإصلاح الجذري يحتاج ترقية رئيسية `astro ≥ 7.3.2` + `@astrojs/node ≥ 11.1.3` + Node `≥ 22.23.4` (المثبّت `22.22.2`)؛ إدخال `astro:assets`/`Image`/`avif` قبلها يُبطل استثناءات `sharp` والحرج؛ `scripts/verify-dependency-posture.mjs` يعيد إثبات الشروط.
 - 2026-11-10 VERIFIED LOCAL (P14): HEAD `2eb45b7`+working tree؛ 56 صفحة مفهرسة (أُدخل `/kernel/`) و117 alias 301 (GET/HEAD، query محفوظ، صفر loop/chain) وcanonical/OG/alt/JSON-LD وصفر روابط مكسورة؛ أُزيل noindex للاستعلام الحساس، وArticle يحمل datePublished+image؛ noindex مقصور على `/auth/*` و`/app/*` و`/healthz/` و`/404/`؛ SE04 الحي BLOCKED على push؛ `Audit/p14-seo-links-2026-11-10/REPORT.md`.
 - 2026-11-10 VERIFIED LOCAL (P12): تنقل موحد للمنتجات وreturnTo بقائمة سماح؛ الكتالوج بلا شارات إتاحة بتوجيه المستخدم، بتصميم تحريري ورسوم وحركة تدريجية؛ build55/routes55/unit17 وChrome360/390/768/1440 وreduced-motion/no-JS PASS؛ الرحلة المخولة والعمليات/الحصص والنشر NOT VERIFIED؛ `Audit/p12-product-journey-2026-11-10/REPORT.md`.
 - 2026-11-10 VERIFIED LOCAL+STAGING-READONLY (P03): HEAD `9f70334`؛ مصفوفة RLS 69/69 محليًا (owner0 لـruntime، صفر منح عميل، A/B CRUD، GUC، COPY، DB07)؛ staging 9/9 قراءة (36 جدول/77 سياسة/25 دالة)؛ contracts36/36؛ دليل `Audit/p03-runtime-rls-2026-11-10/REPORT.md`.
@@ -18,6 +20,7 @@
 - 2026-11-10 PARTIAL (P13): HEAD `c5ef5547` + working tree؛ اختبارات المحولات 16/16 محليًا؛ مسودة URL غير معتمدة وغير كافية، وGA4 network غير مختبر؛ لا وجهة أو ingestion؛ `Audit/p13-observability-2026-11-10/REPORT.md`.
 
 ## Open Issues / Blockers
+- 2026-11-10 OPEN (P16): استثناء `GHSA-26w7-cxv4-gfx2` (critical، غير قابل للوصول) يحتاج موافقة المؤسس صراحةً قبل إدراجه؛ الترقية الرئيسية ورفع Node وتطبيق allowlist الآلي (`.github/workflows/ci-build-guard.yml` غير موجود) واعية؛ التحقق الحي لحراسة `Host` ينتظر push.
 - 2026-11-10 BLOCKED (P06-B): التفعيل التجريبي يحتاج نتيجة readiness PASS لكل منتج لنفس SHA/البيئة واعتماد الحصص/المدة/الاحتفاظ ونجاح P07–P11؛ لا صفوف جاهزية/حصة ولا مشغّل في أي بيئة، و`0030` غير مطبق خارجيًا.
 - 2026-11-10 BLOCKED (P04): تغييرات P04+إصلاح الربط غير مرفوعة؛ `push` ممنوع على الوكيل ⇒ خدمة `brightai-staging-node` لم تصبح live بعد. بعد push المالك تُثبت الحالات الحية.
 - 2026-11-10 BLOCKED (P04): Render MCP غير مخوّل (`list_workspaces`=`unauthorized`) — الوصول عبر CLI/لوحة فقط؛ قراءة `static_site` المرجعية تبقى HISTORICAL وليست في workspace الـCLI.
@@ -36,6 +39,14 @@
 - 2026-11-10 OPEN: Bootstrap/RLS وtrial/purge وموافقات المزودين والـUAT ما زالت مفتوحة.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-10] — P16: ثغرات الاعتماديات وتراخيصها (AR04)
+- **تم:** جرد lockfile (v3، 429 مدخلًا) و`npm ci` exit 0؛ إزالة `packageManager: pnpm` و`engines.pnpm` لتعارضهما مع `package-lock.json` الوحيد.
+- **تم:** ربط 12 advisory بمسارها وأثرها؛ إغلاق المسارين القابلين للاستغلال في `@astrojs/node` داخل `scripts/server.mjs` (Host منفذ مشوّه ⇒ 400 بدل 500، backslash خام ⇒ 400 بدل 301 protocol-relative) والتقاط رفض المعالجة.
+- **التحقق:** PASS محليًا — runtime16/1skip، posture7/7، unit62، build56، routes56/117؛ الحرج AVIF غير قابل للوصول؛ YAML 11 استثناءً فريدًا.
+- **الحالة:** AR04 DONE LOCAL؛ P16 PARTIAL — استثناء critical يحتاج موافقة المؤسس، والترقية الرئيسية وNode وpush وتطبيق allowlist الآلي واعية.
+- **ملفات:** `Audit/p16-dependency-security-2026-11-10/REPORT.md`، `docs/DEPENDENCY-SECURITY-2026-11-10.md`، `scripts/verify-dependency-posture.mjs`.
+- **مفتوح:** `astro ≥ 7.3.2` + `@astrojs/node ≥ 11.1.3` + Node `≥ 22.23.4`؛ تحقق حي بعد push.
 
 ## [2026-11-10] — P14: روابط SEO وCanonical والفهرسة
 - **تم:** فهرسة `/kernel/` وإدخالها الخريطة وllms (56 صفحة)؛ إزالة noindex المرتبط بالاستعلام الحساس؛ datePublished+image لكل Article من تواريخ المنشأ الحقيقية.

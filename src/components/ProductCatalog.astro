@@ -5,11 +5,11 @@ import ProductSchematic from './ProductSchematic.astro';
 import ProductIcon from './ProductIcon.astro';
 const order = ['firewall', 'risk-engine', 'human-gate', 'ledger', 'secure-chat'];
 const products = [...productNavigation].sort((a,b) => order.indexOf(a.slug)-order.indexOf(b.slug));
-const labels = { firewall: 'حماية الطلب', 'risk-engine': 'فهم المخاطر', 'human-gate': 'قرار بشري', ledger: 'أثر قابل للفحص', 'secure-chat': 'محادثة محكومة' };
+const labels: Record<string, string> = { firewall: 'حماية الطلب', 'risk-engine': 'فهم المخاطر', 'human-gate': 'قرار بشري', ledger: 'أثر قابل للفحص', 'secure-chat': 'محادثة محكومة' };
 ---
 <section class="block product-showcase" aria-labelledby="catalog-title" data-product-showcase>
   <div class="showcase-heading">
-    <div><p class="eyebrow">دليل المنتجات / <bdi dir="ltr">01–05</bdi></p><h2 id="catalog-title" aria-label="ابدأ بالدور الذي تحتاجه."><span data-text-reveal aria-hidden="true">ابدأ بالدور</span> <span class="showcase-heading-accent" data-text-reveal aria-hidden="true">الذي تحتاجه.</span></h2></div>
+    <div><p class="eyebrow">دليل المنتجات / <bdi dir="ltr">01–05</bdi></p><h2 id="catalog-title" aria-label="جرب المنتج اللي تحتاجه."><span data-text-reveal aria-hidden="true">جرب المنتج</span> <span class="showcase-heading-accent" data-text-reveal aria-hidden="true">اللي تحتاجه.</span></h2></div>
     <span class="showcase-edition" aria-hidden="true"><bdi dir="ltr">AIGAS<br/>PRODUCT COLLECTION / 05</bdi><span></span></span>
   </div>
   <nav class="product-index" aria-label="انتقل إلى منتج">

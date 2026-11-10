@@ -1,0 +1,14 @@
+# License inventory from package-lock.json (429 entries)
+# Generated 2026-11-10 by P16; counts are lockfile packages, not installed files.
+ 359  MIT
+  20  Apache-2.0
+  16  ISC
+  10  LGPL-3.0-or-later
+   9  BSD-2-Clause
+   3  Apache-2.0 AND LGPL-3.0-or-later
+   3  BlueOak-1.0.0
+   3  BSD-3-Clause
+   2  CC0-1.0
+   1  Apache-2.0 AND LGPL-3.0-or-later AND MIT
+   1  Python-2.0
+   1  0BSD

@@ -1,0 +1,23 @@
+# Dependency paths for the four packages npm audit flags (lockfile v3)
+
+## astro 6.4.8
+  declared by: <root> (dependencies)
+  direct dependency of the root: true
+  optional in lockfile: false  |  dev flag: false
+
+## @astrojs/node 10.1.4
+  declared by: <root> (dependencies)
+  direct dependency of the root: true
+  optional in lockfile: false  |  dev flag: false
+
+## sharp 0.34.5
+  declared by: node_modules/astro (optionalDependencies)
+  direct dependency of the root: false
+  optional in lockfile: true  |  dev flag: false
+
+## esbuild 0.27.7
+  declared by: node_modules/astro (dependencies), node_modules/vite (dependencies)
+  direct dependency of the root: false
+  optional in lockfile: false  |  dev flag: false
+
+## sharp platform payloads (all optional): 24
