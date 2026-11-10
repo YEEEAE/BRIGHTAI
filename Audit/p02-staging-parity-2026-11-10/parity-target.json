@@ -1,0 +1,45 @@
+{
+  "generatedAt": "2026-11-10T14:28:35.289Z",
+  "expectedSource": {
+    "file": "Audit/p02-staging-parity-2026-11-10/rehearsal.json",
+    "description": "local rehearsal, fresh install from migrations/ 0001..0029"
+  },
+  "actualSource": {
+    "file": "Audit/p02-staging-parity-2026-11-10/staging-catalog.json",
+    "description": "Neon project lucky-salad-43566291 (aigas-staging), branch br-rough-wind-bdkmg13n, database neondb",
+    "capturedAt": "2026-11-10T14:28:28.053Z"
+  },
+  "counts": {
+    "expected": {
+      "tables": 36,
+      "rlsEnabled": 36,
+      "forceRls": 2,
+      "policies": 77,
+      "functions": 25,
+      "clientTableGrants": 0,
+      "runtimeRole": "PRESENT"
+    },
+    "actual": {
+      "tables": 36,
+      "rlsEnabled": 36,
+      "forceRls": 2,
+      "policies": 77,
+      "functions": 25,
+      "clientTableGrants": 0,
+      "runtimeRole": "PRESENT"
+    }
+  },
+  "missingInTarget": {
+    "tables": [],
+    "policies": [],
+    "functions": [],
+    "indexes": []
+  },
+  "unexpectedInTarget": {
+    "tables": [],
+    "policies": [],
+    "functions": [],
+    "ledgerTriggersMissingFromExpected": []
+  },
+  "verdict": "PARITY"
+}

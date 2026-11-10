@@ -1,0 +1,91 @@
+{
+  "source": "Neon project young-frog-60183055, branch br-young-bird-b43proeb (production), database neondb",
+  "method": "Neon MCP run_sql, SELECT only",
+  "capturedAt": "2026-11-10T14:01:54Z",
+  "notes": [
+    "Read-only catalog snapshot used as the 'actual' side of the parity diff.",
+    "No row content is stored: every audited table returned 0 rows.",
+    "ldConstraint is represented by flags instead of the full expression text."
+  ],
+  "tables": [
+    "aigas_audit_events","aigas_auth_organizations","aigas_department_events","aigas_department_memberships",
+    "aigas_departments","aigas_fw_decisions","aigas_fw_rules","aigas_hg_decisions","aigas_hg_events",
+    "aigas_hg_policies","aigas_hg_requests","aigas_kernel_policy_decisions","aigas_ld_events",
+    "aigas_ld_evidence_requirements","aigas_member_invitations","aigas_memberships","aigas_policies",
+    "aigas_policy_approvals","aigas_policy_delegations","aigas_policy_versions","aigas_product_access",
+    "aigas_product_grants","aigas_re_assessments","aigas_re_asset_revisions","aigas_re_assets",
+    "aigas_re_treatment_revisions","aigas_sc_cancellations","aigas_sc_conversations","aigas_sc_messages",
+    "aigas_sc_requests","aigas_tenants"
+  ],
+  "rlsEnabled": 31,
+  "forceRls": 0,
+  "policies": [
+    { "tablename": "aigas_sc_cancellations", "policyname": "sc_cancellation_owner", "permissive": "PERMISSIVE" },
+    { "tablename": "aigas_sc_requests", "policyname": "sc_request_owner", "permissive": "PERMISSIVE" }
+  ],
+  "functions": [
+    "aigas_fw_decisions_append_only","aigas_hg_immutable","aigas_hg_request_guard","aigas_hg_tenant_revision",
+    "aigas_ld_events_reject_mutation","aigas_policy_append_only","aigas_policy_version_guard",
+    "aigas_re_guard_treatment","aigas_re_reject_history_mutation","aigas_sc_usage_window"
+  ],
+  "securityDefinerFunctions": ["aigas_sc_usage_window"],
+  "triggers": [
+    "aigas_department_events_append_only","aigas_fw_decisions_append_only","aigas_hg_decision_immutable",
+    "aigas_hg_event_immutable","aigas_hg_request_guard","aigas_hg_tenant_revision",
+    "aigas_kernel_policy_decisions_append_only","aigas_ld_events_append_only","aigas_ld_events_no_truncate",
+    "aigas_policy_approvals_append_only","aigas_policy_version_immutable","aigas_re_assessments_append_only",
+    "aigas_re_asset_revisions_append_only","aigas_re_treatment_append_only","aigas_re_treatment_guard"
+  ],
+  "indexes": [
+    "aigas_audit_events_pkey","aigas_audit_tenant_time_idx","aigas_auth_organizations_organization_id_key",
+    "aigas_auth_organizations_pkey","aigas_department_events_history_idx","aigas_department_events_pkey",
+    "aigas_department_memberships_actor_idx","aigas_department_memberships_pkey","aigas_departments_pkey",
+    "aigas_departments_tenant_id_id_key","aigas_departments_tenant_id_name_key","aigas_fw_decisions_pkey",
+    "aigas_fw_decisions_request_idx","aigas_fw_decisions_tenant_action_idx","aigas_fw_decisions_tenant_mode_idx",
+    "aigas_fw_decisions_tenant_time_idx","aigas_fw_rules_pkey","aigas_fw_rules_template_idx",
+    "aigas_fw_rules_tenant_id_id_key","aigas_fw_rules_tenant_id_name_key","aigas_fw_rules_tenant_order_idx",
+    "aigas_hg_decisions_pkey","aigas_hg_decisions_request_id_key","aigas_hg_events_pkey",
+    "aigas_hg_events_request_id_event_type_key","aigas_hg_events_request_idx","aigas_hg_expiry_idx",
+    "aigas_hg_policies_pkey","aigas_hg_requests_pkey","aigas_hg_requests_tenant_id_id_requester_id_key",
+    "aigas_hg_requests_tenant_status_idx","aigas_kernel_policy_decisions_pkey",
+    "aigas_kernel_policy_decisions_tenant_id_request_id_key","aigas_kernel_policy_decisions_tenant_time_idx",
+    "aigas_ld_events_pkey","aigas_ld_events_tenant_id_integrity_hash_key","aigas_ld_events_tenant_id_sequence_no_key",
+    "aigas_ld_events_tenant_id_source_idempotency_key_key","aigas_ld_evidence_requirements_pkey",
+    "aigas_ld_tenant_source_idx","aigas_ld_tenant_time_idx","aigas_member_invitations_pkey",
+    "aigas_member_invitations_tenant_idx","aigas_memberships_pkey","aigas_memberships_user_idx",
+    "aigas_policies_pkey","aigas_policies_scope_idx","aigas_policies_tenant_id_id_key",
+    "aigas_policy_approvals_actor_action_idx","aigas_policy_approvals_history_idx","aigas_policy_approvals_pkey",
+    "aigas_policy_delegations_active_idx","aigas_policy_delegations_pkey","aigas_policy_versions_active_idx",
+    "aigas_policy_versions_pkey","aigas_product_access_pkey","aigas_product_grants_pkey",
+    "aigas_re_assessment_scope","aigas_re_assessment_version_scope","aigas_re_assessments_history_idx",
+    "aigas_re_assessments_pkey","aigas_re_asset_revisions_history_idx","aigas_re_asset_revisions_pkey",
+    "aigas_re_assets_pkey","aigas_re_assets_tenant_id_id_key","aigas_re_assets_tenant_idx",
+    "aigas_re_treatment_history_idx","aigas_re_treatment_revisions_pkey",
+    "aigas_re_treatment_revisions_tenant_id_asset_id_version_key","aigas_sc_cancellations_pkey",
+    "aigas_sc_conversations_pkey","aigas_sc_messages_pkey","aigas_sc_requests_pkey","aigas_sc_requests_window",
+    "aigas_tenants_pkey"
+  ],
+  "clientTableGrants": 124,
+  "sequences": 0,
+  "runtimeRoleExists": false,
+  "defaultAcl": [
+    { "role": "cloud_admin", "type": "S", "acl": "{neon_superuser=r*w*U*/cloud_admin}" },
+    { "role": "cloud_admin", "type": "r", "acl": "{neon_superuser=a*r*w*d*D*m*/cloud_admin}" },
+    { "role": "neondb_owner", "type": "S", "acl": "{authenticated=U/neondb_owner}" },
+    { "role": "neondb_owner", "type": "f", "acl": "{authenticated=X/neondb_owner}" },
+    { "role": "neondb_owner", "type": "r", "acl": "{authenticated=arwd/neondb_owner}" }
+  ],
+  "roles": [
+    { "rolname": "neondb_owner", "rolsuper": false, "rolbypassrls": true, "rolcanlogin": true, "rolinherit": true, "rolcreaterole": true },
+    { "rolname": "authenticated", "rolsuper": false, "rolbypassrls": false, "rolcanlogin": false, "rolinherit": true, "rolcreaterole": false },
+    { "rolname": "anonymous", "rolsuper": false, "rolbypassrls": false, "rolcanlogin": false, "rolinherit": true, "rolcreaterole": false },
+    { "rolname": "neon_auth", "rolsuper": false, "rolbypassrls": false, "rolcanlogin": true, "rolinherit": false, "rolcreaterole": false },
+    { "rolname": "cloud_admin", "rolsuper": true, "rolbypassrls": true, "rolcanlogin": true, "rolinherit": true, "rolcreaterole": true }
+  ],
+  "ldConstraintFlags": {
+    "hasRequestFingerprintRule": false,
+    "fiveStateFirewallActions": false,
+    "observedFirewallActions": ["ALLOW", "BLOCK", "REDACT"]
+  },
+  "emptyTableCounts": { "tenants": 0, "memberships": 0, "audit_events": 0, "ld_events": 0, "sc_messages": 0 }
+}

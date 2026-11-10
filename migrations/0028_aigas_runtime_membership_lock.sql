@@ -27,7 +27,16 @@ BEGIN
     FOR SHARE OF m,u;
 END;
 $$;
-REVOKE ALL ON FUNCTION public.aigas_lock_member(uuid,uuid) FROM PUBLIC, authenticated, anonymous;
+REVOKE ALL ON FUNCTION public.aigas_lock_member(uuid,uuid) FROM PUBLIC;
+DO $$
+BEGIN
+  IF to_regrole('authenticated') IS NOT NULL THEN
+    EXECUTE 'REVOKE ALL ON FUNCTION public.aigas_lock_member(uuid,uuid) FROM authenticated';
+  END IF;
+  IF to_regrole('anonymous') IS NOT NULL THEN
+    EXECUTE 'REVOKE ALL ON FUNCTION public.aigas_lock_member(uuid,uuid) FROM anonymous';
+  END IF;
+END $$;
 GRANT EXECUTE ON FUNCTION public.aigas_lock_member(uuid,uuid) TO aigas_runtime;
 -- Read-only entitlement/evidence rows still need revocation serialization.
 -- Lock through owner functions rather than granting UPDATE on operator-only tables.
@@ -45,6 +54,15 @@ LANGUAGE sql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,public AS $$
  WHERE r.tenant_id=wanted AND public.aigas_tenant_scope(wanted)
  FOR SHARE OF r
 $$;
-REVOKE ALL ON FUNCTION public.aigas_locked_product_grants(uuid),public.aigas_locked_evidence_requirements(uuid) FROM PUBLIC,authenticated,anonymous;
+REVOKE ALL ON FUNCTION public.aigas_locked_product_grants(uuid),public.aigas_locked_evidence_requirements(uuid) FROM PUBLIC;
+DO $$
+BEGIN
+  IF to_regrole('authenticated') IS NOT NULL THEN
+    EXECUTE 'REVOKE ALL ON FUNCTION public.aigas_locked_product_grants(uuid),public.aigas_locked_evidence_requirements(uuid) FROM authenticated';
+  END IF;
+  IF to_regrole('anonymous') IS NOT NULL THEN
+    EXECUTE 'REVOKE ALL ON FUNCTION public.aigas_locked_product_grants(uuid),public.aigas_locked_evidence_requirements(uuid) FROM anonymous';
+  END IF;
+END $$;
 GRANT EXECUTE ON FUNCTION public.aigas_locked_product_grants(uuid),public.aigas_locked_evidence_requirements(uuid) TO aigas_runtime;
 COMMIT;

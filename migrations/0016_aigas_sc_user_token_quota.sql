@@ -34,5 +34,19 @@ LANGUAGE sql SECURITY DEFINER SET search_path = pg_catalog, public AS $$
       WHERE tenant_id=wanted_tenant AND user_id=wanted_user
     )
 $$;
+-- Function EXECUTE defaults to PUBLIC, and the table-owner default ACL on this
+-- database additionally grants EXECUTE to `authenticated` on every new function.
+-- Revoking PUBLIC alone therefore leaves a SECURITY DEFINER aggregate reachable by
+-- the Data API client role until 0018 or 0025 runs. Close both paths here so this
+-- migration is safe on its own, independent of ordering.
 REVOKE ALL ON FUNCTION public.aigas_sc_usage_window_v2(uuid,uuid) FROM PUBLIC;
+DO $$
+BEGIN
+  IF to_regrole('authenticated') IS NOT NULL THEN
+    EXECUTE 'REVOKE ALL ON FUNCTION public.aigas_sc_usage_window_v2(uuid,uuid) FROM authenticated';
+  END IF;
+  IF to_regrole('anonymous') IS NOT NULL THEN
+    EXECUTE 'REVOKE ALL ON FUNCTION public.aigas_sc_usage_window_v2(uuid,uuid) FROM anonymous';
+  END IF;
+END $$;
 COMMIT;

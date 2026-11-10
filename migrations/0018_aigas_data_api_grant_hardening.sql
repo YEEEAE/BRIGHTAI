@@ -31,25 +31,43 @@ BEGIN
 END $$;
 
 -- 1. Remove all client-role privileges on existing public objects.
-REVOKE ALL ON ALL TABLES IN SCHEMA public FROM authenticated;
-REVOKE ALL ON ALL SEQUENCES IN SCHEMA public FROM authenticated;
-REVOKE ALL ON ALL FUNCTIONS IN SCHEMA public FROM authenticated;
-REVOKE ALL ON ALL TABLES IN SCHEMA public FROM anonymous;
-REVOKE ALL ON ALL SEQUENCES IN SCHEMA public FROM anonymous;
-REVOKE ALL ON ALL FUNCTIONS IN SCHEMA public FROM anonymous;
--- Functions are EXECUTE to PUBLIC by default in PostgreSQL. Revoking from
--- `authenticated` alone leaves that inherited path open. `public` is server-only,
--- so remove the PUBLIC path too; the owner keeps its implicit rights and the
--- runtime role is granted explicitly by 0025.
-REVOKE ALL ON ALL FUNCTIONS IN SCHEMA public FROM PUBLIC;
+-- Client roles exist only when the Data API or Neon Auth created them. Guarding
+-- on to_regrole keeps this file runnable on a project without those roles
+-- instead of aborting with 42704 before any posture is established. The guard
+-- changes no grant: when the role exists the REVOKE is identical.
+DO $$
+BEGIN
+  IF to_regrole('authenticated') IS NOT NULL THEN
+    EXECUTE 'REVOKE ALL ON ALL TABLES IN SCHEMA public FROM authenticated';
+    EXECUTE 'REVOKE ALL ON ALL SEQUENCES IN SCHEMA public FROM authenticated';
+    EXECUTE 'REVOKE ALL ON ALL FUNCTIONS IN SCHEMA public FROM authenticated';
+  END IF;
+  IF to_regrole('anonymous') IS NOT NULL THEN
+    EXECUTE 'REVOKE ALL ON ALL TABLES IN SCHEMA public FROM anonymous';
+    EXECUTE 'REVOKE ALL ON ALL SEQUENCES IN SCHEMA public FROM anonymous';
+    EXECUTE 'REVOKE ALL ON ALL FUNCTIONS IN SCHEMA public FROM anonymous';
+  END IF;
+  -- Functions are EXECUTE to PUBLIC by default in PostgreSQL. Revoking from
+  -- `authenticated` alone leaves that inherited path open. `public` is server-only,
+  -- so remove the PUBLIC path too; the owner keeps its implicit rights and the
+  -- runtime role is granted explicitly by 0025.
+  EXECUTE 'REVOKE ALL ON ALL FUNCTIONS IN SCHEMA public FROM PUBLIC';
+END $$;
 
 -- 2. Stop auto-granting on future objects created by the owner connection.
-ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON TABLES FROM authenticated;
-ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON SEQUENCES FROM authenticated;
-ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON FUNCTIONS FROM authenticated;
-ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON TABLES FROM anonymous;
-ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON SEQUENCES FROM anonymous;
-ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON FUNCTIONS FROM anonymous;
+DO $$
+BEGIN
+  IF to_regrole('authenticated') IS NOT NULL THEN
+    EXECUTE 'ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON TABLES FROM authenticated';
+    EXECUTE 'ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON SEQUENCES FROM authenticated';
+    EXECUTE 'ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON FUNCTIONS FROM authenticated';
+  END IF;
+  IF to_regrole('anonymous') IS NOT NULL THEN
+    EXECUTE 'ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON TABLES FROM anonymous';
+    EXECUTE 'ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON SEQUENCES FROM anonymous';
+    EXECUTE 'ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON FUNCTIONS FROM anonymous';
+  END IF;
+END $$;
 
 -- 3. Keep the two owner-scoped policies, but require a real membership row in addition to
 --    the GUCs. The GUCs are transaction-local and set by the server after JWT verification;
@@ -105,11 +123,15 @@ DO $$
 BEGIN
   IF to_regprocedure('public.aigas_sc_usage_window(uuid,uuid)') IS NOT NULL THEN
     EXECUTE 'REVOKE ALL ON FUNCTION public.aigas_sc_usage_window(uuid,uuid) FROM PUBLIC';
-    EXECUTE 'REVOKE ALL ON FUNCTION public.aigas_sc_usage_window(uuid,uuid) FROM authenticated';
+    IF to_regrole('authenticated') IS NOT NULL THEN
+      EXECUTE 'REVOKE ALL ON FUNCTION public.aigas_sc_usage_window(uuid,uuid) FROM authenticated';
+    END IF;
   END IF;
   IF to_regprocedure('public.aigas_sc_usage_window_v2(uuid,uuid)') IS NOT NULL THEN
     EXECUTE 'REVOKE ALL ON FUNCTION public.aigas_sc_usage_window_v2(uuid,uuid) FROM PUBLIC';
-    EXECUTE 'REVOKE ALL ON FUNCTION public.aigas_sc_usage_window_v2(uuid,uuid) FROM authenticated';
+    IF to_regrole('authenticated') IS NOT NULL THEN
+      EXECUTE 'REVOKE ALL ON FUNCTION public.aigas_sc_usage_window_v2(uuid,uuid) FROM authenticated';
+    END IF;
   END IF;
 END $$;
 

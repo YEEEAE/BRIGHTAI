@@ -1,0 +1,1459 @@
+{
+  "source": "Neon project lucky-salad-43566291 (aigas-staging), branch br-rough-wind-bdkmg13n, database neondb",
+  "method": "direct SELECT catalog capture",
+  "capturedAt": "2026-11-10T14:28:28.053Z",
+  "serverVersion": "18.6 (ac70818)",
+  "database": "neondb",
+  "tables": [
+    {
+      "relname": "aigas_audit_events",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_auth_organizations",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_department_events",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_department_memberships",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_departments",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_fw_decisions",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_fw_rules",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_hg_decisions",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_hg_delegations",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_hg_events",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_hg_grants",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_hg_policies",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_hg_requests",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_kernel_policy_decisions",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_ld_events",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_ld_evidence_requirements",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_member_invitations",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_memberships",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_policies",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_policy_approvals",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_policy_delegations",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_policy_versions",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_product_access",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_product_grants",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_re_assessments",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_re_asset_revisions",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_re_assets",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_re_treatment_revisions",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_sc_cancellations",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_sc_conversations",
+      "rls": true,
+      "force": true
+    },
+    {
+      "relname": "aigas_sc_messages",
+      "rls": true,
+      "force": true
+    },
+    {
+      "relname": "aigas_sc_requests",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_tenants",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_trial_entitlements",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_trial_events",
+      "rls": true,
+      "force": false
+    },
+    {
+      "relname": "aigas_trial_requests",
+      "rls": true,
+      "force": false
+    }
+  ],
+  "rlsEnabled": 36,
+  "forceRls": 2,
+  "policies": [
+    {
+      "tablename": "aigas_audit_events",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_audit_events",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_auth_organizations",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_auth_organizations",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_department_events",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_department_events",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_department_memberships",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_department_memberships",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_departments",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_departments",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_fw_decisions",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_fw_decisions",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_fw_rules",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_fw_rules",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_hg_decisions",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_hg_decisions",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_hg_delegations",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_hg_delegations",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_hg_events",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_hg_events",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_hg_grants",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_hg_grants",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_hg_policies",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_hg_policies",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_hg_requests",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_hg_requests",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_kernel_policy_decisions",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_kernel_policy_decisions",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_ld_events",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_ld_events",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_ld_evidence_requirements",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_ld_evidence_requirements",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_member_invitations",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_member_invitations",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_memberships",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_memberships",
+      "policyname": "aigas_runtime_self_membership",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_memberships",
+      "policyname": "aigas_runtime_tenant_membership_delete",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_memberships",
+      "policyname": "aigas_runtime_tenant_membership_insert",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_memberships",
+      "policyname": "aigas_runtime_tenant_membership_read",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_memberships",
+      "policyname": "aigas_runtime_tenant_membership_update",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_policies",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_policies",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_policy_approvals",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_policy_approvals",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_policy_delegations",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_policy_delegations",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_policy_versions",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_policy_versions",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_product_access",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_product_access",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_product_grants",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_product_grants",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_re_assessments",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_re_assessments",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_re_asset_revisions",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_re_asset_revisions",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_re_assets",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_re_assets",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_re_treatment_revisions",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_re_treatment_revisions",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_sc_cancellations",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_sc_cancellations",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_sc_conversations",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_sc_conversations",
+      "policyname": "sc_content_participant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_sc_messages",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_sc_messages",
+      "policyname": "sc_content_participant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_sc_requests",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_sc_requests",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_tenants",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_tenants",
+      "policyname": "aigas_runtime_tenant_read",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_tenants",
+      "policyname": "aigas_runtime_tenant_rename",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_trial_entitlements",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_trial_entitlements",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_trial_events",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_trial_events",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "aigas_trial_requests",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "aigas_trial_requests",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE"
+    }
+  ],
+  "functions": [
+    {
+      "proname": "aigas_actor",
+      "secdef": false
+    },
+    {
+      "proname": "aigas_actor_is_manager",
+      "secdef": true
+    },
+    {
+      "proname": "aigas_actor_role",
+      "secdef": true
+    },
+    {
+      "proname": "aigas_fw_decisions_append_only",
+      "secdef": false
+    },
+    {
+      "proname": "aigas_hg_decision_guard",
+      "secdef": false
+    },
+    {
+      "proname": "aigas_hg_delegation_guard",
+      "secdef": false
+    },
+    {
+      "proname": "aigas_hg_grant_guard",
+      "secdef": false
+    },
+    {
+      "proname": "aigas_hg_immutable",
+      "secdef": false
+    },
+    {
+      "proname": "aigas_hg_request_guard",
+      "secdef": false
+    },
+    {
+      "proname": "aigas_hg_tenant_revision",
+      "secdef": false
+    },
+    {
+      "proname": "aigas_is_tenant_member",
+      "secdef": true
+    },
+    {
+      "proname": "aigas_ld_events_chain_guard",
+      "secdef": false
+    },
+    {
+      "proname": "aigas_ld_events_reject_mutation",
+      "secdef": false
+    },
+    {
+      "proname": "aigas_lock_member",
+      "secdef": true
+    },
+    {
+      "proname": "aigas_locked_evidence_requirements",
+      "secdef": true
+    },
+    {
+      "proname": "aigas_locked_product_grants",
+      "secdef": true
+    },
+    {
+      "proname": "aigas_policy_append_only",
+      "secdef": false
+    },
+    {
+      "proname": "aigas_policy_version_guard",
+      "secdef": false
+    },
+    {
+      "proname": "aigas_re_guard_treatment",
+      "secdef": false
+    },
+    {
+      "proname": "aigas_re_reject_history_mutation",
+      "secdef": false
+    },
+    {
+      "proname": "aigas_sc_usage_window",
+      "secdef": true
+    },
+    {
+      "proname": "aigas_sc_usage_window_v2",
+      "secdef": true
+    },
+    {
+      "proname": "aigas_tenant_scope",
+      "secdef": false
+    },
+    {
+      "proname": "aigas_trial_entitlement_guard",
+      "secdef": false
+    },
+    {
+      "proname": "aigas_trial_transition_guard",
+      "secdef": false
+    }
+  ],
+  "triggers": [
+    {
+      "tgname": "aigas_department_events_append_only"
+    },
+    {
+      "tgname": "aigas_fw_decisions_append_only"
+    },
+    {
+      "tgname": "aigas_hg_decision_guard"
+    },
+    {
+      "tgname": "aigas_hg_decision_immutable"
+    },
+    {
+      "tgname": "aigas_hg_delegation_guard"
+    },
+    {
+      "tgname": "aigas_hg_event_immutable"
+    },
+    {
+      "tgname": "aigas_hg_grant_guard"
+    },
+    {
+      "tgname": "aigas_hg_request_guard"
+    },
+    {
+      "tgname": "aigas_hg_tenant_revision"
+    },
+    {
+      "tgname": "aigas_kernel_policy_decisions_append_only"
+    },
+    {
+      "tgname": "aigas_ld_events_append_only"
+    },
+    {
+      "tgname": "aigas_ld_events_chain_guard"
+    },
+    {
+      "tgname": "aigas_ld_events_no_truncate"
+    },
+    {
+      "tgname": "aigas_policy_approvals_append_only"
+    },
+    {
+      "tgname": "aigas_policy_version_immutable"
+    },
+    {
+      "tgname": "aigas_re_assessments_append_only"
+    },
+    {
+      "tgname": "aigas_re_asset_revisions_append_only"
+    },
+    {
+      "tgname": "aigas_re_treatment_append_only"
+    },
+    {
+      "tgname": "aigas_re_treatment_guard"
+    },
+    {
+      "tgname": "aigas_trial_entitlement_guard"
+    },
+    {
+      "tgname": "aigas_trial_transition_guard"
+    }
+  ],
+  "indexes": [
+    {
+      "indexname": "aigas_audit_events_pkey"
+    },
+    {
+      "indexname": "aigas_audit_events_tenant_idempotency_idx"
+    },
+    {
+      "indexname": "aigas_audit_tenant_time_idx"
+    },
+    {
+      "indexname": "aigas_auth_organizations_organization_id_key"
+    },
+    {
+      "indexname": "aigas_auth_organizations_pkey"
+    },
+    {
+      "indexname": "aigas_department_events_history_idx"
+    },
+    {
+      "indexname": "aigas_department_events_pkey"
+    },
+    {
+      "indexname": "aigas_department_memberships_actor_idx"
+    },
+    {
+      "indexname": "aigas_department_memberships_pkey"
+    },
+    {
+      "indexname": "aigas_departments_pkey"
+    },
+    {
+      "indexname": "aigas_departments_tenant_id_id_key"
+    },
+    {
+      "indexname": "aigas_departments_tenant_id_name_key"
+    },
+    {
+      "indexname": "aigas_fw_decisions_pkey"
+    },
+    {
+      "indexname": "aigas_fw_decisions_request_idx"
+    },
+    {
+      "indexname": "aigas_fw_decisions_request_scope_idx"
+    },
+    {
+      "indexname": "aigas_fw_decisions_tenant_action_idx"
+    },
+    {
+      "indexname": "aigas_fw_decisions_tenant_mode_idx"
+    },
+    {
+      "indexname": "aigas_fw_decisions_tenant_time_idx"
+    },
+    {
+      "indexname": "aigas_fw_rules_pkey"
+    },
+    {
+      "indexname": "aigas_fw_rules_template_idx"
+    },
+    {
+      "indexname": "aigas_fw_rules_tenant_id_id_key"
+    },
+    {
+      "indexname": "aigas_fw_rules_tenant_id_name_key"
+    },
+    {
+      "indexname": "aigas_fw_rules_tenant_order_idx"
+    },
+    {
+      "indexname": "aigas_hg_decisions_pkey"
+    },
+    {
+      "indexname": "aigas_hg_decisions_request_id_key"
+    },
+    {
+      "indexname": "aigas_hg_delegations_active_idx"
+    },
+    {
+      "indexname": "aigas_hg_delegations_pkey"
+    },
+    {
+      "indexname": "aigas_hg_events_pkey"
+    },
+    {
+      "indexname": "aigas_hg_events_request_id_event_type_key"
+    },
+    {
+      "indexname": "aigas_hg_events_request_idx"
+    },
+    {
+      "indexname": "aigas_hg_expiry_idx"
+    },
+    {
+      "indexname": "aigas_hg_grants_pkey"
+    },
+    {
+      "indexname": "aigas_hg_grants_request_id_key"
+    },
+    {
+      "indexname": "aigas_hg_grants_tenant_status_idx"
+    },
+    {
+      "indexname": "aigas_hg_policies_pkey"
+    },
+    {
+      "indexname": "aigas_hg_requests_pkey"
+    },
+    {
+      "indexname": "aigas_hg_requests_tenant_id_id_requester_id_key"
+    },
+    {
+      "indexname": "aigas_hg_requests_tenant_status_idx"
+    },
+    {
+      "indexname": "aigas_kernel_policy_decisions_pkey"
+    },
+    {
+      "indexname": "aigas_kernel_policy_decisions_tenant_id_request_id_key"
+    },
+    {
+      "indexname": "aigas_kernel_policy_decisions_tenant_time_idx"
+    },
+    {
+      "indexname": "aigas_ld_events_pkey"
+    },
+    {
+      "indexname": "aigas_ld_events_tenant_id_integrity_hash_key"
+    },
+    {
+      "indexname": "aigas_ld_events_tenant_id_sequence_no_key"
+    },
+    {
+      "indexname": "aigas_ld_events_tenant_id_source_idempotency_key_key"
+    },
+    {
+      "indexname": "aigas_ld_evidence_requirements_pkey"
+    },
+    {
+      "indexname": "aigas_ld_tenant_source_idx"
+    },
+    {
+      "indexname": "aigas_ld_tenant_time_idx"
+    },
+    {
+      "indexname": "aigas_member_invitations_pkey"
+    },
+    {
+      "indexname": "aigas_member_invitations_tenant_idx"
+    },
+    {
+      "indexname": "aigas_memberships_pkey"
+    },
+    {
+      "indexname": "aigas_memberships_user_idx"
+    },
+    {
+      "indexname": "aigas_policies_pkey"
+    },
+    {
+      "indexname": "aigas_policies_scope_idx"
+    },
+    {
+      "indexname": "aigas_policies_tenant_id_id_key"
+    },
+    {
+      "indexname": "aigas_policy_approvals_actor_action_idx"
+    },
+    {
+      "indexname": "aigas_policy_approvals_history_idx"
+    },
+    {
+      "indexname": "aigas_policy_approvals_pkey"
+    },
+    {
+      "indexname": "aigas_policy_delegations_active_idx"
+    },
+    {
+      "indexname": "aigas_policy_delegations_pkey"
+    },
+    {
+      "indexname": "aigas_policy_versions_active_idx"
+    },
+    {
+      "indexname": "aigas_policy_versions_pkey"
+    },
+    {
+      "indexname": "aigas_product_access_pkey"
+    },
+    {
+      "indexname": "aigas_product_grants_pkey"
+    },
+    {
+      "indexname": "aigas_re_assessment_scope"
+    },
+    {
+      "indexname": "aigas_re_assessment_version_scope"
+    },
+    {
+      "indexname": "aigas_re_assessments_history_idx"
+    },
+    {
+      "indexname": "aigas_re_assessments_pkey"
+    },
+    {
+      "indexname": "aigas_re_asset_revisions_history_idx"
+    },
+    {
+      "indexname": "aigas_re_asset_revisions_pkey"
+    },
+    {
+      "indexname": "aigas_re_assets_pkey"
+    },
+    {
+      "indexname": "aigas_re_assets_tenant_id_id_key"
+    },
+    {
+      "indexname": "aigas_re_assets_tenant_idx"
+    },
+    {
+      "indexname": "aigas_re_treatment_history_idx"
+    },
+    {
+      "indexname": "aigas_re_treatment_revisions_pkey"
+    },
+    {
+      "indexname": "aigas_re_treatment_revisions_tenant_id_asset_id_version_key"
+    },
+    {
+      "indexname": "aigas_sc_cancellations_pkey"
+    },
+    {
+      "indexname": "aigas_sc_conversations_pkey"
+    },
+    {
+      "indexname": "aigas_sc_messages_pkey"
+    },
+    {
+      "indexname": "aigas_sc_requests_pkey"
+    },
+    {
+      "indexname": "aigas_sc_requests_scope_idx"
+    },
+    {
+      "indexname": "aigas_sc_requests_window"
+    },
+    {
+      "indexname": "aigas_tenants_pkey"
+    },
+    {
+      "indexname": "aigas_trial_entitlements_pkey"
+    },
+    {
+      "indexname": "aigas_trial_entitlements_tenant_product_idx"
+    },
+    {
+      "indexname": "aigas_trial_events_pkey"
+    },
+    {
+      "indexname": "aigas_trial_events_trial_idx"
+    },
+    {
+      "indexname": "aigas_trial_requests_id_tenant_id_key"
+    },
+    {
+      "indexname": "aigas_trial_requests_one_open_idx"
+    },
+    {
+      "indexname": "aigas_trial_requests_pkey"
+    },
+    {
+      "indexname": "aigas_trial_requests_tenant_created_idx"
+    }
+  ],
+  "sequences": 0,
+  "clientTableGrants": 0,
+  "clientFunctionGrants": 0,
+  "runtimeRoleExists": true,
+  "runtimeRole": {
+    "rolsuper": false,
+    "rolbypassrls": false,
+    "rolcanlogin": false,
+    "rolinherit": false
+  },
+  "runtimeGrants": [
+    {
+      "table_name": "aigas_audit_events",
+      "privs": "INSERT,SELECT"
+    },
+    {
+      "table_name": "aigas_auth_organizations",
+      "privs": "INSERT,SELECT"
+    },
+    {
+      "table_name": "aigas_department_events",
+      "privs": "INSERT,SELECT"
+    },
+    {
+      "table_name": "aigas_department_memberships",
+      "privs": "DELETE,INSERT,SELECT,UPDATE"
+    },
+    {
+      "table_name": "aigas_departments",
+      "privs": "INSERT,SELECT,UPDATE"
+    },
+    {
+      "table_name": "aigas_fw_decisions",
+      "privs": "INSERT,SELECT"
+    },
+    {
+      "table_name": "aigas_fw_rules",
+      "privs": "DELETE,INSERT,SELECT,UPDATE"
+    },
+    {
+      "table_name": "aigas_hg_decisions",
+      "privs": "INSERT,SELECT"
+    },
+    {
+      "table_name": "aigas_hg_delegations",
+      "privs": "DELETE,INSERT,SELECT,UPDATE"
+    },
+    {
+      "table_name": "aigas_hg_events",
+      "privs": "INSERT,SELECT"
+    },
+    {
+      "table_name": "aigas_hg_grants",
+      "privs": "DELETE,INSERT,SELECT,UPDATE"
+    },
+    {
+      "table_name": "aigas_hg_policies",
+      "privs": "DELETE,INSERT,SELECT,UPDATE"
+    },
+    {
+      "table_name": "aigas_hg_requests",
+      "privs": "INSERT,SELECT,UPDATE"
+    },
+    {
+      "table_name": "aigas_kernel_policy_decisions",
+      "privs": "INSERT,SELECT"
+    },
+    {
+      "table_name": "aigas_ld_events",
+      "privs": "INSERT,SELECT"
+    },
+    {
+      "table_name": "aigas_ld_evidence_requirements",
+      "privs": "SELECT"
+    },
+    {
+      "table_name": "aigas_member_invitations",
+      "privs": "INSERT,SELECT,UPDATE"
+    },
+    {
+      "table_name": "aigas_memberships",
+      "privs": "DELETE,INSERT,SELECT,UPDATE"
+    },
+    {
+      "table_name": "aigas_policies",
+      "privs": "INSERT,SELECT,UPDATE"
+    },
+    {
+      "table_name": "aigas_policy_approvals",
+      "privs": "INSERT,SELECT"
+    },
+    {
+      "table_name": "aigas_policy_delegations",
+      "privs": "INSERT,SELECT,UPDATE"
+    },
+    {
+      "table_name": "aigas_policy_versions",
+      "privs": "INSERT,SELECT,UPDATE"
+    },
+    {
+      "table_name": "aigas_product_access",
+      "privs": "INSERT,SELECT,UPDATE"
+    },
+    {
+      "table_name": "aigas_product_grants",
+      "privs": "SELECT"
+    },
+    {
+      "table_name": "aigas_re_assessments",
+      "privs": "DELETE,INSERT,SELECT,UPDATE"
+    },
+    {
+      "table_name": "aigas_re_asset_revisions",
+      "privs": "INSERT,SELECT"
+    },
+    {
+      "table_name": "aigas_re_assets",
+      "privs": "INSERT,SELECT,UPDATE"
+    },
+    {
+      "table_name": "aigas_re_treatment_revisions",
+      "privs": "INSERT,SELECT"
+    },
+    {
+      "table_name": "aigas_sc_cancellations",
+      "privs": "INSERT,SELECT"
+    },
+    {
+      "table_name": "aigas_sc_requests",
+      "privs": "INSERT,SELECT,UPDATE"
+    },
+    {
+      "table_name": "aigas_tenants",
+      "privs": "SELECT,UPDATE"
+    },
+    {
+      "table_name": "aigas_trial_entitlements",
+      "privs": "SELECT"
+    },
+    {
+      "table_name": "aigas_trial_events",
+      "privs": "INSERT,SELECT"
+    },
+    {
+      "table_name": "aigas_trial_requests",
+      "privs": "SELECT"
+    }
+  ],
+  "contentTableRuntimeGrants": [],
+  "defaultAcl": [
+    {
+      "role": "neon_auth",
+      "type": "r",
+      "acl": "{neondb_owner=r*x*/neon_auth}"
+    }
+  ],
+  "ledgerTriggers": [
+    {
+      "tgname": "aigas_ld_events_append_only"
+    },
+    {
+      "tgname": "aigas_ld_events_chain_guard"
+    },
+    {
+      "tgname": "aigas_ld_events_no_truncate"
+    }
+  ],
+  "ledgerConstraintHasFingerprint": true,
+  "migrationLedger": [
+    {
+      "filename": "0001_aigas_kernel.sql",
+      "sha256": "1c80c5abced0503f598e4cbe5b935e877622a57fb1f15a7f7f9e98f373e47ac7",
+      "status": "APPLIED",
+      "duration_ms": 344
+    },
+    {
+      "filename": "0002_aigas_firewall.sql",
+      "sha256": "4396ae21579a257b86eeb44d2c0e8ed0cace560c391a58fefb445417a33da2fb",
+      "status": "APPLIED",
+      "duration_ms": 311
+    },
+    {
+      "filename": "0003_aigas_ledger.sql",
+      "sha256": "7efef03a77c83b88a5abb67159213e06d467fe828f0182e59ae56d2851ff6642",
+      "status": "APPLIED",
+      "duration_ms": 336
+    },
+    {
+      "filename": "0004_aigas_human_gate.sql",
+      "sha256": "b707e5745272106a01e393a3479811f309e981f60dbe7bec65f9b23f935792ef",
+      "status": "APPLIED",
+      "duration_ms": 277
+    },
+    {
+      "filename": "0005_aigas_risk_engine.sql",
+      "sha256": "8bcd839c1afd937e1a6805ffd0cdd6231638f96a2ff0d492045459a54549046c",
+      "status": "APPLIED",
+      "duration_ms": 218
+    },
+    {
+      "filename": "0006_aigas_kernel_administration.sql",
+      "sha256": "b623dec133d85b6c47dc76a2f9e0a134290074eabe3abcf045ca461257511ce7",
+      "status": "APPLIED",
+      "duration_ms": 214
+    },
+    {
+      "filename": "0007_aigas_human_gate_enforcement.sql",
+      "sha256": "090ff73390db2bb063edcab0485a1c0c96787d6beb7afb9a559dd9a8cb7f3da8",
+      "status": "APPLIED",
+      "duration_ms": 318
+    },
+    {
+      "filename": "0008_aigas_risk_engine_lifecycle.sql",
+      "sha256": "625a640e5d1dc7877c92116801ecb1e2d0772c1b1eeed269c15afbab07d484d2",
+      "status": "APPLIED",
+      "duration_ms": 237
+    },
+    {
+      "filename": "0009_aigas_secure_chat.sql",
+      "sha256": "42dd8675ff9c91e2807bc983d69af49e8ddd5963961ccf28486de7cb99042cca",
+      "status": "APPLIED",
+      "duration_ms": 321
+    },
+    {
+      "filename": "0010_aigas_kernel_policy_hierarchy.sql",
+      "sha256": "e359220d6a46ff8c3b5b6fcc6af29482f3d9023dac818928e83eda54d1c26daa",
+      "status": "APPLIED",
+      "duration_ms": 313
+    },
+    {
+      "filename": "0014_aigas_human_gate_cancellation_delegation_and_grant.sql",
+      "sha256": "2424084ffc65a9dbd43158e9a8570c0285aa9ced388ff059edaef2f63b12dfe0",
+      "status": "APPLIED",
+      "duration_ms": 328
+    },
+    {
+      "filename": "0015_aigas_risk_engine_asset_context_residual_risk.sql",
+      "sha256": "df372952f4fc9e53604c7d892774fc46bded9dc1b4d52937705f366d9e923f0a",
+      "status": "APPLIED",
+      "duration_ms": 267
+    },
+    {
+      "filename": "0016_aigas_sc_user_token_quota.sql",
+      "sha256": "3e5017a9d80dc9cea5d947624f843c3d6c101ded50e763980cb1b6b2c04354d6",
+      "status": "APPLIED",
+      "duration_ms": 323
+    },
+    {
+      "filename": "0017_aigas_kernel_audit_context.sql",
+      "sha256": "61baef8eb746c91b2ffb527d7b1f21b8b1d571c5fc1773f6743ac4b8499b27e5",
+      "status": "APPLIED",
+      "duration_ms": 316
+    },
+    {
+      "filename": "0018_aigas_data_api_grant_hardening.sql",
+      "sha256": "87e47801e87d2aedb4155198548a589ef028787fee16fbbf5c62fd450c7092d2",
+      "status": "APPLIED",
+      "duration_ms": 345
+    },
+    {
+      "filename": "0020_aigas_kernel_policy_review_requirements.sql",
+      "sha256": "54f73a509a32e943efa19f6beaebb5e8bbc69a5947e2f546ab0351a310b55b92",
+      "status": "APPLIED",
+      "duration_ms": 247
+    },
+    {
+      "filename": "0021_aigas_risk_engine_acceptance_guard.sql",
+      "sha256": "b059020470a63d8a678b32463cd1093fe09ea5dbc9bf2a94e94d0fe220c32cd5",
+      "status": "APPLIED",
+      "duration_ms": 320
+    },
+    {
+      "filename": "0022_aigas_reference_scope_guard.sql",
+      "sha256": "dfed738a9ef94c2ce1f9672ebf14c3c0468883986b69388f1c98796567674141",
+      "status": "APPLIED",
+      "duration_ms": 325
+    },
+    {
+      "filename": "0023_aigas_enterprise_trial_lifecycle.sql",
+      "sha256": "e424e7eb1af6f0b14f14714c23aff19fc6d03656a9eab9b1a3cd68a041ef3189",
+      "status": "APPLIED",
+      "duration_ms": 304
+    },
+    {
+      "filename": "0024_aigas_catalog_parity_repair.sql",
+      "sha256": "13c2f7f6da29fd5823289eb30c681a7c129f1416bfffd25b543a2f8e712dfbd9",
+      "status": "APPLIED",
+      "duration_ms": 327
+    },
+    {
+      "filename": "0025_aigas_tenant_isolation_closure.sql",
+      "sha256": "013432e9fdb6905723d2d3fd7eb8110c5b3f9385dd61655e0a505719924d204b",
+      "status": "APPLIED",
+      "duration_ms": 984
+    },
+    {
+      "filename": "0026_aigas_risk_engine_residual_and_acceptance_policy.sql",
+      "sha256": "144abb18ba58956633a852da846a276594cd686f77342dd9924940315f275cc8",
+      "status": "APPLIED",
+      "duration_ms": 733
+    },
+    {
+      "filename": "0027_aigas_sc_content_participant_only.sql",
+      "sha256": "4a59eb0c528a40e371949f4650c4595cfbb3a26cbc5cb55dbcfae70e63baac1c",
+      "status": "APPLIED",
+      "duration_ms": 250
+    },
+    {
+      "filename": "0028_aigas_runtime_membership_lock.sql",
+      "sha256": "df314f3a23dfe03fbcdb755537d03bda717ca096c2caeb99c426f8b3ed0af2c4",
+      "status": "APPLIED",
+      "duration_ms": 322
+    },
+    {
+      "filename": "0029_aigas_ledger_required_reference.sql",
+      "sha256": "99be1b9d0aa2b584df8e610a292df30b6b9ac192ff223cc6ccc3b35acf7c2987",
+      "status": "APPLIED",
+      "duration_ms": 320
+    }
+  ],
+  "neonAuthTables": [
+    "account",
+    "invitation",
+    "jwks",
+    "member",
+    "organization",
+    "project_config",
+    "session",
+    "user",
+    "verification"
+  ],
+  "roles": [
+    {
+      "rolname": "aigas_runtime",
+      "rolcanlogin": false,
+      "rolsuper": false,
+      "rolinherit": false,
+      "rolbypassrls": false,
+      "rolcreaterole": false
+    },
+    {
+      "rolname": "anonymous",
+      "rolcanlogin": false,
+      "rolsuper": false,
+      "rolinherit": true,
+      "rolbypassrls": false,
+      "rolcreaterole": false
+    },
+    {
+      "rolname": "authenticated",
+      "rolcanlogin": false,
+      "rolsuper": false,
+      "rolinherit": true,
+      "rolbypassrls": false,
+      "rolcreaterole": false
+    },
+    {
+      "rolname": "neon_auth",
+      "rolcanlogin": true,
+      "rolsuper": false,
+      "rolinherit": false,
+      "rolbypassrls": false,
+      "rolcreaterole": false
+    },
+    {
+      "rolname": "neondb_owner",
+      "rolcanlogin": true,
+      "rolsuper": false,
+      "rolinherit": true,
+      "rolbypassrls": true,
+      "rolcreaterole": true
+    }
+  ],
+  "memberships": [
+    {
+      "granted": "aigas_runtime",
+      "member": "neondb_owner",
+      "grantor": "cloud_admin",
+      "admin_option": true,
+      "inherit_option": false,
+      "set_option": false
+    },
+    {
+      "granted": "aigas_runtime",
+      "member": "neondb_owner",
+      "grantor": "neondb_owner",
+      "admin_option": false,
+      "inherit_option": false,
+      "set_option": true
+    },
+    {
+      "granted": "anonymous",
+      "member": "neondb_owner",
+      "grantor": "cloud_admin",
+      "admin_option": true,
+      "inherit_option": false,
+      "set_option": false
+    },
+    {
+      "granted": "anonymous",
+      "member": "neondb_owner",
+      "grantor": "neondb_owner",
+      "admin_option": false,
+      "inherit_option": true,
+      "set_option": true
+    },
+    {
+      "granted": "authenticated",
+      "member": "neondb_owner",
+      "grantor": "cloud_admin",
+      "admin_option": true,
+      "inherit_option": false,
+      "set_option": false
+    },
+    {
+      "granted": "authenticated",
+      "member": "neondb_owner",
+      "grantor": "neondb_owner",
+      "admin_option": false,
+      "inherit_option": true,
+      "set_option": true
+    },
+    {
+      "granted": "neon_auth",
+      "member": "neon_service",
+      "grantor": "cloud_admin",
+      "admin_option": true,
+      "inherit_option": false,
+      "set_option": false
+    },
+    {
+      "granted": "neon_auth",
+      "member": "neon_service",
+      "grantor": "neon_service",
+      "admin_option": false,
+      "inherit_option": true,
+      "set_option": true
+    }
+  ]
+}

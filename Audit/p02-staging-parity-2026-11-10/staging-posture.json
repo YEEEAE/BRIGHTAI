@@ -1,0 +1,68 @@
+{
+  "checks": 8,
+  "passed": 8,
+  "failed": 0,
+  "results": [
+    {
+      "probe": "authenticated cannot SELECT public.aigas_tenants",
+      "passed": true,
+      "outcome": {
+        "code": "42501",
+        "message": "permission denied for table aigas_tenants"
+      }
+    },
+    {
+      "probe": "authenticated cannot EXECUTE aigas_sc_usage_window_v2",
+      "passed": true,
+      "outcome": {
+        "code": "42501",
+        "message": "permission denied for function aigas_sc_usage_window_v2"
+      }
+    },
+    {
+      "probe": "aigas_runtime holds no verb on aigas_sc_messages",
+      "passed": true,
+      "outcome": {
+        "code": "42501",
+        "message": "permission denied for table aigas_sc_messages"
+      }
+    },
+    {
+      "probe": "aigas_runtime sees zero rows without tenant scope (RLS default deny)",
+      "passed": true,
+      "outcome": {
+        "rows": 0
+      }
+    },
+    {
+      "probe": "aigas_runtime can EXECUTE its granted aggregate",
+      "passed": true,
+      "outcome": {
+        "rows": 1
+      }
+    },
+    {
+      "probe": "transaction-local scope does not leak past ROLLBACK",
+      "passed": true,
+      "outcome": {
+        "rows": null
+      }
+    },
+    {
+      "probe": "aigas.tenant_id is empty outside the transaction",
+      "passed": true,
+      "outcome": {
+        "value": ""
+      }
+    },
+    {
+      "probe": "ledger chain guard rejects a forged link",
+      "passed": true,
+      "outcome": {
+        "code": "P0001",
+        "message": "Ledger sequence gap or wrong previous hash"
+      }
+    }
+  ],
+  "verdict": "PASS"
+}

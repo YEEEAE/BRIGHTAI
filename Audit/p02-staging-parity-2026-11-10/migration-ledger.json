@@ -1,0 +1,352 @@
+{
+  "referenceSha": "7b1f533f71c7b1f41884790366a4d5967c85a87b",
+  "headSha": "60777c9739d5584360e57bd5238d3a075b06c09a",
+  "capturedAt": "2026-11-10T14:28:19.148Z",
+  "note": "sha256 of each migrations/*.sql at HEAD and at the reference SHA. 0001-0015, 0017, 0019-0024, 0026, 0027 and 0029 are byte-identical to the reference; 0016, 0018, 0025 changed with owner authorization (0016: SECURITY DEFINER grant gap; 0018/0025: to_regrole guard for B9), and 0028/0029 were added after the reference (0028 also patched for B9).",
+  "liveStateSource": "derived from catalog objects on branch br-young-bird-b43proeb (no ledger table exists there)",
+  "files": [
+    {
+      "file": "0001_aigas_kernel.sql",
+      "sha256_head": "1c80c5abced0503f598e4cbe5b935e877622a57fb1f15a7f7f9e98f373e47ac7",
+      "sha256_ref_7b1f533": "1c80c5abced0503f598e4cbe5b935e877622a57fb1f15a7f7f9e98f373e47ac7",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0002_aigas_firewall.sql",
+      "sha256_head": "4396ae21579a257b86eeb44d2c0e8ed0cace560c391a58fefb445417a33da2fb",
+      "sha256_ref_7b1f533": "4396ae21579a257b86eeb44d2c0e8ed0cace560c391a58fefb445417a33da2fb",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0003_aigas_ledger.sql",
+      "sha256_head": "7efef03a77c83b88a5abb67159213e06d467fe828f0182e59ae56d2851ff6642",
+      "sha256_ref_7b1f533": "7efef03a77c83b88a5abb67159213e06d467fe828f0182e59ae56d2851ff6642",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "DRIFTED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "NOT RUN",
+      "note": "Live branch ran this file before commit 4e5f9f49, which added the ledger chain guard.",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0004_aigas_human_gate.sql",
+      "sha256_head": "b707e5745272106a01e393a3479811f309e981f60dbe7bec65f9b23f935792ef",
+      "sha256_ref_7b1f533": "b707e5745272106a01e393a3479811f309e981f60dbe7bec65f9b23f935792ef",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0005_aigas_risk_engine.sql",
+      "sha256_head": "8bcd839c1afd937e1a6805ffd0cdd6231638f96a2ff0d492045459a54549046c",
+      "sha256_ref_7b1f533": "8bcd839c1afd937e1a6805ffd0cdd6231638f96a2ff0d492045459a54549046c",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0006_aigas_kernel_administration.sql",
+      "sha256_head": "b623dec133d85b6c47dc76a2f9e0a134290074eabe3abcf045ca461257511ce7",
+      "sha256_ref_7b1f533": "b623dec133d85b6c47dc76a2f9e0a134290074eabe3abcf045ca461257511ce7",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0007_aigas_human_gate_enforcement.sql",
+      "sha256_head": "090ff73390db2bb063edcab0485a1c0c96787d6beb7afb9a559dd9a8cb7f3da8",
+      "sha256_ref_7b1f533": "090ff73390db2bb063edcab0485a1c0c96787d6beb7afb9a559dd9a8cb7f3da8",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0008_aigas_risk_engine_lifecycle.sql",
+      "sha256_head": "625a640e5d1dc7877c92116801ecb1e2d0772c1b1eeed269c15afbab07d484d2",
+      "sha256_ref_7b1f533": "625a640e5d1dc7877c92116801ecb1e2d0772c1b1eeed269c15afbab07d484d2",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0009_aigas_secure_chat.sql",
+      "sha256_head": "42dd8675ff9c91e2807bc983d69af49e8ddd5963961ccf28486de7cb99042cca",
+      "sha256_ref_7b1f533": "42dd8675ff9c91e2807bc983d69af49e8ddd5963961ccf28486de7cb99042cca",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0010_aigas_kernel_policy_hierarchy.sql",
+      "sha256_head": "e359220d6a46ff8c3b5b6fcc6af29482f3d9023dac818928e83eda54d1c26daa",
+      "sha256_ref_7b1f533": "e359220d6a46ff8c3b5b6fcc6af29482f3d9023dac818928e83eda54d1c26daa",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0011_aigas_firewall_execution_binding.sql",
+      "sha256_head": "2e40c03d49414d18777e42d41004d41ffb08538fddc99f10acb7059d9fec8b04",
+      "sha256_ref_7b1f533": "2e40c03d49414d18777e42d41004d41ffb08538fddc99f10acb7059d9fec8b04",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "APPLIED",
+      "rehearsal_fresh": "NOT RUN",
+      "rehearsal_delta": "NOT RUN"
+    },
+    {
+      "file": "0012_aigas_firewall_five_state_upgrade.sql",
+      "sha256_head": "afc2227ec9ee0a192374e4db3e399f3ada7db927442aa5be19914df49069646b",
+      "sha256_ref_7b1f533": "afc2227ec9ee0a192374e4db3e399f3ada7db927442aa5be19914df49069646b",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "APPLIED",
+      "rehearsal_fresh": "NOT RUN",
+      "rehearsal_delta": "NOT RUN"
+    },
+    {
+      "file": "0013_aigas_ledger_five_state_and_chain_guard.sql",
+      "sha256_head": "07f96e6d9246d1c8f0c933d4cfa38a93416f3bbb599ce35334b77e960f73a8bd",
+      "sha256_ref_7b1f533": "07f96e6d9246d1c8f0c933d4cfa38a93416f3bbb599ce35334b77e960f73a8bd",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "NOT APPLIED",
+      "rehearsal_fresh": "NOT RUN",
+      "rehearsal_delta": "APPLIED"
+    },
+    {
+      "file": "0014_aigas_human_gate_cancellation_delegation_and_grant.sql",
+      "sha256_head": "2424084ffc65a9dbd43158e9a8570c0285aa9ced388ff059edaef2f63b12dfe0",
+      "sha256_ref_7b1f533": "2424084ffc65a9dbd43158e9a8570c0285aa9ced388ff059edaef2f63b12dfe0",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "NOT APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0015_aigas_risk_engine_asset_context_residual_risk.sql",
+      "sha256_head": "df372952f4fc9e53604c7d892774fc46bded9dc1b4d52937705f366d9e923f0a",
+      "sha256_ref_7b1f533": "df372952f4fc9e53604c7d892774fc46bded9dc1b4d52937705f366d9e923f0a",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0016_aigas_sc_user_token_quota.sql",
+      "sha256_head": "3e5017a9d80dc9cea5d947624f843c3d6c101ded50e763980cb1b6b2c04354d6",
+      "sha256_ref_7b1f533": "eeffcb639b76e6addc93759b608005324b57eb51a3ad0991666ccc226784276e",
+      "hash_matches_reference": false,
+      "drift": "MODIFIED_AFTER_REFERENCE",
+      "live": "NOT APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "note": "Patched 2026-11-10 (P02) to revoke EXECUTE from authenticated/anonymous; hash no longer matches the reference.",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0017_aigas_kernel_audit_context.sql",
+      "sha256_head": "61baef8eb746c91b2ffb527d7b1f21b8b1d571c5fc1773f6743ac4b8499b27e5",
+      "sha256_ref_7b1f533": "61baef8eb746c91b2ffb527d7b1f21b8b1d571c5fc1773f6743ac4b8499b27e5",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "NOT APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0018_aigas_data_api_grant_hardening.sql",
+      "sha256_head": "87e47801e87d2aedb4155198548a589ef028787fee16fbbf5c62fd450c7092d2",
+      "sha256_ref_7b1f533": "e1dc7ed2592f83316dabad4a0f0ba0420f5906d73e15a74c7411fb59e752e8ae",
+      "hash_matches_reference": false,
+      "drift": "MODIFIED_AFTER_REFERENCE",
+      "live": "NOT APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "note": "Patched 2026-11-10 (B9, owner-authorized) to guard client-role REVOKEs with to_regrole; hash no longer matches the reference. No grant changed.",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0019_aigas_runtime_least_privilege.sql",
+      "sha256_head": "5814b31d7312dcb25fe2a1b9e47710845b0f00cebfc3e1ceccf79edaa4c5c4ea",
+      "sha256_ref_7b1f533": "5814b31d7312dcb25fe2a1b9e47710845b0f00cebfc3e1ceccf79edaa4c5c4ea",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "NOT APPLIED",
+      "rehearsal_fresh": "NOT RUN",
+      "rehearsal_delta": "NOT RUN"
+    },
+    {
+      "file": "0020_aigas_kernel_policy_review_requirements.sql",
+      "sha256_head": "54f73a509a32e943efa19f6beaebb5e8bbc69a5947e2f546ab0351a310b55b92",
+      "sha256_ref_7b1f533": "54f73a509a32e943efa19f6beaebb5e8bbc69a5947e2f546ab0351a310b55b92",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "NOT APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0021_aigas_risk_engine_acceptance_guard.sql",
+      "sha256_head": "b059020470a63d8a678b32463cd1093fe09ea5dbc9bf2a94e94d0fe220c32cd5",
+      "sha256_ref_7b1f533": "b059020470a63d8a678b32463cd1093fe09ea5dbc9bf2a94e94d0fe220c32cd5",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "NOT APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0022_aigas_reference_scope_guard.sql",
+      "sha256_head": "dfed738a9ef94c2ce1f9672ebf14c3c0468883986b69388f1c98796567674141",
+      "sha256_ref_7b1f533": "dfed738a9ef94c2ce1f9672ebf14c3c0468883986b69388f1c98796567674141",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "NOT APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0023_aigas_enterprise_trial_lifecycle.sql",
+      "sha256_head": "e424e7eb1af6f0b14f14714c23aff19fc6d03656a9eab9b1a3cd68a041ef3189",
+      "sha256_ref_7b1f533": "e424e7eb1af6f0b14f14714c23aff19fc6d03656a9eab9b1a3cd68a041ef3189",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "NOT APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0024_aigas_catalog_parity_repair.sql",
+      "sha256_head": "13c2f7f6da29fd5823289eb30c681a7c129f1416bfffd25b543a2f8e712dfbd9",
+      "sha256_ref_7b1f533": "13c2f7f6da29fd5823289eb30c681a7c129f1416bfffd25b543a2f8e712dfbd9",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "NOT APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0025_aigas_tenant_isolation_closure.sql",
+      "sha256_head": "013432e9fdb6905723d2d3fd7eb8110c5b3f9385dd61655e0a505719924d204b",
+      "sha256_ref_7b1f533": "3d607687aa5d2b0cc7b8689da3fc27816b56848cf25385b0dbe0ef53563b954c",
+      "hash_matches_reference": false,
+      "drift": "MODIFIED_AFTER_REFERENCE",
+      "live": "NOT APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "note": "Patched 2026-11-10 (B9, owner-authorized) to guard client-role REVOKEs, default-privilege revokes and §8 postcondition checks with to_regrole; hash no longer matches the reference. No grant changed.",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0026_aigas_risk_engine_residual_and_acceptance_policy.sql",
+      "sha256_head": "144abb18ba58956633a852da846a276594cd686f77342dd9924940315f275cc8",
+      "sha256_ref_7b1f533": "144abb18ba58956633a852da846a276594cd686f77342dd9924940315f275cc8",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "NOT APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0027_aigas_sc_content_participant_only.sql",
+      "sha256_head": "4a59eb0c528a40e371949f4650c4595cfbb3a26cbc5cb55dbcfae70e63baac1c",
+      "sha256_ref_7b1f533": "4a59eb0c528a40e371949f4650c4595cfbb3a26cbc5cb55dbcfae70e63baac1c",
+      "hash_matches_reference": true,
+      "drift": "IDENTICAL",
+      "live": "NOT APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0028_aigas_runtime_membership_lock.sql",
+      "sha256_head": "df314f3a23dfe03fbcdb755537d03bda717ca096c2caeb99c426f8b3ed0af2c4",
+      "sha256_ref_7b1f533": null,
+      "hash_matches_reference": false,
+      "drift": "ADDED_AFTER_REFERENCE",
+      "live": "NOT APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "note": "Added after the reference; patched 2026-11-10 (B9) to guard its REVOKE lists with to_regrole after the no-client-roles rehearsal failed at this file.",
+      "rehearsal_no_client_roles": "APPLIED"
+    },
+    {
+      "file": "0029_aigas_ledger_required_reference.sql",
+      "sha256_head": "99be1b9d0aa2b584df8e610a292df30b6b9ac192ff223cc6ccc3b35acf7c2987",
+      "sha256_ref_7b1f533": null,
+      "hash_matches_reference": false,
+      "drift": "ADDED_AFTER_REFERENCE",
+      "live": "NOT APPLIED",
+      "rehearsal_fresh": "APPLIED",
+      "rehearsal_delta": "APPLIED",
+      "rehearsal_no_client_roles": "APPLIED"
+    }
+  ],
+  "drift": {
+    "addedAfterReference": [
+      "0028_aigas_runtime_membership_lock.sql",
+      "0029_aigas_ledger_required_reference.sql"
+    ],
+    "modifiedAfterReference": [
+      "0016_aigas_sc_user_token_quota.sql",
+      "0018_aigas_data_api_grant_hardening.sql",
+      "0025_aigas_tenant_isolation_closure.sql"
+    ]
+  },
+  "rehearsal": {
+    "serverVersion": "18.6 (Homebrew)",
+    "result": "PASS",
+    "freshApplied": 25,
+    "freshTotal": 25,
+    "deltaApplied": 26,
+    "deltaTotal": 26,
+    "noClientRolesApplied": 25,
+    "noClientRolesTotal": 25,
+    "negativeOk": 10,
+    "negativeTotal": 10
+  }
+}

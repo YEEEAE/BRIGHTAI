@@ -106,15 +106,26 @@ END $$;
 --    This is intentionally broader than AIGAS: the architectural decision is
 --    that public is server-only. If a future browser API is needed, expose a
 --    dedicated schema with its own grants instead of reusing public.
-REVOKE ALL ON ALL TABLES IN SCHEMA public FROM authenticated;
-REVOKE ALL ON ALL SEQUENCES IN SCHEMA public FROM authenticated;
-REVOKE ALL ON ALL FUNCTIONS IN SCHEMA public FROM authenticated;
--- Functions in public are EXECUTE to PUBLIC by default. Remove that path as well;
--- this database currently has no non-AIGAS functions in public.
-REVOKE ALL ON ALL FUNCTIONS IN SCHEMA public FROM PUBLIC;
-REVOKE ALL ON ALL TABLES IN SCHEMA public FROM anonymous;
-REVOKE ALL ON ALL SEQUENCES IN SCHEMA public FROM anonymous;
-REVOKE ALL ON ALL FUNCTIONS IN SCHEMA public FROM anonymous;
+--    Client roles exist only when the Data API or Neon Auth created them, so
+--    each REVOKE is guarded by to_regrole: on a project without those roles the
+--    file proceeds to establish the rest of the posture instead of aborting with
+--    42704. The guard changes no grant; when the role exists the REVOKE is identical.
+DO $$
+BEGIN
+  IF to_regrole('authenticated') IS NOT NULL THEN
+    EXECUTE 'REVOKE ALL ON ALL TABLES IN SCHEMA public FROM authenticated';
+    EXECUTE 'REVOKE ALL ON ALL SEQUENCES IN SCHEMA public FROM authenticated';
+    EXECUTE 'REVOKE ALL ON ALL FUNCTIONS IN SCHEMA public FROM authenticated';
+  END IF;
+  -- Functions in public are EXECUTE to PUBLIC by default. Remove that path as well;
+  -- this database currently has no non-AIGAS functions in public.
+  EXECUTE 'REVOKE ALL ON ALL FUNCTIONS IN SCHEMA public FROM PUBLIC';
+  IF to_regrole('anonymous') IS NOT NULL THEN
+    EXECUTE 'REVOKE ALL ON ALL TABLES IN SCHEMA public FROM anonymous';
+    EXECUTE 'REVOKE ALL ON ALL SEQUENCES IN SCHEMA public FROM anonymous';
+    EXECUTE 'REVOKE ALL ON ALL FUNCTIONS IN SCHEMA public FROM anonymous';
+  END IF;
+END $$;
 
 -- A table grant to PUBLIC would survive the revokes above and would make
 -- authenticated inherit it. Remove it on AIGAS tables specifically.
@@ -136,20 +147,28 @@ END $$;
 DO $$
 BEGIN
   IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'neondb_owner') THEN
-    EXECUTE 'ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON TABLES FROM authenticated';
-    EXECUTE 'ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON SEQUENCES FROM authenticated';
-    EXECUTE 'ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON FUNCTIONS FROM authenticated';
-    EXECUTE 'ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON TABLES FROM anonymous';
-    EXECUTE 'ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON SEQUENCES FROM anonymous';
-    EXECUTE 'ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON FUNCTIONS FROM anonymous';
+    IF to_regrole('authenticated') IS NOT NULL THEN
+      EXECUTE 'ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON TABLES FROM authenticated';
+      EXECUTE 'ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON SEQUENCES FROM authenticated';
+      EXECUTE 'ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON FUNCTIONS FROM authenticated';
+    END IF;
+    IF to_regrole('anonymous') IS NOT NULL THEN
+      EXECUTE 'ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON TABLES FROM anonymous';
+      EXECUTE 'ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON SEQUENCES FROM anonymous';
+      EXECUTE 'ALTER DEFAULT PRIVILEGES FOR ROLE neondb_owner IN SCHEMA public REVOKE ALL ON FUNCTIONS FROM anonymous';
+    END IF;
+  END IF;
+  IF to_regrole('authenticated') IS NOT NULL THEN
+    EXECUTE 'ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON TABLES FROM authenticated';
+    EXECUTE 'ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON SEQUENCES FROM authenticated';
+    EXECUTE 'ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON FUNCTIONS FROM authenticated';
+  END IF;
+  IF to_regrole('anonymous') IS NOT NULL THEN
+    EXECUTE 'ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON TABLES FROM anonymous';
+    EXECUTE 'ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON SEQUENCES FROM anonymous';
+    EXECUTE 'ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON FUNCTIONS FROM anonymous';
   END IF;
 END $$;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON TABLES FROM authenticated;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON SEQUENCES FROM authenticated;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON FUNCTIONS FROM authenticated;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON TABLES FROM anonymous;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON SEQUENCES FROM anonymous;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON FUNCTIONS FROM anonymous;
 
 -- 3. Least-privilege object grants for the runtime role. RLS policies in
 --    section 5 still bound every row; these grants only decide which verbs
@@ -280,8 +299,12 @@ BEGIN
     WHERE n.nspname = 'public' AND p.proname LIKE 'aigas\_%'
   LOOP
     EXECUTE format('REVOKE ALL ON FUNCTION %s FROM PUBLIC', target.signature);
-    EXECUTE format('REVOKE ALL ON FUNCTION %s FROM authenticated', target.signature);
-    EXECUTE format('REVOKE ALL ON FUNCTION %s FROM anonymous', target.signature);
+    IF to_regrole('authenticated') IS NOT NULL THEN
+      EXECUTE format('REVOKE ALL ON FUNCTION %s FROM authenticated', target.signature);
+    END IF;
+    IF to_regrole('anonymous') IS NOT NULL THEN
+      EXECUTE format('REVOKE ALL ON FUNCTION %s FROM anonymous', target.signature);
+    END IF;
   END LOOP;
 END $$;
 
@@ -416,12 +439,16 @@ DO $$
 BEGIN
   IF to_regprocedure('public.aigas_sc_usage_window(uuid,uuid)') IS NOT NULL THEN
     EXECUTE 'REVOKE ALL ON FUNCTION public.aigas_sc_usage_window(uuid,uuid) FROM PUBLIC';
-    EXECUTE 'REVOKE ALL ON FUNCTION public.aigas_sc_usage_window(uuid,uuid) FROM authenticated';
+    IF to_regrole('authenticated') IS NOT NULL THEN
+      EXECUTE 'REVOKE ALL ON FUNCTION public.aigas_sc_usage_window(uuid,uuid) FROM authenticated';
+    END IF;
     EXECUTE 'GRANT EXECUTE ON FUNCTION public.aigas_sc_usage_window(uuid,uuid) TO aigas_runtime';
   END IF;
   IF to_regprocedure('public.aigas_sc_usage_window_v2(uuid,uuid)') IS NOT NULL THEN
     EXECUTE 'REVOKE ALL ON FUNCTION public.aigas_sc_usage_window_v2(uuid,uuid) FROM PUBLIC';
-    EXECUTE 'REVOKE ALL ON FUNCTION public.aigas_sc_usage_window_v2(uuid,uuid) FROM authenticated';
+    IF to_regrole('authenticated') IS NOT NULL THEN
+      EXECUTE 'REVOKE ALL ON FUNCTION public.aigas_sc_usage_window_v2(uuid,uuid) FROM authenticated';
+    END IF;
     EXECUTE 'GRANT EXECUTE ON FUNCTION public.aigas_sc_usage_window_v2(uuid,uuid) TO aigas_runtime';
   END IF;
 END $$;
@@ -457,34 +484,62 @@ BEGIN
 END $$;
 
 -- 8. Fail closed if the resulting posture is not what this file promises.
+--    Each client check runs only when the role exists: has_table_privilege on a
+--    missing role raises 42704, which would turn a postcondition into a crash.
 DO $$
 DECLARE
   offender text;
 BEGIN
-  SELECT string_agg(c.relname, ', ') INTO offender
-  FROM pg_class c
-  JOIN pg_namespace n ON n.oid = c.relnamespace
-  WHERE n.nspname = 'public' AND c.relkind = 'r' AND c.relname LIKE 'aigas\_%'
-    AND EXISTS (
-      SELECT 1
-      FROM unnest(ARRAY['SELECT','INSERT','UPDATE','DELETE','TRUNCATE','REFERENCES','TRIGGER']) AS t(verb)
-      WHERE has_table_privilege('authenticated', c.oid, verb)
-         OR has_table_privilege('anonymous', c.oid, verb)
-    );
-  IF offender IS NOT NULL THEN
-    RAISE EXCEPTION 'client role still has AIGAS table privileges: %', offender;
+  IF to_regrole('authenticated') IS NOT NULL THEN
+    SELECT string_agg(c.relname, ', ') INTO offender
+    FROM pg_class c
+    JOIN pg_namespace n ON n.oid = c.relnamespace
+    WHERE n.nspname = 'public' AND c.relkind = 'r' AND c.relname LIKE 'aigas\_%'
+      AND EXISTS (
+        SELECT 1
+        FROM unnest(ARRAY['SELECT','INSERT','UPDATE','DELETE','TRUNCATE','REFERENCES','TRIGGER']) AS t(verb)
+        WHERE has_table_privilege('authenticated', c.oid, verb)
+      );
+    IF offender IS NOT NULL THEN
+      RAISE EXCEPTION 'authenticated still has AIGAS table privileges: %', offender;
+    END IF;
   END IF;
 
-  SELECT string_agg(p.proname, ', ') INTO offender
-  FROM pg_proc p
-  JOIN pg_namespace n ON n.oid = p.pronamespace
-  WHERE n.nspname = 'public'
-    AND (
-      has_function_privilege('authenticated', p.oid, 'EXECUTE')
-      OR has_function_privilege('anonymous', p.oid, 'EXECUTE')
-    );
-  IF offender IS NOT NULL THEN
-    RAISE EXCEPTION 'client role can still execute public functions: %', offender;
+  IF to_regrole('anonymous') IS NOT NULL THEN
+    SELECT string_agg(c.relname, ', ') INTO offender
+    FROM pg_class c
+    JOIN pg_namespace n ON n.oid = c.relnamespace
+    WHERE n.nspname = 'public' AND c.relkind = 'r' AND c.relname LIKE 'aigas\_%'
+      AND EXISTS (
+        SELECT 1
+        FROM unnest(ARRAY['SELECT','INSERT','UPDATE','DELETE','TRUNCATE','REFERENCES','TRIGGER']) AS t(verb)
+        WHERE has_table_privilege('anonymous', c.oid, verb)
+      );
+    IF offender IS NOT NULL THEN
+      RAISE EXCEPTION 'anonymous still has AIGAS table privileges: %', offender;
+    END IF;
+  END IF;
+
+  IF to_regrole('authenticated') IS NOT NULL THEN
+    SELECT string_agg(p.proname, ', ') INTO offender
+    FROM pg_proc p
+    JOIN pg_namespace n ON n.oid = p.pronamespace
+    WHERE n.nspname = 'public'
+      AND has_function_privilege('authenticated', p.oid, 'EXECUTE');
+    IF offender IS NOT NULL THEN
+      RAISE EXCEPTION 'authenticated can still execute public functions: %', offender;
+    END IF;
+  END IF;
+
+  IF to_regrole('anonymous') IS NOT NULL THEN
+    SELECT string_agg(p.proname, ', ') INTO offender
+    FROM pg_proc p
+    JOIN pg_namespace n ON n.oid = p.pronamespace
+    WHERE n.nspname = 'public'
+      AND has_function_privilege('anonymous', p.oid, 'EXECUTE');
+    IF offender IS NOT NULL THEN
+      RAISE EXCEPTION 'anonymous can still execute public functions: %', offender;
+    END IF;
   END IF;
 
   IF EXISTS (
