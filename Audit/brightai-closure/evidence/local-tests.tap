@@ -1,0 +1,106 @@
+TAP version 13
+# Subtest: AU01 identity: EdDSA only, required claims, bounded age, issuer and UUID subject
+ok 1 - AU01 identity: EdDSA only, required claims, bounded age, issuer and UUID subject
+  ---
+  duration_ms: 8.437625
+  type: 'test'
+  ...
+# Subtest: AU01/AU02 auth setup: same-origin HTTPS JWKS only, no false readiness, bounded header
+ok 2 - AU01/AU02 auth setup: same-origin HTTPS JWKS only, no false readiness, bounded header
+  ---
+  duration_ms: 7.933208
+  type: 'test'
+  ...
+# Subtest: AU07 entitlement: purchase, trial, administrative grant and licence stay separate
+ok 3 - AU07 entitlement: purchase, trial, administrative grant and licence stay separate
+  ---
+  duration_ms: 0.62225
+  type: 'test'
+  ...
+# Subtest: AU06 policy: top-level mandatory deny cannot be softened by a lower scope
+ok 4 - AU06 policy: top-level mandatory deny cannot be softened by a lower scope
+  ---
+  duration_ms: 0.318542
+  type: 'test'
+  ...
+# Subtest: all five product entry paths preserve only canonical allowlisted destinations
+ok 5 - all five product entry paths preserve only canonical allowlisted destinations
+  ---
+  duration_ms: 1.193291
+  type: 'test'
+  ...
+# Subtest: external, encoded, recursive and non-product return paths cannot redirect
+ok 6 - external, encoded, recursive and non-product return paths cannot redirect
+  ---
+  duration_ms: 0.1195
+  type: 'test'
+  ...
+# Subtest: only a server-authorized product and canonical tenant selector produce a destination
+ok 7 - only a server-authorized product and canonical tenant selector produce a destination
+  ---
+  duration_ms: 0.275916
+  type: 'test'
+  ...
+# Subtest: Secure Chat remains fail-closed while no provider approval exists
+ok 8 - Secure Chat remains fail-closed while no provider approval exists
+  ---
+  duration_ms: 0.632834
+  type: 'test'
+  ...
+# Subtest: missing Kernel and Firewall integration refuses dispatch with a server error
+ok 9 - missing Kernel and Firewall integration refuses dispatch with a server error
+  ---
+  duration_ms: 0.214584
+  type: 'test'
+  ...
+# Subtest: baseline blocks synthetic secrets and redacts every outgoing history item
+ok 10 - baseline blocks synthetic secrets and redacts every outgoing history item
+  ---
+  duration_ms: 0.879333
+  type: 'test'
+  ...
+# Subtest: unapproved quota fails closed
+ok 11 - unapproved quota fails closed
+  ---
+  duration_ms: 0.077958
+  type: 'test'
+  ...
+# Subtest: configured message size accepts only bounded integer limits
+ok 12 - configured message size accepts only bounded integer limits
+  ---
+  duration_ms: 0.137709
+  type: 'test'
+  ...
+# Subtest: database setup errors are mapped without exposing SQL details
+ok 13 - database setup errors are mapped without exposing SQL details
+  ---
+  duration_ms: 9.947833
+  type: 'test'
+  ...
+# Subtest: P06-A trial: 48h window, state machine and commercial separation
+ok 14 - P06-A trial: 48h window, state machine and commercial separation
+  ---
+  duration_ms: 0.505375
+  type: 'test'
+  ...
+# Subtest: P06-A trial: the window starts at activated_at and expiry is derived, not trusted
+ok 15 - P06-A trial: the window starts at activated_at and expiry is derived, not trusted
+  ---
+  duration_ms: 3.304292
+  type: 'test'
+  ...
+# Subtest: P06-A trial: access projection never turns a request or approval into access
+ok 16 - P06-A trial: access projection never turns a request or approval into access
+  ---
+  duration_ms: 0.452917
+  type: 'test'
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 16
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 154.864167

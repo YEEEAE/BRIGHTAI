@@ -1,0 +1,13 @@
+{
+  "compared": 25,
+  "mismatches": [],
+  "not_in_staging_ledger": [
+    "0011_aigas_firewall_execution_binding.sql",
+    "0012_aigas_firewall_five_state_upgrade.sql",
+    "0013_aigas_ledger_five_state_and_chain_guard.sql",
+    "0019_aigas_runtime_least_privilege.sql",
+    "0030_aigas_trial_server_cycle.sql",
+    "0031_aigas_risk_treatment_runtime_lock.sql"
+  ],
+  "note": "Not-in-ledger includes upgrade-only files; do not apply all missing numbers."
+}
