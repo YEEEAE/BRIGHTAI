@@ -12,7 +12,7 @@ import { execFileSync } from 'node:child_process';
 import { describeSentryEventForTest } from '../src/server/observability/sentry.mjs';
 import { buildProductEvent } from '../src/server/observability/posthog.mjs';
 import { monitoringGates } from '../src/server/observability/config.mjs';
-import { describeUrlPolicy, safeAnalyticsReferrer, safeAnalyticsUrl } from '../src/server/observability/url-policy.mjs';
+import { describeUrlPolicy, safeAnalyticsPath, safeAnalyticsReferrer, safeAnalyticsUrl } from '../src/server/observability/url-policy.mjs';
 
 const MONITORING_KEYS = Object.keys(process.env).filter((key) => /^AIGAS_(MONITORING|SENTRY|POSTHOG|ANALYTICS)_/.test(key));
 for (const key of MONITORING_KEYS) delete process.env[key];
@@ -85,7 +85,10 @@ const negativeCases = {
   extra_property: buildProductEvent('login_flow_result', { status_code: 200, user_id: 'SYNTHETIC' }),
   unknown_section_value: buildProductEvent('portal_viewed', { section: 'SYNTHETIC' }),
   raw_query_in_page_url: safeAnalyticsUrl('https://brightai.live/docs/?q=SYNTHETIC&utm_source=newsletter#token=SYNTHETIC'),
+  private_path_in_page_url: safeAnalyticsUrl('https://brightai.live/auth/callback/SYNTHETIC_CODE?code=SYNTHETIC'),
+  private_path_in_referrer: safeAnalyticsReferrer('https://brightai.live/app/kernel/SYNTHETIC_ID', 'https://brightai.live'),
   unknown_referrer_host: safeAnalyticsReferrer('https://evil-brightai.live/?token=SYNTHETIC', 'https://brightai.live'),
+  encoded_public_path: safeAnalyticsPath('/docs/%2e%2e%2fSYNTHETIC'),
   unknown_code_falls_back_to_generic: describeSentryEventForTest({ code: 'SOMETHING_NEW', status: 503, surface: 'server', pathname: '/app/' })?.exception?.values?.[0]?.value,
 };
 
@@ -127,6 +130,12 @@ const preview = {
     redirects: 'rejected',
   },
   url_policy: describeUrlPolicy(),
+  ga4_page_contract: {
+    page_location: 'origin + sanitized pathname + allowlisted utm_* keys',
+    page_referrer: 'always present; allowlisted origin+path or explicit empty string',
+    private_paths: '/auth/*, /app/* and /api/* collapse to the section root',
+    note: 'An omitted page_referrer lets gtag fall back to document.referrer; the snippet now sends an explicit empty value.',
+  },
   sentry_payloads: sentryCases,
   posthog_payloads: posthogEvents,
   relay_bodies: relayBodies,

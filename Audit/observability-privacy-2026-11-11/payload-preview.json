@@ -1,0 +1,391 @@
+{
+  "generated_at_utc": "2026-11-11T03:14:21.776Z",
+  "sha": "4a5a085b0b5ed625215bae51419ae8b4d4dcec28",
+  "scope": "P13 payload preview — no transport, no external request, no secret read",
+  "gates": {
+    "approval": "AIGAS_MONITORING_APPROVAL_REF",
+    "environment": "AIGAS_MONITORING_ENVIRONMENT",
+    "sentryEnabled": "AIGAS_SENTRY_ENABLED",
+    "sentryApproval": "AIGAS_SENTRY_APPROVAL_REF",
+    "sentryOrigin": "AIGAS_SENTRY_APPROVED_ORIGIN",
+    "sentryBrowser": "AIGAS_SENTRY_BROWSER_ENABLED",
+    "sentryDsn": "AIGAS_SENTRY_DSN",
+    "sentryKillSwitch": "AIGAS_SENTRY_KILL_SWITCH",
+    "posthogEnabled": "AIGAS_POSTHOG_ENABLED",
+    "analyticsApproval": "AIGAS_ANALYTICS_APPROVAL_REF",
+    "posthogKey": "AIGAS_POSTHOG_API_KEY",
+    "posthogHost": "AIGAS_POSTHOG_HOST",
+    "posthogKillSwitch": "AIGAS_POSTHOG_KILL_SWITCH"
+  },
+  "synthetic_environment": "staging",
+  "synthetic_release": "4a5a085b0b5ed625215bae51419ae8b4d4dcec28",
+  "sentry_transport": {
+    "endpoint_shape": "https://<approved-origin>/api/<project-id>/envelope/",
+    "public_key_placement": "X-Sentry-Auth only; never an event field",
+    "timeout_ms": 2000,
+    "retries": 0,
+    "redirects": "rejected"
+  },
+  "posthog_transport": {
+    "endpoint_shape": "https://<approved-origin>/i/v0/e/",
+    "api_key_placement": "request body api_key; redacted in this preview",
+    "anonymous": {
+      "$process_person_profile": false,
+      "$geoip_disable": true
+    },
+    "distinct_id": "fresh random UUID per event",
+    "timeout_ms": 2000,
+    "retries": 0,
+    "redirects": "rejected"
+  },
+  "url_policy": {
+    "pageQueryAllowlist": [
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "utm_term",
+      "utm_content"
+    ],
+    "referrerHostAllowlist": [
+      "brightai.live",
+      "www.brightai.live"
+    ],
+    "privatePath": "collapsed to /auth/, /app/ or /api/",
+    "fragment": "dropped",
+    "unknownQuery": "dropped",
+    "unknownReferrer": "omitted (explicit empty page_referrer)"
+  },
+  "ga4_page_contract": {
+    "page_location": "origin + sanitized pathname + allowlisted utm_* keys",
+    "page_referrer": "always present; allowlisted origin+path or explicit empty string",
+    "private_paths": "/auth/*, /app/* and /api/* collapse to the section root",
+    "note": "An omitted page_referrer lets gtag fall back to document.referrer; the snippet now sends an explicit empty value."
+  },
+  "sentry_payloads": [
+    {
+      "label": "auth",
+      "envelope_event": {
+        "event_id": "41a95b42873f4508a22d76688f9af9e8",
+        "timestamp": 1794366861.775,
+        "platform": "node",
+        "level": "error",
+        "logger": "aigas.server",
+        "environment": "staging",
+        "transaction": "app.page",
+        "fingerprint": [
+          "aigas",
+          "server",
+          "AUTH_UNAVAILABLE"
+        ],
+        "tags": {
+          "surface": "server",
+          "status_code": "503",
+          "dependency": "temporarily unavailable",
+          "operation": "POST"
+        },
+        "exception": {
+          "values": [
+            {
+              "type": "AigasServerError",
+              "value": "AUTH_UNAVAILABLE"
+            }
+          ]
+        },
+        "release": "4a5a085b0b5ed625215bae51419ae8b4d4dcec28"
+      }
+    },
+    {
+      "label": "db",
+      "envelope_event": {
+        "event_id": "55565e8507b542fab83f4cecaf03fe13",
+        "timestamp": 1794366861.775,
+        "platform": "node",
+        "level": "error",
+        "logger": "aigas.server",
+        "environment": "staging",
+        "transaction": "app.api.kernel",
+        "fingerprint": [
+          "aigas",
+          "kernel",
+          "RLS_DENIED"
+        ],
+        "tags": {
+          "surface": "kernel",
+          "status_code": "503",
+          "dependency": "temporarily unavailable",
+          "operation": "POST"
+        },
+        "exception": {
+          "values": [
+            {
+              "type": "AigasKernelError",
+              "value": "RLS_DENIED"
+            }
+          ]
+        },
+        "release": "4a5a085b0b5ed625215bae51419ae8b4d4dcec28"
+      }
+    },
+    {
+      "label": "ai",
+      "envelope_event": {
+        "event_id": "f681e4c37423440fa78f2f1a7fa53f98",
+        "timestamp": 1794366861.775,
+        "platform": "node",
+        "level": "error",
+        "logger": "aigas.server",
+        "environment": "staging",
+        "transaction": "app.api.secure-chat",
+        "fingerprint": [
+          "aigas",
+          "secure-chat",
+          "PROVIDER_TIMEOUT"
+        ],
+        "tags": {
+          "surface": "secure-chat",
+          "status_code": "504",
+          "dependency": "temporarily unavailable",
+          "operation": "POST"
+        },
+        "exception": {
+          "values": [
+            {
+              "type": "AigasSecureChatError",
+              "value": "PROVIDER_TIMEOUT"
+            }
+          ]
+        },
+        "release": "4a5a085b0b5ed625215bae51419ae8b4d4dcec28"
+      }
+    },
+    {
+      "label": "ledger",
+      "envelope_event": {
+        "event_id": "e80414913a4b4a8a8037f43a8e81debe",
+        "timestamp": 1794366861.775,
+        "platform": "node",
+        "level": "error",
+        "logger": "aigas.server",
+        "environment": "staging",
+        "transaction": "app.api.ledger.verify",
+        "fingerprint": [
+          "aigas",
+          "ledger",
+          "LEDGER_VERIFICATION_MISMATCH"
+        ],
+        "tags": {
+          "surface": "ledger",
+          "status_code": "500",
+          "dependency": "temporarily unavailable",
+          "operation": "POST"
+        },
+        "exception": {
+          "values": [
+            {
+              "type": "AigasLedgerError",
+              "value": "LEDGER_VERIFICATION_MISMATCH"
+            }
+          ]
+        },
+        "release": "4a5a085b0b5ed625215bae51419ae8b4d4dcec28"
+      }
+    },
+    {
+      "label": "product",
+      "envelope_event": {
+        "event_id": "e581ecc9a9f5407181233025400bbd3a",
+        "timestamp": 1794366861.775,
+        "platform": "node",
+        "level": "error",
+        "logger": "aigas.server",
+        "environment": "staging",
+        "transaction": "app.api.risk-engine",
+        "fingerprint": [
+          "aigas",
+          "risk-engine",
+          "UNEXPECTED_FAILURE"
+        ],
+        "tags": {
+          "surface": "risk-engine",
+          "status_code": "503",
+          "dependency": "temporarily unavailable",
+          "operation": "POST"
+        },
+        "exception": {
+          "values": [
+            {
+              "type": "AigasRiskEngineError",
+              "value": "UNEXPECTED_FAILURE"
+            }
+          ]
+        },
+        "release": "4a5a085b0b5ed625215bae51419ae8b4d4dcec28"
+      }
+    },
+    {
+      "label": "browser-auth",
+      "envelope_event": {
+        "event_id": "a53d3a90c70c48d0acdbedaa9eb72bb4",
+        "timestamp": 1794366861.775,
+        "platform": "javascript",
+        "level": "warning",
+        "logger": "aigas.server",
+        "environment": "staging",
+        "transaction": "auth.page",
+        "fingerprint": [
+          "aigas",
+          "browser",
+          "CLIENT_AUTH_FAILURE"
+        ],
+        "tags": {
+          "surface": "browser",
+          "status_code": "401",
+          "dependency": "temporarily unavailable",
+          "operation": "POST"
+        },
+        "exception": {
+          "values": [
+            {
+              "type": "AigasBrowserError",
+              "value": "CLIENT_AUTH_FAILURE"
+            }
+          ]
+        },
+        "release": "4a5a085b0b5ed625215bae51419ae8b4d4dcec28"
+      }
+    }
+  ],
+  "posthog_payloads": [
+    {
+      "input": {
+        "name": "portal_viewed",
+        "properties": {
+          "section": "portal"
+        }
+      },
+      "payload": {
+        "event": "portal_viewed",
+        "properties": {
+          "section": "portal"
+        }
+      }
+    },
+    {
+      "input": {
+        "name": "product_opened",
+        "properties": {
+          "product": "kernel"
+        }
+      },
+      "payload": {
+        "event": "product_opened",
+        "properties": {
+          "product": "kernel"
+        }
+      }
+    },
+    {
+      "input": {
+        "name": "login_flow_result",
+        "properties": {
+          "status_code": 200
+        }
+      },
+      "payload": {
+        "event": "login_flow_result",
+        "properties": {
+          "status_code": 200
+        }
+      }
+    },
+    {
+      "input": {
+        "name": "login_flow_result",
+        "properties": {
+          "status_code": 409
+        }
+      },
+      "payload": {
+        "event": "login_flow_result",
+        "properties": {
+          "status_code": 409
+        }
+      }
+    },
+    {
+      "input": {
+        "name": "policy_action_result",
+        "properties": {
+          "action_category": "decision",
+          "status_code": 200
+        }
+      },
+      "payload": {
+        "event": "policy_action_result",
+        "properties": {
+          "action_category": "decision",
+          "status_code": 200
+        }
+      }
+    },
+    {
+      "input": {
+        "name": "quota_exhausted",
+        "properties": {
+          "product": "secure-chat"
+        }
+      },
+      "payload": {
+        "event": "quota_exhausted",
+        "properties": {
+          "product": "secure-chat"
+        }
+      }
+    }
+  ],
+  "relay_bodies": [
+    {
+      "kind": "login_flow_result",
+      "section": "auth",
+      "status_code": 401
+    },
+    {
+      "kind": "client_error",
+      "section": "kernel"
+    },
+    {
+      "kind": "client_rejection",
+      "section": "portal"
+    }
+  ],
+  "negative_cases": {
+    "unknown_product_event": null,
+    "prototype_event_name": null,
+    "extra_property": null,
+    "unknown_section_value": null,
+    "raw_query_in_page_url": "https://brightai.live/docs/?utm_source=newsletter",
+    "private_path_in_page_url": "https://brightai.live/auth/",
+    "private_path_in_referrer": "https://brightai.live/app/",
+    "unknown_referrer_host": null,
+    "encoded_public_path": "/"
+  },
+  "inventory": {
+    "sentry_organization": "659ec3bf0cec",
+    "sentry_region": "https://us.sentry.io",
+    "sentry_projects": 0,
+    "posthog_organization": "01a1bd00-d4be-0000-c380-301b9d020f7c",
+    "posthog_projects": 1,
+    "posthog_project_id": 720936,
+    "posthog_project_limit": 1,
+    "posthog_plan": "free",
+    "posthog_events_usage": 0,
+    "posthog_events_limit": 1000000,
+    "note": "Read through MCP on 2026-11-10. No destination is approved; no project, key, setting or event was changed."
+  },
+  "still_requires_owner_authorization": [
+    "choose or upgrade a destination project for each layer",
+    "approve the payload in this file",
+    "provide the named secrets through the approved secret store",
+    "authorize one synthetic send per layer to prove ingestion"
+  ]
+}

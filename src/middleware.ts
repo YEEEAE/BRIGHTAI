@@ -40,7 +40,7 @@ const GA_COLLECT_ORIGINS = [
 ];
 const INLINE_SCRIPT_HASHES = [
   // <script is:inline> GA4 init block, BaseLayout.astro
-  'sha256-HJkD1lF4177kuaga0wHI556h4MfrYdnXNWbSalg2REQ=',
+  'sha256-ZLgnDWpa8Ttk/2xqB5rLoL1DBUmdV0MBJR1rPJExu0o=',
   // <script is:inline>document.documentElement.classList.add('js');</script>
   'sha256-/x7W7R75k8Roq0WaVRQX9blP4OufE5xbAdzklGxsgpw=',
 ];

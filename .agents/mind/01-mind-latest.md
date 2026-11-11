@@ -24,7 +24,7 @@
 - 2026-11-10 VERIFIED LOCAL (P04): HEAD `655a8b9` (ملفاتP04 مطابقة للمرجع `7b1f533`)؛ `/healthz/` عام 200/503 يفحص DB/schema/auth/portal بلا أسرار، و`dist/server/version.json`+readback يربطان service/deploy/SHA/artifact مع `consistent`؛ `healthCheckPath=/healthz/`؛ دليل `Audit/p04-node-ssr-2026-11-10/REPORT.md`.
 - 2026-11-10 VERIFIED LOCAL+LIVE (P05): HEAD `7954bb6f` + working tree؛ إصلاح قفل الفاعل في `manageMember`/`policies` عبر `aigas_lock_member` ورفض self-role/revoke مبكرًا وتغليف 42501 في `createWorkspace`؛ contracts42/42 وbuild55 PASS؛ live Auth staging PASS (signup/login/restore/sign-out؛ JWT EdDSA/iss/ttl900؛ 5 هويات اصطناعية/0 جلسات/0 tenants)؛ دليل `Audit/p05-auth-identity-2026-11-10/REPORT.md`.
 - 2026-11-10 STAGING FREE (Render): `brightai-staging-node`=`srv-dbpj8jajnfac739je6lg` خطة free/oregon، auto-deploy من `main`، بلا دومين؛ كشف أول نشر أن `scripts/server.mjs` يستمع على loopback ⇒ صار الافتراضي `0.0.0.0`. الخدمة المرجعية `srv-d7m5bcjbc2fs73826v20` ليست في workspace الـCLI (`tea-dade102fngtc739064v0`).
-- 2026-11-10 PARTIAL (P13): HEAD `c5ef5547` + working tree؛ اختبارات المحولات 16/16 محليًا؛ مسودة URL غير معتمدة وغير كافية، وGA4 network غير مختبر؛ لا وجهة أو ingestion؛ `Audit/p13-observability-2026-11-10/REPORT.md`.
+- 2026-11-10 PARTIAL (P13): HEAD `c5ef5547` + working tree؛ اختبارات المحولات 16/16 محليًا؛ مسودة URL غير معتمدة؛ لا وجهة أو ingestion؛ `Audit/p13-observability-2026-11-10/REPORT.md`؛ 2026-11-11: ثغرة `page_referrer` وطي المسارات الخاصة أُغلقتا (18/18) وبقيت الوجهة/canary مفتوحة.
 
 ## Open Issues / Blockers
 - 2026-11-11 T05: المالكحددBRIGHT AI/5طلبات+30000توكنيوميًاللمؤسسة/48h؛وثيقةخصوصيةغائبة؛exacttenantغيرموجودباتصال.envالمقروء؛registryفارغوAIGAS_SCغيرمهيأ؛Identity/DBAللنطاقوAI Systems/Privacyلاعتمادالموصل؛InternalNOTREADY/PublicCommercialNO-GO.
@@ -49,6 +49,12 @@
 - 2026-11-10 OPEN: Bootstrap/RLS وtrial/purge وموافقات المزودين والـUAT ما زالت مفتوحة.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-11] — E09: إغلاق تسريب URL/referrer في GA4
+- **تم:** `page_referrer` صريح (`''` عند الرفض) بدل الحذف الذي يعيد `document.referrer` الخام؛ طي `/auth|/app|/api/*` إلى جذر القسم ورفض المسارات المُرمّزة؛ تصحيح hash CSP القديم.
+- **التحقق:** PASS محلي بلا شبكة — 18/18 (كان 16)؛ معاينة 6/6+6/6 و10 حالات سلبية؛ اختبار الهاش يفشل على المصدر السابق.
+- **الحالة:** PARTIAL — canary/ingestion/إعدادات PostHog/التنبيه NOT RUN؛ تحتاج وجهة وتفويض إرسال.
+- **ملفات:** `Audit/observability-privacy-2026-11-11/REPORT.md`، `src/server/observability/url-policy.mjs`، `docs/MONITORING-AND-ANALYTICS-WIRING.md`.
 
 ## [2026-11-11] — T05: سياسة Chat دون فتح مزود غير معتمد
 - **تم:** استبدالقفلالتكاملالدائمبقرارKernel/Firewallوسياقمنقحومراجعةحدالبايتات؛جاهزيةإرسالمشتقة،دونتغييرالواجهةأوenv.

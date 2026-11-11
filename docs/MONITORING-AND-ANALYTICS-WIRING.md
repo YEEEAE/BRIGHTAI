@@ -1,6 +1,8 @@
 # المراقبة والتحليلات — ربط محلي اختياري
 
 > **تصحيح P13:** سياسة URL أدناه مسودة غير معتمدة وغير كافية لإثبات الخصوصية: مسارات وقيم UTM حرة قد تحمل بيانات حساسة، ولا يثبت حذف `page_referrer` منع إرسال GA4 للقيمة الافتراضية. لم يُختبر SDK أو الشبكة بمتصفح؛ لا تعتمد ادعاءات منع URL/referrer أدناه إلى حين P21 واختبار النقل الفعلي.
+>
+> **تحديث 2026-11-11 (خصوصية URL):** أُغلق ثغرة الرجوع الضمني: كان حقل `page_referrer` يُحذف عند رفض المُحيل، فيعود `gtag` إلى `document.referrer` الخام — أي القيمة نفسها التي تمنعها السياسة. الآن يُرسل الحقل دائمًا: أصل+مسار مسموح أو سلسلة فارغة صريحة. كما تُطوى المسارات الخاصة (`/auth/*`, `/app/*`, `/api/*`) إلى جذر القسم قبل الإرسال، لأن رمز callback أو معرف سجل قد يكون في مقطع مسار لا في query. صُحح hash الـCSP القديم للـsnippet وأُضيف اختبار يمنع انحرافه. الحمولة/الوجهة/الاستقبال لم تُختبر شبكيًا بعد.
 
 > تحديث 2026-11-10 (P13)؛ أساس HEAD `c5ef5547143c4acb35b568a350e9ae4aa019a184` (`main`، شجرة عمل معدّلة محليًا). المرجع التاريخي `00d6de9` لم يعد أساس القراءة.
 > `SOURCE_PRESENT=YES`؛ `SCHEMA_PRESENT=N/A` للربط؛ `CONFIGURED=NOT_VERIFIED` (لا وجهة معتمدة، لا أسرار)؛ `RUNTIME_VERIFIED=NO` (لا إرسال خارجي)؛ `ADAPTER_VERIFIED=LOCAL PASS`؛ `APPROVED=NO`.
@@ -11,7 +13,7 @@
 | البند | الحالة | الدليل |
 |---|---|---|
 | بوابات الطبقتين وكيل الإيقاف | LOCAL PASS | `tests/observability.test.mjs` (15/15) |
-| منع URL/query/fragment/referrer غير المعتمد | LOCAL PASS — قائمة سماح واحدة | `src/server/observability/url-policy.mjs` + اختباراتها |
+| منع URL/query/fragment/referrer غير المعتمد | LOCAL PASS — قائمة سماح واحدة + طي المسارات الخاصة + `page_referrer` فارغ صريح | `src/server/observability/url-policy.mjs` + `tests/observability.test.mjs` (18/18) |
 | الحمولة: لا chat/body/token/SQL/docs ولا stack أو replay | LOCAL PASS | معاينة `Audit/p13-observability-2026-11-10/payload-preview.json` |
 | استقبال الواجهة والرفض | LOCAL PASS | 403/415/413/400/429 على `127.0.0.1` |
 | الوجهة والاعتماد والتكلفة | BLOCKED | لا مشروع Sentry، ومشروع PostHog الوحيد بلغ حد الخطة |
@@ -59,6 +61,22 @@
 
 لا تُرقّى أي خطة تلقائيًا، ولا يُنشأ مشروع أو مفتاح أو إعداد قبل تفويض هذه العملية نفسها. حدّ الخطة الحالي يجعل «مشروع PostHog staging مستقل» ترقيةً مدفوعة، لا خطوة مجانية.
 
+### 2.2 توصية محلية للاعتماد — بلا ترقية مدفوعة (غير معتمدة)
+
+هذه توصية تنفيذية، ليست قرارًا: كل بند يحتاج توقيع صاحب السلطة قبل أي إرسال.
+
+| البند | التوصية | حالة الاعتماد |
+|---|---|---|
+| وجهة الأخطاء | إنشاء مشروع Sentry واحد `brightai-staging` داخل المنظمة `659ec3bf0cec` (الخطة المجانية تتسع لمشروع)، ثم DSN عبر Secret | `NOT APPROVED` — إنشاء مشروع خارجي يحتاج تفويضًا |
+| وجهة التحليلات | إعادة استخدام المشروع `720936` مع `environment` ثابت لكل بيئة بدل مشروع ثانٍ (لا ترقية مدفوعة) | `NOT APPROVED` — خلط البيئات قرار مالك |
+| إعدادات PostHog الإلزامية | `anonymize_ips=true`، `capture_console_log_opt_in=false`، `capture_performance_opt_in=false`، `session_recording_opt_in=false`، `autocapture_opt_out=true` | `NOT APPROVED` — تغيير إعداد حساب خارجي |
+| الاحتفاظ | 30 يومًا للتحليلات و90 يومًا للأخطاء كسقف أدنى متوافق مع التحقيق، بلا أرشفة طويلة | `NOT APPROVED` |
+| allowlist الأحداث | الخمسة الحالية فقط (`portal_viewed`, `login_flow_result`, `product_opened`, `policy_action_result`, `quota_exhausted`) | مطابق للمصدر؛ الاعتماد `NOT APPROVED` |
+| قناة التنبيه | `#ops-alerts` + بريد on-call، مع Incident commander وrollback owner بالاسم | `NOT ASSIGNED` — يحتاج قرارات 96/97 |
+| canary | حدث واحد لكل طبقة من بيئة staging مع SHA كامل، ثم إثبات `event_id`/`distinct_id` في المشروع الصحيح | `NOT RUN` — يحتاج تفويض إرسال |
+
+فشل الوجهة: `send` يعيد `false` بعد 2 ثانية بلا retry أو throw، فلا تتغير استجابة المنتج. تعطيل الطبقة وحدها عبر kill switch المعني مع بقاء المراقبة المحلية (logs/healthz) فعّالة.
+
 الإيقاف: ضبط kill switch المعني ثم إعادة تشغيل الخدمة بالطريقة المعتمدة. يعاد فحص البوابات عند كل إرسال؛ تبويب قديم لا يستطيع تجاوز إيقاف الخادم. لا ادعاء أن تغيير متغير في Render يغيّر بيئة process قائم فورًا؛ لا يمكن سحب حدث أُرسل أو طلب قيد التنفيذ.
 
 ## 3. عقد البيانات — تنقيح قبل الإرسال
@@ -93,15 +111,17 @@
 
 ### عقد URL وreferrer — قائمة سماح واحدة
 
-`src/server/observability/url-policy.mjs` هو التمثيل الوحيد المسموح لقناة ترسل عنوانًا. القاعدة: إمّا أصل ومسار مع مفاتيح استعلام مسموحة، أو لا يُرسل الحقل. لا يوجد فرع «نحذف q/from ونمرّر الباقي».
+`src/server/observability/url-policy.mjs` هو التمثيل الوحيد المسموح لقناة ترسل عنوانًا. القاعدة: إمّا أصل ومسار مسموحان مع مفاتيح استعلام مسموحة، أو لا يُرسل الحقل. لا يوجد فرع «نحذف q/from ونمرّر الباقي».
 
 | الحقل | المسموح | المرفوض |
 |---|---|---|
-| `page_location` | `origin + pathname` + `utm_source/medium/campaign/term/content` بقيمة `[A-Za-z0-9._~-]{1,64}` | أي مفتاح آخر، fragment، credentials، non-http(s) |
-| `page_referrer` | نفس الأصل، أو `brightai.live`/`www.brightai.live`، ثم `origin + pathname` فقط | أي مضيف آخر يُحذف الحقل بالكامل |
+| `page_location` | `origin + pathname` + `utm_source/medium/campaign/term/content` بقيمة `[A-Za-z0-9._~-]{1,64}`؛ المسارات الخاصة تُطوى إلى `/auth/` أو `/app/` أو `/api/` | أي مفتاح آخر، fragment، credentials، non-http(s)، مسار خاص مفصّل، مسار مُرمّز أو أطول من 200 محرف (يُستبدل بـ`/`) |
+| `page_referrer` | نفس الأصل، أو `brightai.live`/`www.brightai.live`، ثم `origin + pathname` (بنفس قاعدة الطي) | أي مضيف آخر ⇒ سلسلة فارغة صريحة `""`؛ لا يُحذف الحقل أبدًا |
 | Sentry/PostHog | لا حقل URL إطلاقًا؛ route label ثابت من `redact.mjs` | query، fragment، ID، بريد، token |
 
-ملاك القرار: P21 (عقد خصوصية URL). لم يُنتج P21 وثيقة بعد؛ القائمة أعلاه هي الافتراضي المحلي، وتوسيعها قرار خصوصية لا تغيير كود. `BaseLayout` يطبّق نفس القائمة على وسم GA4 العام، و`tests/observability.test.mjs` يثبت السلوك.
+**سبب إلزام الحقل الفارغ:** حذف `page_referrer` لا يعني «بلا مُحيل» في GA4؛ بل يجعل gtag يستخدم `document.referrer` الخام بما فيه query. لذلك يُرسل `page_referrer: ''` عند الرفض. هذا عقد محلي مثبت باختبار على الـsnippet، وليس إثباتًا لسلوك شبكة GA4 — يبقى إثباته ضمن O8.
+
+ملاك القرار: P21 (عقد خصوصية URL). لم يُنتج P21 وثيقة بعد؛ القائمة أعلاه هي الافتراضي المحلي، وتوسيعها قرار خصوصية لا تغيير كود. `BaseLayout` يطبّق نفس القائمة على وسم GA4 العام، و`tests/observability.test.mjs` يثبت السلوك (18/18 محليًا، منها اختبار تطابق hash الـCSP).
 
 ### نقطة استقبال الواجهة
 
@@ -145,14 +165,17 @@ node --import ./tests/helpers/no-egress.mjs scripts/preview-observability-payloa
 
 النتيجة: 15/15 PASS، وملف معاينة `Audit/p13-observability-2026-11-10/payload-preview.json` يحتوي 6/6 حمولات Sentry و6/6 أحداث PostHog و7 حالات سلبية موثقة. `fetch` مستبدل والبيئة اصطناعية، ولم يُقرأ أي ملف أسرار. هذه فحوص محولات فقط؛ لا تستبدل O6–O8 أو تثبت SDK/تنبيه Live.
 
+**تحديث 2026-11-11:** `18/18 PASS` على نفس الأمر، ومعاينة جديدة `Audit/observability-privacy-2026-11-11/payload-preview.json` (6/6 Sentry، 6/6 PostHog، 10 حالات سلبية: 5 `null` و5 منقّحة/عامة بالتصميم). أُضيفت حالات طي المسار الخاص ومنع المسار المُرمّز، واختبار تطابق hash الـCSP. الشبكة والوجهة وcanary ما زالت `NOT RUN`.
+
 ## 6. مصفوفة الحالة النهائية
 
 | النطاق | SOURCE_PRESENT | SCHEMA_PRESENT | CONFIGURED | LOCAL_ADAPTER | RUNTIME_VERIFIED | APPROVED |
 |---|---|---|---|---|---|---|
-| Sentry server + browser relay | YES | N/A | NOT_VERIFIED | PASS (15/15 tests) | NO | NO |
-| PostHog explicit events + login result | YES | N/A | NOT_VERIFIED | PASS (15/15 tests) | NO | NO |
-| URL/referrer allowlist | YES | N/A | NOT_VERIFIED (P21 بلا وثيقة) | PASS | NOT VERIFIED خارجيًا | NO |
+| Sentry server + browser relay | YES | N/A | NOT_VERIFIED | PASS (18/18 tests) | NO | NO |
+| PostHog explicit events + login result | YES | N/A | NOT_VERIFIED | PASS (18/18 tests) | NO | NO |
+| URL/referrer allowlist | YES | N/A | NOT_VERIFIED (P21 بلا وثيقة) | PASS — طي المسارات الخاصة + `page_referrer` فارغ صريح + hash CSP | NOT VERIFIED خارجيًا | NO |
 | Alert/on-call plan | YES (مسودة) | N/A | NO | N/A | NO | NO |
+| canary/ingestion | N/A | N/A | NO | N/A | NO — يحتاج تفويض إرسال ووجهة | NO |
 | مشروعات/retention وقنوات خارجية | N/A | N/A | NOT_VERIFIED | N/A | NO | NO |
 
 `CONFIGURED` يبقى `NOT_VERIFIED` لأن كل الاختبارات استخدمت بيئة اصطناعية وقيمًا وهمية؛ لا مشروع أو DSN أو مفتاح حقيقي. `RUNTIME_VERIFIED=NO` يعني عدم وجود دليل ingestion، وليس صفر أحداث: الإرسال لم يُفعّل أصلًا، فلا يجوز استنتاج «لا أحداث» من تعطيل البوابة. إغلاق التنبيهات وack وrunbook مسؤولية P22.

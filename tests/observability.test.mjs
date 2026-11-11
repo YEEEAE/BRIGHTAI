@@ -4,12 +4,13 @@
 import { after, beforeEach, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import vm from 'node:vm';
 import { posthogSettings, sentrySettings, parseSentryDsn } from '../src/server/observability/config.mjs';
 import { captureIntegritySignal, captureServerFailure, shouldCaptureFailure } from '../src/server/observability/sentry.mjs';
 import { buildProductEvent, captureProductEvent, productEventNames } from '../src/server/observability/posthog.mjs';
 import { safeCode, safeRoute, safeSection, sectionFor } from '../src/server/observability/redact.mjs';
-import { describeUrlPolicy, safeAnalyticsReferrer, safeAnalyticsUrl } from '../src/server/observability/url-policy.mjs';
+import { describeUrlPolicy, safeAnalyticsPath, safeAnalyticsReferrer, safeAnalyticsUrl } from '../src/server/observability/url-policy.mjs';
 
 const ENV_KEYS = [
   'AIGAS_MONITORING_APPROVAL_REF',
@@ -322,6 +323,23 @@ test('URL/referrer policy drops a free query and an unknown referrer instead of 
   assert.equal(safeAnalyticsReferrer('https://app.brightai.live/x?y=1', 'https://app.brightai.live'), 'https://app.brightai.live/x');
 });
 
+test('a private surface never forwards a path segment, only its section root', () => {
+  // A callback code, invitation token or record id can sit in a path segment.
+  assert.equal(safeAnalyticsPath('/auth/callback/SYNTHETIC_CODE'), '/auth/');
+  assert.equal(safeAnalyticsPath('/auth'), '/auth/');
+  assert.equal(safeAnalyticsPath('/app/kernel/0b6f8c2e-1111-4222-8333-444455556666'), '/app/');
+  assert.equal(safeAnalyticsPath('/app'), '/app/');
+  assert.equal(safeAnalyticsPath('/api/ledger/verify'), '/api/');
+  // A public path is forwarded only while short, plain and unencoded.
+  assert.equal(safeAnalyticsPath('/docs/'), '/docs/');
+  assert.equal(safeAnalyticsPath('/docs/%2e%2e%2fsecret'), '/');
+  assert.equal(safeAnalyticsPath('/' + 'a'.repeat(201)), '/');
+  assert.equal(safeAnalyticsPath('https://brightai.live/docs/'), '/');
+
+  assert.equal(safeAnalyticsUrl('https://brightai.live/auth/callback/SYNTHETIC_CODE?code=SYNTHETIC'), 'https://brightai.live/auth/');
+  assert.equal(safeAnalyticsReferrer('https://brightai.live/app/kernel/SYNTHETIC_ID', 'https://brightai.live'), 'https://brightai.live/app/');
+});
+
 test('the shipped GA4 snippet obeys the same allowlist as the policy module', () => {
   const layout = readFileSync(new URL('../src/layouts/BaseLayout.astro', import.meta.url), 'utf8');
   const inline = layout.match(/<script is:inline>([\s\S]*?)<\/script>/)?.[1];
@@ -340,13 +358,31 @@ test('the shipped GA4 snippet obeys the same allowlist as the policy module', ()
   }
 
   const leaked = analyticsPage('https://brightai.live/docs/?q=SYNTHETIC&token=SYNTHETIC&utm_source=newsletter#fragment', 'https://www.google.com/search?q=SYNTHETIC');
-  assert.deepEqual(leaked, { page_location: 'https://brightai.live/docs/?utm_source=newsletter' });
+  // page_referrer must be present and empty: omitting it lets gtag fall back to
+  // the raw document.referrer this policy exists to drop.
+  assert.deepEqual(leaked, { page_location: 'https://brightai.live/docs/?utm_source=newsletter', page_referrer: '' });
   assert.equal(JSON.stringify(leaked).includes('SYNTHETIC'), false);
 
-  assert.deepEqual(analyticsPage('https://brightai.live/pricing/?utm_medium=email&email=a@b.test', ''), { page_location: 'https://brightai.live/pricing/?utm_medium=email' });
+  assert.deepEqual(analyticsPage('https://brightai.live/pricing/?utm_medium=email&email=a@b.test', ''), { page_location: 'https://brightai.live/pricing/?utm_medium=email', page_referrer: '' });
   assert.deepEqual(analyticsPage('https://brightai.live/auth/?token=SYNTHETIC#x', 'https://brightai.live/docs/?q=SYNTHETIC'), {
     page_location: 'https://brightai.live/auth/',
     page_referrer: 'https://brightai.live/docs/',
   });
-  assert.deepEqual(analyticsPage('https://brightai.live/', 'https://evil-brightai.live/?token=SYNTHETIC'), { page_location: 'https://brightai.live/' });
+  assert.deepEqual(analyticsPage('https://brightai.live/', 'https://evil-brightai.live/?token=SYNTHETIC'), { page_location: 'https://brightai.live/', page_referrer: '' });
+  // A private page or referrer path collapses before it reaches GA4.
+  assert.deepEqual(analyticsPage('https://brightai.live/app/kernel/SYNTHETIC_ID', 'https://brightai.live/auth/callback/SYNTHETIC_CODE'), {
+    page_location: 'https://brightai.live/app/',
+    page_referrer: 'https://brightai.live/auth/',
+  });
+});
+
+test('the CSP hash of the shipped GA4 snippet matches the middleware allowlist', () => {
+  // A stale hash silently disables analytics (or reports a violation) the day
+  // CSP enforcement is turned on, so the pair must move together.
+  const layout = readFileSync(new URL('../src/layouts/BaseLayout.astro', import.meta.url), 'utf8');
+  const inline = layout.match(/<script is:inline>([\s\S]*?)<\/script>/)?.[1];
+  assert.ok(inline, 'GA4 inline snippet must exist');
+  const digest = `sha256-${createHash('sha256').update(inline).digest('base64')}`;
+  const middleware = readFileSync(new URL('../src/middleware.ts', import.meta.url), 'utf8');
+  assert.ok(middleware.includes(digest), `middleware CSP must list ${digest}`);
 });

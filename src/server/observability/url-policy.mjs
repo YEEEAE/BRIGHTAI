@@ -45,12 +45,33 @@ function bareOrigin(url) {
   return `${url.protocol}//${url.host}`;
 }
 
+// Private surfaces never forward a pathname: an auth callback code, an
+// invitation token, a tenant slug or a record id can live in a path segment,
+// not only in the query. They collapse to the same fixed section root that
+// Sentry/PostHog already use as a route label.
+const PRIVATE_PATH_ROOTS = Object.freeze([
+  ['/auth', '/auth/'],
+  ['/app', '/app/'],
+  ['/api', '/api/'],
+]);
+
+// A public path is forwarded whole, but only while it is short, plain and free
+// of percent-encoded bytes that could carry an identifier. Anything else falls
+// back to the site root instead of being passed through.
+export function safeAnalyticsPath(pathname) {
+  if (typeof pathname !== 'string' || pathname.charAt(0) !== '/') return '/';
+  for (const [root, label] of PRIVATE_PATH_ROOTS) {
+    if (pathname === root || pathname.startsWith(`${root}/`)) return label;
+  }
+  return pathname.length <= 200 && /^\/[A-Za-z0-9\-._~/]*$/.test(pathname) ? pathname : '/';
+}
+
 // Allowed for a page location: origin + pathname + allowlisted campaign keys.
 // `null` means "omit the field", never "send the raw value as a fallback".
 export function safeAnalyticsUrl(value, base) {
   const url = parse(value, base);
   if (!url) return null;
-  const out = new URL(`${bareOrigin(url)}${url.pathname}`);
+  const out = new URL(`${bareOrigin(url)}${safeAnalyticsPath(url.pathname)}`);
   for (const key of PAGE_QUERY_ALLOWLIST) {
     const candidate = url.searchParams.get(key);
     if (candidate !== null && QUERY_VALUE.test(candidate)) out.searchParams.set(key, candidate);
@@ -59,7 +80,8 @@ export function safeAnalyticsUrl(value, base) {
 }
 
 // Allowed for a referrer: same origin, or an explicitly listed external host,
-// and then only origin + pathname. Query and fragment are never forwarded.
+// and then only origin + pathname. Query and fragment are never forwarded, and
+// a private pathname collapses exactly like a page location.
 export function safeAnalyticsReferrer(value, selfOrigin) {
   const url = parse(value, selfOrigin);
   if (!url) return null;
@@ -67,7 +89,7 @@ export function safeAnalyticsReferrer(value, selfOrigin) {
   try { self = selfOrigin ? new URL(selfOrigin) : null; } catch { self = null; }
   const sameOrigin = Boolean(self) && bareOrigin(url) === bareOrigin(self);
   if (!sameOrigin && !REFERRER_HOST_ALLOWLIST.includes(url.hostname.toLowerCase())) return null;
-  return `${bareOrigin(url)}${url.pathname}`;
+  return `${bareOrigin(url)}${safeAnalyticsPath(url.pathname)}`;
 }
 
 // Read-only description for tests, docs and the payload preview. It exposes the
@@ -76,8 +98,9 @@ export function describeUrlPolicy() {
   return {
     pageQueryAllowlist: [...PAGE_QUERY_ALLOWLIST],
     referrerHostAllowlist: [...REFERRER_HOST_ALLOWLIST],
+    privatePath: 'collapsed to /auth/, /app/ or /api/',
     fragment: 'dropped',
     unknownQuery: 'dropped',
-    unknownReferrer: 'omitted',
+    unknownReferrer: 'omitted (explicit empty page_referrer)',
   };
 }
