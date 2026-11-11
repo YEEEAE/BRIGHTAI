@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: policy inspects and redacts every role while preserving immutable context
+ok 1 - policy inspects and redacts every role while preserving immutable context
+  ---
+  duration_ms: 11.584083
+  type: 'test'
+  ...
+# Subtest: history deny, escalation, warning, secret and missing allow all stop egress
+ok 2 - history deny, escalation, warning, secret and missing allow all stop egress
+  ---
+  duration_ms: 18.977583
+  type: 'test'
+  ...
+# Subtest: redaction cannot become an implicit allow or expose a hidden deny
+ok 3 - redaction cannot become an implicit allow or expose a hidden deny
+  ---
+  duration_ms: 0.705209
+  type: 'test'
+  ...
+# Subtest: expired and unavailable model approval fail before any fetch
+ok 4 - expired and unavailable model approval fail before any fetch
+  ---
+  duration_ms: 0.943958
+  type: 'test'
+  ...
+# Subtest: Secure Chat remains fail-closed while no provider approval exists
+ok 5 - Secure Chat remains fail-closed while no provider approval exists
+  ---
+  duration_ms: 7.953459
+  type: 'test'
+  ...
+# Subtest: missing Kernel and Firewall integration refuses dispatch with a server error
+ok 6 - missing Kernel and Firewall integration refuses dispatch with a server error
+  ---
+  duration_ms: 0.231667
+  type: 'test'
+  ...
+# Subtest: baseline blocks synthetic secrets and redacts every outgoing history item
+ok 7 - baseline blocks synthetic secrets and redacts every outgoing history item
+  ---
+  duration_ms: 0.824042
+  type: 'test'
+  ...
+# Subtest: unapproved quota fails closed
+ok 8 - unapproved quota fails closed
+  ---
+  duration_ms: 0.157792
+  type: 'test'
+  ...
+# Subtest: configured message size accepts only bounded integer limits
+ok 9 - configured message size accepts only bounded integer limits
+  ---
+  duration_ms: 1.926292
+  type: 'test'
+  ...
+# Subtest: database setup errors are mapped without exposing SQL details
+ok 10 - database setup errors are mapped without exposing SQL details
+  ---
+  duration_ms: 57.165042
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 551.162167

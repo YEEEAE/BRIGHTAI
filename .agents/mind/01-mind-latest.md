@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-11 PARTIAL T05: HEAD `dcd52eac9f14465a32cfc166a44b5387edf5a636`+tree؛ Chat يقيّمKernel/Firewallلكلturnويسجلقرارًاوصفيًا؛unit10/PG18سيناريو1 PASS؛Groqmodels200؛لاcompletion؛ `Audit/t05-secure-chat-2026-11-11/REPORT.md`.
 - 2026-11-11 VERIFIED LOCAL T04: HEAD `48e0f4fe61a3e7b86bb752675d6148ede01c7a1d`+working tree؛ review binding v2 يفرضtenant/request/fingerprint؛unit7 وPG18.6 سيناريوأربعةمنتجات1 PASS؛ESCALATE409 فقط بلاadapter؛ `Audit/t04-products-2026-11-11/REPORT.md`؛رحلةفريقغيرمثبتة.
 - 2026-11-11 VERIFIED LOCAL T03: HEAD `86954bd96dd4929a92ffa96066a309efc367ddf2`+working tree؛ bootstrap مشغّل ذري ومنحتصفح48h مستقلة؛ DB18.6 سيناريو1 PASS/unit identity4/navigation3/order5 PASS؛0033 محلي فقط؛ `Audit/t03-exploration-2026-11-11/REPORT.md`.
 - 2026-11-11 VERIFIED LOCAL+STAGING T02: HEAD `95f12b9c1fff4717904d4602de86c441a7a56d22`+working tree؛ local RLS74/contracts75/order5/build56 PASS؛ Neon restricted LOGIN34/34 PASS،حُذف معfixtures؛ `Audit/t02-schema-rls-2026-11-11/REPORT.md`؛ T03 permanent pool/SSR غير مثبتة.
@@ -26,6 +27,7 @@
 - 2026-11-10 PARTIAL (P13): HEAD `c5ef5547` + working tree؛ اختبارات المحولات 16/16 محليًا؛ مسودة URL غير معتمدة وغير كافية، وGA4 network غير مختبر؛ لا وجهة أو ingestion؛ `Audit/p13-observability-2026-11-10/REPORT.md`.
 
 ## Open Issues / Blockers
+- 2026-11-11 T05: المالكحددBRIGHT AI/5طلبات+30000توكنيوميًاللمؤسسة/48h؛وثيقةخصوصيةغائبة؛exacttenantغيرموجودباتصال.envالمقروء؛registryفارغوAIGAS_SCغيرمهيأ؛Identity/DBAللنطاقوAI Systems/Privacyلاعتمادالموصل؛InternalNOTREADY/PublicCommercialNO-GO.
 - 2026-11-11 PARTIAL T04: registryالتصعيدفارغ؛Backend/AI Governance لاعتمادoperationType وعقدمحتوىالمراجعةومحولذري؛بديلالحجبالمحددمثبت،لاpendingreviewحقيقية؛Neonقراءةoperators0/readiness0/explorationغائب؛InternalNOTREADY/PublicCommercialNO-GO.
 - 2026-11-11 PARTIAL T03: NeonStaging operators0/quota0/exploration schemaغائب؛ يحتاجDBA0033 وIdentity/Operationsمشغّل وحسابات ومنح وAuthBrowserمشترك،وDevOpsNode؛closeلايبطلAuthsessions؛purgeمقفوللاحتفاظمعتمد؛InternalNOTREADY/PublicCommercialNO-GO.
 - 2026-11-10 OPEN (P16): استثناء `GHSA-26w7-cxv4-gfx2` (critical، غير قابل للوصول) يحتاج موافقة المؤسس صراحةً قبل إدراجه؛ الترقية الرئيسية ورفع Node وتطبيق allowlist الآلي (`.github/workflows/ci-build-guard.yml` غير موجود) واعية؛ التحقق الحي لحراسة `Host` ينتظر push.
@@ -47,6 +49,18 @@
 - 2026-11-10 OPEN: Bootstrap/RLS وtrial/purge وموافقات المزودين والـUAT ما زالت مفتوحة.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-11] — T05: سياسة Chat دون فتح مزود غير معتمد
+- **تم:** استبدالقفلالتكاملالدائمبقرارKernel/Firewallوسياقمنقحومراجعةحدالبايتات؛جاهزيةإرسالمشتقة،دونتغييرالواجهةأوenv.
+- **التحقق:** PASS unit10/PG18سيناريو1؛حجبالسياقوالصلاحيةوالانتهاءوتدقيقوإلغاءبحصةمحافظة؛Groqmodels200ليسcompletion.
+- **الحالة:** PARTIAL؛tenantواعتمادخصوصيةوموصلوحصةدائمةوإرسالمنتجيNOTRUN.
+- **ملفات:** `Audit/t05-secure-chat-2026-11-11/REPORT.md`.
+
+## [2026-11-11] — إضافة MCP: firecrawl/openseo/similarweb/linear
+- **تم:** firecrawl `https://mcp.firecrawl.dev/v2/mcp-oauth`، openseo `https://app.openseo.so/mcp`، similarweb `https://mcp.similarweb.com` بـ`oauth:false` + ترويسة `api-key: {env:SIMILARWEB_API_KEY}`، linear `https://mcp.linear.app/mcp` (read-write؛ البديل `/mcp/readonly`)؛ كلها في `opencode.json` محليًا بلا `--global`.
+- **التحقق:** `opencode mcp list` → linear/openseo `connected`، firecrawl `needs authentication`، similarweb `401` (المفتاح غير مضبوط)؛ زال خطأ DCR 403.
+- **الحالة:** DONE للإعداد — يبقى OAuth لـfirecrawl، ومفتاح Similarweb في بيئة خدمة OpenCode ثم `opencode service restart`.
+- **ملفات:** `opencode.json`.
 
 ## [2026-11-11] — T04: عمليات ممثلة وربط التصعيد
 - **تم:** سدقبولمراجعةبـtenantمختلفوتمريرfingerprintداخلالمعاملة؛لافتحregistryأوتنفيذخارجي.

@@ -1,0 +1,5 @@
+initdb failed: 2026-11-11 06:05:13.451 +03 [25753] FATAL:  could not create shared memory segment: Operation not permitted
+2026-11-11 06:05:13.451 +03 [25753] DETAIL:  Failed system call was shmget(key=170186971, size=56, 03600).
+child process exited with exit code 1
+initdb: removing data directory "/var/folders/md/ply6x_qd1k3gzt5vvg5ksnrr0000gn/T/t05-chat-verify-FApGYt/data"
+

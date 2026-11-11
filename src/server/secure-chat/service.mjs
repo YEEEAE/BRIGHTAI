@@ -8,15 +8,20 @@ import { env } from '../kernel/env.mjs';
 import { captureProductEvent, captureServerFailure } from '../observability/index.mjs';
 import { findApprovedModel, listApprovedModels } from './models.mjs';
 import { complete, providerConfiguration, providerState } from './adapter.mjs';
-import { INPUT_POLICY, approvedEgress, protectText, usagePolicyStatus } from './policy.mjs';
+import { INPUT_POLICY, protectText, usagePolicyStatus } from './policy.mjs';
 import { reserve, settleUnknown, cancel, cancellationRequested } from './requests.mjs';
 import { uuid } from '../kernel/http.mjs';
+import { authorizeChatContext, chatPolicyContext } from './integration.mjs';
 
 export const HARD_MAX_MESSAGE_LENGTH = 4000;
-// Secure Chat does not yet have a bound Kernel/Firewall decision for every
-// message in the outgoing context. A model approval alone must not enable egress.
-export function requireChatPolicyIntegration() {
-  throw new KernelError(503, 'CHAT_POLICY_INTEGRATION_REQUIRED', 'تكامل سياسات Kernel وFirewall للمحادثة غير مهيأ؛ الإرسال موقوف ولم يُرسل أي محتوى.', 'not configured');
+export function requireChatPolicyIntegration(context) {
+  if (!context) throw new KernelError(503, 'CHAT_POLICY_INTEGRATION_REQUIRED', 'يلزم سياق مؤسسة وطلب وسياسة قبل الإرسال.', 'not configured');
+  const { identity, tenantId, requestId, model, messages } = context;
+  return transaction(async db => {
+    await requireProductAccess(db, identity, tenantId, 'secure-chat');
+    await db.query('SELECT id FROM public.aigas_tenants WHERE id=$1 FOR UPDATE', [tenantId]);
+    return authorizeChatContext(db, identity, tenantId, requestId, model, messages);
+  }).then(result => { if (result.error) throw result.error; return result; });
 }
 export function configuredMessageLimit(raw = env('AIGAS_SC_MAX_MESSAGE_CHARS')) {
   if (typeof raw !== 'string' || !/^\d{1,4}$/.test(raw)) return HARD_MAX_MESSAGE_LENGTH;
@@ -47,7 +52,7 @@ async function auditBlocked(identity, tenantId, action, requestId) {
 }
 
 export async function listModels(request) {
-  const { tenant } = await accessContext(request, 'browse');
+  const { identity, tenant } = await accessContext(request, 'browse');
   const approvedModels = listApprovedModels(tenant.tenant_id);
   const states = approvedModels.map(model => ({ model, state: providerState(model) }));
   const ready = states.filter(item => item.state === 'READY');
@@ -63,8 +68,21 @@ export async function listModels(request) {
   }
   // An approved model without an approved quota is not sendable: it would meter
   // nothing. The gate stays closed until both are configured and reviewed.
-  const sendable = false; // Kept closed until the mandatory policy integration is verified.
-  const models = sendable ? ready.map(({ model }) => ({ id: model.id, label: model.label, region: model.region, ready: true, state: 'READY' })) : [];
+  const policyReady = [];
+  if (usageQuotaReady && quota.approved) {
+    for (const { model } of ready) {
+      try {
+        const usable = await transaction(async db => {
+          // Browsing alone never grants sending (including exploration grants).
+          await requireProductAccess(db, identity, tenant.tenant_id, 'secure-chat');
+          return (await chatPolicyContext(db, identity, tenant.tenant_id, model)).ready;
+        });
+        if (usable) policyReady.push(model);
+      } catch { /* A dependency or authorization failure closes sending only. */ }
+    }
+  }
+  const sendable = policyReady.length > 0;
+  const models = policyReady.map(model => ({ id: model.id, label: model.label, region: model.region, ready: true, state: 'READY' }));
   const available = sendable;
   const allExpired = states.length > 0 && states.every(item => item.state === 'EXPIRED');
   const dependencyStatus = available ? 'available'
@@ -153,7 +171,6 @@ export async function sendMessage(request, body) {
     await auditBlocked(identity,tenant.tenant_id,error?.code === 'PROVIDER_NOT_CONFIGURED' ? 'secure_chat.blocked_provider_not_configured' : 'secure_chat.blocked_no_approved_model',requestId);
     throw error;
   }
-  requireChatPolicyIntegration();
   let protectedInput;
   try {
     protectedInput = validateMessages(body.message,body.history ?? [],model);
@@ -185,7 +202,13 @@ export async function sendMessage(request, body) {
     controller.signal.throwIfAborted();
     // Final egress check: the exact bytes that leave the process are re-protected
     // and frozen. No Firewall licence is consulted, so baseline protection always runs.
-    const outbound = approvedEgress(protectedInput.messages);
+    const { outbound } = await requireChatPolicyIntegration({ identity, tenantId: tenant.tenant_id, requestId, model, messages: protectedInput.messages });
+    // Replacement markers can grow the byte count. Recheck the exact final
+    // context against the model's reviewed framing and reservation ceiling.
+    validateMessages(outbound.at(-1).content, outbound.slice(0,-1), model);
+    controller.signal.throwIfAborted();
+    if (await cancellationRequested(identity,tenant.tenant_id,requestId)) abort();
+    controller.signal.throwIfAborted();
     dispatched=true;
     const result = await complete(model,outbound,controller.signal);
     usage=result.usage;
@@ -196,7 +219,7 @@ export async function sendMessage(request, body) {
     const state = await settleUnknown(identity,tenant.tenant_id,requestId,'SUCCEEDED',usage);
     settled=true;
     if (state === 'CANCELLED' || controller.signal.aborted) throw new KernelError(409,'REQUEST_CANCELLED','أُوقفت إتاحة الرد؛ قد يكون المزود استهلك الطلب بالفعل.');
-    return { requestId, reply:output.text, submittedText:protectedInput.submittedText, modelId:model.id, usage, redacted:protectedInput.redacted || output.redacted, saved:false, contentStored:false, message:'وصل رد مفحوص أوليًا؛ لم يُحفظ متن المحادثة.' };
+    return { requestId, reply:output.text, submittedText:outbound.at(-1).content, modelId:model.id, usage, redacted:protectedInput.redacted || output.redacted || outbound.some((item,index) => item.content !== protectedInput.messages[index].content), saved:false, contentStored:false, message:'وصل رد مفحوص أوليًا؛ لم يُحفظ متن المحادثة.' };
   } catch (error) {
     if (!settled) {
       // Unknown usage remains conservatively reserved. Never claim zero cost
