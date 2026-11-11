@@ -8,9 +8,9 @@ const product = productForSlug(slug);
   <p>{product.scope}</p>
   <div class="actions">
     <a class="journey-entry" href={productEntryPath(slug)} aria-label={`الدخول إلى مساحة ${product.name}`}><span>{compact ? 'الدخول' : 'الدخول إلى المساحة'}</span><span class="journey-arrow" aria-hidden="true">↖</span></a>
-    <a class="journey-contact" href={productContactPath(slug)} aria-label={`طلب تقييم ${product.name}`}>طلب تقييم <span aria-hidden="true">←</span></a>
+    <a class="journey-contact" href={productContactPath(slug)} aria-label={`استفسار عن تقييم ${product.name}`}>استفسار عن تقييم <span aria-hidden="true">←</span></a>
   </div>
-  {!compact && <p>حدد هدفك ببيانات اصطناعية. طلب الاشتراك مستقل، والتكامل مع المنتجات الأخرى اختياري. <a href={productContactPath(slug, true)}>تواصل بشأن الاشتراك</a></p>}
+  {!compact && <p>الدخول يتحقق من الهوية وقرار الإتاحة في الخادم؛ والمخططات أعلاه تعليمية. الاستفسار رسالة تواصل لا تفعّل تجربة ولا تمنح ترخيصًا. طلب الاشتراك مستقل، والتكامل مع المنتجات الأخرى اختياري. <a href={productContactPath(slug, true)}>تواصل بشأن الاشتراك</a></p>}
 </section>}
 <style>
   .product-journey { margin-block:32px; padding:clamp(24px,4vw,40px); border-radius:20px; background:#ffffff04; box-shadow:inset 0 1px 0 #ffffff10; }

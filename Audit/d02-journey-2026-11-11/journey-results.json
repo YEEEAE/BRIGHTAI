@@ -1,0 +1,158 @@
+{
+ "environment": "local Node 22.22.2 / headless Chrome / AIGAS_APP_ENABLED=true / no Auth session",
+ "base": "http://127.0.0.1:4422",
+ "results": [
+  {
+   "name": "five product cards",
+   "status": "PASS",
+   "detail": "5"
+  },
+  {
+   "name": "entry hrefs use kernel returnTo",
+   "status": "PASS",
+   "detail": "[\"/app/kernel/?returnTo=%2Fapp%2Ffirewall%2F\",\"/app/kernel/?returnTo=%2Fapp%2Frisk-engine%2F\",\"/app/kernel/?returnTo=%2Fapp%2Fhuman-gate%2F\",\"/app/kernel/?returnTo=%2Fapp%2Fledger%2F\",\"/app/kernel/?returnTo=%2Fapp%2Fsecure-chat%2F\"]"
+  },
+  {
+   "name": "contact CTA is an inquiry",
+   "status": "PASS",
+   "detail": "[\"استفسار عن تقييم ←\",\"استفسار عن تقييم ←\",\"استفسار عن تقييم ←\",\"استفسار عن تقييم ←\",\"استفسار عن تقييم ←\"]"
+  },
+  {
+   "name": "contact targets stay on /contact/",
+   "status": "PASS",
+   "detail": "[\"/contact/?topic=%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AA%D9%82%D9%8A%D9%8A%D9%85%20%E2%80%94%20AIGAS%20Firewall\",\"/contact/?topic=%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AA%D9%82%D9%8A%D9%8A%D9%85%20%E2%80%94%20AIGAS%20Risk%20Engine\",\"/contact/?topic=%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AA%D9%82%D9%8A%D9%8A%D9%85%20%E2%80%94%20AIGAS%20Human%20Gate\",\"/contact/?topic=%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AA%D9%82%D9%8A%D9%8A%D9%85%20%E2%80%94%20AIGAS%20Ledger\",\"/contact/?topic=%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AA%D9%82%D9%8A%D9%8A%D9%85%20%E2%80%94%20AIGAS%20Secure%20Chat\"]"
+  },
+  {
+   "name": "catalog no horizontal overflow at 390",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "name": "detail entry is a server-gated operation",
+   "status": "PASS",
+   "detail": "\"/app/kernel/?returnTo=%2Fapp%2Ffirewall%2F\""
+  },
+  {
+   "name": "detail copy separates inquiry from activation",
+   "status": "PASS",
+   "detail": "الدخول يتحقق من الهوية وقرار الإتاحة في الخادم؛ والمخططات أعلاه تعليمية. الاستفسار رسالة تواصل لا تفعّل تجربة ولا تمنح ترخيصًا. طلب الاشتراك مستقل، والتكامل مع المنتجات الأخرى اختياري. تواصل بشأن الاشتراك"
+  },
+  {
+   "name": "detail no horizontal overflow at 390",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "name": "kernel honours returnTo",
+   "status": "PASS",
+   "detail": "{\"returnTo\":\"/app/firewall/\",\"notice\":\"سجّل الدخول ثم اختر مساحة عملك للمتابعة.\",\"heading\":\"نواة المنظومةمساحتك، ومنها تبدأ.\"}"
+  },
+  {
+   "name": "kernel shows the intended product",
+   "status": "PASS",
+   "detail": "سجّل الدخول ثم اختر مساحة عملك للمتابعة."
+  },
+  {
+   "name": "returnTo survives reload",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "name": "destination /app/firewall/ renders",
+   "status": "PASS",
+   "detail": "{\"heading\":\"اضبط السياسة.واحكم مسار الطلب.\",\"status\":\"يلزم تسجيل الدخول عبر Kernel. تحقق أيضًا من إعداد الأصل الموثوق.\",\"privateHidden\":true,\"overflow\":false}"
+  },
+  {
+   "name": "destination /app/firewall/ keeps private data hidden without a session",
+   "status": "PASS",
+   "detail": "{\"heading\":\"اضبط السياسة.واحكم مسار الطلب.\",\"status\":\"يلزم تسجيل الدخول عبر Kernel. تحقق أيضًا من إعداد الأصل الموثوق.\",\"privateHidden\":true,\"overflow\":false}"
+  },
+  {
+   "name": "destination /app/firewall/ rejects with a sign-in message, not an upstream status",
+   "status": "PASS",
+   "detail": "\"يلزم تسجيل الدخول عبر Kernel. تحقق أيضًا من إعداد الأصل الموثوق.\""
+  },
+  {
+   "name": "destination /app/ledger/ renders",
+   "status": "PASS",
+   "detail": "{\"heading\":\"أثر واضح.وسلامة قابلة للفحص.\",\"status\":\"محجوب — يلزم تسجيل الدخول عبر Kernel. تحقق من إعداد الأصل الموثوق. لم تُثبت سلامة السجل في هذه المحاولة.\",\"privateHidden\":true,\"overflow\":false}"
+  },
+  {
+   "name": "destination /app/ledger/ keeps private data hidden without a session",
+   "status": "PASS",
+   "detail": "{\"heading\":\"أثر واضح.وسلامة قابلة للفحص.\",\"status\":\"محجوب — يلزم تسجيل الدخول عبر Kernel. تحقق من إعداد الأصل الموثوق. لم تُثبت سلامة السجل في هذه المحاولة.\",\"privateHidden\":true,\"overflow\":false}"
+  },
+  {
+   "name": "destination /app/ledger/ rejects with a sign-in message, not an upstream status",
+   "status": "PASS",
+   "detail": "\"محجوب — يلزم تسجيل الدخول عبر Kernel. تحقق من إعداد الأصل الموثوق. لم تُثبت سلامة السجل في هذه المحاولة.\""
+  },
+  {
+   "name": "destination /app/human-gate/ renders",
+   "status": "PASS",
+   "detail": "{\"heading\":\"موافقة محددة.وتنفيذ مرة واحدة.\",\"status\":\"يلزم تسجيل الدخول عبر Kernel. تحقق من إعداد الأصل الموثوق. حدّث البيانات لاستعادة الحالة من الخادم. إذا انقطع الاتصال بعد الإرسال، لا تعِد الإرسال قبل مراجعة نتيجة الطلب.\",\"privateHidden\":true,\"overflow\":false}"
+  },
+  {
+   "name": "destination /app/human-gate/ keeps private data hidden without a session",
+   "status": "PASS",
+   "detail": "{\"heading\":\"موافقة محددة.وتنفيذ مرة واحدة.\",\"status\":\"يلزم تسجيل الدخول عبر Kernel. تحقق من إعداد الأصل الموثوق. حدّث البيانات لاستعادة الحالة من الخادم. إذا انقطع الاتصال بعد الإرسال، لا تعِد الإرسال قبل مراجعة نتيجة الطلب.\",\"privateHidden\":true,\"overflow\":false}"
+  },
+  {
+   "name": "destination /app/human-gate/ rejects with a sign-in message, not an upstream status",
+   "status": "PASS",
+   "detail": "\"يلزم تسجيل الدخول عبر Kernel. تحقق من إعداد الأصل الموثوق. حدّث البيانات لاستعادة الحالة من الخادم. إذا انقطع الاتصال بعد الإرسال، لا تعِد الإرسال قبل مراجعة نتيجة الطلب.\""
+  },
+  {
+   "name": "destination /app/risk-engine/ renders",
+   "status": "PASS",
+   "detail": "{\"heading\":\"افهم الخطر.ووثّق سببه.\",\"status\":\"يلزم تسجيل الدخول عبر Kernel. تحقق من إعداد الأصل الموثوق. عند انقطاع الاتصال بعد الإرسال، حدّث السجل قبل إعادة الإرسال.\",\"privateHidden\":true,\"overflow\":false}"
+  },
+  {
+   "name": "destination /app/risk-engine/ keeps private data hidden without a session",
+   "status": "PASS",
+   "detail": "{\"heading\":\"افهم الخطر.ووثّق سببه.\",\"status\":\"يلزم تسجيل الدخول عبر Kernel. تحقق من إعداد الأصل الموثوق. عند انقطاع الاتصال بعد الإرسال، حدّث السجل قبل إعادة الإرسال.\",\"privateHidden\":true,\"overflow\":false}"
+  },
+  {
+   "name": "destination /app/risk-engine/ rejects with a sign-in message, not an upstream status",
+   "status": "PASS",
+   "detail": "\"يلزم تسجيل الدخول عبر Kernel. تحقق من إعداد الأصل الموثوق. عند انقطاع الاتصال بعد الإرسال، حدّث السجل قبل إعادة الإرسال.\""
+  },
+  {
+   "name": "destination /app/secure-chat/ renders",
+   "status": "PASS",
+   "detail": "{\"heading\":\"محادثة مؤسسية\",\"status\":\"سجّل الدخول بحساب Neon Auth لعرض مساحة العمل.\",\"privateHidden\":true,\"overflow\":false}"
+  },
+  {
+   "name": "destination /app/secure-chat/ keeps private data hidden without a session",
+   "status": "PASS",
+   "detail": "{\"heading\":\"محادثة مؤسسية\",\"status\":\"سجّل الدخول بحساب Neon Auth لعرض مساحة العمل.\",\"privateHidden\":true,\"overflow\":false}"
+  },
+  {
+   "name": "destination /app/secure-chat/ rejects with a sign-in message, not an upstream status",
+   "status": "PASS",
+   "detail": "\"سجّل الدخول بحساب Neon Auth لعرض مساحة العمل.\""
+  },
+  {
+   "name": "kernel offers sign-in when signed out",
+   "status": "PASS",
+   "detail": "{\"loginVisible\":true,\"status\":\"سجّل الدخول بحسابك لعرض مساحة العمل.\",\"errorType\":\"\"}"
+  },
+  {
+   "name": "kernel does not leak an upstream status",
+   "status": "PASS",
+   "detail": "{\"loginVisible\":true,\"status\":\"سجّل الدخول بحسابك لعرض مساحة العمل.\",\"errorType\":\"\"}"
+  },
+  {
+   "name": "external returnTo ignored",
+   "status": "PASS",
+   "detail": "{\"returnTo\":null,\"origin\":\"http://127.0.0.1:4422\",\"path\":\"/app/kernel/\"}"
+  },
+  {
+   "name": "catalog no horizontal overflow at 1440",
+   "status": "PASS",
+   "detail": ""
+  }
+ ],
+ "authenticatedBrowser": "NOT RUN: no Neon Auth session or tenant in this local environment",
+ "liveDeployment": "NOT RUN: static Render deploy still answers 404 for /app/*"
+}

@@ -358,7 +358,7 @@ function renderActivity(rows: any[]) {
 function render(data: any) {
   const intent = root.querySelector<HTMLElement>('[data-product-intent]');
   if (intent) intent.textContent = data.tenant
-    ? 'راجع صلاحيات المنتج مع مسؤول المؤسسة، أو اختر مؤسسة أخرى من قائمتك، أو تواصل لطلب تقييم.'
+    ? 'راجع صلاحيات المنتج مع مسؤول المؤسسة، أو اختر مؤسسة أخرى من قائمتك، أو تواصل للاستفسار عن تقييم.'
     : 'اطلب الانضمام إلى مؤسسة من مسؤولها؛ إنشاء الحساب وحده لا يمنح وصولًا إلى المنتج.';
   dashboardError.hidden = true; dashboardErrorType.textContent = '';
   currentTenant = data.tenant;

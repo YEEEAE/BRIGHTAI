@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-11 PARTIAL LOCAL D02: HEAD `0baadba`+working tree؛ allowlist/returnTo بلا تغيير؛ وجهات المنتجات الخمس 200 محليًا وreturnTo صحيح ×5 ورفض الخارجي/المشفّر؛ فشل رمز المزود بلا جلسة صار «سجّل الدخول» بدل `HTTP 404`؛ Browser30/30 وunit3 وbuild57 PASS؛ الجلسة الحقيقية والنشر NOT RUN (T01/T03)؛ `Audit/d02-journey-2026-11-11/REPORT.md`.
 - 2026-11-11 VERIFIED LOCAL D01: HEAD `cbd8d42df6e9`؛ أصل `/solutions/` أثر Static قديم (شعار400×400+`/assets`+`/js/sw-register.js`) لا ينتجه المصدر؛ أُضيف `src/pages/solutions/index.astro` بهويةPageShell وادعاءات تخطيط فقط، و19 تحويلًا قديمًا+2 alias إلى مسارات حالية بلا حلقات؛ build57/فحصURLs24/301×38 PASS؛ النشر وتحويل الحافة BLOCKED بتفويض مستقل؛ `Audit/d01-solutions-2026-11-11/REPORT.md`.
 - 2026-11-11 PARTIAL T05: HEAD `dcd52eac9f14465a32cfc166a44b5387edf5a636`+tree؛ Chat يقيّمKernel/Firewallلكلturnويسجلقرارًاوصفيًا؛unit10/PG18سيناريو1 PASS؛Groqmodels200؛لاcompletion؛ `Audit/t05-secure-chat-2026-11-11/REPORT.md`.
 - 2026-11-11 VERIFIED LOCAL T04: HEAD `48e0f4fe61a3e7b86bb752675d6148ede01c7a1d`+working tree؛ review binding v2 يفرضtenant/request/fingerprint؛unit7 وPG18.6 سيناريوأربعةمنتجات1 PASS؛ESCALATE409 فقط بلاadapter؛ `Audit/t04-products-2026-11-11/REPORT.md`؛رحلةفريقغيرمثبتة.
@@ -28,6 +29,7 @@
 - 2026-11-10 PARTIAL (P13): HEAD `c5ef5547` + working tree؛ اختبارات المحولات 16/16 محليًا؛ مسودة URL غير معتمدة؛ لا وجهة أو ingestion؛ `Audit/p13-observability-2026-11-10/REPORT.md`؛ 2026-11-11: ثغرة `page_referrer` وطي المسارات الخاصة أُغلقتا (18/18) وبقيت الوجهة/canary مفتوحة.
 
 ## Open Issues / Blockers
+- 2026-11-11 PARTIAL D02: المصدر محليًا مغلق؛ الرحلة الحية محجوبة بنشر Node SSR (T01) وبجلسة/عضويات/منح حقيقية (T03)؛InternalNOTREADY/PublicCommercialNO-GO.
 - 2026-11-11 D01: `/solutions/` الحي ما زال الأثر القديم حتى النشر؛ تفعيل تحويلات الـ19 على الاستضافة Static يحتاج تفويض DevOps/edge، و`/sw.js` القديم ما زال على الحافة ويحتاج مهمة منفصلة.
 - 2026-11-11 T05: المالكحددBRIGHT AI/5طلبات+30000توكنيوميًاللمؤسسة/48h؛وثيقةخصوصيةغائبة؛exacttenantغيرموجودباتصال.envالمقروء؛registryفارغوAIGAS_SCغيرمهيأ؛Identity/DBAللنطاقوAI Systems/Privacyلاعتمادالموصل؛InternalNOTREADY/PublicCommercialNO-GO.
 - 2026-11-11 PARTIAL T04: registryالتصعيدفارغ؛Backend/AI Governance لاعتمادoperationType وعقدمحتوىالمراجعةومحولذري؛بديلالحجبالمحددمثبت،لاpendingreviewحقيقية؛Neonقراءةoperators0/readiness0/explorationغائب؛InternalNOTREADY/PublicCommercialNO-GO.

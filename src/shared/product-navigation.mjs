@@ -17,7 +17,7 @@ export function productEntryPath(slug) {
 }
 export function productContactPath(slug, subscription = false) {
   const product = productForSlug(slug);
-  return product ? `/contact/?topic=${encodeURIComponent(`${subscription ? 'طلب اشتراك مستقل' : 'طلب تقييم'} — AIGAS ${product.name}`)}` : '/contact/';
+  return product ? `/contact/?topic=${encodeURIComponent(`${subscription ? 'طلب اشتراك مستقل' : 'استفسار عن تقييم'} — AIGAS ${product.name}`)}` : '/contact/';
 }
 // A route choice is only navigation; every destination re-authorizes every API call.
 export function authorizedProductDestination(returnTo, dashboard) {

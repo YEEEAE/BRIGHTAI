@@ -20,6 +20,13 @@ export function createWorkspaceAuth(url: string): WorkspaceAuth {
         if (!result.error) { sessionChannel?.postMessage('SIGN_OUT'); document.dispatchEvent(new Event('workspace-session-ended')); setWorkspace(''); }
         return result;
       };
+      // The declared contract is a token or null. The provider client throws when no
+      // session exists (the token endpoint answers 404), which would surface a raw
+      // upstream status on a signed-out or expired visit. Every caller already maps a
+      // null token to its own sign-in message, so an absent credential stays absent.
+      if (key === 'getJWTToken') return async () => {
+        try { return await target.getJWTToken(); } catch { return null; }
+      };
       return Reflect.get(target, key, receiver);
     }
   });
