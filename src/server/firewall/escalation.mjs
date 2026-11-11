@@ -14,7 +14,7 @@
 const approvedReviewIntegrations = Object.freeze([]);
 
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-export const reviewBindingVersion = 'aigas-review-binding-v1';
+export const reviewBindingVersion = 'aigas-review-binding-v2';
 
 function findIntegration(tenantId) {
   return approvedReviewIntegrations.find(item => Array.isArray(item.tenantIds)
@@ -39,11 +39,18 @@ export function reviewIntegrationState(tenantId) {
 // A returned review must describe exactly this decision, tenant, operation type
 // and policy version. A review for a previous decision or another workspace is
 // never accepted as "pending for this request".
-function reviewBound(review, tenantId, context, integration) {
+export function reviewBound(review, tenantId, context, integration) {
   return !!review
+    && uuidPattern.test(tenantId ?? '')
+    && uuidPattern.test(context.decisionId ?? '')
+    && uuidPattern.test(context.requestId ?? '')
+    && typeof context.policyVersion === 'string' && context.policyVersion.length > 0
+    && /^[0-9a-f]{64}$/.test(context.requestFingerprint ?? '')
     && review.status === 'PENDING'
     && uuidPattern.test(review.id ?? '')
-    && (review.tenant_id === undefined || review.tenant_id === tenantId)
+    && review.tenant_id === tenantId
+    && review.request_ref === context.requestId
+    && review.request_fingerprint === context.requestFingerprint
     && review.subject_ref === context.decisionId
     && review.operation_type === integration.operationType
     && review.policy_version === context.policyVersion;
@@ -68,6 +75,7 @@ export async function requestHumanReview(db, identity, tenantId, context) {
       decisionId: context.decisionId,
       requestId: context.requestId,
       policyVersion: context.policyVersion,
+      requestFingerprint: context.requestFingerprint,
     },
     review,
   };

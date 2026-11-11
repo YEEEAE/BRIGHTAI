@@ -1,6 +1,6 @@
 import { approvedProvider, PROVIDER_TIMEOUT_MS } from './provider.mjs';
 import { policyReference, decisionFingerprint } from './binding.mjs';
-import { reviewBindingVersion, verifyHumanApproval } from './escalation.mjs';
+import { reviewBindingVersion, reviewBound, verifyHumanApproval } from './escalation.mjs';
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const fingerprint = /^[0-9a-f]{64}$/;
@@ -44,8 +44,10 @@ export async function enforceDecision({ decision, tenantId, actorUserId, request
       && binding.decisionId === decision.id
       && binding.requestId === requestId
       && binding.policyVersion === policyVersion
-      && escalation.review?.subject_ref === decision.id
-      && escalation.review?.policy_version === policyVersion;
+      && binding.requestFingerprint === requestFingerprint
+      && reviewBound(escalation.review, tenantId,
+        { decisionId: decision.id, requestId, policyVersion, requestFingerprint },
+        { operationType: escalation.operation_type });
     if (escalation?.requested === true && !reviewBindingValid) {
       return { ...base, httpStatus: 503, code: 'HUMAN_GATE_REVIEW_UNBOUND',
         execution_status: 'BLOCKED', blocked_reason: 'REVIEW_BINDING_MISMATCH', review_required: true,

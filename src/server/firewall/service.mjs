@@ -263,7 +263,7 @@ export function createFirewallService(transact = transaction) {
           // A human review decision creates its pending request in this transaction,
           // before any provider call, only through an approved server integration.
           if (enforced && result.action === 'ESCALATE') {
-            try { escalation = await requestHumanReview(db, identity, tenantId, { decisionId: id, requestId: body.request_id, policyVersion }); }
+            try { escalation = await requestHumanReview(db, identity, tenantId, { decisionId: id, requestId: body.request_id, policyVersion, requestFingerprint }); }
             catch { throw new KernelError(503, 'HUMAN_GATE_UNAVAILABLE', 'تعذر إنشاء طلب المراجعة البشرية داخل المعاملة؛ لم تُحفظ العملية ولم يُرسل الطلب.'); }
           }
           const decision = {

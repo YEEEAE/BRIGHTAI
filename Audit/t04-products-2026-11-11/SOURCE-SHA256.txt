@@ -1,0 +1,6 @@
+319ab5f2178a4118d40c16d926aa2fae25dc4408abd9d356cd04dcdfa7928531  src/server/firewall/service.mjs
+da381229125826f7e78ab137663075a302acb720ea19176e94b8ff0d2c7c18e6  src/server/firewall/guard.mjs
+6118c491b6fa43c1212cd606a3124ae2d227f30b404b47b149d41d98810d73e9  src/server/firewall/escalation.mjs
+db5a57ec14bb97660abef8f38959a748ebf12e646b9530a29ce47230bad40d19  tests/firewall-review-binding.test.mjs
+2c875d0fef1e58c8af6102f67668f0f25ec28687f9879d291a5356fd3cd106cc  Audit/t04-products-2026-11-11/scenario.mjs
+4d3268b05a93e3af5a71f58578d07ad920ad69575c917073c7444684b2cc3846  scripts/verify-products-local.mjs

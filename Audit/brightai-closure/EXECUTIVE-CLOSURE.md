@@ -94,14 +94,14 @@ RLS المفعلة لا تثبت عزلًا ولا تسريبًا. المنح ا
 
 ## 5. Execution Ledger
 
-هذه حالات **تطبيق الإصلاحات**. القراءة والتحقق الحاليان منفذان، لكن لا يوجد إصلاح كود نُفذ في هذه المحادثة.
+هذه حالات **تطبيق الإصلاحات**؛ السجلات المؤرخة أدناه تميز الإصلاح المحلي عن التشغيل المشترك والنشر، ولا تغيّر حدود الأدلة التاريخية E01–E16.
 
 | ID | حالة التنفيذ | المانع / الخطوة التالية |
 |---|---|---|
 | T01 | BLOCKED_BY_PERMISSION | النشر غير مخول؛ إعداد المصدر موجود |
 | T02 | BLOCKED_BY_DEPENDENCY | rehearsal نهائي، عقد0031 واستعادة؛ لا تعديل runner هنا |
 | T03 | PARTIAL — LOCAL VERIFIED 2026-11-11 | bootstrap مشغّل + تصفح محدود48h؛ DB محلي PASS؛ رحلة Auth مشتركة/تطبيق0033/نشر غير مثبتة؛ [الدليل](../t03-exploration-2026-11-11/REPORT.md) |
-| T04 | BLOCKED_BY_DEPENDENCY | مؤسسة وصلاحيات runtime |
+| T04 | PARTIAL — LOCAL VERIFIED 2026-11-11 | review binding v2؛ unit7 وPG18.6 سيناريوأربعةمنتجات1 PASS؛ ESCALATE409 المحدد مثبت؛ adapter فعلي ورحلةفريق/T01/T03 غيرمغلقة؛ [الدليل](../t04-products-2026-11-11/REPORT.md) |
 | T05 | BLOCKED_BY_DEPENDENCY | سياسة وحصة وربط فعلي؛ المفتاح وحده لا يكفي |
 | T06 | BLOCKED_BY_DEPENDENCY | وجهة مخولة ورحلة مصدر للأحداث |
 | T07 | PREPARED_FOR_LOCAL_EXECUTION | التحضير مستقل؛ القرار ينتظر الأدلة |
@@ -166,6 +166,7 @@ Kernel بوابة مشتركة يفرض الهوية والمؤسسة والمن
 | E14 | OpenSEO بلا مشاريع؛ docs200 وروابط32مقالًا؛ knowledge404 | لاGSC أو ترتيب سعودي |
 | E15 | DataAPI الإنتاجactive،schema public،دورanonymous،aggregates=true | سطح يستدعي المراجعة؛ لا تسريب مثبت |
 | E16 | فرق المصدر منa6f3551 إلىHEAD صفر؛ working tree نظيف | لم تتغير ملفات المشروع |
+| E17 | T04 علىHEAD `48e0f4fe61a3e7b86bb752675d6148ede01c7a1d`+working tree؛ [سيناريوPG18.6](../t04-products-2026-11-11/local-db.tap)،unit7،Browser401×4 وNeonreadback | عملياتمحليةبهويةfixture؛لاadapterتصعيدحقيقيأورحلةفريقأونشر؛[الحدودوالمالكون](../t04-products-2026-11-11/REPORT.md) |
 
 الأدوات المستخدمة فعلًا: GitHub،Neon،Render بعد اختيارWorkspace،Chrome DevTools،Browser Use،Firecrawl،PostHog،Sentry،OpenSEO،Better Design،Git وNode. قُرئت مهارات التدقيق والتحقق وFirecrawl وPostHog واستُخدمت. قُرئت Modern Web Guidance وSEO Technical للتحضير وحدود التحقق، دون تثبيت أداة أو تعديلUI.
 

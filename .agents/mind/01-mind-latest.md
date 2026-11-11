@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-11 VERIFIED LOCAL T04: HEAD `48e0f4fe61a3e7b86bb752675d6148ede01c7a1d`+working tree؛ review binding v2 يفرضtenant/request/fingerprint؛unit7 وPG18.6 سيناريوأربعةمنتجات1 PASS؛ESCALATE409 فقط بلاadapter؛ `Audit/t04-products-2026-11-11/REPORT.md`؛رحلةفريقغيرمثبتة.
 - 2026-11-11 VERIFIED LOCAL T03: HEAD `86954bd96dd4929a92ffa96066a309efc367ddf2`+working tree؛ bootstrap مشغّل ذري ومنحتصفح48h مستقلة؛ DB18.6 سيناريو1 PASS/unit identity4/navigation3/order5 PASS؛0033 محلي فقط؛ `Audit/t03-exploration-2026-11-11/REPORT.md`.
 - 2026-11-11 VERIFIED LOCAL+STAGING T02: HEAD `95f12b9c1fff4717904d4602de86c441a7a56d22`+working tree؛ local RLS74/contracts75/order5/build56 PASS؛ Neon restricted LOGIN34/34 PASS،حُذف معfixtures؛ `Audit/t02-schema-rls-2026-11-11/REPORT.md`؛ T03 permanent pool/SSR غير مثبتة.
 - 2026-11-11 VERIFIED LOCAL T01: HEAD `8a5f498`+working tree؛ Node22.22.2 build56/runtime19 (PG18 مؤقت؛ Auth probe SKIPPED)؛ `Audit/t01-node-ssr-2026-11-11/REPORT.md`؛ لا نشر.
@@ -25,6 +26,7 @@
 - 2026-11-10 PARTIAL (P13): HEAD `c5ef5547` + working tree؛ اختبارات المحولات 16/16 محليًا؛ مسودة URL غير معتمدة وغير كافية، وGA4 network غير مختبر؛ لا وجهة أو ingestion؛ `Audit/p13-observability-2026-11-10/REPORT.md`.
 
 ## Open Issues / Blockers
+- 2026-11-11 PARTIAL T04: registryالتصعيدفارغ؛Backend/AI Governance لاعتمادoperationType وعقدمحتوىالمراجعةومحولذري؛بديلالحجبالمحددمثبت،لاpendingreviewحقيقية؛Neonقراءةoperators0/readiness0/explorationغائب؛InternalNOTREADY/PublicCommercialNO-GO.
 - 2026-11-11 PARTIAL T03: NeonStaging operators0/quota0/exploration schemaغائب؛ يحتاجDBA0033 وIdentity/Operationsمشغّل وحسابات ومنح وAuthBrowserمشترك،وDevOpsNode؛closeلايبطلAuthsessions؛purgeمقفوللاحتفاظمعتمد؛InternalNOTREADY/PublicCommercialNO-GO.
 - 2026-11-10 OPEN (P16): استثناء `GHSA-26w7-cxv4-gfx2` (critical، غير قابل للوصول) يحتاج موافقة المؤسس صراحةً قبل إدراجه؛ الترقية الرئيسية ورفع Node وتطبيق allowlist الآلي (`.github/workflows/ci-build-guard.yml` غير موجود) واعية؛ التحقق الحي لحراسة `Host` ينتظر push.
 - 2026-11-10 BLOCKED (P06-B): التفعيل التجريبي يحتاج نتيجة readiness PASS لكل منتج لنفس SHA/البيئة واعتماد الحصص/المدة/الاحتفاظ ونجاح P07–P11؛ لا صفوف جاهزية/حصة ولا مشغّل في أي بيئة؛ `0030` طُبق علىStagingفيT02 مع0031/0032 دون اعتمادجاهزيةأوحصص.
@@ -45,6 +47,12 @@
 - 2026-11-10 OPEN: Bootstrap/RLS وtrial/purge وموافقات المزودين والـUAT ما زالت مفتوحة.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-11] — T04: عمليات ممثلة وربط التصعيد
+- **تم:** سدقبولمراجعةبـtenantمختلفوتمريرfingerprintداخلالمعاملة؛لافتحregistryأوتنفيذخارجي.
+- **التحقق:** PASS unit7/PG18.6سيناريو1 لأربعةمنتجات؛Browser401×4؛Neonreadbackفقط؛الانحدارFAILقبلالإصلاح.
+- **الحالة:** PARTIAL — محلي؛الفريقالمشتركوالـadapterوالنشرغيرمثبتة.
+- **ملفات:** `Audit/t04-products-2026-11-11/REPORT.md`.
 
 ## [2026-11-11] — T03: bootstrap واستكشاف محدود
 - **تم:** قناةمشغّل منفصلة بمعاملةوتدقيق؛منحتصفحلكلمنتج48hوحصةذرية،دونتزويرreadinessأوفتحChatsend؛export/close/purge-dry-runبلاحذف.

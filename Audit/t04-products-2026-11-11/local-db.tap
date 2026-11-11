@@ -1,0 +1,27 @@
+TAP version 13
+# {"product":"firewall","tenant":"453b269e-34ae-4b0d-a775-47e1abdeef55","decisionId":"561d9a18-0d69-4bde-8757-36805ee40b97","requestId":"6a52a834-a5c4-4eb0-9091-4fc2d1cd4152","fingerprint":"ce49dd485a84be9664cc5ebe5844bf1f49ddba2f510da60620a707ad22cfb20c","policyVersion":"kernel:5c403d1ffb571733424516b913a23c4242257f431a4b462ca20684ce5a55edec","result":"PASS_BLOCKED_ONLY_ESCALATE","at":"2026-11-11T02:24:33.098Z"}
+# {"product":"ledger","eventId":"614c7a71-8879-4685-aba9-69dd8b9734e3","result":"PASS","at":"2026-11-11T02:24:33.112Z"}
+# {"product":"human-gate","requestId":"77c893fb-53e8-4ecb-9dda-e80e4023970c","result":"PASS","at":"2026-11-11T02:24:33.151Z"}
+# {"product":"risk-engine","assetId":"32a87ef0-e30f-4a4d-b883-290573c0c34b","assessmentId":"f9f5744b-a658-4bdb-af7b-5628e20e35dd","result":"PASS","deployment_authorized":false,"at":"2026-11-11T02:24:33.203Z"}
+# Subtest: T04: representative four-product workflow and honest ESCALATE refusal
+ok 1 - T04: representative four-product workflow and honest ESCALATE refusal
+  ---
+  duration_ms: 309.028833
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 392.843375
+{
+  "result": "PASS",
+  "exitCode": 0,
+  "databases": 1,
+  "port": 55437,
+  "keptCluster": false
+}
