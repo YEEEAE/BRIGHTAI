@@ -14,7 +14,7 @@
 
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
-import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, readdir, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
@@ -24,7 +24,7 @@ import { freshOrder } from './migration-order.mjs';
 const run = promisify(execFile);
 const PGBIN = process.env.P03_PG_BIN || '/opt/homebrew/opt/postgresql@18/bin';
 const ROOT = new URL('..', import.meta.url).pathname;
-const WORK = join(process.env.TMPDIR || tmpdir(), 'p03-runtime-rls');
+const WORK = await mkdtemp(join(process.env.TMPDIR || tmpdir(), 'p03-runtime-rls-'));
 const DATA = join(WORK, 'data');
 const SOCK = join(WORK, 'sock');
 const PORT = '5443';
@@ -204,7 +204,7 @@ async function seed() {
 
 // Run `work` inside a transaction as `role`, always rolled back.
 async function as(role, work) {
-  const client = await admin(DB, 'neondb_owner');
+  const client = await admin(DB, role === 'aigas_runtime' ? 'p03_runtime_login' : 'neondb_owner');
   try {
     await client.query('BEGIN');
     await client.query(`SET LOCAL ROLE ${role}`);
@@ -366,12 +366,13 @@ async function structural() {
       FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
       WHERE n.nspname='public' AND c.relkind='r' AND c.relname LIKE 'aigas\\_%' ORDER BY 1`);
     sections.policyCoverage = coverage;
-    const uncovered = coverage.filter(r => r.has_tenant && r.permissive === 0 && !['aigas_sc_conversations', 'aigas_sc_messages'].includes(r.relname));
-    record('DB05', 'permissive-policy-per-tenant-table', 'every tenant table has a permissive policy (content tables excepted)',
+    const definerOnly = ['aigas_trial_quota_usage','aigas_trial_quota_reservations'];
+    const uncovered = coverage.filter(r => r.has_tenant && r.permissive === 0 && !['aigas_sc_conversations', 'aigas_sc_messages', ...definerOnly].includes(r.relname));
+    record('DB05', 'permissive-policy-per-tenant-table', 'tenant tables have a permissive policy unless explicitly definer-only; quota tables remain deny-all',
       uncovered.map(r => r.relname), uncovered.length === 0);
 
     // Exact verb matrix that 0025 §3 promises, compared against the catalog.
-    const readOnly = ['aigas_product_grants','aigas_ld_evidence_requirements','aigas_trial_requests','aigas_trial_entitlements'];
+    const readOnly = ['aigas_trial_operators','aigas_release_readiness','aigas_product_grants','aigas_ld_evidence_requirements','aigas_trial_requests'];
     const appendOnly = ['aigas_audit_events','aigas_ld_events','aigas_kernel_policy_decisions','aigas_fw_decisions',
       'aigas_hg_decisions','aigas_hg_events','aigas_department_events','aigas_policy_approvals',
       'aigas_re_asset_revisions','aigas_re_treatment_revisions','aigas_sc_cancellations','aigas_trial_events'];
@@ -380,7 +381,8 @@ async function structural() {
       'aigas_policy_versions','aigas_policy_delegations','aigas_departments','aigas_product_access','aigas_member_invitations'];
     const contentTables = ['aigas_sc_conversations','aigas_sc_messages'];
     const expected = (table) => {
-      if (contentTables.includes(table)) return [];
+      if (contentTables.includes(table) || ['aigas_trial_quota_limits', ...definerOnly].includes(table)) return [];
+      if (table === 'aigas_trial_entitlements') return ['SELECT','INSERT'];
       if (readOnly.includes(table)) return ['SELECT'];
       if (appendOnly.includes(table)) return ['SELECT','INSERT'];
       if (selectInsert.includes(table)) return ['SELECT','INSERT'];
@@ -401,8 +403,22 @@ async function structural() {
       WHERE n.nspname='public' AND c.relkind='r' AND c.relname LIKE 'aigas\_%' ORDER BY 1`);
     const drift = actual.filter(row => expected(row.relname).sort().join(',') !== (row.verbs ?? []).sort().join(','));
     sections.runtimeTableGrants = actual;
-    record('DB06', 'runtime-verb-matrix-exact', 'aigas_runtime verbs match the 0025 §3 matrix on all 36 tables',
+    record('DB06', 'runtime-verb-matrix-exact', 'aigas_runtime table verbs match 0025/0030; column grants are checked separately',
       drift, drift.length === 0);
+
+    const columnGrants = await q(`SELECT c.relname,a.attname,x.privilege_type
+      FROM pg_attribute a JOIN pg_class c ON c.oid=a.attrelid
+      CROSS JOIN LATERAL aclexplode(a.attacl) x
+      WHERE c.relnamespace='public'::regnamespace AND x.grantee='aigas_runtime'::regrole
+      ORDER BY 1,2,3`);
+    const expectedColumns = [
+      ...['id','tenant_id','requested_by','requested_products','deployment_mode','data_mode','business_goal','state'].map(c => `aigas_trial_requests.${c}.INSERT`),
+      ...['state','decision_source','decided_by','decided_at','activated_at','expires_at','closed_at','reason','version'].map(c => `aigas_trial_requests.${c}.UPDATE`),
+      'aigas_trial_entitlements.status.UPDATE',
+    ].sort();
+    sections.runtimeColumnGrants = columnGrants;
+    record('DB06','runtime-column-grants-exact','0030 column grants match exactly; no broad request UPDATE/INSERT',columnGrants,
+      columnGrants.map(r => `${r.relname}.${r.attname}.${r.privilege_type}`).sort().join(',') === expectedColumns.join(','));
 
     const contentGrants = await q(`
       SELECT grantee, privilege_type FROM information_schema.role_table_grants
@@ -420,6 +436,11 @@ async function structural() {
 
 // ---------------------------------------------------------------- behavioral
 async function behavioral() {
+  for (const table of ['aigas_trial_quota_limits','aigas_trial_quota_usage','aigas_trial_quota_reservations']) {
+    const result = await as('aigas_runtime', c => c.query(`SELECT * FROM public.${table}`));
+    record('DB06', `definer-only-${table}`, 'quota tables deny direct runtime SELECT', result, !result.ok && result.code === '42501');
+  }
+
   const runtimeRow = async (client, tenant, user) => {
     await scope(client, tenant, user);
     return (await client.query('SELECT tenant_id::text FROM public.aigas_fw_rules ORDER BY 1')).rows.map(r => r.tenant_id);

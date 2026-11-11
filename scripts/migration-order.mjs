@@ -16,7 +16,7 @@ export const DELTA_BASELINE = [
 
 export const DELTA_ORDER = [
   '0013', '0014', '0016', '0017', '0018', '0020', '0021', '0022', '0023',
-  '0025', '0026', '0027', '0028', '0029', '0024', '0030',
+  '0025', '0026', '0027', '0028', '0029', '0024', '0030', '0031', '0032',
 ];
 
 export function freshOrder(files) {
@@ -39,7 +39,59 @@ export const LIVE_BASELINE_TABLES = [
   'aigas_sc_messages', 'aigas_sc_requests', 'aigas_tenants',
 ];
 
-// Client roles that the Neon Data API provisions. 0018/0025/0027 revoke from them
-// unconditionally, so a target without the Data API must either create empty stubs or
-// the revoke statements fail with SQLSTATE 42704. See the P02 report, finding PORT-0018.
+// Optional empty client roles for rehearsing the Neon Data API privilege posture.
+// Current migrations guard revocation when these roles are absent.
 export const CLIENT_ROLES = ['authenticated', 'anonymous'];
+
+// Resume only a verified prefix of the fresh-install ledger; never replay upgrade-only
+// migrations or infer application from table counts. Validate ALL rows before writing.
+export function resumeOrder(files, ledger) {
+  const order = freshOrder(files);
+  const expected = order.map(key => files.find(file => file.key === key));
+  const known = new Map(expected.map(file => [file.name, file]));
+  const applied = new Set();
+  for (const row of ledger) {
+    const file = known.get(row.filename);
+    if (!file || row.status !== 'APPLIED' || row.sha256 !== file.sha256 || applied.has(row.filename)) {
+      throw new Error(`Unverified migration ledger: ${row.filename}`);
+    }
+    applied.add(row.filename);
+  }
+  if (!applied.size) throw new Error('Resume requires an existing verified ledger');
+  let missing = false;
+  for (const file of expected) {
+    if (!applied.has(file.name)) missing = true;
+    else if (missing) throw new Error(`Ledger is not a fresh-order prefix: ${file.name}`);
+  }
+  return expected.filter(file => !applied.has(file.name));
+}
+
+// Existing SQL files own a single outer transaction. Move ONLY that envelope to
+// the caller, allowing schema changes and their hash receipt to commit atomically.
+export function migrationBody(body) {
+  const match = body.match(/^((?:\s|--[^\n]*(?:\n|$))*)BEGIN;([\s\S]*)COMMIT;((?:\s|--[^\n]*(?:\n|$))*)$/i);
+  if (!match) throw new Error('Migration must have one outer BEGIN/COMMIT envelope');
+  if (/^\s*(?:BEGIN|COMMIT|ROLLBACK)\s*;/im.test(match[2])) {
+    // PL/pgSQL BEGIN has no semicolon; transaction control is not permitted inside.
+    throw new Error('Unexpected transaction boundary in migration');
+  }
+  return match[1] + match[2];
+}
+
+// Schema and receipt are one durable unit; callers may record failure separately.
+export async function applyMigration(client, file) {
+  const started = Date.now();
+  await client.query('BEGIN');
+  try {
+    await client.query(migrationBody(file.body));
+    await client.query(
+      `INSERT INTO ops.aigas_migration_ledger(filename,sha256,duration_ms,status)
+       VALUES($1,$2,$3,'APPLIED') ON CONFLICT(filename) DO UPDATE
+       SET status='APPLIED',duration_ms=EXCLUDED.duration_ms,applied_at=now(),detail=NULL`,
+      [file.name, file.sha256, Date.now() - started]);
+    await client.query('COMMIT');
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  }
+}

@@ -1,0 +1,82 @@
+[
+  {
+    "evidence": "migration-order.tap",
+    "sha": "95f12b9c1fff4717904d4602de86c441a7a56d22",
+    "environment": "Node22.22.2 local",
+    "completedAt": "2026-11-11T02:06:47.403312+00:00",
+    "result": "PASS:5/5",
+    "sha256": "b95e47547b00b2a44f15089c1768616ae525587c2ad5d38d32badc40565aaa24"
+  },
+  {
+    "evidence": "rehearsal.json",
+    "sha": "95f12b9c1fff4717904d4602de86c441a7a56d22",
+    "environment": "PG18.6 disposable local",
+    "completedAt": "2026-11-11T02:04:15.600475+00:00",
+    "result": "PASS:fresh28,delta29,resume28,absent28,negative12",
+    "sha256": "42f6610cf26af1084db7f4274a6ab58f6446ae657e4bf81cdf52ed8f7ae2c7a8"
+  },
+  {
+    "evidence": "runtime-rls.json",
+    "sha": "95f12b9c1fff4717904d4602de86c441a7a56d22",
+    "environment": "PG18.6 restricted login local",
+    "completedAt": "2026-11-11T02:06:01.897427+00:00",
+    "result": "PASS:74/74",
+    "sha256": "8b882fbc8b6ba7407cc8e0569d288738d453d212bebe6279e4b0dc1d660ee691"
+  },
+  {
+    "evidence": "contracts.log",
+    "sha": "95f12b9c1fff4717904d4602de86c441a7a56d22",
+    "environment": "PG18.6 nine disposable local DBs/no-egress",
+    "completedAt": "2026-11-11T02:04:16.348432+00:00",
+    "result": "PASS:75/75",
+    "sha256": "8f2b6ffa5aedbe3f74855814881b4275509085a0d7bc169c05091558525d6013"
+  },
+  {
+    "evidence": "build.log",
+    "sha": "95f12b9c1fff4717904d4602de86c441a7a56d22",
+    "environment": "Node22.22.2 Astro local",
+    "completedAt": "2026-11-11T02:02:31.375713+00:00",
+    "result": "PASS:56 pages",
+    "sha256": "daa02c091e7f85b373ec53a8714e1c6f4c04ff89b67f3099a775f873e986aeda"
+  },
+  {
+    "evidence": "staging-apply.log",
+    "sha": "95f12b9c1fff4717904d4602de86c441a7a56d22",
+    "environment": "Neon staging PG18.6",
+    "completedAt": "2026-11-11T02:00:00.434546+00:00",
+    "result": "PASS:25 preserved+3 applied",
+    "sha256": "1778b242f5ed05af29e8379d5156309c0738cdf6dc59b6d490eece518f230264"
+  },
+  {
+    "evidence": "staging-runtime.json",
+    "sha": "95f12b9c1fff4717904d4602de86c441a7a56d22",
+    "environment": "Neon staging restricted password LOGIN",
+    "completedAt": "2026-11-11T02:02:23.161201+00:00",
+    "result": "PASS:34/34",
+    "sha256": "571501d7aea242e9d93c122e0b31fa8d989681b3d38b3829927ef87e27d373fc"
+  },
+  {
+    "evidence": "staging-final.json",
+    "sha": "95f12b9c1fff4717904d4602de86c441a7a56d22",
+    "environment": "Neon staging readback+runner no-op",
+    "completedAt": "2026-11-11T02:06:10.839262+00:00",
+    "result": "PASS:28/28",
+    "sha256": "28f5cec07c2a985e83334af4b21ceea6ddac441f88604551b17307f60083208a"
+  },
+  {
+    "evidence": "data-api-surface.json",
+    "sha": "95f12b9c1fff4717904d4602de86c441a7a56d22",
+    "environment": "Production external HEAD only",
+    "completedAt": "2026-11-11T02:03:40.586452+00:00",
+    "result": "PARTIAL:3x400",
+    "sha256": "6eee1e21f9e6adf35b32af9cc8e7f9e223e1c69bdb19c5b5b1af399dc656b064"
+  },
+  {
+    "evidence": "production-readonly.json",
+    "sha": "95f12b9c1fff4717904d4602de86c441a7a56d22",
+    "environment": "Neon production catalog/control-plane only",
+    "completedAt": "2026-11-11T02:05:38.714354+00:00",
+    "result": "PARTIAL:unchanged",
+    "sha256": "5d5fc5af83f0ccfefb1e79a1994153d89c4884074b2368b76589e95a0af14416"
+  }
+]

@@ -6,20 +6,24 @@
 // Safety: the target is identified by its shape, not by trust in the caller.
 //   --mode fresh  refuses to run unless public has zero tables (production has 31).
 //   --mode delta  refuses unless public has exactly the 31 reviewed baseline tables.
-// That makes pointing this at production fail closed instead of applying the delta.
+// delta is an explicit production-shaped plan, not production authorization.
+// Host/database pinning is mandatory, in addition to the ledger/shape checks.
 //
 // Usage:
 //   node scripts/apply-migrations.mjs --mode fresh --dry-run
 //   node scripts/apply-migrations.mjs --mode fresh --bootstrap-client-roles
 //   node scripts/apply-migrations.mjs --mode delta --confirm-live-baseline
 //
+// Resume: --mode resume --confirm-existing-ledger preserves every matching prefix row.
+// All writes require --expected-host <approved host> --expected-database <database>.
+// Each schema migration and its APPLIED hash receipt share one transaction.
 // Exit codes: 0 applied, 1 failed migration, 2 refused / bad usage, 3 nothing to do.
 
 import { createHash } from 'node:crypto';
 import { readFile, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import pg from 'pg';
-import { DELTA_BASELINE, DELTA_ORDER, LIVE_BASELINE_TABLES, CLIENT_ROLES, freshOrder } from './migration-order.mjs';
+import { DELTA_ORDER, LIVE_BASELINE_TABLES, CLIENT_ROLES, freshOrder, resumeOrder, applyMigration } from './migration-order.mjs';
 
 const ROOT = new URL('..', import.meta.url).pathname;
 const MIGRATIONS = join(ROOT, 'migrations');
@@ -38,7 +42,7 @@ function refuse(message) {
   process.exit(2);
 }
 
-if (!['fresh', 'delta'].includes(mode)) refuse('--mode must be fresh or delta');
+if (!['fresh', 'delta', 'resume'].includes(mode)) refuse('--mode must be fresh, delta or resume');
 
 async function loadFiles() {
   const names = (await readdir(MIGRATIONS)).filter(f => f.endsWith('.sql')).sort();
@@ -47,19 +51,12 @@ async function loadFiles() {
     const body = await readFile(join(MIGRATIONS, name), 'utf8');
     files.push({ key: name.slice(0, 4), name, body, sha256: createHash('sha256').update(body).digest('hex') });
   }
-  // The delta baseline needs the pre-chain-guard 0003 the live branch actually ran.
-  const legacy = await import('node:child_process').then(({ execFileSync }) =>
-    execFileSync('git', ['-C', ROOT, 'show', '4e5f9f49^:migrations/0003_aigas_ledger.sql'], { encoding: 'utf8' }));
-  files.push({
-    key: '0003@pre-chain-guard', name: '0003_aigas_ledger.sql@4e5f9f49^', body: legacy,
-    sha256: createHash('sha256').update(legacy).digest('hex'), historical: true,
-  });
   return files;
 }
 
 const files = await loadFiles();
 const byKey = key => files.find(f => f.key === key);
-const plan = mode === 'fresh' ? freshOrder(files) : [...DELTA_BASELINE, ...DELTA_ORDER];
+const plan = mode !== 'delta' ? freshOrder(files) : DELTA_ORDER;
 const steps = plan.map(key => {
   const file = byKey(key);
   if (!file) refuse(`missing migration ${key}`);
@@ -68,9 +65,9 @@ const steps = plan.map(key => {
 
 if (dryRun) {
   console.log(JSON.stringify({
-    mode, dryRun: true, target: 'DATABASE_URL_UNPOOLED (not read in dry run)',
+    mode, dryRun: true, requiresLedgerRead: mode === 'resume', target: 'DATABASE_URL_UNPOOLED (not read in dry run)',
     stepCount: steps.length,
-    steps: steps.map(s => ({ file: s.name, sha256: s.sha256, baseline: DELTA_BASELINE.includes(s.key) && mode === 'delta' })),
+    steps: steps.map(s => ({ file: s.name, sha256: s.sha256, baseline: false })),
   }, null, 2));
   process.exit(0);
 }
@@ -79,17 +76,23 @@ const dsn = process.env.DATABASE_URL_UNPOOLED;
 if (!dsn) refuse('DATABASE_URL_UNPOOLED is not set in the environment');
 if (/(@|\/\/)(localhost|127\.0\.0\.1)/.test(dsn)) refuse('refusing a localhost DSN: use the rehearsal script for local databases');
 
+if (new URL(dsn).hostname.includes('-pooler')) refuse('migrations require an unpooled connection');
+if (!value('--expected-host') || new URL(dsn).hostname !== value('--expected-host')) refuse('--expected-host must match the approved target');
+if (!value('--expected-database') || new URL(dsn).pathname.slice(1) !== value('--expected-database')) refuse('--expected-database must match the approved target');
+
 const client = new pg.Client({ connectionString: dsn, application_name: 'aigas-migration-runner', connectionTimeoutMillis: 15000 });
 await client.connect();
 
 const one = async (sql, params) => (await client.query(sql, params)).rows;
+
+await client.query("SELECT pg_advisory_lock(hashtext('aigas-migration-runner'))");
 
 const tables = await one(`SELECT tablename FROM pg_tables WHERE schemaname = 'public' ORDER BY 1`);
 const present = tables.map(r => r.tablename);
 
 if (mode === 'fresh') {
   if (present.length !== 0) refuse(`fresh mode requires an empty public schema, found ${present.length} tables`);
-} else {
+} else if (mode === 'delta') {
   const expected = new Set(LIVE_BASELINE_TABLES);
   const missing = LIVE_BASELINE_TABLES.filter(t => !present.includes(t));
   const extra = present.filter(t => !expected.has(t));
@@ -97,6 +100,15 @@ if (mode === 'fresh') {
     refuse(`delta mode requires the reviewed 31-table baseline; missing=[${missing}] extra=[${extra}]`);
   }
   if (!flag('--confirm-live-baseline')) refuse('delta mode also requires --confirm-live-baseline');
+}
+
+let resumeSteps;
+if (mode === 'resume') {
+  if (!flag('--confirm-existing-ledger')) refuse('resume requires --confirm-existing-ledger');
+  if (!(await one("SELECT to_regclass('ops.aigas_migration_ledger') AS ledger"))[0].ledger) refuse('resume requires an existing ledger');
+  try {
+    resumeSteps = resumeOrder(files, await one(`SELECT filename, sha256, status FROM ${LEDGER}`));
+  } catch (error) { refuse(error.message); }
 }
 
 const [identity] = await one('SELECT current_database() AS db, current_user AS usr, version() AS version');
@@ -114,9 +126,7 @@ await client.query(`
   );`);
 
 if (bootstrapRoles) {
-  // 0018/0025 revoke from the Data API client roles unconditionally. A target without
-  // the Data API has no such roles, so the revokes would fail with 42704. Create empty
-  // NOLOGIN stubs and grant nothing; 0018/0025 then prove they hold zero privileges.
+  // Optional NOLOGIN stubs for checking client denial; no privileges are granted.
   for (const role of CLIENT_ROLES) {
     const existing = await one('SELECT 1 FROM pg_roles WHERE rolname = $1', [role]);
     if (!existing.length) {
@@ -129,7 +139,7 @@ if (bootstrapRoles) {
 const applied = new Map((await one(`SELECT filename, sha256, status FROM ${LEDGER}`)).map(r => [r.filename, r]));
 
 let changed = 0;
-for (const step of steps) {
+for (const step of resumeSteps ?? steps) {
   const prior = applied.get(step.name);
   if (prior) {
     if (prior.sha256 !== step.sha256) {
@@ -146,12 +156,8 @@ for (const step of steps) {
   }
   const started = Date.now();
   try {
-    await client.query(step.body);
+    await applyMigration(client, step);
     const ms = Date.now() - started;
-    await client.query(
-      `INSERT INTO ${LEDGER}(filename, sha256, duration_ms, status) VALUES($1,$2,$3,'APPLIED')
-       ON CONFLICT (filename) DO UPDATE SET status='APPLIED', duration_ms=EXCLUDED.duration_ms, applied_at=now()`,
-      [step.name, step.sha256, ms]);
     console.log(`applied ${step.name} (${ms}ms)`);
     changed += 1;
   } catch (error) {

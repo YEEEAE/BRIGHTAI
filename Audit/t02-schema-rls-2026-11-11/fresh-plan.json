@@ -1,0 +1,149 @@
+{
+  "mode": "fresh",
+  "dryRun": true,
+  "requiresLedgerRead": false,
+  "target": "DATABASE_URL_UNPOOLED (not read in dry run)",
+  "stepCount": 28,
+  "steps": [
+    {
+      "file": "0001_aigas_kernel.sql",
+      "sha256": "1c80c5abced0503f598e4cbe5b935e877622a57fb1f15a7f7f9e98f373e47ac7",
+      "baseline": false
+    },
+    {
+      "file": "0002_aigas_firewall.sql",
+      "sha256": "4396ae21579a257b86eeb44d2c0e8ed0cace560c391a58fefb445417a33da2fb",
+      "baseline": false
+    },
+    {
+      "file": "0003_aigas_ledger.sql",
+      "sha256": "7efef03a77c83b88a5abb67159213e06d467fe828f0182e59ae56d2851ff6642",
+      "baseline": false
+    },
+    {
+      "file": "0004_aigas_human_gate.sql",
+      "sha256": "b707e5745272106a01e393a3479811f309e981f60dbe7bec65f9b23f935792ef",
+      "baseline": false
+    },
+    {
+      "file": "0005_aigas_risk_engine.sql",
+      "sha256": "8bcd839c1afd937e1a6805ffd0cdd6231638f96a2ff0d492045459a54549046c",
+      "baseline": false
+    },
+    {
+      "file": "0006_aigas_kernel_administration.sql",
+      "sha256": "b623dec133d85b6c47dc76a2f9e0a134290074eabe3abcf045ca461257511ce7",
+      "baseline": false
+    },
+    {
+      "file": "0007_aigas_human_gate_enforcement.sql",
+      "sha256": "090ff73390db2bb063edcab0485a1c0c96787d6beb7afb9a559dd9a8cb7f3da8",
+      "baseline": false
+    },
+    {
+      "file": "0008_aigas_risk_engine_lifecycle.sql",
+      "sha256": "625a640e5d1dc7877c92116801ecb1e2d0772c1b1eeed269c15afbab07d484d2",
+      "baseline": false
+    },
+    {
+      "file": "0009_aigas_secure_chat.sql",
+      "sha256": "42dd8675ff9c91e2807bc983d69af49e8ddd5963961ccf28486de7cb99042cca",
+      "baseline": false
+    },
+    {
+      "file": "0010_aigas_kernel_policy_hierarchy.sql",
+      "sha256": "e359220d6a46ff8c3b5b6fcc6af29482f3d9023dac818928e83eda54d1c26daa",
+      "baseline": false
+    },
+    {
+      "file": "0014_aigas_human_gate_cancellation_delegation_and_grant.sql",
+      "sha256": "2424084ffc65a9dbd43158e9a8570c0285aa9ced388ff059edaef2f63b12dfe0",
+      "baseline": false
+    },
+    {
+      "file": "0015_aigas_risk_engine_asset_context_residual_risk.sql",
+      "sha256": "df372952f4fc9e53604c7d892774fc46bded9dc1b4d52937705f366d9e923f0a",
+      "baseline": false
+    },
+    {
+      "file": "0016_aigas_sc_user_token_quota.sql",
+      "sha256": "3e5017a9d80dc9cea5d947624f843c3d6c101ded50e763980cb1b6b2c04354d6",
+      "baseline": false
+    },
+    {
+      "file": "0017_aigas_kernel_audit_context.sql",
+      "sha256": "61baef8eb746c91b2ffb527d7b1f21b8b1d571c5fc1773f6743ac4b8499b27e5",
+      "baseline": false
+    },
+    {
+      "file": "0018_aigas_data_api_grant_hardening.sql",
+      "sha256": "87e47801e87d2aedb4155198548a589ef028787fee16fbbf5c62fd450c7092d2",
+      "baseline": false
+    },
+    {
+      "file": "0020_aigas_kernel_policy_review_requirements.sql",
+      "sha256": "54f73a509a32e943efa19f6beaebb5e8bbc69a5947e2f546ab0351a310b55b92",
+      "baseline": false
+    },
+    {
+      "file": "0021_aigas_risk_engine_acceptance_guard.sql",
+      "sha256": "b059020470a63d8a678b32463cd1093fe09ea5dbc9bf2a94e94d0fe220c32cd5",
+      "baseline": false
+    },
+    {
+      "file": "0022_aigas_reference_scope_guard.sql",
+      "sha256": "dfed738a9ef94c2ce1f9672ebf14c3c0468883986b69388f1c98796567674141",
+      "baseline": false
+    },
+    {
+      "file": "0023_aigas_enterprise_trial_lifecycle.sql",
+      "sha256": "e424e7eb1af6f0b14f14714c23aff19fc6d03656a9eab9b1a3cd68a041ef3189",
+      "baseline": false
+    },
+    {
+      "file": "0024_aigas_catalog_parity_repair.sql",
+      "sha256": "13c2f7f6da29fd5823289eb30c681a7c129f1416bfffd25b543a2f8e712dfbd9",
+      "baseline": false
+    },
+    {
+      "file": "0025_aigas_tenant_isolation_closure.sql",
+      "sha256": "013432e9fdb6905723d2d3fd7eb8110c5b3f9385dd61655e0a505719924d204b",
+      "baseline": false
+    },
+    {
+      "file": "0026_aigas_risk_engine_residual_and_acceptance_policy.sql",
+      "sha256": "144abb18ba58956633a852da846a276594cd686f77342dd9924940315f275cc8",
+      "baseline": false
+    },
+    {
+      "file": "0027_aigas_sc_content_participant_only.sql",
+      "sha256": "4a59eb0c528a40e371949f4650c4595cfbb3a26cbc5cb55dbcfae70e63baac1c",
+      "baseline": false
+    },
+    {
+      "file": "0028_aigas_runtime_membership_lock.sql",
+      "sha256": "df314f3a23dfe03fbcdb755537d03bda717ca096c2caeb99c426f8b3ed0af2c4",
+      "baseline": false
+    },
+    {
+      "file": "0029_aigas_ledger_required_reference.sql",
+      "sha256": "99be1b9d0aa2b584df8e610a292df30b6b9ac192ff223cc6ccc3b35acf7c2987",
+      "baseline": false
+    },
+    {
+      "file": "0030_aigas_trial_server_cycle.sql",
+      "sha256": "325cd0881522311dd815b9d48d0117228eea5fd06604f57b07eb85f37d9c3df3",
+      "baseline": false
+    },
+    {
+      "file": "0031_aigas_risk_treatment_runtime_lock.sql",
+      "sha256": "c33189f3debc821cc07a101aa5405843602a7171d0c3df0591a53b31db138e0a",
+      "baseline": false
+    },
+    {
+      "file": "0032_aigas_trial_trigger_execute_lock.sql",
+      "sha256": "1f3bce9c6b26e3bac6b89f1af17c69b37788529f5fccab2760aad152cdb43164",
+      "baseline": false
+    }
+  ]
+}

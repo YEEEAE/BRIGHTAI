@@ -1,0 +1,333 @@
+{
+  "at": "2026-11-11T02:06:10.833Z",
+  "result": "PASS",
+  "rerunExit": 3,
+  "unchangedReceipts": 28,
+  "ledger": [
+    {
+      "filename": "0001_aigas_kernel.sql",
+      "sha256": "1c80c5abced0503f598e4cbe5b935e877622a57fb1f15a7f7f9e98f373e47ac7",
+      "applied_at": "2026-11-10T14:26:56.558Z",
+      "duration_ms": 344,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0002_aigas_firewall.sql",
+      "sha256": "4396ae21579a257b86eeb44d2c0e8ed0cace560c391a58fefb445417a33da2fb",
+      "applied_at": "2026-11-10T14:26:57.168Z",
+      "duration_ms": 311,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0003_aigas_ledger.sql",
+      "sha256": "7efef03a77c83b88a5abb67159213e06d467fe828f0182e59ae56d2851ff6642",
+      "applied_at": "2026-11-10T14:26:57.855Z",
+      "duration_ms": 336,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0004_aigas_human_gate.sql",
+      "sha256": "b707e5745272106a01e393a3479811f309e981f60dbe7bec65f9b23f935792ef",
+      "applied_at": "2026-11-10T14:26:58.648Z",
+      "duration_ms": 277,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0005_aigas_risk_engine.sql",
+      "sha256": "8bcd839c1afd937e1a6805ffd0cdd6231638f96a2ff0d492045459a54549046c",
+      "applied_at": "2026-11-10T14:26:59.318Z",
+      "duration_ms": 218,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0006_aigas_kernel_administration.sql",
+      "sha256": "b623dec133d85b6c47dc76a2f9e0a134290074eabe3abcf045ca461257511ce7",
+      "applied_at": "2026-11-10T14:26:59.748Z",
+      "duration_ms": 214,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0007_aigas_human_gate_enforcement.sql",
+      "sha256": "090ff73390db2bb063edcab0485a1c0c96787d6beb7afb9a559dd9a8cb7f3da8",
+      "applied_at": "2026-11-10T14:27:00.378Z",
+      "duration_ms": 318,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0008_aigas_risk_engine_lifecycle.sql",
+      "sha256": "625a640e5d1dc7877c92116801ecb1e2d0772c1b1eeed269c15afbab07d484d2",
+      "applied_at": "2026-11-10T14:27:01.019Z",
+      "duration_ms": 237,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0009_aigas_secure_chat.sql",
+      "sha256": "42dd8675ff9c91e2807bc983d69af49e8ddd5963961ccf28486de7cb99042cca",
+      "applied_at": "2026-11-10T14:27:01.678Z",
+      "duration_ms": 321,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0010_aigas_kernel_policy_hierarchy.sql",
+      "sha256": "e359220d6a46ff8c3b5b6fcc6af29482f3d9023dac818928e83eda54d1c26daa",
+      "applied_at": "2026-11-10T14:27:02.299Z",
+      "duration_ms": 313,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0014_aigas_human_gate_cancellation_delegation_and_grant.sql",
+      "sha256": "2424084ffc65a9dbd43158e9a8570c0285aa9ced388ff059edaef2f63b12dfe0",
+      "applied_at": "2026-11-10T14:27:02.938Z",
+      "duration_ms": 328,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0015_aigas_risk_engine_asset_context_residual_risk.sql",
+      "sha256": "df372952f4fc9e53604c7d892774fc46bded9dc1b4d52937705f366d9e923f0a",
+      "applied_at": "2026-11-10T14:27:03.419Z",
+      "duration_ms": 267,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0016_aigas_sc_user_token_quota.sql",
+      "sha256": "3e5017a9d80dc9cea5d947624f843c3d6c101ded50e763980cb1b6b2c04354d6",
+      "applied_at": "2026-11-10T14:27:04.059Z",
+      "duration_ms": 323,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0017_aigas_kernel_audit_context.sql",
+      "sha256": "61baef8eb746c91b2ffb527d7b1f21b8b1d571c5fc1773f6743ac4b8499b27e5",
+      "applied_at": "2026-11-10T14:27:04.700Z",
+      "duration_ms": 316,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0018_aigas_data_api_grant_hardening.sql",
+      "sha256": "87e47801e87d2aedb4155198548a589ef028787fee16fbbf5c62fd450c7092d2",
+      "applied_at": "2026-11-10T14:27:05.366Z",
+      "duration_ms": 345,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0020_aigas_kernel_policy_review_requirements.sql",
+      "sha256": "54f73a509a32e943efa19f6beaebb5e8bbc69a5947e2f546ab0351a310b55b92",
+      "applied_at": "2026-11-10T14:27:06.619Z",
+      "duration_ms": 247,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0021_aigas_risk_engine_acceptance_guard.sql",
+      "sha256": "b059020470a63d8a678b32463cd1093fe09ea5dbc9bf2a94e94d0fe220c32cd5",
+      "applied_at": "2026-11-10T14:27:07.326Z",
+      "duration_ms": 320,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0022_aigas_reference_scope_guard.sql",
+      "sha256": "dfed738a9ef94c2ce1f9672ebf14c3c0468883986b69388f1c98796567674141",
+      "applied_at": "2026-11-10T14:27:07.987Z",
+      "duration_ms": 325,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0023_aigas_enterprise_trial_lifecycle.sql",
+      "sha256": "e424e7eb1af6f0b14f14714c23aff19fc6d03656a9eab9b1a3cd68a041ef3189",
+      "applied_at": "2026-11-10T14:27:08.599Z",
+      "duration_ms": 304,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0024_aigas_catalog_parity_repair.sql",
+      "sha256": "13c2f7f6da29fd5823289eb30c681a7c129f1416bfffd25b543a2f8e712dfbd9",
+      "applied_at": "2026-11-10T14:27:09.238Z",
+      "duration_ms": 327,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0025_aigas_tenant_isolation_closure.sql",
+      "sha256": "013432e9fdb6905723d2d3fd7eb8110c5b3f9385dd61655e0a505719924d204b",
+      "applied_at": "2026-11-10T14:27:10.547Z",
+      "duration_ms": 984,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0026_aigas_risk_engine_residual_and_acceptance_policy.sql",
+      "sha256": "144abb18ba58956633a852da846a276594cd686f77342dd9924940315f275cc8",
+      "applied_at": "2026-11-10T14:27:11.509Z",
+      "duration_ms": 733,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0027_aigas_sc_content_participant_only.sql",
+      "sha256": "4a59eb0c528a40e371949f4650c4595cfbb3a26cbc5cb55dbcfae70e63baac1c",
+      "applied_at": "2026-11-10T14:27:12.026Z",
+      "duration_ms": 250,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0028_aigas_runtime_membership_lock.sql",
+      "sha256": "df314f3a23dfe03fbcdb755537d03bda717ca096c2caeb99c426f8b3ed0af2c4",
+      "applied_at": "2026-11-10T14:27:12.707Z",
+      "duration_ms": 322,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0029_aigas_ledger_required_reference.sql",
+      "sha256": "99be1b9d0aa2b584df8e610a292df30b6b9ac192ff223cc6ccc3b35acf7c2987",
+      "applied_at": "2026-11-10T14:27:13.329Z",
+      "duration_ms": 320,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0030_aigas_trial_server_cycle.sql",
+      "sha256": "325cd0881522311dd815b9d48d0117228eea5fd06604f57b07eb85f37d9c3df3",
+      "applied_at": "2026-11-11T01:59:54.606Z",
+      "duration_ms": 905,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0031_aigas_risk_treatment_runtime_lock.sql",
+      "sha256": "c33189f3debc821cc07a101aa5405843602a7171d0c3df0591a53b31db138e0a",
+      "applied_at": "2026-11-11T01:59:55.921Z",
+      "duration_ms": 467,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0032_aigas_trial_trigger_execute_lock.sql",
+      "sha256": "1f3bce9c6b26e3bac6b89f1af17c69b37788529f5fccab2760aad152cdb43164",
+      "applied_at": "2026-11-11T01:59:56.956Z",
+      "duration_ms": 523,
+      "status": "APPLIED",
+      "detail": null
+    }
+  ],
+  "columnGrants": [
+    {
+      "relname": "aigas_trial_entitlements",
+      "attname": "status",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "relname": "aigas_trial_requests",
+      "attname": "activated_at",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "relname": "aigas_trial_requests",
+      "attname": "business_goal",
+      "privilege_type": "INSERT"
+    },
+    {
+      "relname": "aigas_trial_requests",
+      "attname": "closed_at",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "relname": "aigas_trial_requests",
+      "attname": "data_mode",
+      "privilege_type": "INSERT"
+    },
+    {
+      "relname": "aigas_trial_requests",
+      "attname": "decided_at",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "relname": "aigas_trial_requests",
+      "attname": "decided_by",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "relname": "aigas_trial_requests",
+      "attname": "decision_source",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "relname": "aigas_trial_requests",
+      "attname": "deployment_mode",
+      "privilege_type": "INSERT"
+    },
+    {
+      "relname": "aigas_trial_requests",
+      "attname": "expires_at",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "relname": "aigas_trial_requests",
+      "attname": "id",
+      "privilege_type": "INSERT"
+    },
+    {
+      "relname": "aigas_trial_requests",
+      "attname": "reason",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "relname": "aigas_trial_requests",
+      "attname": "requested_by",
+      "privilege_type": "INSERT"
+    },
+    {
+      "relname": "aigas_trial_requests",
+      "attname": "requested_products",
+      "privilege_type": "INSERT"
+    },
+    {
+      "relname": "aigas_trial_requests",
+      "attname": "state",
+      "privilege_type": "INSERT"
+    },
+    {
+      "relname": "aigas_trial_requests",
+      "attname": "state",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "relname": "aigas_trial_requests",
+      "attname": "tenant_id",
+      "privilege_type": "INSERT"
+    },
+    {
+      "relname": "aigas_trial_requests",
+      "attname": "version",
+      "privilege_type": "UPDATE"
+    }
+  ],
+  "treatment": {
+    "definition": "CREATE OR REPLACE FUNCTION public.aigas_re_guard_treatment()\n RETURNS trigger\n LANGUAGE plpgsql\nAS $function$\nDECLARE current_version integer; latest_assessment public.aigas_re_assessments%ROWTYPE; prior_version integer; membership_role text; expected_level text;\nBEGIN\n SELECT version INTO current_version FROM public.aigas_re_assets WHERE tenant_id=NEW.tenant_id AND id=NEW.asset_id FOR UPDATE;\n SELECT * INTO latest_assessment FROM public.aigas_re_assessments WHERE tenant_id=NEW.tenant_id AND asset_id=NEW.asset_id ORDER BY created_at DESC,id DESC LIMIT 1;\n SELECT COALESCE(max(version),0) INTO prior_version FROM public.aigas_re_treatment_revisions WHERE tenant_id=NEW.tenant_id AND asset_id=NEW.asset_id;\n IF NEW.changed_by IS DISTINCT FROM public.aigas_actor() THEN\n  RAISE EXCEPTION 'Treatment actor must match the authenticated actor';\n END IF;\n SELECT role INTO membership_role FROM public.aigas_lock_member(NEW.tenant_id,NEW.changed_by);\n IF current_version IS DISTINCT FROM NEW.asset_version OR latest_assessment.id IS DISTINCT FROM NEW.assessment_id OR latest_assessment.asset_version IS DISTINCT FROM current_version OR NEW.version<>prior_version+1 THEN\n  RAISE EXCEPTION 'Treatment requires current asset, assessment and treatment revision';\n END IF;\n IF membership_role IS NULL OR membership_role NOT IN ('OWNER','ADMIN') OR membership_role<>NEW.actor_role THEN\n  RAISE EXCEPTION 'Treatment actor is not authorized';\n END IF;\n IF NEW.residual_likelihood IS NOT NULL THEN\n  IF NEW.residual_impact IS NULL OR NEW.residual_likelihood NOT BETWEEN 1 AND 3 OR NEW.residual_impact NOT BETWEEN 1 AND 3 THEN\n   RAISE EXCEPTION 'Residual likelihood and impact must both be integers from 1 to 3';\n  END IF;\n  expected_level := CASE WHEN NEW.residual_likelihood*NEW.residual_impact<=2 THEN 'LOW' WHEN NEW.residual_likelihood*NEW.residual_impact<=4 THEN 'MEDIUM' ELSE 'HIGH' END;\n  IF NEW.residual_score IS DISTINCT FROM NEW.residual_likelihood*NEW.residual_impact OR NEW.residual_level IS DISTINCT FROM expected_level THEN\n   RAISE EXCEPTION 'Residual score and level must match the declared matrix';\n  END IF;\n END IF;\n IF NEW.status IN ('MITIGATED','ACCEPTED') AND NEW.residual_level IS NULL THEN\n  RAISE EXCEPTION 'Mitigation or acceptance requires a residual assessment';\n END IF;\n IF NEW.status='ACCEPTED' AND NEW.review_on IS NULL THEN\n  RAISE EXCEPTION 'Acceptance requires a review date';\n END IF;\n IF NEW.status='ACCEPTED' AND NEW.acceptance_policy_version IS DISTINCT FROM 'risk-acceptance-policy-v1' THEN\n  RAISE EXCEPTION 'Acceptance requires the declared policy version';\n END IF;\n -- Acceptance is an administrative decision with a recorded reason, not a score change.\n IF NEW.status='ACCEPTED' AND char_length(btrim(NEW.rationale))<20 THEN\n  RAISE EXCEPTION 'Acceptance requires a recorded rationale of at least 20 characters';\n END IF;\n -- HIGH inherent or residual risk requires an OWNER independent of the evaluator.\n IF NEW.status='ACCEPTED' AND (latest_assessment.risk_level='HIGH' OR NEW.residual_level='HIGH') AND (membership_role<>'OWNER' OR latest_assessment.evaluator_id=NEW.changed_by) THEN\n  RAISE EXCEPTION 'High risk acceptance requires an independent owner';\n END IF;\n RETURN NEW;\nEND;\n$function$\n"
+  },
+  "gates": {
+    "operators": 0,
+    "readiness": 0,
+    "quotas": 0
+  },
+  "leftoverProbeRoles": 0
+}

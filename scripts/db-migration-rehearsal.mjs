@@ -20,7 +20,7 @@ import { existsSync } from 'node:fs';
 import { mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import pg from 'pg';
-import { DELTA_BASELINE, DELTA_ORDER, freshOrder } from './migration-order.mjs';
+import { DELTA_BASELINE, DELTA_ORDER, freshOrder, resumeOrder, applyMigration } from './migration-order.mjs';
 
 const PGBIN = process.env.P02_PG_BIN || '/opt/homebrew/opt/postgresql@18/bin';
 const ROOT = new URL('..', import.meta.url).pathname;
@@ -258,7 +258,7 @@ async function main() {
     ledger: (await withClient(guards.database, c => c.query('SELECT filename, status FROM ops.aigas_migration_ledger ORDER BY filename'))).rows,
   };
   // Complete the guards database so post-0025 suppression can be observed.
-  for (const key of ['0025', '0026', '0027', '0028', '0029', '0030', '0024']) {
+  for (const key of ['0025', '0026', '0027', '0028', '0029', '0030', '0031', '0032', '0024']) {
     await withClient(guards.database, async client => {
       const result = await applyFile(client, byKey(key));
       await recordLedger(client, byKey(key), result);
@@ -339,6 +339,28 @@ async function main() {
   // shape and stop the whole chain; the to_regrole guard must let a full fresh
   // install complete. Roles are cluster-scoped, so this runs after the other
   // phase databases are dropped.
+  const prefixKeys = freshKeys.filter(key => key < '0030');
+  const resume = await phase('resume', [], prefixKeys, files);
+  await withClient(resume.database, async client => {
+    const before = (await client.query('SELECT * FROM ops.aigas_migration_ledger ORDER BY filename')).rows;
+    const pending = resumeOrder(files, before);
+    for (const file of pending) {
+      await applyMigration(client, file);
+    }
+    const after = (await client.query('SELECT * FROM ops.aigas_migration_ledger ORDER BY filename')).rows;
+    evidence.negative.push({case: 'resume applies only 0030/0031/0032, preserves all 25 receipts, and rerun is empty',
+      ok: pending.map(f => f.key).join(',') === '0030,0031,0032' &&
+        before.every(row => JSON.stringify(row) === JSON.stringify(after.find(r => r.filename === row.filename))) &&
+        resumeOrder(files, after).length === 0});
+    // A failed receipt must roll the schema back too.
+    try {
+      await applyMigration(client, {name: null, sha256: 'synthetic', body: 'BEGIN; CREATE TABLE public.atomic_receipt_probe(id integer); COMMIT;'});
+      throw new Error('Expected receipt failure');
+    } catch (error) { if (error.code !== '23502') throw error; }
+    evidence.negative.push({case: 'receipt failure rolls schema back', ok:
+      (await client.query("SELECT to_regclass('public.atomic_receipt_probe') AS t")).rows[0].t === null});
+  });
+  evidence.postures.resume = await posture(resume.database);
   await resetCluster();
   const dropErrors = await withClient('postgres', async client => {
     const errors = [];
@@ -382,7 +404,8 @@ async function main() {
   evidence.files = files.map(({ key, name, sha256, historical: h }) => ({ key, name, sha256, historical: h === true }));
   const refSha = process.env.P02_REF_SHA || null;
   evidence.reference = { referenceSha: refSha, headSha: (await run('git', ['-C', ROOT, 'rev-parse', 'HEAD'])).out.trim() };
-  evidence.result = evidence.negative.every(n => n.ok === true) ? 'PASS' : 'FAIL';
+  evidence.result = evidence.negative.every(n => n.ok === true) && Object.values(evidence.phases).every(p => !p.ledger || p.ledger.every(l => l.status === 'APPLIED' || !l.sha256)) ? 'PASS' : 'FAIL';
+  if (evidence.result !== 'PASS') process.exitCode = 1;
   evidence.workDir = WORK;
 
   if (jsonPath) {

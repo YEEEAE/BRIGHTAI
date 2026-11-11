@@ -1,0 +1,29 @@
+[
+  {
+    "at": "2026-11-11T02:03:39.201Z",
+    "path": "/aigas_tenants?select=id",
+    "profile": "public",
+    "method": "HEAD",
+    "status": 400,
+    "contentProfile": null,
+    "contentRange": null
+  },
+  {
+    "at": "2026-11-11T02:03:39.968Z",
+    "path": "/aigas_sc_messages?select=id",
+    "profile": "public",
+    "method": "HEAD",
+    "status": 400,
+    "contentProfile": null,
+    "contentRange": null
+  },
+  {
+    "at": "2026-11-11T02:03:40.585Z",
+    "path": "/user?select=id",
+    "profile": "neon_auth",
+    "method": "HEAD",
+    "status": 400,
+    "contentProfile": null,
+    "contentRange": null
+  }
+]

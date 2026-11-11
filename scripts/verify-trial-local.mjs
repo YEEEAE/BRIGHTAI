@@ -9,12 +9,12 @@
 
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
-import { mkdir, rm } from 'node:fs/promises';
+import { mkdir, mkdtemp, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import pg from 'pg';
 
 const PGBIN = process.env.P06_PG_BIN || '/opt/homebrew/opt/postgresql@18/bin';
-const WORK = join(process.env.TMPDIR || '/tmp', 'p06-trial-verify');
+const WORK = await mkdtemp(join(process.env.TMPDIR || '/tmp', 'p06-trial-verify-'));
 const DATA = join(WORK, 'data');
 const SOCK = join(WORK, 'sock');
 const PORT = process.env.P06_PG_PORT || '55433';
@@ -70,7 +70,7 @@ async function bootstrap() {
 
 async function main() {
   await bootstrap();
-  const names = ['KERNEL', 'FIREWALL', 'HUMAN_GATE', 'LEDGER', 'RISK_ENGINE', 'KERNEL_IDENTITY', 'KERNEL_INVITATION', 'KERNEL_TRIAL'];
+  const names = ['KERNEL', 'FIREWALL', 'HUMAN_GATE', 'LEDGER', 'RISK_ENGINE', 'RISK_ENGINE_RESIDUAL', 'KERNEL_IDENTITY', 'KERNEL_INVITATION', 'KERNEL_TRIAL'];
   const env = {
     PATH: process.env.PATH,
     TMPDIR: process.env.TMPDIR,

@@ -1,0 +1,360 @@
+{
+  "at": "2026-11-11T02:01:37.082Z",
+  "project": "lucky-salad-43566291",
+  "branch": "br-rough-wind-bdkmg13n",
+  "database": "neondb",
+  "results": [
+    {
+      "name": "no scope: zero synthetic rows",
+      "outcome": {
+        "rows": [],
+        "rowCount": 0
+      },
+      "pass": true,
+      "at": "2026-11-11T02:01:43.434Z"
+    },
+    {
+      "name": "A SELECT own",
+      "outcome": {
+        "rows": [
+          {
+            "id": "75a3eb91-4293-4ab6-b111-07714697ea5e"
+          }
+        ],
+        "rowCount": 1
+      },
+      "pass": true,
+      "at": "2026-11-11T02:01:44.483Z"
+    },
+    {
+      "name": "A SELECT foreign",
+      "outcome": {
+        "rows": [],
+        "rowCount": 0
+      },
+      "pass": true,
+      "at": "2026-11-11T02:01:45.523Z"
+    },
+    {
+      "name": "A INSERT own",
+      "outcome": {
+        "rows": [],
+        "rowCount": 1
+      },
+      "pass": true,
+      "at": "2026-11-11T02:01:46.596Z"
+    },
+    {
+      "name": "A INSERT foreign",
+      "outcome": {
+        "code": "42501"
+      },
+      "pass": true,
+      "at": "2026-11-11T02:01:47.739Z"
+    },
+    {
+      "name": "A UPDATE own",
+      "outcome": {
+        "rows": [],
+        "rowCount": 1
+      },
+      "pass": true,
+      "at": "2026-11-11T02:01:49.068Z"
+    },
+    {
+      "name": "A UPDATE foreign",
+      "outcome": {
+        "rows": [],
+        "rowCount": 0
+      },
+      "pass": true,
+      "at": "2026-11-11T02:01:50.099Z"
+    },
+    {
+      "name": "A DELETE own",
+      "outcome": {
+        "rows": [],
+        "rowCount": 1
+      },
+      "pass": true,
+      "at": "2026-11-11T02:01:51.231Z"
+    },
+    {
+      "name": "A DELETE foreign",
+      "outcome": {
+        "rows": [],
+        "rowCount": 0
+      },
+      "pass": true,
+      "at": "2026-11-11T02:01:52.208Z"
+    },
+    {
+      "name": "B SELECT own",
+      "outcome": {
+        "rows": [
+          {
+            "id": "d6919887-8788-4581-95ff-7b4f7bf0d94c"
+          }
+        ],
+        "rowCount": 1
+      },
+      "pass": true,
+      "at": "2026-11-11T02:01:53.274Z"
+    },
+    {
+      "name": "B SELECT foreign",
+      "outcome": {
+        "rows": [],
+        "rowCount": 0
+      },
+      "pass": true,
+      "at": "2026-11-11T02:01:54.286Z"
+    },
+    {
+      "name": "B INSERT own",
+      "outcome": {
+        "rows": [],
+        "rowCount": 1
+      },
+      "pass": true,
+      "at": "2026-11-11T02:01:56.132Z"
+    },
+    {
+      "name": "B INSERT foreign",
+      "outcome": {
+        "code": "42501"
+      },
+      "pass": true,
+      "at": "2026-11-11T02:01:57.463Z"
+    },
+    {
+      "name": "B UPDATE own",
+      "outcome": {
+        "rows": [],
+        "rowCount": 1
+      },
+      "pass": true,
+      "at": "2026-11-11T02:01:59.243Z"
+    },
+    {
+      "name": "B UPDATE foreign",
+      "outcome": {
+        "rows": [],
+        "rowCount": 0
+      },
+      "pass": true,
+      "at": "2026-11-11T02:02:00.211Z"
+    },
+    {
+      "name": "B DELETE own",
+      "outcome": {
+        "rows": [],
+        "rowCount": 1
+      },
+      "pass": true,
+      "at": "2026-11-11T02:02:01.251Z"
+    },
+    {
+      "name": "B DELETE foreign",
+      "outcome": {
+        "rows": [],
+        "rowCount": 0
+      },
+      "pass": true,
+      "at": "2026-11-11T02:02:02.786Z"
+    },
+    {
+      "name": "nonmember SELECT",
+      "outcome": {
+        "rows": [],
+        "rowCount": 0
+      },
+      "pass": true,
+      "at": "2026-11-11T02:02:04.228Z"
+    },
+    {
+      "name": "nonmember INSERT",
+      "outcome": {
+        "code": "42501"
+      },
+      "pass": true,
+      "at": "2026-11-11T02:02:05.315Z"
+    },
+    {
+      "name": "nonmember UPDATE",
+      "outcome": {
+        "rows": [],
+        "rowCount": 0
+      },
+      "pass": true,
+      "at": "2026-11-11T02:02:06.303Z"
+    },
+    {
+      "name": "nonmember DELETE",
+      "outcome": {
+        "rows": [],
+        "rowCount": 0
+      },
+      "pass": true,
+      "at": "2026-11-11T02:02:07.363Z"
+    },
+    {
+      "name": "runtime identity",
+      "outcome": {
+        "rows": [
+          {
+            "session_user": "aigas_t02_probe_39afae7d0e",
+            "current_user": "aigas_runtime",
+            "bypass": false
+          }
+        ],
+        "rowCount": 1
+      },
+      "pass": true,
+      "at": "2026-11-11T02:02:08.426Z"
+    },
+    {
+      "name": "cannot SET ROLE neondb_owner",
+      "outcome": {
+        "code": "42501"
+      },
+      "pass": true,
+      "at": "2026-11-11T02:02:09.452Z"
+    },
+    {
+      "name": "cannot SET ROLE authenticated",
+      "outcome": {
+        "code": "42501"
+      },
+      "pass": true,
+      "at": "2026-11-11T02:02:10.518Z"
+    },
+    {
+      "name": "no Chat body access: aigas_sc_messages",
+      "outcome": {
+        "code": "42501"
+      },
+      "pass": true,
+      "at": "2026-11-11T02:02:11.549Z"
+    },
+    {
+      "name": "no Chat body access: aigas_sc_conversations",
+      "outcome": {
+        "code": "42501"
+      },
+      "pass": true,
+      "at": "2026-11-11T02:02:12.600Z"
+    },
+    {
+      "name": "activation gaps: readiness and quota absent",
+      "outcome": {
+        "rows": [
+          {
+            "kind": "READINESS",
+            "product_slug": "firewall"
+          },
+          {
+            "kind": "QUOTA",
+            "product_slug": "firewall"
+          }
+        ],
+        "rowCount": 2
+      },
+      "pass": true,
+      "at": "2026-11-11T02:02:14.083Z"
+    },
+    {
+      "name": "quota function executable and fail closed",
+      "outcome": {
+        "rows": [
+          {
+            "allowed": false,
+            "reason": "TRIAL_NOT_FOUND",
+            "used": "0",
+            "limit_units": "0",
+            "remaining": "0"
+          }
+        ],
+        "rowCount": 1
+      },
+      "pass": true,
+      "at": "2026-11-11T02:02:15.118Z"
+    },
+    {
+      "name": "quota outsider rejected",
+      "outcome": {
+        "code": "42501"
+      },
+      "pass": true,
+      "at": "2026-11-11T02:02:16.142Z"
+    },
+    {
+      "name": "0032 trigger not a runtime RPC",
+      "outcome": {
+        "code": "42501"
+      },
+      "pass": true,
+      "at": "2026-11-11T02:02:17.222Z"
+    },
+    {
+      "name": "no GUC/role leak after COMMIT",
+      "outcome": {
+        "current_user": "aigas_t02_probe_39afae7d0e",
+        "tenant": "",
+        "actor": ""
+      },
+      "pass": true,
+      "at": "2026-11-11T02:02:18.230Z"
+    },
+    {
+      "name": "no GUC/role leak after ROLLBACK",
+      "outcome": {
+        "current_user": "aigas_t02_probe_39afae7d0e",
+        "tenant": "",
+        "actor": ""
+      },
+      "pass": true,
+      "at": "2026-11-11T02:02:19.792Z"
+    },
+    {
+      "name": "rollback preserved original rule",
+      "outcome": {
+        "rows": [
+          {
+            "name": "T02 A"
+          }
+        ],
+        "rowCount": 1
+      },
+      "pass": true,
+      "at": "2026-11-11T02:02:20.813Z"
+    },
+    {
+      "name": "NOINHERIT login has no direct privilege",
+      "outcome": {
+        "code": "42501"
+      },
+      "pass": true,
+      "at": "2026-11-11T02:02:21.033Z"
+    }
+  ],
+  "loginIdentity": {
+    "session_user": "aigas_t02_probe_39afae7d0e",
+    "current_user": "aigas_t02_probe_39afae7d0e",
+    "rolsuper": false,
+    "rolbypassrls": false,
+    "rolcreaterole": false,
+    "rolinherit": false,
+    "owned_tables": 0
+  },
+  "runtimeRole": {
+    "rolname": "aigas_runtime",
+    "rolsuper": false,
+    "rolbypassrls": false,
+    "rolcanlogin": false,
+    "rolcreaterole": false
+  },
+  "result": "PASS",
+  "fixturesRemoved": true,
+  "probeLoginRemoved": true
+}

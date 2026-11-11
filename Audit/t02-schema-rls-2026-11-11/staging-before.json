@@ -1,0 +1,1379 @@
+{
+  "at": "2026-11-11T01:59:49.601Z",
+  "identity": [
+    {
+      "current_database": "neondb",
+      "current_user": "neondb_owner",
+      "version": "PostgreSQL 18.6 (ac70818) on aarch64-unknown-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit"
+    }
+  ],
+  "tables": [
+    {
+      "relname": "aigas_audit_events",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_auth_organizations",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_department_events",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_department_memberships",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_departments",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_fw_decisions",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_fw_rules",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_hg_decisions",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_hg_delegations",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_hg_events",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_hg_grants",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_hg_policies",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_hg_requests",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_kernel_policy_decisions",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_ld_events",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_ld_evidence_requirements",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_member_invitations",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_memberships",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_policies",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_policy_approvals",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_policy_delegations",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_policy_versions",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_product_access",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_product_grants",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_re_assessments",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_re_asset_revisions",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_re_assets",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_re_treatment_revisions",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_sc_cancellations",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_sc_conversations",
+      "relrowsecurity": true,
+      "relforcerowsecurity": true,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_sc_messages",
+      "relrowsecurity": true,
+      "relforcerowsecurity": true,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_sc_requests",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_tenants",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_trial_entitlements",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_trial_events",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    },
+    {
+      "relname": "aigas_trial_requests",
+      "relrowsecurity": true,
+      "relforcerowsecurity": false,
+      "owner": "neondb_owner"
+    }
+  ],
+  "policies": [
+    {
+      "schemaname": "public",
+      "tablename": "aigas_audit_events",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_audit_events",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_auth_organizations",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_auth_organizations",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_department_events",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_department_events",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_department_memberships",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_department_memberships",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_departments",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_departments",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_fw_decisions",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_fw_decisions",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_fw_rules",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_fw_rules",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_hg_decisions",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_hg_decisions",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_hg_delegations",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_hg_delegations",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_hg_events",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_hg_events",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_hg_grants",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_hg_grants",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_hg_policies",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_hg_policies",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_hg_requests",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_hg_requests",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_kernel_policy_decisions",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_kernel_policy_decisions",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_ld_events",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_ld_events",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_ld_evidence_requirements",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_ld_evidence_requirements",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_member_invitations",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_member_invitations",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_memberships",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_memberships",
+      "policyname": "aigas_runtime_self_membership",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "SELECT",
+      "qual": "(user_id = aigas_actor())",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_memberships",
+      "policyname": "aigas_runtime_tenant_membership_delete",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "DELETE",
+      "qual": "(aigas_tenant_scope(tenant_id) AND aigas_actor_is_manager(tenant_id) AND (user_id <> aigas_actor()))",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_memberships",
+      "policyname": "aigas_runtime_tenant_membership_insert",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "(aigas_tenant_scope(tenant_id) AND aigas_actor_is_manager(tenant_id))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_memberships",
+      "policyname": "aigas_runtime_tenant_membership_read",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "SELECT",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_memberships",
+      "policyname": "aigas_runtime_tenant_membership_update",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "UPDATE",
+      "qual": "(aigas_tenant_scope(tenant_id) AND aigas_actor_is_manager(tenant_id) AND (user_id <> aigas_actor()))",
+      "with_check": "(aigas_tenant_scope(tenant_id) AND aigas_actor_is_manager(tenant_id) AND (user_id <> aigas_actor()))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_policies",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_policies",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_policy_approvals",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_policy_approvals",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_policy_delegations",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_policy_delegations",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_policy_versions",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_policy_versions",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_product_access",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_product_access",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_product_grants",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_product_grants",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_re_assessments",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_re_assessments",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_re_asset_revisions",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_re_asset_revisions",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_re_assets",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_re_assets",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_re_treatment_revisions",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_re_treatment_revisions",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_sc_cancellations",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_sc_cancellations",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_sc_conversations",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_sc_conversations",
+      "policyname": "sc_content_participant",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "((tenant_id = (NULLIF(current_setting('aigas.tenant_id'::text, true), ''::text))::uuid) AND (user_id = (NULLIF(current_setting('aigas.user_id'::text, true), ''::text))::uuid))",
+      "with_check": "((tenant_id = (NULLIF(current_setting('aigas.tenant_id'::text, true), ''::text))::uuid) AND (user_id = (NULLIF(current_setting('aigas.user_id'::text, true), ''::text))::uuid))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_sc_messages",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_sc_messages",
+      "policyname": "sc_content_participant",
+      "permissive": "PERMISSIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "((tenant_id = (NULLIF(current_setting('aigas.tenant_id'::text, true), ''::text))::uuid) AND (user_id = (NULLIF(current_setting('aigas.user_id'::text, true), ''::text))::uuid))",
+      "with_check": "((tenant_id = (NULLIF(current_setting('aigas.tenant_id'::text, true), ''::text))::uuid) AND (user_id = (NULLIF(current_setting('aigas.user_id'::text, true), ''::text))::uuid))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_sc_requests",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_sc_requests",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_tenants",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_tenants",
+      "policyname": "aigas_runtime_tenant_read",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "SELECT",
+      "qual": "aigas_is_tenant_member(id)",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_tenants",
+      "policyname": "aigas_runtime_tenant_rename",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "UPDATE",
+      "qual": "(aigas_tenant_scope(id) AND aigas_actor_is_manager(id))",
+      "with_check": "(aigas_tenant_scope(id) AND aigas_actor_is_manager(id))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_trial_entitlements",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_trial_entitlements",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_trial_events",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_trial_events",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_trial_requests",
+      "policyname": "aigas_client_deny",
+      "permissive": "RESTRICTIVE",
+      "roles": "{public}",
+      "cmd": "ALL",
+      "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+      "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "aigas_trial_requests",
+      "policyname": "aigas_runtime_tenant",
+      "permissive": "PERMISSIVE",
+      "roles": "{aigas_runtime}",
+      "cmd": "ALL",
+      "qual": "aigas_tenant_scope(tenant_id)",
+      "with_check": "aigas_tenant_scope(tenant_id)"
+    }
+  ],
+  "functions": [
+    {
+      "signature": "aigas_actor()",
+      "prosecdef": false,
+      "runtime": true,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_actor_is_manager(uuid)",
+      "prosecdef": true,
+      "runtime": true,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_actor_role(uuid)",
+      "prosecdef": true,
+      "runtime": true,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_fw_decisions_append_only()",
+      "prosecdef": false,
+      "runtime": false,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_hg_decision_guard()",
+      "prosecdef": false,
+      "runtime": false,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_hg_delegation_guard()",
+      "prosecdef": false,
+      "runtime": false,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_hg_grant_guard()",
+      "prosecdef": false,
+      "runtime": false,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_hg_immutable()",
+      "prosecdef": false,
+      "runtime": false,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_hg_request_guard()",
+      "prosecdef": false,
+      "runtime": false,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_hg_tenant_revision()",
+      "prosecdef": false,
+      "runtime": false,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_is_tenant_member(uuid)",
+      "prosecdef": true,
+      "runtime": true,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_ld_events_chain_guard()",
+      "prosecdef": false,
+      "runtime": false,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_ld_events_reject_mutation()",
+      "prosecdef": false,
+      "runtime": false,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_lock_member(uuid,uuid)",
+      "prosecdef": true,
+      "runtime": true,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_locked_evidence_requirements(uuid)",
+      "prosecdef": true,
+      "runtime": true,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_locked_product_grants(uuid)",
+      "prosecdef": true,
+      "runtime": true,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_policy_append_only()",
+      "prosecdef": false,
+      "runtime": false,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_policy_version_guard()",
+      "prosecdef": false,
+      "runtime": false,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_re_guard_treatment()",
+      "prosecdef": false,
+      "runtime": false,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_re_reject_history_mutation()",
+      "prosecdef": false,
+      "runtime": false,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_sc_usage_window(uuid,uuid)",
+      "prosecdef": true,
+      "runtime": true,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_sc_usage_window_v2(uuid,uuid)",
+      "prosecdef": true,
+      "runtime": true,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_tenant_scope(uuid)",
+      "prosecdef": false,
+      "runtime": true,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_trial_entitlement_guard()",
+      "prosecdef": false,
+      "runtime": false,
+      "authenticated": false,
+      "anonymous": false
+    },
+    {
+      "signature": "aigas_trial_transition_guard()",
+      "prosecdef": false,
+      "runtime": false,
+      "authenticated": false,
+      "anonymous": false
+    }
+  ],
+  "ledger": [
+    {
+      "filename": "0001_aigas_kernel.sql",
+      "sha256": "1c80c5abced0503f598e4cbe5b935e877622a57fb1f15a7f7f9e98f373e47ac7",
+      "applied_at": "2026-11-10T14:26:56.558Z",
+      "duration_ms": 344,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0002_aigas_firewall.sql",
+      "sha256": "4396ae21579a257b86eeb44d2c0e8ed0cace560c391a58fefb445417a33da2fb",
+      "applied_at": "2026-11-10T14:26:57.168Z",
+      "duration_ms": 311,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0003_aigas_ledger.sql",
+      "sha256": "7efef03a77c83b88a5abb67159213e06d467fe828f0182e59ae56d2851ff6642",
+      "applied_at": "2026-11-10T14:26:57.855Z",
+      "duration_ms": 336,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0004_aigas_human_gate.sql",
+      "sha256": "b707e5745272106a01e393a3479811f309e981f60dbe7bec65f9b23f935792ef",
+      "applied_at": "2026-11-10T14:26:58.648Z",
+      "duration_ms": 277,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0005_aigas_risk_engine.sql",
+      "sha256": "8bcd839c1afd937e1a6805ffd0cdd6231638f96a2ff0d492045459a54549046c",
+      "applied_at": "2026-11-10T14:26:59.318Z",
+      "duration_ms": 218,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0006_aigas_kernel_administration.sql",
+      "sha256": "b623dec133d85b6c47dc76a2f9e0a134290074eabe3abcf045ca461257511ce7",
+      "applied_at": "2026-11-10T14:26:59.748Z",
+      "duration_ms": 214,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0007_aigas_human_gate_enforcement.sql",
+      "sha256": "090ff73390db2bb063edcab0485a1c0c96787d6beb7afb9a559dd9a8cb7f3da8",
+      "applied_at": "2026-11-10T14:27:00.378Z",
+      "duration_ms": 318,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0008_aigas_risk_engine_lifecycle.sql",
+      "sha256": "625a640e5d1dc7877c92116801ecb1e2d0772c1b1eeed269c15afbab07d484d2",
+      "applied_at": "2026-11-10T14:27:01.019Z",
+      "duration_ms": 237,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0009_aigas_secure_chat.sql",
+      "sha256": "42dd8675ff9c91e2807bc983d69af49e8ddd5963961ccf28486de7cb99042cca",
+      "applied_at": "2026-11-10T14:27:01.678Z",
+      "duration_ms": 321,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0010_aigas_kernel_policy_hierarchy.sql",
+      "sha256": "e359220d6a46ff8c3b5b6fcc6af29482f3d9023dac818928e83eda54d1c26daa",
+      "applied_at": "2026-11-10T14:27:02.299Z",
+      "duration_ms": 313,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0014_aigas_human_gate_cancellation_delegation_and_grant.sql",
+      "sha256": "2424084ffc65a9dbd43158e9a8570c0285aa9ced388ff059edaef2f63b12dfe0",
+      "applied_at": "2026-11-10T14:27:02.938Z",
+      "duration_ms": 328,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0015_aigas_risk_engine_asset_context_residual_risk.sql",
+      "sha256": "df372952f4fc9e53604c7d892774fc46bded9dc1b4d52937705f366d9e923f0a",
+      "applied_at": "2026-11-10T14:27:03.419Z",
+      "duration_ms": 267,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0016_aigas_sc_user_token_quota.sql",
+      "sha256": "3e5017a9d80dc9cea5d947624f843c3d6c101ded50e763980cb1b6b2c04354d6",
+      "applied_at": "2026-11-10T14:27:04.059Z",
+      "duration_ms": 323,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0017_aigas_kernel_audit_context.sql",
+      "sha256": "61baef8eb746c91b2ffb527d7b1f21b8b1d571c5fc1773f6743ac4b8499b27e5",
+      "applied_at": "2026-11-10T14:27:04.700Z",
+      "duration_ms": 316,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0018_aigas_data_api_grant_hardening.sql",
+      "sha256": "87e47801e87d2aedb4155198548a589ef028787fee16fbbf5c62fd450c7092d2",
+      "applied_at": "2026-11-10T14:27:05.366Z",
+      "duration_ms": 345,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0020_aigas_kernel_policy_review_requirements.sql",
+      "sha256": "54f73a509a32e943efa19f6beaebb5e8bbc69a5947e2f546ab0351a310b55b92",
+      "applied_at": "2026-11-10T14:27:06.619Z",
+      "duration_ms": 247,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0021_aigas_risk_engine_acceptance_guard.sql",
+      "sha256": "b059020470a63d8a678b32463cd1093fe09ea5dbc9bf2a94e94d0fe220c32cd5",
+      "applied_at": "2026-11-10T14:27:07.326Z",
+      "duration_ms": 320,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0022_aigas_reference_scope_guard.sql",
+      "sha256": "dfed738a9ef94c2ce1f9672ebf14c3c0468883986b69388f1c98796567674141",
+      "applied_at": "2026-11-10T14:27:07.987Z",
+      "duration_ms": 325,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0023_aigas_enterprise_trial_lifecycle.sql",
+      "sha256": "e424e7eb1af6f0b14f14714c23aff19fc6d03656a9eab9b1a3cd68a041ef3189",
+      "applied_at": "2026-11-10T14:27:08.599Z",
+      "duration_ms": 304,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0024_aigas_catalog_parity_repair.sql",
+      "sha256": "13c2f7f6da29fd5823289eb30c681a7c129f1416bfffd25b543a2f8e712dfbd9",
+      "applied_at": "2026-11-10T14:27:09.238Z",
+      "duration_ms": 327,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0025_aigas_tenant_isolation_closure.sql",
+      "sha256": "013432e9fdb6905723d2d3fd7eb8110c5b3f9385dd61655e0a505719924d204b",
+      "applied_at": "2026-11-10T14:27:10.547Z",
+      "duration_ms": 984,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0026_aigas_risk_engine_residual_and_acceptance_policy.sql",
+      "sha256": "144abb18ba58956633a852da846a276594cd686f77342dd9924940315f275cc8",
+      "applied_at": "2026-11-10T14:27:11.509Z",
+      "duration_ms": 733,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0027_aigas_sc_content_participant_only.sql",
+      "sha256": "4a59eb0c528a40e371949f4650c4595cfbb3a26cbc5cb55dbcfae70e63baac1c",
+      "applied_at": "2026-11-10T14:27:12.026Z",
+      "duration_ms": 250,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0028_aigas_runtime_membership_lock.sql",
+      "sha256": "df314f3a23dfe03fbcdb755537d03bda717ca096c2caeb99c426f8b3ed0af2c4",
+      "applied_at": "2026-11-10T14:27:12.707Z",
+      "duration_ms": 322,
+      "status": "APPLIED",
+      "detail": null
+    },
+    {
+      "filename": "0029_aigas_ledger_required_reference.sql",
+      "sha256": "99be1b9d0aa2b584df8e610a292df30b6b9ac192ff223cc6ccc3b35acf7c2987",
+      "applied_at": "2026-11-10T14:27:13.329Z",
+      "duration_ms": 320,
+      "status": "APPLIED",
+      "detail": null
+    }
+  ]
+}

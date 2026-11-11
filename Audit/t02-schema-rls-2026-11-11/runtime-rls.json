@@ -1,0 +1,2233 @@
+{
+  "generatedAt": "2026-11-11T02:06:01.880Z",
+  "sha": "95f12b9c1fff4717904d4602de86c441a7a56d22",
+  "workdir": "/var/folders/md/ply6x_qd1k3gzt5vvg5ksnrr0000gn/T/p03-runtime-rls-XWghyX",
+  "kept": false,
+  "sections": {
+    "serverVersion": "18.6 (Homebrew)",
+    "freshDatabase": true,
+    "migrations": {
+      "count": 28,
+      "applied": [
+        {
+          "file": "0001_aigas_kernel.sql",
+          "ms": 7,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0002_aigas_firewall.sql",
+          "ms": 7,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0003_aigas_ledger.sql",
+          "ms": 6,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0004_aigas_human_gate.sql",
+          "ms": 5,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0005_aigas_risk_engine.sql",
+          "ms": 11,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0006_aigas_kernel_administration.sql",
+          "ms": 6,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0007_aigas_human_gate_enforcement.sql",
+          "ms": 8,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0008_aigas_risk_engine_lifecycle.sql",
+          "ms": 5,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0009_aigas_secure_chat.sql",
+          "ms": 13,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0010_aigas_kernel_policy_hierarchy.sql",
+          "ms": 30,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0014_aigas_human_gate_cancellation_delegation_and_grant.sql",
+          "ms": 16,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0015_aigas_risk_engine_asset_context_residual_risk.sql",
+          "ms": 7,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0016_aigas_sc_user_token_quota.sql",
+          "ms": 2,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0017_aigas_kernel_audit_context.sql",
+          "ms": 2,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0018_aigas_data_api_grant_hardening.sql",
+          "ms": 17,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0020_aigas_kernel_policy_review_requirements.sql",
+          "ms": 7,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0021_aigas_risk_engine_acceptance_guard.sql",
+          "ms": 3,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0022_aigas_reference_scope_guard.sql",
+          "ms": 3,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0023_aigas_enterprise_trial_lifecycle.sql",
+          "ms": 14,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0024_aigas_catalog_parity_repair.sql",
+          "ms": 13,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0025_aigas_tenant_isolation_closure.sql",
+          "ms": 39,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0026_aigas_risk_engine_residual_and_acceptance_policy.sql",
+          "ms": 2,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0027_aigas_sc_content_participant_only.sql",
+          "ms": 3,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0028_aigas_runtime_membership_lock.sql",
+          "ms": 2,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0029_aigas_ledger_required_reference.sql",
+          "ms": 1,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0030_aigas_trial_server_cycle.sql",
+          "ms": 10,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0031_aigas_risk_treatment_runtime_lock.sql",
+          "ms": 1,
+          "status": "APPLIED"
+        },
+        {
+          "file": "0032_aigas_trial_trigger_execute_lock.sql",
+          "ms": 1,
+          "status": "APPLIED"
+        }
+      ]
+    },
+    "owner": [
+      {
+        "role": "neondb_owner",
+        "rolsuper": false,
+        "rolbypassrls": true,
+        "rolcreaterole": true,
+        "rolcanlogin": true
+      }
+    ],
+    "tableOwners": [
+      {
+        "owner": "neondb_owner",
+        "tables": 41
+      }
+    ],
+    "runtimeRole": {
+      "rolsuper": false,
+      "rolbypassrls": false,
+      "rolcreaterole": false,
+      "rolcreatedb": false,
+      "rolreplication": false,
+      "rolcanlogin": false,
+      "rolinherit": false
+    },
+    "runtimeMemberships": [],
+    "rls": [
+      {
+        "relname": "aigas_audit_events",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_auth_organizations",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_department_events",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_department_memberships",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_departments",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_fw_decisions",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_fw_rules",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_hg_decisions",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_hg_delegations",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_hg_events",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_hg_grants",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_hg_policies",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_hg_requests",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_kernel_policy_decisions",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_ld_events",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_ld_evidence_requirements",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_member_invitations",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_memberships",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 6
+      },
+      {
+        "relname": "aigas_policies",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_policy_approvals",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_policy_delegations",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_policy_versions",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_product_access",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_product_grants",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_re_assessments",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_re_asset_revisions",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_re_assets",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_re_treatment_revisions",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_release_readiness",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_sc_cancellations",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_sc_conversations",
+        "relrowsecurity": true,
+        "relforcerowsecurity": true,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_sc_messages",
+        "relrowsecurity": true,
+        "relforcerowsecurity": true,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_sc_requests",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_tenants",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 3
+      },
+      {
+        "relname": "aigas_trial_entitlements",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 4
+      },
+      {
+        "relname": "aigas_trial_events",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 3
+      },
+      {
+        "relname": "aigas_trial_operators",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 2
+      },
+      {
+        "relname": "aigas_trial_quota_limits",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 1
+      },
+      {
+        "relname": "aigas_trial_quota_reservations",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 1
+      },
+      {
+        "relname": "aigas_trial_quota_usage",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 1
+      },
+      {
+        "relname": "aigas_trial_requests",
+        "relrowsecurity": true,
+        "relforcerowsecurity": false,
+        "policies": 4
+      }
+    ],
+    "clientTableGrants": [],
+    "clientSequenceGrants": [],
+    "functions": [
+      {
+        "signature": "aigas_actor()",
+        "prosecdef": false,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": true
+      },
+      {
+        "signature": "aigas_actor_is_manager(uuid)",
+        "prosecdef": true,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": true
+      },
+      {
+        "signature": "aigas_actor_role(uuid)",
+        "prosecdef": true,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": true
+      },
+      {
+        "signature": "aigas_fw_decisions_append_only()",
+        "prosecdef": false,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": false
+      },
+      {
+        "signature": "aigas_hg_decision_guard()",
+        "prosecdef": false,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": false
+      },
+      {
+        "signature": "aigas_hg_delegation_guard()",
+        "prosecdef": false,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": false
+      },
+      {
+        "signature": "aigas_hg_grant_guard()",
+        "prosecdef": false,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": false
+      },
+      {
+        "signature": "aigas_hg_immutable()",
+        "prosecdef": false,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": false
+      },
+      {
+        "signature": "aigas_hg_request_guard()",
+        "prosecdef": false,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": false
+      },
+      {
+        "signature": "aigas_hg_tenant_revision()",
+        "prosecdef": false,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": false
+      },
+      {
+        "signature": "aigas_is_tenant_member(uuid)",
+        "prosecdef": true,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": true
+      },
+      {
+        "signature": "aigas_ld_events_chain_guard()",
+        "prosecdef": false,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": false
+      },
+      {
+        "signature": "aigas_ld_events_reject_mutation()",
+        "prosecdef": false,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": false
+      },
+      {
+        "signature": "aigas_lock_member(uuid,uuid)",
+        "prosecdef": true,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": true
+      },
+      {
+        "signature": "aigas_locked_evidence_requirements(uuid)",
+        "prosecdef": true,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": true
+      },
+      {
+        "signature": "aigas_locked_product_grants(uuid)",
+        "prosecdef": true,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": true
+      },
+      {
+        "signature": "aigas_policy_append_only()",
+        "prosecdef": false,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": false
+      },
+      {
+        "signature": "aigas_policy_version_guard()",
+        "prosecdef": false,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": false
+      },
+      {
+        "signature": "aigas_re_guard_treatment()",
+        "prosecdef": false,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": false
+      },
+      {
+        "signature": "aigas_re_reject_history_mutation()",
+        "prosecdef": false,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": false
+      },
+      {
+        "signature": "aigas_sc_usage_window(uuid,uuid)",
+        "prosecdef": true,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": true
+      },
+      {
+        "signature": "aigas_sc_usage_window_v2(uuid,uuid)",
+        "prosecdef": true,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": true
+      },
+      {
+        "signature": "aigas_tenant_scope(uuid)",
+        "prosecdef": false,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": true
+      },
+      {
+        "signature": "aigas_trial_activation_gaps(text[])",
+        "prosecdef": true,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": true
+      },
+      {
+        "signature": "aigas_trial_consume_quota(uuid,uuid,text,bigint,text)",
+        "prosecdef": true,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": true
+      },
+      {
+        "signature": "aigas_trial_entitlement_guard()",
+        "prosecdef": false,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": false
+      },
+      {
+        "signature": "aigas_trial_operator_active()",
+        "prosecdef": true,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": true
+      },
+      {
+        "signature": "aigas_trial_readiness_guard()",
+        "prosecdef": true,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": false
+      },
+      {
+        "signature": "aigas_trial_tenant_transition(uuid,uuid,text,text)",
+        "prosecdef": true,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": true
+      },
+      {
+        "signature": "aigas_trial_transition_guard()",
+        "prosecdef": false,
+        "authenticated": false,
+        "anonymous": false,
+        "runtime": false
+      }
+    ],
+    "securityDefiner": [
+      "aigas_actor_is_manager(uuid)",
+      "aigas_actor_role(uuid)",
+      "aigas_is_tenant_member(uuid)",
+      "aigas_lock_member(uuid,uuid)",
+      "aigas_locked_evidence_requirements(uuid)",
+      "aigas_locked_product_grants(uuid)",
+      "aigas_sc_usage_window(uuid,uuid)",
+      "aigas_sc_usage_window_v2(uuid,uuid)",
+      "aigas_trial_activation_gaps(text[])",
+      "aigas_trial_consume_quota(uuid,uuid,text,bigint,text)",
+      "aigas_trial_operator_active()",
+      "aigas_trial_readiness_guard()",
+      "aigas_trial_tenant_transition(uuid,uuid,text,text)"
+    ],
+    "defaultAcl": [],
+    "policyCoverage": [
+      {
+        "relname": "aigas_audit_events",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_auth_organizations",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_department_events",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_department_memberships",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_departments",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_fw_decisions",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_fw_rules",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_hg_decisions",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_hg_delegations",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_hg_events",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_hg_grants",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_hg_policies",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_hg_requests",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_kernel_policy_decisions",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_ld_events",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_ld_evidence_requirements",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_member_invitations",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_memberships",
+        "has_tenant": true,
+        "permissive": 5
+      },
+      {
+        "relname": "aigas_policies",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_policy_approvals",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_policy_delegations",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_policy_versions",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_product_access",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_product_grants",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_re_assessments",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_re_asset_revisions",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_re_assets",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_re_treatment_revisions",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_release_readiness",
+        "has_tenant": false,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_sc_cancellations",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_sc_conversations",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_sc_messages",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_sc_requests",
+        "has_tenant": true,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_tenants",
+        "has_tenant": false,
+        "permissive": 2
+      },
+      {
+        "relname": "aigas_trial_entitlements",
+        "has_tenant": true,
+        "permissive": 3
+      },
+      {
+        "relname": "aigas_trial_events",
+        "has_tenant": true,
+        "permissive": 2
+      },
+      {
+        "relname": "aigas_trial_operators",
+        "has_tenant": false,
+        "permissive": 1
+      },
+      {
+        "relname": "aigas_trial_quota_limits",
+        "has_tenant": false,
+        "permissive": 0
+      },
+      {
+        "relname": "aigas_trial_quota_reservations",
+        "has_tenant": true,
+        "permissive": 0
+      },
+      {
+        "relname": "aigas_trial_quota_usage",
+        "has_tenant": true,
+        "permissive": 0
+      },
+      {
+        "relname": "aigas_trial_requests",
+        "has_tenant": true,
+        "permissive": 3
+      }
+    ],
+    "runtimeTableGrants": [
+      {
+        "relname": "aigas_audit_events",
+        "verbs": [
+          "INSERT",
+          "SELECT"
+        ]
+      },
+      {
+        "relname": "aigas_auth_organizations",
+        "verbs": [
+          "INSERT",
+          "SELECT"
+        ]
+      },
+      {
+        "relname": "aigas_department_events",
+        "verbs": [
+          "INSERT",
+          "SELECT"
+        ]
+      },
+      {
+        "relname": "aigas_department_memberships",
+        "verbs": [
+          "DELETE",
+          "INSERT",
+          "SELECT",
+          "UPDATE"
+        ]
+      },
+      {
+        "relname": "aigas_departments",
+        "verbs": [
+          "INSERT",
+          "SELECT",
+          "UPDATE"
+        ]
+      },
+      {
+        "relname": "aigas_fw_decisions",
+        "verbs": [
+          "INSERT",
+          "SELECT"
+        ]
+      },
+      {
+        "relname": "aigas_fw_rules",
+        "verbs": [
+          "DELETE",
+          "INSERT",
+          "SELECT",
+          "UPDATE"
+        ]
+      },
+      {
+        "relname": "aigas_hg_decisions",
+        "verbs": [
+          "INSERT",
+          "SELECT"
+        ]
+      },
+      {
+        "relname": "aigas_hg_delegations",
+        "verbs": [
+          "DELETE",
+          "INSERT",
+          "SELECT",
+          "UPDATE"
+        ]
+      },
+      {
+        "relname": "aigas_hg_events",
+        "verbs": [
+          "INSERT",
+          "SELECT"
+        ]
+      },
+      {
+        "relname": "aigas_hg_grants",
+        "verbs": [
+          "DELETE",
+          "INSERT",
+          "SELECT",
+          "UPDATE"
+        ]
+      },
+      {
+        "relname": "aigas_hg_policies",
+        "verbs": [
+          "DELETE",
+          "INSERT",
+          "SELECT",
+          "UPDATE"
+        ]
+      },
+      {
+        "relname": "aigas_hg_requests",
+        "verbs": [
+          "INSERT",
+          "SELECT",
+          "UPDATE"
+        ]
+      },
+      {
+        "relname": "aigas_kernel_policy_decisions",
+        "verbs": [
+          "INSERT",
+          "SELECT"
+        ]
+      },
+      {
+        "relname": "aigas_ld_events",
+        "verbs": [
+          "INSERT",
+          "SELECT"
+        ]
+      },
+      {
+        "relname": "aigas_ld_evidence_requirements",
+        "verbs": [
+          "SELECT"
+        ]
+      },
+      {
+        "relname": "aigas_member_invitations",
+        "verbs": [
+          "INSERT",
+          "SELECT",
+          "UPDATE"
+        ]
+      },
+      {
+        "relname": "aigas_memberships",
+        "verbs": [
+          "DELETE",
+          "INSERT",
+          "SELECT",
+          "UPDATE"
+        ]
+      },
+      {
+        "relname": "aigas_policies",
+        "verbs": [
+          "INSERT",
+          "SELECT",
+          "UPDATE"
+        ]
+      },
+      {
+        "relname": "aigas_policy_approvals",
+        "verbs": [
+          "INSERT",
+          "SELECT"
+        ]
+      },
+      {
+        "relname": "aigas_policy_delegations",
+        "verbs": [
+          "INSERT",
+          "SELECT",
+          "UPDATE"
+        ]
+      },
+      {
+        "relname": "aigas_policy_versions",
+        "verbs": [
+          "INSERT",
+          "SELECT",
+          "UPDATE"
+        ]
+      },
+      {
+        "relname": "aigas_product_access",
+        "verbs": [
+          "INSERT",
+          "SELECT",
+          "UPDATE"
+        ]
+      },
+      {
+        "relname": "aigas_product_grants",
+        "verbs": [
+          "SELECT"
+        ]
+      },
+      {
+        "relname": "aigas_re_assessments",
+        "verbs": [
+          "DELETE",
+          "INSERT",
+          "SELECT",
+          "UPDATE"
+        ]
+      },
+      {
+        "relname": "aigas_re_asset_revisions",
+        "verbs": [
+          "INSERT",
+          "SELECT"
+        ]
+      },
+      {
+        "relname": "aigas_re_assets",
+        "verbs": [
+          "INSERT",
+          "SELECT",
+          "UPDATE"
+        ]
+      },
+      {
+        "relname": "aigas_re_treatment_revisions",
+        "verbs": [
+          "INSERT",
+          "SELECT"
+        ]
+      },
+      {
+        "relname": "aigas_release_readiness",
+        "verbs": [
+          "SELECT"
+        ]
+      },
+      {
+        "relname": "aigas_sc_cancellations",
+        "verbs": [
+          "INSERT",
+          "SELECT"
+        ]
+      },
+      {
+        "relname": "aigas_sc_conversations",
+        "verbs": []
+      },
+      {
+        "relname": "aigas_sc_messages",
+        "verbs": []
+      },
+      {
+        "relname": "aigas_sc_requests",
+        "verbs": [
+          "INSERT",
+          "SELECT",
+          "UPDATE"
+        ]
+      },
+      {
+        "relname": "aigas_tenants",
+        "verbs": [
+          "SELECT",
+          "UPDATE"
+        ]
+      },
+      {
+        "relname": "aigas_trial_entitlements",
+        "verbs": [
+          "INSERT",
+          "SELECT"
+        ]
+      },
+      {
+        "relname": "aigas_trial_events",
+        "verbs": [
+          "INSERT",
+          "SELECT"
+        ]
+      },
+      {
+        "relname": "aigas_trial_operators",
+        "verbs": [
+          "SELECT"
+        ]
+      },
+      {
+        "relname": "aigas_trial_quota_limits",
+        "verbs": []
+      },
+      {
+        "relname": "aigas_trial_quota_reservations",
+        "verbs": []
+      },
+      {
+        "relname": "aigas_trial_quota_usage",
+        "verbs": []
+      },
+      {
+        "relname": "aigas_trial_requests",
+        "verbs": [
+          "SELECT"
+        ]
+      }
+    ],
+    "runtimeColumnGrants": [
+      {
+        "relname": "aigas_trial_entitlements",
+        "attname": "status",
+        "privilege_type": "UPDATE"
+      },
+      {
+        "relname": "aigas_trial_requests",
+        "attname": "activated_at",
+        "privilege_type": "UPDATE"
+      },
+      {
+        "relname": "aigas_trial_requests",
+        "attname": "business_goal",
+        "privilege_type": "INSERT"
+      },
+      {
+        "relname": "aigas_trial_requests",
+        "attname": "closed_at",
+        "privilege_type": "UPDATE"
+      },
+      {
+        "relname": "aigas_trial_requests",
+        "attname": "data_mode",
+        "privilege_type": "INSERT"
+      },
+      {
+        "relname": "aigas_trial_requests",
+        "attname": "decided_at",
+        "privilege_type": "UPDATE"
+      },
+      {
+        "relname": "aigas_trial_requests",
+        "attname": "decided_by",
+        "privilege_type": "UPDATE"
+      },
+      {
+        "relname": "aigas_trial_requests",
+        "attname": "decision_source",
+        "privilege_type": "UPDATE"
+      },
+      {
+        "relname": "aigas_trial_requests",
+        "attname": "deployment_mode",
+        "privilege_type": "INSERT"
+      },
+      {
+        "relname": "aigas_trial_requests",
+        "attname": "expires_at",
+        "privilege_type": "UPDATE"
+      },
+      {
+        "relname": "aigas_trial_requests",
+        "attname": "id",
+        "privilege_type": "INSERT"
+      },
+      {
+        "relname": "aigas_trial_requests",
+        "attname": "reason",
+        "privilege_type": "UPDATE"
+      },
+      {
+        "relname": "aigas_trial_requests",
+        "attname": "requested_by",
+        "privilege_type": "INSERT"
+      },
+      {
+        "relname": "aigas_trial_requests",
+        "attname": "requested_products",
+        "privilege_type": "INSERT"
+      },
+      {
+        "relname": "aigas_trial_requests",
+        "attname": "state",
+        "privilege_type": "INSERT"
+      },
+      {
+        "relname": "aigas_trial_requests",
+        "attname": "state",
+        "privilege_type": "UPDATE"
+      },
+      {
+        "relname": "aigas_trial_requests",
+        "attname": "tenant_id",
+        "privilege_type": "INSERT"
+      },
+      {
+        "relname": "aigas_trial_requests",
+        "attname": "version",
+        "privilege_type": "UPDATE"
+      }
+    ],
+    "rowCounts": [
+      {
+        "t": "aigas_tenants",
+        "n": 2
+      },
+      {
+        "t": "aigas_memberships",
+        "n": 4
+      },
+      {
+        "t": "aigas_sc_messages",
+        "n": 2
+      }
+    ],
+    "export": [
+      "SET",
+      "aaaaaaaa-0000-4000-8000-00000000000a",
+      "22222222-2222-4222-8222-222222222222",
+      "aaaaaaaa-0000-4000-8000-00000000000a",
+      "aaaaaaaa-0000-4000-8000-00000000000a,workspace.created",
+      "3",
+      "1",
+      "aaaaaaaa-0000-4000-8000-00000000000a"
+    ]
+  },
+  "checks": 74,
+  "passed": 74,
+  "failed": 0,
+  "failures": [],
+  "results": [
+    {
+      "area": "DB04",
+      "id": "runtime-owns-no-table",
+      "expectation": "aigas_runtime owns 0 of the AIGAS tables",
+      "outcome": {
+        "owned": 0
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB04",
+      "id": "runtime-least-privilege",
+      "expectation": "aigas_runtime: NOBYPASSRLS NOSUPERUSER NOCREATEROLE NOLOGIN",
+      "outcome": {
+        "rolsuper": false,
+        "rolbypassrls": false,
+        "rolcreaterole": false,
+        "rolcreatedb": false,
+        "rolreplication": false,
+        "rolcanlogin": false,
+        "rolinherit": false
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB04",
+      "id": "runtime-no-privileged-membership",
+      "expectation": "aigas_runtime is not a member of an owner/BYPASSRLS/client role",
+      "outcome": [],
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB04",
+      "id": "rls-enabled-all",
+      "expectation": "RLS enabled on every AIGAS table",
+      "outcome": {
+        "tables": 41,
+        "missing": []
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB04",
+      "id": "force-only-content",
+      "expectation": "FORCE RLS exactly on the two Secure Chat content tables",
+      "outcome": [
+        "aigas_sc_conversations",
+        "aigas_sc_messages"
+      ],
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB04",
+      "id": "runtime-not-owner-means-rls-applies",
+      "expectation": "runtime is not the owner, so ENABLE (not FORCE) is enough to bind it",
+      "outcome": {
+        "owner": "neondb_owner",
+        "runtimeTables": 0
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "client-zero-table-grants",
+      "expectation": "authenticated/anonymous/PUBLIC hold zero table privileges in public",
+      "outcome": [],
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "client-zero-sequence-grants",
+      "expectation": "client roles hold no sequence privilege in public",
+      "outcome": [],
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "client-zero-function-execute",
+      "expectation": "authenticated/anonymous cannot EXECUTE any public function",
+      "outcome": [],
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "definer-not-client-callable",
+      "expectation": "SECURITY DEFINER helpers are not executable by client roles",
+      "outcome": [
+        "aigas_actor_is_manager(uuid)",
+        "aigas_actor_role(uuid)",
+        "aigas_is_tenant_member(uuid)",
+        "aigas_lock_member(uuid,uuid)",
+        "aigas_locked_evidence_requirements(uuid)",
+        "aigas_locked_product_grants(uuid)",
+        "aigas_sc_usage_window(uuid,uuid)",
+        "aigas_sc_usage_window_v2(uuid,uuid)",
+        "aigas_trial_activation_gaps(text[])",
+        "aigas_trial_consume_quota(uuid,uuid,text,bigint,text)",
+        "aigas_trial_operator_active()",
+        "aigas_trial_readiness_guard()",
+        "aigas_trial_tenant_transition(uuid,uuid,text,text)"
+      ],
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "no-client-default-acl",
+      "expectation": "no default ACL grants client roles future access",
+      "outcome": [],
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "client-deny-restrictive",
+      "expectation": "aigas_client_deny is RESTRICTIVE on every AIGAS table",
+      "outcome": {
+        "count": 41,
+        "nonRestrictive": []
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "permissive-policy-per-tenant-table",
+      "expectation": "tenant tables have a permissive policy unless explicitly definer-only; quota tables remain deny-all",
+      "outcome": [],
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "runtime-verb-matrix-exact",
+      "expectation": "aigas_runtime table verbs match 0025/0030; column grants are checked separately",
+      "outcome": [],
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "runtime-column-grants-exact",
+      "expectation": "0030 column grants match exactly; no broad request UPDATE/INSERT",
+      "outcome": [
+        {
+          "relname": "aigas_trial_entitlements",
+          "attname": "status",
+          "privilege_type": "UPDATE"
+        },
+        {
+          "relname": "aigas_trial_requests",
+          "attname": "activated_at",
+          "privilege_type": "UPDATE"
+        },
+        {
+          "relname": "aigas_trial_requests",
+          "attname": "business_goal",
+          "privilege_type": "INSERT"
+        },
+        {
+          "relname": "aigas_trial_requests",
+          "attname": "closed_at",
+          "privilege_type": "UPDATE"
+        },
+        {
+          "relname": "aigas_trial_requests",
+          "attname": "data_mode",
+          "privilege_type": "INSERT"
+        },
+        {
+          "relname": "aigas_trial_requests",
+          "attname": "decided_at",
+          "privilege_type": "UPDATE"
+        },
+        {
+          "relname": "aigas_trial_requests",
+          "attname": "decided_by",
+          "privilege_type": "UPDATE"
+        },
+        {
+          "relname": "aigas_trial_requests",
+          "attname": "decision_source",
+          "privilege_type": "UPDATE"
+        },
+        {
+          "relname": "aigas_trial_requests",
+          "attname": "deployment_mode",
+          "privilege_type": "INSERT"
+        },
+        {
+          "relname": "aigas_trial_requests",
+          "attname": "expires_at",
+          "privilege_type": "UPDATE"
+        },
+        {
+          "relname": "aigas_trial_requests",
+          "attname": "id",
+          "privilege_type": "INSERT"
+        },
+        {
+          "relname": "aigas_trial_requests",
+          "attname": "reason",
+          "privilege_type": "UPDATE"
+        },
+        {
+          "relname": "aigas_trial_requests",
+          "attname": "requested_by",
+          "privilege_type": "INSERT"
+        },
+        {
+          "relname": "aigas_trial_requests",
+          "attname": "requested_products",
+          "privilege_type": "INSERT"
+        },
+        {
+          "relname": "aigas_trial_requests",
+          "attname": "state",
+          "privilege_type": "INSERT"
+        },
+        {
+          "relname": "aigas_trial_requests",
+          "attname": "state",
+          "privilege_type": "UPDATE"
+        },
+        {
+          "relname": "aigas_trial_requests",
+          "attname": "tenant_id",
+          "privilege_type": "INSERT"
+        },
+        {
+          "relname": "aigas_trial_requests",
+          "attname": "version",
+          "privilege_type": "UPDATE"
+        }
+      ],
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB07",
+      "id": "runtime-zero-content-grants",
+      "expectation": "aigas_runtime holds no table privilege on Secure Chat content",
+      "outcome": [],
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "definer-only-aigas_trial_quota_limits",
+      "expectation": "quota tables deny direct runtime SELECT",
+      "outcome": {
+        "ok": false,
+        "code": "42501",
+        "message": "permission denied for table aigas_trial_quota_limits"
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "definer-only-aigas_trial_quota_usage",
+      "expectation": "quota tables deny direct runtime SELECT",
+      "outcome": {
+        "ok": false,
+        "code": "42501",
+        "message": "permission denied for table aigas_trial_quota_usage"
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "definer-only-aigas_trial_quota_reservations",
+      "expectation": "quota tables deny direct runtime SELECT",
+      "outcome": {
+        "ok": false,
+        "code": "42501",
+        "message": "permission denied for table aigas_trial_quota_reservations"
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "no-scope-zero-rows",
+      "expectation": "runtime without tenant scope reads 0 rows",
+      "outcome": {
+        "ok": true,
+        "value": 0
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "scope-a-only",
+      "expectation": "runtime scoped to A sees exactly tenant A rows",
+      "outcome": {
+        "ok": true,
+        "value": [
+          "aaaaaaaa-0000-4000-8000-00000000000a"
+        ]
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "cross-tenant-read-blocked",
+      "expectation": "explicit WHERE tenant_id=B under scope A returns 0 rows",
+      "outcome": {
+        "ok": true,
+        "value": 0
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "cross-tenant-insert-blocked",
+      "expectation": "INSERT with tenant_id=B under scope A is rejected",
+      "outcome": {
+        "ok": false,
+        "code": "42501",
+        "message": "new row violates row-level security policy for table \"aigas_fw_rules\""
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "own-tenant-insert-allowed",
+      "expectation": "INSERT with tenant_id=A under scope A succeeds",
+      "outcome": {
+        "ok": true,
+        "value": 1
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "cross-tenant-update-noop",
+      "expectation": "UPDATE of tenant B rows under scope A affects 0 rows",
+      "outcome": {
+        "ok": true,
+        "value": 0
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "cross-tenant-delete-noop",
+      "expectation": "DELETE of tenant B rows under scope A affects 0 rows",
+      "outcome": {
+        "ok": true,
+        "value": 0
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "non-member-zero-rows",
+      "expectation": "identity without membership reads 0 rows in tenant A",
+      "outcome": {
+        "ok": true,
+        "value": 0
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "non-member-write-blocked",
+      "expectation": "identity without membership cannot INSERT into tenant A",
+      "outcome": {
+        "ok": false,
+        "code": "42501",
+        "message": "new row violates row-level security policy for table \"aigas_fw_rules\""
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "guc-switch-no-carryover",
+      "expectation": "switching the tenant selector cannot carry tenant A rows into B",
+      "outcome": {
+        "result": [
+          [
+            "aaaaaaaa-0000-4000-8000-00000000000a"
+          ],
+          [],
+          [
+            "aaaaaaaa-0000-4000-8000-00000000000a"
+          ]
+        ]
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "actor-tenant-mismatch",
+      "expectation": "tenant A + actor from B reads 0 rows",
+      "outcome": {
+        "ok": true,
+        "value": 0
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "scope-dies-with-transaction",
+      "expectation": "scope is transaction-local and the next transaction reads 0 rows",
+      "outcome": {
+        "inside": 1,
+        "afterCommit": "",
+        "after": 0
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "scope-not-shared-across-connections",
+      "expectation": "a new connection starts with an empty scope",
+      "outcome": {
+        "value": ""
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB04",
+      "id": "runtime-cannot-disable-rls",
+      "expectation": "SET row_security=off does not bypass RLS for the runtime role",
+      "outcome": {
+        "ok": false,
+        "code": "42501",
+        "message": "query would be affected by row-level security policy for table \"aigas_fw_rules\""
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB04",
+      "id": "runtime-login-directly-denied",
+      "expectation": "the runtime login role holds no direct table privilege (NOINHERIT)",
+      "outcome": {
+        "ok": false,
+        "code": "42501"
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB04",
+      "id": "runtime-login-wrapper-enforces-rls",
+      "expectation": "the login wrapper reaches only tenant A rows through SET ROLE",
+      "outcome": {
+        "rowsA": [
+          "aaaaaaaa-0000-4000-8000-00000000000a"
+        ],
+        "crossB": 0
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB04",
+      "id": "runtime-cannot-become-owner",
+      "expectation": "the runtime login role cannot SET ROLE the owner",
+      "outcome": {
+        "ok": false,
+        "code": "42501"
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "runtime-cannot-become-client",
+      "expectation": "the runtime login role cannot SET ROLE a client role",
+      "outcome": {
+        "ok": false,
+        "code": "42501"
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "authenticator-cannot-read",
+      "expectation": "the Data API login role as authenticated reads no AIGAS row",
+      "outcome": {
+        "ok": false,
+        "code": "42501"
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "client-cannot-become-runtime",
+      "expectation": "authenticated cannot SET ROLE aigas_runtime",
+      "outcome": {
+        "ok": false,
+        "code": "42501"
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "verb-aigas_fw_decisions-update",
+      "expectation": "append-only: no UPDATE",
+      "outcome": {
+        "ok": false,
+        "code": "42501",
+        "message": "permission denied for table aigas_fw_decisions"
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "verb-aigas_audit_events-delete",
+      "expectation": "append-only: no DELETE",
+      "outcome": {
+        "ok": false,
+        "code": "42501",
+        "message": "permission denied for table aigas_audit_events"
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "verb-aigas_product_grants-insert",
+      "expectation": "read-only: no INSERT",
+      "outcome": {
+        "ok": false,
+        "code": "42501",
+        "message": "permission denied for table aigas_product_grants"
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "verb-aigas_product_access-delete",
+      "expectation": "select/insert/update: no DELETE",
+      "outcome": {
+        "ok": false,
+        "code": "42501",
+        "message": "permission denied for table aigas_product_access"
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "verb-aigas_tenants-insert",
+      "expectation": "tenants: no INSERT (bootstrap is privileged)",
+      "outcome": {
+        "ok": false,
+        "code": "42501",
+        "message": "permission denied for table aigas_tenants"
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "member-sees-roster",
+      "expectation": "a MEMBER in tenant A reads the 3-row roster",
+      "outcome": {
+        "ok": true,
+        "value": 3
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "member-cannot-write",
+      "expectation": "a MEMBER cannot change a membership row",
+      "outcome": {
+        "ok": true,
+        "value": 0
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "manager-writes-other-member",
+      "expectation": "an ADMIN manages a different member",
+      "outcome": {
+        "ok": true,
+        "value": 1
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "manager-cannot-edit-self",
+      "expectation": "a manager cannot change their own row (last-owner guard)",
+      "outcome": {
+        "ok": true,
+        "value": 0
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "manager-renames-own-tenant",
+      "expectation": "an ADMIN renames their tenant",
+      "outcome": {
+        "ok": true,
+        "value": 1
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "member-cannot-rename-tenant",
+      "expectation": "a MEMBER cannot rename the tenant",
+      "outcome": {
+        "ok": true,
+        "value": 0
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "foreign-owner-cannot-rename",
+      "expectation": "the owner of B cannot rename tenant A",
+      "outcome": {
+        "ok": true,
+        "value": 0
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "authenticated-select-tenants",
+      "expectation": "authenticated is denied: select tenants",
+      "outcome": {
+        "ok": false,
+        "code": "42501",
+        "message": "permission denied for table aigas_tenants"
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "authenticated-select-chat-content",
+      "expectation": "authenticated is denied: select chat content",
+      "outcome": {
+        "ok": false,
+        "code": "42501",
+        "message": "permission denied for table aigas_sc_messages"
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "authenticated-insert-rule",
+      "expectation": "authenticated is denied: insert rule",
+      "outcome": {
+        "ok": false,
+        "code": "42501",
+        "message": "permission denied for table aigas_fw_rules"
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "authenticated-execute-aggregate",
+      "expectation": "authenticated is denied: execute aggregate",
+      "outcome": {
+        "ok": false,
+        "code": "42501",
+        "message": "permission denied for function aigas_sc_usage_window_v2"
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "anonymous-select-tenants",
+      "expectation": "anonymous is denied: select tenants",
+      "outcome": {
+        "ok": false,
+        "code": "42501",
+        "message": "permission denied for table aigas_tenants"
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "anonymous-select-chat-content",
+      "expectation": "anonymous is denied: select chat content",
+      "outcome": {
+        "ok": false,
+        "code": "42501",
+        "message": "permission denied for table aigas_sc_messages"
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "anonymous-insert-rule",
+      "expectation": "anonymous is denied: insert rule",
+      "outcome": {
+        "ok": false,
+        "code": "42501",
+        "message": "permission denied for table aigas_fw_rules"
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB06",
+      "id": "anonymous-execute-aggregate",
+      "expectation": "anonymous is denied: execute aggregate",
+      "outcome": {
+        "ok": false,
+        "code": "42501",
+        "message": "permission denied for function aigas_sc_usage_window_v2"
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB07",
+      "id": "definer-helper-scope",
+      "expectation": "helpers resolve membership/role for the scoped actor only",
+      "outcome": {
+        "ok": true,
+        "value": {
+          "m": true,
+          "r": "MEMBER",
+          "g": false
+        }
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "definer-helper-non-member",
+      "expectation": "helpers return false/null for a non-member",
+      "outcome": {
+        "ok": true,
+        "value": {
+          "m": false,
+          "r": null
+        }
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB07",
+      "id": "participant-reads-own",
+      "expectation": "a participant reads only their own message text",
+      "outcome": {
+        "ok": true,
+        "value": [
+          {
+            "content": "member-a-secret"
+          }
+        ]
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB07",
+      "id": "other-participant-isolated",
+      "expectation": "another participant in the same tenant cannot read it",
+      "outcome": {
+        "ok": true,
+        "value": [
+          {
+            "content": "owner-a-secret"
+          }
+        ]
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB07",
+      "id": "non-participant-owner-blocked",
+      "expectation": "tenant OWNER cannot read a conversation they did not participate in",
+      "outcome": {
+        "ok": true,
+        "value": 0
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB07",
+      "id": "non-participant-admin-blocked",
+      "expectation": "a non-participant ADMIN reads 0 rows of chat content",
+      "outcome": {
+        "ok": true,
+        "value": []
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB07",
+      "id": "cross-tenant-content-blocked",
+      "expectation": "the owner of tenant B reads 0 rows of tenant A content",
+      "outcome": {
+        "ok": true,
+        "value": []
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB07",
+      "id": "participant-reads-own-conversation",
+      "expectation": "a participant reads only their own conversation row",
+      "outcome": {
+        "ok": true,
+        "value": [
+          {
+            "n": 1
+          }
+        ]
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB07",
+      "id": "admin-reads-no-conversation",
+      "expectation": "a non-participant ADMIN reads 0 conversation rows",
+      "outcome": {
+        "ok": true,
+        "value": [
+          {
+            "n": 0
+          }
+        ]
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB07",
+      "id": "cannot-write-as-another-author",
+      "expectation": "a write attributed to another author is rejected by WITH CHECK",
+      "outcome": {
+        "ok": false,
+        "code": "42501",
+        "message": "new row violates row-level security policy for table \"aigas_sc_messages\""
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB07",
+      "id": "participant-writes-own",
+      "expectation": "a participant can write their own message (control)",
+      "outcome": {
+        "ok": true,
+        "value": 1
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB07",
+      "id": "content-without-tenant-scope",
+      "expectation": "content with no scope returns 0 rows",
+      "outcome": {
+        "ok": true,
+        "value": 0
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB04",
+      "id": "owner-bypasses-rls-baseline",
+      "expectation": "owner (BYPASSRLS) sees every tenant: documented, not a fix",
+      "outcome": {
+        "rules": 2
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB04",
+      "id": "owner-reads-all-content-baseline",
+      "expectation": "owner can read chat content even with FORCE: cutover is the control",
+      "outcome": {
+        "messages": 2
+      },
+      "passed": true,
+      "detail": null
+    },
+    {
+      "area": "DB05",
+      "id": "export-respects-rls",
+      "expectation": "COPY export under scope A yields only tenant A rows",
+      "outcome": {
+        "lines": [
+          "SET",
+          "aaaaaaaa-0000-4000-8000-00000000000a",
+          "22222222-2222-4222-8222-222222222222",
+          "aaaaaaaa-0000-4000-8000-00000000000a",
+          "aaaaaaaa-0000-4000-8000-00000000000a,workspace.created",
+          "3",
+          "1",
+          "aaaaaaaa-0000-4000-8000-00000000000a"
+        ]
+      },
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "verdict": "PASS"
+}

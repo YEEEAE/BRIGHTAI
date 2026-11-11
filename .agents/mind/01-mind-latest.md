@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-11 VERIFIED LOCAL+STAGING T02: HEAD `95f12b9c1fff4717904d4602de86c441a7a56d22`+working tree؛ local RLS74/contracts75/order5/build56 PASS؛ Neon restricted LOGIN34/34 PASS،حُذف معfixtures؛ `Audit/t02-schema-rls-2026-11-11/REPORT.md`؛ T03 permanent pool/SSR غير مثبتة.
 - 2026-11-11 VERIFIED LOCAL T01: HEAD `8a5f498`+working tree؛ Node22.22.2 build56/runtime19 (PG18 مؤقت؛ Auth probe SKIPPED)؛ `Audit/t01-node-ssr-2026-11-11/REPORT.md`؛ لا نشر.
 - 2026-11-11 VERIFIED LOCAL: أزرار أسماء المنتجات أعلى«جرب المنتج اللي تحتاجه» تفتحKernel عبرproductEntryPath مثلزرالدخول، معreturnToلكلمنتج؛ أزيلscrollspyللـanchors؛ Browser5/5 وunit3 وbuild56/routes56/0broken؛ `Audit/local-trial-2026-11-11/PRODUCT-ENTRY-LINKS.md`.
 - 2026-11-11 VERIFIED LOCAL: `npm run start:trial` يفتحPortal على127.0.0.1:4416 دون تغييرproduction gate؛ اختيار المستخدمGroq/qwen/qwen3.8-27b فيGROQ_MODEL وردupstream200/31tokens؛ ليس تشغيلSecureChat. قاعدة.env الخارجية بلاجداولTrial/Quota وبلاBRIGHT AI؛ registryفارغ وchat policy integrationمغلق؛ `Audit/local-trial-2026-11-11/REPORT.md`.
@@ -10,8 +11,8 @@
 - 2026-11-10 VERIFIED LOCAL (P12): تنقل موحد للمنتجات وreturnTo بقائمة سماح؛ الكتالوج بلا شارات إتاحة بتوجيه المستخدم، بتصميم تحريري ورسوم وحركة تدريجية؛ build55/routes55/unit17 وChrome360/390/768/1440 وreduced-motion/no-JS PASS؛ الرحلة المخولة والعمليات/الحصص والنشر NOT VERIFIED؛ `Audit/p12-product-journey-2026-11-10/REPORT.md`.
 - 2026-11-10 VERIFIED LOCAL+STAGING-READONLY (P03): HEAD `9f70334`؛ مصفوفة RLS 69/69 محليًا (owner0 لـruntime، صفر منح عميل، A/B CRUD، GUC، COPY، DB07)؛ staging 9/9 قراءة (36 جدول/77 سياسة/25 دالة)؛ contracts36/36؛ دليل `Audit/p03-runtime-rls-2026-11-10/REPORT.md`.
 - 2026-11-10 VERIFIED LOCAL: HEAD `60777c9739d5584360e57bd5238d3a075b06c09a` + working tree؛ AR02/AR03 (مقيسة على `5725727`): unit31/combined36 PASS،0 FAIL/0 SKIP؛ DB18.6 بخمس قواعد ودورruntime/NOBYPASSRLS؛ build/routes55 PASS؛ مرجع `Audit/ar02-ar03-2026-11-10/REPORT.md`؛ لا إطلاق.
-- 2026-11-10 VERIFIED STAGING `lucky-salad-43566291`/`br-rough-wind-bdkmg13n`/`neondb` (بُني مرتين؛ الثاني بعد تحصين B9): 25/25 APPLIED، ledger hashes == repo، 36 جدولًا/RLS36/FORCE2/77 سياسة/25 دالة، 0 منح لـ`authenticated`/`anonymous`، `aigas_runtime` NOBYPASSRLS بـ34 منحة وصفر على جداول المتن، chain guard+append_only+no_truncate، 9 جداول `neon_auth`، 0 صفوف؛ parity=`PARITY`، posture 8/8.
-- العقد المحلي يتطلب `0028` لقفل العضوية/المنح دون صلاحيات تعديل إضافية، و`0029` لمنع مرجعLedger الاصطناعيnull؛ طُبقتا ضمن 25/25 على staging المعزول؛ أي تطبيق على الإنتاج يحتاج مراجعة وتفويضًا مستقلًا.
+- 2026-11-11 VERIFIED STAGING `lucky-salad-43566291`/`br-rough-wind-bdkmg13n`/`neondb`:28/28 APPLIED/hash match؛25 receipts محفوظة،delta0030/0031/0032 فقط دون إعادة بناء؛41 جدولًا/RLS41/FORCE2/89 سياسة/30 دالة؛صفرEXECUTEعميل،18منحةأعمدةTrial؛quota/readiness/operators=0؛runtime NOLOGIN/NOBYPASSRLS/owner0 وقناةSET ROLEثبتت؛لاcutoverللتطبيق.
+- العقد المحلي يتطلب `0028` لقفل العضوية/المنح دون صلاحيات تعديل إضافية، و`0029` لمنع مرجعLedger الاصطناعيnull؛ طُبقتا ضمن ledger28/28 على staging المعزول؛ أي تطبيق على الإنتاج يحتاج مراجعة وتفويضًا مستقلًا.
 - التقرير له قارئHTML مستقل دون شبكة: `Audit/final-360-2026-11-10/FINAL-360-AUDIT.html`؛ يولد بـbuild-report.mjs؛76 متطلبًا و25 برومبتًا؛ Chromium360/390/768/1440 والبحث/النسخ/CSV وتهيئة الطباعة PASS؛ بيانات التدقيق لم تتغير.
 - توجيه المستخدم2026-11-10: لا سقف15 لبرومبتات الإغلاق؛ الخطة الحالية25 بتقسيم تخصصي وتبعيات مفحوصة في `Audit/final-360-2026-11-10/EXECUTION-PROMPTS.md`؛ أرقام التدقيق وNO-GO دون تغيير.
 - 2026-11-10 VERIFIED LOCAL (P06-A): HEAD `7d7be00`+working tree؛ دورة Trial خادمية بقناة مشغّل وبوابة جاهزية/حصة؛ contracts46/46، `0030` fresh+delta، build/routes55؛ التفعيل مغلق وP06-B BLOCKED؛ `Audit/p06-trial-2026-11-10/REPORT.md`.
@@ -24,12 +25,12 @@
 
 ## Open Issues / Blockers
 - 2026-11-10 OPEN (P16): استثناء `GHSA-26w7-cxv4-gfx2` (critical، غير قابل للوصول) يحتاج موافقة المؤسس صراحةً قبل إدراجه؛ الترقية الرئيسية ورفع Node وتطبيق allowlist الآلي (`.github/workflows/ci-build-guard.yml` غير موجود) واعية؛ التحقق الحي لحراسة `Host` ينتظر push.
-- 2026-11-10 BLOCKED (P06-B): التفعيل التجريبي يحتاج نتيجة readiness PASS لكل منتج لنفس SHA/البيئة واعتماد الحصص/المدة/الاحتفاظ ونجاح P07–P11؛ لا صفوف جاهزية/حصة ولا مشغّل في أي بيئة، و`0030` غير مطبق خارجيًا.
+- 2026-11-10 BLOCKED (P06-B): التفعيل التجريبي يحتاج نتيجة readiness PASS لكل منتج لنفس SHA/البيئة واعتماد الحصص/المدة/الاحتفاظ ونجاح P07–P11؛ لا صفوف جاهزية/حصة ولا مشغّل في أي بيئة؛ `0030` طُبق علىStagingفيT02 مع0031/0032 دون اعتمادجاهزيةأوحصص.
 - 2026-11-11 BLOCKED T01: الخدمة العامة static_site/dist/client/pnpm؛ deploy `dep-dbpsb5ss728c738pbpmg` مطابق لـ`8a5f498`؛ app/health/API404 وكاش GET عام300ث؛ يحتاج تفويض نشر معزول وT02/T03، لا إعادة رفع مصدر P04.
 - 2026-11-11 VERIFIED Render MCP يعمل قراءة في `tea-d7m59qbeo5us73ekdu80`؛ staging `srv-dbpj8jajnfac739je6lg` أعاد404 فيه؛ افحص workspace التاريخية `tea-dade102fngtc739064v0` قبل إنشاء بديل؛ يصحح unauthorized التاريخي.
 - 2026-11-10 BLOCKED (P05): AU03/AU04 نجاحًا يحتاجان قناة P19؛ تحت runtime `createWorkspace`/`accept` يفشلان 503، ودعوات invited غير مرئية قبل bootstrap. 5 هويات staging اصطناعية بلا جلسات؛ حذفها يحتاج تفويضًا مستقلًا.
 - 2026-11-10 INVARIANT: `healthCheckPath=/healthz/` في blueprint؛ نشر بلا DB/Auth صالحين لا يصبح healthy (مقصود). `AIGAS_HEALTH_AUTH_PROBE=true` هو الفحص الوحيد الذي يخرج من الخدمة.
-- 2026-11-10 VERIFIED: Neon production وحيد غير محمي؛ 31 جدولًا/RLS31/سياسات2/FORCE0؛ runtime role وmigration ledger غائبان؛ لا استعادة مقاسة.
+- 2026-11-11 VERIFIED READONLY T02: production غيرمحمي31/RLS31/policies2/authenticated grants124؛runtime/ledgerغائبان؛snapshots=[]؛يوجدفرعp08-restore-20261110 التاريخي،لااستعادةحاليةمعتمدةلنافذةالتغيير؛لاكتابةإنتاج.
 - 2026-11-10 VERIFIED: الفرع الحي على `0001`–`0012`+`0015` فقط؛ `aigas_ld_events_chain_guard` (دالة+trigger) غائب فسلسلة Ledger غير مفروضة في DB؛ يحتاج `0013`+`0024`.
 - 2026-11-10 CLOSED B9: `0018`/`0025` لم تعد تفشل 42704 — حُرست بـ`to_regrole`، وكذلك `0028` الذي كشفه اختبار `client_roles_absent`. ثلاث hashes أصبحت `MODIFIED_AFTER_REFERENCE`؛ لم يتغيّر أي منح.
 - 2026-11-10 TARGET: `aigas-staging`=`lucky-salad-43566291` / `br-rough-wind-bdkmg13n`، PG18.6، Neon Auth `better_auth` (9 جداول)، غير محمي (حد الخطة)، بلا scale-to-zero (412)، CU≤1، حصص مضبوطة.
@@ -37,11 +38,18 @@
 - 2026-11-10 GOTCHA: منصة Neon تمنح الأدوار المُنشأة `ADMIN TRUE/INHERIT FALSE/SET FALSE` من `cloud_admin` ⇒ `SET ROLE` يفشل 42501 رغم `pg_has_role`; يلزم `GRANT … WITH SET TRUE` **بعد** الترحيلات (يتكرر بعد كل `CREATE ROLE`). الإنتاج يستلمها من `neon_service` بـSET TRUE.
 - 2026-11-10 INFO: بين `0018` و`0025` تُنشئ `0023` دالتي trigger تحصلان على `EXECUTE` لـPUBLIC (`authenticated_can_execute=true`)؛ `0025` تسحبهما. أي توقف عند `0024` يترك النافذة مفتوحة.
 - 2026-11-10 VERIFIED: إعادة `0025` على `aigas_runtime` موجود تفشل `42501` عند `ALTER ROLE … NOSUPERUSER` بلا superuser؛ مسار `CREATE ROLE` الأول سليم. لا تُعدّل الترحيل المطبّق؛ أصلح في ملف لاحق/runbook.
-- 2026-11-10 VERIFIED: Data API على production `active` و`db_schemas=["public"]` (`anonymous`, aggregates=true)؛ staging بلا Data API؛ الإغلاق يحتاج تفويض control plane (خيار A/B في `docs/DATA-API-EXPOSURE-DECISION.md`).
+- 2026-11-11 APPROVED CONDITIONAL T02: المالكاعتمدDataAPIخيارA(تعطيلالإنتاج)بشرطاستيفاءبوابةالاستعادة؛التنفيذNOT RUN؛productionمازالactive/public/anonymous/aggregates=true،Staging404؛HEAD3×400بلامتنليسإغلاقًا؛ `docs/DATA-API-EXPOSURE-DECISION.md`.
 - 2026-11-10 BLOCKED (P13): لا وجهة معتمدة — Sentry صفر مشاريع، وPostHog مشروع واحد `720936` على حد الخطة (free، أحداث 0/1M) وإعداداته (IP غير مجهول/console/perf/retention12m) غير معتمدة؛ P21 بلا وثيقة URL؛ لا ingestion/تنبيهات (P22).
 - 2026-11-10 OPEN: Bootstrap/RLS وtrial/purge وموافقات المزودين والـUAT ما زالت مفتوحة.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-11] — T02: delta وruntime على Staging
+- **تم:** resumeيتحققمنكلhash؛schema+receiptذريان؛إضافة0031للـdeltaو0032لقفلEXECUTEالجديد؛حفظ25وتطبيق3علىStagingدونإعادةبناء.
+- **التحقق:** PASS — fresh28/delta29/negative12؛RLS74/contracts75/order5/build56؛NeonLOGIN34/34وledger28/28/no-op؛بياناتوأدوارالفحصنُظفت.
+- **الحالة:** PARTIAL — local/Staging DONE؛Production unchanged؛DataAPI Aمعتمدبشرطاستعادةمثبتة،لاتعطيلبعد.
+- **ملفات:** `Audit/t02-schema-rls-2026-11-11/REPORT.md`،`scripts/apply-migrations.mjs`،`migrations/0032_aigas_trial_trigger_execute_lock.sql`.
+- **مفتوح:** Neonowner/DBAللاستعادةونافذةالإنتاج؛T03لـpermanent runtime pool/bootstrap؛Internal app NOT READY؛Public/Commercial NO-GO.
 
 ## [2026-11-11] — T01: مصالحة Node والكاش
 - **تم:** توسيع دليل HTTP الخاص وGET/HEAD وتصحيح handoff؛ P04 محفوظ بلا نشر.

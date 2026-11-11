@@ -1,6 +1,7 @@
 # قرار تعرّض Data API — الخيار المعتمد والمتبقي
 
-> **الحالة:** القرار **غير معتمد** بعد؛ هذا مستند خيارات جاهز لمالك Neon ومراجع الأمن. لم يُغيَّر أي إعداد في هذه المهمة.
+> **قرار المالك 2026-11-11:** الخيار A **معتمد مشروطًا باستيفاء بوابة الاستعادة**: «اعتماد تعطيل Data API (الخيار A) عند استيفاء بوابة الاستعادة». التعطيل **NOT RUN**؛ لا snapshot مسجلة ولا إثبات استعادة حالي لنافذة ترحيل الإنتاج. لا تُفعّل الموافقة التنفيذ قبل تحقق الشرط.
+> **قراءة T02 الحالية:** الإنتاج ما زال `active/public/aggregates=true`، و124 منحة `authenticated` وبلا runtime/ledger؛ Staging بلا Data API. التفاصيل: `Audit/t02-schema-rls-2026-11-11/REPORT.md`. فحص HEAD غير موثق الهوية أعاد400 دون تنزيل متن؛ ليس إثبات إغلاق أو اختبار JWT.
 > **قياس حالي (قراءة فقط، 2026-11-10T11:51:12Z):**
 > - `production` (`young-frog-60183055` / `br-young-bird-b43proeb` / `neondb`): Data API **`active`**، `db_schemas=["public"]`، `db_anon_role=anonymous`، `jwt_role_claim_key=.role`، `db_aggregates_enabled=true`.
 > - `aigas-staging` (`lucky-salad-43566291` / `br-rough-wind-bdkmg13n` / `neondb`): **لا Data API** (`404 data api not found`).
@@ -14,8 +15,8 @@
 SQL لا يستطيع تعطيل Data API ولا تغيير `db_schemas`؛ هذه إعدادات control plane. الحالة الحالية على production:
 
 1. نقطة REST عامة `https://<endpoint>/neondb/rest/v1` تعرض مخطط `public` حيث تعيش جداول `aigas_*`.
-2. الحماية الحالية من ثلاث طبقات: صفر منح لـ`authenticated`/`anonymous`، سياسة `aigas_client_deny` RESTRICTIVE على كل جدول، وRLS مفعّلة. أي واحدة منها تفشل وحدها لا تكفي.
-3. `db_aggregates_enabled=true` يسمح لـPostgREST بتجميعات؛ مع صفر منح لا تصل إلى صف، لكنه يوسّع السطح عند أي خطأ منح مستقبلي.
+2. الضوابط المستهدفة ثلاث طبقات: صفر منح لـ`authenticated`/`anonymous`، وسياسة `aigas_client_deny` RESTRICTIVE، وRLS. هذه مثبتة على Staging بعد T02، **وليست مطبقة على production** (124 منحة authenticated وسياسات2).
+3. `db_aggregates_enabled=true` يسمح لـPostgREST بتجميعات؛ الضوابط المستهدفة تمنع الوصول؛ لا ينطبق افتراض صفر المنح على الإنتاج الحالي، والتجميعات تزيد السطح.
 4. `public` ليس مخططًا مخصصًا للعميل، بل مخطط التطبيق الخادمي. تعريضه للإنترنت قرار معماري خاطئ حتى لو كانت المنح مغلقة اليوم.
 
 **الخلاصة:** لا يوجد اليوم دليل على تسريب (لم يُختبر REST فعليًا)، لكن التعرّض نفسه سطح هجوم مستقل عن SQL. إغلاقه مطلوب قبل Beta.
@@ -71,6 +72,6 @@ SQL لا يستطيع تعطيل Data API ولا تغيير `db_schemas`؛ هذ�
 ## 5. ما لم يُنفَّذ هنا
 
 - لم يُعدَّل أي إعداد على production أو staging.
-- لم يُجرَ طلب REST حقيقي إلى production (يتطلب تفويضًا ونافذة اختبار).
-- لم تُنشأ أدوار أو منح جديدة.
+- T02 أجرى HEAD فقط بلا JWT أو تنزيل بيانات؛ GET والجلسة المخولة NOT RUN.
+- إعداد Data API لم يتغير؛ دور اختبار T02 المؤقت غير المالك أُنشئ على Staging، اختُبر ثم حُذف؛ لا نظير له على الإنتاج.
 - التغيير المقترح لا يمس الترحيلات ولا RLS ولا `aigas_runtime`.

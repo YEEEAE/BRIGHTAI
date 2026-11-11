@@ -4,6 +4,19 @@
 > **لا يمثل هذا المستند إثبات production ولا موافقة إطلاق.** `PASS ≠ RELEASED`.
 > لا يحتوي هذا الملف أي DSN أو سر أو محتوى عميل.
 
+
+## تحديث T02 — 2026-11-11
+
+الأقسام العددية أدناه تصف خط أساس P03 التاريخي (36/77/25)، وليست كتالوج T02 النهائي. الدليل الحالي في `Audit/t02-schema-rls-2026-11-11/REPORT.md`:
+
+- Staging `lucky-salad-43566291/br-rough-wind-bdkmg13n/neondb`: ledger28/28 مطابق؛41 جدولًا/RLS41/FORCE2/89 سياسة/30 دالة؛ حفظ25 receipt دون تعديل؛ تطبيق0030/0031/0032 فقط.
+- `0030`: جدولَا operators/readiness لهما SELECT فقط؛ quota_limits/usage/reservations بلا أفعال مباشرة؛ quota عبر SECURITY DEFINER فقط. استثناء هذه الجداول من permissive-policy coverage مقصود ويصحبه رفض SELECT فعلي42501، وليس تخفيف RLS.
+- trial_requests: SELECT + INSERT على8 أعمدة وUPDATE على9 أعمدة فقط؛ قرارات UPDATE محكومة بالمشغّل. trial_entitlements: SELECT/INSERT + UPDATE(status) فقط. فحص table grants وحده لا يغطي هذه18 منحة أعمدة.
+- `0032`: سحب PUBLIC/عميل/runtime EXECUTE من readiness trigger؛ لا تغيير لملفات الترحيل المطبقة، ولا سحب EXECUTE من quota/activation_gaps المخولتين لـruntime.
+- Staging34/34 سلوكيًا عبر LOGIN مؤقت NOINHERIT/NOBYPASSRLS/غير مالك → SET LOCAL ROLE aigas_runtime؛ A/B لكلCRUD، رفض غير العضو والتصعيد وقراءة متنChat، rollback وGUC بعد COMMIT/ROLLBACK؛ البيانات الاصطناعية ودور الاختبار حُذفا.
+- NOLOGIN على aigas_runtime محفوظ؛ قناة SET ROLE مثبتة، لكن اعتماد التطبيق الدائم وcutover/secret-store فيT03 لم يُنفذا. PostgreSQL trust المحلي ليس برهان قناة Neon؛ الدليل الحي مستقل.
+- Production قراءة فقط:31/RLS31/policies2/authenticated grants124؛ لاruntime ولاledger. قرارDataAPI A معتمد من المالك بشرط استعادة مثبتة، ولم يُنفذ التعطيل.
+
 ---
 
 ## 1. الأدوار ومن يملك ماذا
