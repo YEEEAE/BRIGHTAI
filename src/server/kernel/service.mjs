@@ -1,3 +1,4 @@
+import { explorationGrants, EXPLORATION_CAPABILITIES } from './exploration.mjs';
 import { listApprovedModels } from '../secure-chat/models.mjs';
 import { providerReady } from '../secure-chat/adapter.mjs';
 import { randomUUID } from 'node:crypto';
@@ -58,6 +59,7 @@ export async function dashboard(identity, requested) {
     const trial = await trialLifecycle(db, tenantId);
     const pov = await buildPovReport(db, tenantId, trial);
     const relations = { firewall: ['aigas_fw_rules','aigas_fw_decisions'], ledger: ['aigas_ld_events'], 'human-gate': ['aigas_hg_requests','aigas_hg_decisions','aigas_hg_policies','aigas_hg_events'], 'risk-engine': ['aigas_re_assets','aigas_re_assessments','aigas_re_asset_revisions'], 'secure-chat': ['aigas_sc_requests','aigas_sc_cancellations'] };
+    const exploration = await explorationGrants(db, tenantId);
     const states = [];
     for (const p of productStates(access)) {
       const grant = grants.find(g => g.product_slug === p.slug);
@@ -67,17 +69,19 @@ export async function dashboard(identity, requested) {
       // The dashboard and the product guard share one access decision, so the
       // state shown here is the state the server would enforce.
       const decision = resolveProductAccess({ storedStatus: p.storedState, grant, trial: trialAccess });
-      const enabled = decision.state === 'ENABLED';
+      const explorationGrant = exploration.find(g => g.product_slug === p.slug);
+      const explorationActive = explorationGrant?.active === true && explorationGrant.used < explorationGrant.limit_units;
+      const enabled = decision.state === 'ENABLED' || explorationActive;
       const trialIncluded = trial?.products?.includes(p.slug) === true;
-      states.push({ ...p, state: decision.state, configuredStatus: p.storedState, grantState: decision.administrative.state, enabled, href: enabled && ready ? `/app/${p.slug}/` : null, version: access.find(a => a.product_slug === p.slug)?.version ?? null,
+      states.push({ ...p, exploration: explorationGrant ? { ...explorationGrant, capabilities: EXPLORATION_CAPABILITIES[p.slug], readiness: 'NOT_ASSERTED' } : null, state: explorationActive ? 'EXPLORATION' : decision.state, configuredStatus: p.storedState, grantState: decision.administrative.state, enabled, href: enabled && ready ? `/app/${p.slug}/` : null, version: access.find(a => a.product_slug === p.slug)?.version ?? null,
         canEnable: decision.grantsProduct, canManage: adminReady && scope.tenant.role === 'OWNER', readiness: ready ? 'CONFIGURED' : 'SETUP_REQUIRED',
         operationalReadiness: { schema: ready ? 'PRESENT' : 'MISSING', verifiedOperational: false },
         commercial: { kernelIncluded: true, independentProduct: true, separateKernelLicense: false, automaticConversion: false, automaticCharge: false, automaticRenewal: false },
-        setupMessage: p.slug === 'secure-chat' ? !ready ? 'يلزم ترحيل Secure Chat المعتمد قبل الإرسال.' : listApprovedModels(tenantId).some(providerReady) ? 'موصل معتمد مهيأ؛ التشغيل والنشر يحتاجان اعتمادًا مستقلًا.' : 'لا يوجد نموذج أو مزود معتمد ومهيأ؛ الإرسال غير متاح.' : ready ? 'مخطط المنتج موجود؛ جاهزيته التشغيلية تحتاج اعتمادًا مستقلًا.' : 'يلزم تطبيق ترحيل المنتج على بيئة معتمدة.',
+        setupMessage: explorationActive ? (p.slug === 'secure-chat' ? 'تصفح المساحة وإعدادات الخصوصية متاح؛ الإرسال يتطلب نموذجًا معتمدًا وتكامل سياسات Kernel وFirewall.' : 'تصفح السجلات والتصفية متاح ضمن حصة الاستكشاف؛ العمليات الأخرى تتطلب قرار إتاحة مستقل.') : p.slug === 'secure-chat' ? !ready ? 'يلزم ترحيل Secure Chat المعتمد قبل الإرسال.' : listApprovedModels(tenantId).some(providerReady) ? 'موصل معتمد مهيأ؛ التشغيل والنشر يحتاجان اعتمادًا مستقلًا.' : 'لا يوجد نموذج أو مزود معتمد ومهيأ؛ الإرسال غير متاح.' : ready ? 'مخطط المنتج موجود؛ جاهزيته التشغيلية تحتاج اعتمادًا مستقلًا.' : 'يلزم تطبيق ترحيل المنتج على بيئة معتمدة.',
         accessKind: grant?.access_kind ?? null, approvedAt: grant?.approved_at ?? null, expiresAt: grant?.expires_at ?? null,
         // The effective source is explicit and is never inferred from a product
         // toggle or merged with another commercial source.
-        accessSource: decision.source, accessReason: decision.reason, accessExpired: decision.expired,
+        accessSource: explorationActive && !decision.grantsProduct ? 'INTERNAL_EXPLORATION_48H' : decision.source, accessReason: explorationActive && !decision.grantsProduct ? 'EXPLORATION_CAPABILITIES_ONLY' : decision.reason, accessExpired: decision.expired,
         // Access sources stay separate. A missing issuer is NOT_CONFIGURED and is
         // never converted into a price, an SLA, or an active trial.
         accessSources: { administrative: decision.administrative, trial: decision.trial, license: decision.license },
@@ -86,7 +90,7 @@ export async function dashboard(identity, requested) {
           decided_at: trialIncluded ? trial?.decidedAt ?? null : null, decision_source: trialIncluded ? trial?.decisionSource ?? null : null,
           activated_at: trialIncluded ? trial?.activatedAt ?? null : null, expires_at: trialIncluded ? trial?.expiresAt ?? null : null,
           durationSeconds: 172800, selfServiceAvailable: false, automaticConversion: false, automaticCharge: false, automaticRenewal: false, dataEligibility: 'SYNTHETIC_ONLY', requiresOperatorActivation: true },
-        label: decision.state === 'ENABLED' ? p.label : decision.state === 'EXPIRED' ? (decision.expired.trial && !decision.expired.administrative ? 'منتهية: انتهت نافذة تجربة 48 ساعة' : 'منتهٍ: انتهى قرار الإتاحة الإداري') : decision.state === 'REVOKED' ? 'ملغى: سحب المشغّل قرار الإتاحة' : decision.state === 'DISABLED' ? (trialAccess.state === 'PENDING' || trialAccess.state === 'APPROVED' ? 'بانتظار تفعيل التجربة — لا وصول بعد' : p.storedState === 'ENABLED' ? 'معطّل: لا يوجد قرار إتاحة ساري' : 'معطّل إداريًا من المالك') : decision.state === 'NOT_CONFIGURED' ? 'غير مهيأ — لا قرار إتاحة' : p.label });
+        label: explorationActive && !decision.grantsProduct ? 'استكشاف: تصفح مساحة المنتج' : decision.state === 'ENABLED' ? p.label : decision.state === 'EXPIRED' ? (decision.expired.trial && !decision.expired.administrative ? 'منتهية: انتهت نافذة تجربة 48 ساعة' : 'منتهٍ: انتهى قرار الإتاحة الإداري') : decision.state === 'REVOKED' ? 'ملغى: سحب المشغّل قرار الإتاحة' : decision.state === 'DISABLED' ? (trialAccess.state === 'PENDING' || trialAccess.state === 'APPROVED' ? 'بانتظار تفعيل التجربة — لا وصول بعد' : p.storedState === 'ENABLED' ? 'معطّل: لا يوجد قرار إتاحة ساري' : 'معطّل إداريًا من المالك') : decision.state === 'NOT_CONFIGURED' ? 'غير مهيأ — لا قرار إتاحة' : p.label });
     }
     const summary = (await db.query('SELECT (SELECT count(*)::int FROM public.aigas_memberships WHERE tenant_id=$1) AS members, count(*)::int AS events FROM public.aigas_audit_events WHERE tenant_id=$1', [tenantId])).rows[0];
     const activity = (await db.query('SELECT action,created_at FROM public.aigas_audit_events WHERE tenant_id=$1 ORDER BY created_at DESC,id DESC LIMIT 8', [tenantId])).rows.map(row => ({ ...row, label: auditActionLabel(row.action), actor: null }));

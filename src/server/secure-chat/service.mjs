@@ -23,13 +23,13 @@ export function configuredMessageLimit(raw = env('AIGAS_SC_MAX_MESSAGE_CHARS')) 
   const value = Number(raw);
   return value >= 1 && value <= HARD_MAX_MESSAGE_LENGTH ? value : HARD_MAX_MESSAGE_LENGTH;
 }
-async function accessContext(request) {
+async function accessContext(request, operation = null) {
   const identity = await authenticate(request);
   // Membership discovery must run inside a transaction so the transaction-local actor scope
   // is visible to the query and is discarded before the connection is pooled.
   const { tenant } = await transaction(db => tenantGuard(identity, new URL(request.url).searchParams.get('workspace'), db));
   if (!tenant) throw new KernelError(403, 'MEMBERSHIP_REQUIRED', 'يلزم الانضمام إلى مؤسسة قبل استخدام Secure Chat.');
-  await transaction(db => requireProductAccess(db, identity, tenant.tenant_id, 'secure-chat'));
+  await transaction(db => requireProductAccess(db, identity, tenant.tenant_id, 'secure-chat', operation));
   return { identity, tenant };
 }
 
@@ -47,7 +47,7 @@ async function auditBlocked(identity, tenantId, action, requestId) {
 }
 
 export async function listModels(request) {
-  const { tenant } = await accessContext(request);
+  const { tenant } = await accessContext(request, 'browse');
   const approvedModels = listApprovedModels(tenant.tenant_id);
   const states = approvedModels.map(model => ({ model, state: providerState(model) }));
   const ready = states.filter(item => item.state === 'READY');

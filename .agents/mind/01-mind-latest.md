@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-11 VERIFIED LOCAL T03: HEAD `86954bd96dd4929a92ffa96066a309efc367ddf2`+working tree؛ bootstrap مشغّل ذري ومنحتصفح48h مستقلة؛ DB18.6 سيناريو1 PASS/unit identity4/navigation3/order5 PASS؛0033 محلي فقط؛ `Audit/t03-exploration-2026-11-11/REPORT.md`.
 - 2026-11-11 VERIFIED LOCAL+STAGING T02: HEAD `95f12b9c1fff4717904d4602de86c441a7a56d22`+working tree؛ local RLS74/contracts75/order5/build56 PASS؛ Neon restricted LOGIN34/34 PASS،حُذف معfixtures؛ `Audit/t02-schema-rls-2026-11-11/REPORT.md`؛ T03 permanent pool/SSR غير مثبتة.
 - 2026-11-11 VERIFIED LOCAL T01: HEAD `8a5f498`+working tree؛ Node22.22.2 build56/runtime19 (PG18 مؤقت؛ Auth probe SKIPPED)؛ `Audit/t01-node-ssr-2026-11-11/REPORT.md`؛ لا نشر.
 - 2026-11-11 VERIFIED LOCAL: أزرار أسماء المنتجات أعلى«جرب المنتج اللي تحتاجه» تفتحKernel عبرproductEntryPath مثلزرالدخول، معreturnToلكلمنتج؛ أزيلscrollspyللـanchors؛ Browser5/5 وunit3 وbuild56/routes56/0broken؛ `Audit/local-trial-2026-11-11/PRODUCT-ENTRY-LINKS.md`.
@@ -24,6 +25,7 @@
 - 2026-11-10 PARTIAL (P13): HEAD `c5ef5547` + working tree؛ اختبارات المحولات 16/16 محليًا؛ مسودة URL غير معتمدة وغير كافية، وGA4 network غير مختبر؛ لا وجهة أو ingestion؛ `Audit/p13-observability-2026-11-10/REPORT.md`.
 
 ## Open Issues / Blockers
+- 2026-11-11 PARTIAL T03: NeonStaging operators0/quota0/exploration schemaغائب؛ يحتاجDBA0033 وIdentity/Operationsمشغّل وحسابات ومنح وAuthBrowserمشترك،وDevOpsNode؛closeلايبطلAuthsessions؛purgeمقفوللاحتفاظمعتمد؛InternalNOTREADY/PublicCommercialNO-GO.
 - 2026-11-10 OPEN (P16): استثناء `GHSA-26w7-cxv4-gfx2` (critical، غير قابل للوصول) يحتاج موافقة المؤسس صراحةً قبل إدراجه؛ الترقية الرئيسية ورفع Node وتطبيق allowlist الآلي (`.github/workflows/ci-build-guard.yml` غير موجود) واعية؛ التحقق الحي لحراسة `Host` ينتظر push.
 - 2026-11-10 BLOCKED (P06-B): التفعيل التجريبي يحتاج نتيجة readiness PASS لكل منتج لنفس SHA/البيئة واعتماد الحصص/المدة/الاحتفاظ ونجاح P07–P11؛ لا صفوف جاهزية/حصة ولا مشغّل في أي بيئة؛ `0030` طُبق علىStagingفيT02 مع0031/0032 دون اعتمادجاهزيةأوحصص.
 - 2026-11-11 BLOCKED T01: الخدمة العامة static_site/dist/client/pnpm؛ deploy `dep-dbpsb5ss728c738pbpmg` مطابق لـ`8a5f498`؛ app/health/API404 وكاش GET عام300ث؛ يحتاج تفويض نشر معزول وT02/T03، لا إعادة رفع مصدر P04.
@@ -43,6 +45,12 @@
 - 2026-11-10 OPEN: Bootstrap/RLS وtrial/purge وموافقات المزودين والـUAT ما زالت مفتوحة.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-11] — T03: bootstrap واستكشاف محدود
+- **تم:** قناةمشغّل منفصلة بمعاملةوتدقيق؛منحتصفحلكلمنتج48hوحصةذرية،دونتزويرreadinessأوفتحChatsend؛export/close/purge-dry-runبلاحذف.
+- **التحقق:** PASS محليPG18.6 — خدمات4وChatguard/مالكواحد/A→B/expiry/quota race/audit rollback؛unit12PASS؛BrowserجزئيKernel200/API401/returnTo،Authغيرمهيأ.
+- **الحالة:** PARTIAL — مصدرومحلي؛لاNeonwritesأونشرأودعوات؛رحلةفريقمشتركةNOTRUN.
+- **ملفات:** `Audit/t03-exploration-2026-11-11/REPORT.md`،`migrations/0033_aigas_exploration.sql`،`scripts/operator-exploration.mjs`.
 
 ## [2026-11-11] — T02: delta وruntime على Staging
 - **تم:** resumeيتحققمنكلhash؛schema+receiptذريان؛إضافة0031للـdeltaو0032لقفلEXECUTEالجديد؛حفظ25وتطبيق3علىStagingدونإعادةبناء.

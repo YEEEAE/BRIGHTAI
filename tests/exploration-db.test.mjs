@@ -1,0 +1,70 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { randomUUID } from 'node:crypto';
+import pg from 'pg';
+import { installSchema,localDatabaseUrl } from './helpers/database.mjs';
+import { bootstrapExploration,closeExploration,exportExploration } from '../src/server/kernel/operator-exploration.mjs';
+const url=localDatabaseUrl('EXPLORATION_TEST_DATABASE_URL');
+test('operator bootstrap and bounded exploration across five products', {skip:!url},async()=>{
+ const pool=new pg.Pool({connectionString:url});
+ let app;
+ try {
+  await installSchema(pool);
+  const op=randomUUID(),owner=randomUUID(),member=randomUUID(),other=randomUUID(),banned=randomUUID();
+  for(const id of [op,owner,member,other,banned])await pool.query('INSERT INTO neon_auth."user"(id,banned) VALUES($1,$2)',[id,id===banned]);
+  await pool.query("INSERT INTO aigas_trial_operators(user_id,status,approval_reference) VALUES($1,'ACTIVE','LOCAL_SYNTHETIC_OPERATOR')",[op]);
+  const input={name:'Synthetic exploration A',ownerId:owner,memberIds:[member],limitUnits:5,approvalReference:'LOCAL_SYNTHETIC_EXPLORATION'};
+  await assert.rejects(bootstrapExploration(pool,member,input),{code:'OPERATOR_REQUIRED'});
+  await assert.rejects(bootstrapExploration(pool,op,{...input,memberIds:[banned]}),{code:'IDENTITY_REQUIRED'});
+  assert.equal((await pool.query('SELECT count(*)::int n FROM aigas_tenants')).rows[0].n,0);
+  const a=await bootstrapExploration(pool,op,input);
+  const b=await bootstrapExploration(pool,op,{...input,name:'Synthetic exploration B',ownerId:other,memberIds:[]});
+  assert.equal((await pool.query("SELECT count(*)::int n FROM aigas_memberships WHERE tenant_id=$1 AND role='OWNER'",[a.tenantId])).rows[0].n,1);
+  // Audit failure after all writes must roll back the entire bootstrap.
+  await pool.query("CREATE FUNCTION reject_bootstrap_audit() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN IF NEW.action='operator.exploration.bootstrapped' THEN RETURN NULL; END IF; RETURN NEW; END $$; CREATE TRIGGER reject_bootstrap_audit BEFORE INSERT ON aigas_audit_events FOR EACH ROW EXECUTE FUNCTION reject_bootstrap_audit()");
+  await assert.rejects(bootstrapExploration(pool,op,{...input,name:'Rollback fixture'}));
+  await pool.query('DROP TRIGGER reject_bootstrap_audit ON aigas_audit_events; DROP FUNCTION reject_bootstrap_audit()');
+  assert.equal((await pool.query('SELECT count(*)::int n FROM aigas_tenants')).rows[0].n,2);
+
+  assert.equal((await pool.query('SELECT count(*)::int n FROM aigas_release_readiness')).rows[0].n,0);
+  const runtime=new URL(url);runtime.username='aigas_runtime';process.env.DATABASE_URL=runtime.href;process.env.AIGAS_REQUIRE_RLS='true';
+  const {database,transaction}=await import('../src/server/kernel/db.mjs');app=database();
+  const {dashboard}=await import('../src/server/kernel/service.mjs');
+  const {requireProductAccess}=await import('../src/server/kernel/access.mjs');
+  const {createFirewallService}=await import('../src/server/firewall/service.mjs');
+  const {createLedgerService}=await import('../src/server/ledger/service.mjs');
+  const {createHumanGateService}=await import('../src/server/human-gate/service.mjs');
+  const {createRiskEngineService}=await import('../src/server/risk-engine/service.mjs');
+  const identity={userId:member};
+  const view=await dashboard(identity,a.tenantId);
+  assert.equal(view.products.filter(p=>p.enabled&&p.exploration?.readiness==='NOT_ASSERTED').length,5);
+  const {authorizedProductDestination}=await import('../src/shared/product-navigation.mjs');
+  assert.equal(authorizedProductDestination('/app/secure-chat/',view),`/app/secure-chat/?workspace=${a.tenantId}`);
+  const browse=(tenant,slug,operation)=>transaction(db=>requireProductAccess(db,identity,tenant,slug,operation));
+  await createFirewallService()(identity,a.tenantId,'dashboard');
+  await createLedgerService()(identity,a.tenantId,'list');
+  await createHumanGateService()(identity,a.tenantId,'list');
+  await createRiskEngineService()(identity,a.tenantId,'list');
+  await browse(a.tenantId,'secure-chat','browse');
+  await assert.rejects(browse(b.tenantId,'secure-chat','browse'),{status:403});
+  await assert.rejects(browse(a.tenantId,'secure-chat','send'),{code:'EXPLORATION_CAPABILITY_DENIED'});
+  await assert.rejects(browse(a.tenantId,'ledger','create'),{code:'EXPLORATION_CAPABILITY_DENIED'});
+  // Atomic quota: one remaining unit, concurrent calls cannot both succeed.
+  await pool.query("UPDATE aigas_exploration_grants SET used=limit_units-1 WHERE tenant_id=$1 AND product_slug='secure-chat'",[a.tenantId]);
+  const race=await Promise.allSettled([browse(a.tenantId,'secure-chat','browse'),browse(a.tenantId,'secure-chat','browse')]);
+  assert.equal(race.filter(r=>r.status==='fulfilled').length,1);
+  assert.equal(race.find(r=>r.status==='rejected').reason.code,'EXPLORATION_QUOTA_EXCEEDED');
+  await pool.query("UPDATE aigas_exploration_grants SET starts_at=now()-interval '49 hours',ends_at=now()-interval '1 hour' WHERE tenant_id=$1 AND product_slug='ledger'",[a.tenantId]);
+  await assert.rejects(browse(a.tenantId,'ledger','list'),{code:'EXPLORATION_EXPIRED'});
+  const report=await exportExploration(pool,op,a.tenantId);
+  assert.equal(report.grants.length,5);assert.equal(report.purge.deleteExecuted,false);
+  assert.ok(report.events.some(e=>e.action==='operator.exploration.bootstrapped'));
+  assert.ok(report.events.some(e=>e.action==='exploration.browse.firewall'));
+  const window=report.grants.find(g=>g.product_slug==='firewall');assert.equal(new Date(window.ends_at)-new Date(window.starts_at),172800000);
+  await assert.rejects(transaction(async db=>{await db.query("INSERT INTO aigas_tenants(id,name) VALUES($1,'Self grant')",[randomUUID()]);}),{code:'42501'});
+  await assert.rejects(transaction(db=>db.query('UPDATE aigas_exploration_grants SET used=0 WHERE tenant_id=$1',[a.tenantId])),{code:'42501'});
+  await closeExploration(pool,op,a.tenantId);
+  await assert.rejects(browse(a.tenantId,'firewall','dashboard'),{code:'EXPLORATION_EXPIRED'});
+  assert.equal((await pool.query('SELECT count(*)::int n FROM aigas_tenants')).rows[0].n,2);
+ }finally{if(app)await app.end();await pool.end();}
+});

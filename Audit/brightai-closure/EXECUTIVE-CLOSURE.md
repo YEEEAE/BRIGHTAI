@@ -100,7 +100,7 @@ RLS المفعلة لا تثبت عزلًا ولا تسريبًا. المنح ا
 |---|---|---|
 | T01 | BLOCKED_BY_PERMISSION | النشر غير مخول؛ إعداد المصدر موجود |
 | T02 | BLOCKED_BY_DEPENDENCY | rehearsal نهائي، عقد0031 واستعادة؛ لا تعديل runner هنا |
-| T03 | BLOCKED_BY_DEPENDENCY | T02 وأصل متاح |
+| T03 | PARTIAL — LOCAL VERIFIED 2026-11-11 | bootstrap مشغّل + تصفح محدود48h؛ DB محلي PASS؛ رحلة Auth مشتركة/تطبيق0033/نشر غير مثبتة؛ [الدليل](../t03-exploration-2026-11-11/REPORT.md) |
 | T04 | BLOCKED_BY_DEPENDENCY | مؤسسة وصلاحيات runtime |
 | T05 | BLOCKED_BY_DEPENDENCY | سياسة وحصة وربط فعلي؛ المفتاح وحده لا يكفي |
 | T06 | BLOCKED_BY_DEPENDENCY | وجهة مخولة ورحلة مصدر للأحداث |

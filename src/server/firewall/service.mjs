@@ -72,7 +72,7 @@ export function createFirewallService(transact = transaction) {
       const tenantId = scope.tenant.tenant_id;
       // Serialize policy changes and evaluation within each tenant.
       await db.query('SELECT id FROM public.aigas_tenants WHERE id=$1 FOR UPDATE', [tenantId]);
-      await requireProductAccess(db, identity, tenantId, 'firewall');
+      await requireProductAccess(db, identity, tenantId, 'firewall', operation);
       const member = (await db.query('SELECT role FROM public.aigas_lock_member($1,$2)', [tenantId, identity.userId])).rows[0];
       if (!member) throw new KernelError(403, 'FORBIDDEN', 'عضويتك لم تعد متاحة.');
       const canManage = ['OWNER', 'ADMIN'].includes(member.role);

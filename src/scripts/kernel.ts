@@ -101,6 +101,13 @@ function appendRecordedTime(target: Element, label: string, value: string | null
 }
 function renderProductTerms(card: HTMLElement, product: any) {
   const terms = card.querySelector('[data-product-terms]')!;
+  if (product.exploration && product.accessSource === 'INTERNAL_EXPLORATION_48H') {
+    terms.textContent = `استكشاف داخلي: تصفح فقط · الاستخدام ${product.exploration.used} / ${product.exploration.limit_units}.`;
+    appendRecordedTime(terms, 'نهاية الاستكشاف (بتوقيت الرياض)', product.exploration.ends_at);
+    card.querySelector('[data-product-commercial]')!.textContent = 'منحة استكشاف مستقلة لمدة 48 ساعة؛ لا فوترة أو تجديد تلقائي.';
+    return;
+  }
+
   const labels: Record<string, string> = {
     ACTIVE: 'إتاحة إدارية مؤقتة سارية وغير مفوترة؛ ليست اشتراكًا أو ترخيصًا أو تجربة 48 ساعة.',
     EXPIRED: 'انتهى قرار الإتاحة الإداري؛ لا يتجدد تلقائيًا.',

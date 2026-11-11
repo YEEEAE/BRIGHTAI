@@ -1,3 +1,4 @@
+import { requireExploration } from './exploration.mjs';
 import { KernelError, requireRole, products, isUuid } from './core.mjs';
 import { setActorScope, setTenantScope, requireRlsPosture } from './db.mjs';
 import { trialProductAccess } from './trial.mjs';
@@ -155,7 +156,7 @@ export async function assertReferenceTenant(db, tenantId, kind, value) {
 // Shared by all five products. Active approval is separate from the product toggle.
 // An active trial entitlement is a separate commercial source; it is accepted only
 // with an activated request, an ACTIVE row, and the exact 48-hour window.
-export async function requireProductAccess(db, identity, tenantId, slug) {
+export async function requireProductAccess(db, identity, tenantId, slug, operation = null) {
   const product = products.find(item => item.slug === slug);
   if (!product) throw new KernelError(404, 'NOT_FOUND', 'المنتج غير موجود.');
   // A caller may arrive here without a prior tenantGuard (for example a product
@@ -184,11 +185,13 @@ export async function requireProductAccess(db, identity, tenantId, slug) {
     if (error.code === '42501') throw new KernelError(503, 'DB_PRIVILEGE_UNAVAILABLE', `صلاحية اتصال النظام لا تسمح بالتحقق من إتاحة ${product.name}.`, 'access denied');
     throw error;
   }
+  if (!access && await requireExploration(db, tenantId, slug, operation)) return member;
   if (!access) throw new KernelError(403, 'PRODUCT_NOT_ENABLED', `لم تُعتمد إتاحة ${product.name} لهذه المؤسسة.`, 'not configured');
   // The dashboard read model and this guard share one decision, so a product the
   // UI reports as available is exactly the product the server permits.
   const decision = resolveProductAccess({ storedStatus: access.status, grant, trial });
   if (decision.grantsProduct && decision.productEnabled) return member;
+  if (await requireExploration(db, tenantId, slug, operation)) return member;
   if (decision.reason === 'ADMIN_GRANT_EXPIRED' || decision.reason === 'TRIAL_WINDOW_ENDED' || access.status === 'EXPIRED') {
     throw new KernelError(403, 'PRODUCT_NOT_ENABLED', `انتهت صلاحية إتاحة ${product.name}؛ راجع مالك المؤسسة.`, 'expired');
   }

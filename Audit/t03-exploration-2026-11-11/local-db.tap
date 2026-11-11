@@ -1,0 +1,28 @@
+TAP version 13
+# {"event":"exploration.denied","product":"secure-chat","code":"EXPLORATION_CAPABILITY_DENIED","at":"2026-11-11T02:17:37.354Z"}
+# {"event":"exploration.denied","product":"ledger","code":"EXPLORATION_CAPABILITY_DENIED","at":"2026-11-11T02:17:37.356Z"}
+# {"event":"exploration.denied","product":"secure-chat","code":"EXPLORATION_QUOTA_EXCEEDED","at":"2026-11-11T02:17:37.364Z"}
+# {"event":"exploration.denied","product":"ledger","code":"EXPLORATION_EXPIRED","at":"2026-11-11T02:17:37.366Z"}
+# {"event":"exploration.denied","product":"firewall","code":"EXPLORATION_EXPIRED","at":"2026-11-11T02:17:37.369Z"}
+# Subtest: operator bootstrap and bounded exploration across five products
+ok 1 - operator bootstrap and bounded exploration across five products
+  ---
+  duration_ms: 200.905208
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 256.117875
+{
+  "result": "PASS",
+  "exitCode": 0,
+  "databases": 1,
+  "port": 55434,
+  "keptCluster": false
+}

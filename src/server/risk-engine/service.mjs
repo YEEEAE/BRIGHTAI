@@ -49,7 +49,7 @@ export function createRiskEngineService(transact=transaction) {
    const scope=await tenantGuard(identity,requested,db);
    if(!scope.tenant)throw new KernelError(403,'NO_WORKSPACE','أنشئ مساحة عمل من Kernel أولًا.');
    const tenantId=scope.tenant.tenant_id;
-   await requireProductAccess(db,identity,tenantId,'risk-engine');
+   await requireProductAccess(db,identity,tenantId,'risk-engine',operation);
    const member=(await db.query('SELECT role FROM public.aigas_lock_member($1,$2)',[tenantId,identity.userId])).rows[0];
    requireRole(member,['OWNER','ADMIN','MEMBER']);
    const canWrite=['OWNER','ADMIN'].includes(member.role);

@@ -46,7 +46,7 @@ export function createLedgerService(transact = transaction) {
       const scope=await tenantGuard(identity,requested,db);
       if (!scope.tenant) throw new KernelError(403,'NO_WORKSPACE','أنشئ مساحة عمل من Kernel أولًا.');
       const tenantId=scope.tenant.tenant_id;
-      const member=await requireProductAccess(db,identity,tenantId,'ledger');
+      const member=await requireProductAccess(db,identity,tenantId,'ledger',operation);
       requireRole(member,['create','export'].includes(operation)?['OWNER','ADMIN']:['OWNER','ADMIN','MEMBER']);
       const permissions={create:['OWNER','ADMIN'].includes(member.role),export:['OWNER','ADMIN'].includes(member.role)};
       if (operation==='create') {

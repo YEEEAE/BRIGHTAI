@@ -37,7 +37,7 @@ export function createHumanGateService(transact=transaction) {
    const scope=await tenantGuard(identity,requested,db);
    if(!scope.tenant) throw new KernelError(403,'NO_WORKSPACE','أنشئ مساحة عمل من Kernel أولًا.');
    const tenantId=scope.tenant.tenant_id;
-   const member=await requireProductAccess(db,identity,tenantId,'human-gate');
+   const member=await requireProductAccess(db,identity,tenantId,'human-gate',operation);
    const caller=(await db.query('SELECT id FROM neon_auth."user" WHERE id=$1 AND banned IS NOT TRUE',[identity.userId])).rows[0];
    if(!caller) throw new KernelError(401,'UNAUTHORIZED','انتهت صلاحية الحساب.');
    // One order for policy, delegation, request transitions and lazy expiry within this tenant.
