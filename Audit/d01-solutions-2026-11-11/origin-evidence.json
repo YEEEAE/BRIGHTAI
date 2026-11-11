@@ -1,0 +1,46 @@
+{
+  "measuredAt": "2026-11-11T03:39:00Z",
+  "environment": "local macOS (darwin), Node v22.22.2, npm 10.9.7",
+  "baselineCommit": "6a3d53f41b5bd1af59eb320245745498765bd320",
+  "measuredHead": "cbd8d42df6e9793f4e1944b629594148b94562e6",
+  "divergence": "HEAD is 9 commits after the baseline; src/pages/solutions/index.astro still absent, so G09 remained open",
+  "live": {
+    "url": "https://brightai.live/solutions/",
+    "status": 200,
+    "title": "حلول حوكمة AI | AI Firewall + سجل تدقيق + ملف أدلة",
+    "canonical": "https://brightai.live/solutions/",
+    "fingerprintLegacyAssets": [
+      "/_astro/BaseLayout.Lilm0SPe.css",
+      "/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js",
+      "/assets/fonts/TheYearofTheCamel-Medium.subset.woff2",
+      "/fonts/IBMPlexSansArabic-Regular.woff2",
+      "/assets/images/logo.png",
+      "/assets/star/bright-star-minimal.svg",
+      "/logo-96.webp",
+      "/js/sw-register.js",
+      "/js/noncritical-init.js"
+    ],
+    "brandAssetDiff": {
+      "legacy": { "path": "/assets/images/logo.png", "sha256": "2ece775a0b9c58f21af98df3544172149a9ed4f21aae1b9a74de0c918fe80f06", "size": "400x400" },
+      "canonical": { "path": "/images/brightai-logo.png", "sha256": "61ce2901eb60ff310773747622be8369ad7b9d19e88a38d91a20754d98221efd", "size": "1536x1024" }
+    },
+    "currentBuildFingerprint": ["/images/brightai-logo.webp", "/fonts/plex-arabic-400.ttf", "G-9LMB4PGTWJ"],
+    "origin": "A pre-existing static artifact (old asset tree) still published at /solutions/ plus its 19 deep links; the repository has no matching Astro route and the current build emits no solutions/index.html, so a rebuild cannot reproduce that HTML.",
+    "legacyDeepLinksReturning200": 19,
+    "legacyServiceWorker": "/sw.js still served (CACHE_VERSION 2026-06-29-1); HTML is network-first, so it does not pin the page but keeps stale asset caches registered for visitors who loaded the legacy page"
+  },
+  "claimsWithoutEvidence": [
+    "ملف PDF موقّع رقمياً جاهز للمدقق",
+    "كل طلب وقرار محفوظ مدى الحياة",
+    "تجربة Kernel مجانية 8 دقائق بدون تسجيل في Sandbox معزول",
+    "سرية بياناتك مضمونة",
+    "امتثال SAMA / NCA ECC / ISO 13485 كنعت للحل"
+  ],
+  "localFix": {
+    "route": "src/pages/solutions/index.astro",
+    "identity": "PageShell + Header/Footer + brand 'brightai-logo.webp' + GA4 G-9LMB4PGTWJ; no legacy assets, no service-worker registration",
+    "claimPosture": "planning questions only; explicit note that availability of AIGAS products is unverified and no compliance certificate is implied",
+    "redirectsAdded": 21,
+    "legacyMapped": 19
+  }
+}

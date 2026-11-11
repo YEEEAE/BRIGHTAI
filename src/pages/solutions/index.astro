@@ -1,0 +1,56 @@
+---
+import PageShell from '../../components/PageShell.astro';
+export const prerender = true;
+const tracks = [
+  { slug: 'government', label: 'GOVERNMENT', title: 'الجهات الحكومية', summary: 'الخدمة العامة والقرار الذي يمس المستفيد، ومسار الاعتماد والتصعيد داخل الجهة.' },
+  { slug: 'finance', label: 'FINANCIAL SERVICES', title: 'القطاع المالي', summary: 'بيانات العملاء والتوصيات ذات الأثر، ومراجعة الجهة المخولة قبل الاعتماد.' },
+  { slug: 'healthcare', label: 'HEALTHCARE', title: 'الرعاية الصحية', summary: 'بيانات المرضى، والحد بين الدعم الإداري والقرار السريري، والمراجعة المهنية.' },
+  { slug: 'enterprise', label: 'ENTERPRISE', title: 'المنشآت والشركات', summary: 'سياسة استخدام الموظفين، وتصنيف البيانات، والأدوات والحسابات المعتمدة.' },
+];
+const layers = [
+  ['firewall', 'AIGAS Firewall', 'حدود ما يُرسل إلى النموذج وفق سياسة الجهة.'],
+  ['risk-engine', 'AIGAS Risk Engine', 'تقييم مخاطر حالة الاستخدام وربطها بالضوابط.'],
+  ['human-gate', 'AIGAS Human Gate', 'مسار المراجعة البشرية والقرار قبل الإجراء الحساس.'],
+  ['ledger', 'AIGAS Ledger', 'حوكمة الأدلة التشغيلية وحدود الوصول والاحتفاظ.'],
+  ['secure-chat', 'AIGAS Secure Chat', 'واجهة مؤسسية محكومة لاستخدام المساعدات.'],
+];
+---
+<PageShell title="حلول حسب القطاع: مسارات حوكمة الذكاء الاصطناعي | BRIGHTAI" description="أربعة مسارات تخطيط لحوكمة الذكاء الاصطناعي في السعودية: الجهات الحكومية والقطاع المالي والرعاية الصحية والمنشآت. أسئلة البيانات والقرار والمراجعة قبل أي استخدام." crumbs={[{ name: 'القطاعات' }]}>
+  <p class="eyebrow">القطاعات / SOLUTIONS</p>
+  <h1>ابدأ من سياقك.<br /><span class="muted">ثم حدّد السؤال.</span></h1>
+  <p class="lead">الحوكمة لا تبدأ بقائمة أدوات، بل بسؤال: ما البيانات، ومن يتأثر، ومن يملك القرار؟ لكل قطاع جهته المخولة ومساره في المراجعة، وهذه الصفحات تجمع الأسئلة التي تسبق اختيار أي أداة.</p>
+  <p class="note">هذه أسئلة للتخطيط وليست توصية تشغيلية أو شهادة امتثال، ولا تثبت اعتماداً تنظيمياً. تختلف الالتزامات بحسب الجهة وحالة الاستخدام، والإتاحة التشغيلية لمنتجات AIGAS غير متحققة.</p>
+
+  <section class="block" aria-labelledby="tracks-title">
+    <h2 id="tracks-title">أربعة سياقات. ومسؤوليات مختلفة.</h2>
+    <p>اختر السياق الأقرب لعملك؛ تجد في كل صفحة الأسئلة نفسها مطبقة على بيانات ذلك القطاع ومسار مراجعته.</p>
+    <div class="grid">
+      {tracks.map(track => <article class="card"><span class="latin tag" dir="ltr">{track.label}</span><h3>{track.title}</h3><p>{track.summary}</p><a class="ghost" href={`/solutions/${track.slug}/`}>أسئلة {track.title} <span aria-hidden="true">←</span></a></article>)}
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="layers-title">
+    <h2 id="layers-title">طبقات تُبنى عليها الإجابة <span class="content-status status-planned" lang="en" dir="ltr">Planned</span></h2>
+    <p>هذه أسماء الأدوار في تصور منتجات AIGAS، وليست قائمة خدمات متاحة. كل دور يجيب عن سؤال مختلف، ويحتاج تحققاً مستقلاً قبل الاعتماد.</p>
+    <ul class="list">
+      {layers.map(([slug, name, role]) => <li><a href={`/products/${slug}/`} dir="ltr">{name}</a> — {role}</li>)}
+    </ul>
+    <div class="actions"><a class="ghost" href="/products/">تفاصيل المنتجات وحالتها <span aria-hidden="true">←</span></a></div>
+  </section>
+
+  <section class="block" aria-labelledby="path-title">
+    <h2 id="path-title">ثلاث خطوات قبل اختيار أي أداة.</h2>
+    <ol class="list">
+      <li>اكتب الغرض وحالة الاستخدام ومالكها المسؤول.</li>
+      <li>صنّف البيانات والأطراف المتأثرة والقناة المعتمدة.</li>
+      <li>اطلب مراجعة الأمن والخصوصية والامتثال قبل إدخال بيانات فعلية.</li>
+    </ol>
+    <p>هذا ترتيب للتخطيط داخل الجهة، ولا يستبدل متطلباتها أو مرجعيتها التنظيمية. راجع <a href="/pillars/safety/">ركن السلامة والموثوقية</a> و<a href="/trust/">حالة الأدلة المعلنة</a> قبل أي قرار.</p>
+  </section>
+
+  <section class="block" aria-labelledby="contact-title">
+    <h2 id="contact-title">هل تحتاج توضيحاً؟</h2>
+    <p>أرسل وصفاً عاماً للاحتياج دون بيانات عملاء أو معلومات حساسة، أو ابدأ من أدلة مركز المعرفة لصياغة السؤال الأول.</p>
+    <div class="actions"><a class="button" href="/contact/">أرسل استفساراً</a><a class="ghost" href="/docs/">مركز المعرفة</a></div>
+  </section>
+</PageShell>

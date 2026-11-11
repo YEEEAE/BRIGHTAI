@@ -24,7 +24,7 @@ const contexts: Record<string, string[][]> = {
  enterprise: [['استخدام الموظف','أداة وحساب معتمدان'],['بيانات المنشأة','تصنيف وقناة مصرح بها'],['مسؤولية واضحة','مالك ومسار إبلاغ ومراجعة']],
 };
 ---
-<PageShell title={`حوكمة الذكاء الاصطناعي في ${title} بالسعودية | BRIGHTAI`} description={searchDescriptions[slug]} crumbs={[{ name: 'القطاعات', href: '/#solutions' }, { name: title }]}>
+<PageShell title={`حوكمة الذكاء الاصطناعي في ${title} بالسعودية | BRIGHTAI`} description={searchDescriptions[slug]} crumbs={[{ name: 'القطاعات', href: '/solutions/' }, { name: title }]}>
   <div class="sector-story"><div><p class="eyebrow">حوكمة حسب السياق / {title} <span class="content-status status-educational" lang="en" dir="ltr">Educational</span></p><h1>{title}</h1><p class="lead">{intro}</p></div><SectorDiagram kind={slug} contexts={contexts[slug]}/></div>
   <p class="note">هذه أسئلة للتخطيط وليست توصية تشغيلية أو شهادة امتثال. الالتزامات تختلف بحسب الجهة والقطاع وحالة الاستخدام، والإتاحة التشغيلية لمنتجات AIGAS غير متحققة.</p>
   <section class="block review-questions"><h2>قرارات تبدأ<br/>بالسؤال الصحيح.</h2><ol>{questions.map((question: string) => <li>{question}</li>)}</ol></section>

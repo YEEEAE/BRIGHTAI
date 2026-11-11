@@ -105,7 +105,7 @@ RLS المفعلة لا تثبت عزلًا ولا تسريبًا. المنح ا
 | T05 | BLOCKED_BY_DEPENDENCY | سياسة وحصة وربط فعلي؛ المفتاح وحده لا يكفي |
 | T06 | BLOCKED_BY_DEPENDENCY | وجهة مخولة ورحلة مصدر للأحداث |
 | T07 | PREPARED_FOR_LOCAL_EXECUTION | التحضير مستقل؛ القرار ينتظر الأدلة |
-| D01 | PREPARED_FOR_LOCAL_EXECUTION | تكليف محلي ثم إذن نشر |
+| D01 | PARTIAL — LOCAL VERIFIED 2026-11-11 | مركز `/solutions/` محلي بهوية موحدة و19 تحويلًا؛ النشر وتحويل الحافة يحتاجان تفويضًا مستقلًا؛ [الدليل](../d01-solutions-2026-11-11/REPORT.md) |
 | D02 | BLOCKED_BY_DEPENDENCY | T01/T03 |
 | D03 | BLOCKED_BY_DEPENDENCY | قدرات خادمية متاحة |
 | D04 | PREPARED_FOR_LOCAL_EXECUTION | تكليف محلي ومقاسات حقيقية |

@@ -77,6 +77,14 @@
       "destination": "/services/"
     },
     {
+      "source": "/solutions.html",
+      "destination": "/solutions/"
+    },
+    {
+      "source": "/solutions/index.html",
+      "destination": "/solutions/"
+    },
+    {
       "source": "/solutions/government.html",
       "destination": "/solutions/government/"
     },
@@ -290,6 +298,82 @@
     },
     {
       "source": "/solutions/healthcare/index.html",
+      "destination": "/solutions/healthcare/"
+    },
+    {
+      "source": "/solutions/ai-governance-platform/",
+      "destination": "/products/"
+    },
+    {
+      "source": "/solutions/ai-firewall/",
+      "destination": "/products/firewall/"
+    },
+    {
+      "source": "/solutions/ai-audit-trail/",
+      "destination": "/products/ledger/"
+    },
+    {
+      "source": "/solutions/ai-evidence-file/",
+      "destination": "/products/ledger/"
+    },
+    {
+      "source": "/solutions/human-approval-layer/",
+      "destination": "/products/human-gate/"
+    },
+    {
+      "source": "/solutions/ai-risk-classification/",
+      "destination": "/products/risk-engine/"
+    },
+    {
+      "source": "/solutions/continuous-ai-governance/",
+      "destination": "/products/risk-engine/"
+    },
+    {
+      "source": "/solutions/ai-use-case-discovery/",
+      "destination": "/products/"
+    },
+    {
+      "source": "/solutions/policy-to-control-mapping/",
+      "destination": "/kernel/"
+    },
+    {
+      "source": "/solutions/banking-ai-governance/",
+      "destination": "/solutions/finance/"
+    },
+    {
+      "source": "/solutions/government-ai-governance/",
+      "destination": "/solutions/government/"
+    },
+    {
+      "source": "/solutions/healthcare-ai-governance/",
+      "destination": "/solutions/healthcare/"
+    },
+    {
+      "source": "/solutions/manufacturing-ai-governance/",
+      "destination": "/solutions/enterprise/"
+    },
+    {
+      "source": "/solutions/banking-ai-governance/khobar/",
+      "destination": "/solutions/finance/"
+    },
+    {
+      "source": "/solutions/banking-ai-governance/riyadh/",
+      "destination": "/solutions/finance/"
+    },
+    {
+      "source": "/solutions/government-ai-governance/dammam/",
+      "destination": "/solutions/government/"
+    },
+    {
+      "source": "/solutions/government-ai-governance/madinah/",
+      "destination": "/solutions/government/"
+    },
+    {
+      "source": "/solutions/healthcare-ai-governance/jeddah/",
+      "destination": "/solutions/healthcare/"
+    },
+    {
+      "source": "/solutions/healthcare-ai-governance/mecca/",
       "destination": "/solutions/healthcare/"
     },
     {
