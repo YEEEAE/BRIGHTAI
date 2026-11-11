@@ -22,26 +22,6 @@
     const headings = compass ? [...root.querySelectorAll<HTMLHeadingElement>('h2')].filter(heading =>
       !heading.closest('.reading-nav,.experience,.section-compass') && heading.textContent?.trim()) : [];
     const links: HTMLAnchorElement[] = [];
-    // A primary action inside the bottom strip must never sit under the fixed index.
-    const primaryActions = compass ? [...root.querySelectorAll<HTMLElement>('.button')] : [];
-    let footerInView = false;
-    let compassQueued = false;
-    const syncCompass = () => {
-      compassQueued = false;
-      if (!compass || headings.length <= 2) return;
-      if (compass.open || compass.contains(document.activeElement)) { compass.hidden = false; return; }
-      const limit = innerHeight - 96;
-      const covered = primaryActions.some(action => {
-        const box = action.getBoundingClientRect();
-        return box.top < innerHeight && box.bottom > limit;
-      });
-      compass.hidden = footerInView || covered;
-    };
-    const scheduleCompass = () => {
-      if (!compass || compassQueued) return;
-      compassQueued = true;
-      frame(syncCompass);
-    };
     if (compass) {
       headings.forEach((heading, index) => {
         heading.id ||= `reading-section-${index + 1}`;
@@ -62,7 +42,7 @@
       });
       if (headings.length > 2) {
         compass.hidden = false;
-        // Escape and an outside tap close the panel; focus stays on the summary.
+        // Closing must not leave focus inside collapsed navigation.
         compass.addEventListener('keydown', event => {
           if (event.key !== 'Escape' || !compass.open) return;
           compass.open = false;
@@ -70,12 +50,12 @@
         }, { signal });
         document.addEventListener('pointerdown', event => {
           if (!compass.open) return;
-          if (event.target instanceof Node && !compass.contains(event.target)) compass.open = false;
+          if (event.target instanceof Node && !compass.contains(event.target)) {
+            const restoreFocus = compass.contains(document.activeElement);
+            compass.open = false;
+            if (restoreFocus) compass.querySelector('summary')?.focus({ preventScroll: true });
+          }
         }, { signal });
-        compass.addEventListener('toggle', syncCompass, { signal });
-        addEventListener('scroll', scheduleCompass, { passive: true, signal });
-        addEventListener('resize', scheduleCompass, { signal });
-        scheduleCompass();
       }
     }
     const position = root.querySelector('[data-section-position]');
@@ -90,15 +70,6 @@
       if (position) position.textContent = `${String(index + 1).padStart(2, '0')} / ${String(headings.length).padStart(2, '0')}`;
     }, { rootMargin: '-12% 0px -55% 0px' });
     if (headings.length > 2) { headings.forEach(heading => headingObserver.observe(heading)); observers.push(headingObserver); }
-
-    const footer = document.querySelector('footer');
-    if (footer && compass && headings.length > 2) {
-      const footerObserver = new IntersectionObserver(entries => {
-        footerInView = entries.some(entry => entry.isIntersecting);
-        syncCompass();
-      });
-      footerObserver.observe(footer); observers.push(footerObserver);
-    }
 
     // The server-rendered document index behaves as a disclosure on phones only.
     const documentToc = root.querySelector<HTMLElement>('[data-document-toc]');

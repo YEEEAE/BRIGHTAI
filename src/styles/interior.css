@@ -61,8 +61,8 @@
      inline chips are used instead of a grid that the slot would collapse. */
   .interior-page .document-toc details[open] a { display: inline-flex; align-items: center; margin-inline-end: 6px; }
 }
-/* A small index stays out of the reading column and opens only on request. */
-.section-compass { position: fixed; z-index: 12; inset-inline-end: 22px; inset-block-end: calc(20px + env(safe-area-inset-bottom, 0px)); padding: 0; border: 1px solid var(--ui-line); border-radius: var(--ui-radius-lg); background: var(--ui-panel); max-inline-size: min(390px,calc(100vw - 40px)); box-shadow: inset 0 1px 0 #ffffff08,0 18px 40px -30px #000; }
+/* In-flow disclosure reserves its own space, including when expanded. */
+.interior-page > .section-compass { position: static; margin-block: 20px 28px; margin-inline: env(safe-area-inset-right, 0px) env(safe-area-inset-left, 0px); padding: 0; border: 1px solid var(--ui-line); border-radius: var(--ui-radius-lg); background: var(--ui-panel); max-inline-size: 100%; padding-block-end: env(safe-area-inset-bottom, 0px); }
 .section-compass[hidden] { display: none; }
 .interior-page .section-compass summary { display: flex; align-items: center; gap: 14px; min-height: 48px; padding: 10px 18px; font-size: 13px; list-style: none; cursor: pointer; }
 .section-compass summary::-webkit-details-marker { display: none; }
@@ -71,6 +71,7 @@
 .section-compass [data-section-position] { color: var(--ui-amber); font: 11px ui-monospace,monospace; margin-inline-start: 16px; direction: ltr; unicode-bidi: isolate; }
 .section-compass nav { max-block-size: min(55svh,450px); overflow-y: auto; border-block-start: 1px solid var(--ui-line); padding: 8px 14px; }
 .section-compass nav a { display: block; padding: 12px 8px; min-height: 44px; font-size: 14px; line-height: 1.8; color: var(--ui-copy); border-inline-start: 2px solid transparent; }
+.interior-page .section-compass nav a:focus-visible { outline: 2px solid var(--ui-focus); outline-offset: -2px; }
 .section-compass nav a[aria-current] { color: var(--ui-amber); border-color: var(--ui-amber); background: #201626; }
 /* Products: technical masthead, a broad instrument, then editorial evidence. */
 .interior-page .product-intro { position: relative; grid-template-columns: minmax(0,1.6fr) minmax(210px,.4fr); padding-block: 56px 70px; gap: 50px; }
@@ -347,7 +348,6 @@
   .interior-privacy-index > .block,.interior-terms-index > .block { display: block; }
   .interior-page form.card { padding: 24px; }
   .interior-page .chat-preview { box-shadow: 6px 8px 0 -1px #08070b,6px 8px 0 0 #2f263a; }
-  .section-compass { inset-inline-end: 12px; inset-block-end: calc(12px + env(safe-area-inset-bottom, 0px)); max-inline-size: calc(100vw - 24px); }
 }
 @media (prefers-reduced-motion: reduce) {
   .interior-page { --ui-fast: 0ms; --ui-state: 0ms; --ui-reveal: 0ms; }
@@ -356,18 +356,6 @@
   .interior-page * { scroll-behavior: auto; }
 }
 @media (max-width: 767px) {
-  /* Phones keep the same index as a bottom disclosure instead of parking it at
-     the end of the document, where it could never be reached while reading.
-     It respects the safe area, opens upward inside the viewport, and the
-     controller hides it whenever a primary action enters the bottom strip. */
-  .section-compass {
-    position: fixed;
-    inset: auto;
-    inset-inline-end: 12px;
-    inset-block-end: calc(12px + env(safe-area-inset-bottom, 0px));
-    max-inline-size: min(340px, calc(100vw - 24px));
-    margin: 0;
-  }
   .section-compass nav { max-block-size: min(50svh, 320px); overscroll-behavior: contain; }
   .interior-page .section-compass summary { padding-inline: 14px; gap: 10px; }
   .section-compass [data-section-position] { margin-inline-start: auto; }

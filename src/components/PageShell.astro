@@ -42,13 +42,13 @@ const minutes = Math.max(1, Math.ceil(words / 180));
     <nav class="breadcrumb" aria-label="مسار التنقل">
       {all.map((c, i) => i < all.length - 1 ? <><a href={c.href}><bdi>{c.name}</bdi></a><span class="breadcrumb-sep" aria-hidden="true">/</span></> : <span aria-current="page"><bdi>{c.name}</bdi></span>)}
     </nav>
-    {reading && family !== 'knowledge' && <nav class="document-toc" aria-label="تنقل القراءة" data-document-toc><p>{family === 'knowledge' ? `وقت قراءة تقريبي: ${minutes} دقيقة، بافتراض 180 كلمة في الدقيقة.` : 'داخل هذه الوثيقة'}</p><details open><summary>انتقل إلى قسم</summary>{toc.map(item => <a href={`#${item.id}`}>{item.title}</a>)}</details></nav>}
-    {family === 'knowledge' ? <KnowledgeReader content={content} toc={toc} minutes={minutes} path={Astro.url.pathname}/> : <Fragment set:html={content} /> }
-    {!['docs', 'knowledge'].includes(family) && <PageMotionStudy family={family} segment={segment}/>}
     {!reading && !['docs', 'knowledge'].includes(family) && <details class="section-compass" hidden data-section-compass>
       <summary aria-controls="section-compass-links"><span aria-hidden="true">☷</span> داخل الصفحة <span data-section-position></span></summary>
       <nav id="section-compass-links" aria-label="فهرس أقسام الصفحة" data-section-links></nav>
     </details>}
+    {reading && family !== 'knowledge' && <nav class="document-toc" aria-label="تنقل القراءة" data-document-toc><p>{family === 'knowledge' ? `وقت قراءة تقريبي: ${minutes} دقيقة، بافتراض 180 كلمة في الدقيقة.` : 'داخل هذه الوثيقة'}</p><details open><summary>انتقل إلى قسم</summary>{toc.map(item => <a href={`#${item.id}`}>{item.title}</a>)}</details></nav>}
+    {family === 'knowledge' ? <KnowledgeReader content={content} toc={toc} minutes={minutes} path={Astro.url.pathname}/> : <Fragment set:html={content} /> }
+    {!['docs', 'knowledge'].includes(family) && <PageMotionStudy family={family} segment={segment}/>}
   </main>
   {!['docs', 'knowledge'].includes(family) && <><InteriorController /><InteriorMotion /></>}
   <Footer />
