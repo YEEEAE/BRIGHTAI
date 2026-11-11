@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-11 PARTIAL D08: HEAD `38403763df2daf2baa60576def4d73215756f430`؛ Browser5routes×390/1440 RTL/overflow PASS؛ compassKeyboard/noJSdocs PASS؛ Hero baseline نص/روابط/أبعادمطابقة وصورة1440متطابقة؛ devLCP228ms/shift0.024تشخيصي؛ SR/INP/المصادق/المنشور NOT RUN؛ `Audit/d08-acceptance-2026-11-11/REPORT.md`؛ InternalNOTREADY/PublicCommercialNO-GO.
 - 2026-11-11 PARTIAL D07: HEAD `b0c1bd415911aec4d24326a7c89dc5f3811c8ae8`؛ لا تعديل مصدر؛ wrapper301→docs200/query PASS وsearch3PASS؛ devdocs/article200 لكنdevaliasqueryغيرمحفوظ؛ artifactقديم؛ الحيknowledge404؛ BrowserBLOCKED/OpenSEO0/GSCNOTVERIFIED؛ `Audit/d07-knowledge-2026-11-11/REPORT.md`؛ InternalNOTREADY/PublicCommercialNO-GO.
 - 2026-11-11 PARTIAL T03 execution: staging0033 APPLIED ledger29/29؛4Auth اصطناعية/مؤسستان/100browse لكلمنتج48h؛runtime LOGIN محدود SET ROLE مثبت؛esbuild أصلح؛Auth token wrapper أصلح؛unit7 PASS؛Browser النهائي NOT VERIFIED وDB اتصال متقطع؛ `Audit/t03-exploration-2026-11-11/EXECUTED.md`.
 - 2026-11-11 PARTIAL LOCAL D06: HEAD `f05b17936809bf9a98acfbc75676ae6cc242d3af`+tree؛ خطوة تالية من الخادم ورسالة منتج للمشارك؛ unit13/compiler PASS؛ Browser BLOCKED بغياب esbuild الأصلي؛ قبول الدورين/T03/T01 NOT RUN؛ `Audit/d06-kernel-2026-11-11/REPORT.md`؛ Internal NOT READY/Public Commercial NO-GO.
