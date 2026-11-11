@@ -74,7 +74,8 @@ const websiteSchema = {
     <meta name="twitter:image" content={new URL(brand.logo, 'https://brightai.live').href} />
     <meta name="twitter:image:alt" content={brand.alt} />
     <title>{title}</title>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9LMB4PGTWJ"></script>
+    <!-- External analytics transport is disabled until a separate consent and
+         payload decision is approved. The local dataLayer below sends nothing. -->
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag(){window.dataLayer.push(arguments);}

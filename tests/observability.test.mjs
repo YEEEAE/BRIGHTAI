@@ -386,3 +386,10 @@ test('the CSP hash of the shipped GA4 snippet matches the middleware allowlist',
   const middleware = readFileSync(new URL('../src/middleware.ts', import.meta.url), 'utf8');
   assert.ok(middleware.includes(digest), `middleware CSP must list ${digest}`);
 });
+
+
+test('public layout has no external analytics loader before consent approval', () => {
+  const layout = readFileSync(new URL('../src/layouts/BaseLayout.astro', import.meta.url), 'utf8');
+  assert.doesNotMatch(layout, /<script[^>]+src=["'][^"']*(?:googletagmanager|google-analytics)/i);
+  assert.doesNotMatch(layout, /createElement\(['"]script['"]\)/);
+});

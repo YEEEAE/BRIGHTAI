@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-11 PARTIAL T06: HEAD `effe61431b491a19773d6192cd1ec982202aded6`+tree؛ GA4 loader معطل لغياب موافقة وعقد URL؛unit19/Browser صفرطلباتقياس PASS؛Sentry صفرمشاريع/PostHog720936 غيرمعتمد؛canary/alert NOT RUN؛ `Audit/t06-observability-2026-11-11/REPORT.md`؛InternalNOTREADY/PublicCommercialNO-GO.
 - 2026-11-11 VERIFIED LOCAL D04: HEAD `9bda61d288746c5392a2bdc0da8162910407a94b`+tree؛ section-compass داخل التدفق أسفلbreadcrumb لمنعحجبالمنتجات؛ Browser390×844/1440×770 بلاoverlap/overflow،Tab/Escape/headingfocus/action PASS؛safe-areaغيرصفريوالنشرNOT RUN؛ `Audit/d04-section-compass-2026-11-11/REPORT.md`.
 - 2026-11-11 PARTIAL D03: HEAD `6452c17`؛ واجهات المنتجات الخمس منفذة أصلًا وعقود API مطابقة (32 مسارًا)؛ Browser 390/1440 ×5 بلا تجاوز أفقي وبيانات خاصة مخفية ورفض دخول صريح وتفاعل Ledger reload بلا نجاح زائف؛ لا تغيير مصدر؛ القبول الحي BLOCKED بـT01/T03؛ `Audit/d03-product-experiences-2026-11-11/REPORT.md`.
 - 2026-11-11 PARTIAL LOCAL D02: HEAD `0baadba`+working tree؛ allowlist/returnTo بلا تغيير؛ وجهات المنتجات الخمس 200 محليًا وreturnTo صحيح ×5 ورفض الخارجي/المشفّر؛ فشل رمز المزود بلا جلسة صار «سجّل الدخول» بدل `HTTP 404`؛ Browser30/30 وunit3 وbuild57 PASS؛ الجلسة الحقيقية والنشر NOT RUN (T01/T03)؛ `Audit/d02-journey-2026-11-11/REPORT.md`.

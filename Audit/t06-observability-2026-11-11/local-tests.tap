@@ -1,0 +1,124 @@
+TAP version 13
+# Subtest: default is inert: no approval means no layer and no transport
+ok 1 - default is inert: no approval means no layer and no transport
+  ---
+  duration_ms: 2.237792
+  type: 'test'
+  ...
+# Subtest: common gates require an approval reference, an approved environment and a full release SHA
+ok 2 - common gates require an approval reference, an approved environment and a full release SHA
+  ---
+  duration_ms: 0.258583
+  type: 'test'
+  ...
+# Subtest: each layer keeps its own approval and a different environment scope
+ok 3 - each layer keeps its own approval and a different environment scope
+  ---
+  duration_ms: 0.524917
+  type: 'test'
+  ...
+# Subtest: Sentry DSN parsing rejects every transport shape it must not use
+ok 4 - Sentry DSN parsing rejects every transport shape it must not use
+  ---
+  duration_ms: 0.212042
+  type: 'test'
+  ...
+# Subtest: a DSN that does not match the approved origin never sends
+ok 5 - a DSN that does not match the approved origin never sends
+  ---
+  duration_ms: 0.383791
+  type: 'test'
+  ...
+# Subtest: PostHog host and key are exact, and the endpoint is fixed
+ok 6 - PostHog host and key are exact, and the endpoint is fixed
+  ---
+  duration_ms: 27.477375
+  type: 'test'
+  ...
+# Subtest: Sentry event carries only allowlisted constants, never the error, URL, SQL or token
+ok 7 - Sentry event carries only allowlisted constants, never the error, URL, SQL or token
+  ---
+  duration_ms: 5.951583
+  type: 'test'
+  ...
+# Subtest: capture policy: 5xx always, 4xx only for the named categories
+ok 8 - capture policy: 5xx always, 4xx only for the named categories
+  ---
+  duration_ms: 0.095667
+  type: 'test'
+  ...
+# Subtest: ledger integrity is an incident even when the HTTP result is not an exception
+ok 9 - ledger integrity is an incident even when the HTTP result is not an exception
+  ---
+  duration_ms: 0.309792
+  type: 'test'
+  ...
+# Subtest: product events are an explicit allowlist and cannot be extended by a caller
+ok 10 - product events are an explicit allowlist and cannot be extended by a caller
+  ---
+  duration_ms: 0.328958
+  type: 'test'
+  ...
+# Subtest: product event payload is anonymous, environment-tagged and URL-free
+ok 11 - product event payload is anonymous, environment-tagged and URL-free
+  ---
+  duration_ms: 0.246791
+  type: 'test'
+  ...
+# Subtest: kill switches are independent, checked at send time, and never depend on the portal flag
+ok 12 - kill switches are independent, checked at send time, and never depend on the portal flag
+  ---
+  duration_ms: 0.1925
+  type: 'test'
+  ...
+# Subtest: collector failure never throws, retries or changes the caller result
+ok 13 - collector failure never throws, retries or changes the caller result
+  ---
+  duration_ms: 0.474125
+  type: 'test'
+  ...
+# Subtest: route and section labels are fixed and cannot carry a query, fragment or identifier
+ok 14 - route and section labels are fixed and cannot carry a query, fragment or identifier
+  ---
+  duration_ms: 0.2055
+  type: 'test'
+  ...
+# Subtest: URL/referrer policy drops a free query and an unknown referrer instead of forwarding it
+ok 15 - URL/referrer policy drops a free query and an unknown referrer instead of forwarding it
+  ---
+  duration_ms: 0.402375
+  type: 'test'
+  ...
+# Subtest: a private surface never forwards a path segment, only its section root
+ok 16 - a private surface never forwards a path segment, only its section root
+  ---
+  duration_ms: 0.076458
+  type: 'test'
+  ...
+# Subtest: the shipped GA4 snippet obeys the same allowlist as the policy module
+ok 17 - the shipped GA4 snippet obeys the same allowlist as the policy module
+  ---
+  duration_ms: 2.87825
+  type: 'test'
+  ...
+# Subtest: the CSP hash of the shipped GA4 snippet matches the middleware allowlist
+ok 18 - the CSP hash of the shipped GA4 snippet matches the middleware allowlist
+  ---
+  duration_ms: 1.643
+  type: 'test'
+  ...
+# Subtest: public layout has no external analytics loader before consent approval
+ok 19 - public layout has no external analytics loader before consent approval
+  ---
+  duration_ms: 2.798542
+  type: 'test'
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 19
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 155.357959
