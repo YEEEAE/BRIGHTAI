@@ -25,7 +25,12 @@ export function createWorkspaceAuth(url: string): WorkspaceAuth {
       // upstream status on a signed-out or expired visit. Every caller already maps a
       // null token to its own sign-in message, so an absent credential stays absent.
       if (key === 'getJWTToken') return async () => {
-        try { return await target.getJWTToken(); } catch { return null; }
+        // Better Auth exposes token(); an unknown getJWTToken property is turned
+        // into /get-jwt-token by its proxy and returns 404 even after sign-in.
+        try {
+          const result = await target.token({ fetchOptions: { headers: { 'X-Force-Fetch': 'true' } } });
+          return !result.error && typeof result.data?.token === 'string' ? result.data.token : null;
+        } catch { return null; }
       };
       return Reflect.get(target, key, receiver);
     }

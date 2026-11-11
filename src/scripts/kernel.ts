@@ -155,6 +155,9 @@ function renderTrialSummary(trial: any) {
 }
 function clearPrivate() {
   currentTenant = null; invitationConfig = null;
+  root.querySelector<HTMLElement>('[data-next-step]')!.hidden = true;
+  root.querySelector('[data-next-step-message]')!.textContent = '';
+  root.querySelector('[data-next-step-action]')!.replaceChildren();
   invitationForm.hidden = true; linkPanel.hidden = true; incomingPanel.hidden = true;
   root.querySelector('[data-invitations]')!.replaceChildren();
   root.querySelector('[data-incoming]')!.replaceChildren();
@@ -362,6 +365,17 @@ function render(data: any) {
     : 'اطلب الانضمام إلى مؤسسة من مسؤولها؛ إنشاء الحساب وحده لا يمنح وصولًا إلى المنتج.';
   dashboardError.hidden = true; dashboardErrorType.textContent = '';
   currentTenant = data.tenant;
+  const nextStep = root.querySelector<HTMLElement>('[data-next-step]')!;
+  nextStep.hidden = !data.nextStep?.message;
+  root.querySelector('[data-next-step-message]')!.textContent = data.nextStep?.message ?? '';
+  const nextAction = root.querySelector('[data-next-step-action]')!;
+  nextAction.replaceChildren();
+  const nextProduct = productNavigation.find(product => product.slug === data.nextStep?.productSlug);
+  const nextDestination = nextProduct && authorizedProductDestination(nextProduct.workspacePath, data);
+  if (nextDestination) {
+    const link = document.createElement('a'); link.href = nextDestination;
+    link.textContent = `فتح ${nextProduct.name}`; nextAction.append(link);
+  }
   if (data.tenant) setWorkspace(data.tenant.tenant_id);
   retry.hidden = true; logout.hidden = false; if (login) login.hidden = true;
   title.textContent = data.tenant ? 'مساحة العمل متصلة' : 'أنشئ مساحة عملك الأولى';
@@ -412,7 +426,10 @@ function render(data: any) {
     const card = root.querySelector<HTMLElement>(`[data-product="${p.slug}"]`);
     if (!card) continue;
     card.querySelector('[data-product-status]')!.textContent = p.label;
-    card.querySelector('[data-product-setup]')!.textContent = p.setupMessage ?? 'اختر مؤسسة لعرض حالة الإعداد.';
+    card.querySelector('[data-product-setup]')!.textContent = ['OWNER','ADMIN'].includes(data.tenant?.role)
+      ? p.setupMessage ?? 'اختر مؤسسة لعرض حالة الإعداد.'
+      : p.href ? (p.accessSource === 'INTERNAL_EXPLORATION_48H' ? 'التصفح متاح ضمن منحة الاستكشاف؛ العمليات الأخرى تحتاج صلاحية مستقلة.' : 'افتح المنتج للاطلاع على العمليات المتاحة لك.')
+        : 'الوصول غير متاح حاليًا؛ راجع مسؤول مؤسستك.';
     renderProductTerms(card, p);
     const admin = card.querySelector<HTMLElement>('[data-product-admin]')!; admin.replaceChildren(); admin.hidden = !p.canManage;
     if (p.canManage) {

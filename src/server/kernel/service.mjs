@@ -1,3 +1,4 @@
+import { workspaceGuidance } from './guidance.mjs';
 import { explorationGrants, EXPLORATION_CAPABILITIES } from './exploration.mjs';
 import { listApprovedModels } from '../secure-chat/models.mjs';
 import { providerReady } from '../secure-chat/adapter.mjs';
@@ -43,7 +44,7 @@ export async function dashboard(identity, requested) {
       // Authenticated view only: the current owner connection bypasses RLS, so isolation rests
       // on explicit tenant predicates until migrations/0019 is approved and applied.
       rls: await connectionPrivilege(db).then(posture => posture.rlsEnforced ? 'ENFORCED' : 'BYPASSED').catch(() => 'NOT_CHECKED') };
-    if (!scope.tenant) return { ...scope, products: productStates([]).map(p => ({ ...p, href: null, enabled: false })), connection: 'CONNECTED', system, summary: null, activity: [], canManageMembers: false, canManageProducts: false, policyEngine:{state:'NOT_CONFIGURED',publishedPolicies:0,departments:0} };
+    if (!scope.tenant) return { ...scope, nextStep: workspaceGuidance(null), products: productStates([]).map(p => ({ ...p, href: null, enabled: false })), connection: 'CONNECTED', system, summary: null, activity: [], canManageMembers: false, canManageProducts: false, policyEngine:{state:'NOT_CONFIGURED',publishedPolicies:0,departments:0} };
     scope.tenant = await lockMember(db, identity, scope.tenant);
     const tenantId = scope.tenant.tenant_id;
     const policySchema = (await db.query("SELECT bool_and(to_regclass('public.' || name) IS NOT NULL) AS ready FROM unnest(ARRAY['aigas_departments','aigas_department_memberships','aigas_department_events','aigas_policy_delegations','aigas_policies','aigas_policy_versions','aigas_policy_approvals','aigas_kernel_policy_decisions']::text[]) AS t(name)")).rows[0].ready;
@@ -96,7 +97,7 @@ export async function dashboard(identity, requested) {
     const activity = (await db.query('SELECT action,created_at FROM public.aigas_audit_events WHERE tenant_id=$1 ORDER BY created_at DESC,id DESC LIMIT 8', [tenantId])).rows.map(row => ({ ...row, label: auditActionLabel(row.action), actor: null }));
     summary.proofOfValue = pov;
     summary.coverage = access.length ? { enabled: states.filter(p => p.enabled).length, total: products.length } : null;
-    return { ...scope, products: states, trialLifecycle: trial, connection: 'CONNECTED', system, summary, activity, policyEngine, canManageMembers: ['OWNER','ADMIN'].includes(scope.tenant.role), canManageProducts: scope.tenant.role === 'OWNER' && adminReady, contract_version: HTTP_CONTRACT_VERSION };
+    return { ...scope, nextStep: workspaceGuidance(scope.tenant, states), products: states, trialLifecycle: trial, connection: 'CONNECTED', system, summary, activity, policyEngine, canManageMembers: ['OWNER','ADMIN'].includes(scope.tenant.role), canManageProducts: scope.tenant.role === 'OWNER' && adminReady, contract_version: HTTP_CONTRACT_VERSION };
   });
 }
 export async function tenantMembers(identity, requested) {
