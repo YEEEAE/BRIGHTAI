@@ -1,5 +1,7 @@
 > **الحالة الأحدث T06 — 2026-11-11:** أزيل تحميل GA4 الخارجي غير المشروط؛ dataLayer محلية فقط ولا تُرسل. لا تعيد loader قبل اعتماد موافقة مستقلة وعقد URL (UTM والمسارات العامة ما زالت حرة محليًا). اختبارات19/19 وشبكةBrowser بلاطلباتقياس PASS؛ canary/eventID والتنبيه NOT RUN. Sentry fresh صفرمشاريع؛ PostHog720936 metadata بلا تغيير: IPغيرمجهول/console+perfمفعلان/replayمغلق؛ recording retention30d ليست event retention. أرقام التشغيل السابقة أدناه تاريخية؛ [دليل T06](../Audit/t06-observability-2026-11-11/REPORT.md) يحدد الحدود والمالكين.
 
+> **إعادة تحقق T06 — 2026-11-11، SHA `b0c1bd4`:** unit19PASS؛ Chrome بلاقياسخارجي وrelayالمعطل204؛ Sentry0/PostHog720936. readback الاحتفاظ: project/organization=null، default12month، `default_period_deletes=false`، لاcleanupمجدول؛ لايعني حذفًا بعد12شهرًا. الإعداداتالسابقةIP/console/perf لمتُعدقراءتها. canary/alert NOT RUN؛ [الدليل الحالي](../Audit/t06-observability-2026-11-11/RECHECK.md).
+
 # المراقبة والتحليلات — ربط محلي اختياري
 
 > **تصحيح P13:** سياسة URL أدناه مسودة غير معتمدة وغير كافية لإثبات الخصوصية: مسارات وقيم UTM حرة قد تحمل بيانات حساسة، ولا يثبت حذف `page_referrer` منع إرسال GA4 للقيمة الافتراضية. لم يُختبر SDK أو الشبكة بمتصفح؛ لا تعتمد ادعاءات منع URL/referrer أدناه إلى حين P21 واختبار النقل الفعلي.

@@ -103,7 +103,7 @@ RLS المفعلة لا تثبت عزلًا ولا تسريبًا. المنح ا
 | T03 | PARTIAL — LOCAL VERIFIED 2026-11-11 | bootstrap مشغّل + تصفح محدود48h؛ DB محلي PASS؛ رحلة Auth مشتركة/تطبيق0033/نشر غير مثبتة؛ [الدليل](../t03-exploration-2026-11-11/REPORT.md) |
 | T04 | PARTIAL — LOCAL VERIFIED 2026-11-11 | review binding v2؛ unit7 وPG18.6 سيناريوأربعةمنتجات1 PASS؛ ESCALATE409 المحدد مثبت؛ adapter فعلي ورحلةفريق/T01/T03 غيرمغلقة؛ [الدليل](../t04-products-2026-11-11/REPORT.md) |
 | T05 | BLOCKED_BY_DEPENDENCY | سياسة وحصة وربط فعلي؛ المفتاح وحده لا يكفي |
-| T06 | BLOCKED_BY_DEPENDENCY | وجهة مخولة ورحلة مصدر للأحداث |
+| T06 | PARTIAL — LOCAL VERIFIED 2026-11-11 | recheckHEADb0c1bd4:unit19PASS/Browserبلاقياسخارجي/relayمعطل204؛Sentry0/PostHog720936؛احتفاظوقناةوcanaryغيرمعتمدة؛ [الدليل](../t06-observability-2026-11-11/RECHECK.md) |
 | T07 | PREPARED_FOR_LOCAL_EXECUTION | التحضير مستقل؛ القرار ينتظر الأدلة |
 | D01 | PARTIAL — LOCAL VERIFIED 2026-11-11 | مركز `/solutions/` محلي بهوية موحدة و19 تحويلًا؛ النشر وتحويل الحافة يحتاجان تفويضًا مستقلًا؛ [الدليل](../d01-solutions-2026-11-11/REPORT.md) |
 | D02 | BLOCKED_BY_DEPENDENCY | T01/T03 |
@@ -111,7 +111,7 @@ RLS المفعلة لا تثبت عزلًا ولا تسريبًا. المنح ا
 | D04 | PREPARED_FOR_LOCAL_EXECUTION | تكليف محلي ومقاسات حقيقية |
 | D05 | PREPARED_FOR_LOCAL_EXECUTION | تكليف محلي؛ Hero محمية |
 | D06 | BLOCKED_BY_DEPENDENCY | T03 |
-| D07 | PREPARED_FOR_LOCAL_EXECUTION | إصلاح محلي ثم نشر التحويل؛ القياس الخارجي غير متوفر |
+| D07 | PARTIAL — LOCAL VERIFIED 2026-11-11 | التحويل موجود: wrapper301→docs200 معquery؛ search3PASS؛ المصدرdocs/article200؛ الحيknowledge404؛ BrowserBLOCKED/GSCNOTVERIFIED؛ [الدليل](../d07-knowledge-2026-11-11/REPORT.md) |
 | D08 | BLOCKED_BY_DEPENDENCY | نسخة نهائية وحالات تطبيق متاحة |
 
 CSV يحوي جميع حقول Linear المطلوبة. لم تُنشأ مهام داخل الحساب.
