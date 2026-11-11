@@ -36,14 +36,6 @@
         "type": "remote",
         "url": "https://app.openseo.so/mcp"
       },
-      "similarweb": {
-        "type": "remote",
-        "url": "https://mcp.similarweb.com",
-        "oauth": false,
-        "headers": {
-          "api-key": "{env:SIMILARWEB_API_KEY}"
-        }
-      },
       "linear": {
         "type": "remote",
         "url": "https://mcp.linear.app/mcp"
