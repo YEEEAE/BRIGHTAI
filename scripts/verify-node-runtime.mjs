@@ -23,7 +23,7 @@ assert(existsSync(new URL('dist/server/version.json', ROOT)), 'Build artifact di
 const HEAD = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim();
 const SECRET_MARKER = 'p04-local-marker-never-echo';
 const results = [];
-const check = (name, fn) => fn().then(() => results.push({ name, status: 'PASS' }), error => { results.push({ name, status: 'FAIL', detail: error.message }); });
+const check = (name, fn) => fn().then(() => results.push({ name, status: 'PASS', at: new Date().toISOString() }), error => { results.push({ name, status: 'FAIL', at: new Date().toISOString(), detail: error.message }); });
 
 async function waitFor(url, timeoutMs = 15000) {
   const deadline = Date.now() + timeoutMs;
@@ -75,8 +75,13 @@ async function withServer(port, env, run) {
     await waitFor(`${base}/`);
     return await run(base);
   } finally {
-    child.kill('SIGTERM');
-    await new Promise(resolve => child.once('exit', resolve));
+    // A bind/startup failure may already have exited; do not wait forever for
+    // an exit event that was emitted before cleanup began.
+    if (child.exitCode === null && child.signalCode === null) {
+      const exited = new Promise(resolve => child.once('exit', resolve));
+      child.kill('SIGTERM');
+      await exited;
+    }
     assert(!/postgres(ql)?:\/\//.test(output), 'server output must never contain a connection string');
   }
 }
@@ -143,6 +148,32 @@ await withServer(4397, { AIGAS_APP_ENABLED: 'false' }, async base => {
     assert.equal((await api.json()).code, 'APP_UNAVAILABLE');
     const dotted = await fetch(`${base}/app/./api/kernel/health/`);
     assert.equal(dotted.status, 503, '/app/./ must normalise to the gated path');
+  });
+  await check('A12 GET/HEAD private responses bypass caches and vary by credentials', async () => {
+    for (const path of ['/app/', '/app/api/kernel/health/', '/auth/sign-up/', '/auth/accept-invitation/']) {
+      for (const method of ['GET', 'HEAD']) {
+        const response = await fetch(`${base}${path}`, { method, redirect: 'manual' });
+        assert.equal(response.status, path.startsWith('/app/') ? 503 : 200, `${method} ${path}`);
+        assert.match(response.headers.get('cache-control') ?? '', /private, no-store/);
+        for (const header of ['cdn-cache-control', 'cloudflare-cdn-cache-control']) {
+          assert.equal(response.headers.get(header), 'no-store', `${method} ${path}: ${header}`);
+        }
+        const vary = (response.headers.get('vary') ?? '').toLowerCase().split(',').map(value => value.trim());
+        assert(vary.includes('authorization') && vary.includes('cookie'), `${method} ${path}: Vary`);
+        assert.equal(response.headers.get('x-robots-tag'), 'noindex, nofollow');
+        if (method === 'HEAD') assert.equal(await response.text(), '');
+      }
+    }
+  });
+  await check('A13 GET/HEAD public redirects retain queries and missing routes return 404', async () => {
+    for (const method of ['GET', 'HEAD']) {
+      const redirect = await fetch(`${base}/terms?source=t01`, { method, redirect: 'manual' });
+      assert.equal(redirect.status, 301);
+      assert.equal(redirect.headers.get('location'), '/terms/?source=t01');
+      const missing = await fetch(`${base}/t01-nonexistent-route/`, { method, redirect: 'manual' });
+      assert.equal(missing.status, 404);
+      if (method === 'HEAD') assert.equal(await missing.text(), '');
+    }
   });
   await check('A9 no configuration value is echoed back', async () => {
     const text = JSON.stringify(body);
@@ -253,7 +284,8 @@ if (!readyUrl) {
   });
 }
 
-for (const { name, status, detail } of results) console.log(`${status}  ${name}${detail ? ` — ${detail}` : ''}`);
+console.log(`SHA=${HEAD} node=${process.version} environment=isolated-loopback checkedAt=${new Date().toISOString()}`);
+for (const { name, status, detail, at } of results) console.log(`${status}  ${name}${detail ? ` — ${detail}` : ''}${at ? ` [${at}]` : ''}`);
 const count = status => results.filter(entry => entry.status === status).length;
 console.log(`\n${count('PASS')} PASS / ${count('SKIP')} SKIP / ${count('FAIL')} FAIL`);
 if (count('FAIL')) process.exitCode = 1;

@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-11 VERIFIED LOCAL T01: HEAD `8a5f498`+working tree؛ Node22.22.2 build56/runtime19 (PG18 مؤقت؛ Auth probe SKIPPED)؛ `Audit/t01-node-ssr-2026-11-11/REPORT.md`؛ لا نشر.
 - 2026-11-11 VERIFIED LOCAL: أزرار أسماء المنتجات أعلى«جرب المنتج اللي تحتاجه» تفتحKernel عبرproductEntryPath مثلزرالدخول، معreturnToلكلمنتج؛ أزيلscrollspyللـanchors؛ Browser5/5 وunit3 وbuild56/routes56/0broken؛ `Audit/local-trial-2026-11-11/PRODUCT-ENTRY-LINKS.md`.
 - 2026-11-11 VERIFIED LOCAL: `npm run start:trial` يفتحPortal على127.0.0.1:4416 دون تغييرproduction gate؛ اختيار المستخدمGroq/qwen/qwen3.8-27b فيGROQ_MODEL وردupstream200/31tokens؛ ليس تشغيلSecureChat. قاعدة.env الخارجية بلاجداولTrial/Quota وبلاBRIGHT AI؛ registryفارغ وchat policy integrationمغلق؛ `Audit/local-trial-2026-11-11/REPORT.md`.
 - 2026-11-10 VERIFIED LOCAL (P16/AR04): HEAD `9628162`؛ 4 حزم/12 advisory (critical AVIF واحد، 2 high)؛ `sharp` اختياري بلا أثر في `dist` و`esbuild` build-only؛ الحزمان القابلان للاستغلال في `@astrojs/node` (Host مشوّه ⇒ 500، backslash ⇒ 301 protocol-relative) أُغلقا في `scripts/server.mjs` وأُثبتا قبل/بعد؛ 11 استثناءً موقّعًا حتى `2027-02-08`؛ الحرجة بلا تنازل (تحتاج موافقة المؤسس)؛ `Audit/p16-dependency-security-2026-11-10/REPORT.md`.
@@ -24,8 +25,8 @@
 ## Open Issues / Blockers
 - 2026-11-10 OPEN (P16): استثناء `GHSA-26w7-cxv4-gfx2` (critical، غير قابل للوصول) يحتاج موافقة المؤسس صراحةً قبل إدراجه؛ الترقية الرئيسية ورفع Node وتطبيق allowlist الآلي (`.github/workflows/ci-build-guard.yml` غير موجود) واعية؛ التحقق الحي لحراسة `Host` ينتظر push.
 - 2026-11-10 BLOCKED (P06-B): التفعيل التجريبي يحتاج نتيجة readiness PASS لكل منتج لنفس SHA/البيئة واعتماد الحصص/المدة/الاحتفاظ ونجاح P07–P11؛ لا صفوف جاهزية/حصة ولا مشغّل في أي بيئة، و`0030` غير مطبق خارجيًا.
-- 2026-11-10 BLOCKED (P04): تغييرات P04+إصلاح الربط غير مرفوعة؛ `push` ممنوع على الوكيل ⇒ خدمة `brightai-staging-node` لم تصبح live بعد. بعد push المالك تُثبت الحالات الحية.
-- 2026-11-10 BLOCKED (P04): Render MCP غير مخوّل (`list_workspaces`=`unauthorized`) — الوصول عبر CLI/لوحة فقط؛ قراءة `static_site` المرجعية تبقى HISTORICAL وليست في workspace الـCLI.
+- 2026-11-11 BLOCKED T01: الخدمة العامة static_site/dist/client/pnpm؛ deploy `dep-dbpsb5ss728c738pbpmg` مطابق لـ`8a5f498`؛ app/health/API404 وكاش GET عام300ث؛ يحتاج تفويض نشر معزول وT02/T03، لا إعادة رفع مصدر P04.
+- 2026-11-11 VERIFIED Render MCP يعمل قراءة في `tea-d7m59qbeo5us73ekdu80`؛ staging `srv-dbpj8jajnfac739je6lg` أعاد404 فيه؛ افحص workspace التاريخية `tea-dade102fngtc739064v0` قبل إنشاء بديل؛ يصحح unauthorized التاريخي.
 - 2026-11-10 BLOCKED (P05): AU03/AU04 نجاحًا يحتاجان قناة P19؛ تحت runtime `createWorkspace`/`accept` يفشلان 503، ودعوات invited غير مرئية قبل bootstrap. 5 هويات staging اصطناعية بلا جلسات؛ حذفها يحتاج تفويضًا مستقلًا.
 - 2026-11-10 INVARIANT: `healthCheckPath=/healthz/` في blueprint؛ نشر بلا DB/Auth صالحين لا يصبح healthy (مقصود). `AIGAS_HEALTH_AUTH_PROBE=true` هو الفحص الوحيد الذي يخرج من الخدمة.
 - 2026-11-10 VERIFIED: Neon production وحيد غير محمي؛ 31 جدولًا/RLS31/سياسات2/FORCE0؛ runtime role وmigration ledger غائبان؛ لا استعادة مقاسة.
@@ -41,6 +42,12 @@
 - 2026-11-10 OPEN: Bootstrap/RLS وtrial/purge وموافقات المزودين والـUAT ما زالت مفتوحة.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-11] — T01: مصالحة Node والكاش
+- **تم:** توسيع دليل HTTP الخاص وGET/HEAD وتصحيح handoff؛ P04 محفوظ بلا نشر.
+- **التحقق:** PASS — build56/runtime19؛ Auth الشبكي و403 وedge NOT RUN.
+- **الحالة:** PARTIAL — نشر معزول بتفويض DevOps وDB/Auth منT02/T03.
+- **ملفات:** `Audit/t01-node-ssr-2026-11-11/REPORT.md`.
 
 ## [2026-11-10] — P16: ثغرات الاعتماديات وتراخيصها (AR04)
 - **تم:** جرد lockfile (v3، 429 مدخلًا) و`npm ci` exit 0؛ إزالة `packageManager: pnpm` و`engines.pnpm` لتعارضهما مع `package-lock.json` الوحيد.

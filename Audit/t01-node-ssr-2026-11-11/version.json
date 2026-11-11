@@ -1,0 +1,7 @@
+{
+  "schema": 1,
+  "commit": "8a5f498c8fde96a53e400b2e4be3641e129e41b5",
+  "builtAt": "2026-11-11T01:40:24.627Z",
+  "node": "v22.22.2",
+  "packageLock": "sha256:362c1a0c27d9275362c984382192314082a233ccab79d5faf9daeaec65a1cf3a"
+}
