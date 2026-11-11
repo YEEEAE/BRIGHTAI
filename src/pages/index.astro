@@ -283,6 +283,9 @@ const sectors = [
 
 <style>
   /* Section polish only: the approved hero and constellation remain untouched. */
+  /* The closing CTA is outside the hero; darken its fill on hover so the white
+     label stays above 4.5:1 instead of inheriting the global brightened hover. */
+  .closing .button:not(:disabled):hover { background: var(--color-action-hover-strong); filter: none; }
   .governance-statement {
     position: relative;
     padding-block: clamp(56px, 7vw, 88px);

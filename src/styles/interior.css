@@ -581,7 +581,7 @@
 .interior-kernel-index .kernel-before h2 { margin-block: 0; }
 .interior-kernel-index .kernel-before .sample { margin-block: 20px 28px; }
 .interior-kernel-index #run-demo { min-block-size: 52px; border: 1px solid #a887ff; border-radius: 12px; color: #fff; background: linear-gradient(135deg,#8052ff,#6840d6); box-shadow: 0 8px 24px -18px #b9a0ff; font-weight: 600; }
-.interior-kernel-index #run-demo:is(:hover,:focus-visible) { border-color: #fff; background: #906bff; }
+.interior-kernel-index #run-demo:is(:hover,:focus-visible) { border-color: #fff; background: var(--color-action-hover-strong); }
 .interior-kernel-index #run-demo:focus-visible { outline: 3px solid #ffcf66; outline-offset: 4px; }
 .interior-kernel-index .demo-progress-wrap { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 8px 16px; inline-size: 100%; margin-block-start: auto; padding-block-start: 28px; color: #d3ccd9; font-size: 12px; }
 .interior-kernel-index .demo-progress-wrap label { grid-column: 1/-1; margin: 0; }
@@ -676,6 +676,12 @@
 }
 .interior-page .ghost:is(:hover, :focus-visible) { color: var(--ui-amber); }
 .interior-page .button:is(:disabled, [aria-disabled='true']) { transform: none; filter: none; }
+/* Hover darkens the iris instead of brightening it: white 14px labels on the
+   previous #9166ff + brightness(1.12) reached only 3.29:1. */
+.interior-page .button:not(:disabled):not([aria-disabled='true']):hover {
+  background: var(--color-action-hover-strong);
+  filter: none;
+}
 .interior-page .button:is(:disabled, [aria-disabled='true']):hover {
   background: var(--state-disabled);
   border-color: transparent;

@@ -37,6 +37,9 @@
   /* — Semantic: actions and focus — */
   --color-action: var(--color-electric-iris);
   --color-action-hover: #9166ff;
+  /* Hover fills that carry white 14px labels must stay >= 4.5:1.
+     #9166ff reaches only 3.78:1, so interactive hover uses this darker iris. */
+  --color-action-hover-strong: #6f43e6;
   --color-action-contrast: var(--color-bone-white);
   --color-focus: var(--color-saffron-spark);
   --color-selection: #5834ad;

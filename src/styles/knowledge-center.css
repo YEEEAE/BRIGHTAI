@@ -623,7 +623,7 @@
   color:var(--kc-subtle)
 }
 /* The only filled primary action in this surface answers hover/focus. */
-.kc .kc-read:is(:hover,:focus-visible) { background:var(--color-action-hover); }
+.kc .kc-read:is(:hover,:focus-visible) { background:var(--color-action-hover-strong); color:var(--color-action-contrast)!important; }
 .kc-empty>svg { color:var(--icon-accent-strong); margin-inline:auto; }
 
 @media(min-width:761px) {

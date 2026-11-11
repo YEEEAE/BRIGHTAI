@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-11 PARTIAL LOCAL D05: HEAD `e5473c63`+tree؛ hover/focus لأزرارCTA صار `#6f43e6` 5.80:1 بدل3.29، أزرارapp تعتيم داخلي12% 5.69 بدل4.24، `.kc-read` أبيض5.80 بدل2.19؛ docs group وkernel list أُصلحا؛ axe26صفحة0عداpricingaside؛ Hero/Firewallمستبعدان؛ SR/Escapeالمصادق/النشرNOT RUN؛ `Audit/d05-accessibility-2026-11-11/REPORT.md`؛InternalNOTREADY/PublicCommercialNO-GO.
 - 2026-11-11 PARTIAL T06: HEAD `effe61431b491a19773d6192cd1ec982202aded6`+tree؛ GA4 loader معطل لغياب موافقة وعقد URL؛unit19/Browser صفرطلباتقياس PASS؛Sentry صفرمشاريع/PostHog720936 غيرمعتمد؛canary/alert NOT RUN؛ `Audit/t06-observability-2026-11-11/REPORT.md`؛InternalNOTREADY/PublicCommercialNO-GO.
 - 2026-11-11 VERIFIED LOCAL D04: HEAD `9bda61d288746c5392a2bdc0da8162910407a94b`+tree؛ section-compass داخل التدفق أسفلbreadcrumb لمنعحجبالمنتجات؛ Browser390×844/1440×770 بلاoverlap/overflow،Tab/Escape/headingfocus/action PASS؛safe-areaغيرصفريوالنشرNOT RUN؛ `Audit/d04-section-compass-2026-11-11/REPORT.md`.
 - 2026-11-11 PARTIAL D03: HEAD `6452c17`؛ واجهات المنتجات الخمس منفذة أصلًا وعقود API مطابقة (32 مسارًا)؛ Browser 390/1440 ×5 بلا تجاوز أفقي وبيانات خاصة مخفية ورفض دخول صريح وتفاعل Ledger reload بلا نجاح زائف؛ لا تغيير مصدر؛ القبول الحي BLOCKED بـT01/T03؛ `Audit/d03-product-experiences-2026-11-11/REPORT.md`.
@@ -32,6 +33,7 @@
 - 2026-11-10 PARTIAL (P13): HEAD `c5ef5547` + working tree؛ اختبارات المحولات 16/16 محليًا؛ مسودة URL غير معتمدة؛ لا وجهة أو ingestion؛ `Audit/p13-observability-2026-11-10/REPORT.md`؛ 2026-11-11: ثغرة `page_referrer` وطي المسارات الخاصة أُغلقتا (18/18) وبقيت الوجهة/canary مفتوحة.
 
 ## Open Issues / Blockers
+- 2026-11-11 PARTIAL D05: عيبHero يبقى استثناءً مفتوحًا؛ pricing `<aside class=quote-scope>` landmark moderate خارج نطاق D05؛ قارئ شاشة فعلي وEscape في Ledger المصادق NOT RUN؛ لا شهادة WCAG شاملة.
 - 2026-11-11 PARTIAL D02: المصدر محليًا مغلق؛ الرحلة الحية محجوبة بنشر Node SSR (T01) وبجلسة/عضويات/منح حقيقية (T03)؛InternalNOTREADY/PublicCommercialNO-GO.
 - 2026-11-11 D01: `/solutions/` الحي ما زال الأثر القديم حتى النشر؛ تفعيل تحويلات الـ19 على الاستضافة Static يحتاج تفويض DevOps/edge، و`/sw.js` القديم ما زال على الحافة ويحتاج مهمة منفصلة.
 - 2026-11-11 T05: المالكحددBRIGHT AI/5طلبات+30000توكنيوميًاللمؤسسة/48h؛وثيقةخصوصيةغائبة؛exacttenantغيرموجودباتصال.envالمقروء؛registryفارغوAIGAS_SCغيرمهيأ؛Identity/DBAللنطاقوAI Systems/Privacyلاعتمادالموصل؛InternalNOTREADY/PublicCommercialNO-GO.

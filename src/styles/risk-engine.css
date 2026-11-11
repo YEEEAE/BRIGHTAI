@@ -95,7 +95,7 @@
 .risk-engine .re-confirm input{accent-color:var(--color-action)}
 .risk-engine button{font-size:13.5px;line-height:1.6}
 .risk-engine button:not(:disabled){transition:filter var(--re-fast) ease,background-color var(--re-fast) ease,transform var(--re-fast) ease}
-.risk-engine button:not(:disabled):hover{filter:brightness(1.08)}
+.risk-engine button:not(:disabled):hover{box-shadow:inset 0 0 0 999px #0000001f;filter:none}
 .risk-engine button:not(:disabled):active{transform:translateY(1px)}
 .risk-engine :is(button,input,select,textarea,a):focus-visible{outline:2px solid var(--re-focus);outline-offset:3px}
 .risk-engine .re-summary>div{

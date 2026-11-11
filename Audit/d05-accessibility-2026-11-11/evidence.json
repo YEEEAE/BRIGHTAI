@@ -1,0 +1,90 @@
+{
+  "task": "D05-accessibility",
+  "measuredAt": "2026-11-11T18:50:00+03:00",
+  "head": "e5473c63f5d92480c091ba9266b83630a09045cc",
+  "baseline": "6a3d53f41b5bd1af59eb320245745498765bd320",
+  "workingTreeDirty": true,
+  "environment": {
+    "platform": "darwin-arm64",
+    "node": "22.22.2",
+    "npm": "10.9.7",
+    "astro": "6.4.8",
+    "browser": "Chromium via chrome-devtools",
+    "baseUrl": "http://127.0.0.1:4422",
+    "devCommandNote": "ESBUILD_BINARY_PATH pointed at node_modules/@esbuild/darwin-arm64/bin/esbuild 2 because the binary is misnamed in this checkout"
+  },
+  "contrast": {
+    "method": "computed styles + filter/opacity/inset-overlay compositing; WCAG 2.x relative luminance; rendered pixels sampled from element screenshots",
+    "baseWhiteOnIris": { "fill": "#8052ff", "text": "#ffffff", "ratio": 4.6, "result": "PASS" },
+    "primaryButtonHover": {
+      "selector": ".button:hover",
+      "before": { "fill": "#a272ff", "text": "#ffffff", "ratio": 3.29, "result": "FAIL" },
+      "after": { "fill": "#6f43e6", "text": "#ffffff", "ratio": 5.8, "result": "PASS", "renderedPixel": "rgb(111,67,230)" }
+    },
+    "runDemoHoverFocus": {
+      "selector": ".interior-kernel-index #run-demo:is(:hover,:focus-visible)",
+      "before": { "fill": "#906bff", "text": "#ffffff", "ratio": 3.66, "result": "FAIL" },
+      "after": { "fill": "#6f43e6", "text": "#ffffff", "ratio": 5.8, "result": "PASS", "renderedPixel": "rgb(111,67,230)" }
+    },
+    "kcReadHoverFocus": {
+      "selector": ".kc .kc-read:is(:hover,:focus-visible)",
+      "before": { "fill": "#9166ff", "text": "#ffb829", "ratio": 2.19, "result": "FAIL" },
+      "after": { "fill": "#6f43e6", "text": "#ffffff", "ratio": 5.8, "result": "PASS" }
+    },
+    "appButtonHover": {
+      "selector": ".kernel button:not(:disabled):hover / .risk-engine / .secure-chat",
+      "before": { "fill": "#8a59ff", "text": "#ffffff", "ratio": 4.24, "result": "FAIL" },
+      "after": { "fill": "12% inset black overlay", "text": "#ffffff", "ratio": 5.69, "result": "PASS", "renderedPixel": "rgb(112,72,224)" }
+    },
+    "heroButtonHover": {
+      "selector": ".hero .button:hover",
+      "before": { "fill": "#9166ff", "filter": "brightness(1.12)" },
+      "after": { "fill": "#9166ff", "filter": "brightness(1.12)" },
+      "result": "UNCHANGED"
+    }
+  },
+  "axe": {
+    "version": "4.10.2",
+    "routes": [
+      "/products/", "/products/firewall/", "/products/ledger/", "/products/human-gate/",
+      "/products/risk-engine/", "/products/secure-chat/", "/docs/", "/solutions/",
+      "/solutions/finance/", "/contact/", "/pricing/", "/about/", "/trust/", "/compliance/",
+      "/privacy/", "/terms/", "/services/", "/kernel/", "/knowledge/prompt-injection/",
+      "/pillars/governance/", "/app/ledger/", "/app/human-gate/", "/app/risk-engine/",
+      "/app/firewall/", "/app/secure-chat/", "/app/kernel/"
+    ],
+    "violationsAfter": {
+      "allRoutes": 0,
+      "exception": {
+        "route": "/pricing/",
+        "id": "landmark-complementary-is-top-level",
+        "impact": "moderate",
+        "nodes": 2,
+        "selector": ".quote-scope",
+        "status": "OPEN — structural, outside D05 acceptance"
+      }
+    },
+    "fixed": [
+      { "route": "/docs/", "before": "aria-prohibited-attr (serious, .kc-active)", "after": "none" },
+      { "route": "/app/kernel/", "before": "aria-allowed-role (minor) + listitem (serious, 8 nodes)", "after": "none" }
+    ]
+  },
+  "keyboard": {
+    "contactButton": { "tabs": 11, "outline": "solid 2px rgb(255,184,41)", "result": "PASS" },
+    "runDemo": { "tabs": 10, "outline": "solid 3px rgb(255,207,102)", "result": "PASS" },
+    "appReload": { "tabs": 15, "outline": "solid 2px rgb(255,184,41)", "result": "PASS" },
+    "selectionAnnouncement": {
+      "products": ["firewall", "ledger", "risk-engine", "human-gate", "secure-chat"],
+      "mechanism": "aria-pressed toggled + role=status live region",
+      "result": "PASS"
+    },
+    "escape": { "surface": "docs quick preview", "result": "PASS — closes and restores focus" }
+  },
+  "reducedMotion": { "prefersReducedMotion": "reduce", "transitionDuration": "0s", "result": "PASS" },
+  "notRun": [
+    "screen reader",
+    "authenticated Ledger dialog / Escape",
+    "published site",
+    "production build"
+  ]
+}

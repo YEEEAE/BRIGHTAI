@@ -82,7 +82,7 @@
 .secure-chat :is(input:not([type=checkbox]),select,textarea):focus{border-color:var(--sc-focus)}
 .secure-chat :is(input:not([type=checkbox]),textarea)::placeholder{color:#8f8a9b;opacity:1}
 .secure-chat button{transition:filter var(--sc-fast) ease,background-color var(--sc-fast) ease,border-color var(--sc-fast) ease,transform var(--sc-fast) ease}
-.secure-chat button:not(:disabled):hover{filter:brightness(1.08)}
+.secure-chat button:not(:disabled):hover{box-shadow:inset 0 0 0 999px #0000001f;filter:none}
 .secure-chat button:not(:disabled):active{transform:translateY(1px)}
 .secure-chat :focus-visible{outline:2px solid var(--sc-focus);outline-offset:3px}
 .secure-chat .conversation,.secure-chat .chat-details{
