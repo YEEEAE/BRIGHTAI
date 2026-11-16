@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ar-SA" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BRIGHT AI — 2026 FINAL INDEPENDENT 360 AUDIT &amp; PERCENTAGE SCORECARD</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --void: #000000;
+      --surface: #0c0b12;
+      --surface-alt: #14111d;
+      --border: #302a39;
+      --border-strong: #463d54;
+      --text: #ffffff;
+      --muted: #c6c1cf;
+      --subtle: #9a9a9a;
+      --iris: #8052ff;
+      --iris-strong: #6f43e6;
+      --saffron: #ffb829;
+      --verdant: #15846e;
+      --verdant-text: #4ec9aa;
+      --error: #ff6b72;
+      --error-text: #ff9ba0;
+      --info: #9bcaff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--void);
+      color: var(--text);
+      font-family: 'Plex Arabic', 'IBM Plex Sans Arabic', Tahoma, system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+    .wrap { max-width: 1320px; margin: 0 auto; padding: 32px 24px 96px; }
+    header.audit-hero {
+      background: radial-gradient(circle at 15% 20%, rgba(128,82,255,0.18), transparent 55%), var(--surface);
+      border: 1px solid var(--border-strong);
+      border-radius: 20px;
+      padding: 36px;
+      margin-bottom: 36px;
+    }
+    .kicker { color: var(--saffron); font-size: 13px; letter-spacing: 0.05em; font-weight: 600; margin: 0 0 8px; }
+    h1 { font-size: clamp(28px, 4vw, 44px); line-height: 1.35; margin: 0 0 16px; }
+    h2 { font-size: clamp(22px, 2.6vw, 30px); line-height: 1.45; margin: 44px 0 16px; border-inline-start: 4px solid var(--iris); padding-inline-start: 14px; }
+    h3 { font-size: 19px; margin: 24px 0 10px; color: var(--saffron); }
+    p { color: var(--muted); margin: 0 0 14px; }
+    .meta-grid, .verdict-grid, .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+    }
+    .card strong.big { display: block; font-size: 32px; color: var(--text); line-height: 1.2; margin: 6px 0; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid currentColor;
+    }
+    .b-nogo { color: var(--error-text); background: rgba(255,107,114,0.12); }
+    .b-cond { color: var(--saffron); background: rgba(255,184,41,0.12); }
+    .b-pass { color: var(--verdant-text); background: rgba(21,132,110,0.18); }
+    .b-info { color: var(--info); background: rgba(155,202,255,0.12); }
+    .bar-track {
+      width: 100%;
+      height: 10px;
+      background: #1c1926;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 8px 0;
+      border: 1px solid var(--border);
+    }
+    .bar-fill { height: 100%; background: linear-gradient(90deg, var(--iris), var(--saffron)); border-radius: 999px; }
+    .bar-fill.danger { background: var(--error); }
+    .bar-fill.ok { background: var(--verdant-text); }
+    .table-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); margin: 18px 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 780px; }
+    th, td { padding: 12px 14px; text-align: start; vertical-align: top; border-bottom: 1px solid var(--border); }
+    th { background: var(--surface-alt); color: var(--text); font-weight: 700; white-space: nowrap; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }
+    code { background: #191524; color: #e5dcff; padding: 2px 6px; border-radius: 5px; direction: ltr; unicode-bidi: embed; }
+    pre { background: #08070c; border: 1px solid var(--border); border-radius: 12px; padding: 16px; overflow-x: auto; direction: ltr; text-align: left; color: #dcd6f7; }
+    .callout { border-inline-start: 4px solid var(--saffron); background: var(--surface-alt); padding: 16px 20px; border-radius: 10px; margin: 18px 0; }
+    footer { margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--border); color: var(--subtle); font-size: 13px; }
+    @media print { body { background: #000; } .wrap { max-width: 100%; padding: 12px; } }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header class="audit-hero">
+    <p class="kicker"><bdi dir="ltr">BRIGHT AI / AIGAS — INDEPENDENT FORENSIC AUDIT 2026</bdi></p>
+    <h1>BRIGHT AI — 2026 FINAL INDEPENDENT 360 AUDIT &amp; PERCENTAGE SCORECARD</h1>
+    <p>تقرير التدقيق الجنائي المستقل الشامل للمستودع والخدمة الحية وقاعدة البيانات ومزود Groq وتجارب المنتجات الخمسة + Kernel، صادر عن اللجنة الافتراضية الموحدة بقيادة <bdi dir="ltr">Gemini 4 Carbon</bdi> دون تعديل أي نظام خارجي.</p>
+    <div class="meta-grid">
+      <div class="card"><span class="kicker">التوقيت المعتمد</span><strong><bdi dir="ltr">2026-11-16 14:00 UTC</bdi></strong><br/><small><bdi dir="ltr">2026-11-16 17:00 Asia/Riyadh</bdi></small></div>
+      <div class="card"><span class="kicker">رأس المصدر المفحوص (HEAD SHA)</span><code>738520067de19ae3bb5380beb292cd4d44861b69</code><br/><small>مقارنة بالمرجع: <code>a6f3551071bb...</code> (+36 commits)</small></div>
+      <div class="card"><span class="kicker">حقيقة الأصل المنشور حيًا</span><strong>Static Site (<code>dist/client</code>)</strong><br/><small>Render Service: <code>srv-d7m5bcjbc2fs73826v20</code> — SSR 404</small></div>
+      <div class="card"><span class="kicker">مستوى الثقة وتغطية الأدلة</span><strong class="big">92.00%</strong><small>Unknown Weight: 8.00% | Upper Bound: 62.48%</small></div>
+    </div>
+    <div class="verdict-grid">
+      <div class="card">
+        <span class="badge b-cond">CONDITIONAL GO — مشروط</span>
+        <h3>1. PUBLIC_DEMO (المختبرات العامة بلا حساب)</h3>
+        <p>متاحة حيًا بـ HTTP 200 دون تسجيل لـ 5 مسارات، ويلزم فقط إصلاح ربط <code>LedgerDemo.astro</code> داخل <code>/products/ledger/#lab</code> وتوحيد <code>/demo/firewall/</code>.</p>
+      </div>
+      <div class="card">
+        <span class="badge b-nogo">NO-GO — مرفوض حيًا</span>
+        <h3>2. 48H_TRIAL (التجربة التشغيلية 48 ساعة)</h3>
+        <p>نجحت على Neon Staging من أصل محلي، لكنها تفشل بـ HTTP 404 حيًا على <code>/auth/sign-up/</code> و<code>/app/trial/</code>، كما أن Production يفتقر لـ RLS الكامل.</p>
+      </div>
+      <div class="card">
+        <span class="badge b-nogo">NO-GO — مرفوض للإطلاق</span>
+        <h3>3. COMMERCIAL_LAUNCH (الإطلاق التجاري + Groq)</h3>
+        <p>محجوب بغياب خادم Node SSR الحي، انكشاف Production Data API/BYPASSRLS، خلو <code>APPROVED_MODELS</code>، ووجوب تدوير مفتاح Groq المكشوف.</p>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <h2>1. لوحة النسب المئوية الـ 22 المستقلة (Reproducible Scorecard)</h2>
+    <div class="callout">
+      <strong>قاعدة النزاهة الحسابية:</strong> جميع النسب مشتقة من سجل المتطلبات الذري المكون من 50 متطلبًا بمجموع أوزان <code>100.00</code>. لا يُمنح أي متطلب خادمي درجة نجاح حية لمجرد وجود كوده في GitHub، ولا يُعرض أي شريط بنسبة 100% إذا شابه عائق P0. المنطقة المحمية (Hero الرئيسية + Constellation) مصانة بنسبة 100% ويُحظر تعديلها.
+    </div>
+    <div class="kpi-grid">
+      <div class="card"><span class="kicker">01 / الإنجاز الكلي المركب</span><strong class="big">54.48%</strong><div class="bar-track"><div class="bar-fill" style="width:54.48%"></div></div><small>البسط/المقام: 54.48 / 100 | الحد الأعلى المحتمل: 62.48%</small></div>
+      <div class="card"><span class="kicker">02 / اكتمال الكود المصدري</span><strong class="big">84.50%</strong><div class="bar-track"><div class="bar-fill ok" style="width:84.5%"></div></div><small>البسط/المقام: 84.50 / 100 في HEAD</small></div>
+      <div class="card"><span class="kicker">03 / جاهزية التشغيل الحي (SSR)</span><strong class="big">6.25%</strong><div class="bar-track"><div class="bar-fill danger" style="width:6.25%"></div></div><small>البسط/المقام: 1.00 / 16.00 — 45 مسارًا خادميًا يرجع 404</small></div>
+      <div class="card"><span class="kicker">04 / الأمان وRLS وعزل المستأجرين</span><strong class="big">11.11%</strong><div class="bar-track"><div class="bar-fill danger" style="width:11.11%"></div></div><small>البسط/المقام: 2.00 / 18.00 — Prod BYPASSRLS &amp; Data API</small></div>
+      <div class="card"><span class="kicker">11 / وصول الزوار للمختبر العام</span><strong class="big">100.00%</strong><div class="bar-track"><div class="bar-fill ok" style="width:100%"></div></div><small>البسط/المقام: 12.00 / 12.00 — مفتوح بلا حساب</small></div>
+      <div class="card"><span class="kicker">12 / اكتمال وظائف المختبر العام</span><strong class="big">87.50%</strong><div class="bar-track"><div class="bar-fill ok" style="width:87.5%"></div></div><small>البسط/المقام: 10.50 / 12.00 — عدا ربط Ledger الرئيسي</small></div>
+    </div>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>#</th><th>المقياس</th><th>البسط / المقام</th><th>النسبة</th><th>تغطية الدليل</th><th>الحالة والتفسير الجنائي</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>01</td><td>Overall Project Completion %</td><td>54.48 / 100.00</td><td><strong>54.48%</strong></td><td>92.00%</td><td>قوة مصدرية وتصميمية مقابل فجوة نشر SSR وأمان Production DB</td></tr>
+          <tr><td>02</td><td>Source Code Implementation %</td><td>84.50 / 100.00</td><td><strong>84.50%</strong></td><td>100.00%</td><td>جميع المحركات والواجهات مبنية؛ يتبقى جسر Groq وربط Ledger وترحيل RLS</td></tr>
+          <tr><td>03</td><td>Deployed Runtime Readiness %</td><td>1.00 / 16.00</td><td><strong>6.25%</strong></td><td>100.00%</td><td>الدومين مرتبط بـ Static Site؛ غياب كامل لعملية Node الحية</td></tr>
+          <tr><td>04</td><td>Security &amp; RLS &amp; Tenant Isolation %</td><td>2.00 / 18.00</td><td><strong>11.11%</strong></td><td>88.89%</td><td>Staging محصن قرائيًا؛ Production على 31 جدولًا بلا <code>aigas_runtime</code> ومع Data API نشط</td></tr>
+          <tr><td>05</td><td>Auth &amp; Roles &amp; Kernel %</td><td>5.00 / 9.00</td><td><strong>55.56%</strong></td><td>100.00%</td><td>تحقق <code>EdDSA</code> والسياسات سليم؛ <code>/auth/sign-up/</code> حيًا 404 ونقص Bootstrap لإنشاء مؤسسة</td></tr>
+          <tr><td>06</td><td>Public Website UI %</td><td>13.25 / 14.00</td><td><strong>94.64%</strong></td><td>100.00%</td><td>57 صفحة عامة حية بـ 200 OK وهوية عربية متماسكة؛ Hero محمية 100%</td></tr>
+          <tr><td>07</td><td>Internal App UI %</td><td>6.50 / 13.00</td><td><strong>50.00%</strong></td><td>92.31%</td><td>مبنية في المصدر بالكامل، لكنها غير متاحة حيًا (404) مع ألوان صلبة في <code>/app/trial/</code></td></tr>
+          <tr><td>08</td><td>Product UX %</td><td>12.25 / 16.00</td><td><strong>76.56%</strong></td><td>93.75%</td><td>Inspector سببي ممتاز؛ الخلل الأبرز في تجربة Ledger على صفحة المنتج</td></tr>
+          <tr><td>09</td><td>Mobile &amp; RTL &amp; Accessibility %</td><td>4.75 / 5.50</td><td><strong>86.36%</strong></td><td>90.91%</td><td>تباين AA مصحح وصفر overflow؛ يتبقى اختبار قارئ الشاشة الحي</td></tr>
+          <tr><td>10</td><td>Motion &amp; Graphics Quality %</td><td>4.50 / 5.00</td><td><strong>90.00%</strong></td><td>100.00%</td><td>رسوم هندسية دقيقة واحترام صارم لـ <code>prefers-reduced-motion</code></td></tr>
+          <tr><td>11</td><td>Public Demo Accessibility %</td><td>12.00 / 12.00</td><td><strong>100.00%</strong></td><td>100.00%</td><td>وصول فوري بلا حساب لجميع صفحات المنتجات والـ Kernel</td></tr>
+          <tr><td>12</td><td>Public Demo Functional Completion %</td><td>10.50 / 12.00</td><td><strong>87.50%</strong></td><td>100.00%</td><td>اكتمال 5 من 6 مختبرات في الصفحات الرئيسية؛ Ledger يعمل فقط في <code>/demo/ledger/</code></td></tr>
+          <tr><td>13</td><td>48h Trial Operational Readiness %</td><td>1.50 / 6.00</td><td><strong>25.00%</strong></td><td>100.00%</td><td>تعمل على Staging محليًا بـ OTP (قراءة فقط 100 وحدة)؛ 0% حيًا على الدومين</td></tr>
+          <tr><td>14</td><td>Groq Configuration / Model Approval %</td><td>0.50 / 4.50</td><td><strong>11.11%</strong></td><td>55.56%</td><td><code>qwen/qwen3.8-27b</code> مؤكد رسميًا؛ <code>APPROVED_MODELS=[]</code> والمفتاح يتطلب تدويرًا</td></tr>
+          <tr><td>15</td><td>Groq Server Integration %</td><td>1.50 / 5.00</td><td><strong>30.00%</strong></td><td>100.00%</td><td>يلزم جسر <code>GROQ_API_KEY</code>، ضبط <code>reasoning_effort="none"</code>، ومعالجة 429 والميزانية</td></tr>
+          <tr><td>16</td><td>Groq Product Coverage %</td><td>0.00 / 4.00</td><td><strong>0.00%</strong></td><td>100.00%</td><td>لا استدعاء حي مفعل بعد في Secure Chat أو Firewall أو Risk Engine</td></tr>
+          <tr><td>17</td><td>Firewall Functional Readiness %</td><td>5.50 / 8.00</td><td><strong>68.75%</strong></td><td>100.00%</td><td>حتمي خماسي الحالات؛ ينقصه النشر الحي وفحص المخرجات وربط Human Gate</td></tr>
+          <tr><td>18</td><td>Ledger Functional Readiness %</td><td>5.50 / 8.00</td><td><strong>68.75%</strong></td><td>100.00%</td><td>نواة SHA-256 وفاحص مستقل حي؛ ينقصه ربط مختبر الصفحة الرئيسية والنشر الحي</td></tr>
+          <tr><td>19</td><td>Human Gate Functional Readiness %</td><td>5.75 / 8.00</td><td><strong>71.88%</strong></td><td>100.00%</td><td>فصل مهام وإذن تنفيذ أحادي؛ ينقصه النشر الحي ونوع عملية تصعيد AI</td></tr>
+          <tr><td>20</td><td>Risk Engine Functional Readiness %</td><td>6.50 / 8.00</td><td><strong>81.25%</strong></td><td>100.00%</td><td>منهج 3×3 ودورة قبول صارمة ومختبر ممتاز؛ ينقصه النشر الحي فقط</td></tr>
+          <tr><td>21</td><td>Secure Chat Functional Readiness %</td><td>5.00 / 8.00</td><td><strong>62.50%</strong></td><td>100.00%</td><td>عزل وتنقيح ممتازان؛ محجوب عن الإرسال الفعلي بانتظار Groq وNode SSR</td></tr>
+          <tr><td>22</td><td>Monitoring / SEO / Performance %</td><td>2.50 / 5.00</td><td><strong>50.00%</strong></td><td>80.00%</td><td>فرعيًا: Monitoring 50% | Saudi SEO 75% | Live Performance 0% (NOT_MEASURED)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>2. مصفوفة المنتجات الخمسة + Kernel وحالة التفعيل</h2>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>المنتج / الوحدة</th><th>Code %</th><th>UX %</th><th>Public Demo %</th><th>AI Assist %</th><th>Trial 48h %</th><th>Security %</th><th>Live E2E %</th><th>Overall %</th><th>تصنيف الجاهزية</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>AIGAS Kernel</strong></td><td>90%</td><td>85%</td><td>100%</td><td>N/A</td><td>50%</td><td>25%</td><td>0%</td><td><strong>58.33%</strong></td><td><span class="badge b-cond">PUBLIC_DEMO: READY / APP: BLOCKED</span></td></tr>
+          <tr><td><strong>AIGAS Firewall</strong></td><td>80%</td><td>90%</td><td>95%</td><td>0%</td><td>50%</td><td>25%</td><td>0%</td><td><strong>48.57%</strong></td><td><span class="badge b-cond">PUBLIC_DEMO: READY / APP: BLOCKED</span></td></tr>
+          <tr><td><strong>AIGAS Ledger</strong></td><td>95%</td><td>65%</td><td>50%</td><td>N/A</td><td>50%</td><td>25%</td><td>0%</td><td><strong>47.50%</strong></td><td><span class="badge b-nogo">DEMO WIRING BUG / APP: BLOCKED</span></td></tr>
+          <tr><td><strong>AIGAS Human Gate</strong></td><td>85%</td><td>88%</td><td>100%</td><td>N/A</td><td>50%</td><td>25%</td><td>0%</td><td><strong>58.00%</strong></td><td><span class="badge b-cond">PUBLIC_DEMO: READY / APP: BLOCKED</span></td></tr>
+          <tr><td><strong>AIGAS Risk Engine</strong></td><td>95%</td><td>92%</td><td>100%</td><td>0%</td><td>50%</td><td>25%</td><td>0%</td><td><strong>51.71%</strong></td><td><span class="badge b-cond">PUBLIC_DEMO: READY / APP: BLOCKED</span></td></tr>
+          <tr><td><strong>AIGAS Secure Chat</strong></td><td>85%</td><td>88%</td><td>100%</td><td>20%</td><td>50%</td><td>35%</td><td>0%</td><td><strong>54.00%</strong></td><td><span class="badge b-nogo">GROQ + SSR BLOCKED</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. كتالوج قاعدة البيانات وRLS ومقارنة البيئات (Neon PostgreSQL)
+        </h2>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>المحور</th><th>Neon Production (<code>young-frog-60183055</code>)</th><th>Neon Staging (<code>lucky-salad-43566291</code>)</th><th>الفجوة والإجراء الإلزامي</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>الجداول وسياسات RLS</td><td>31 جدولًا / سياستان فقط / 0 FORCE</td><td>43 جدولًا (بعد <code>0034</code>) / 91 سياسة / 2 FORCE</td><td>تطبيق خطة Delta + ترحيل <code>0035</code> لإغلاق <code>client_deny</code></td></tr>
+          <tr><td>دور التشغيل وسجل الترحيل</td><td>غائب (اتصال المالك <code>BYPASSRLS</code>) / لا <code>ops</code> ledger</td><td><code>aigas_runtime</code> (<code>NOBYPASSRLS</code>) / 30/30 APPLIED</td><td>إنشاء دور التشغيل وتفعيل <code>AIGAS_REQUIRE_RLS=true</code></td></tr>
+          <tr><td>Neon Data API ومنح العميل</td><td><strong>نشط (Active)</strong> على <code>public</code> + منح <code>authenticated</code></td><td>معطّل (404) / صفر منح عميل</td><td>تعطيل Data API من لوحة Neon وسحب منح العميل</td></tr>
+          <tr><td>تعارض رقم الترحيل <code>0034</code></td><td>لم يُطبّق</td><td>طُبّق <code>0034_aigas_self_service_trial.sql</code></td><td>إلحاق <code>0034</code> في <code>DELTA_ORDER</code> ونقل إصلاح العزل والـ Bootstrap إلى <code>0035</code> و<code>0036</code></td></tr>
+          <tr><td>المنطقة والاحتفاظ وحماية الفرع</td><td><code>protected=false</code> / PITR 6 ساعات فقط</td><td><code>protected=false</code> / بيانات اصطناعية فقط</td><td>تفعيل Branch Protection، اختبار استعادة PITR، وتوثيق منطقة الاستضافة والاحتفاظ</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>4. جاهزية Groq والنموذج <code>qwen/qwen3.8-27b</code> وتقدير التكلفة</h2>
+    <p>النموذج <code>qwen/qwen3.8-27b</code> معتمد رسميًا على Groq بسرعة تتجاوز 450 رمز/ثانية ونافذة سياق 131,072 رمزًا وتسعير $0.80 لكل مليون رمز إدخال و$4.00 لكل مليون رمز إخراج. أسماء المتغيرات المعتمدة محليًا (بدون قيم): <code>GROQ_API_KEY</code> (يجب تدويره فورًا باعتباره مكشوفًا) و<code>GROQ_MODEL=qwen/qwen3.8-27b</code>، مع جسر خادمي مدقق إلى <code>AIGAS_SC_GROQ_API_KEY</code> وضبط <code>reasoning_effort="none"</code> لتفادي رفض <code>finish_reason !== 'stop'</code> وتضخم التكلفة.</p>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>السيناريو (سقف 800 إدخال / 400 إخراج)</th><th>حجم الطلبات الشهري</th><th>التكلفة الشهرية التقديرية</th><th>الضابط الخادمي الإلزامي</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>محدود (500 طلب/يوم)</td><td>15,000 طلب</td><td><strong>$33.60 / شهر</strong></td><td>Opt-in صريح + حصة جلسة/IP + مهلة 15 ثانية</td></tr>
+          <tr><td>متوسط (2,500 طلب/يوم)</td><td>75,000 طلب</td><td><strong>$168.00 / شهر</strong></td><td>سقف تزامن (Concurrency Cap) + معالجة 429 Exponential Backoff</td></tr>
+          <tr><td>مرتفع (20,000 طلب/يوم)</td><td>600,000 طلب</td><td><strong>$1,344.00 / شهر</strong></td><td>قاطع دائرة مالي يومي/شهري يعيد التوجيه تلقائيًا للمختبر الحتمي</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>5. المقارنة المرجعية العالمية (UI/UX Benchmark) وما لم يُتحقق منه</h2>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>النمط المرجعي العالمي</th><th>تطبيقه في هوية BRIGHT AI العربية (دون نسخ بصري)</th><th>الحالة الحالية</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Linear</strong> (كثافة المهام والتنقل)</td><td>شريط تنقل جانبي ثابت في <code>LabShell</code> + مهمة أساسية بأول شاشة دون تمرير طويل</td><td>منفذ في 5 مختبرات؛ مفقود في صفحة منتج Ledger</td></tr>
+          <tr><td><strong>Stripe</strong> (المفتش السببي والعقود)</td><td>لوحة Inspector تشرح القاعدة المطابقة والسبب وحالة التنقيح قبل وبعد بوضوح</td><td>ممتاز في Firewall وRisk؛ يحتاج توحيد ألوان التوكنز</td></tr>
+          <tr><td><strong>Vercel</strong> (شفافية حالة التشغيل)</td><td>إظهار صريح لـ <code>DEMO AVAILABLE</code> مقابل <code>PROVIDER APPROVAL REQUIRED</code> وفحص <code>/healthz/</code></td><td>الكود جاهز؛ النشر الحي يرجع 404</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>سجل عدم اليقين (8.00% من الوزن الكلي — NOT_VERIFIED / NOT_MEASURED):</strong> (1) كتابة عزل المستأجرين السلوكية A/B على فرع Neon الحقيقي واختبار PITR (2.0%)؛ (2) صلاحية وسقف حساب المالك الفعلي على Groq بعد تدوير المفتاح (2.0%)؛ (3) قياسات الأداء الحية LCP/CLS/INP عبر متصفح فعلي (1.0%)؛ (4) اختبار قارئ الشاشة الحي NVDA/VoiceOver على الشاشات المصادقة (0.5%)؛ (5) تشغيل كامل حزمة الاختبارات المحلية بعد التعديلات الأخيرة (2.5%).</p>
+  </section>
+
+  <section>
+    <h2>6. خريطة المسار الحرج والاعتماديات وخطة التراجع (Critical Path &amp; Rollback)</h2>
+    <pre>
+[P-01..P-04: Public Labs &amp; UI Parity (Independent, Safe for Immediate Static/SSR Preview)]
+       │
+[P-05: Node SSR Origin &amp; CDN Bypass] ──► [P-06..P-07: DB Delta 0035/0036, RLS &amp; Runtime Cutover]
+                                                   │
+                                         [P-08: Groq Key Rotation &amp; Gateway + Qwen 3.8 Registry]
+                                                   │
+                        ┌──────────────────────────┼──────────────────────────┐
+               [P-09: Secure Chat Live]   [P-10: Opt-in Public AI Lab]   [P-11..P-12: Firewall/HG/Risk Assist]
+                        └──────────────────────────┼──────────────────────────┘
+                                         [P-13: 48h Trial Live E2E]
+                                                   │
+                                [P-14..P-16: Observability, Astro 7 Upgrade &amp; Final QA Gate]
+    </pre>
+    <p><strong>قاعدة التراجع (Rollback Invariant):</strong> لا تُحذف خدمة Static الحالية ولا يُحوّل DNS إلا بعد نجاح <code>/healthz/</code> بـ HTTP 200 على خدمة Node المعزولة؛ جميع ترحيلات PostgreSQL أمامية فقط (Forward-Only) ومسبوقة بنقطة استعادة فرع محمي؛ وأي خلل في مزود Groq يُفعّل قاطع الدائرة الفوري لإعادة التجارب إلى الوضع الحتمي المحلي في 0 ثانية دون تعطل.</p>
+  </section>
+
+  <footer>
+    BRIGHT AI (مؤسسة مُشرقة) — منظومة AIGAS | تقرير تدقيق جنائي مستقل غير معدل للبيئات | النموذج المدقق: <bdi dir="ltr">Gemini 4 Carbon</bdi> | منطقة Hero الرئيسية محمية بالكامل.
+  </footer>
+</div>
+</body>
+</html>
