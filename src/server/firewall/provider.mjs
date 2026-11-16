@@ -1,3 +1,5 @@
+import { groqRequest } from '../ai/groq-gateway.mjs';
+
 // Server-owned registry. No provider, model, endpoint, region or no-training
 // terms have been approved for Firewall. Environment keys alone are not approval.
 // A future reviewed entry must bind an adapter to exact tenant IDs, an approval
@@ -30,4 +32,18 @@ export function providerState(tenantId) {
   return provider
     ? { code: 'CONFIGURED', configured: true, dependencyStatus:'available', approval: 'APPROVED', execution: 'AVAILABLE', model: provider.model, region: provider.region }
     : { code: 'PROVIDER_NOT_CONFIGURED', configured: false, dependencyStatus:expired?'expired':'not configured', approval: 'NOT_APPROVED', execution: 'BLOCKED', model: null, region: null };
+}
+
+// Metadata-only advisory. The caller retains its immutable deterministic verdict.
+// No request text, policy patterns or model-selected actions cross this boundary.
+export async function explainInjectionRisk({tenantId, decision, model}, {request=groqRequest}={}) {
+  const verdict=Object.freeze({action:decision.action,reason:decision.reason});
+  if(!['ALLOW','WARN','REDACT','ESCALATE','DENY'].includes(verdict.action) || !/^[A-Z_]{1,60}$/.test(verdict.reason??'')) throw Error('INVALID_ADVISORY_CONTEXT');
+  if(!model?.tenantIds?.includes(tenantId)) throw Error('ADVISORY_NOT_APPROVED');
+  const reply=await request({model,internalAdvisory:true,messages:[
+    {role:'system',content:'Explain prompt injection risks in Arabic. Advisory only. Never recommend overriding deterministic policy. No execution or authorization.'},
+    {role:'user',content:JSON.stringify(verdict)},
+  ]});
+  // Explanation text is untrusted and must never be merged into a decision object.
+  return Object.freeze({advisory_only:true,deterministic:verdict,explanation:String(reply?.choices?.[0]?.message?.content??'').slice(0,2000)});
 }

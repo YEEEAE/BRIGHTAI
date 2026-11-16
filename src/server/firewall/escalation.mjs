@@ -1,39 +1,14 @@
-// Server-owned review-integration registry, deliberately empty.
-//
-// Human Gate 0004/0007 accepts only INTERNAL_DEMO_NOTE and KERNEL_WORKSPACE_RENAME,
-// requires an enabled operator policy, and has no approved operation type or payload
-// contract for reviewing Firewall decision content. Firewall intentionally does not
-// store the reviewed text, so a reviewer could not decide on a bound task. Until an
-// approved mapping with a server-side create(db, identity, tenantId, context) adapter
-// exists:
-//   - no Human Gate request is created,
-//   - ESCALATE never reaches a provider,
-//   - the response says HUMAN_GATE_NOT_CONFIGURED.
-// An entry must bind exact tenant IDs, an approval reference/expiry, one approved
-// operationType and a create() adapter that persists a PENDING request atomically.
-const approvedReviewIntegrations = Object.freeze([]);
+import { randomUUID } from 'node:crypto';
+import { binding } from '../human-gate/core.mjs';
+import { requireProductAccess } from '../kernel/access.mjs';
+import { audit } from '../kernel/service.mjs';
 
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 export const reviewBindingVersion = 'aigas-review-binding-v2';
 
-function findIntegration(tenantId) {
-  return approvedReviewIntegrations.find(item => Array.isArray(item.tenantIds)
-    && item.tenantIds.includes(tenantId)
-    && typeof item.approvalReference === 'string' && item.approvalReference.length > 0
-    && typeof item.approvedUntil === 'string' && Number.isFinite(Date.parse(item.approvedUntil))
-    && Date.parse(item.approvedUntil) > Date.now()
-    && typeof item.operationType === 'string' && item.operationType.length > 0
-    && typeof item.create === 'function') ?? null;
-}
-
-export function reviewIntegrationState(tenantId) {
-  const integration = findIntegration(tenantId);
-  const expired = approvedReviewIntegrations.some(item => Array.isArray(item.tenantIds) && item.tenantIds.includes(tenantId)
-    && typeof item.approvalReference === 'string' && typeof item.approvedUntil === 'string'
-    && Number.isFinite(Date.parse(item.approvedUntil)) && Date.parse(item.approvedUntil) <= Date.now());
-  return integration
-    ? { code: 'HUMAN_GATE_CONFIGURED', configured: true, dependencyStatus:'available', operation_type: integration.operationType }
-    : { code: 'HUMAN_GATE_NOT_CONFIGURED', configured: false, dependencyStatus:expired?'expired':'not configured', operation_type: null, reason: 'NO_APPROVED_REVIEW_INTEGRATION' };
+export function reviewIntegrationState(tenantId, policy = null) {
+  if(policy?.enabled && policy.firewall_escalation_enabled === true) return {code:'HUMAN_GATE_CONFIGURED',configured:true,dependencyStatus:'available',operation_type:'FIREWALL_ESCALATION_REVIEW'};
+  return { code:'HUMAN_GATE_NOT_CONFIGURED', configured:false, dependencyStatus:'not configured', operation_type:null, reason:'TENANT_POLICY_REQUIRED' };
 }
 
 // A returned review must describe exactly this decision, tenant, operation type
@@ -60,8 +35,11 @@ export function reviewBound(review, tenantId, context, integration) {
 // and any mandatory Ledger evidence. A configured adapter must insert the review
 // request in the same transaction; a throw rolls the whole decision back (fail-closed).
 export async function requestHumanReview(db, identity, tenantId, context) {
-  const integration = findIntegration(tenantId);
-  if (!integration) return { requested: false, ...reviewIntegrationState(tenantId), review: null, binding: null };
+  await db.query("SELECT pg_advisory_xact_lock(hashtextextended('human-gate:' || $1,0))", [tenantId]);
+  const policy = (await db.query('SELECT * FROM public.aigas_hg_policies WHERE tenant_id=$1 FOR SHARE',[tenantId])).rows[0];
+  if (!policy?.enabled || policy.firewall_escalation_enabled !== true) return {requested:false,...reviewIntegrationState(),review:null,binding:null};
+  await requireProductAccess(db, identity, tenantId, 'human-gate', 'create');
+  const integration = {operationType:'FIREWALL_ESCALATION_REVIEW', create: createReview};
   const review = await integration.create(db, identity, tenantId, { ...context, operationType: integration.operationType });
   if (!reviewBound(review, tenantId, context, integration)) throw new Error('REVIEW_BINDING_MISMATCH');
   return {
@@ -100,4 +78,19 @@ export function verifyHumanApproval(escalation, expected) {
   return bound
     ? { state: 'BOUND' }
     : { state: 'INVALID', reason: 'APPROVAL_BINDING_MISMATCH' };
+}
+
+async function createReview(db, identity, tenantId, context) {
+  const policy=(await db.query('SELECT * FROM public.aigas_hg_policies WHERE tenant_id=$1 FOR SHARE',[tenantId])).rows[0];
+  const decision=(await db.query("SELECT * FROM public.aigas_fw_decisions WHERE tenant_id=$1 AND id=$2 AND action='ESCALATE'",[tenantId,context.decisionId])).rows[0];
+  if(!decision || decision.request_id!==context.requestId || decision.request_fingerprint!==context.requestFingerprint || decision.policy_version!==context.policyVersion) throw Error('REVIEW_BINDING_MISMATCH');
+  const payload={decision_id:decision.id,rule_id:decision.rule_id,rule_version:decision.rule_version,request_fingerprint:decision.request_fingerprint};
+  const data={tenant_id:tenantId,requester_id:identity.userId,operation_type:context.operationType,subject_ref:decision.id,payload,policy_version:policy.version};
+  const id=randomUUID();
+  const review=(await db.query(`INSERT INTO public.aigas_hg_requests(id,tenant_id,requester_id,title,description,reason,operation_scope,operation_type,subject_ref,payload,payload_digest,policy_version,provider_ref,expires_at)
+    VALUES($1,$2,$3,'Firewall escalation review','Metadata-only policy review','Independent review required',$4,$4,$5,$6,$7,$8,'aigas-kernel',clock_timestamp()+make_interval(mins=>$9)) RETURNING *`,
+    [id,tenantId,identity.userId,context.operationType,decision.id,payload,binding(data),policy.version,policy.pending_minutes])).rows[0];
+  const auditId=await audit(db,identity,tenantId,`human_gate.request.created:${id}`);
+  await db.query("INSERT INTO public.aigas_hg_events(id,tenant_id,request_id,requester_id,actor_user_id,event_type,audit_id) VALUES($1,$2,$3,$4,$4,'CREATED',$5)",[randomUUID(),tenantId,id,identity.userId,auditId]);
+  return {...review,policy_version:context.policyVersion,request_ref:context.requestId,request_fingerprint:context.requestFingerprint};
 }

@@ -143,7 +143,7 @@ export function createHumanGateService(transact=transaction) {
    if(operation==='create'){
     if(!policy?.enabled) throw new KernelError(409,'POLICY_REQUIRED','يلزم أن يحدد المالك أو المسؤول مهلة سياسة مفعّلة أولًا.');
     if(body.synthetic_confirmed!==true) throw new KernelError(400,'SYNTHETIC_REQUIRED','أكد استخدام مساحة تجريبية ونصوص غير حساسة، دون بيانات عميل حقيقية.');
-    if(!operations.includes(body.operation_type)) throw new KernelError(400,'INVALID_SCOPE','اختر عملية متاحة.');
+    if(body.operation_type==='FIREWALL_ESCALATION_REVIEW'||!operations.includes(body.operation_type)) throw new KernelError(400,'INVALID_SCOPE','اختر عملية متاحة.');
     const requestId=randomUUID(),title=text(body.title,120),description=text(body.description),reason=text(body.reason);
     let subjectRef=requestId,payload={note:description};
     if(body.operation_type==='KERNEL_WORKSPACE_RENAME'){
@@ -204,6 +204,13 @@ export function createHumanGateService(transact=transaction) {
     if((request.provider_ref??providerFor(request.operation_type))!==providerFor(request.operation_type)) return false;
     const requester=(await db.query('SELECT role FROM public.aigas_lock_member($1,$2)',[tenantId,request.requester_id])).rows[0];
     if(!requester||(request.operation_type==='KERNEL_WORKSPACE_RENAME'&&!admin(requester))) return false;
+    if(request.operation_type==='FIREWALL_ESCALATION_REVIEW'){
+     if(!policy.firewall_escalation_enabled) return false;
+     const current=(await db.query(`SELECT d.id FROM public.aigas_fw_decisions d JOIN public.aigas_fw_rules r ON r.tenant_id=d.tenant_id AND r.id=d.rule_id
+      WHERE d.tenant_id=$1 AND d.id=$2 AND d.action='ESCALATE' AND r.enabled AND r.version=d.rule_version
+      AND d.request_fingerprint=$3 AND d.rule_id=$4 AND d.rule_version=$5`,[tenantId,request.subject_ref,request.payload.request_fingerprint,request.payload.rule_id,request.payload.rule_version])).rows[0];
+     if(!current) return false;
+    }
     if(request.operation_type==='KERNEL_WORKSPACE_RENAME'){
      // A delegated MEMBER can read the target but cannot acquire an UPDATE-policy
      // row lock. Execution rechecks and locks the target before changing it.
@@ -236,12 +243,12 @@ export function createHumanGateService(transact=transaction) {
      const grantActive=request.grant_status==='ACTIVE'&&request.grant_expires_at&&new Date(request.grant_expires_at).getTime()>new Date(serverTime).getTime();
      const history=(await db.query('SELECT event_type,reason_code,actor_user_id,created_at,audit_id FROM public.aigas_hg_events WHERE tenant_id=$1 AND request_id=$2 ORDER BY created_at,id',[tenantId,request.id])).rows;
      const canDecide=!!valid&&decisionAllowed(request,identity.userId,policy,authority);
-     const canExecute=!!valid&&reviewerValid&&request.requester_id===identity.userId&&request.status==='APPROVED'&&grantActive;
+     const canExecute=request.operation_type!=='FIREWALL_ESCALATION_REVIEW'&&!!valid&&reviewerValid&&request.requester_id===identity.userId&&request.status==='APPROVED'&&grantActive;
      // Codes only; the UI owns the Arabic wording. They explain a disabled control
      // instead of implying that the viewer has authority the server did not grant.
      const reviewBlock=request.status!=='PENDING'?null
       :!valid?'BINDING_INVALID'
-      :request.requester_id===identity.userId&&((policy?.separation_of_duties!==false)||request.operation_type==='KERNEL_WORKSPACE_RENAME')?'SELF_REVIEW'
+      :request.requester_id===identity.userId&&((policy?.separation_of_duties!==false)||['KERNEL_WORKSPACE_RENAME','FIREWALL_ESCALATION_REVIEW'].includes(request.operation_type))?'SELF_REVIEW'
       :!authority.allowed?'NO_AUTHORITY'
       :null;
      const executeBlock=request.status==='APPROVED'&&request.requester_id===identity.userId&&valid&&!canExecute
@@ -310,7 +317,7 @@ export function createHumanGateService(transact=transaction) {
     const newStatus=body.decision==='APPROVE'?'APPROVED':'REJECTED';
     assertTransition(request.status,newStatus);
     const authority=await reviewAuthority(request);
-    if(request.requester_id===identity.userId&&((policy?.separation_of_duties!==false)||request.operation_type==='KERNEL_WORKSPACE_RENAME')) throw new KernelError(403,'SELF_REVIEW_DENIED','فصل المهام يمنع صاحب الطلب من اعتماده أو رفضه.');
+    if(request.requester_id===identity.userId&&((policy?.separation_of_duties!==false)||['KERNEL_WORKSPACE_RENAME','FIREWALL_ESCALATION_REVIEW'].includes(request.operation_type))) throw new KernelError(403,'SELF_REVIEW_DENIED','فصل المهام يمنع صاحب الطلب من اعتماده أو رفضه.');
     if(!decisionAllowed(request,identity.userId,policy,authority)) throw new KernelError(403,'REVIEW_NOT_AUTHORIZED','لا تملك صلاحية مراجعة هذه العملية ضمن المستوى والتفويض الحاليين.');
     const reason=text(body.reason);
     const decision=(await db.query('INSERT INTO public.aigas_hg_decisions(id,tenant_id,request_id,requester_id,reviewer_id,decision,reason,payload_digest,policy_version,delegation_id,authority_level) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *',[randomUUID(),tenantId,id,request.requester_id,identity.userId,body.decision,reason,request.payload_digest,request.policy_version,authority.delegation_id,authority.level])).rows[0];
@@ -338,7 +345,7 @@ export function createHumanGateService(transact=transaction) {
    if(new Date(permit.expires_at).getTime()>new Date(request.expires_at).getTime()) throw new KernelError(409,'BINDING_INVALID','صلاحية إذن التنفيذ تتجاوز المهمة المعتمدة؛ يلزم اعتماد جديد.');
    const approval=(await db.query("SELECT * FROM public.aigas_hg_decisions WHERE tenant_id=$1 AND request_id=$2 AND decision='APPROVE'",[tenantId,id])).rows[0];
    const selfApproval=approval?.reviewer_id===identity.userId;
-   if(!approval||(selfApproval&&((policy?.separation_of_duties!==false)||request.operation_type==='KERNEL_WORKSPACE_RENAME'))||approval.payload_digest!==request.payload_digest||approval.policy_version!==request.policy_version||permit.payload_digest!==request.payload_digest||permit.policy_version!==request.policy_version||permit.subject_ref!==request.subject_ref||permit.operation_type!==request.operation_type||permit.requester_id!==request.requester_id||permit.reviewer_id!==approval.reviewer_id) throw new KernelError(409,'APPROVAL_REQUIRED','الموافقة أو إذن التنفيذ لا يطابق المهمة الحالية.');
+   if(!approval||(selfApproval&&((policy?.separation_of_duties!==false)||['KERNEL_WORKSPACE_RENAME','FIREWALL_ESCALATION_REVIEW'].includes(request.operation_type)))||approval.payload_digest!==request.payload_digest||approval.policy_version!==request.policy_version||permit.payload_digest!==request.payload_digest||permit.policy_version!==request.policy_version||permit.subject_ref!==request.subject_ref||permit.operation_type!==request.operation_type||permit.requester_id!==request.requester_id||permit.reviewer_id!==approval.reviewer_id) throw new KernelError(409,'APPROVAL_REQUIRED','الموافقة أو إذن التنفيذ لا يطابق المهمة الحالية.');
    // Lock both identities and memberships until COMMIT; re-check the reviewer now.
    const principals=[];
    for(const userId of [...new Set([request.requester_id,approval.reviewer_id])].sort()){
@@ -350,6 +357,7 @@ export function createHumanGateService(transact=transaction) {
     await expire(request,'AUTHORITY_CHANGED');
     return failure(403,'AUTHORITY_CHANGED','تغيرت صلاحية مقدم الطلب أو المراجع أو التفويض؛ يلزم طلب جديد.');
    }
+   if(request.operation_type==='FIREWALL_ESCALATION_REVIEW') throw new KernelError(409,'EXECUTION_INTEGRATION_NOT_CONFIGURED','الموافقة لا تنفذ طلب المزود تلقائيًا.');
    let executionResult={kind:'INTERNAL_DEMO_NOTE',note_ref:request.id};
    if(request.operation_type==='KERNEL_WORKSPACE_RENAME'){
     const target=(await db.query('SELECT id,name,profile_version FROM public.aigas_tenants WHERE id=$1 FOR UPDATE',[tenantId])).rows[0];

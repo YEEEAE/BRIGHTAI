@@ -1,3 +1,5 @@
+import { evaluate } from './core.mjs';
+import { protectText } from '../secure-chat/policy.mjs';
 import { approvedProvider, PROVIDER_TIMEOUT_MS } from './provider.mjs';
 import { policyReference, decisionFingerprint } from './binding.mjs';
 import { reviewBindingVersion, reviewBound, verifyHumanApproval } from './escalation.mjs';
@@ -15,7 +17,7 @@ const policyVersionFormat = /^[a-zA-Z0-9_.:-]{1,120}$/;
 // harness and never by the HTTP route; an injected adapter is accepted only when it
 // declares `localSandbox:true` and `external:false`, so injection cannot enable a
 // real provider that the approved registry did not authorise.
-export async function enforceDecision({ decision, tenantId, actorUserId, requestId, policyVersion, requestFingerprint, forwardText, kernelPolicy, escalation }, { resolveProvider = null } = {}) {
+export async function enforceDecision({ decision, tenantId, actorUserId, requestId, policyVersion, requestFingerprint, forwardText, kernelPolicy, escalation, outputRules }, { resolveProvider = null } = {}) {
   const base = {
     decision,
     policy: kernelPolicy ? { decision: kernelPolicy.decision, action: kernelPolicy.action ?? null, reason: kernelPolicy.reason, obligations: kernelPolicy.obligations ?? [], mandatory: kernelPolicy.mandatory === true, policies: kernelPolicy.policies ?? [], warnings: kernelPolicy.warnings ?? [] } : null,
@@ -135,13 +137,15 @@ export async function enforceDecision({ decision, tenantId, actorUserId, request
     });
     const output = await Promise.race([provider.generate(call), deadline]);
     if (typeof output !== 'string' || output.length > 16000) throw new Error('INVALID_PROVIDER_RESPONSE');
+    const filtered = evaluateOutput(output, outputRules);
+    if (!filtered.allowed) return {...base,httpStatus:422,code:'OUTPUT_BLOCKED',external_action_executed:!localSandbox,execution_status:'OUTPUT_BLOCKED'};
     // A local sandbox never leaves the process, so it must never be reported as an
     // external execution or as EXECUTED.
     if (localSandbox) return { ...base, external_action_executed: false, execution_status: 'LOCAL_SANDBOX_COMPLETED',
-      provider_kind: 'LOCAL_SANDBOX', response_text: output, httpStatus: 200 };
+      provider_kind: 'LOCAL_SANDBOX', response_text: filtered.text, httpStatus: 200 };
     return { ...base, external_action_executed: true,
       execution_status: decision.action === 'REDACT' ? 'REDACTED_AND_EXECUTED' : 'EXECUTED',
-      response_text: output, httpStatus: 200 };
+      response_text: filtered.text, httpStatus: 200 };
   } catch {
     // For an external adapter a timeout cannot prove that the provider did not
     // receive the request. A local sandbox has no egress, so the truthful state is
@@ -151,4 +155,15 @@ export async function enforceDecision({ decision, tenantId, actorUserId, request
     return { ...base, external_action_executed: null, execution_status: 'UNKNOWN', httpStatus: 503,
       code: 'PROVIDER_UNAVAILABLE', message: 'تعذر تأكيد نتيجة المزود؛ قد يكون الطلب وصل. لا تعِد الإرسال تلقائيًا.' };
   } finally { clearTimeout(timer); }
+}
+
+export function evaluateOutput(output, rules) {
+  try {
+    // Evaluate the complete output; never truncate around a possible match.
+    if(typeof output!=='string'||output.length>4000||!Array.isArray(rules)) return {allowed:false};
+    const normalized=output.normalize('NFKC');
+    const result=evaluate(normalized,rules,{enforce:true});
+    if(!['ALLOW','REDACT'].includes(result.action)) return {allowed:false};
+    return {allowed:true,...protectText(result.output)};
+  } catch { return {allowed:false}; }
 }

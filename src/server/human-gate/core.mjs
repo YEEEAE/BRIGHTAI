@@ -3,7 +3,7 @@ import { KernelError } from '../kernel/core.mjs';
 
 // APPROVED is not executable by itself: the server consumes a bound grant once.
 export const statuses = ['PENDING','APPROVED','REJECTED','EXPIRED','CANCELLED','EXECUTED'];
-export const operations = ['KERNEL_WORKSPACE_RENAME','INTERNAL_DEMO_NOTE'];
+export const operations = ['KERNEL_WORKSPACE_RENAME','INTERNAL_DEMO_NOTE','FIREWALL_ESCALATION_REVIEW'];
 export const reviewLevels = ['ADMIN','OWNER'];
 export const terminalReasons = ['TIMEOUT','POLICY_CHANGED','TARGET_CHANGED','AUTHORITY_CHANGED','LEGACY_UNBOUND','BINDING_UPGRADED','CANCELLED_BY_REQUESTER','CANCELLED_BY_REVIEWER'];
 // Only these transitions are accepted by the server; the database guard repeats them.
@@ -38,18 +38,22 @@ export function binding(request) {
  const payload=request.payload;
  if(request.operation_type === 'KERNEL_WORKSPACE_RENAME') exact(payload,['expected_name','expected_version','new_name']);
  else if(request.operation_type === 'INTERNAL_DEMO_NOTE') exact(payload,['note']);
+ else if(request.operation_type === 'FIREWALL_ESCALATION_REVIEW') {
+  exact(payload,['decision_id','rule_id','rule_version','request_fingerprint']);
+  if(!uuid(payload.decision_id)||!uuid(payload.rule_id)||!Number.isInteger(payload.rule_version)||payload.rule_version<1||!/^[0-9a-f]{64}$/.test(payload.request_fingerprint)) throw new KernelError(409,'INVALID_BINDING','Invalid Firewall metadata');
+ }
  else throw new KernelError(409,'OPERATION_MISMATCH','نوع العملية غير معتمد في هذا المسار.');
  return createHash('sha256').update(JSON.stringify([
   bindingVersion,request.tenant_id,request.requester_id,request.operation_type,
   request.provider_ref ?? providerFor(request.operation_type),
   request.subject_ref,request.policy_version,
-  request.operation_type === 'KERNEL_WORKSPACE_RENAME' ? [payload.expected_name,String(payload.expected_version),payload.new_name] : [payload.note]
+  request.operation_type === 'KERNEL_WORKSPACE_RENAME' ? [payload.expected_name,String(payload.expected_version),payload.new_name] : request.operation_type === 'FIREWALL_ESCALATION_REVIEW' ? [payload.decision_id,payload.rule_id,payload.rule_version,payload.request_fingerprint] : [payload.note]
  ])).digest('hex');
 }
 export function decisionAllowed(request,userId,policy,authority) {
  if(request.status !== 'PENDING' || !authority?.allowed) return false;
  // Separation of duties is a policy switch, defaulting to required.
- if((policy?.separation_of_duties !== false) && request.requester_id === userId) return false;
+ if((request.operation_type === 'FIREWALL_ESCALATION_REVIEW' || policy?.separation_of_duties !== false) && request.requester_id === userId) return false;
  return true;
 }
 export function cancelAllowed(request,member,userId) {

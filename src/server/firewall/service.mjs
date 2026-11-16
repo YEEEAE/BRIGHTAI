@@ -274,7 +274,7 @@ export function createFirewallService(transact = transaction) {
           };
           const dependencies = dependencySummary(ledgerEvidence, reviewIntegrationState(tenantId));
           if (enforced) return { decision, tenantId, actorUserId: identity.userId, requestId: body.request_id, policyVersion, requestFingerprint,
-            forwardText: ['ALLOW', 'REDACT'].includes(result.action) ? result.output : null, kernelPolicy, escalation, dependencies, contract_version: HTTP_CONTRACT_VERSION };
+            outputRules: rules, forwardText: ['ALLOW', 'REDACT'].includes(result.action) ? result.output : null, kernelPolicy, escalation, dependencies, contract_version: HTTP_CONTRACT_VERSION };
           return {
             ...decision, rule_name: result.rule_name, output: result.output,
             input_length: requestText.length, persisted: true,
@@ -292,7 +292,8 @@ export function createFirewallService(transact = transaction) {
 
       const counts = (await db.query('SELECT action,count(*)::int AS count FROM public.aigas_fw_decisions WHERE tenant_id=$1 GROUP BY action', [tenantId])).rows;
       const provider = providerState(tenantId);
-      const review = reviewIntegrationState(tenantId);
+      const reviewPolicy = (await db.query('SELECT * FROM public.aigas_hg_policies WHERE tenant_id=$1',[tenantId])).rows[0];
+      const review = reviewIntegrationState(tenantId, reviewPolicy);
       // One enforcement route, reported truthfully: a saved decision is not a delivery and
       // execution stays BLOCKED until an approved provider adapter exists.
       const enforcement = {

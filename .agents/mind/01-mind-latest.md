@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-17 PARTIAL LOCAL Firewall G-09: 0037 جاهز/default-off؛ PENDING ذري metadata-only وSoD إلزامي/ربط القاعدة؛ output rules+protectText؛ advisory metadata عبرGroq غير حاكم؛ PG18 review5/HG1/unit20/build PASS؛ لا shared migration/Browser/provider resume؛ `Audit/firewall-escalation-2026-11-17/REPORT.md`.
 - 2026-11-16 PARTIAL LOCAL Secure Chat: output Baseline+Firewall+Kernel قبلالعرض؛tenant/expiry registry gate؛quota emergency switch؛unit23/build وPG18ستةحدود/settlement/no-content PASS؛registryفارغ/liveSend NOT_VERIFIED؛.envفيهGroqkey/modelفقطبلامستأجرأوموافقات؛ `docs/SECURE-CHAT-DEVELOPMENT.md` خطواتالاعتماد.
 - 2026-11-16 PARTIAL LOCAL Groq: بوابةموحدةوحجزتكلفةدائم/timeout15s/429محاولتان/concurrency5/circuit5×60s؛unit19/build/client-key-scan0 PASS؛registryفارغ؛يلزمسعران inputUsdPerMillion/outputUsdPerMillion وAIGAS_GROQ_BUDGET_FILE مشتركودائمومهيأ؛crash يحتفظبالحجز/slot للمصالحة؛الاتصالوتدويرالمفتاح NOT RUN؛القاطع503 دونتحويلحتميآلي.
 - 2026-11-16 VERIFIED STAGING 0035/0036: ledger32/32 APPLIED/hash32مطابقة؛43جدولًا/93سياسة؛A→B guard403/write42501 وruntimeRLS=true؛reverse/owner503/finalposture NOT VERIFIED لاتصالمتقطع؛Production protected=false/PITR21600s بقراءةCLI؛لاكتابةإنتاج؛ `audit/production-hardening-2026-11-16/REPORT.md`.
@@ -54,6 +55,12 @@
 
 ## Ledger (الأحدث أولًا)
 
+## [2026-11-17] — Firewall escalation
+- **تم:** محول PENDING ذري، metadata-only وSoD إلزامي، وفلترة مخرجات؛ 0037 default-off.
+- **التحقق:** PASS — PG18 مراجعة5/HG1 وunit20/build؛ Browser/المزود NOT RUN.
+- **الحالة:** PARTIAL — استئناف التنفيذ وتفسير النص الغامض غير مكتملين؛ لا ترحيل مشترك.
+- **ملفات:** `Audit/firewall-escalation-2026-11-17/REPORT.md`.
+
 ## [2026-11-16] — حزمة برومبتات H v2.1
 - **تم:** `Audit/prompts.md` مزامَنة مع `Audit/BRIGHT-AI-2026-FINAL-360-AUDIT.html`: الأحكام الثلاثة، 22 مقياسًا، مسار P-01…P-16، سجل عدم اليقين 8%، وموجات W1–W9.
 - **تم:** مخطط بطاقة ثابت، خطوات بمخرجات، تحقق قبل التعديل، سجل فجوات G-01…G-16 بدليل ملف:سطر، وبوابات G1–G9.
@@ -77,7 +84,7 @@
 - 2026-11-11 PARTIAL D02: المصدر محليًا مغلق؛ الرحلة الحية محجوبة بنشر Node SSR (T01) وبجلسة/عضويات/منح حقيقية (T03)؛InternalNOTREADY/PublicCommercialNO-GO.
 - 2026-11-16 D01: `/solutions/` الحي200 بالمركز الجديد؛ أُغلق وصف الأثر القديم لهذا المسار بقراءة اليوم؛ تحويلات19 وSW لم تُعد فحوصها، فتظل NOT VERIFIED؛ `Audit/p01-delta-2026-11-16/http.json`.
 - 2026-11-11 T05: المالكحددBRIGHT AI/5طلبات+30000توكنيوميًاللمؤسسة/48h؛وثيقةخصوصيةغائبة؛exacttenantغيرموجودباتصال.envالمقروء؛registryفارغوAIGAS_SCغيرمهيأ؛Identity/DBAللنطاقوAI Systems/Privacyلاعتمادالموصل؛InternalNOTREADY/PublicCommercialNO-GO.
-- 2026-11-16 PARTIAL T04: registry التصعيد فارغ بالمصدر؛ Backend/AI Governance لاعتمادoperationType وعقدالمراجعة ومحولذري؛ الحجب المحلي مثبت، لاpendingreviewحقيقية؛ exploration موجود فيStaging بقراءةP01، operators/readiness لم تُعد فحوصهما؛ InternalNOTREADY/PublicCommercialNO-GO.
+- 2026-11-17 PARTIAL T04/G-09: محول PENDING محلي خلف firewall_escalation_enabled (0037 غير مطبق خارجيًا)؛ اعتماد المالك والترحيل وتفعيل المؤسسة وBrowser مفتوحة؛ لا مهايئ provider resume معتمد؛ انظر `Audit/firewall-escalation-2026-11-17/REPORT.md`.
 - 2026-11-11 PARTIAL T03: Neon Staging0033 مطبق ومشغل اصطناعي ومنح اختبار موجودة؛ Identity/Kernel للتحقق من pool ورحلةAuth النهائية؛ DevOpsNode للنشر؛ close لا يبطلAuthsessions؛ purge ينتظرالاحتفاظ؛ InternalNOTREADY/PublicCommercialNO-GO.
 - 2026-11-10 OPEN (P16): استثناء `GHSA-26w7-cxv4-gfx2` (critical، غير قابل للوصول) يحتاج موافقة المؤسس صراحةً قبل إدراجه؛ الترقية الرئيسية ورفع Node وتطبيق allowlist الآلي (`.github/workflows/ci-build-guard.yml` غير موجود) واعية؛ التحقق الحي لحراسة `Host` ينتظر push.
 - 2026-11-10 BLOCKED (P06-B): التفعيل التجريبي يحتاج نتيجة readiness PASS لكل منتج لنفس SHA/البيئة واعتماد الحصص/المدة/الاحتفاظ ونجاح P07–P11؛ لا صفوف جاهزية/حصة ولا مشغّل في أي بيئة؛ `0030` طُبق علىStagingفيT02 مع0031/0032 دون اعتمادجاهزيةأوحصص.
