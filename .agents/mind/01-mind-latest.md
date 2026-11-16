@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-17 PARTIAL LOCAL Risk Assist G-10: OWNER/ADMIN+synthetic+tenant/product guard؛Groq registry مغلق/فارغ؛strict advisory JSON إلىوصفالسياقفقط؛core/acceptance بلا تغيير؛unit11/build PASS؛Browser فصلapp/demo PASS،Auth insertion/provider NOT VERIFIED؛ `Audit/risk-assist-2026-11-17/REPORT.md`.
 - 2026-11-17 PARTIAL LOCAL Firewall G-09: 0037 جاهز/default-off؛ PENDING ذري metadata-only وSoD إلزامي/ربط القاعدة؛ output rules+protectText؛ advisory metadata عبرGroq غير حاكم؛ PG18 review5/HG1/unit20/build PASS؛ لا shared migration/Browser/provider resume؛ `Audit/firewall-escalation-2026-11-17/REPORT.md`.
 - 2026-11-16 PARTIAL LOCAL Secure Chat: output Baseline+Firewall+Kernel قبلالعرض؛tenant/expiry registry gate؛quota emergency switch؛unit23/build وPG18ستةحدود/settlement/no-content PASS؛registryفارغ/liveSend NOT_VERIFIED؛.envفيهGroqkey/modelفقطبلامستأجرأوموافقات؛ `docs/SECURE-CHAT-DEVELOPMENT.md` خطواتالاعتماد.
 - 2026-11-16 PARTIAL LOCAL Groq: بوابةموحدةوحجزتكلفةدائم/timeout15s/429محاولتان/concurrency5/circuit5×60s؛unit19/build/client-key-scan0 PASS؛registryفارغ؛يلزمسعران inputUsdPerMillion/outputUsdPerMillion وAIGAS_GROQ_BUDGET_FILE مشتركودائمومهيأ؛crash يحتفظبالحجز/slot للمصالحة؛الاتصالوتدويرالمفتاح NOT RUN؛القاطع503 دونتحويلحتميآلي.
@@ -54,6 +55,12 @@
 - 2026-11-16 حزمة الإغلاق النشطة `Audit/prompts.md` v2.1 مشتقة من `Audit/BRIGHT-AI-2026-FINAL-360-AUDIT.html`: 16 برومبتًا/G-01…G-16/W1–W9؛ سجل 50 متطلبًا معلن غير مسرود؛ رأس التقرير `7385200` والرأس الحالي `cb9863f`؛ `Audit/final-360-2026-11-10/*` غير موجود على القرص.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-17] — Risk Assist
+- **تم:** صياغة استشارية مقيدة دون درجة أو قبول أو حفظ آلي؛ المختبر العام مستبعد.
+- **التحقق:** PASS — unit11/build وفصل app/demo؛ رحلة Auth/provider NOT VERIFIED.
+- **الحالة:** PARTIAL — سجل النماذج المعتمدة فارغ؛ الإدراج المصادق غير مفحوص.
+- **ملفات:** `Audit/risk-assist-2026-11-17/REPORT.md`.
 
 ## [2026-11-17] — Firewall escalation
 - **تم:** محول PENDING ذري، metadata-only وSoD إلزامي، وفلترة مخرجات؛ 0037 default-off.

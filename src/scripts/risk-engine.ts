@@ -149,3 +149,23 @@ get('[data-export]').addEventListener('click',()=>{exportState.textContent='';vo
  exportState.textContent=`تم تصدير ${data.assets.length} أصلًا ضمن المستأجر الحالي وفق ${data.schema_version}. لا يتضمن معرّفات المستخدمين أو اللقطات أو مراجع الأدلة. ليس شهادة امتثال.`;
 },'تم تجهيز ملف ملخص المؤسسة من الخادم وبدء تنزيله. يتضمن المنهج المعلن وحالة اكتمال البيانات والقيود؛ ليس شهادة امتثال.',exportState);});
 preview();
+
+get('[data-assist]').addEventListener('click',()=>{
+ const fields=new FormData(assetForm);
+ const purpose=String(fields.get('purpose')||'');
+ const classification=String(fields.get('data_classification')||'');
+ const context=get<HTMLTextAreaElement>('#re-data-context');
+ const original=context.value, tenant=workspace.value, editor=editing;
+ if(fields.get('synthetic_data_confirmed')!=='on'){get('[data-assist-state]').textContent='أكد استخدام مدخلات اصطناعية قبل طلب المسودة.';return;}
+ void run(async()=>{
+  const result=await api('',{purpose,data_classification:classification,synthetic:true},'POST',false,'assist');
+  if(area.hidden||get('[data-editor]').hidden||workspace.value!==tenant||editing!==editor||context.value!==original)throw new Error('تغير سياق التحرير؛ لم تُدرج المسودة.');
+  const draft=result.draft, keys=['scenarios','suggestedControls','reviewQuestions'];
+  if(result.advisory_only!==true||!draft||Object.keys(draft).length!==3||!keys.every(k=>Array.isArray(draft[k])&&draft[k].length>=1&&draft[k].length<=3&&draft[k].every((v:unknown)=>typeof v==='string'&&v.length>=2&&v.length<=100)))throw new Error('رُفضت مسودة غير صالحة؛ لم تتغير الحقول.');
+  const generated=['مسودة استشارية مولدة آليًا',...keys.map((k,i)=>`${['سيناريوهات','ضوابط مقترحة','أسئلة مراجعة'][i]}: ${draft[k].join('؛ ')}`)].join('\n');
+  const next=[context.value,generated].filter(Boolean).join('\n');
+  if(next.length>context.maxLength)throw new Error('المسودة تتجاوز سعة الوصف؛ اختصر السياق أو الغرض وأعد المحاولة. لم تتغير الحقول.');
+  context.value=next;
+  get('[data-assist-state]').textContent='مسودة استشارية مولدة آليًا — راجع وصف السياق قبل الحفظ. لم يتغير التقييم أو القبول.';
+ },'أُدرجت مسودة وصف غير محفوظة للمراجعة البشرية.',get('[data-assist-state]'));
+});

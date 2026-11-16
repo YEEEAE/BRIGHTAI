@@ -4,7 +4,7 @@ import { contractHeaders, errorBody } from '../kernel/contracts.mjs';
 import { captureServerFailure } from '../observability/index.mjs';
 import { operate } from './service.mjs';
 const headers = contractHeaders({ 'Cache-Control':'private, no-store', 'X-Robots-Tag':'noindex, nofollow', 'X-Content-Type-Options':'nosniff', 'Referrer-Policy':'no-referrer', Vary:'Authorization' });
-async function readBody(request) {
+export async function readBody(request) {
   if (request.headers.get('origin') !== new URL(request.url).origin) throw new KernelError(403,'ORIGIN_REJECTED','مصدر الطلب غير مسموح.');
   if (request.headers.get('content-type')?.split(';')[0] !== 'application/json') throw new KernelError(415,'INVALID_BODY','أرسل JSON فقط.');
   const reader = request.body?.getReader();
