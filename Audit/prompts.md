@@ -300,7 +300,7 @@ graph TB
 ### PROMPT-02 · نمط المهمة أولًا وتوفيق نصوص التجربتين
 
 **P2 · W1 · يعتمد على: 01 · يفتح: 14 · الفجوة: G-02 · req_ref (غير متحقق): REQ-28, REQ-33, REQ-42, REQ-49**
-
+استخدم اي مكونات اضافية او mcps تفيدك أنت\
 **الفجوة:** تقرير 360 §5 يسجل أن نمط Linear — مهمة أساسية في أول شاشة دون تمرير طويل — منفّذ في خمسة مختبرات و**مفقود في صفحة منتج Ledger** تحديدًا. ويُضاف إليه تحقق قرائي خارج التقرير: حالات `Empty/Loading/Verified/Blocked` غير مميّزة بغير اللون، ونصوص `/pricing/` و`/contact/` تنفي التفعيل الذاتي الذي تعد به صفحة المنتج. لا تُعِد بناء المختبرات الخمسة العاملة.
 
 **نطاق الملفات:** `src/components/LabShell.astro`, `src/styles/experience-hub.css`, `src/pages/kernel.astro`, `src/pages/pricing.astro`, `src/pages/contact.astro`, `src/pages/app/trial/index.astro`. **محظور** الصفحة الرئيسية و`Constellation.astro`.
@@ -330,7 +330,7 @@ graph TB
 ### PROMPT-03 · الترحيلات 0035/0036 ومصفوفة RLS والبوتستراب
 
 **P0 · W3 · يعتمد على: — · يفتح: 05، 09 · الفجوة: G-03 · req_ref (غير متحقق): REQ-06, REQ-09, REQ-13**
-
+استخدم اي مكونات اضافية او mcps تفيدك أنت\
 **الفجوة:** `0034` غير مدرج في `DELTA_ORDER` فيختلف المسار fresh عن delta؛ الجدولان `aigas_exploration_grants` و`aigas_self_service_trials` بلا سياسة `aigas_client_deny` فيسقط فحص DB06؛ ولا دالة محروسة لإنشاء مؤسسة أو قبول دعوة عبر `aigas_runtime`.
 
 **نطاق الملفات:** `scripts/migration-order.mjs`, `migrations/0035_aigas_tenant_isolation_closure_v2.sql` (جديد), `migrations/0036_aigas_runtime_workspace_bootstrap.sql` (جديد), `src/server/kernel/service.mjs`, `scripts/verify-runtime-rls.mjs`, `tests/migration-order.test.mjs`.
@@ -361,7 +361,7 @@ graph TB
 ### PROMPT-04 · أصل Node SSR ودور الاتصال وسياسة الكاش
 
 **P0 · W2 · يعتمد على: — · يفتح: 05، 11، 12، 14 · الفجوة: G-04 · req_ref (غير متحقق): REQ-01, REQ-02, REQ-03, REQ-04, REQ-46**
-
+استخدم اي مكونات اضافية او mcps تفيدك أنت\
 **الفجوة:** `render.yaml` في المصدر يعرّف Web Service من نوع Node، لكن الخدمة المنشورة `srv-d7m5bcjbc2fs73826v20` كانت `static_site` تخدم `dist/client` فقط، فيسجل التقرير 45 مسارًا خادميًا يرجع 404 ومقياس جاهزية تشغيل 6.25%؛ ومجمع Neon يرفض تمرير `options=-c role=aigas_runtime` عند البدء؛ و`AIGAS_DB_RUNTIME_ROLE` غير موجود في الكود، و`AIGAS_REQUIRE_RLS` مذكور في تعليق `render.yaml` لا كمتغير.
 
 **نطاق الملفات:** `src/server/kernel/db.mjs`, `render.yaml`, `scripts/verify-node-runtime.mjs`, `docs/NODE-ORIGIN-OPERATOR-2026-11-16.md`.
@@ -387,7 +387,7 @@ graph TB
 ---
 
 ### PROMPT-05 · تأمين Neon Staging ثم Production وتعطيل Data API
-
+استخدم اي مكونات اضافية او mcps تفيدك أنت\
 **P0 · W3 · يعتمد على: 03، 04 · يفتح: 11 · الفجوة: G-05 · req_ref (غير متحقق): REQ-06, REQ-07, REQ-08, REQ-10**
 
 **الفجوة:** تقرير 360 §3: Production على 31 جدولًا وسياستين فقط و0 FORCE، Data API نشط، فرع `protected=false` بـPITR ست ساعات فقط، واتصال بمالك `BYPASSRLS` بلا `aigas_runtime` ولا `ops` ledger؛ مقابل Staging بعد `0034`: 43 جدولًا/91 سياسة/2 FORCE وledger 30/30. **أعد القياس قبل أي إجراء؛ لا تعتمد أرقام التقرير كحالة حالية.**
@@ -417,7 +417,7 @@ graph TB
 ### PROMPT-06 · بوابة Groq الموحدة
 
 **P0 · W4 · يعتمد على: — · يفتح: 07، 08، 09، 10 · الفجوة: G-06 · req_ref (غير متحقق): REQ-34, REQ-35, REQ-36**
-
+استخدم اي مكونات اضافية او mcps تفيدك أنت\
 **الفجوة:** مفتاح سابق مكشوف؛ `adapter.mjs` يشترط اسم `AIGAS_SC_<PROVIDER>_API_KEY`؛ لا معالجة 429 ولا سقف تزامن ولا قاطع ميزانية؛ ونموذج qwen يستهلك حد الرموز في وضع التفكير الافتراضي.
 
 **نطاق الملفات:** `src/server/kernel/env.mjs`, `src/server/ai/groq-gateway.mjs` (جديد), `src/server/secure-chat/adapter.mjs`, `.env.example`, `tests/groq-gateway.test.mjs` (جديد).
