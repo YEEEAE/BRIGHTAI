@@ -5,7 +5,7 @@ export const EXPLORATION_CAPABILITIES = Object.freeze({
  firewall: Object.freeze(['dashboard']),
  ledger: Object.freeze(['list']),
  'human-gate': Object.freeze(['list']),
- 'risk-engine': Object.freeze(['list']),
+ 'risk-engine': Object.freeze(['list','actions','history','revisions','treatments']),
  'secure-chat': Object.freeze(['browse']),
 });
 export async function explorationGrants(db, tenantId) {

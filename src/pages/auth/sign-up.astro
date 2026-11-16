@@ -8,7 +8,8 @@ export const prerender = false;
 const authUrl = env('NEON_AUTH_BASE_URL') ?? '';
 const portalEnabled = isPortalEnabled();
 const intendedProduct = productForReturnTo(Astro.url.searchParams.get('returnTo'));
-const workspacePath = intendedProduct ? productEntryPath(intendedProduct.slug) : '/app/kernel/';
+const trialIntent = Astro.url.searchParams.get('trial') === '48h';
+const workspacePath = trialIntent ? '/app/trial/' : intendedProduct ? productEntryPath(intendedProduct.slug) : '/app/kernel/';
 Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
 ---
 
@@ -24,7 +25,7 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
   <p class="lead">سجّل بالبريد الإلكتروني وكلمة المرور. تُدار بيانات الدخول عبر Neon Managed Auth.</p>
 
   {authUrl ? (
-    <section class="card auth-card" data-auth-url={authUrl} data-workspace-path={workspacePath} data-product-intent={!!intendedProduct} data-portal-enabled={portalEnabled} aria-labelledby="auth-heading">
+    <section class="card auth-card" data-auth-url={authUrl} data-workspace-path={workspacePath} data-product-intent={!!intendedProduct || trialIntent} data-trial-intent={trialIntent} data-portal-enabled={portalEnabled} aria-labelledby="auth-heading">
       <div data-auth-form-view>
         <h2 id="auth-heading">إنشاء حساب</h2>
         <form data-auth-form>
@@ -62,6 +63,14 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
         <button class="button" type="button" data-sign-out>تسجيل الخروج</button>
       </div>
 
+      <form data-verify-form>
+        <h2>توثيق البريد أو الدخول برمز</h2><p>التجربة تتطلب توثيقًا فعليًا؛ إنشاء الحساب وحده لا يمنح وصولًا. تقدر ترجع لحسابك برمز بريد دون كلمة مرور.</p>
+        <label for="otp-purpose">غرض الرمز</label><select id="otp-purpose"><option value="email-verification">توثيق البريد</option><option value="sign-in">تسجيل الدخول برمز</option></select>
+        <label for="verify-email">البريد الإلكتروني</label><input id="verify-email" type="email" autocomplete="email" required dir="ltr" maxlength="254" />
+        <button type="button" data-send-otp>إرسال الرمز</button>
+        <label for="verify-otp">رمز الرسالة</label><input id="verify-otp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required dir="ltr" />
+        <button type="submit">التحقق من الرمز</button>
+      </form>
       <p class="auth-status" data-auth-status role="status" aria-live="polite">جارٍ التحقق من جلسة الدخول…</p>
     </section>
   ) : (
@@ -95,6 +104,31 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
     submitButton && switchButton && switchLabel && signOutButton && currentUser && status && authUrl
   ) {
     const auth = createAuthClient(authUrl);
+    const verifyForm=card.querySelector<HTMLFormElement>('[data-verify-form]')!;
+    const verificationEmail=card.querySelector<HTMLInputElement>('#verify-email')!;
+    const verificationOtp=card.querySelector<HTMLInputElement>('#verify-otp')!;
+    const otpPurpose=card.querySelector<HTMLSelectElement>('#otp-purpose')!;
+    const sendOtp=card.querySelector<HTMLButtonElement>('[data-send-otp]')!;
+    let verifying=false;
+    async function verificationWork(work:()=>Promise<void>){
+      if(verifying)return;verifying=true;
+      verifyForm.querySelectorAll<HTMLButtonElement|HTMLSelectElement|HTMLInputElement>('button,select,input').forEach(b=>b.disabled=true);
+      try{await work();}catch{status!.textContent='تعذر إكمال توثيق البريد؛ تحقق من الرمز أو اطلب رمزًا جديدًا.';}
+      finally{verifying=false;verifyForm.querySelectorAll<HTMLButtonElement|HTMLSelectElement|HTMLInputElement>('button,select,input').forEach(b=>b.disabled=false);verificationOtp.value='';}
+    }
+    sendOtp.addEventListener('click',()=>{if(!verificationEmail.reportValidity())return;void verificationWork(async()=>{
+      const result=await auth.emailOtp.sendVerificationOtp({email:verificationEmail.value.trim(),type:otpPurpose.value==='sign-in'?'sign-in':'email-verification'});
+      if(result.error)throw new Error('OTP unavailable');
+      status!.textContent='أُرسل طلب رمز التوثيق. أدخل الرمز من بريدك؛ لم تُنشأ تجربة بعد.';
+    });});
+    verifyForm.addEventListener('submit',event=>{event.preventDefault();if(!verifyForm.reportValidity())return;void verificationWork(async()=>{
+      const details={email:verificationEmail.value.trim(),otp:verificationOtp.value};
+      const result=otpPurpose.value==='sign-in'?await auth.signIn.emailOtp(details):await auth.emailOtp.verifyEmail(details);
+      if(result.error)throw new Error('Verification rejected');
+      status!.textContent='نجح التحقق. إذا لم تبدأ جلسة، اختر تسجيل الدخول برمز؛ الخادم يتحقق قبل إنشاء التجربة.';
+      const session=await auth.getSession({fetchOptions:{headers:{'X-Force-Fetch':'true'}}});
+      if(session.data?.user?.emailVerified)showUser(session.data.user.email);
+    });});
     let mode: 'sign-up' | 'sign-in' = 'sign-up';
 
     const setStatus = (message: string) => {
@@ -130,11 +164,13 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
       (['name', 'email', 'password'] as const).forEach((field) => setFieldError(field));
     };
 
-    const showUser = (email: string) => {
+    const showUser = (email: string, verified = true) => {
+      verificationEmail.value=email;
       currentUser.textContent = email;
       formView.hidden = true;
       sessionView.hidden = false;
       setStatus('عُثر على جلسة لدى Neon Auth. يتحقق الخادم من الهوية والعضوية عند فتح مساحة العمل.');
+      if (card?.dataset.trialIntent === 'true' && !verified) {setStatus('وثّق بريدك بالرمز قبل بدء التجربة.');return;}
       if (card?.dataset.productIntent === 'true' && card.dataset.portalEnabled === 'true' && card.dataset.workspacePath) location.replace(card.dataset.workspacePath);
     };
 
@@ -217,7 +253,7 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
         }
 
         if (sessionResult.data?.user?.email) {
-          showUser(sessionResult.data.user.email);
+          showUser(sessionResult.data.user.email,sessionResult.data.user.emailVerified === true);
         } else if (mode === 'sign-up') {
           setMode('sign-in');
           setStatus('تم إنشاء الحساب. أكمل تأكيد البريد الإلكتروني إذا وصلك طلب تحقق، ثم سجّل الدخول.');
@@ -275,7 +311,7 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
       if (error) {
         setStatus('تعذر التحقق من الجلسة. تقدر تتابع بتسجيل الدخول.');
       } else if (data?.user?.email) {
-        showUser(data.user.email);
+        showUser(data.user.email,data.user.emailVerified === true);
       } else {
         setStatus('أكمل الحقول لإنشاء حساب، أو سجّل الدخول إذا كان لديك حساب.');
       }

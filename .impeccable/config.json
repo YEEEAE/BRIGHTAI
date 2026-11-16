@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/pages/auth/sign-up.astro"
+        ],
+        "createdAt": "2026-11-16T13:37:22.817Z",
+        "reason": "Agent review: existing HEAD .auth-unavailable warning uses a 3px amber leading border to distinguish unavailable registration; role=status and explicit explanatory text remain. This session did not introduce that styling."
+      }
+    ]
+  }
+}

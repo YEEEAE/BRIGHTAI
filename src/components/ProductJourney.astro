@@ -7,8 +7,8 @@ const product = productForSlug(slug);
   {!compact && <h2>خطوتك التالية مع <bdi dir="ltr">{product.name}</bdi></h2>}
   {!compact && <p>{product.scope}</p>}
   <div class="actions">
-    <a class="journey-entry" href={`${product.publicPath}#lab`} aria-label={`جرّب الآن — ${product.name}`}><span>جرّب الآن</span><span class="journey-arrow" aria-hidden="true">←</span></a>
-    <a class="journey-contact" href={`/auth/sign-up/?returnTo=${encodeURIComponent(product.workspacePath)}`} aria-label={`تجربة تشغيلية 48 ساعة — ${product.name}`}>تجربة تشغيلية 48 ساعة <span aria-hidden="true">↗</span></a>
+    <a class="journey-entry" href={`${product.publicPath}#lab`} aria-label={`جرّب المختبر الآن بلا حساب — ${product.name}`}><span>جرّب المختبر الآن بلا حساب</span><span class="journey-arrow" aria-hidden="true">←</span></a>
+    <a class="journey-contact" href={`/auth/sign-up/?trial=48h&returnTo=${encodeURIComponent(product.workspacePath)}`} aria-label={`ابدأ تجربة تشغيلية 48 ساعة — ${product.name}`}>ابدأ تجربة تشغيلية 48 ساعة <span aria-hidden="true">↗</span></a>
   </div>
   {!compact && <p>المختبر عام وتعليمي. التجربة التشغيلية لمدة 48 ساعة تتطلب حسابًا وتفعيلًا مؤهلًا بعد التحقق من الوصول في الخادم؛ تسجيل الدخول وحده لا يفعّلها. <a href={productContactPath(slug, true)}>تواصل بشأن الاشتراك</a></p>}
 </section>}

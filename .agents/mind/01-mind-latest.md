@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-16 VERIFIED STAGING+LOCAL Trial: OTPبريدفعلي→Tenantمعزول/MEMBER/5منحقراءة100×48hوRiskSynthetic؛0034مطبقledger30/30بصماتمطابقة؛Home5/5 وBrowser390/1440،A→B403 وAI403؛انتهاءنافذةماضٍداخلrollbackPASSوليسمرور48h؛previewlocalhost:4428؛النشرNOT RUN؛ `Audit/self-service-trial-2026-11-16/REPORT.md`.
 - 2026-11-16 VERIFIED LOCAL Kernel demo: Control Center أصل/سياسة→فحص→مراجعة→دليل؛ 6 Scenario IDs اصطناعية بين المختبرات وعودة بالسياق؛ لا هوية/tenant/نصوص؛ unit6/build57 وBrowser390/1440 PASS؛ app/kernel وguidance بلا تعديل؛ النشر/Auth الفعلي NOT RUN؛ `Audit/kernel-demo-2026-11-16/REPORT.md`.
 - 2026-11-16 VERIFIED LOCAL Secure Chat demo: محرر/3سيناريوهات ALLOW-REDACT-BLOCK وردمحاكاة/قبل-بعد/نسخ/reset/loader؛ unit13/build57/Browser390+1440 PASS؛ لاخروجمتنمرصود؛Live NOT_VERIFIED وregistryفارغ،48hوسقفتكلفة/Auth/tenantغيرمثبتة؛ `Audit/secure-chat-demo-2026-11-16/REPORT.md`؛لانشر.
 - 2026-11-16 VERIFIED LOCAL Risk demo: RiskWorkspace demo mode؛ أصلان خياليان/Matrix/معالجة/Inspector/قبول اصطناعي يُلغى بالتغيير/SyntheticJSON؛ unit5/build57/Browser390 PASS؛ لاAPIأوقبولمؤسسيأونشر؛ `Audit/risk-demo-2026-11-16/REPORT.md`.
@@ -46,6 +47,12 @@
 - 2026-11-10 PARTIAL (P13): HEAD `c5ef5547` + working tree؛ اختبارات المحولات 16/16 محليًا؛ مسودة URL غير معتمدة؛ لا وجهة أو ingestion؛ `Audit/p13-observability-2026-11-10/REPORT.md`؛ 2026-11-11: ثغرة `page_referrer` وطي المسارات الخاصة أُغلقتا (18/18) وبقيت الوجهة/canary مفتوحة.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-16] — Verified-email trial
+- **تم:** تهيئةذاتيةلمشاركفقطببريدموثق،بياناتSyntheticومنحقراءةمحدودة؛0034علىStagingفقط.
+- **التحقق:** PASS — unit13/PG18/Browser5منتجاتوعزل403؛انتهاءبـrollback؛poolerيرفضstartuproleفاستُخدماتصالمباشرaigas_runtime.
+- **الحالة:** DONE للنطاقالمحدودعلىStagingبأصلمحلي؛النشرومرور48hفعليًاوOTPعودةمنفصلNOT RUN.
+- **ملفات:** `Audit/self-service-trial-2026-11-16/REPORT.md`.
 
 ## [2026-11-16] — Experience Hub
 - **تم:** تقديم التجربة العامة وفصل مسارها عن التفعيل التشغيلي؛ التفاصيل في `Audit/experience-hub-2026-11-16/REPORT.md`.

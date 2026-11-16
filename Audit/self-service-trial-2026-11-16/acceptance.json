@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-16",
+  "environment": "Neon Staging + local Node origin",
+  "browser": {
+    "results": [
+      {
+        "name": "own",
+        "status": 200,
+        "code": null,
+        "products": 5
+      },
+      {
+        "name": "foreign",
+        "status": 403,
+        "code": "FORBIDDEN"
+      },
+      {
+        "name": "provider",
+        "status": 403,
+        "code": "EXPLORATION_CAPABILITY_DENIED"
+      }
+    ],
+    "assetVisible": true,
+    "overflow": false
+  },
+  "expiry": {
+    "passed": true,
+    "method": "past window in rolled-back subtransaction; original deadline preserved",
+    "wallClock48HoursElapsed": false
+  },
+  "providerCompletionRequested": false,
+  "publicDeployment": false
+}

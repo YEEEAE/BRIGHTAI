@@ -26,6 +26,7 @@ test('operator bootstrap and bounded exploration across five products', {skip:!u
   await pool.query('DROP TRIGGER reject_bootstrap_audit ON aigas_audit_events; DROP FUNCTION reject_bootstrap_audit()');
   assert.equal((await pool.query('SELECT count(*)::int n FROM aigas_tenants')).rows[0].n,2);
 
+
   assert.equal((await pool.query('SELECT count(*)::int n FROM aigas_release_readiness')).rows[0].n,0);
   const runtime=new URL(url);runtime.username='aigas_runtime';process.env.DATABASE_URL=runtime.href;process.env.AIGAS_REQUIRE_RLS='true';
   const {database,transaction}=await import('../src/server/kernel/db.mjs');app=database();
@@ -66,5 +67,39 @@ test('operator bootstrap and bounded exploration across five products', {skip:!u
   await closeExploration(pool,op,a.tenantId);
   await assert.rejects(browse(a.tenantId,'firewall','dashboard'),{code:'EXPLORATION_EXPIRED'});
   assert.equal((await pool.query('SELECT count(*)::int n FROM aigas_tenants')).rows[0].n,2);
+  // Self-service uses verified identity, never a privileged operator request.
+  // These catalog rows are synthetic DB fixtures, not email-delivery evidence.
+  const {startTrial,trialHome,openTrialProduct}=await import('../src/server/kernel/self-service-trial.mjs');
+  await assert.rejects(startTrial({userId:owner}),{code:'IDENTITY_NOT_VERIFIED'});
+  await pool.query('UPDATE neon_auth."user" SET "emailVerified"=true WHERE id=$1',[owner]);
+  const results=await Promise.all([startTrial({userId:owner}),startTrial({userId:owner})]);
+  const trial=results[0].tenantId;assert.equal(results[1].tenantId,trial);
+  assert.equal((await pool.query('SELECT role FROM aigas_memberships WHERE tenant_id=$1',[trial])).rows[0].role,'MEMBER');
+  const home=await trialHome({userId:owner},trial);
+  assert.equal(home.products.length,5);assert.equal(home.dataset.classification,'SYNTHETIC');
+  assert.equal((await pool.query('SELECT count(*)::int n FROM aigas_re_assets WHERE tenant_id=$1',[trial])).rows[0].n,1);
+  assert.ok(home.products.every(p=>p.remaining===100&&p.remainingSeconds<=172800&&p.operations.length>=1&&p.providerStatus==='PROVIDER APPROVAL REQUIRED'));
+  assert.ok((await openTrialProduct({userId:owner},trial,'firewall')).href.includes(trial));
+  await assert.rejects(trialHome({userId:member},trial),{status:403});
+  await assert.rejects(transaction(db=>requireProductAccess(db,{userId:owner},trial,'secure-chat','send')),{code:'EXPLORATION_CAPABILITY_DENIED'});
+  await createFirewallService()({userId:owner},trial,'dashboard');
+  await pool.query('UPDATE neon_auth."user" SET banned=true WHERE id=$1',[owner]);
+  await assert.rejects(transaction(db=>requireProductAccess(db,{userId:owner},trial,'firewall','dashboard')),{status:403});
+  await pool.query('UPDATE neon_auth."user" SET banned=false WHERE id=$1',[owner]);
+  await pool.query("UPDATE aigas_exploration_grants SET starts_at=now()-interval '48 hours',ends_at=now() WHERE tenant_id=$1",[trial]);
+  await assert.rejects(transaction(db=>requireProductAccess(db,{userId:owner},trial,'firewall','dashboard')),{code:'EXPLORATION_EXPIRED'});
+  await assert.rejects(openTrialProduct({userId:owner},trial,'firewall'),{code:'TRIAL_UNAVAILABLE'});
+  assert.ok((await trialHome({userId:owner},trial)).products.every(p=>p.operations.length===0));
+  assert.equal((await startTrial({userId:owner})).tenantId,trial);
+  assert.equal((await pool.query("SELECT count(*)::int n FROM aigas_audit_events WHERE tenant_id=$1 AND action='trial.synthetic.started'",[trial])).rows[0].n,1);
+  assert.deepEqual((await pool.query('SELECT action FROM aigas_audit_events WHERE tenant_id=$1 ORDER BY created_at',[trial])).rows.map(r=>r.action),['trial.synthetic.started','exploration.browse.firewall']);
+  // No direct changes to the one-trial receipt, membership or quota by runtime.
+  await assert.rejects(transaction(db=>db.query('UPDATE aigas_self_service_trials SET dataset=dataset')),{code:'42501'});
+  const tenantCount=(await pool.query('SELECT count(*)::int n FROM aigas_tenants')).rows[0].n;
+  await pool.query('UPDATE neon_auth."user" SET "emailVerified"=true WHERE id=$1',[member]);
+  await pool.query("CREATE FUNCTION reject_trial_audit() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN IF NEW.action='trial.synthetic.started' THEN RETURN NULL; END IF; RETURN NEW; END $$; CREATE TRIGGER reject_trial_audit BEFORE INSERT ON aigas_audit_events FOR EACH ROW EXECUTE FUNCTION reject_trial_audit()");
+  await assert.rejects(startTrial({userId:member}),{code:'P0001'});
+  await pool.query('DROP TRIGGER reject_trial_audit ON aigas_audit_events; DROP FUNCTION reject_trial_audit()');
+  assert.equal((await pool.query('SELECT count(*)::int n FROM aigas_tenants')).rows[0].n,tenantCount);
  }finally{if(app)await app.end();await pool.end();}
 });
