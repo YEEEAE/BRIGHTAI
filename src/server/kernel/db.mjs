@@ -20,6 +20,17 @@ export function database() {
   }
   return pool;
 }
+// Fixed allowlist: never interpolate an environment value into SQL.
+async function activateRuntimeRole(client) {
+  const role = env('AIGAS_DB_RUNTIME_ROLE');
+  if (!role) return;
+  if (role !== 'aigas_runtime') throw new KernelError(503, 'RUNTIME_ROLE_INVALID', 'إعداد دور التشغيل غير صالح.');
+  await client.query('SET LOCAL ROLE aigas_runtime');
+  const row = (await client.query("SELECT current_user AS role, rolsuper, rolbypassrls FROM pg_roles WHERE rolname=current_user")).rows[0];
+  if (row?.role !== 'aigas_runtime' || row.rolsuper !== false || row.rolbypassrls !== false) {
+    throw new KernelError(503, 'RLS_NOT_ENFORCED', 'تعذر تأكيد دور التشغيل المحدود.');
+  }
+}
 // Short-lived readiness probe. It deliberately does not reuse the request pool:
 // while the database is down a platform health checker would otherwise open a
 // new pooled connection on every attempt and starve real requests.
@@ -35,7 +46,10 @@ export async function probeDatabase(timeoutMs = 2000) {
   });
   try {
     await client.connect();
+    await client.query('BEGIN');
+    await activateRuntimeRole(client);
     const row = (await client.query("SELECT to_regclass('public.aigas_tenants') IS NOT NULL AS kernel_schema")).rows[0] ?? {};
+    await client.query('COMMIT');
     return { state: row.kernel_schema === true ? 'READY' : 'SCHEMA_MISSING' };
   } catch (error) {
     return { state: error?.code === '42501' ? 'PRIVILEGE_DENIED' : 'UNAVAILABLE' };
@@ -48,6 +62,7 @@ export async function transaction(work) {
   const client = await database().connect();
   try {
     await client.query('BEGIN');
+    await activateRuntimeRole(client);
     const result = await work(client);
     await client.query('COMMIT');
     return result;

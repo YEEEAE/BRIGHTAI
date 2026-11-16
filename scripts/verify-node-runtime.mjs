@@ -233,13 +233,22 @@ await withServer(4398, {
       }
     }
   });
+  await check('B0 redirects preserve search and signup renders', async () => {
+    const redirect = await fetch(`${base}/knowledge/?q=audit`, { redirect: 'manual' });
+    assert.equal(redirect.status, 301);
+    assert.equal(redirect.headers.get('location'), '/docs/?q=audit');
+    const signup = await fetch(`${base}/auth/sign-up/`);
+    assert.equal(signup.status, 200);
+    assert.equal(signup.headers.get('cache-control'), 'private, no-store, max-age=0');
+    assert(!existsSync(new URL('dist/client/app/index.html', ROOT)));
+  });
   await check('B1 unauthenticated API answers 401 JSON', async () => {
     const api = await fetch(`${base}/app/api/kernel/members/`);
     const json = await api.json();
     assert.equal(api.status, 401);
     assert.match(api.headers.get('content-type') ?? '', /application\/json/);
     assert.equal(json.code, 'UNAUTHORIZED');
-    assert.match(api.headers.get('cache-control') ?? '', /private, no-store/);
+    assert.equal(api.headers.get('cache-control'), 'private, no-store, max-age=0');
   });
   await check('B2 authenticated call with no auth config answers 503', async () => {
     const api = await fetch(`${base}/app/api/kernel/members/`, { headers: { authorization: 'Bearer local-invalid-token' } });

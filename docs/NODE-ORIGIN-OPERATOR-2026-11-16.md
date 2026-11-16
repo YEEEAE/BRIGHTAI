@@ -95,3 +95,9 @@ Optional operator identity: `AIGAS_RELEASE_SHA`, `AIGAS_DEPLOY_ID`, `AIGAS_IMAGE
 | `/healthz/` | `src/pages/healthz.ts` → `src/server/kernel/readiness.mjs` | GET / HEAD |
 | `/auth/sign-up/` | `src/pages/auth/sign-up.astro` | GET / HEAD |
 | `/auth/accept-invitation/` | `src/pages/auth/accept-invitation.astro` | GET / HEAD |
+
+## ملحق الدور وقرار التحويل
+
+خطة فقط: يلزم اعتماد المالك قبل أي إجراء Render/Cloudflare أو ربط brightai.live. الأصل الجديد على .onrender.com مع Neon Staging فقط. اضبط AIGAS_DB_RUNTIME_ROLE=aigas_runtime وAIGAS_REQUIRE_RLS=true؛ حساب القناة LOGIN محدود، NOBYPASSRLS/NOSUPERUSER، وله SET على aigas_runtime دون صلاحيات إدارة. لا تستخدم options=-c role في Pooler؛ SET LOCAL ROLE داخل كل معاملة وفحص DB مع قراءة current_user وrolbypassrls. يلزم إثبات هذه الصلاحيات على Staging؛ لا تمنحها هذه الخطة تلقائيًا.
+
+أسماء المزود: GROQ_API_KEY (سر)، GROQ_MODEL (إعداد)، وAIGAS_CSP_ENFORCE (موجود في blueprint، غير سري). قبل ربط الدومين: health200 وconsistent=true، ثم Bypass Cache للبادئات /app* و/auth* و/api* و/healthz*، بما فيها الأخطاء والتحويلات. أبق الخدمة الثابتة خيار رجوع فوري لتوجيه Cloudflare بعد التفويض؛ رجوعها لا يعني عمل المنتجات الخادمية.
