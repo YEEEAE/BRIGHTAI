@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-16 VERIFIED LOCAL Experience Hub: `/products/` خمس بطاقات+Kernel؛ `#lab` مختبر عام أولًا و48h→Auth معreturnTo؛ غلافRTL وتنقل مشترك للمختبر/التطبيق، حفظ اختيار محلي للجلسة؛ Hero/Constellation/logo/tokens بلا تغيير؛ التشغيل الحقيقي والنشر غير مثبتين.
 - 2026-11-16 PARTIAL Node origin: HEAD `fa3884d4217b77b411598a2095858d5938cbfff9`+tree؛ JWKS/SHA readiness شُدّد؛ build57/unit11/runtime19PASS+1SKIP؛6/6SSR محليGET/HEAD200،API401JSON؛ DB/Auth الفعلي وBrowserغيرمثبتين؛ Renderread نجح: العامةstatic_site/dist/client وdeploy `dep-dbte0qe417fc738h1fsg` بنفسSHA؛ أصلRenderوالدومين6/6+health/API404؛ `Audit/node-origin-2026-11-16/REPORT.md` وخطة `docs/NODE-ORIGIN-OPERATOR-2026-11-16.md`؛ لا نشر/DNS.
 - 2026-11-16 P01 drift: رأس البدايةf221ac4 ثمHEAD8b0aa3c بعمليةخارجالوكيل؛ لا فرق مصدر/اختبارات/إعدادات بينهما؛ رأسالتسليم264ملفًا/55مصدرًا، رأسالبداية245/55؛ `Audit/p01-delta-2026-11-16/final-delta.tsv`؛ آخرGitHubread=f221ac4،DeploySHA UNKNOWN.
 - 2026-11-16 VERIFIED P01 audit: HEAD/GitHub `f221ac4177d63dad649bfaf892868b5c6d971a0d`؛ delta245=R10099/reports84/source55/context7؛ live ست أمثلة تعليمية ×390/1440 بلا overflow، CTA5→404 وhealth/API404 بكاش300ث؛ unit42PASS؛ `Audit/p01-delta-2026-11-16/REPORT.md` يحوي13فجوة وخريطةP02–P13؛ لا تشغيل منتج حي مثبت.
@@ -38,6 +39,13 @@
 - 2026-11-10 VERIFIED LOCAL+LIVE (P05): HEAD `7954bb6f` + working tree؛ إصلاح قفل الفاعل في `manageMember`/`policies` عبر `aigas_lock_member` ورفض self-role/revoke مبكرًا وتغليف 42501 في `createWorkspace`؛ contracts42/42 وbuild55 PASS؛ live Auth staging PASS (signup/login/restore/sign-out؛ JWT EdDSA/iss/ttl900؛ 5 هويات اصطناعية/0 جلسات/0 tenants)؛ دليل `Audit/p05-auth-identity-2026-11-10/REPORT.md`.
 - 2026-11-10 STAGING FREE (Render): `brightai-staging-node`=`srv-dbpj8jajnfac739je6lg` خطة free/oregon، auto-deploy من `main`، بلا دومين؛ كشف أول نشر أن `scripts/server.mjs` يستمع على loopback ⇒ صار الافتراضي `0.0.0.0`. الخدمة المرجعية `srv-d7m5bcjbc2fs73826v20` ليست في workspace الـCLI (`tea-dade102fngtc739064v0`).
 - 2026-11-10 PARTIAL (P13): HEAD `c5ef5547` + working tree؛ اختبارات المحولات 16/16 محليًا؛ مسودة URL غير معتمدة؛ لا وجهة أو ingestion؛ `Audit/p13-observability-2026-11-10/REPORT.md`؛ 2026-11-11: ثغرة `page_referrer` وطي المسارات الخاصة أُغلقتا (18/18) وبقيت الوجهة/canary مفتوحة.
+
+## Ledger (الأحدث أولًا)
+
+## [2026-11-16] — Experience Hub
+- **تم:** تقديم التجربة العامة وفصل مسارها عن التفعيل التشغيلي؛ التفاصيل في `Audit/experience-hub-2026-11-16/REPORT.md`.
+- **التحقق:** PASS — build57/navigation3؛ Browser36 مقاسًا بلا overflow، حفظ5، hover64≥5.8:1، keyboard/reduced-motion/noJS/storage-blocked.
+- **الحالة:** DONE محليًا؛ النشر وAuth الفعلي NOT RUN.
 
 ## Open Issues / Blockers
 - 2026-11-11 PARTIAL D05: عيبHero يبقى استثناءً مفتوحًا؛ pricing `<aside class=quote-scope>` landmark moderate خارج نطاق D05؛ قارئ شاشة فعلي وEscape في Ledger المصادق NOT RUN؛ لا شهادة WCAG شاملة.

@@ -4,6 +4,7 @@ import ProductContentExtension from '../../components/ProductContentExtension.as
 import PageShell from '../../components/PageShell.astro';
 import ProductExperience from '../../components/ProductExperience.astro';
 import ProductIcon from '../../components/ProductIcon.astro';
+import LabShell from '../../components/LabShell.astro';
 export const prerender = true;
 export const products = [
   { slug: 'firewall', name: 'AIGAS Firewall', purpose: 'تصور منتج لفحص مدخلات ومخرجات الذكاء الاصطناعي بحثاً عن معلومات أو تعليمات قد تتطلب معالجة وفق سياسة المنشأة.', questions: ['ما فئات المعلومات التي تحتاج إلى ضوابط؟', 'كيف تُراجع نتيجة الفحص وحدودها؟', 'ما الإجراء عند اكتشاف مادة حساسة؟'] },
@@ -34,11 +35,11 @@ const productSchema = {
 };
 ---
 <PageShell title={`${searchTopics[slug]} | ${name} — BRIGHTAI`} description={description} crumbs={[{ name: 'المنتجات', href: '/products/' }, { name }]} structuredData={productSchema}>
-  <div class="product-intro">
-    <div><p class="eyebrow"><bdi dir="ltr">AIGAS</bdi> / جرّب إمكانيات المنتج</p><h1><bdi dir="ltr" style={`view-transition-name:product-${slug}`}>{name}</bdi></h1><p class="product-role">{roles[slug]}</p><p class="lead">{purpose}</p></div>
+  <LabShell kind={slug}><ProductExperience kind={slug}/></LabShell>
+  <div class="product-intro" id="product-details">
+    <div><p class="eyebrow"><bdi dir="ltr">AIGAS</bdi> / جرّب إمكانيات المنتج</p><h2><bdi dir="ltr">{name}</bdi></h2><p class="product-role">{roles[slug]}</p><p class="lead">{purpose}</p></div>
     <aside class="product-meta"><span class="product-mark"><ProductIcon kind={slug}/></span><div><p>منتج مستقل ضمن المنظومة</p><a class="ghost" href="/products/">كل المنتجات ←</a></div></aside>
   </div>
-  <ProductExperience kind={slug}/>
   <p class="note">المخططات تعليمية وتصف نطاقاً مستهدفاً وفق Blueprint. لا تثبت وجود خدمة عاملة أو تكامل أو مستوى حماية أو اعتماد. لا توجد أسعار نهائية معتمدة.</p>
   <section class="block review-questions"><div><p class="eyebrow">قبل أي استخدام فعلي</p><h2>ثلاثة أسئلة<br/>تستحق المراجعة.</h2></div><ol>{questions.map((question: string) => <li>{question}</li>)}</ol></section>
   <section class="block"><h2>مكان المنتج في التصور</h2><p><bdi dir="ltr">AIGAS Kernel</bdi> مكوّن مشترك يوفر الحد الأدنى اللازم للمنتجات، ولا يُباع كمنتج مرخص مستقل. أما المنتجات الخمسة فتُصمم كوحدات مستقلة وظيفياً وتجارياً وفق الـBlueprint.</p><div class="actions"><a class="button" href="/contact/">اطلب معلومات أو عرض سعر</a><a class="ghost" href="/products/">استعراض المنتجات</a></div></section>

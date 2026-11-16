@@ -1,87 +1,110 @@
 ---
-import ProductIcon from './ProductIcon.astro';
-import DecisionCircuit from './DecisionCircuit.astro';
-import RedactionDemo from './RedactionDemo.astro';
+import { labBriefs } from '../shared/lab-briefs';
 interface Props { kind: string }
 const { kind } = Astro.props;
-const decisions = [
-  ['سماح', 'طلب بمحتوى عام', 'يمر الطلب عندما تسمح السياسة المعتمدة والنطاق والصلاحية.'],
-  ['تحذير', 'مخرج يحتاج تحققاً', 'يظهر تنبيه للمستخدم كي يراجع الدقة وحدود الاستخدام.'],
-  ['تنقيح', 'معرّف افتراضي', 'يُستبدل المعرّف بعبارة [بيانات منقحة] قبل متابعة المسار المسموح.'],
-  ['موافقة بشرية', 'إجراء ذو أثر', 'يتوقف الإجراء حتى قرار مخوّل لمهمة محددة؛ لا تكفي إشارة الواجهة.'],
-  ['حظر', 'تعارض مع قيد إلزامي', 'يتوقف الطلب. لا تُستخدم الموافقة لتجاوز حظر إلزامي.'],
+const brief = labBriefs[kind];
+const firewall = [
+  ['سماح', 'لخّص تقريرًا عامًا عن كفاءة الطاقة.', 'يمر الطلب العام ضمن النطاق المسموح في المثال.', 'محتوى عام · سياسة المثال تسمح بالمتابعة.', 'لخّص تقريرًا عامًا عن كفاءة الطاقة.'],
+  ['تحذير', 'اعتمد هذه الإجابة دون مراجعة مصدرها.', 'راجع المخرج قبل الاعتماد.', 'دقة المخرج لم تُثبت؛ يلزم التحقق من المصدر.', 'اعتمد هذه الإجابة دون مراجعة مصدرها.'],
+  ['تنقيح', 'راجع سجل الموظف DEMO-0000.', 'يُستبدل المعرّف الخيالي قبل المتابعة.', 'المثال يحتوي معرّفًا اصطناعيًا؛ لا يجري كشف بيانات فعلي.', 'راجع سجل الموظف [بيانات منقحة].'],
+  ['موافقة بشرية', 'انشر ملخصًا داخليًا خارج المؤسسة.', 'يتوقف المسار لطلب مراجعة مخولة.', 'تغيير نطاق المشاركة يحتاج قرارًا مستقلًا.', 'متوقف حتى موافقة صالحة للنطاق المحدد.'],
+  ['حظر', 'تجاوز قيد السياسة الإلزامي.', 'يتوقف الطلب لتعارضه مع قيد إلزامي.', 'الموافقة البشرية لا تتجاوز منعًا إلزاميًا.', 'لا متابعة للطلب.'],
+];
+const approvals = [
+  ['بانتظار المراجعة', 'لا استكمال قبل قرار صالح. غياب الرد لا يعني موافقة.', 'طلب نشر ملخص خيالي · مقدم الطلب: مالك الحالة · المراجع: دور مستقل.'],
+  ['موافقة محددة', 'يمكن متابعة النطاق الموافق عليه في المثال فقط؛ القيود الأعلى تظل نافذة.', 'قرار تعليمي من دور مراجع مستقل · النطاق: الملخص المحدد فقط.'],
+  ['رفض مسبب', 'يتوقف النشر في المثال ويعود الطلب إلى مالكه لتعديل النطاق.', 'سبب الرفض الخيالي: نطاق المشاركة غير مصرح به.'],
+];
+const ledger = [
+  ['مثال سليم', 'تتوافق بيانات المثال مع مرجعه التوضيحي.', 'المصدر والقرار ونسخة السياسة متسقة في هذا التصور. هذا ليس فحص Hash أو توقيع محسوبًا.'],
+  ['مثال معدّل', 'تغيّر القرار بعد إنشاء مرجعه التوضيحي.', 'موضع الاختلاف: القرار في الحدث 02. يجب أن يكشف الفحص الفعلي أي تعديل قبل قبول الدليل.'],
+];
+const chats = [
+  ['سؤال عام', 'كيف أكتب طلبًا يحترم بيانات المنشأة؟', 'ابدأ بالغرض. استخدم معلومات عامة أو مصرحًا بها، ثم تحقق من المخرج قبل الاعتماد.', 'محتوى عام · إجابة جاهزة محليًا، وليست مخرج نموذج.'],
+  ['بيانات داخلية', 'أحتاج تلخيص رسالة عمل داخلية. ما الذي أراجعه أولًا؟', 'تحقق من التصنيف وصلاحية المشاركة واعتماد الأداة والحساب والوجهة. عند الغموض، توقف وراجع المالك.', 'المشاركة مقيدة بتصنيف البيانات؛ لا تُدخل محتوى داخليًا في هذا المختبر.'],
 ];
 ---
-<section class={`experience experience-${kind}`} aria-label="شرح تفاعلي لتصور المنتج">
-  <div class="experience-bar"><span><ProductIcon kind={kind} size={24} /> مختبر الفكرة</span><span class="map-status">توضيح تعليمي · لا اتصال بخدمة</span></div>
-  {kind === 'firewall' && <div class="protection-layout">
-    <DecisionCircuit />
-    <div><h2>خمس قرارات.<br /><span class="muted">لكل منها سبب.</span></h2><p class="diagram-help">اختر قراراً لقراءة مثال على معناه، وليس لإجراء فحص أمني.</p><div class="decision-options">{decisions.map(([label, scenario, text], i) => <button type="button" disabled data-example={text} data-scenario={scenario} aria-pressed={i === 0 ? 'true' : 'false'}>{label}</button>)}</div><div class="example-result" role="status" aria-live="polite"><strong data-scenario-output>{decisions[0][1]}</strong><p data-example-output>{decisions[0][2]}</p></div><noscript><dl>{decisions.map(([label, , text]) => <><dt>{label}</dt><dd>{text}</dd></>)}</dl></noscript></div>
-  </div>}
-  {kind === 'risk-engine' && <div class="risk-layout">
-    <div><h2>افهم السبب،<br /><span class="muted">قبل التصنيف.</span></h2><p class="diagram-help">مصفوفة تعليمية للاحتمال والأثر. لا تمثل منهجاً معتمداً أو تقييماً لحالة فعلية.</p><div class="example-result" role="status" aria-live="polite"><strong data-scenario-output>احتمال محدود · أثر محدود</strong><p data-example-output>ابدأ بتوثيق الحالة والمالك والضابط، ثم اعتمد منهج التقييم مع المختص.</p></div></div>
-    <div class="risk-chart"><span>الأثر المحتمل ←</span><div class="risk-matrix">{['مرتفع', 'متوسط', 'محدود'].map((likelihood, row) => ['محدود', 'متوسط', 'مرتفع'].map((impact, col) => <button type="button" disabled class={`risk-cell level-${row === 0 || col === 2 ? 'high' : row === 1 || col === 1 ? 'medium' : 'low'}`} aria-label={`احتمال ${likelihood} وأثر ${impact}`} aria-pressed={row === 2 && col === 0 ? 'true' : 'false'} data-scenario={`احتمال ${likelihood} · أثر ${impact}`} data-example={row === 0 || col === 2 ? 'في هذا التصور، تستحق الحالة مراجعة أعمق للضوابط والآثار قبل الاعتماد. لا يُستنتج حظر آلي من لون الخلية.' : 'وثّق السبب والضابط والمالك وموعد المراجعة. يبقى التصنيف النهائي للمنهج والجهة المخولة.'}><span>{likelihood}</span><small>أثر {impact}</small></button>))}</div><span>↑ الاحتمال المحتمل</span><noscript><p>تزداد حاجة المراجعة مع زيادة احتمال الضرر أو أثره وفق المنهج المعتمد لدى الجهة.</p></noscript></div>
-  </div>}
-  {kind === 'human-gate' && <div class="human-layout"><div><h2>القرار لصاحب<br /><span class="muted">الصلاحية.</span></h2><p class="diagram-help">افتح كل مرحلة لفهم مسؤوليتها. لا ينشئ هذا الرسم طلب موافقة أو قراراً فعلياً.</p></div><ol class="approval-flow">{[
-    ['طلب محدد', 'مالك الحالة يصف الإجراء والسبب والسياق ونسخة السياسة.'],
-    ['مراجعة مستقلة', 'المراجع المخول يتحقق من النطاق وفصل المهام؛ مقدم الطلب لا يعتمد طلبه عندما يُشترط الفصل.'],
-    ['قرار مسبب', 'موافقة محددة أو رفض موثق؛ لا يغيّر القرار قيود الحظر الأعلى.'],
-    ['تنفيذ أو إيقاف آمن', 'لا استكمال قبل موافقة صالحة. انتهاء المهلة أو غياب الرد لا يعني موافقة.'],
-  ].map(([label, text], i) => <li><span aria-hidden="true">0{i + 1}</span><details open={i === 0}><summary>{label}</summary><p>{text}</p></details></li>)}</ol></div>}
-  {kind === 'ledger' && <div class="ledger-layout"><div><h2>من الحدث،<br /><span class="muted">إلى الدليل.</span></h2><p class="diagram-help">تتبّع متطلبات الدليل. فتح المراحل لا يحفظ أحداثاً ولا يولّد توقيعاً أو تحققاً تشفيرياً.</p><div class="evidence-seal" aria-hidden="true"><ProductIcon kind="ledger"/><span>المصدر<br />القرار<br />السياسة</span></div>
-    <div class="integrity-example"><p class="diagram-help">قارن حالتين افتراضيتين للدليل:</p><div class="decision-options"><button type="button" disabled data-integrity="valid" aria-pressed="true">مثال سليم</button><button type="button" disabled data-integrity="changed" aria-pressed="false">مثال معدّل</button></div><p class="integrity-result" role="status" aria-live="polite" data-integrity-output>في المثال السليم تتوافق البيانات مع مرجع التحقق. هذا وصف تعليمي ولا يفحص ملفاً أو توقيعاً.</p><noscript><p>في المثال المعدّل تختلف البيانات عن مرجع التحقق؛ المطلوب أن يكشف التنفيذ الفعلي ذلك قبل قبول الدليل.</p></noscript></div></div><ol class="evidence-timeline">{[
-    ['التقاط الحد الأدنى', 'مصدر الحدث وهوية الفاعل المخول ووقت القرار ونسخة السياسة، دون محتوى حساس غير لازم.'],
-    ['ربط سلامة الدليل', 'Hash أو توقيع مناسب ضمن تنفيذ مثبت، مع مفاتيح وصلاحيات وإدارة دورة حياة.'],
-    ['حفظ وفق السياسة', 'احتفاظ ووصول وحذف وقيود قانونية تحددها الجهة والعقد.'],
-    ['تصدير وفحص مستقل', 'حزمة دليل وأداة تحقق مفوضة. تعديل الدليل يجب أن يظهر في نتيجة فحص حقيقية.'],
-  ].map(([label, text], i) => <li><span class="event-point" aria-hidden="true">0{i + 1}</span><details open={i === 0}><summary>{label}</summary><p>{text}</p></details></li>)}</ol></div>}
-  {kind === 'secure-chat' && <div class="chat-layout"><div><h2>مساحة أبسط.<br /><span class="muted">وحدود أوضح.</span></h2><p class="diagram-help">قصة توضيحية جاهزة، وليست محادثة مع نموذج. لا تكتب بيانات أو ملفات هنا.</p><ul class="chat-principles"><li>اختيار نموذج مصرح به</li><li>حفظ المحتوى حسب سياسة المؤسسة</li><li>مشاركة وتصدير مغلقان افتراضياً</li></ul></div><div class="chat-preview"><div class="chat-toolbar"><span>محادثة توضيحية</span><span>بلا اتصال</span></div><div class="chat-examples decision-options" aria-label="اختيار مثال جاهز"><button type="button" disabled data-chat-example="public" aria-pressed="true">بيانات عامة</button><button type="button" disabled data-chat-example="internal" aria-pressed="false">بيانات داخلية</button></div><p class="chat-bubble user">كيف أكتب طلباً يحترم بيانات المنشأة؟</p><p class="chat-bubble assistant" role="status" aria-live="polite">ابدأ بالغرض. استخدم معلومات عامة أو بيانات مصرحاً بها، وتحقق من المخرج قبل الاعتماد.</p><details><summary>ما الذي يضبط هذا المسار؟</summary><p>صلاحية الاستخدام والنموذج والوجهة والميزانية. لا نفترض وجود نموذج أو تكامل عامل في هذا التصور.</p></details><div class="chat-footer">مثال جاهز / لا إرسال أو رفع ملفات</div></div></div>}
+<section class={`lab-experience lab-${kind}`} data-lab-experience data-kind={kind} aria-label={brief.task}>
+  <div class="lab-workbench">
+    <div class="lab-instruction"><p class="hub-kicker">01 / {brief.task}</p><h2>{brief.example}</h2><p>{brief.outcome}</p></div>
+    {kind === 'firewall' && <>
+      <div class="lab-request"><span>طلب خيالي</span><p data-lab-input>{firewall[0][1]}</p></div>
+      <div class="lab-options" aria-label="قرارات المثال">{firewall.map(([label, input, result, evidence, processed], i) => <button type="button" disabled data-lab-choice={i} data-input={input} data-result={result} data-evidence={evidence} data-output={processed} aria-pressed={i === 0 ? 'true' : 'false'}>{label}</button>)}</div>
+      <div class="lab-route" aria-hidden="true"><span>الطلب</span><span>←</span><strong>السياسة</strong><span>←</span><span>المعالجة</span></div>
+      <div class="lab-processed"><span>النص بعد المعالجة</span><p data-lab-output>{firewall[0][4]}</p></div>
+    </>}
+    {kind === 'risk-engine' && <div class="lab-risk-board"><p>الأثر المحتمل ←</p><div class="lab-risk-matrix">{['مرتفع', 'متوسط', 'محدود'].map((likelihood, row) => ['محدود', 'متوسط', 'مرتفع'].map((impact, col) => <button type="button" disabled class={`lab-risk-cell lab-risk-${row === 0 || col === 2 ? 'high' : row === 1 || col === 1 ? 'medium' : 'low'}`} data-lab-choice={row * 3 + col} aria-label={`احتمال ${likelihood} وأثر ${impact}`} aria-pressed={row === 2 && col === 0 ? 'true' : 'false'} data-result={row === 0 || col === 2 ? 'الحالة تستحق مراجعة أعمق قبل الاعتماد.' : 'وثّق الضابط والمالك وموعد المراجعة.'} data-evidence={`اختيارك: احتمال ${likelihood} وأثر ${impact}. التصنيف النهائي يتبع منهج الجهة المعتمد؛ لون الخلية لا يقرر الحظر.`}><span>{likelihood}</span><small>أثر {impact}</small></button>))}</div><p>↑ الاحتمال · اختر خلية لتفسيرها</p></div>}
+    {kind === 'human-gate' && <>
+      <article class="lab-review"><header><bdi dir="ltr">REQ-DEMO-01</bdi><span>طلب مراجعة خيالي</span></header><h3>نشر ملخص خارج المؤسسة</h3><dl><dt>مقدم الطلب</dt><dd>مالك الحالة</dd><dt>المراجع</dt><dd>دور مستقل عن مقدم الطلب</dd><dt>النطاق</dt><dd>ملخص محدد، دون بيانات شخصية</dd></dl></article>
+      <ol class="lab-approval-steps"><li>طلب</li><li>مراجعة مستقلة</li><li data-lab-output>بانتظار المراجعة</li></ol>
+      <div class="lab-options" aria-label="قرار المراجع في المثال">{approvals.map(([label, result, evidence], i) => <button type="button" disabled data-lab-choice={i} data-result={result} data-evidence={evidence} data-output={label} aria-pressed={i === 0 ? 'true' : 'false'}>{label}</button>)}</div>
+    </>}
+    {kind === 'ledger' && <>
+      <ol class="lab-events"><li><span>01</span><div><strong>مصدر الحدث</strong><p>طلب خيالي · سياسة المثال v1</p></div></li><li><span>02</span><div><strong>القرار المسجل</strong><p data-ledger-decision>سماح بالنطاق المحدد</p></div></li><li><span>03</span><div><strong>مرجع الدليل</strong><p><bdi dir="ltr">DEMO-REF-02</bdi> · تمثيل تعليمي</p></div></li></ol>
+      <div class="lab-options" aria-label="مقارنة سلامة المثال">{ledger.map(([label, result, evidence], i) => <button type="button" disabled data-lab-choice={i} data-result={result} data-evidence={evidence} aria-pressed={i === 0 ? 'true' : 'false'}>{label}</button>)}</div>
+    </>}
+    {kind === 'secure-chat' && <div class="lab-conversation"><header><span>محادثة توضيحية</span><span>بلا اتصال</span></header><p class="lab-message-user" data-lab-input>{chats[0][1]}</p><div class="lab-message-assistant"><span>إجابة جاهزة / AIGAS</span><p data-lab-output>{chats[0][2]}</p></div><div class="lab-options" aria-label="اختيار سؤال جاهز">{chats.map(([label, input, output, evidence], i) => <button type="button" disabled data-lab-choice={i} data-input={input} data-output={output} data-result={i === 0 ? 'ابدأ بالغرض ثم تحقق من الإجابة.' : 'راجع تصنيف المعلومات قبل المشاركة.'} data-evidence={evidence} aria-pressed={i === 0 ? 'true' : 'false'}>{label}</button>)}</div><p class="lab-chat-caption">اختر سؤالًا جاهزًا؛ لا إرسال نصوص أو رفع ملفات.</p></div>}
+    <a class="lab-inspector-jump" href={`#inspector-${kind}`}>اقرأ السبب والدليل ↓</a>
+  </div>
+  <aside class="lab-inspector" aria-labelledby={`inspector-${kind}`}><p class="hub-kicker">02 / INSPECTOR</p><h2 id={`inspector-${kind}`} tabindex="-1">السبب والدليل</h2><div role="status" aria-live="polite" aria-atomic="true"><p class="lab-result-label">نتيجة المثال</p><strong data-lab-result>{kind === 'firewall' ? firewall[0][2] : kind === 'risk-engine' ? 'وثّق الضابط والمالك وموعد المراجعة.' : kind === 'human-gate' ? approvals[0][1] : kind === 'ledger' ? ledger[0][1] : 'ابدأ بالغرض ثم تحقق من الإجابة.'}</strong><p class="lab-result-label">لماذا؟</p><p data-lab-evidence>{kind === 'firewall' ? firewall[0][3] : kind === 'risk-engine' ? 'اختيارك: احتمال محدود وأثر محدود. التصنيف النهائي يتبع منهج الجهة المعتمد؛ لون الخلية لا يقرر الحظر.' : kind === 'human-gate' ? approvals[0][2] : kind === 'ledger' ? ledger[0][2] : chats[0][3]}</p></div><div class="lab-boundary"><span>حدود هذا المختبر</span><p>تفاعل محلي ببيانات خيالية. لا تنفيذ أو حفظ تشغيلي، ولا دليل على فاعلية ضابط في بيئة حقيقية.</p><a href="/docs/">اقرأ المنهج وحدود الاستخدام ←</a></div></aside>
+  <noscript><p class="lab-nojs">الأزرار تحتاج JavaScript لتغيير المثال. النتيجة الأولى وسببها ظاهران؛ يمكنك استكشاف بقية المنتجات من التنقل.</p></noscript>
 </section>
-{kind === 'firewall' && <RedactionDemo />}
-{kind === 'secure-chat' && <><p class="note">النموذج المصرح: تسمية توضيحية فقط؛ لم يُختر أو يُربط مورد فعلي.</p><RedactionDemo example="CHAT-DEMO-0000" /></>}
-{kind === 'human-gate' && <section class="motion-study" data-approval-demo aria-label="مسارات موافقة خيالية">
-  <h2>جرّب قرار المراجع في مثال خيالي</h2>
-  <p>لا تُرسل هذه الأزرار موافقة أو رفضاً لأي نظام.</p>
-  <svg class="approval-lock" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path class="lock-shackle" d="M20 28V19a12 12 0 0 1 24 0v9"/><rect x="14" y="28" width="36" height="28" rx="3"/><path d="M32 38v9"/></svg>
-  <div class="decision-options"><button type="button" data-approval="pending" aria-pressed="true" disabled>انتظار توضيحي</button><button type="button" data-approval="allow" aria-pressed="false" disabled>موافقة توضيحية</button><button type="button" data-approval="block" aria-pressed="false" disabled>رفض توضيحي</button></div>
-  <p data-approval-output role="status">انتظار مراجعة مستقلة في المثال. غياب الرد لا يعني موافقة.</p>
-  <noscript><p>الموافقة تسمح باستكمال النطاق المحدد فقط؛ الرفض يوقف المثال. الحظر الإلزامي لا تتجاوزه الموافقة.</p></noscript>
-</section>}
-{kind === 'ledger' && <div class="motion-study educational-hash"><p>تمثيل تعليمي مبسّط للربط، لا Hash أو توقيع محسوب:</p><ol data-motion="stagger"><li><code>DEMO-A → REF-A</code></li><li><code>REF-A + DEMO-B → REF-B</code></li><li><code>DEMO-B* ≠ REF-B</code> · تعديل محتوى المثال يستلزم كشف الاختلاف في تنفيذ حقيقي.</li></ol></div>}
 <script>
-  // Local educational state only. Progressive enhancement, scoped to each diagram.
-  document.querySelectorAll<HTMLElement>('.experience').forEach(root => {
-    root.querySelectorAll<HTMLButtonElement>('button[data-example]').forEach(button => {
-      button.addEventListener('click', () => {
-        root.querySelectorAll('button[data-example]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
-        const heading = root.querySelector('[data-scenario-output]');
-        const output = root.querySelector('[data-example-output]');
-        if (heading) heading.textContent = button.dataset.scenario ?? '';
-        if (output) output.textContent = button.dataset.example ?? '';
-      });
-      button.disabled = false;
-    });
-    root.querySelectorAll<HTMLButtonElement>('button[data-integrity]').forEach(button => {
-      button.addEventListener('click', () => {
-        root.querySelectorAll('button[data-integrity]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
-        root.setAttribute('data-integrity-state', button.dataset.integrity ?? 'valid');
-        const output = root.querySelector('[data-integrity-output]');
-        if (output) output.textContent = button.dataset.integrity === 'changed'
-          ? 'في المثال المعدّل تختلف البيانات عن مرجع التحقق. يجب أن يكشف التنفيذ الفعلي التغيير؛ لا يجري هنا فحص تشفيري.'
-          : 'في المثال السليم تتوافق البيانات مع مرجع التحقق. هذا وصف تعليمي ولا يفحص ملفاً أو توقيعاً.';
-      });
-      button.disabled = false;
-    });
-    root.querySelectorAll<HTMLButtonElement>('button[data-chat-example]').forEach(button => {
-      button.addEventListener('click', () => {
-        root.querySelectorAll('button[data-chat-example]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
-        const internal = button.dataset.chatExample === 'internal';
-        const user = root.querySelector('.chat-bubble.user');
-        const assistant = root.querySelector('.chat-bubble.assistant');
-        if (user) user.textContent = internal ? 'أحتاج تلخيص رسالة عمل داخلية. ما الذي أراجعه أولاً؟' : 'كيف أكتب طلباً يحترم بيانات المنشأة؟';
-        if (assistant) assistant.textContent = internal ? 'تحقق من تصنيف البيانات وصلاحية مشاركتها ومن اعتماد الأداة والحساب والوجهة. عند الغموض، توقف وراجع المالك المختص قبل إدخال المحتوى.' : 'ابدأ بالغرض. استخدم معلومات عامة أو بيانات مصرحاً بها، وتحقق من المخرج قبل الاعتماد.';
-      });
-      button.disabled = false;
-    });
+  document.querySelectorAll<HTMLElement>('[data-lab-experience]').forEach(root => {
+    const kind = root.dataset.kind!;
+    const shell = root.closest<HTMLElement>('[data-lab-shell]')!;
+    const choices = [...root.querySelectorAll<HTMLButtonElement>('[data-lab-choice]')];
+    const initial = choices.find(button => button.getAttribute('aria-pressed') === 'true')!;
+    const progress = shell.querySelector('[data-lab-progress]');
+    const key = `aigas:lab:${kind}:choice`;
+    function select(button: HTMLButtonElement, persist = true) {
+      choices.forEach(choice => choice.setAttribute('aria-pressed', String(choice === button)));
+      for (const field of ['input', 'output', 'result', 'evidence']) {
+        const output = root.querySelector(`[data-lab-${field}]`);
+        if (output && button.dataset[field]) output.textContent = button.dataset[field]!;
+      }
+      const ledger = root.querySelector<HTMLElement>('[data-ledger-decision]');
+      if (ledger) { ledger.textContent = button.dataset.labChoice === '1' ? 'حظر — محتوى معدّل' : 'سماح بالنطاق المحدد'; ledger.classList.toggle('lab-changed', button.dataset.labChoice === '1'); }
+      if (progress) progress.textContent = `خطوتك: ${button.getAttribute('aria-label') ?? button.textContent?.trim()}`;
+      if (persist) try { sessionStorage.setItem(key, button.dataset.labChoice!); } catch { /* Optional local navigation state only. */ }
+    }
+    choices.forEach(button => { button.disabled = false; button.addEventListener('click', () => select(button)); });
+    try {
+      const saved = sessionStorage.getItem(key);
+      const match = choices.find(button => button.dataset.labChoice === saved);
+      if (match) select(match, false);
+      sessionStorage.setItem('aigas:lab:last', kind);
+    } catch { /* The lab also works without storage. */ }
+    const reset = shell.querySelector<HTMLButtonElement>('[data-lab-reset]');
+    if (reset) { reset.hidden = false; reset.addEventListener('click', () => select(initial)); }
   });
 </script>
+<style>
+  .lab-inspector-jump{display:inline-flex;align-items:center;min-block-size:44px;color:var(--color-focus);font-size:14px;margin-block-start:12px}
+  @media(min-width:1200px){.lab-inspector-jump{display:none}}
+  .lab-experience{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.65fr);min-block-size:570px}
+  .lab-workbench{padding:clamp(20px,2.5vw,32px);min-inline-size:0}
+  .lab-instruction h2{font-size:22px;line-height:1.65;margin:0 0 12px;max-inline-size:32ch}
+  .lab-instruction>p:last-child{font-size:14px;color:var(--color-text-muted);margin:0 0 24px}
+  .lab-options{display:flex;flex-wrap:wrap;gap:8px;margin-block:18px}
+  .lab-options button,.lab-risk-cell{font:inherit;min-block-size:44px;border:1px solid var(--border-strong);border-radius:var(--radius-control);padding:10px 14px;background:var(--surface-raised);color:var(--color-text-muted);font-size:14px;cursor:pointer}
+  .lab-options button:is(:hover,:focus-visible){color:var(--color-text);background:var(--surface-raised-hover);border-color:var(--icon-accent)}
+  .lab-options button[aria-pressed=true]{background:var(--surface-raised-hover);border-color:var(--icon-accent);color:var(--color-text);box-shadow:inset 0 -2px var(--icon-accent)}
+  .lab-options button:disabled,.lab-risk-cell:disabled{opacity:.65;cursor:default}
+  .lab-request,.lab-processed{background:var(--surface-raised);border:1px solid var(--border-subtle);padding:20px;border-radius:var(--radius-control)}
+  .lab-request>span,.lab-processed>span{font-size:12px;color:var(--color-text-subtle)}
+  .lab-request p,.lab-processed p{font-size:16px;margin:10px 0 0;overflow-wrap:anywhere}
+  .lab-processed{border-inline-start:2px solid var(--color-focus)}
+  .lab-route{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:24px 0;font-size:12px;color:var(--color-text-muted)}.lab-route strong{padding:12px 18px;border:1px solid var(--icon-accent);border-radius:var(--radius-control);color:var(--icon-accent-strong);font-weight:400}
+  .lab-inspector{padding:28px 24px;border-inline-start:1px solid var(--border-subtle);background:var(--surface-raised);min-inline-size:0}
+  .lab-inspector h2{font-size:20px;margin:0 0 28px}.lab-result-label{font-size:12px;color:var(--color-text-subtle);margin:24px 0 8px}.lab-inspector strong{font-size:18px;font-weight:400;line-height:1.8;color:var(--color-focus)}
+  [data-lab-evidence]{font-size:14px;color:var(--color-text-copy);line-height:1.9;overflow-wrap:anywhere}
+  .lab-boundary{border-block-start:1px solid var(--border-subtle);padding-block-start:20px;margin-block-start:32px}.lab-boundary>span{font-size:12px;color:var(--icon-accent-strong)}.lab-boundary p{font-size:12px;color:var(--color-text-muted)}.lab-boundary a{display:inline-flex;align-items:center;font-size:12px;min-block-size:44px;color:var(--color-text)}
+  .lab-risk-board>p{font-size:12px;color:var(--color-text-muted);margin-block:16px}.lab-risk-matrix{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-inline-size:480px}.lab-risk-cell{aspect-ratio:1;display:grid;align-content:center;gap:8px;padding:8px;color:var(--color-text)}.lab-risk-cell small{font-size:12px}.lab-risk-high{background:color-mix(in srgb,var(--state-error) 18%,var(--surface-sunken));border-color:var(--state-error)}.lab-risk-medium{background:color-mix(in srgb,var(--color-focus) 15%,var(--surface-sunken));border-color:var(--color-focus)}.lab-risk-low{background:color-mix(in srgb,var(--state-success) 24%,var(--surface-sunken));border-color:var(--state-success-text)}.lab-risk-cell[aria-pressed=true]{outline:3px solid var(--color-text);outline-offset:-6px}.lab-risk-cell:hover{box-shadow:inset 0 0 0 2px var(--color-text)}
+  .lab-review{padding:24px;background:var(--surface-raised);border:1px solid var(--border-strong);border-block-start:2px solid var(--color-focus);border-radius:var(--radius-control)}.lab-review header{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;font-size:12px;color:var(--color-text-muted)}.lab-review h3{font-size:22px;margin:20px 0}.lab-review dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;font-size:14px}.lab-review dt{color:var(--color-text-subtle)}.lab-review dd{margin:0}.lab-approval-steps{display:flex;flex-wrap:wrap;gap:12px 24px;padding:16px 20px;font-size:12px;color:var(--color-text-muted)}
+  .lab-events{padding:0;list-style:none;margin:24px 0}.lab-events li{display:flex;gap:20px;padding:20px 0;border-block-end:1px solid var(--border-subtle)}.lab-events li>span{font:14px var(--font-monospace);color:var(--icon-accent-strong);padding-block-start:6px}.lab-events strong{font-weight:400;font-size:18px}.lab-events p{font-size:14px;margin:6px 0 0;color:var(--color-text-muted)}.lab-events .lab-changed{color:var(--state-error-text);text-decoration:underline}
+  .lab-conversation{border:1px solid var(--border-strong);border-radius:var(--radius-content);padding:20px;background:var(--surface-raised)}.lab-conversation header{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--color-text-muted);border-block-end:1px solid var(--border-subtle);padding-block-end:16px}.lab-message-user{background:var(--surface-raised-hover);border:1px solid var(--border-strong);border-radius:12px 12px 0 12px;padding:16px;font-size:16px;margin:24px 0 24px 20px}.lab-message-assistant{padding-inline-start:16px;border-inline-start:2px solid var(--icon-accent)}.lab-message-assistant>span{font-size:12px;color:var(--icon-accent-strong)}.lab-message-assistant p{font-size:16px;color:var(--color-text-copy);margin-block:8px 0}.lab-chat-caption,.lab-nojs{font-size:12px;color:var(--color-text-muted)}.lab-nojs{padding:20px}
+  @media(max-width:1199px){.lab-experience{grid-template-columns:minmax(0,1fr)}.lab-inspector{border-inline-start:0;border-block-start:1px solid var(--border-subtle)}.lab-inspector h2{margin-block-end:16px}.lab-boundary{margin-block-start:20px}}
+  @media(max-width:650px){.lab-workbench{padding:20px 18px}.lab-instruction h2{font-size:20px}.lab-inspector{padding:24px 18px}.lab-review{padding:18px}.lab-options button{padding:10px 12px}.lab-risk-cell{padding:8px 4px}.lab-risk-cell small{font-size:11px}.lab-review dl{gap:10px;font-size:13px}.lab-conversation{padding:16px}.lab-experience{min-block-size:0}}
+  @media(prefers-reduced-motion:no-preference){.lab-options button{transition:background-color var(--motion-hover),border-color var(--motion-hover)}.lab-options button:active{transform:translateY(1px)}}
+</style>

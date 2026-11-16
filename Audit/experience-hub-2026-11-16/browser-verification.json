@@ -1,0 +1,1239 @@
+{
+  "viewports": [
+    {
+      "width": 360,
+      "scroll": 360,
+      "h1": 1,
+      "firstCTA": 476.46875,
+      "choices": true,
+      "path": "/products/",
+      "status": 200
+    },
+    {
+      "width": 360,
+      "scroll": 360,
+      "h1": 1,
+      "choices": true,
+      "menu": false,
+      "path": "/products/firewall/",
+      "status": 200
+    },
+    {
+      "width": 360,
+      "scroll": 360,
+      "h1": 1,
+      "choices": true,
+      "menu": false,
+      "path": "/products/risk-engine/",
+      "status": 200
+    },
+    {
+      "width": 360,
+      "scroll": 360,
+      "h1": 1,
+      "choices": true,
+      "menu": false,
+      "path": "/products/human-gate/",
+      "status": 200
+    },
+    {
+      "width": 360,
+      "scroll": 360,
+      "h1": 1,
+      "choices": true,
+      "menu": false,
+      "path": "/products/ledger/",
+      "status": 200
+    },
+    {
+      "width": 360,
+      "scroll": 360,
+      "h1": 1,
+      "choices": true,
+      "menu": false,
+      "path": "/products/secure-chat/",
+      "status": 200
+    },
+    {
+      "width": 360,
+      "scroll": 360,
+      "h1": 1,
+      "choices": true,
+      "menu": false,
+      "path": "/app/kernel/",
+      "status": 200
+    },
+    {
+      "width": 360,
+      "scroll": 360,
+      "h1": 1,
+      "choices": true,
+      "menu": false,
+      "path": "/app/firewall/",
+      "status": 200
+    },
+    {
+      "width": 360,
+      "scroll": 360,
+      "h1": 1,
+      "choices": true,
+      "menu": false,
+      "path": "/app/risk-engine/",
+      "status": 200
+    },
+    {
+      "width": 360,
+      "scroll": 360,
+      "h1": 1,
+      "choices": true,
+      "menu": false,
+      "path": "/app/human-gate/",
+      "status": 200
+    },
+    {
+      "width": 360,
+      "scroll": 360,
+      "h1": 1,
+      "choices": true,
+      "menu": false,
+      "path": "/app/ledger/",
+      "status": 200
+    },
+    {
+      "width": 360,
+      "scroll": 360,
+      "h1": 1,
+      "choices": true,
+      "menu": false,
+      "path": "/app/secure-chat/",
+      "status": 200
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "h1": 1,
+      "firstCTA": 476.46875,
+      "choices": true,
+      "path": "/products/",
+      "status": 200
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "h1": 1,
+      "choices": true,
+      "menu": false,
+      "path": "/products/firewall/",
+      "status": 200
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "h1": 1,
+      "choices": true,
+      "menu": false,
+      "path": "/products/risk-engine/",
+      "status": 200
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "h1": 1,
+      "choices": true,
+      "menu": false,
+      "path": "/products/human-gate/",
+      "status": 200
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "h1": 1,
+      "choices": true,
+      "menu": false,
+      "path": "/products/ledger/",
+      "status": 200
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "h1": 1,
+      "choices": true,
+      "menu": false,
+      "path": "/products/secure-chat/",
+      "status": 200
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "h1": 1,
+      "choices": true,
+      "menu": false,
+      "path": "/app/kernel/",
+      "status": 200
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "h1": 1,
+      "choices": true,
+      "menu": false,
+      "path": "/app/firewall/",
+      "status": 200
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "h1": 1,
+      "choices": true,
+      "menu": false,
+      "path": "/app/risk-engine/",
+      "status": 200
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "h1": 1,
+      "choices": true,
+      "menu": false,
+      "path": "/app/human-gate/",
+      "status": 200
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "h1": 1,
+      "choices": true,
+      "menu": false,
+      "path": "/app/ledger/",
+      "status": 200
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "h1": 1,
+      "choices": true,
+      "menu": false,
+      "path": "/app/secure-chat/",
+      "status": 200
+    },
+    {
+      "width": 1440,
+      "scroll": 1440,
+      "h1": 1,
+      "firstCTA": 316.484375,
+      "choices": true,
+      "path": "/products/",
+      "status": 200
+    },
+    {
+      "width": 1440,
+      "scroll": 1440,
+      "h1": 1,
+      "choices": true,
+      "menu": true,
+      "path": "/products/firewall/",
+      "status": 200
+    },
+    {
+      "width": 1440,
+      "scroll": 1440,
+      "h1": 1,
+      "choices": true,
+      "menu": true,
+      "path": "/products/risk-engine/",
+      "status": 200
+    },
+    {
+      "width": 1440,
+      "scroll": 1440,
+      "h1": 1,
+      "choices": true,
+      "menu": true,
+      "path": "/products/human-gate/",
+      "status": 200
+    },
+    {
+      "width": 1440,
+      "scroll": 1440,
+      "h1": 1,
+      "choices": true,
+      "menu": true,
+      "path": "/products/ledger/",
+      "status": 200
+    },
+    {
+      "width": 1440,
+      "scroll": 1440,
+      "h1": 1,
+      "choices": true,
+      "menu": true,
+      "path": "/products/secure-chat/",
+      "status": 200
+    },
+    {
+      "width": 1440,
+      "scroll": 1440,
+      "h1": 1,
+      "choices": true,
+      "menu": true,
+      "path": "/app/kernel/",
+      "status": 200
+    },
+    {
+      "width": 1440,
+      "scroll": 1440,
+      "h1": 1,
+      "choices": true,
+      "menu": true,
+      "path": "/app/firewall/",
+      "status": 200
+    },
+    {
+      "width": 1440,
+      "scroll": 1440,
+      "h1": 1,
+      "choices": true,
+      "menu": true,
+      "path": "/app/risk-engine/",
+      "status": 200
+    },
+    {
+      "width": 1440,
+      "scroll": 1440,
+      "h1": 1,
+      "choices": true,
+      "menu": true,
+      "path": "/app/human-gate/",
+      "status": 200
+    },
+    {
+      "width": 1440,
+      "scroll": 1440,
+      "h1": 1,
+      "choices": true,
+      "menu": true,
+      "path": "/app/ledger/",
+      "status": 200
+    },
+    {
+      "width": 1440,
+      "scroll": 1440,
+      "h1": 1,
+      "choices": true,
+      "menu": true,
+      "path": "/app/secure-chat/",
+      "status": 200
+    }
+  ],
+  "interactions": [
+    {
+      "slug": "firewall",
+      "selected": "4",
+      "restored": "4",
+      "evidence": "الموافقة البشرية لا تتجاوز منعًا إلزاميًا."
+    },
+    {
+      "slug": "risk-engine",
+      "selected": "8",
+      "restored": "8",
+      "evidence": "اختيارك: احتمال محدود وأثر مرتفع. التصنيف النهائي يتبع منهج الجهة المعتمد؛ لون الخلية لا يقرر الحظر."
+    },
+    {
+      "slug": "human-gate",
+      "selected": "2",
+      "restored": "2",
+      "evidence": "سبب الرفض الخيالي: نطاق المشاركة غير مصرح به."
+    },
+    {
+      "slug": "ledger",
+      "selected": "1",
+      "restored": "1",
+      "evidence": "موضع الاختلاف: القرار في الحدث 02. يجب أن يكشف الفحص الفعلي أي تعديل قبل قبول الدليل."
+    },
+    {
+      "slug": "secure-chat",
+      "selected": "1",
+      "restored": "1",
+      "evidence": "المشاركة مقيدة بتصنيف البيانات؛ لا تُدخل محتوى داخليًا في هذا المختبر."
+    }
+  ],
+  "links": [
+    {
+      "href": "/products/firewall/#lab",
+      "status": 200
+    },
+    {
+      "href": "/auth/sign-up/?returnTo=%2Fapp%2Ffirewall%2F",
+      "status": 200
+    },
+    {
+      "href": "/products/risk-engine/#lab",
+      "status": 200
+    },
+    {
+      "href": "/auth/sign-up/?returnTo=%2Fapp%2Frisk-engine%2F",
+      "status": 200
+    },
+    {
+      "href": "/products/human-gate/#lab",
+      "status": 200
+    },
+    {
+      "href": "/auth/sign-up/?returnTo=%2Fapp%2Fhuman-gate%2F",
+      "status": 200
+    },
+    {
+      "href": "/products/ledger/#lab",
+      "status": 200
+    },
+    {
+      "href": "/auth/sign-up/?returnTo=%2Fapp%2Fledger%2F",
+      "status": 200
+    },
+    {
+      "href": "/products/secure-chat/#lab",
+      "status": 200
+    },
+    {
+      "href": "/auth/sign-up/?returnTo=%2Fapp%2Fsecure-chat%2F",
+      "status": 200
+    },
+    {
+      "href": "/app/kernel/",
+      "status": 200
+    },
+    {
+      "href": "/auth/sign-up/?returnTo=%2Fapp%2Ffirewall%2F",
+      "status": 200
+    },
+    {
+      "href": "/products/firewall/#lab",
+      "status": 200
+    },
+    {
+      "href": "/auth/sign-up/?returnTo=%2Fapp%2Frisk-engine%2F",
+      "status": 200
+    },
+    {
+      "href": "/products/risk-engine/#lab",
+      "status": 200
+    },
+    {
+      "href": "/auth/sign-up/?returnTo=%2Fapp%2Fhuman-gate%2F",
+      "status": 200
+    },
+    {
+      "href": "/products/human-gate/#lab",
+      "status": 200
+    },
+    {
+      "href": "/auth/sign-up/?returnTo=%2Fapp%2Fledger%2F",
+      "status": 200
+    },
+    {
+      "href": "/products/ledger/#lab",
+      "status": 200
+    },
+    {
+      "href": "/auth/sign-up/?returnTo=%2Fapp%2Fsecure-chat%2F",
+      "status": 200
+    },
+    {
+      "href": "/products/secure-chat/#lab",
+      "status": 200
+    }
+  ],
+  "contrast": [
+    {
+      "path": "/products/",
+      "text": "جرّب Firewall الآن ←",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        111,
+        67,
+        230
+      ],
+      "ratio": 5.8,
+      "size": 14
+    },
+    {
+      "path": "/products/",
+      "text": "أكمل مختبر Firewall ←",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        0,
+        0,
+        0
+      ],
+      "ratio": 12.14,
+      "size": 14
+    },
+    {
+      "path": "/products/",
+      "text": "جرّب الآن←",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        111,
+        67,
+        230
+      ],
+      "ratio": 5.8,
+      "size": 14
+    },
+    {
+      "path": "/products/",
+      "text": "تجربة تشغيلية 48 ساعة ↗",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        12,
+        11,
+        18
+      ],
+      "ratio": 11.32,
+      "size": 14
+    },
+    {
+      "path": "/products/",
+      "text": "جرّب الآن←",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        111,
+        67,
+        230
+      ],
+      "ratio": 5.8,
+      "size": 14
+    },
+    {
+      "path": "/products/",
+      "text": "تجربة تشغيلية 48 ساعة ↗",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        12,
+        11,
+        18
+      ],
+      "ratio": 11.32,
+      "size": 14
+    },
+    {
+      "path": "/products/",
+      "text": "جرّب الآن←",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        111,
+        67,
+        230
+      ],
+      "ratio": 5.8,
+      "size": 14
+    },
+    {
+      "path": "/products/",
+      "text": "تجربة تشغيلية 48 ساعة ↗",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        12,
+        11,
+        18
+      ],
+      "ratio": 11.32,
+      "size": 14
+    },
+    {
+      "path": "/products/",
+      "text": "جرّب الآن←",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        111,
+        67,
+        230
+      ],
+      "ratio": 5.8,
+      "size": 14
+    },
+    {
+      "path": "/products/",
+      "text": "تجربة تشغيلية 48 ساعة ↗",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        12,
+        11,
+        18
+      ],
+      "ratio": 11.32,
+      "size": 14
+    },
+    {
+      "path": "/products/",
+      "text": "جرّب الآن←",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        111,
+        67,
+        230
+      ],
+      "ratio": 5.8,
+      "size": 14
+    },
+    {
+      "path": "/products/",
+      "text": "تجربة تشغيلية 48 ساعة ↗",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        12,
+        11,
+        18
+      ],
+      "ratio": 11.32,
+      "size": 14
+    },
+    {
+      "path": "/products/",
+      "text": "افتح بوابة Kernel ←",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        8,
+        7,
+        11
+      ],
+      "ratio": 11.61,
+      "size": 18
+    },
+    {
+      "path": "/products/firewall/#lab",
+      "text": "تجربة تشغيلية 48 ساعة ↗",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        12,
+        11,
+        18
+      ],
+      "ratio": 11.32,
+      "size": 14
+    },
+    {
+      "path": "/products/firewall/#lab",
+      "text": "سماح",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        23,
+        18,
+        31
+      ],
+      "ratio": 18.38,
+      "size": 14
+    },
+    {
+      "path": "/products/firewall/#lab",
+      "text": "تحذير",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        23,
+        18,
+        31
+      ],
+      "ratio": 18.38,
+      "size": 14
+    },
+    {
+      "path": "/products/firewall/#lab",
+      "text": "تنقيح",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        23,
+        18,
+        31
+      ],
+      "ratio": 18.38,
+      "size": 14
+    },
+    {
+      "path": "/products/firewall/#lab",
+      "text": "موافقة بشرية",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        23,
+        18,
+        31
+      ],
+      "ratio": 18.38,
+      "size": 14
+    },
+    {
+      "path": "/products/firewall/#lab",
+      "text": "حظر",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        23,
+        18,
+        31
+      ],
+      "ratio": 18.38,
+      "size": 14
+    },
+    {
+      "path": "/products/firewall/#lab",
+      "text": "اقرأ السبب والدليل ↓",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        8,
+        7,
+        11
+      ],
+      "ratio": 11.61,
+      "size": 14
+    },
+    {
+      "path": "/products/firewall/#lab",
+      "text": "اقرأ المنهج وحدود الاستخدام ←",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        12,
+        11,
+        18
+      ],
+      "ratio": 11.32,
+      "size": 12
+    },
+    {
+      "path": "/products/firewall/#lab",
+      "text": "← كل التجارب",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        8,
+        7,
+        11
+      ],
+      "ratio": 11.61,
+      "size": 14
+    },
+    {
+      "path": "/products/firewall/#lab",
+      "text": "عن المنتج وحدود الاستخدام ↓",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        8,
+        7,
+        11
+      ],
+      "ratio": 11.61,
+      "size": 14
+    },
+    {
+      "path": "/products/firewall/#lab",
+      "text": "إعادة ضبط المثال",
+      "color": "rgb(189, 189, 189)",
+      "background": [
+        8,
+        7,
+        11
+      ],
+      "ratio": 10.69,
+      "size": 12
+    },
+    {
+      "path": "/products/risk-engine/#lab",
+      "text": "تجربة تشغيلية 48 ساعة ↗",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        12,
+        11,
+        18
+      ],
+      "ratio": 11.32,
+      "size": 14
+    },
+    {
+      "path": "/products/risk-engine/#lab",
+      "text": "مرتفعأثر محدود",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        0.205725,
+        0.0980392,
+        0.115843
+      ],
+      "ratio": 20.98,
+      "size": 14
+    },
+    {
+      "path": "/products/risk-engine/#lab",
+      "text": "مرتفعأثر متوسط",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        0.205725,
+        0.0980392,
+        0.115843
+      ],
+      "ratio": 20.98,
+      "size": 14
+    },
+    {
+      "path": "/products/risk-engine/#lab",
+      "text": "مرتفعأثر مرتفع",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        0.205725,
+        0.0980392,
+        0.115843
+      ],
+      "ratio": 20.98,
+      "size": 14
+    },
+    {
+      "path": "/products/risk-engine/#lab",
+      "text": "متوسطأثر محدود",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        0.176667,
+        0.131569,
+        0.0607843
+      ],
+      "ratio": 20.98,
+      "size": 14
+    },
+    {
+      "path": "/products/risk-engine/#lab",
+      "text": "متوسطأثر متوسط",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        0.176667,
+        0.131569,
+        0.0607843
+      ],
+      "ratio": 20.98,
+      "size": 14
+    },
+    {
+      "path": "/products/risk-engine/#lab",
+      "text": "متوسطأثر مرتفع",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        0.205725,
+        0.0980392,
+        0.115843
+      ],
+      "ratio": 20.98,
+      "size": 14
+    },
+    {
+      "path": "/products/risk-engine/#lab",
+      "text": "محدودأثر محدود",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        0.0436078,
+        0.145098,
+        0.136314
+      ],
+      "ratio": 20.98,
+      "size": 14
+    },
+    {
+      "path": "/products/risk-engine/#lab",
+      "text": "محدودأثر متوسط",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        0.176667,
+        0.131569,
+        0.0607843
+      ],
+      "ratio": 20.98,
+      "size": 14
+    },
+    {
+      "path": "/products/risk-engine/#lab",
+      "text": "محدودأثر مرتفع",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        0.205725,
+        0.0980392,
+        0.115843
+      ],
+      "ratio": 20.98,
+      "size": 14
+    },
+    {
+      "path": "/products/risk-engine/#lab",
+      "text": "اقرأ السبب والدليل ↓",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        8,
+        7,
+        11
+      ],
+      "ratio": 11.61,
+      "size": 14
+    },
+    {
+      "path": "/products/risk-engine/#lab",
+      "text": "اقرأ المنهج وحدود الاستخدام ←",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        12,
+        11,
+        18
+      ],
+      "ratio": 11.32,
+      "size": 12
+    },
+    {
+      "path": "/products/risk-engine/#lab",
+      "text": "← كل التجارب",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        8,
+        7,
+        11
+      ],
+      "ratio": 11.61,
+      "size": 14
+    },
+    {
+      "path": "/products/risk-engine/#lab",
+      "text": "عن المنتج وحدود الاستخدام ↓",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        8,
+        7,
+        11
+      ],
+      "ratio": 11.61,
+      "size": 14
+    },
+    {
+      "path": "/products/risk-engine/#lab",
+      "text": "إعادة ضبط المثال",
+      "color": "rgb(189, 189, 189)",
+      "background": [
+        8,
+        7,
+        11
+      ],
+      "ratio": 10.69,
+      "size": 12
+    },
+    {
+      "path": "/products/human-gate/#lab",
+      "text": "تجربة تشغيلية 48 ساعة ↗",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        12,
+        11,
+        18
+      ],
+      "ratio": 11.32,
+      "size": 14
+    },
+    {
+      "path": "/products/human-gate/#lab",
+      "text": "بانتظار المراجعة",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        23,
+        18,
+        31
+      ],
+      "ratio": 18.38,
+      "size": 14
+    },
+    {
+      "path": "/products/human-gate/#lab",
+      "text": "موافقة محددة",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        23,
+        18,
+        31
+      ],
+      "ratio": 18.38,
+      "size": 14
+    },
+    {
+      "path": "/products/human-gate/#lab",
+      "text": "رفض مسبب",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        23,
+        18,
+        31
+      ],
+      "ratio": 18.38,
+      "size": 14
+    },
+    {
+      "path": "/products/human-gate/#lab",
+      "text": "اقرأ السبب والدليل ↓",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        8,
+        7,
+        11
+      ],
+      "ratio": 11.61,
+      "size": 14
+    },
+    {
+      "path": "/products/human-gate/#lab",
+      "text": "اقرأ المنهج وحدود الاستخدام ←",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        12,
+        11,
+        18
+      ],
+      "ratio": 11.32,
+      "size": 12
+    },
+    {
+      "path": "/products/human-gate/#lab",
+      "text": "← كل التجارب",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        8,
+        7,
+        11
+      ],
+      "ratio": 11.61,
+      "size": 14
+    },
+    {
+      "path": "/products/human-gate/#lab",
+      "text": "عن المنتج وحدود الاستخدام ↓",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        8,
+        7,
+        11
+      ],
+      "ratio": 11.61,
+      "size": 14
+    },
+    {
+      "path": "/products/human-gate/#lab",
+      "text": "إعادة ضبط المثال",
+      "color": "rgb(189, 189, 189)",
+      "background": [
+        8,
+        7,
+        11
+      ],
+      "ratio": 10.69,
+      "size": 12
+    },
+    {
+      "path": "/products/ledger/#lab",
+      "text": "تجربة تشغيلية 48 ساعة ↗",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        12,
+        11,
+        18
+      ],
+      "ratio": 11.32,
+      "size": 14
+    },
+    {
+      "path": "/products/ledger/#lab",
+      "text": "مثال سليم",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        23,
+        18,
+        31
+      ],
+      "ratio": 18.38,
+      "size": 14
+    },
+    {
+      "path": "/products/ledger/#lab",
+      "text": "مثال معدّل",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        23,
+        18,
+        31
+      ],
+      "ratio": 18.38,
+      "size": 14
+    },
+    {
+      "path": "/products/ledger/#lab",
+      "text": "اقرأ السبب والدليل ↓",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        8,
+        7,
+        11
+      ],
+      "ratio": 11.61,
+      "size": 14
+    },
+    {
+      "path": "/products/ledger/#lab",
+      "text": "اقرأ المنهج وحدود الاستخدام ←",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        12,
+        11,
+        18
+      ],
+      "ratio": 11.32,
+      "size": 12
+    },
+    {
+      "path": "/products/ledger/#lab",
+      "text": "← كل التجارب",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        8,
+        7,
+        11
+      ],
+      "ratio": 11.61,
+      "size": 14
+    },
+    {
+      "path": "/products/ledger/#lab",
+      "text": "عن المنتج وحدود الاستخدام ↓",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        8,
+        7,
+        11
+      ],
+      "ratio": 11.61,
+      "size": 14
+    },
+    {
+      "path": "/products/ledger/#lab",
+      "text": "إعادة ضبط المثال",
+      "color": "rgb(189, 189, 189)",
+      "background": [
+        8,
+        7,
+        11
+      ],
+      "ratio": 10.69,
+      "size": 12
+    },
+    {
+      "path": "/products/secure-chat/#lab",
+      "text": "تجربة تشغيلية 48 ساعة ↗",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        12,
+        11,
+        18
+      ],
+      "ratio": 11.32,
+      "size": 14
+    },
+    {
+      "path": "/products/secure-chat/#lab",
+      "text": "سؤال عام",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        23,
+        18,
+        31
+      ],
+      "ratio": 18.38,
+      "size": 14
+    },
+    {
+      "path": "/products/secure-chat/#lab",
+      "text": "بيانات داخلية",
+      "color": "rgb(255, 255, 255)",
+      "background": [
+        23,
+        18,
+        31
+      ],
+      "ratio": 18.38,
+      "size": 14
+    },
+    {
+      "path": "/products/secure-chat/#lab",
+      "text": "اقرأ السبب والدليل ↓",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        8,
+        7,
+        11
+      ],
+      "ratio": 11.61,
+      "size": 14
+    },
+    {
+      "path": "/products/secure-chat/#lab",
+      "text": "اقرأ المنهج وحدود الاستخدام ←",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        12,
+        11,
+        18
+      ],
+      "ratio": 11.32,
+      "size": 12
+    },
+    {
+      "path": "/products/secure-chat/#lab",
+      "text": "← كل التجارب",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        8,
+        7,
+        11
+      ],
+      "ratio": 11.61,
+      "size": 14
+    },
+    {
+      "path": "/products/secure-chat/#lab",
+      "text": "عن المنتج وحدود الاستخدام ↓",
+      "color": "rgb(255, 184, 41)",
+      "background": [
+        8,
+        7,
+        11
+      ],
+      "ratio": 11.61,
+      "size": 14
+    },
+    {
+      "path": "/products/secure-chat/#lab",
+      "text": "إعادة ضبط المثال",
+      "color": "rgb(189, 189, 189)",
+      "background": [
+        8,
+        7,
+        11
+      ],
+      "ratio": 10.69,
+      "size": 12
+    }
+  ],
+  "keyboard": {
+    "menuTab": "/products/",
+    "choice": "Enter activated redaction",
+    "escape": "closed menu and returned focus to summary",
+    "focus": {
+      "style": "solid",
+      "width": "3px",
+      "color": "rgb(255, 184, 41)"
+    }
+  },
+  "reducedMotion": {
+    "matches": true,
+    "animations": 0,
+    "choiceTransition": "0s"
+  },
+  "noJS": {
+    "result": "يمر الطلب العام ضمن النطاق المسموح في المثال.",
+    "fallback": true,
+    "overflow": false
+  },
+  "storageBlocked": {
+    "pressed": "true"
+  }
+}

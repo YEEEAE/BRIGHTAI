@@ -1,16 +1,16 @@
 ---
-import { productForSlug, productEntryPath, productContactPath } from '../shared/product-navigation.mjs';
+import { productForSlug, productContactPath } from '../shared/product-navigation.mjs';
 const { slug, compact = false } = Astro.props;
 const product = productForSlug(slug);
 ---
 {product && <section class:list={['product-journey', { compact }]} aria-label={`مسار AIGAS ${product.name}`}>
   {!compact && <h2>خطوتك التالية مع <bdi dir="ltr">{product.name}</bdi></h2>}
-  <p>{product.scope}</p>
+  {!compact && <p>{product.scope}</p>}
   <div class="actions">
-    <a class="journey-entry" href={productEntryPath(slug)} aria-label={`الدخول إلى مساحة ${product.name}`}><span>{compact ? 'الدخول' : 'الدخول إلى المساحة'}</span><span class="journey-arrow" aria-hidden="true">↖</span></a>
-    <a class="journey-contact" href={productContactPath(slug)} aria-label={`استفسار عن تقييم ${product.name}`}>استفسار عن تقييم <span aria-hidden="true">←</span></a>
+    <a class="journey-entry" href={`${product.publicPath}#lab`} aria-label={`جرّب الآن — ${product.name}`}><span>جرّب الآن</span><span class="journey-arrow" aria-hidden="true">←</span></a>
+    <a class="journey-contact" href={`/auth/sign-up/?returnTo=${encodeURIComponent(product.workspacePath)}`} aria-label={`تجربة تشغيلية 48 ساعة — ${product.name}`}>تجربة تشغيلية 48 ساعة <span aria-hidden="true">↗</span></a>
   </div>
-  {!compact && <p>الدخول يتحقق من الهوية وقرار الإتاحة في الخادم؛ والمخططات أعلاه تعليمية. الاستفسار رسالة تواصل لا تفعّل تجربة ولا تمنح ترخيصًا. طلب الاشتراك مستقل، والتكامل مع المنتجات الأخرى اختياري. <a href={productContactPath(slug, true)}>تواصل بشأن الاشتراك</a></p>}
+  {!compact && <p>المختبر عام وتعليمي. التجربة التشغيلية لمدة 48 ساعة تتطلب حسابًا وتفعيلًا مؤهلًا بعد التحقق من الوصول في الخادم؛ تسجيل الدخول وحده لا يفعّلها. <a href={productContactPath(slug, true)}>تواصل بشأن الاشتراك</a></p>}
 </section>}
 <style>
   .product-journey { margin-block:32px; padding:clamp(24px,4vw,40px); border-radius:20px; background:#ffffff04; box-shadow:inset 0 1px 0 #ffffff10; }
@@ -19,8 +19,9 @@ const product = productForSlug(slug);
   .product-journey h2 { margin-block-end:20px; }
   .actions { display:flex; flex-wrap:wrap; align-items:center; gap:12px 24px; }
   .actions a { display:inline-flex; align-items:center; justify-content:center; gap:20px; min-block-size:48px; overflow-wrap:anywhere; font-size:14px; text-decoration:none; }
-  .journey-entry { padding:6px 6px 6px 22px; border-radius:99px; color:#100d16; background:#e8d9ff; font-weight:600; }
+  .journey-entry { padding:6px 18px; border-radius:var(--radius-control); background:var(--color-action); color:var(--color-action-contrast); font-weight:600; }
   .journey-arrow { display:grid; place-items:center; inline-size:34px; block-size:34px; flex-shrink:0; border-radius:50%; background:#120b1910; font-size:19px; }
+  .journey-entry:is(:hover,:focus-visible) { background:var(--color-action-hover-strong); color:var(--color-action-contrast) !important; }
   .journey-contact { color:var(--ui-ink,#f4f1f8); }
   .journey-contact>span { color:var(--ui-violet,#c7adff); }
   .product-journey:not(.compact)>p:last-child { margin-block:24px 0; font-size:14px; color:var(--ui-muted,#b9b3c4); }
