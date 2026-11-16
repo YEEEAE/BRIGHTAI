@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-16 VERIFIED LOCAL Firewall demo: Workspace نصي حتمي demo-v1 بخمسة قرارات؛ لا API/مزود/حفظ نص؛ Human Gate رابط مثال افتراضي؛ unit6/Browser5+empty/long/loading/reset/redaction/build57 PASS؛ النشر NOT RUN.
 - 2026-11-16 VERIFIED LOCAL Experience Hub: `/products/` خمس بطاقات+Kernel؛ `#lab` مختبر عام أولًا و48h→Auth معreturnTo؛ غلافRTL وتنقل مشترك للمختبر/التطبيق، حفظ اختيار محلي للجلسة؛ Hero/Constellation/logo/tokens بلا تغيير؛ التشغيل الحقيقي والنشر غير مثبتين.
 - 2026-11-16 PARTIAL Node origin: HEAD `fa3884d4217b77b411598a2095858d5938cbfff9`+tree؛ JWKS/SHA readiness شُدّد؛ build57/unit11/runtime19PASS+1SKIP؛6/6SSR محليGET/HEAD200،API401JSON؛ DB/Auth الفعلي وBrowserغيرمثبتين؛ Renderread نجح: العامةstatic_site/dist/client وdeploy `dep-dbte0qe417fc738h1fsg` بنفسSHA؛ أصلRenderوالدومين6/6+health/API404؛ `Audit/node-origin-2026-11-16/REPORT.md` وخطة `docs/NODE-ORIGIN-OPERATOR-2026-11-16.md`؛ لا نشر/DNS.
 - 2026-11-16 P01 drift: رأس البدايةf221ac4 ثمHEAD8b0aa3c بعمليةخارجالوكيل؛ لا فرق مصدر/اختبارات/إعدادات بينهما؛ رأسالتسليم264ملفًا/55مصدرًا، رأسالبداية245/55؛ `Audit/p01-delta-2026-11-16/final-delta.tsv`؛ آخرGitHubread=f221ac4،DeploySHA UNKNOWN.

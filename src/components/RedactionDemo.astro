@@ -1,11 +1,11 @@
 ---
-interface Props { example?: string; placeholder?: string }
-const { example = 'DEMO-0000', placeholder = '[بيانات منقحة]' } = Astro.props;
+interface Props { example?: string; placeholder?: string; comparison?: boolean }
+const { example = 'DEMO-0000', placeholder = '[بيانات منقحة]', comparison = false } = Astro.props;
 ---
-<div class="redaction-demo" data-redaction data-placeholder={placeholder}>
+{comparison ? <div class="redaction-demo"><p>Before / قبل — معرّف خيالي</p><p data-before dir="auto"></p><p>After / بعد</p><p data-after dir="auto"></p></div> : <div class="redaction-demo" data-redaction data-placeholder={placeholder}>
   <p class="diagram-help">مثال خيالي للتنقيح · لا فحص أو إرسال بيانات</p>
   <p class="redaction-value" aria-hidden="true"><bdi data-redaction-value data-original={example}>{example}</bdi><span class="scan-line"></span></p>
   <button type="button" class="ghost" data-redaction-run disabled>شاهد التنقيح</button>
   <p class="note" data-redaction-status role="status"></p>
   <noscript><p>النتيجة التوضيحية: {placeholder}</p></noscript>
-</div>
+</div>}

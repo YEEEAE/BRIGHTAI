@@ -1,5 +1,5 @@
 ---
-const labels = ['سماح','تحذير','تنقيح','موافقة','حظر'];
+const labels = ['سماح','تحذير','تنقيح','تصعيد','حظر'];
 ---
 <figure class="decision-circuit" aria-label="خريطة تعليمية لمرور الطلب إلى السياسة ثم قرار محدد">
   <div class="circuit-source"><span>01 / المدخل</span><strong>طلب ذكاء اصطناعي</strong><small>بيانات افتراضية فقط</small></div>
@@ -14,10 +14,10 @@ const labels = ['سماح','تحذير','تنقيح','موافقة','حظر'];
       {labels.map((_,i) => <g class={`circuit-branch branch-${i}`}><path d={`M300 222V244Q300 260 ${60+i*120} 260V314`} stroke="currentColor" stroke-width="1.5"/><circle cx={60+i*120} cy="321" r="6" fill="#120c1b" stroke="currentColor" stroke-width="2"/></g>)}
       <circle data-decision-packet cx="60" cy="314" r="5" fill="currentColor"/>
     </svg>
-    <span class="circuit-policy">السياسة + الصلاحية</span>
+    <span class="circuit-policy">قاعدة demo</span>
   </div>
   <div class="circuit-outcomes" aria-hidden="true">{labels.map((label,i) => <span class={`outcome-${i}`}>{label}</span>)}</div>
-  <figcaption><span>03 / المخرج</span><strong>قرار محدد بالسياق</strong><b data-path-label>سماح</b></figcaption>
+  <figcaption><span>03 / المخرج</span><strong>قرار محدد بالسياق</strong><b data-path-label>لم يُفحص</b></figcaption>
 </figure>
 <style>
  .decision-circuit { margin: 0; min-width: 0; text-align: center; }

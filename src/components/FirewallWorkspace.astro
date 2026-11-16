@@ -1,0 +1,91 @@
+---
+import DecisionCircuit from './DecisionCircuit.astro';
+import RedactionDemo from './RedactionDemo.astro';
+import {examples, rules} from '../shared/firewall-demo.mjs';
+---
+<section class="decision-workspace ph-no-capture" data-demo-workspace data-ph-no-capture aria-label="Workspace قرار Firewall التعليمي">
+  <div class="workspace-grid">
+    <div>
+      <p>01 / الإدخال</p><h2>افهم أثر الطلب على القرار</h2>
+      <p>demo محلي حتمي، وليس فحصًا أمنيًا حقيقيًا. لا مزوّد AI ولا إرسال أو حفظ للنص. استخدم نصوصًا خيالية فقط.</p>
+      <div class="examples">{examples.map(([code,label,text]) => <button disabled type="button" data-demo-example={text}>{label} <bdi>{code}</bdi></button>)}</div>
+      <label for="demo-request">نص الطلب — حتى 500 حرف</label>
+      <textarea id="demo-request" rows="4" autocomplete="off" data-private aria-describedby="demo-help demo-status"></textarea>
+      <p id="demo-help">المطابقة حرفية وحساسة لحالة الأحرف. اختيار المثال يملأ النص؛ اضغط الفحص لحساب القرار.</p>
+      <button disabled type="button" data-check>افحص الطلب</button>
+      <button disabled type="button" data-clear>إعادة ضبط</button>
+      <p id="demo-status" role="status" aria-live="polite">لم يُفحص أي طلب بعد.</p>
+      <div data-result hidden>
+        <p>الإدخال ← قاعدة demo ← قرار ← السبب ← المخرج</p>
+        <p data-input-snapshot dir="auto"></p>
+        <h3 data-decision></h3><p data-reason></p>
+        <h3>المخرج</h3><p data-output dir="auto"></p>
+        <div data-comparison hidden><RedactionDemo comparison /></div>
+        <a data-escalate hidden href="/products/human-gate/?scenario=default#lab">افتح سيناريو Human Gate الافتراضي فقط ←</a>
+      </div>
+      <details open><summary>Inspector / سياسة demo-v1</summary><p>أول قاعدة مطابقة حسب الترتيب أدناه تفوز. لا فهم دلالي ولا كشف بيانات شخصية.</p><ol>{rules.map(rule => <li><bdi>{rule.code}</bdi> — {rule.match ? <>يحتوي النص حرفيًا على «{rule.match}»</> : 'أي نص آخر غير فارغ ضمن الحد'}: {rule.reason}</li>)}</ol><p data-rule>القاعدة المطابقة: لم يُفحص.</p></details>
+    </div>
+    <div class="experience-firewall"><DecisionCircuit /></div>
+  </div>
+  <noscript>الفحص يحتاج JavaScript؛ سياسة المثال وأسبابه الخمسة ظاهرة أعلاه.</noscript>
+</section>
+<script>
+import {evaluateDemo, examples} from '../shared/firewall-demo.mjs';
+document.querySelectorAll<HTMLElement>('[data-demo-workspace]').forEach(root => {
+ const field = root.querySelector<HTMLTextAreaElement>('textarea')!;
+ const check = root.querySelector<HTMLButtonElement>('[data-check]')!;
+ const clear = root.querySelector<HTMLButtonElement>('[data-clear]')!;
+ const status = root.querySelector<HTMLElement>('[role=status]')!;
+ const result = root.querySelector<HTMLElement>('[data-result]')!;
+ const circuit = root.querySelector<HTMLElement>('.experience-firewall')!;
+ const set = (selector:string, text:string) => { root.querySelector(selector)!.textContent = text; };
+ let timer: ReturnType<typeof setTimeout> | undefined;
+ function invalidate(message = 'تغيّر الإدخال؛ اضغط افحص الطلب.') {
+   clearTimeout(timer); check.disabled = false; root.setAttribute('aria-busy','false');
+   field.removeAttribute('aria-invalid'); result.hidden = true; status.textContent = message;
+   circuit.removeAttribute('data-state');
+   set('[data-path-label]','لم يُفحص'); set('[data-rule]','القاعدة المطابقة: لم يُفحص.');
+ }
+ root.querySelectorAll<HTMLButtonElement>('[data-demo-example]').forEach(button => {
+   button.disabled = false;
+   button.addEventListener('click', () => {field.value = button.dataset.demoExample!; invalidate(); field.focus();});
+ });
+ check.disabled = clear.disabled = false;
+ field.addEventListener('input', () => invalidate());
+ const reset = () => {field.value=''; invalidate('أُعيد الضبط. لم يُفحص أي طلب.'); field.focus();};
+ clear.addEventListener('click',reset);
+ const shellReset = root.closest('[data-lab-shell]')?.querySelector<HTMLButtonElement>('[data-lab-reset]');
+ if(shellReset) {shellReset.hidden=false; shellReset.addEventListener('click',reset);}
+ check.addEventListener('click', () => {
+   invalidate(); const input = field.value; const decision = evaluateDemo(input);
+   if ('error' in decision) {status.textContent=decision.error!; field.setAttribute('aria-invalid','true'); return;}
+   field.removeAttribute('aria-invalid'); check.disabled=true; root.setAttribute('aria-busy','true');
+   status.textContent='جارٍ تطبيق قواعد demo محليًا…';
+   timer=setTimeout(() => {
+     root.setAttribute('aria-busy','false'); check.disabled=false; result.hidden=false;
+     set('[data-input-snapshot]',input); set('[data-decision]',decision.label+' / '+decision.code);
+     set('[data-reason]',decision.reason); set('[data-output]',decision.output!);
+     set('[data-rule]',decision.ruleId+' — '+decision.reason);
+     root.querySelector<HTMLElement>('[data-comparison]')!.hidden=decision.code!=='REDACT';
+     set('[data-before]',input); set('[data-after]',decision.output!);
+     root.querySelector<HTMLElement>('[data-escalate]')!.hidden=decision.code!=='ESCALATE';
+     const index=examples.findIndex(example=>example[0]===decision.code);
+     circuit.dataset.state=String(index); circuit.style.setProperty('--branch-color','var(--color-focus)');
+     set('[data-path-label]',decision.label);
+     const packet=root.querySelector('[data-decision-packet]')!; packet.setAttribute('cx',String(60+index*120));
+     status.textContent='اكتمل المثال: '+decision.label;
+   },250);
+ });
+});
+</script>
+<style>
+.decision-workspace{padding:clamp(18px,3vw,36px);min-width:0}
+.workspace-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px}
+textarea{display:block;box-sizing:border-box;width:100%;margin-block:12px;background:var(--surface-raised);color:var(--color-text);border:1px solid var(--border-strong);border-radius:8px;padding:16px;font:inherit;resize:vertical}
+.examples{display:flex;flex-wrap:wrap;gap:8px;margin-block:20px}
+button,a{min-height:44px}button{font:inherit;padding:10px 14px;background:var(--surface-raised);color:var(--color-text);border:1px solid var(--border-strong);border-radius:8px;cursor:pointer}button:disabled{opacity:.6;cursor:wait}
+button:focus-visible,textarea:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--color-focus);outline-offset:4px}
+p,li{line-height:1.9;overflow-wrap:anywhere}li{margin-block:12px}details{margin-block:24px;border-top:1px solid var(--border-strong);padding-top:20px}summary{cursor:pointer}
+[data-result]{border-inline-start:3px solid var(--color-focus);padding-inline:20px}[data-escalate]{display:inline-flex;align-items:center;color:var(--color-focus)}[hidden]{display:none!important}
+@media(max-width:900px){.workspace-grid{grid-template-columns:minmax(0,1fr)}.experience-firewall{max-width:420px;width:100%;margin:auto}}
+</style>
