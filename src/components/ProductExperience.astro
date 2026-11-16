@@ -1,4 +1,6 @@
 ---
+import RiskWorkspace from './RiskWorkspace.astro';
+import HumanGateDemo from './HumanGateDemo.astro';
 import FirewallWorkspace from './FirewallWorkspace.astro';
 import { labBriefs } from '../shared/lab-briefs';
 interface Props { kind: string }
@@ -18,10 +20,9 @@ const chats = [
   ['بيانات داخلية', 'أحتاج تلخيص رسالة عمل داخلية. ما الذي أراجعه أولًا؟', 'تحقق من التصنيف وصلاحية المشاركة واعتماد الأداة والحساب والوجهة. عند الغموض، توقف وراجع المالك.', 'المشاركة مقيدة بتصنيف البيانات؛ لا تُدخل محتوى داخليًا في هذا المختبر.'],
 ];
 ---
-{kind === 'firewall' ? <FirewallWorkspace /> : <section class={`lab-experience lab-${kind}`} data-lab-experience data-kind={kind} aria-label={brief.task}>
+{kind === 'risk-engine' ? <RiskWorkspace demo /> : kind === 'human-gate' ? <HumanGateDemo /> : kind === 'firewall' ? <FirewallWorkspace /> : <section class={`lab-experience lab-${kind}`} data-lab-experience data-kind={kind} aria-label={brief.task}>
   <div class="lab-workbench">
     <div class="lab-instruction"><p class="hub-kicker">01 / {brief.task}</p><h2>{brief.example}</h2><p>{brief.outcome}</p></div>
-    {kind === 'risk-engine' && <div class="lab-risk-board"><p>الأثر المحتمل ←</p><div class="lab-risk-matrix">{['مرتفع', 'متوسط', 'محدود'].map((likelihood, row) => ['محدود', 'متوسط', 'مرتفع'].map((impact, col) => <button type="button" disabled class={`lab-risk-cell lab-risk-${row === 0 || col === 2 ? 'high' : row === 1 || col === 1 ? 'medium' : 'low'}`} data-lab-choice={row * 3 + col} aria-label={`احتمال ${likelihood} وأثر ${impact}`} aria-pressed={row === 2 && col === 0 ? 'true' : 'false'} data-result={row === 0 || col === 2 ? 'الحالة تستحق مراجعة أعمق قبل الاعتماد.' : 'وثّق الضابط والمالك وموعد المراجعة.'} data-evidence={`اختيارك: احتمال ${likelihood} وأثر ${impact}. التصنيف النهائي يتبع منهج الجهة المعتمد؛ لون الخلية لا يقرر الحظر.`}><span>{likelihood}</span><small>أثر {impact}</small></button>))}</div><p>↑ الاحتمال · اختر خلية لتفسيرها</p></div>}
     {kind === 'human-gate' && <>
       <article class="lab-review"><header><bdi dir="ltr">REQ-DEMO-01</bdi><span>طلب مراجعة خيالي</span></header><h3>نشر ملخص خارج المؤسسة</h3><dl><dt>مقدم الطلب</dt><dd>مالك الحالة</dd><dt>المراجع</dt><dd>دور مستقل عن مقدم الطلب</dd><dt>النطاق</dt><dd>ملخص محدد، دون بيانات شخصية</dd></dl></article>
       <ol class="lab-approval-steps"><li>طلب</li><li>مراجعة مستقلة</li><li data-lab-output>بانتظار المراجعة</li></ol>

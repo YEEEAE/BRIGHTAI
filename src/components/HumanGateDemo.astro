@@ -1,0 +1,49 @@
+<section class="hg-demo ph-no-capture" data-hg-demo data-ph-no-capture aria-label="Queue موافقات اصطناعية">
+ <header><p>HUMAN GATE / DEMO ONLY</p><h2>قرار بشري، ثم تحقق مستقل للتنفيذ</h2><p>بيانات خيالية في ذاكرة الصفحة فقط. تبديل Persona لا يغير حسابك أو صلاحياتك الفعلية. لا API ولا اعتمادات إنتاجية.</p></header>
+ <div class="hg-toolbar"><label>Persona افتراضي داخل demo فقط<select data-persona><option value="requester">مقدم الطلب · سارة (افتراضي)</option><option value="reviewer">مراجع مخوّل · ناصر (افتراضي ADMIN)</option></select></label><label>Queue<select data-filter><option value="all">كل الطلبات</option><option value="pending">pending · معلقة</option><option value="decided">decided · سُجّل قرار</option><option value="cancelled">cancelled · ملغاة</option></select></label><button data-reset>إعادة ضبط المحاكاة</button></div>
+ <p data-origin></p><div class="hg-grid"><aside aria-label="اختيار طلب"><div data-queue></div><button data-new>طلب اصطناعي جديد</button></aside><article>
+ <h3 data-title></h3><p data-state></p><details><summary>لماذا يحتاج موافقة؟</summary><p>قاعدة ESCALATE التعليمية تستدعي مراجعة مستقلة. العملية المحاكية INTERNAL_DEMO_NOTE. ربط Firewall هنا توضيحي فقط؛ لا ينشئ الخادم طلب مراجعة تلقائيًا ولا يجيز نشرًا أو استدعاء مزود.</p><p>المراجع المطلوب: ADMIN مستقل أو تفويض صالح بالمستوى نفسه. مقدم الطلب: سارة؛ المراجع: ناصر. التنفيذ لمقدم الطلب وحده.</p></details>
+ <p data-authority></p><p data-decision></p><p data-permit></p><p data-reason></p>
+ <label for="hg-reason">سبب الإجراء / التوضيح — بيانات خيالية فقط</label><textarea id="hg-reason" maxlength="500" rows="3" autocomplete="off" data-private></textarea>
+ <div class="hg-actions"><button data-act="APPROVE">وافق</button><button data-act="REJECT">ارفض</button><button data-act="CLARIFY">اطلب توضيحًا</button><button data-act="CANCEL">ألغِ الطلب</button><button data-act="EXECUTE">تحقق ونفّذ الملاحظة اصطناعيًا</button></div>
+ <p>طلب التوضيح ملاحظة demo فقط؛ يبقى PENDING، ولا يُسجّل كقرار أو حالة خادمية.</p><div class="hg-actions"><button data-act="EXPIRE">حاكِ انتهاء المهلة</button><button data-act="AUTHORITY_LOST">حاكِ انتهاء تفويض المراجع</button></div>
+ <p role="status" aria-live="polite" data-feedback>اختر طلبًا ثم جرّب مقدم الطلب لإظهار منع المراجعة الذاتية.</p>
+ <h4>تاريخ المثال</h4><ol data-history></ol><h4>Ledger · معاينة حدث اصطناعي</h4><p>يتولد محليًا عند القرار أو التنفيذ؛ لا يُرسل إلى Ledger الحقيقي.</p><pre data-event>لم يُسجّل قرار في هذه الدورة.</pre>
+ </article></div><noscript>فعّل JavaScript لتشغيل Queue المحلية. لا تُستخدم صلاحيات فعلية في هذا المختبر.</noscript>
+</section>
+<script>
+import {createQueue,act,ledgerEvent} from '../shared/human-gate-demo.mjs';
+document.querySelectorAll<HTMLElement>('[data-hg-demo]').forEach(root=>{
+ let queue=createQueue(),selected=queue[0].id,events=new Map();
+ const get=(s:string)=>root.querySelector<HTMLElement>(s)!;
+ const persona=root.querySelector<HTMLSelectElement>('[data-persona]')!;
+ const filter=root.querySelector<HTMLSelectElement>('[data-filter]')!;
+ const reason=root.querySelector<HTMLTextAreaElement>('textarea')!;
+ const say=(text:string)=>get('[data-feedback]').textContent=text;
+ function render(){
+  const list=get('[data-queue]');list.replaceChildren();
+  const visible=queue.filter(r=>filter.value==='all'||filter.value==='pending'&&r.status==='PENDING'||filter.value==='decided'&&r.decision||filter.value==='cancelled'&&r.status==='CANCELLED');
+  if(!visible.length) list.textContent='لا توجد طلبات ضمن هذا الفلتر؛ غيّر الفلتر أو أنشئ طلبًا.';
+  visible.forEach(r=>{const b=document.createElement('button');b.textContent=r.id+' · '+r.title+' · '+r.status;b.setAttribute('aria-pressed',String(r.id===selected));b.onclick=()=>{selected=r.id;reason.value='';render();say('فُتح الطلب '+r.id);};list.append(b);});
+  const r=queue.find(r=>r.id===selected)!;
+  get('[data-title]').textContent=r.title+' / '+r.id;
+  get('[data-state]').textContent='حالة الطلب: '+r.status;
+  get('[data-authority]').textContent='صاحب صلاحية المراجعة في المثال: ناصر · ADMIN مستقل · '+(r.authority?'الصلاحية سارية افتراضيًا.':'التفويض منتهٍ؛ لا يملك اعتماد التنفيذ.')+(persona.value==='requester'?' أنت مقدم الطلب: فصل المهام يمنعك من اعتماده أو رفضه.':' أنت المراجع: التنفيذ متاح لمقدم الطلب فقط.');
+  get('[data-decision]').textContent='القرار البشري: '+(r.decision==='APPROVE'?'سُجّلت موافقة بشرية؛ لا تعني السماح بالتنفيذ.':r.decision==='REJECT'?'سُجّل رفض؛ التنفيذ ممنوع.':'لم يُسجّل قرار.');
+  get('[data-permit]').textContent='إذن التنفيذ: '+(r.permit??'غير صادر')+' · '+(r.status==='APPROVED'?'يلزم فحص الربط والسياسة والمهلة وصلاحية المراجع ثم الاستهلاك مرة واحدة.':r.status==='EXECUTED'?'استهلك مرة واحدة في المحاكاة.':'التنفيذ غير مسموح لهذه الحالة.');
+  get('[data-reason]').textContent='سبب الحالة: '+r.reason;
+  get('[data-history]').replaceChildren(...r.history.map(t=>{const li=document.createElement('li');li.textContent=t;return li;}));
+  get('[data-event]').textContent=events.has(r.id)?JSON.stringify(events.get(r.id),null,2):'لم يولّد حدث في هذه الدورة.';
+ }
+ root.querySelectorAll<HTMLButtonElement>('[data-act]').forEach(b=>b.onclick=()=>{try{const r=queue.find(r=>r.id===selected)!;const next=act(r,persona.value,b.dataset.act,reason.value);queue=queue.map(q=>q.id===selected?next:q);if(['APPROVE','REJECT','EXECUTE'].includes(b.dataset.act!))events.set(selected,ledgerEvent(next));render();say(b.dataset.act==='CLARIFY'?'سُجل توضيح محلي؛ الحالة PENDING دون قرار خادمي.':'اكتمل إجراء المحاكاة: '+next.status);}catch(e){say(e instanceof Error?e.message:'تعذر الإجراء.');}});
+ persona.onchange=()=>{render();say('تغيّرت شخصية demo فقط؛ صلاحيات حسابك لم تتغير.');};filter.onchange=render;
+ const reset=()=>{queue=createQueue();selected=queue[0].id;events.clear();persona.value='requester';filter.value='all';reason.value='';render();say('أعيدت بيانات المحاكاة؛ لم تحفظ قرارات.');};
+ get('[data-reset]').onclick=reset;
+ get('[data-new]').onclick=()=>{const r={...createQueue()[0],id:'HG-DEMO-'+String(queue.length+1).padStart(2,'0')};queue.push(r);selected=r.id;filter.value='all';reason.value='';render();say('أُنشئ طلب اصطناعي جديد.');};
+ const shellReset=root.closest('[data-lab-shell]')?.querySelector<HTMLButtonElement>('[data-lab-reset]');if(shellReset){shellReset.hidden=false;shellReset.onclick=reset;}
+ get('[data-origin]').textContent=new URLSearchParams(location.search).get('scenario')==='escalate'?'وصلت من Firewall ESCALATE: حُمّل سيناريو ثابت فقط؛ لم يُنقل نص أو طلب حقيقي.':'مصدر المثال: ESCALATE اصطناعي ثابت.';render();
+});
+</script>
+<style>
+.hg-demo{padding:clamp(18px,3vw,32px);color:var(--color-text);overflow-wrap:anywhere}.hg-demo p{line-height:1.9}.hg-toolbar,.hg-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin-block:18px}.hg-toolbar label{flex:1;min-width:180px}.hg-grid{display:grid;grid-template-columns:minmax(180px,.65fr) minmax(0,1.5fr);gap:24px}.hg-grid>*{min-width:0}.hg-grid article{padding-inline-start:24px;border-inline-start:1px solid var(--border-strong)}button,select,textarea{font:inherit;color:var(--color-text);background:var(--surface-raised);border:1px solid var(--border-strong);border-radius:8px;padding:12px;box-sizing:border-box;min-height:44px}button{cursor:pointer}select,textarea{display:block;width:100%;margin-block:8px}button[aria-pressed=true]{border-color:var(--color-focus);box-shadow:inset 0 -2px var(--color-focus)}[data-queue] button{display:block;width:100%;text-align:start;margin-block-end:10px}button:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--color-focus);outline-offset:4px}details,pre,[role=status]{padding:16px;background:var(--surface-raised);border:1px solid var(--border-strong);border-radius:8px}pre{white-space:pre-wrap;direction:ltr;text-align:left}summary{cursor:pointer;min-height:44px}[data-permit]{border-inline-start:3px solid var(--color-focus);padding-inline-start:14px}@media(max-width:850px){.hg-grid{grid-template-columns:minmax(0,1fr)}.hg-grid article{border-inline-start:0;border-block-start:1px solid var(--border-strong);padding:20px 0}}
+</style>

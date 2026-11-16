@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createQueue,act,lifecycle,ledgerEvent} from '../src/shared/human-gate-demo.mjs';
+import {transitions} from '../src/server/human-gate/core.mjs';
+test('demo lifecycle mirrors current server',()=>assert.deepEqual(lifecycle,transitions));
+test('self review denied for approval, rejection and clarification',()=>{for(const a of ['APPROVE','REJECT','CLARIFY'])assert.throws(()=>act(createQueue()[0],'requester',a,'سبب خيالي'),/SELF_REVIEW_DENIED/);});
+test('clarification remains pending without decision or permit',()=>{const r=act(createQueue()[0],'reviewer','CLARIFY','وضح النطاق');assert.equal(r.status,'PENDING');assert.equal(r.decision,null);assert.equal(r.permit,null);});
+test('independent approval then requester consumes once',()=>{const r=act(createQueue()[0],'reviewer','APPROVE','نطاق محدد');assert.equal(r.permit,'ACTIVE');assert.throws(()=>act(r,'reviewer','EXECUTE',''),/لمقدم الطلب/);const done=act(r,'requester','EXECUTE','');assert.equal(done.status,'EXECUTED');assert.equal(done.permit,'CONSUMED');assert.throws(()=>act(done,'requester','EXECUTE',''));assert.equal(ledgerEvent(done).synthetic,true);});
+test('rejection, cancellation, timeout and lost authority block execution',()=>{for(const a of ['REJECT','CANCEL','EXPIRE','AUTHORITY_LOST']){const r=act(createQueue()[0],'reviewer',a,'سبب خيالي');assert.throws(()=>act(r,'requester','EXECUTE',''));}const approved=act(createQueue()[0],'reviewer','APPROVE','سبب خيالي');const lost=act(approved,'reviewer','AUTHORITY_LOST','انتهى التفويض');assert.equal(lost.decision,'APPROVE');assert.equal(lost.status,'EXPIRED');assert.equal(lost.permit,'REVOKED');});
+test('reason required and fixtures isolated',()=>{assert.throws(()=>act(createQueue()[0],'reviewer','APPROVE',' '));const q=createQueue();act(q[0],'reviewer','REJECT','سبب خيالي');assert.equal(q[0].status,'PENDING');});

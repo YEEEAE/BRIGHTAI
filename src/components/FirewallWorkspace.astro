@@ -21,7 +21,7 @@ import {examples, rules} from '../shared/firewall-demo.mjs';
         <h3 data-decision></h3><p data-reason></p>
         <h3>المخرج</h3><p data-output dir="auto"></p>
         <div data-comparison hidden><RedactionDemo comparison /></div>
-        <a data-escalate hidden href="/products/human-gate/?scenario=default#lab">افتح سيناريو Human Gate الافتراضي فقط ←</a>
+        <a data-escalate hidden href="/products/human-gate/?scenario=escalate#lab">افتح Queue Human Gate الاصطناعية ←</a>
       </div>
       <details open><summary>Inspector / سياسة demo-v1</summary><p>أول قاعدة مطابقة حسب الترتيب أدناه تفوز. لا فهم دلالي ولا كشف بيانات شخصية.</p><ol>{rules.map(rule => <li><bdi>{rule.code}</bdi> — {rule.match ? <>يحتوي النص حرفيًا على «{rule.match}»</> : 'أي نص آخر غير فارغ ضمن الحد'}: {rule.reason}</li>)}</ol><p data-rule>القاعدة المطابقة: لم يُفحص.</p></details>
     </div>

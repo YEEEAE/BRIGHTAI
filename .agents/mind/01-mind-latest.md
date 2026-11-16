@@ -1,6 +1,8 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-16 VERIFIED LOCAL Risk demo: RiskWorkspace demo mode؛ أصلان خياليان/Matrix/معالجة/Inspector/قبول اصطناعي يُلغى بالتغيير/SyntheticJSON؛ unit5/build57/Browser390 PASS؛ لاAPIأوقبولمؤسسيأونشر؛ `Audit/risk-demo-2026-11-16/REPORT.md`.
+- 2026-11-16 VERIFIED LOCAL Human Gate demo: Queue وPersona محلية فقط؛ lifecycle مطابق للخادم، SoD وقرار≠تنفيذ وإذن أحادي ورفض/إلغاء/مهلة/تفويض؛ توضيح ملاحظةPENDING؛ Firewall→fixture وLedger preview بلاAPI؛ unit6/build57/Browser390+1440 PASS؛ `Audit/human-gate-demo-2026-11-16/REPORT.md`؛ لا نشر.
 - 2026-11-16 VERIFIED LOCAL Firewall demo: Workspace نصي حتمي demo-v1 بخمسة قرارات؛ لا API/مزود/حفظ نص؛ Human Gate رابط مثال افتراضي؛ unit6/Browser5+empty/long/loading/reset/redaction/build57 PASS؛ النشر NOT RUN.
 - 2026-11-16 VERIFIED LOCAL Experience Hub: `/products/` خمس بطاقات+Kernel؛ `#lab` مختبر عام أولًا و48h→Auth معreturnTo؛ غلافRTL وتنقل مشترك للمختبر/التطبيق، حفظ اختيار محلي للجلسة؛ Hero/Constellation/logo/tokens بلا تغيير؛ التشغيل الحقيقي والنشر غير مثبتين.
 - 2026-11-16 PARTIAL Node origin: HEAD `fa3884d4217b77b411598a2095858d5938cbfff9`+tree؛ JWKS/SHA readiness شُدّد؛ build57/unit11/runtime19PASS+1SKIP؛6/6SSR محليGET/HEAD200،API401JSON؛ DB/Auth الفعلي وBrowserغيرمثبتين؛ Renderread نجح: العامةstatic_site/dist/client وdeploy `dep-dbte0qe417fc738h1fsg` بنفسSHA؛ أصلRenderوالدومين6/6+health/API404؛ `Audit/node-origin-2026-11-16/REPORT.md` وخطة `docs/NODE-ORIGIN-OPERATOR-2026-11-16.md`؛ لا نشر/DNS.

@@ -1,14 +1,15 @@
 ---
+import RiskDemo from './RiskDemo.astro';
 import { productEntryPath } from '../shared/product-navigation.mjs';
 import AppLayout from '../layouts/AppLayout.astro';
 import { authConfig } from '../server/kernel/auth.mjs';
 import { evaluate } from '../server/risk-engine/core.mjs';
 import '../styles/risk-engine.css';
-const { assetId = '' } = Astro.props;
+const { assetId = '', demo = false } = Astro.props;
 const config=authConfig();
 const levels={LOW:'منخفض',MEDIUM:'متوسط',HIGH:'مرتفع'};
 ---
-<AppLayout title="تقييم المخاطر Risk Engine">
+{demo ? <RiskDemo /> : <AppLayout title="تقييم المخاطر Risk Engine">
  <section class="kernel risk-engine" data-risk-engine data-detail-asset={assetId} data-auth-url={config?.base??''}>
   <div class="page-heading"><div><p class="overline">05 / RISK ENGINE</p><h1>افهم الخطر.<span>ووثّق سببه.</span></h1><p class="intro">سجل حالات استخدام الذكاء الاصطناعي وتقييم أولي بقواعد معلنة. النتيجة مسودة تقدير بشرية المدخلات؛ ليست شهادة امتثال أو قرار حظر أو تصريح تشغيل.</p></div><span class="connection">قواعد حتمية · دون نموذج AI</span></div>
   <section class="notice"><div><h2>حالة الوصول</h2><p data-status role="status" aria-live="polite">{config?'جارٍ التحقق من الدخول…':'يلزم إعداد الدخول عبر Neon Auth.'}</p><a href={productEntryPath('risk-engine')}>الدخول وإدارة المؤسسة عبر Kernel ←</a></div><button type="button" data-reload>تحديث الحالات</button></section>
@@ -66,5 +67,7 @@ const levels={LOW:'منخفض',MEDIUM:'متوسط',HIGH:'مرتفع'};
   </div>
   <p class="notice">نسخة أولى لسجل المخاطر والتقييم القاعدي والمعالجة؛ مستقلة عن شراء Firewall وHuman Gate وLedger. لا تحليل AI أو مراقبة آلية أو اعتماد تنظيمي. استخدم أوصافًا اصطناعية وغير حساسة؛ لا تُستخدم بيانات العملاء لتدريب النماذج.</p>
  </section>
-</AppLayout>
-<script src="../scripts/risk-engine.ts"></script>
+</AppLayout>}
+<script>
+ if (document.querySelector('[data-risk-engine]')) import('../scripts/risk-engine');
+</script>
