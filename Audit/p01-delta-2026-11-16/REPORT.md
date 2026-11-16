@@ -12,6 +12,9 @@
 - Staging: **42 جدولًا و90 سياسة** بقراءة مباشرة؛ ledger يحوي29 صفًا APPLIED. بصمات `0030–0033` تطابق المصدر؛ إعادة تطبيقها عمل مكرر. الإنتاج:31 جدولًا، سياسات على جدولين،124 منحة authenticated، وruntime وledger وexploration غائبة. هذه قراءة كتالوج owner، وليست اختبار عزل A/B.
 - `/solutions/` الحي يعرض المركز الجديد؛ مانع «الصفحة القديمة» في D01 أصبح متجاوزًا لهذا المسار. `/knowledge/?q=audit` ما زال404؛ `/docs/` ومقال المعرفة الممثل200. لا يصح تعميم تعطل جميع المقالات.
 
+
+**انحراف أثناء التنفيذ:** تقدّم HEAD بعملية خارج أوامر الوكيل إلى `8b0aa3c0d1a62659658272d8a5ba57ef10293d9d`. فحص `f221ac4..8b0aa3c` لم يجد أي فرق في المصدر أو الاختبارات أو migrations أو إعدادات التشغيل. رأس التسليم الحالي يحوي 25 commit منذ المرجع و264 سجل ملف:99 إعادة تسمية،103 تقارير/أدلة،55 مصدرًا/اختبارًا،7 سياق. الأعداد245 أعلاه وdelta.json تخص رأس البداية؛ [final-delta.tsv](final-delta.tsv) يثبت رأس التسليم. لم ينفذ الوكيل commit أوpush. آخر قراءة GitHub كانتf221ac4؛ مطابقة الرأس اللاحق البعيد UNKNOWN.
+
 ## التصنيف وحدوده
 
 | التصنيف | المعنى |
@@ -91,7 +94,7 @@
 
 - 200: `/products/` وصفحات المنتجات الخمس،`/kernel/`،`/docs/`،`/solutions/`.
 - 404: `/app/`،Kernel والمنتجات الخمسة،operator/trials،ومسار Risk asset بمعرّف UUID اصطناعي،`/healthz/`،`/knowledge/?q=audit`.
--404 HTML مع كاش عام:37 API تطبيقي +`/api/observability/` +`/api/ai/chat/` +`/auth/sign-up/`.
+- 404 HTML مع كاش عام:37 API تطبيقي +`/api/observability/` +`/api/ai/chat/` +`/auth/sign-up/`.
 - بعض API يدعم POST دون GET، مثل `src/pages/app/api/firewall/evaluate.ts:4`؛ GET404 هنا ليس اختبار عملية POST أو تفويضها. لم تُرسل عمليات كتابة أو طلبات provider. ديناميكيات UUID مثّلت بمعرّف اصطناعي ثابت؛ لا بيانات مؤسسات حقيقية.
 
 ## Gap Register قابل للإغلاق
@@ -163,8 +166,8 @@ flowchart LR
 - `TRIAL_48H_NO-GO`: التطبيق وAuth404،وفجوة DB/runtime،ولا رحلة ذاتية مثبتة.
 - `ENTERPRISE_NO-GO`: لا دليل تشغيل أو تعافٍ أو قبول شامل؛هذا ليس إعادة تدقيق Enterprise كاملًا.
 - 42 اختبارًا محليًا PASS،0FAIL،0SKIP: التنقل،guidance،الهوية،review binding،سياسة Chat،ترتيب migrations،بحث المعرفة،observability. [TAP](local-tests.tap). لم يُشغّل build أو DB harness جديد؛لا تغيير مصدر يستدعيهما.
-- Neon MCP استُخدم SELECT فقط على Staging والإنتاج. [Staging hash comparison](staging-hash-comparison.json)،[Production catalog](production-catalog.json). الكتالوج ليس برهان RLS سلوكيًا،ولا يثبت اتصال التطبيق بهذه القاعدة.
-- GitHub connector طابق main مع SHA المحلي. Render نوع الخدمة وDeploy SHA UNKNOWN؛HTTP لا يربط artifact بالـHEAD. لا نكرر وصف static_site التاريخي كحقيقة اليوم.
+- Neon MCP استُخدم SELECT فقط على Staging والإنتاج. [Staging catalog](staging-catalog.json)،[Staging hash comparison](staging-hash-comparison.json)،[Production catalog](production-catalog.json). الكتالوج ليس برهان RLS سلوكيًا،ولا يثبت اتصال التطبيق بهذه القاعدة.
+- GitHub connector طابق main مع SHA المحلي؛ [revision.json](revision.json). Render نوع الخدمة وDeploy SHA UNKNOWN؛HTTP لا يربط artifact بالـHEAD. لا نكرر وصف static_site التاريخي كحقيقة اليوم.
 - المهارتان المستخدمتان: research-repository وtest-scenario. Graphify graph غير موجود؛لم يُثبّت شيء. استُخدم Git/Node وPlaywright وNeon وGitHub،دون أدوات تصميم خارجية لا تحتاجها المهمة.
 - لا commit/push/deploy/DNS/Neon write/paid AI/إرسال رسائل. لم تتغير ملفات المصدر أو الإعدادات. لم تُنشأ Issues أو حسابات أو منح.
 

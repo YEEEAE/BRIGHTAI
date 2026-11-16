@@ -1,0 +1,264 @@
+M	.agents/mind/01-mind-latest.md
+A	Audit/BRIGHTAI-AIGAS-EXPERIENCE-13-PROMPTS-2026-11-16.md
+A	Audit/brightai-closure/EXECUTIVE-CLOSURE.md
+A	Audit/brightai-closure/GENERATED-REMEDIATION-PROMPTS.md
+A	Audit/brightai-closure/LINEAR-IMPORT.csv
+A	Audit/brightai-closure/README.md
+A	Audit/brightai-closure/SHA256SUMS.txt
+A	Audit/brightai-closure/evidence/browser-use-result.json
+A	Audit/brightai-closure/evidence/connector-readback.json
+A	Audit/brightai-closure/evidence/firecrawl-solutions.json
+A	Audit/brightai-closure/evidence/http-readback.json
+A	Audit/brightai-closure/evidence/local-tests.tap
+A	Audit/brightai-closure/evidence/migration-comparison.json
+A	Audit/brightai-closure/prompt-manifest.json
+A	Audit/brightai-closure/prompts/D01.md
+A	Audit/brightai-closure/prompts/D02.md
+A	Audit/brightai-closure/prompts/D03.md
+A	Audit/brightai-closure/prompts/D04.md
+A	Audit/brightai-closure/prompts/D05.md
+A	Audit/brightai-closure/prompts/D06.md
+A	Audit/brightai-closure/prompts/D07.md
+A	Audit/brightai-closure/prompts/D08.md
+A	Audit/brightai-closure/prompts/T01.md
+A	Audit/brightai-closure/prompts/T02.md
+A	Audit/brightai-closure/prompts/T03.md
+A	Audit/brightai-closure/prompts/T04.md
+A	Audit/brightai-closure/prompts/T05.md
+A	Audit/brightai-closure/prompts/T06.md
+A	Audit/brightai-closure/prompts/T07.md
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/REPORT.md
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/local-db-initial-failure.tap
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/local-db-sandbox-blocked.txt
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/local-db.tap
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/REPORT.md
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d01-solutions-2026-11-11/REPORT.md
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d01-solutions-2026-11-11/after-local-solutions.png
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d01-solutions-2026-11-11/before-live-solutions.png
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d01-solutions-2026-11-11/origin-evidence.json
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d02-journey-2026-11-11/REPORT.md
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d02-journey-2026-11-11/catalog-1440.png
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d02-journey-2026-11-11/journey-results.json
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d02-journey-2026-11-11/product-detail-390.png
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d04-section-compass-2026-11-11/REPORT.md
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d05-accessibility-2026-11-11/REPORT.md
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d05-accessibility-2026-11-11/evidence.json
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d06-kernel-2026-11-11/REPORT.md
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d07-knowledge-2026-11-11/REPORT.md
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/payload-preview.json
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/scenario.mjs
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t01-node-ssr-2026-11-11/REPORT.md
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t01-node-ssr-2026-11-11/version.json
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/REPORT.md
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/apply-staging.mjs
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/data-api-surface.json
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/fresh-plan.json
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/migration-order.tap
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/production-delta-plan.json
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/production-readonly.json
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/rehearsal.json
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/runtime-rls.json
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/staging-after.json
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/staging-before.json
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/staging-final.json
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/staging-ledger-before.json
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/staging-runtime.json
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/verification-index.json
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/verify-staging-ledger.mjs
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/verify-staging-runtime.mjs
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t03-exploration-2026-11-11/EXECUTED.md
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t03-exploration-2026-11-11/RECHECK.md
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t03-exploration-2026-11-11/REPORT.md
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t03-exploration-2026-11-11/current-db.tap
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t03-exploration-2026-11-11/local-db.tap
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t04-products-2026-11-11/REPORT.md
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t04-products-2026-11-11/SOURCE-SHA256.txt
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t04-products-2026-11-11/initial-fixture-failure.tap
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t04-products-2026-11-11/local-db.tap
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/t04-products-2026-11-11/scenario.mjs
+A	Audit/brightai-closure/t05-secure-chat-2026-11-11/unit.tap
+A	Audit/brightai-closure/t06-observability-2026-11-11/RECHECK.md
+A	Audit/brightai-closure/t06-observability-2026-11-11/REPORT.md
+A	Audit/brightai-closure/t06-observability-2026-11-11/local-tests.tap
+A	Audit/brightai-closure/t06-observability-2026-11-11/payload-preview.json
+A	Audit/brightai-closure/t06-observability-2026-11-11/recheck-payload-preview.json
+A	Audit/outhers/BRIGHTAI-AIGAS-FINAL-360-CONSOLIDATED-REPORT-2026-11-11.html
+R100	Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/00-START-HERE.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/00-START-HERE.md
+R100	Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/01-TRUTH-AND-RELEASE-BASELINE.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/01-TRUTH-AND-RELEASE-BASELINE.md
+R100	Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/02-PUBLIC-DESIGN-FINAL-DELTA.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/02-PUBLIC-DESIGN-FINAL-DELTA.md
+R100	Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/03-KNOWLEDGE-SEO-ACCESSIBILITY.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/03-KNOWLEDGE-SEO-ACCESSIBILITY.md
+R100	Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/04-ASTRO-NODE-PORTAL-RUNTIME.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/04-ASTRO-NODE-PORTAL-RUNTIME.md
+R100	Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/05-NEON-STAGING-MIGRATION-PARITY.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/05-NEON-STAGING-MIGRATION-PARITY.md
+R100	Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/06-NEON-LEAST-PRIVILEGE-RLS.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/06-NEON-LEAST-PRIVILEGE-RLS.md
+R100	Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/07-AUTH-FIRST-TENANT-INVITES.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/07-AUTH-FIRST-TENANT-INVITES.md
+R100	Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/08-KERNEL-POLICIES-GRANTS-TRIAL.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/08-KERNEL-POLICIES-GRANTS-TRIAL.md
+R100	Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/09-FIREWALL-PROVIDER-DECISIONS.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/09-FIREWALL-PROVIDER-DECISIONS.md
+R100	Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/10-LEDGER-CHAIN-VERIFY-EXPORT.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/10-LEDGER-CHAIN-VERIFY-EXPORT.md
+R100	Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/11-HUMAN-GATE-SOD-LIFECYCLE.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/11-HUMAN-GATE-SOD-LIFECYCLE.md
+R100	Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/12-RISK-ENGINE-ASSETS-LIFECYCLE.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/12-RISK-ENGINE-ASSETS-LIFECYCLE.md
+R100	Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/13-SECURE-CHAT-APPROVAL-PRIVACY-QUOTAS.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/13-SECURE-CHAT-APPROVAL-PRIVACY-QUOTAS.md
+R100	Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/14-PRIVACY-INCIDENTS-CSP-OPERATIONS.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/14-PRIVACY-INCIDENTS-CSP-OPERATIONS.md
+R100	Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/15-BETA-RELEASE-GO-NOGO-HANDOFF.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/15-BETA-RELEASE-GO-NOGO-HANDOFF.md
+R100	Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/ALL-15-PRE-BETA-PROMPTS.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/ALL-15-PRE-BETA-PROMPTS.md
+R100	Audit/EXECUTION-PROMPTS.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/EXECUTION-PROMPTS.md
+R100	Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/FINAL-AUDIT-REPORT.html	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/FINAL-AUDIT-REPORT.html
+R100	Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/FINAL-AUDIT-REPORT.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/FINAL-AUDIT-REPORT.md
+R100	Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/SCORING-METHOD.json	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/SCORING-METHOD.json
+R100	Audit/p05-auth-identity-2026-11-10/REPORT.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p05-auth-identity-2026-11-10/REPORT.md
+R100	Audit/p06-trial-2026-11-10/REPORT.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p06-trial-2026-11-10/REPORT.md
+R100	Audit/p07-firewall-2026-11-10/REPORT.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p07-firewall-2026-11-10/REPORT.md
+R100	Audit/p08-ledger-2026-11-10/REPORT.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p08-ledger-2026-11-10/REPORT.md
+R100	Audit/p09-human-gate-2026-11-10/REPORT.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p09-human-gate-2026-11-10/REPORT.md
+R100	Audit/p10-risk-engine-2026-11-10/REPORT.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p10-risk-engine-2026-11-10/REPORT.md
+R100	Audit/p11-secure-chat-2026-11-10/REPORT.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p11-secure-chat-2026-11-10/REPORT.md
+R100	Audit/p12-product-journey-2026-11-10/REPORT.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p12-product-journey-2026-11-10/REPORT.md
+R100	Audit/p12-product-journey-2026-11-10/browser-results.json	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p12-product-journey-2026-11-10/browser-results.json
+R100	Audit/p12-product-journey-2026-11-10/design-results.json	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p12-product-journey-2026-11-10/design-results.json
+R100	Audit/p13-observability-2026-11-10/REPORT.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p13-observability-2026-11-10/REPORT.md
+R100	Audit/p13-observability-2026-11-10/payload-preview.json	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p13-observability-2026-11-10/payload-preview.json
+R100	Audit/p14-seo-links-2026-11-10/REPORT.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p14-seo-links-2026-11-10/REPORT.md
+R100	Audit/p16-dependency-security-2026-11-10/REPORT.md	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p16-dependency-security-2026-11-10/REPORT.md
+R100	Audit/p16-dependency-security-2026-11-10/dependency-paths.txt	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p16-dependency-security-2026-11-10/dependency-paths.txt
+R100	Audit/p16-dependency-security-2026-11-10/licenses-2026-11-10.txt	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p16-dependency-security-2026-11-10/licenses-2026-11-10.txt
+R100	Audit/p16-dependency-security-2026-11-10/npm-audit-2026-11-10.json	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p16-dependency-security-2026-11-10/npm-audit-2026-11-10.json
+R100	Audit/p17-restore-rehearsal-2026-11-10/evidence/local-measurements-20261110T221917Z.json	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p17-restore-rehearsal-2026-11-10/evidence/local-measurements-20261110T221917Z.json
+R100	Audit/p17-restore-rehearsal-2026-11-10/evidence/local-measurements-20261110T222807Z.json	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p17-restore-rehearsal-2026-11-10/evidence/local-measurements-20261110T222807Z.json
+R100	Audit/p17-restore-rehearsal-2026-11-10/evidence/local-measurements-20261110T223011Z.json	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p17-restore-rehearsal-2026-11-10/evidence/local-measurements-20261110T223011Z.json
+R100	Audit/p17-restore-rehearsal-2026-11-10/evidence/local-measurements-20261110T223231Z.json	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p17-restore-rehearsal-2026-11-10/evidence/local-measurements-20261110T223231Z.json
+R100	Audit/p17-restore-rehearsal-2026-11-10/evidence/local-measurements-20261110T223332Z.json	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p17-restore-rehearsal-2026-11-10/evidence/local-measurements-20261110T223332Z.json
+R100	Audit/p17-restore-rehearsal-2026-11-10/evidence/local-verify-20261110T221917Z.json	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p17-restore-rehearsal-2026-11-10/evidence/local-verify-20261110T221917Z.json
+R100	Audit/p17-restore-rehearsal-2026-11-10/evidence/local-verify-20261110T222807Z.json	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p17-restore-rehearsal-2026-11-10/evidence/local-verify-20261110T222807Z.json
+R100	Audit/p17-restore-rehearsal-2026-11-10/evidence/local-verify-20261110T223011Z.json	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p17-restore-rehearsal-2026-11-10/evidence/local-verify-20261110T223011Z.json
+R100	Audit/p17-restore-rehearsal-2026-11-10/evidence/local-verify-20261110T223332Z.json	Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p17-restore-rehearsal-2026-11-10/evidence/local-verify-20261110T223332Z.json
+R100	Audit/final-360-2026-11-10/FINAL-360-AUDIT.html	Audit/outhers/final-360-2026-11-10/FINAL-360-AUDIT.html
+R100	Audit/final-360-2026-11-10/FINAL-360-AUDIT.md	Audit/outhers/final-360-2026-11-10/FINAL-360-AUDIT.md
+R100	Audit/final-360-2026-11-10/INDEPENDENT-REVIEW.md	Audit/outhers/final-360-2026-11-10/INDEPENDENT-REVIEW.md
+R100	Audit/final-360-2026-11-10/REAL-TRIAL-SPEC.md	Audit/outhers/final-360-2026-11-10/REAL-TRIAL-SPEC.md
+R100	Audit/final-360-2026-11-10/REQUIREMENTS.md	Audit/outhers/final-360-2026-11-10/REQUIREMENTS.md
+R100	Audit/final-360-2026-11-10/additional-evidence.json	Audit/outhers/final-360-2026-11-10/additional-evidence.json
+R100	Audit/final-360-2026-11-10/build-report.mjs	Audit/outhers/final-360-2026-11-10/build-report.mjs
+R100	Audit/final-360-2026-11-10/calculate.py	Audit/outhers/final-360-2026-11-10/calculate.py
+R100	Audit/final-360-2026-11-10/capabilities.json	Audit/outhers/final-360-2026-11-10/capabilities.json
+R100	Audit/final-360-2026-11-10/catalog-queries.sql	Audit/outhers/final-360-2026-11-10/catalog-queries.sql
+R100	Audit/final-360-2026-11-10/catalog-summary.json	Audit/outhers/final-360-2026-11-10/catalog-summary.json
+R100	Audit/final-360-2026-11-10/credentials.json	Audit/outhers/final-360-2026-11-10/credentials.json
+R100	Audit/final-360-2026-11-10/deliverable-checks.json	Audit/outhers/final-360-2026-11-10/deliverable-checks.json
+R100	Audit/final-360-2026-11-10/dependencies.txt	Audit/outhers/final-360-2026-11-10/dependencies.txt
+R100	Audit/final-360-2026-11-10/firewall-harness-source.mjs	Audit/outhers/final-360-2026-11-10/firewall-harness-source.mjs
+R100	Audit/final-360-2026-11-10/html-source-manifest.json	Audit/outhers/final-360-2026-11-10/html-source-manifest.json
+R100	Audit/final-360-2026-11-10/html-verification.json	Audit/outhers/final-360-2026-11-10/html-verification.json
+R100	Audit/final-360-2026-11-10/http.json	Audit/outhers/final-360-2026-11-10/http.json
+R100	Audit/final-360-2026-11-10/live-evidence.json	Audit/outhers/final-360-2026-11-10/live-evidence.json
+R100	Audit/final-360-2026-11-10/local-http.json	Audit/outhers/final-360-2026-11-10/local-http.json
+R100	Audit/final-360-2026-11-10/migration-catalog.json	Audit/outhers/final-360-2026-11-10/migration-catalog.json
+R100	Audit/final-360-2026-11-10/prompt-expansion.json	Audit/outhers/final-360-2026-11-10/prompt-expansion.json
+R100	Audit/final-360-2026-11-10/prompt-plan-checks.json	Audit/outhers/final-360-2026-11-10/prompt-plan-checks.json
+R100	Audit/final-360-2026-11-10/readability-overrides.json	Audit/outhers/final-360-2026-11-10/readability-overrides.json
+R100	Audit/final-360-2026-11-10/report-client.js	Audit/outhers/final-360-2026-11-10/report-client.js
+R100	Audit/final-360-2026-11-10/report.css	Audit/outhers/final-360-2026-11-10/report.css
+R100	Audit/final-360-2026-11-10/requirements.csv	Audit/outhers/final-360-2026-11-10/requirements.csv
+R100	Audit/final-360-2026-11-10/requirements.json	Audit/outhers/final-360-2026-11-10/requirements.json
+R100	Audit/final-360-2026-11-10/scores.json	Audit/outhers/final-360-2026-11-10/scores.json
+R100	Audit/final-360-2026-11-10/seo-crawl.json	Audit/outhers/final-360-2026-11-10/seo-crawl.json
+R100	Audit/final-360-2026-11-10/skill-index.txt	Audit/outhers/final-360-2026-11-10/skill-index.txt
+R100	Audit/final-360-2026-11-10/tests.tap	Audit/outhers/final-360-2026-11-10/tests.tap
+R100	Audit/final-360-2026-11-10/verification-manifest.json	Audit/outhers/final-360-2026-11-10/verification-manifest.json
+R100	Audit/final-360-2026-11-10/write_prompts.py	Audit/outhers/final-360-2026-11-10/write_prompts.py
+R100	Audit/knowledge-publication-2026-11-08/REPORT.md	Audit/outhers/knowledge-publication-2026-11-08/REPORT.md
+R100	Audit/knowledge-publication-2026-11-08/articles.json	Audit/outhers/knowledge-publication-2026-11-08/articles.json
+R100	Audit/knowledge-publication-2026-11-08/browser-evidence/page-2026-11-08T16-57-06-497Z.yml	Audit/outhers/knowledge-publication-2026-11-08/browser-evidence/page-2026-11-08T16-57-06-497Z.yml
+R100	Audit/knowledge-publication-2026-11-08/browser-evidence/page-2026-11-08T16-58-28-054Z.yml	Audit/outhers/knowledge-publication-2026-11-08/browser-evidence/page-2026-11-08T16-58-28-054Z.yml
+R100	Audit/local-trial-2026-11-11/PRODUCT-ENTRY-LINKS.md	Audit/outhers/local-trial-2026-11-11/PRODUCT-ENTRY-LINKS.md
+R100	Audit/local-trial-2026-11-11/REPORT.md	Audit/outhers/local-trial-2026-11-11/REPORT.md
+R100	Audit/p02-staging-parity-2026-11-10/REPORT.md	Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/REPORT.md
+R100	Audit/p02-staging-parity-2026-11-10/live-catalog.json	Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/live-catalog.json
+R100	Audit/p02-staging-parity-2026-11-10/migration-ledger.json	Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/migration-ledger.json
+R100	Audit/p03-runtime-rls-2026-11-10/REPORT.md	Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/p03-runtime-rls-2026-11-10/REPORT.md
+R100	Audit/p03-runtime-rls-2026-11-10/local-runtime-rls.json	Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/p03-runtime-rls-2026-11-10/local-runtime-rls.json
+R100	Audit/p03-runtime-rls-2026-11-10/neon-staging-posture.json	Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/p03-runtime-rls-2026-11-10/neon-staging-posture.json
+R100	Audit/p04-node-ssr-2026-11-10/REPORT.md	Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/p03-runtime-rls-2026-11-10/p04-node-ssr-2026-11-10/REPORT.md
+R100	Audit/p02-staging-parity-2026-11-10/parity-target.json	Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/parity-target.json
+R100	Audit/p02-staging-parity-2026-11-10/parity.json	Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/parity.json
+R100	Audit/p02-staging-parity-2026-11-10/rehearsal.json	Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/rehearsal.json
+R100	Audit/p02-staging-parity-2026-11-10/staging-catalog.json	Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/staging-catalog.json
+R100	Audit/p02-staging-parity-2026-11-10/staging-posture.json	Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/staging-posture.json
+A	Audit/p01-delta-2026-11-16/GAP-REGISTER.csv
+A	Audit/p01-delta-2026-11-16/REPORT.md
+A	Audit/p01-delta-2026-11-16/SHA256SUMS.txt
+A	Audit/p01-delta-2026-11-16/api-http.json
+A	Audit/p01-delta-2026-11-16/api-paths.json
+A	Audit/p01-delta-2026-11-16/contact.json
+A	Audit/p01-delta-2026-11-16/cta.json
+A	Audit/p01-delta-2026-11-16/delta.json
+A	Audit/p01-delta-2026-11-16/http.json
+A	Audit/p01-delta-2026-11-16/keyboard.json
+A	Audit/p01-delta-2026-11-16/local-tests.tap
+A	Audit/p01-delta-2026-11-16/production-catalog.json
+A	Audit/p01-delta-2026-11-16/provenance.json
+A	Audit/p01-delta-2026-11-16/scenarios.json
+A	Audit/p01-delta-2026-11-16/source-lines.txt
+A	Audit/p01-delta-2026-11-16/staging-catalog.json
+A	Audit/p01-delta-2026-11-16/staging-hash-comparison.json
+A	Audit/p01-delta-2026-11-16/staging-ledger.json
+A	Audit/p01-delta-2026-11-16/supplement.json
+M	docs/APP-PORTAL-RUNTIME-HANDOFF.md
+M	docs/DATA-API-EXPOSURE-DECISION.md
+M	docs/MONITORING-AND-ANALYTICS-WIRING.md
+M	docs/RUNTIME-RLS-PERMISSION-MATRIX.md
+A	migrations/0032_aigas_trial_trigger_execute_lock.sql
+A	migrations/0033_aigas_exploration.sql
+M	opencode.json
+M	public/llms.txt
+M	redirects.json
+M	scripts/apply-migrations.mjs
+M	scripts/db-migration-rehearsal.mjs
+M	scripts/migration-order.mjs
+A	scripts/operator-exploration.mjs
+M	scripts/preview-observability-payload.mjs
+A	scripts/verify-chat-policy-local.mjs
+M	scripts/verify-contracts-local.mjs
+A	scripts/verify-exploration-local.mjs
+M	scripts/verify-node-runtime.mjs
+A	scripts/verify-products-local.mjs
+M	scripts/verify-runtime-rls.mjs
+M	scripts/verify-trial-local.mjs
+M	src/components/InteriorController.astro
+M	src/components/PageShell.astro
+M	src/components/ProductJourney.astro
+M	src/layouts/BaseLayout.astro
+M	src/middleware.ts
+M	src/pages/app/kernel/index.astro
+M	src/pages/docs.astro
+M	src/pages/index.astro
+M	src/pages/solutions/[sector].astro
+A	src/pages/solutions/index.astro
+M	src/scripts/kernel.ts
+M	src/scripts/workspace-context.ts
+M	src/server/firewall/escalation.mjs
+M	src/server/firewall/guard.mjs
+M	src/server/firewall/service.mjs
+M	src/server/human-gate/service.mjs
+M	src/server/kernel/access.mjs
+A	src/server/kernel/exploration.mjs
+A	src/server/kernel/guidance.mjs
+A	src/server/kernel/operator-exploration.mjs
+M	src/server/kernel/service.mjs
+M	src/server/ledger/service.mjs
+M	src/server/observability/url-policy.mjs
+M	src/server/risk-engine/service.mjs
+A	src/server/secure-chat/integration.mjs
+M	src/server/secure-chat/service.mjs
+M	src/shared/product-navigation.mjs
+M	src/styles/interior.css
+M	src/styles/kernel.css
+M	src/styles/knowledge-center.css
+M	src/styles/risk-engine.css
+M	src/styles/secure-chat.css
+M	src/styles/tokens.json
+M	src/styles/variables.css
+A	tests/exploration-db.test.mjs
+A	tests/firewall-review-binding.test.mjs
+A	tests/kernel-guidance.test.mjs
+A	tests/migration-order.test.mjs
+M	tests/observability.test.mjs
+A	tests/secure-chat-policy.test.mjs
