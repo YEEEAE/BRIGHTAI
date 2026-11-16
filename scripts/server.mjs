@@ -1,6 +1,7 @@
 import { createServer as httpServer } from 'node:http';
 import { createServer as httpsServer } from 'node:https';
 import { readFileSync } from 'node:fs';
+import { applySecurityPolicy } from '../src/server/observability/security-policy.mjs';
 import { publicRedirect } from '../src/server/seo/redirects.mjs';
 
 // The standalone adapter serves /page/index.html from disk before Astro
@@ -50,6 +51,16 @@ const listener = (request, response) => {
   } catch {
     badRequest(response);
     return;
+  }
+  // Prerendered HTML bypasses Astro middleware. Apply the same runtime policy
+  // before the adapter writes headers, including redirects and error responses.
+  const security = new Headers();
+  const privateSurface = /^\/(?:app|auth)(?:\/|$)/.test(url.pathname);
+  applySecurityPolicy(security, privateSurface);
+  for (const [name, value] of security) response.setHeader(name, value);
+  const forwardedProto = request.headers['x-forwarded-proto']?.split(',')[0]?.trim();
+  if (request.socket.encrypted || forwardedProto === 'https') {
+    response.setHeader('Strict-Transport-Security', 'max-age=15552000');
   }
   const destination = ['GET', 'HEAD'].includes(request.method) && publicRedirect(url.pathname);
   if (destination) {

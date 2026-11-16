@@ -13,6 +13,7 @@ import { safeCode, safeRoute, safeSection, sectionFor } from '../src/server/obse
 import { describeUrlPolicy, safeAnalyticsPath, safeAnalyticsReferrer, safeAnalyticsUrl } from '../src/server/observability/url-policy.mjs';
 
 const ENV_KEYS = [
+  'AIGAS_MONITORING_KILL_SWITCH',
   'AIGAS_MONITORING_APPROVAL_REF',
   'AIGAS_MONITORING_ENVIRONMENT',
   'AIGAS_MONITORING_RELEASE',
@@ -383,7 +384,7 @@ test('the CSP hash of the shipped GA4 snippet matches the middleware allowlist',
   const inline = layout.match(/<script is:inline>([\s\S]*?)<\/script>/)?.[1];
   assert.ok(inline, 'GA4 inline snippet must exist');
   const digest = `sha256-${createHash('sha256').update(inline).digest('base64')}`;
-  const middleware = readFileSync(new URL('../src/middleware.ts', import.meta.url), 'utf8');
+  const middleware = readFileSync(new URL('../src/server/observability/security-policy.mjs', import.meta.url), 'utf8');
   assert.ok(middleware.includes(digest), `middleware CSP must list ${digest}`);
 });
 
@@ -392,4 +393,46 @@ test('public layout has no external analytics loader before consent approval', (
   const layout = readFileSync(new URL('../src/layouts/BaseLayout.astro', import.meta.url), 'utf8');
   assert.doesNotMatch(layout, /<script[^>]+src=["'][^"']*(?:googletagmanager|google-analytics)/i);
   assert.doesNotMatch(layout, /createElement\(['"]script['"]\)/);
+});
+
+test('CSP promotion and rollback use the same resource policy', async () => {
+  const { applySecurityPolicy } = await import('../src/server/observability/security-policy.mjs');
+  const old = process.env.AIGAS_CSP_ENFORCE;
+  const auth = process.env.NEON_AUTH_BASE_URL;
+  try {
+    process.env.NEON_AUTH_BASE_URL = 'https://auth.synthetic.invalid/neondb/auth';
+    for (const portal of [false, true]) {
+      process.env.AIGAS_CSP_ENFORCE = 'false';
+      const report = new Headers(); applySecurityPolicy(report, portal);
+      assert.match(report.get('Content-Security-Policy-Report-Only'), /font-src 'self'/);
+      assert.match(report.get('Content-Security-Policy-Report-Only'), /https:\/\/auth.synthetic.invalid/);
+      process.env.AIGAS_CSP_ENFORCE = 'true';
+      const enforced = new Headers(); applySecurityPolicy(enforced, portal);
+      assert.equal(enforced.has('Content-Security-Policy-Report-Only'), false);
+      for (const directive of report.get('Content-Security-Policy-Report-Only').split('; ')) {
+        assert.ok(enforced.get('Content-Security-Policy').includes(directive));
+      }
+      assert.doesNotMatch(enforced.get('Content-Security-Policy'), /script-src[^;]*unsafe-inline/);
+    }
+  } finally {
+    if (old === undefined) delete process.env.AIGAS_CSP_ENFORCE; else process.env.AIGAS_CSP_ENFORCE = old;
+    if (auth === undefined) delete process.env.NEON_AUTH_BASE_URL; else process.env.NEON_AUTH_BASE_URL = auth;
+  }
+});
+
+test('one global kill switch stops both transports at send time', async () => {
+  approveAll();
+  process.env.AIGAS_MONITORING_KILL_SWITCH = 'true';
+  assert.equal(sentrySettings().reason, 'KILL_SWITCH');
+  assert.equal(posthogSettings().reason, 'KILL_SWITCH');
+  assert.equal(await captureServerFailure(null, { status: 503, surface: 'kernel' }), false);
+  assert.equal(await captureProductEvent('portal_viewed', { section: 'portal' }), false);
+  assert.equal(calls.length, 0);
+});
+
+test('sensitive free-form fields never become product payloads', () => {
+  approveAll();
+  for (const field of ['email', 'tenant_id', 'message', 'chat', 'prompt', 'body']) {
+    assert.equal(buildProductEvent('login_flow_result', { status_code: 200, [field]: 'SYNTHETIC_PRIVATE' }), null);
+  }
 });

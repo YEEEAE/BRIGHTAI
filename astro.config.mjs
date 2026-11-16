@@ -7,6 +7,8 @@ import buildVersion from './scripts/build-version.mjs';
 export default defineConfig({
   site: 'https://brightai.live',
   trailingSlash: 'always',
+  // Keep bundled scripts external so runtime CSP can allow only same-origin modules.
+  vite: { build: { assetsInlineLimit: 0 } },
   output: 'server',
   adapter: node({ mode: 'standalone' }),
   integrations: [sitemap({ filter: (page) => {

@@ -54,6 +54,7 @@ export function parseSentryDsn(raw) {
 }
 
 function commonGate() {
+  if (env('AIGAS_MONITORING_KILL_SWITCH') === TRUE) return 'KILL_SWITCH';
   if (!approvalReference() || !monitoringEnvironment()) return 'APPROVAL_REQUIRED';
   if (!monitoringRelease()) return 'RELEASE_REQUIRED';
   return null;
@@ -108,6 +109,7 @@ export function posthogSettings() {
 
 // Named only so tests/docs can enumerate the gates without reading env values.
 export const monitoringGates = Object.freeze({
+  killSwitch: 'AIGAS_MONITORING_KILL_SWITCH',
   approval: 'AIGAS_MONITORING_APPROVAL_REF',
   environment: 'AIGAS_MONITORING_ENVIRONMENT',
   sentryEnabled: 'AIGAS_SENTRY_ENABLED',

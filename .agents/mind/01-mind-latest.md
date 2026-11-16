@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-17 PARTIAL LOCAL G-12: CSP موحدةNode+middleware/quotedhashes/externalmodules؛global monitoring kill؛privacy draft؛unit22/build57 PASS؛Chrome public2clear/auth+appZod eval issue؛لافرضحي/قانونية/retention/Auth حقيقي؛ `audit/csp-observability-2026-11-17/REPORT.md`.
 - 2026-11-17 PARTIAL LOCAL Risk Assist G-10: OWNER/ADMIN+synthetic+tenant/product guard؛Groq registry مغلق/فارغ؛strict advisory JSON إلىوصفالسياقفقط؛core/acceptance بلا تغيير؛unit11/build PASS؛Browser فصلapp/demo PASS،Auth insertion/provider NOT VERIFIED؛ `Audit/risk-assist-2026-11-17/REPORT.md`.
 - 2026-11-17 PARTIAL LOCAL Firewall G-09: 0037 جاهز/default-off؛ PENDING ذري metadata-only وSoD إلزامي/ربط القاعدة؛ output rules+protectText؛ advisory metadata عبرGroq غير حاكم؛ PG18 review5/HG1/unit20/build PASS؛ لا shared migration/Browser/provider resume؛ `Audit/firewall-escalation-2026-11-17/REPORT.md`.
 - 2026-11-16 PARTIAL LOCAL Secure Chat: output Baseline+Firewall+Kernel قبلالعرض؛tenant/expiry registry gate؛quota emergency switch؛unit23/build وPG18ستةحدود/settlement/no-content PASS؛registryفارغ/liveSend NOT_VERIFIED؛.envفيهGroqkey/modelفقطبلامستأجرأوموافقات؛ `docs/SECURE-CHAT-DEVELOPMENT.md` خطواتالاعتماد.
