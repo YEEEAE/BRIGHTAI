@@ -21,7 +21,6 @@ export function providerConfiguration(model) {
         !Number.isSafeInteger(model.maxRequestTokens) || model.maxRequestTokens <= model.maxOutputTokens ||
         !Number.isSafeInteger(model.maxInputBytes) || model.maxInputBytes < 1 ||
         !Number.isSafeInteger(model.inputOverheadTokens) || model.inputOverheadTokens < 0 ||
-        model.maxInputBytes + model.inputOverheadTokens > model.maxRequestTokens - model.maxOutputTokens ||
         !Number.isSafeInteger(model.timeoutMs) || model.timeoutMs < 1000 || model.timeoutMs > 120000 ||
         !/^AIGAS_SC_[A-Z0-9_]+_API_KEY$/.test(model.apiKeyEnv)) throw approvedModelUnavailable();
     const destination = new URL(model.endpoint);

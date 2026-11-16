@@ -8,10 +8,10 @@ import { env } from '../kernel/env.mjs';
 import { captureProductEvent, captureServerFailure } from '../observability/index.mjs';
 import { findApprovedModel, listApprovedModels } from './models.mjs';
 import { complete, providerConfiguration, providerState } from './adapter.mjs';
-import { INPUT_POLICY, protectText, usagePolicyStatus } from './policy.mjs';
+import { INPUT_POLICY, protectText, usagePolicy, usagePolicyStatus } from './policy.mjs';
 import { reserve, settleUnknown, cancel, cancellationRequested } from './requests.mjs';
 import { uuid } from '../kernel/http.mjs';
-import { authorizeChatContext, chatPolicyContext } from './integration.mjs';
+import { authorizeChatContext, chatPolicyContext, protectContext } from './integration.mjs';
 
 export const HARD_MAX_MESSAGE_LENGTH = 4000;
 export function requireChatPolicyIntegration(context) {
@@ -22,6 +22,26 @@ export function requireChatPolicyIntegration(context) {
     await db.query('SELECT id FROM public.aigas_tenants WHERE id=$1 FOR UPDATE', [tenantId]);
     return authorizeChatContext(db, identity, tenantId, requestId, model, messages);
   }).then(result => { if (result.error) throw result.error; return result; });
+}
+// Apply the exact input baseline and Firewall semantics to an untrusted reply.
+export function protectReply(reply, rules) {
+  try {
+    const baseline = protectText(reply);
+    const text = protectContext([{ role: 'assistant', content: baseline.text }], rules)[0].content;
+    return { text, redacted: baseline.redacted || text !== baseline.text };
+  } catch (error) {
+    if (error instanceof KernelError) throw new KernelError(error.status, error.code, 'حُجب رد النموذج بفحص الحماية؛ لم يُعرض المحتوى. قد يكون المزود استهلك الطلب.');
+    throw error;
+  }
+}
+async function protectModelReply(identity, tenantId, model, reply) {
+  return transaction(async db => {
+    await requireProductAccess(db, identity, tenantId, 'secure-chat');
+    await db.query('SELECT id FROM public.aigas_tenants WHERE id=$1 FOR UPDATE', [tenantId]);
+    const { ready, rules } = await chatPolicyContext(db, identity, tenantId, model);
+    if (!ready) throw new KernelError(403, 'CHAT_POLICY_DENIED', 'حجبت سياسة المؤسسة إتاحة رد النموذج.');
+    return protectReply(reply, rules);
+  });
 }
 export function configuredMessageLimit(raw = env('AIGAS_SC_MAX_MESSAGE_CHARS')) {
   if (typeof raw !== 'string' || !/^\d{1,4}$/.test(raw)) return HARD_MAX_MESSAGE_LENGTH;
@@ -191,7 +211,7 @@ export async function sendMessage(request, body) {
   const watcher = setInterval(async () => {
     if (polling || controller.signal.aborted) return;
     polling=true;
-    try { if (await cancellationRequested(identity,tenant.tenant_id,requestId)) abort(); }
+    try { usagePolicy(); if (await cancellationRequested(identity,tenant.tenant_id,requestId)) abort(); }
     catch { watcherFailed=true; abort(); }
     finally { polling=false; }
   },1000);
@@ -211,11 +231,17 @@ export async function sendMessage(request, body) {
     controller.signal.throwIfAborted();
     if (await cancellationRequested(identity,tenant.tenant_id,requestId)) abort();
     controller.signal.throwIfAborted();
+    usagePolicy(); // Recheck the emergency quota gate immediately before egress.
     dispatched=true;
     const result = await complete(model,outbound,controller.signal);
     usage=result.usage;
     controller.signal.throwIfAborted();
-    const output = protectText(result.reply);
+    let output;
+    try { output = await protectModelReply(identity, tenant.tenant_id, model, result.reply); }
+    catch (error) {
+      await auditBlocked(identity, tenant.tenant_id, 'secure_chat.output.blocked', requestId);
+      throw error;
+    }
     await accessContext(request);
     // No streaming: the entire reply is checked before any content is disclosed.
     const state = await settleUnknown(identity,tenant.tenant_id,requestId,'SUCCEEDED',usage);

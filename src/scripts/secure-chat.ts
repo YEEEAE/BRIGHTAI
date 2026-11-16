@@ -358,7 +358,7 @@ composer.addEventListener('submit', event => {
       root.querySelector<HTMLElement>('[data-empty]')!.hidden = true;
       message.value = '';
       updateCount();
-      status.textContent = data.redacted ? 'وصل رد من النموذج بعد تنقيح أولي. السياق المؤقت يقتصر على أحدث الأدوار ضمن الحد التقني.' : 'وصل رد من النموذج. يُرسل أحدث سياق مؤقت ضمن الحد التقني؛ لا يُحفظ المتن.';
+      status.textContent = data.redacted ? 'وصل رد من النموذج بعد تنقيح المدخلات أو المخرجات وفق سياسة الحماية. السياق المؤقت يقتصر على أحدث الأدوار ضمن الحد التقني.' : 'وصل رد من النموذج. يُرسل أحدث سياق مؤقت ضمن الحد التقني؛ لا يُحفظ المتن.';
       setComposerState('READY');
     })
     .catch(error => {
@@ -386,7 +386,7 @@ composer.addEventListener('submit', event => {
                 : value.code === 'PROVIDER_UNAVAILABLE' || value.code === 'PROVIDER_REJECTED'
                   ? 'المزود غير متاح أو رفض الطلب دون تأكيد نتيجة. قد يكون الاستهلاك حدث؛ لا تُعد الإرسال تلقائيًا.'
                   : value.code === 'SENSITIVE_CONTENT_BLOCKED'
-                    ? 'حُجب النص قبل الإرسال لأنه يشبه سرًا أو مفتاح وصول. عدّل المسودة ثم أعد المحاولة.'
+                    ? 'حجب فحص الحماية محتوى يشبه سرًا أو مفتاح وصول في المدخلات أو رد النموذج؛ لم يُعرض الرد. قد يكون المزود استهلك الطلب.'
                     : friendlyError(value);
       sendErrorText.textContent = `${failure} بقيت المسودة في الحقل، ولا يُحفظ المتن. أي إرسال جديد طلب مستقل وقد يستهلك من المزود.`;
       retrySend.hidden = false;

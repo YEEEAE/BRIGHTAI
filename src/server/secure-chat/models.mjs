@@ -10,8 +10,19 @@ export const APPROVED_MODELS = Object.freeze([]);
 // approval: { reference, expiresAt, noTraining:true, retentionReference,
 // regionReference }. Adding an entry requires actual approvals, not this comment.
 
-export function listApprovedModels(tenantId) {
-  return APPROVED_MODELS.filter(model => model.tenantIds?.includes(tenantId));
+// Pure gate also allows isolated fixtures without modifying the live registry.
+export function listApprovedModels(tenantId, registry = APPROVED_MODELS, now = Date.now()) {
+  if (typeof tenantId !== 'string' || !tenantId.trim()) return [];
+  return registry.filter(model => {
+    const approval = model.approval;
+    return Array.isArray(model.tenantIds) && model.tenantIds.length > 0 &&
+      model.tenantIds.every(id => typeof id === 'string' && id.trim()) &&
+      model.tenantIds.includes(tenantId) &&
+      typeof approval?.reference === 'string' && !!approval.reference.trim() &&
+      approval.noTraining === true && !!approval.retentionReference?.trim() &&
+      !!approval.regionReference?.trim() &&
+      Number.isFinite(Date.parse(approval.expiresAt)) && Date.parse(approval.expiresAt) > now;
+  });
 }
 
 export function findApprovedModel(modelId, tenantId) {

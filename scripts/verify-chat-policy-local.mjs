@@ -73,7 +73,7 @@ async function main() {
   await withClient('postgres','postgres',db=>db.query('CREATE DATABASE ar_contract_chat'));
   const names=['CHAT'];
   const env={PATH:process.env.PATH,TMPDIR:process.env.TMPDIR,TZ:'Asia/Riyadh',AIGAS_REQUIRE_DB_TESTS:'true', CHAT_TEST_DATABASE_URL:`postgres://postgres@127.0.0.1:${PORT}/ar_contract_chat`,NODE_OPTIONS:`--import=${new URL('../tests/helpers/no-egress.mjs',import.meta.url).href}`};
-  const child = spawn(process.execPath, ['--test','Audit/t05-secure-chat-2026-11-11/scenario.mjs'], { env, stdio: 'inherit' });
+  const child = spawn(process.execPath, ['--test','tests/secure-chat-db.test.mjs'], { env, stdio: 'inherit' });
   const code = await new Promise((resolve, reject) => {
     child.on('error', reject);
     child.on('exit', value => resolve(value ?? 1));

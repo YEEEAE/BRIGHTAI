@@ -65,6 +65,7 @@ function readLimits() {
 export function usagePolicyStatus() {
   // Unapproved values have no effect. Never interpret a key as model approval.
   // A missing or invalid quota is a closed gate, not "unlimited".
+  if (env('AIGAS_SC_QUOTAS_ENABLED') === 'false') return { policy: null, approved: false, code: 'USAGE_POLICY_NOT_CONFIGURED' };
   if (!env('AIGAS_SC_LIMITS_APPROVAL_REF')?.trim()) return { policy: null, approved: false, code: 'USAGE_POLICY_NOT_CONFIGURED' };
   try { return { policy: readLimits(), approved: true, code: null }; }
   catch { return { policy: null, approved: false, code: 'USAGE_POLICY_INVALID' }; }
