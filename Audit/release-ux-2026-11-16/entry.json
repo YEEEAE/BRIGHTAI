@@ -1,0 +1,47 @@
+[
+  {
+    "slug": "firewall",
+    "entry": "/products/firewall/#lab",
+    "destination": "/products/firewall/",
+    "reset": {
+      "visible": true,
+      "covered": false
+    }
+  },
+  {
+    "slug": "ledger",
+    "entry": "/products/ledger/#lab",
+    "destination": "/products/ledger/",
+    "reset": {
+      "visible": true,
+      "covered": false
+    }
+  },
+  {
+    "slug": "human-gate",
+    "entry": "/products/human-gate/#lab",
+    "destination": "/products/human-gate/",
+    "reset": {
+      "visible": true,
+      "covered": false
+    }
+  },
+  {
+    "slug": "risk-engine",
+    "entry": "/products/risk-engine/#lab",
+    "destination": "/products/risk-engine/",
+    "reset": {
+      "visible": true,
+      "covered": false
+    }
+  },
+  {
+    "slug": "secure-chat",
+    "entry": "/products/secure-chat/#lab",
+    "destination": "/products/secure-chat/",
+    "reset": {
+      "visible": true,
+      "covered": false
+    }
+  }
+]

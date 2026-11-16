@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-16 PARTIAL UX release audit: HEAD `738520067de19ae3bb5380beb292cd4d44861b69` rebuilt;92 views/4sizes no overflow/45tests PASS؛Ledger embedded preset≠full demo؛live Trial/API404 publiccache؛serverpayloads/realAuth/INP NOT VERIFIED؛PUBLIC_DEMO/TRIAL_48H/ENTERPRISE NO-GO؛ `Audit/release-ux-2026-11-16/REPORT.md`.
 - 2026-11-16 VERIFIED STAGING+LOCAL Trial: OTPبريدفعلي→Tenantمعزول/MEMBER/5منحقراءة100×48hوRiskSynthetic؛0034مطبقledger30/30بصماتمطابقة؛Home5/5 وBrowser390/1440،A→B403 وAI403؛انتهاءنافذةماضٍداخلrollbackPASSوليسمرور48h؛previewlocalhost:4428؛النشرNOT RUN؛ `Audit/self-service-trial-2026-11-16/REPORT.md`.
 - 2026-11-16 VERIFIED LOCAL Kernel demo: Control Center أصل/سياسة→فحص→مراجعة→دليل؛ 6 Scenario IDs اصطناعية بين المختبرات وعودة بالسياق؛ لا هوية/tenant/نصوص؛ unit6/build57 وBrowser390/1440 PASS؛ app/kernel وguidance بلا تعديل؛ النشر/Auth الفعلي NOT RUN؛ `Audit/kernel-demo-2026-11-16/REPORT.md`.
 - 2026-11-16 VERIFIED LOCAL Secure Chat demo: محرر/3سيناريوهات ALLOW-REDACT-BLOCK وردمحاكاة/قبل-بعد/نسخ/reset/loader؛ unit13/build57/Browser390+1440 PASS؛ لاخروجمتنمرصود؛Live NOT_VERIFIED وregistryفارغ،48hوسقفتكلفة/Auth/tenantغيرمثبتة؛ `Audit/secure-chat-demo-2026-11-16/REPORT.md`؛لانشر.

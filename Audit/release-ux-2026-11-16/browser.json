@@ -1,0 +1,1906 @@
+{
+  "artifact": {
+    "schema": 1,
+    "commit": "738520067de19ae3bb5380beb292cd4d44861b69",
+    "builtAt": "2026-11-16T13:48:18.114Z",
+    "node": "v22.22.2",
+    "packageLock": "sha256:362c1a0c27d9275362c984382192314082a233ccab79d5faf9daeaec65a1cf3a"
+  },
+  "viewports": [
+    {
+      "width": 360,
+      "path": "/products/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 29,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/",
+      "og": "https://brightai.live/products/",
+      "smallTargets": [
+        "Firewall",
+        "Risk Engine",
+        "Ledger"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 172,
+        "cls": 0.0000035727451989026067,
+        "events": []
+      }
+    },
+    {
+      "width": 360,
+      "path": "/products/firewall/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 26,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/firewall/",
+      "og": "https://brightai.live/products/firewall/",
+      "smallTargets": [
+        "تواصل بشأن الاشتراك"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 44,
+        "cls": 0.004900350222908093,
+        "events": []
+      }
+    },
+    {
+      "width": 360,
+      "path": "/products/ledger/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 17,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/ledger/",
+      "og": "https://brightai.live/products/ledger/",
+      "smallTargets": [
+        "تواصل بشأن الاشتراك"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 40,
+        "cls": 0.0000035727451989026067,
+        "events": []
+      }
+    },
+    {
+      "width": 360,
+      "path": "/products/human-gate/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 16,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/human-gate/",
+      "og": "https://brightai.live/products/human-gate/",
+      "smallTargets": [
+        "تواصل بشأن الاشتراك"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 44,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 360,
+      "path": "/products/risk-engine/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 16,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/risk-engine/",
+      "og": "https://brightai.live/products/risk-engine/",
+      "smallTargets": [
+        "تواصل بشأن الاشتراك"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0.0000035727451989026067,
+        "events": []
+      }
+    },
+    {
+      "width": 360,
+      "path": "/products/secure-chat/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 16,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/secure-chat/",
+      "og": "https://brightai.live/products/secure-chat/",
+      "smallTargets": [
+        "تواصل بشأن الاشتراك"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 32,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 360,
+      "path": "/kernel/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 17,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/kernel/",
+      "og": "https://brightai.live/kernel/",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 40,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 360,
+      "path": "/demo/firewall/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 40,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 360,
+      "path": "/demo/ledger/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [
+        "شاهد Firewall"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 360,
+      "path": "/demo/human-gate/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 32,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 360,
+      "path": "/demo/risk-engine/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 360,
+      "path": "/demo/secure-chat/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 360,
+      "path": "/demo/kernel/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 28,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 360,
+      "path": "/app/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 43,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 112,
+        "cls": 0.41871682393475645,
+        "events": []
+      }
+    },
+    {
+      "width": 360,
+      "path": "/app/trial/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 7,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 360,
+      "path": "/app/kernel/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 43,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 28,
+        "cls": 0.02316882153420782,
+        "events": []
+      }
+    },
+    {
+      "width": 360,
+      "path": "/app/firewall/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 18,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 360,
+      "path": "/app/ledger/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 16,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 40,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 360,
+      "path": "/app/human-gate/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 10,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 360,
+      "path": "/app/risk-engine/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 11,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 48,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 360,
+      "path": "/app/secure-chat/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 11,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 44,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 360,
+      "path": "/app/operator/trials/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 9,
+      "robots": "noindex,nofollow",
+      "smallTargets": [
+        "نواة المنظومة"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 32,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 360,
+      "path": "/app/risk-engine/00000000-0000-0000-0000-000000000000/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 11,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 32,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/products/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 29,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/",
+      "og": "https://brightai.live/products/",
+      "smallTargets": [
+        "Firewall",
+        "Risk Engine",
+        "Human Gate",
+        "Ledger",
+        "Secure Chat"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 28,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/products/firewall/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 26,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/firewall/",
+      "og": "https://brightai.live/products/firewall/",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/products/ledger/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 17,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/ledger/",
+      "og": "https://brightai.live/products/ledger/",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 28,
+        "cls": 0.0000032979186451408675,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/products/human-gate/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 16,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/human-gate/",
+      "og": "https://brightai.live/products/human-gate/",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/products/risk-engine/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 16,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/risk-engine/",
+      "og": "https://brightai.live/products/risk-engine/",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/products/secure-chat/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 16,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/secure-chat/",
+      "og": "https://brightai.live/products/secure-chat/",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 32,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/kernel/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 17,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/kernel/",
+      "og": "https://brightai.live/kernel/",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 40,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/demo/firewall/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 52,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/demo/ledger/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [
+        "شاهد Firewall"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 20,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/demo/human-gate/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/demo/risk-engine/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 44,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/demo/secure-chat/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 20,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/demo/kernel/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 16,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/app/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 43,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0.02315179487179487,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/app/trial/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 7,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 32,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/app/kernel/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 43,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 32,
+        "cls": 0.02315179487179487,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/app/firewall/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 18,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/app/ledger/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 16,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 24,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/app/human-gate/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 10,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 20,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/app/risk-engine/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 11,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 40,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/app/secure-chat/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 11,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 40,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/app/operator/trials/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 9,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0.20196022218265275,
+        "events": []
+      }
+    },
+    {
+      "width": 390,
+      "path": "/app/risk-engine/00000000-0000-0000-0000-000000000000/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 11,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 28,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/products/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 29,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/",
+      "og": "https://brightai.live/products/",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 52,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/products/firewall/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 26,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/firewall/",
+      "og": "https://brightai.live/products/firewall/",
+      "smallTargets": [
+        "تواصل بشأن الاشتراك"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 32,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/products/ledger/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 17,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/ledger/",
+      "og": "https://brightai.live/products/ledger/",
+      "smallTargets": [
+        "تواصل بشأن الاشتراك"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 32,
+        "cls": 0.0000016747243119855968,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/products/human-gate/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 16,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/human-gate/",
+      "og": "https://brightai.live/products/human-gate/",
+      "smallTargets": [
+        "تواصل بشأن الاشتراك"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 28,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/products/risk-engine/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 16,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/risk-engine/",
+      "og": "https://brightai.live/products/risk-engine/",
+      "smallTargets": [
+        "تواصل بشأن الاشتراك"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 44,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/products/secure-chat/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 16,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/secure-chat/",
+      "og": "https://brightai.live/products/secure-chat/",
+      "smallTargets": [
+        "تواصل بشأن الاشتراك"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/kernel/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 17,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/kernel/",
+      "og": "https://brightai.live/kernel/",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 40,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/demo/firewall/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 28,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/demo/ledger/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [
+        "شاهد Firewall",
+        "شاهد Human Gate"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 24,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/demo/human-gate/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 40,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/demo/risk-engine/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/demo/secure-chat/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/demo/kernel/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 24,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/app/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 43,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 56,
+        "cls": 0.027228354673032404,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/app/trial/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 7,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 32,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/app/kernel/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 43,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 32,
+        "cls": 0.027228354673032404,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/app/firewall/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 18,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 24,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/app/ledger/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 16,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 28,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/app/human-gate/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 10,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 32,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/app/risk-engine/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 11,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 28,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/app/secure-chat/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 11,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 32,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/app/operator/trials/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 9,
+      "robots": "noindex,nofollow",
+      "smallTargets": [
+        "نواة المنظومة"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 24,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 768,
+      "path": "/app/risk-engine/00000000-0000-0000-0000-000000000000/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 11,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 24,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/products/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 29,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/",
+      "og": "https://brightai.live/products/",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 24,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/products/firewall/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 26,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/firewall/",
+      "og": "https://brightai.live/products/firewall/",
+      "smallTargets": [
+        "تواصل بشأن الاشتراك"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/products/ledger/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 17,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/ledger/",
+      "og": "https://brightai.live/products/ledger/",
+      "smallTargets": [
+        "تواصل بشأن الاشتراك"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 32,
+        "cls": 0.000030404315629286696,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/products/human-gate/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 16,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/human-gate/",
+      "og": "https://brightai.live/products/human-gate/",
+      "smallTargets": [
+        "تواصل بشأن الاشتراك"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 40,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/products/risk-engine/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 16,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/risk-engine/",
+      "og": "https://brightai.live/products/risk-engine/",
+      "smallTargets": [
+        "تواصل بشأن الاشتراك"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/products/secure-chat/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 16,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/products/secure-chat/",
+      "og": "https://brightai.live/products/secure-chat/",
+      "smallTargets": [
+        "تواصل بشأن الاشتراك"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 32,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/kernel/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 17,
+      "robots": "index, follow",
+      "canonical": "https://brightai.live/kernel/",
+      "og": "https://brightai.live/kernel/",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 40,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/demo/firewall/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 44,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/demo/ledger/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [
+        "شاهد Firewall",
+        "شاهد Human Gate"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 44,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/demo/human-gate/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 32,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/demo/risk-engine/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 40,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/demo/secure-chat/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/demo/kernel/",
+      "status": 200,
+      "cache": "public, max-age=0",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 1,
+      "robots": "noindex, follow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 20,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/app/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 43,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 84,
+        "cls": 0.04523015404637131,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/app/trial/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 7,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 32,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/app/kernel/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 43,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 32,
+        "cls": 0.04523015404637131,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/app/firewall/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 18,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/app/ledger/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 16,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 28,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/app/human-gate/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 10,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 20,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/app/risk-engine/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 11,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 32,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/app/secure-chat/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 11,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/app/operator/trials/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 9,
+      "robots": "noindex,nofollow",
+      "smallTargets": [
+        "نواة المنظومة"
+      ],
+      "animations": 0,
+      "perf": {
+        "lcp": 24,
+        "cls": 0,
+        "events": []
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/app/risk-engine/00000000-0000-0000-0000-000000000000/",
+      "status": 200,
+      "cache": "private, no-store, max-age=0",
+      "xrobots": "noindex, nofollow",
+      "overflow": 0,
+      "dir": "rtl",
+      "bdi": 11,
+      "robots": "noindex,nofollow",
+      "smallTargets": [],
+      "animations": 0,
+      "perf": {
+        "lcp": 36,
+        "cls": 0,
+        "events": []
+      }
+    }
+  ],
+  "flows": [
+    {
+      "name": "legacy demo firewall",
+      "path": "/demo/firewall/",
+      "status": "PASS",
+      "result": "Demo · BLOCK — تطابقت قاعدة كلمات حساسة تعليمية؛ حُجب الطلب.",
+      "reset": "جاهز للتجربة.",
+      "value": "لخّص دليل التشغيل"
+    },
+    {
+      "name": "legacy demo kernel",
+      "path": "/demo/kernel/",
+      "status": "PASS",
+      "result": "Demo · PERMIT — الدور الافتراضي مدير يسمح بعملية الإعداد في هذا المثال.",
+      "reset": "جاهز للتجربة.",
+      "value": "قارئ"
+    },
+    {
+      "name": "Firewall full",
+      "path": "/products/firewall/#lab",
+      "status": "PASS",
+      "result": "تنقيح / REDACT",
+      "reason": "يوجد المعرّف الخيالي DEMO-0000؛ يُستبدل محليًا قبل عرض المخرج.",
+      "empty": "اكتب نصًا قصيرًا أو اختر مثالًا اصطناعيًا.",
+      "reset": ""
+    },
+    {
+      "name": "Ledger full",
+      "path": "/demo/ledger/",
+      "status": "PASS",
+      "valid": "VALID ✓ · 3 أحداث متسقة في هذا المثال المحلي.",
+      "altered": "ALTERED ✕ · أول خلل في الحدث 1: عدم تطابق البصمة أو رابط الحدث السابق. قارن hash المحفوظ بالمحسوب في Inspector.",
+      "reset": "غير مفحوصة · حدث افتراضي واحد جاهز."
+    },
+    {
+      "name": "Human Gate full",
+      "path": "/demo/human-gate/",
+      "status": "PASS",
+      "denial": "SELF_REVIEW_DENIED: فصل المهام يمنع مقدم الطلب من مراجعة طلبه، حتى لو امتلك دورًا إداريًا.",
+      "approved": "حالة الطلب: APPROVED",
+      "executed": "حالة الطلب: EXECUTED",
+      "reset": "حالة الطلب: PENDING"
+    },
+    {
+      "name": "Risk full",
+      "path": "/demo/risk-engine/",
+      "status": "PASS",
+      "result": "رر\n1 · محدود وقابل للتدارك\n2 · مؤثر ويتطلب معالجة\n3 · جسيم\n\nالصفوف: الاحتمال ↑ · الأعمدة: الأثر من 1 إلى 3 ←\n\n3\nمتوسط\n3 × 1\n6\nمرتفع\n3 × 2\n9\nمرتفع\n3 × 3\n2\nمنخفض\n2 × 1\n4\nمتوسط\n2 × 2\n6\nمرتفع\nأولي\n1\nمنخفض\n1 × 1\n2\nمنخفض\n1 × 2\n3\nمتوسط\nمتبقٍ\n\nاختر خلية أو استخدم القوائم. في سياق الجمهور يُرفع الاحتمال 1 إلى 2.\n\nكيف تُحسب الدرجة؟ منهج demo معلن\n04 / اختر المعالجة والضابط\nإجراء المعالجة\nتقليل الخطر\nإحالة للمراجعة\nتجنب الاستخدام · تعليق المثال\nالضابط المفترض\nبدون ضابط\nمراجعة بشرية قبل الإرسال · احتمال −1\nإخفاء البيانات · أثر −1 لخطر التسريب فقط\n\nلا تُجمع التخفيضات، ولا تنخفض أي قيمة عن 1. لا قياس فعلي لفاعلية الضابط.\n\nINSPECTOR / تفسير القرار\n\nأولي · Initial\n6 / 9 · مرتفع (2 × 3)\nمتبقٍ · Residual\n3 / 9 · متوسط (1 × 3)\n\nقد تظهر معلومات غير دقيقة، لكن المسودة قابلة للتصحيح قبل النشر. السياق بيئة اختبار مغلقة. الاحتمال 2 × الأثر 3 = 6.\n\nافتراض demo: المراجعة قبل الإرسال تخفض الاحتمال درجة واحدة، ولا تغيّر شدة الأثر.\n\nالفرق: 3 درجات في هذا المثال فقط\n\nمالك الأصل الخيالي\nسامي · مالك افتراضي\nالمراجع الخيالي\nنورة · مراجعة مستقلة افتراضية\nموعد المراجعة\nبعد 7 أيام افتراضية، أو فور تغيّر الأصل أو الضابط\nالافتراضات\nلا بيانات فعلية؛ قيم مرتبة وليست احتمالات مقاسة؛ الضابط مفترض الفاعلية ضمن المثال فقط.\n05 / قرار المثال\n\nأنت تستكشف دورًا خياليًا؛ لا تملك هذه الواجهة قبول مخاطر أي مؤسسة.\n\nإحالة خيالية للمراجعة\nمحاكاة قبول خيالي فقط\n\nقيد مراجعة خيالية · لم يُقبل\n\nأي تغيير في المدخلات يلغي قرار المثال ويستدعي مراجعة جديدة. القبول لا يخفض الدرجة ولا يجيز التشغيل.\n\nتصدير ملخص Synthetic · JSONإعادة المثال",
+      "resetAsset": "privacy",
+      "mode": "reactive calculation; no separate Run button"
+    },
+    {
+      "name": "Secure Chat full",
+      "path": "/demo/secure-chat/",
+      "status": "PASS",
+      "result": "اختر مثالًا أو اكتب طلبًا افتراضيًا؛ الرد التالي محاكاة محددة.\nأنت · قبل التنقيح (محلي فقط)\n\nUX_CANARY طلب خيالي ux@example.invalid UX_TOKEN\n\nBRIGHT AI · رد محاكاة\n\nنُقحت بيانات الاتصال في المثال. يمكن تلخيص الغرض والخطوات دون تضمينها.\n\nFirewall: REDACT · Kernel: ALLOW · قرارات محاكاة\n\nقاعدة تعليمية تستبدل البريد والهاتف قبل الرد المحدد.\n\nبعد التنقيح / حدود الخروج المحاكى\nUX_CANARY طلب خيالي [بريد منقح] UX_TOKEN\nنسخ رد المحاكاة",
+      "reason": "حدود التجربة التشغيلية · 48 ساعة\n\nمسار منفصل يتطلب Auth ومؤسسة وصلاحية خادمية، اعتماد المزود والمنطقة والخروج، قرار ALLOW وحصة وسقف تكلفة. لا تعني تهيئة الموصل READY؛ يلزم رد نموذج فعلي بإذن. المختبر هنا يستمر دون مزود.",
+      "reset": ""
+    },
+    {
+      "name": "Kernel full",
+      "path": "/kernel/#lab",
+      "status": "PASS",
+      "result": "REQUEST_APPROVAL",
+      "reason": "موافقة محاكاة محددة؛ لا تنفيذ فعلي ولا صلاحية تشغيل.",
+      "reset": "بانتظار تطبيق السياسة"
+    },
+    {
+      "name": "embedded ledger",
+      "path": "/products/ledger/#lab",
+      "status": "PASS",
+      "result": "تغيّر القرار بعد إنشاء مرجعه التوضيحي.",
+      "mode": "preset selection only, no editable input or explicit Run"
+    },
+    {
+      "name": "embedded human-gate",
+      "path": "/products/human-gate/#lab",
+      "status": "PASS",
+      "mode": "specialized shared component",
+      "controls": [
+        "إعادة ضبط المحاكاة",
+        "HG-DEMO-01 · مراجعة ملاحظة داخلية اصطناعية · PENDING",
+        "HG-DEMO-02 · ملاحظة خارج النطاق · REJECTED",
+        "HG-DEMO-03 · طلب سحبه مقدمه · CANCELLED",
+        "HG-DEMO-04 · موافقة انتهى تفويض مراجعها · EXPIRED",
+        "طلب اصطناعي جديد",
+        "وافق",
+        "ارفض",
+        "اطلب توضيحًا",
+        "ألغِ الطلب",
+        "تحقق ونفّذ الملاحظة اصطناعيًا",
+        "حاكِ انتهاء المهلة",
+        "حاكِ انتهاء تفويض المراجع",
+        "إعادة ضبط المثال"
+      ]
+    },
+    {
+      "name": "embedded risk-engine",
+      "path": "/products/risk-engine/#lab",
+      "status": "PASS",
+      "mode": "specialized shared component",
+      "controls": [
+        "3متوسط3 × 1",
+        "6مرتفع3 × 2",
+        "9مرتفعأولي · متبقٍ",
+        "2منخفض2 × 1",
+        "4متوسط2 × 2",
+        "6مرتفع2 × 3",
+        "1منخفض1 × 1",
+        "2منخفض1 × 2",
+        "3متوسط1 × 3",
+        "إحالة خيالية للمراجعة",
+        "محاكاة قبول خيالي فقط",
+        "تصدير ملخص Synthetic · JSON",
+        "إعادة المثال",
+        "إعادة ضبط المثال"
+      ]
+    },
+    {
+      "name": "embedded secure-chat",
+      "path": "/products/secure-chat/#lab",
+      "status": "PASS",
+      "mode": "specialized shared component",
+      "controls": [
+        "محادثة جديدة",
+        "إعادة الضبط",
+        "طلب عام",
+        "بيانات افتراضية حساسة",
+        "طلب ترفضه السياسة",
+        "أرسل للمحاكاة",
+        "إعادة ضبط المثال"
+      ]
+    },
+    {
+      "name": "keyboard menu and focus",
+      "path": "/products/firewall/#lab",
+      "status": "PASS",
+      "focus": {
+        "tag": "A",
+        "href": "/products/",
+        "outline": "solid"
+      },
+      "closed": true,
+      "returned": true
+    }
+  ],
+  "network": [],
+  "live": [
+    {
+      "path": "/products/",
+      "status": 200,
+      "cache": "public, max-age=0, s-maxage=300",
+      "title": "منتجات حوكمة وأمان الذكاء الاصطناعي AIGAS | BRIGHTAI"
+    },
+    {
+      "path": "/kernel/",
+      "status": 200,
+      "cache": "public, max-age=0, s-maxage=300",
+      "title": "Kernel | مسار السياسة إلى الدليل — BRIGHTAI"
+    },
+    {
+      "path": "/demo/firewall/",
+      "status": 200,
+      "cache": "public, max-age=0, s-maxage=300",
+      "title": "مختبر Firewall | BRIGHTAI"
+    },
+    {
+      "path": "/app/trial/",
+      "status": 404,
+      "cache": "public, max-age=0, s-maxage=300",
+      "title": "الصفحة غير موجودة | BRIGHTAI"
+    },
+    {
+      "path": "/app/api/trial/",
+      "status": 404,
+      "cache": "public, max-age=0, s-maxage=300",
+      "title": "الصفحة غير موجودة | BRIGHTAI"
+    }
+  ]
+}

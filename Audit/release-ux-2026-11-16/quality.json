@@ -1,0 +1,2265 @@
+{
+  "performance": [
+    {
+      "round": "baseline",
+      "width": 390,
+      "path": "/products/",
+      "lcp": 144,
+      "cls": 0.0000032979186451408675,
+      "interactionDurationMax": 16,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 390,
+      "path": "/products/firewall/",
+      "lcp": 60,
+      "cls": 0.0000032979186451408675,
+      "interactionDurationMax": 16,
+      "interactionCount": 2,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 390,
+      "path": "/products/ledger/",
+      "lcp": 44,
+      "cls": 0.0000032979186451408675,
+      "interactionDurationMax": 16,
+      "interactionCount": 2,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 390,
+      "path": "/products/human-gate/",
+      "lcp": 56,
+      "cls": 0,
+      "interactionDurationMax": null,
+      "interactionCount": 0,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 390,
+      "path": "/products/risk-engine/",
+      "lcp": 40,
+      "cls": 0.0000032979186451408675,
+      "interactionDurationMax": 16,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 390,
+      "path": "/products/secure-chat/",
+      "lcp": 40,
+      "cls": 0,
+      "interactionDurationMax": 24,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 390,
+      "path": "/kernel/",
+      "lcp": 40,
+      "cls": 0,
+      "interactionDurationMax": 24,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 390,
+      "path": "/demo/firewall/",
+      "lcp": 52,
+      "cls": 0,
+      "interactionDurationMax": null,
+      "interactionCount": 0,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 390,
+      "path": "/demo/ledger/",
+      "lcp": 32,
+      "cls": 0,
+      "interactionDurationMax": null,
+      "interactionCount": 0,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 390,
+      "path": "/demo/human-gate/",
+      "lcp": 44,
+      "cls": 0,
+      "interactionDurationMax": null,
+      "interactionCount": 0,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 390,
+      "path": "/demo/risk-engine/",
+      "lcp": 44,
+      "cls": 0,
+      "interactionDurationMax": 32,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 390,
+      "path": "/demo/secure-chat/",
+      "lcp": 32,
+      "cls": 0,
+      "interactionDurationMax": 24,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 390,
+      "path": "/demo/kernel/",
+      "lcp": 24,
+      "cls": 0,
+      "interactionDurationMax": 16,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 1440,
+      "path": "/products/",
+      "lcp": 48,
+      "cls": 0,
+      "interactionDurationMax": null,
+      "interactionCount": 0,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 1440,
+      "path": "/products/firewall/",
+      "lcp": 44,
+      "cls": 0,
+      "interactionDurationMax": 16,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 1440,
+      "path": "/products/ledger/",
+      "lcp": 44,
+      "cls": 0.000030404315629286696,
+      "interactionDurationMax": 16,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 1440,
+      "path": "/products/human-gate/",
+      "lcp": 36,
+      "cls": 0,
+      "interactionDurationMax": 112,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 1440,
+      "path": "/products/risk-engine/",
+      "lcp": 40,
+      "cls": 0,
+      "interactionDurationMax": 24,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 1440,
+      "path": "/products/secure-chat/",
+      "lcp": 24,
+      "cls": 0,
+      "interactionDurationMax": 24,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 1440,
+      "path": "/kernel/",
+      "lcp": 48,
+      "cls": 0,
+      "interactionDurationMax": 16,
+      "interactionCount": 2,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 1440,
+      "path": "/demo/firewall/",
+      "lcp": 48,
+      "cls": 0,
+      "interactionDurationMax": 16,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 1440,
+      "path": "/demo/ledger/",
+      "lcp": 44,
+      "cls": 0,
+      "interactionDurationMax": null,
+      "interactionCount": 0,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 1440,
+      "path": "/demo/human-gate/",
+      "lcp": 28,
+      "cls": 0,
+      "interactionDurationMax": 16,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 1440,
+      "path": "/demo/risk-engine/",
+      "lcp": 44,
+      "cls": 0,
+      "interactionDurationMax": 16,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 1440,
+      "path": "/demo/secure-chat/",
+      "lcp": 40,
+      "cls": 0,
+      "interactionDurationMax": 16,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "baseline",
+      "width": 1440,
+      "path": "/demo/kernel/",
+      "lcp": 32,
+      "cls": 0,
+      "interactionDurationMax": null,
+      "interactionCount": 0,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 390,
+      "path": "/products/",
+      "lcp": 36,
+      "cls": 0,
+      "interactionDurationMax": null,
+      "interactionCount": 0,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 390,
+      "path": "/products/firewall/",
+      "lcp": 36,
+      "cls": 0,
+      "interactionDurationMax": 32,
+      "interactionCount": 2,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 390,
+      "path": "/products/ledger/",
+      "lcp": 44,
+      "cls": 0.0000032979186451408675,
+      "interactionDurationMax": 32,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 390,
+      "path": "/products/human-gate/",
+      "lcp": 32,
+      "cls": 0,
+      "interactionDurationMax": 32,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 390,
+      "path": "/products/risk-engine/",
+      "lcp": 48,
+      "cls": 0,
+      "interactionDurationMax": 32,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 390,
+      "path": "/products/secure-chat/",
+      "lcp": 24,
+      "cls": 0,
+      "interactionDurationMax": null,
+      "interactionCount": 0,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 390,
+      "path": "/kernel/",
+      "lcp": 44,
+      "cls": 0,
+      "interactionDurationMax": 32,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 390,
+      "path": "/demo/firewall/",
+      "lcp": 40,
+      "cls": 0,
+      "interactionDurationMax": 16,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 390,
+      "path": "/demo/ledger/",
+      "lcp": 44,
+      "cls": 0,
+      "interactionDurationMax": null,
+      "interactionCount": 0,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 390,
+      "path": "/demo/human-gate/",
+      "lcp": 36,
+      "cls": 0,
+      "interactionDurationMax": 32,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 390,
+      "path": "/demo/risk-engine/",
+      "lcp": 32,
+      "cls": 0,
+      "interactionDurationMax": 16,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 390,
+      "path": "/demo/secure-chat/",
+      "lcp": 40,
+      "cls": 0,
+      "interactionDurationMax": 32,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 390,
+      "path": "/demo/kernel/",
+      "lcp": 24,
+      "cls": 0,
+      "interactionDurationMax": null,
+      "interactionCount": 0,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 1440,
+      "path": "/products/",
+      "lcp": 40,
+      "cls": 0,
+      "interactionDurationMax": null,
+      "interactionCount": 0,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 1440,
+      "path": "/products/firewall/",
+      "lcp": 48,
+      "cls": 0,
+      "interactionDurationMax": 32,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 1440,
+      "path": "/products/ledger/",
+      "lcp": 52,
+      "cls": 0.000030404315629286696,
+      "interactionDurationMax": 32,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 1440,
+      "path": "/products/human-gate/",
+      "lcp": 44,
+      "cls": 0,
+      "interactionDurationMax": 16,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 1440,
+      "path": "/products/risk-engine/",
+      "lcp": 40,
+      "cls": 0,
+      "interactionDurationMax": 32,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 1440,
+      "path": "/products/secure-chat/",
+      "lcp": 40,
+      "cls": 0,
+      "interactionDurationMax": null,
+      "interactionCount": 0,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 1440,
+      "path": "/kernel/",
+      "lcp": 32,
+      "cls": 0,
+      "interactionDurationMax": 16,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 1440,
+      "path": "/demo/firewall/",
+      "lcp": 36,
+      "cls": 0,
+      "interactionDurationMax": null,
+      "interactionCount": 0,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 1440,
+      "path": "/demo/ledger/",
+      "lcp": 36,
+      "cls": 0,
+      "interactionDurationMax": null,
+      "interactionCount": 0,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 1440,
+      "path": "/demo/human-gate/",
+      "lcp": 32,
+      "cls": 0,
+      "interactionDurationMax": null,
+      "interactionCount": 0,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 1440,
+      "path": "/demo/risk-engine/",
+      "lcp": 44,
+      "cls": 0,
+      "interactionDurationMax": 16,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 1440,
+      "path": "/demo/secure-chat/",
+      "lcp": 24,
+      "cls": 0,
+      "interactionDurationMax": 24,
+      "interactionCount": 1,
+      "animations": 0
+    },
+    {
+      "round": "repeat",
+      "width": 1440,
+      "path": "/demo/kernel/",
+      "lcp": 48,
+      "cls": 0,
+      "interactionDurationMax": null,
+      "interactionCount": 0,
+      "animations": 0
+    }
+  ],
+  "accessibility": [
+    {
+      "path": "/products/",
+      "focus": [
+        {
+          "tag": "A",
+          "text": "تخطّ إلى المحتوى",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "SUMMARY",
+          "text": "القائمة",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "اطلب معلومات ↗",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "الرئيسية",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "جرّب Firewall الآن ←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "أكمل مختبر Ledger ←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Firewall",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "جرّب المختبر الآن بلا حساب←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "ابدأ تجربة تشغيلية 48 ساعة ↗",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Risk Engine",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "جرّب المختبر الآن بلا حساب←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "ابدأ تجربة تشغيلية 48 ساعة ↗",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Human Gate",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "جرّب المختبر الآن بلا حساب←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "ابدأ تجربة تشغيلية 48 ساعة ↗",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Ledger",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "جرّب المختبر الآن بلا حساب←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        }
+      ],
+      "semantics": {
+        "unlabelled": [],
+        "emptyButtons": 0,
+        "dir": "rtl",
+        "bdi": 29
+      }
+    },
+    {
+      "path": "/products/firewall/#lab",
+      "focus": [
+        {
+          "tag": "SUMMARY",
+          "text": "التنقل بين المختبرات ⌄",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "تجربة تشغيلية 48 ساعة ↗",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "ارجع إلى مسار السياسة والدليل ←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "جرب المنتج التالي ←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "سماح ALLOW",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "تحذير WARN",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "تنقيح REDACT",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "تصعيد للمراجعة البشرية ESCALATE",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "حظر BLOCK",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "TEXTAREA",
+          "text": "demo-request",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "افحص الطلب",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "إعادة ضبط",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "SUMMARY",
+          "text": "Inspector / سياسة demo-v1",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "← كل التجارب",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "عن المنتج وحدود الاستخدام ↓",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "إعادة ضبط المثال",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "كل المنتجات ←",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "اطلب معلومات أو عرض سعر",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        }
+      ],
+      "semantics": {
+        "unlabelled": [],
+        "emptyButtons": 0,
+        "dir": "rtl",
+        "bdi": 26
+      }
+    },
+    {
+      "path": "/products/ledger/#lab",
+      "focus": [
+        {
+          "tag": "SUMMARY",
+          "text": "التنقل بين المختبرات ⌄",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "تجربة تشغيلية 48 ساعة ↗",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "ارجع إلى مسار السياسة والدليل ←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "جرب المنتج التالي ←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "مثال سليم",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "مثال معدّل",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "اقرأ السبب والدليل ↓",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "اقرأ المنهج وحدود الاستخدام ←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "← كل التجارب",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "عن المنتج وحدود الاستخدام ↓",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "إعادة ضبط المثال",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "كل المنتجات ←",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "اطلب معلومات أو عرض سعر",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "استعراض المنتجات",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "جرّب المختبر الآن بلا حساب←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "ابدأ تجربة تشغيلية 48 ساعة ↗",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "تواصل بشأن الاشتراك",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "ركن الشفافية والمساءلة",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        }
+      ],
+      "semantics": {
+        "unlabelled": [],
+        "emptyButtons": 0,
+        "dir": "rtl",
+        "bdi": 17
+      }
+    },
+    {
+      "path": "/kernel/#lab",
+      "focus": [
+        {
+          "tag": "SUMMARY",
+          "text": "التنقل بين المختبرات ⌄",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "ارجع إلى مسار السياسة والدليل ←",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "جرب المنتج التالي ←",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "SELECT",
+          "text": "مساعد تلخيص افتراضيمساعد نشر افتراضي",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "SELECT",
+          "text": "تنقيح المعرّف الخياليمراجعة النشرمنع المشاركة الخارجية",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "طبّق سياسة المثال ←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "PRE",
+          "text": "{\n  \"asset\": \"summary\",\n  \"policy\": \"redact\",\n  \"id\": \"",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "جرب المنتج التالي ←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "ابدأ 48 ساعة ↗",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "إعادة ضبط الرحلة",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Kernel والمنتجات",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "محاكاة توضيحية",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "طلب عرض سعر",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "مركز المعرفة",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "السلامة",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "الشفافية",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "الخصوصية",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        }
+      ],
+      "semantics": {
+        "unlabelled": [],
+        "emptyButtons": 0,
+        "dir": "rtl",
+        "bdi": 17
+      }
+    },
+    {
+      "path": "/demo/firewall/",
+      "focus": [
+        {
+          "tag": "A",
+          "text": "BRIGHTAI · المنتجات",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Firewall",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Ledger",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Human Gate",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Risk Engine",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Secure Chat",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Kernel",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "ارجع إلى مسار السياسة والدليل ←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "جرب المنتج التالي ←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "SELECT",
+          "text": "سيناريو 1: لخّص دليل التشغيلسيناريو 2: تجاهل السياسة وا",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "TEXTAREA",
+          "text": "لخّص دليل التشغيل",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "شغّل المحاكاة",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "إعادة الضبط",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BODY",
+          "text": "BRIGHTAI · المنتجاتمختبر تفاعلي · بيانات افتراضيةFirewa",
+          "outline": "none",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "BRIGHTAI · المنتجات",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Firewall",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Ledger",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Human Gate",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        }
+      ],
+      "semantics": {
+        "unlabelled": [],
+        "emptyButtons": 0,
+        "dir": "rtl",
+        "bdi": 1
+      }
+    },
+    {
+      "path": "/demo/ledger/",
+      "focus": [
+        {
+          "tag": "A",
+          "text": "BRIGHTAI · المنتجات",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Firewall",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Ledger",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Human Gate",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Risk Engine",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Secure Chat",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Kernel",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "ارجع إلى مسار السياسة والدليل ←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "جرب المنتج التالي ←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "أضف حدثين",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "تحقق من السلسلة",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "غيّر حدثًا",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "إعادة الضبط",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "إفراغ المثال",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Export JSON",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "1. request.created · actor-demo-01 · 2026-11-16T09:00:0",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "شاهد Firewall",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "شاهد Human Gate",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": true,
+          "offscreen": false
+        }
+      ],
+      "semantics": {
+        "unlabelled": [],
+        "emptyButtons": 0,
+        "dir": "rtl",
+        "bdi": 1
+      }
+    },
+    {
+      "path": "/demo/human-gate/",
+      "focus": [
+        {
+          "tag": "A",
+          "text": "BRIGHTAI · المنتجات",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Firewall",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Ledger",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Human Gate",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Risk Engine",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Secure Chat",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Kernel",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "ارجع إلى مسار السياسة والدليل ←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "جرب المنتج التالي ←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "SELECT",
+          "text": "مقدم الطلب · سارة (افتراضي)مراجع مخوّل · ناصر (افتراضي ",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "SELECT",
+          "text": "كل الطلباتpending · معلقةdecided · سُجّل قرارcancelled ",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "إعادة ضبط المحاكاة",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "HG-DEMO-01 · مراجعة ملاحظة داخلية اصطناعية · PENDING",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "HG-DEMO-02 · ملاحظة خارج النطاق · REJECTED",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "HG-DEMO-03 · طلب سحبه مقدمه · CANCELLED",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "HG-DEMO-04 · موافقة انتهى تفويض مراجعها · EXPIRED",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "طلب اصطناعي جديد",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "SUMMARY",
+          "text": "لماذا يحتاج موافقة؟",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        }
+      ],
+      "semantics": {
+        "unlabelled": [],
+        "emptyButtons": 0,
+        "dir": "rtl",
+        "bdi": 1
+      }
+    },
+    {
+      "path": "/demo/risk-engine/",
+      "focus": [
+        {
+          "tag": "A",
+          "text": "BRIGHTAI · المنتجات",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Firewall",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Ledger",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Human Gate",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Risk Engine",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Secure Chat",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Kernel",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "ارجع إلى مسار السياسة والدليل ←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "جرب المنتج التالي ←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "SELECT",
+          "text": "مساعد خدمة عملاء خياليمساعد مسودات تسويقية خيالي",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "SELECT",
+          "text": "بيئة اختبار مغلقة · لا نشرمخرجات تصل إلى جمهور افتراضي",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "SELECT",
+          "text": "1 · غير مرجح2 · ممكن3 · مرجح",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "SELECT",
+          "text": "1 · محدود وقابل للتدارك2 · مؤثر ويتطلب معالجة3 · جسيم",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "3متوسط3 × 1",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "6مرتفع3 × 2",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "9مرتفعأولي · متبقٍ",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "2منخفض2 × 1",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "4متوسط2 × 2",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        }
+      ],
+      "semantics": {
+        "unlabelled": [],
+        "emptyButtons": 0,
+        "dir": "rtl",
+        "bdi": 1
+      }
+    },
+    {
+      "path": "/demo/secure-chat/",
+      "focus": [
+        {
+          "tag": "A",
+          "text": "BRIGHTAI · المنتجات",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Firewall",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Ledger",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Human Gate",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Risk Engine",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Secure Chat",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Kernel",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "ارجع إلى مسار السياسة والدليل ←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "جرب المنتج التالي ←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "محادثة جديدة",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "إعادة الضبط",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "طلب عام",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "بيانات افتراضية حساسة",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "طلب ترفضه السياسة",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "TEXTAREA",
+          "text": "sc-demo-input",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "أرسل للمحاكاة",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "SUMMARY",
+          "text": "حدود التجربة التشغيلية · 48 ساعة",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "BRIGHTAI · المنتجات",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        }
+      ],
+      "semantics": {
+        "unlabelled": [],
+        "emptyButtons": 0,
+        "dir": "rtl",
+        "bdi": 1
+      }
+    },
+    {
+      "path": "/demo/kernel/",
+      "focus": [
+        {
+          "tag": "A",
+          "text": "BRIGHTAI · المنتجات",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Firewall",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Ledger",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Human Gate",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Risk Engine",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Secure Chat",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Kernel",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "ارجع إلى مسار السياسة والدليل ←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "جرب المنتج التالي ←",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "SELECT",
+          "text": "سيناريو 1: قارئسيناريو 2: مدير",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "TEXTAREA",
+          "text": "قارئ",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "شغّل المحاكاة",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "إعادة الضبط",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BODY",
+          "text": "BRIGHTAI · المنتجاتمختبر تفاعلي · بيانات افتراضيةFirewa",
+          "outline": "none",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "BRIGHTAI · المنتجات",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Firewall",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Ledger",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "Human Gate",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        }
+      ],
+      "semantics": {
+        "unlabelled": [],
+        "emptyButtons": 0,
+        "dir": "rtl",
+        "bdi": 1
+      }
+    },
+    {
+      "path": "/app/trial/",
+      "focus": [
+        {
+          "tag": "A",
+          "text": "انتقل للمحتوى",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "SUMMARY",
+          "text": "التنقل بين المنتجات ⌄",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "المنتجات",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "لوحة البوابة",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "إنشاء حساب أو تسجيل الدخول",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "ابدأ تجربة تشغيلية 48 ساعة",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "تحديث حالة الخادم",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "المختبرات العامة — 5/5",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "تواصل اختياري بشأن الترخيص",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "انتقل للمحتوى",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "SUMMARY",
+          "text": "التنقل بين المنتجات ⌄",
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "المنتجات",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "لوحة البوابة",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "A",
+          "text": "إنشاء حساب أو تسجيل الدخول",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "ابدأ تجربة تشغيلية 48 ساعة",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        },
+        {
+          "tag": "BUTTON",
+          "text": "تحديث حالة الخادم",
+          "outline": "solid",
+          "outlineWidth": "3px",
+          "obscured": false,
+          "offscreen": false
+        }
+      ],
+      "semantics": {
+        "unlabelled": [],
+        "emptyButtons": 0,
+        "dir": "rtl",
+        "bdi": 7
+      }
+    }
+  ],
+  "privacy": [
+    {
+      "path": "/products/firewall/",
+      "dataLayer": [
+        [
+          "js",
+          "2026-11-16T13:51:44.259Z"
+        ],
+        [
+          "config",
+          "G-9LMB4PGTWJ",
+          {
+            "page_location": "http://localhost:4429/products/firewall/",
+            "page_referrer": ""
+          }
+        ]
+      ],
+      "externalResources": [],
+      "canaryInStorage": false
+    },
+    {
+      "path": "/app/trial/",
+      "dataLayer": [],
+      "externalResources": [],
+      "canaryInStorage": false
+    }
+  ],
+  "sitemap": {
+    "status": 200,
+    "demoIncluded": false,
+    "appIncluded": false,
+    "kernelIncluded": true,
+    "products": 6
+  }
+}
