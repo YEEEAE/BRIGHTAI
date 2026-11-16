@@ -65,7 +65,9 @@ export function buildIdentity() {
   const claimed = declaredCommit ?? runtimeCommit;
   cached = Object.freeze({
     commit,
-    consistent: artifact.commit && claimed ? artifact.commit === claimed : null,
+    consistent: artifact.commit && claimed
+      ? [declaredCommit, runtimeCommit].filter(Boolean).every(value => value === artifact.commit)
+      : null,
     artifact,
     service: {
       id: env('RENDER_SERVICE_ID') || null,

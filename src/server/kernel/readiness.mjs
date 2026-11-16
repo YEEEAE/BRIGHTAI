@@ -17,7 +17,7 @@ import { buildIdentity } from './version.mjs';
 const AUTH_PROBE_TTL_MS = 15_000;
 const AUTH_PROBE_TIMEOUT_MS = 2_000;
 
-let authProbe = { at: 0, state: 'UNKNOWN' };
+let authProbe = { at: 0, state: 'UNKNOWN', jwks: null };
 
 // An active JWKS probe is opt-in: it is the only readiness check that leaves the
 // service, so it is enabled per environment (AIGAS_HEALTH_AUTH_PROBE=true) and
@@ -26,7 +26,7 @@ async function authState(config) {
   if (!config) return { state: 'UNCONFIGURED', probe: 'SKIPPED' };
   if (env('AIGAS_HEALTH_AUTH_PROBE') !== 'true') return { state: 'READY', probe: 'SKIPPED' };
   const now = Date.now();
-  if (authProbe.at && now - authProbe.at < AUTH_PROBE_TTL_MS) return { state: authProbe.state, probe: 'CACHED' };
+  if (authProbe.jwks === config.jwks && authProbe.at && now - authProbe.at < AUTH_PROBE_TTL_MS) return { state: authProbe.state, probe: 'CACHED' };
   let state = 'UNREACHABLE';
   try {
     const response = await fetch(config.jwks, {
@@ -34,12 +34,21 @@ async function authState(config) {
       redirect: 'error',
       signal: AbortSignal.timeout(AUTH_PROBE_TIMEOUT_MS),
     });
-    state = response.ok ? 'READY' : 'UNREACHABLE';
-    await response.body?.cancel?.();
+    if (response.ok && response.headers.get('content-type')?.includes('application/json')) {
+      const jwks = await response.json();
+      // The verifier only accepts EdDSA: an HTML 200 or empty key set is not ready.
+      state = Array.isArray(jwks?.keys) && jwks.keys.some(key =>
+        key?.kty === 'OKP' && key.crv === 'Ed25519' && typeof key.x === 'string'
+        && /^[A-Za-z0-9_-]{43}$/.test(key.x) && !key.d
+        && (!key.use || key.use === 'sig') && (!key.alg || key.alg === 'EdDSA')
+      ) ? 'READY' : 'UNREACHABLE';
+    } else {
+      await response.body?.cancel?.();
+    }
   } catch {
     state = 'UNREACHABLE';
   }
-  authProbe = { at: Date.now(), state };
+  authProbe = { at: Date.now(), state, jwks: config.jwks };
   return { state, probe: 'ACTIVE' };
 }
 
@@ -56,7 +65,7 @@ export async function readiness() {
   const identity = buildIdentity();
   const config = authConfig();
   const [database, auth] = await Promise.all([probeDatabase(), authState(config)]);
-  const state = stateOf(database.state, auth.state);
+  const state = identity.consistent === false ? 'blocked' : stateOf(database.state, auth.state);
   return {
     schema: 1,
     status: state === 'ready' ? 'ready' : 'not_ready',

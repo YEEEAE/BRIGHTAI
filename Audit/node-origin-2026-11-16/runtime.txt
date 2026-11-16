@@ -1,0 +1,23 @@
+SHA=fa3884d4217b77b411598a2095858d5938cbfff9 node=v22.22.2 environment=isolated-loopback checkedAt=2026-11-16T11:00:38.483Z
+PASS  A1 readiness is 503 without dependencies [2026-11-16T11:00:38.197Z]
+PASS  A2 build artifact identity is read back [2026-11-16T11:00:38.197Z]
+PASS  A3 readiness response is private and uncacheable [2026-11-16T11:00:38.197Z]
+PASS  A4 HEAD readiness answers without a body [2026-11-16T11:00:38.205Z]
+PASS  A5 public homepage is still server-rendered [2026-11-16T11:00:38.207Z]
+PASS  A6 closed portal answers 503 HTML with private headers [2026-11-16T11:00:38.210Z]
+PASS  A7 closed portal API answers JSON, not HTML [2026-11-16T11:00:38.214Z]
+PASS  A8 encoded alias cannot bypass the gate [2026-11-16T11:00:38.219Z]
+PASS  A12 GET/HEAD private responses bypass caches and vary by credentials [2026-11-16T11:00:38.239Z]
+PASS  A13 GET/HEAD public redirects retain queries and missing routes return 404 [2026-11-16T11:00:38.243Z]
+PASS  A9 no configuration value is echoed back [2026-11-16T11:00:38.243Z]
+PASS  A10 malformed Host is rejected before any route renders [2026-11-16T11:00:38.251Z]
+PASS  A11 a backslash path cannot become a protocol-relative redirect [2026-11-16T11:00:38.252Z]
+PASS  B0 six SSR workspaces are reachable with private headers [2026-11-16T11:00:38.466Z]
+PASS  B1 unauthenticated API answers 401 JSON [2026-11-16T11:00:38.473Z]
+PASS  B2 authenticated call with no auth config answers 503 [2026-11-16T11:00:38.474Z]
+PASS  B3 unreachable database closes readiness [2026-11-16T11:00:38.477Z]
+PASS  B4 service/deploy/commit identity is read back [2026-11-16T11:00:38.479Z]
+PASS  B5 readiness body never leaks the DSN marker [2026-11-16T11:00:38.480Z]
+SKIP  C readiness with a reachable database — P04_READY_DATABASE_URL not set
+
+19 PASS / 1 SKIP / 0 FAIL

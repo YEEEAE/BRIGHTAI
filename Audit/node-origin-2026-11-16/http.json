@@ -1,0 +1,213 @@
+{
+  "checkedAt": "2026-11-16T11:01:32.921Z",
+  "results": [
+    {
+      "origin": "https://brightai.live",
+      "path": "/app/kernel/",
+      "status": 404,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "public, max-age=0, s-maxage=300",
+        "cdn-cache-control": null,
+        "x-robots-tag": null,
+        "server": "cloudflare",
+        "cf-cache-status": "BYPASS"
+      }
+    },
+    {
+      "origin": "https://brightai.live",
+      "path": "/app/firewall/",
+      "status": 404,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "public, max-age=0, s-maxage=300",
+        "cdn-cache-control": null,
+        "x-robots-tag": null,
+        "server": "cloudflare",
+        "cf-cache-status": "BYPASS"
+      }
+    },
+    {
+      "origin": "https://brightai.live",
+      "path": "/app/ledger/",
+      "status": 404,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "public, max-age=0, s-maxage=300",
+        "cdn-cache-control": null,
+        "x-robots-tag": null,
+        "server": "cloudflare",
+        "cf-cache-status": "BYPASS"
+      }
+    },
+    {
+      "origin": "https://brightai.live",
+      "path": "/app/human-gate/",
+      "status": 404,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "public, max-age=0, s-maxage=300",
+        "cdn-cache-control": null,
+        "x-robots-tag": null,
+        "server": "cloudflare",
+        "cf-cache-status": "BYPASS"
+      }
+    },
+    {
+      "origin": "https://brightai.live",
+      "path": "/app/risk-engine/",
+      "status": 404,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "public, max-age=0, s-maxage=300",
+        "cdn-cache-control": null,
+        "x-robots-tag": null,
+        "server": "cloudflare",
+        "cf-cache-status": "BYPASS"
+      }
+    },
+    {
+      "origin": "https://brightai.live",
+      "path": "/app/secure-chat/",
+      "status": 404,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "public, max-age=0, s-maxage=300",
+        "cdn-cache-control": null,
+        "x-robots-tag": null,
+        "server": "cloudflare",
+        "cf-cache-status": "BYPASS"
+      }
+    },
+    {
+      "origin": "https://brightai.live",
+      "path": "/healthz/",
+      "status": 404,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "public, max-age=0, s-maxage=300",
+        "cdn-cache-control": null,
+        "x-robots-tag": null,
+        "server": "cloudflare",
+        "cf-cache-status": "BYPASS"
+      }
+    },
+    {
+      "origin": "https://brightai.live",
+      "path": "/app/api/kernel/members/",
+      "status": 404,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "public, max-age=0, s-maxage=300",
+        "cdn-cache-control": null,
+        "x-robots-tag": null,
+        "server": "cloudflare",
+        "cf-cache-status": "BYPASS"
+      }
+    },
+    {
+      "origin": "https://brightai-4x39.onrender.com",
+      "path": "/app/kernel/",
+      "status": 404,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "public, max-age=0, s-maxage=300",
+        "cdn-cache-control": null,
+        "x-robots-tag": null,
+        "server": "cloudflare",
+        "cf-cache-status": "BYPASS"
+      }
+    },
+    {
+      "origin": "https://brightai-4x39.onrender.com",
+      "path": "/app/firewall/",
+      "status": 404,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "public, max-age=0, s-maxage=300",
+        "cdn-cache-control": null,
+        "x-robots-tag": null,
+        "server": "cloudflare",
+        "cf-cache-status": "BYPASS"
+      }
+    },
+    {
+      "origin": "https://brightai-4x39.onrender.com",
+      "path": "/app/ledger/",
+      "status": 404,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "public, max-age=0, s-maxage=300",
+        "cdn-cache-control": null,
+        "x-robots-tag": null,
+        "server": "cloudflare",
+        "cf-cache-status": "BYPASS"
+      }
+    },
+    {
+      "origin": "https://brightai-4x39.onrender.com",
+      "path": "/app/human-gate/",
+      "status": 404,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "public, max-age=0, s-maxage=300",
+        "cdn-cache-control": null,
+        "x-robots-tag": null,
+        "server": "cloudflare",
+        "cf-cache-status": "BYPASS"
+      }
+    },
+    {
+      "origin": "https://brightai-4x39.onrender.com",
+      "path": "/app/risk-engine/",
+      "status": 404,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "public, max-age=0, s-maxage=300",
+        "cdn-cache-control": null,
+        "x-robots-tag": null,
+        "server": "cloudflare",
+        "cf-cache-status": "BYPASS"
+      }
+    },
+    {
+      "origin": "https://brightai-4x39.onrender.com",
+      "path": "/app/secure-chat/",
+      "status": 404,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "public, max-age=0, s-maxage=300",
+        "cdn-cache-control": null,
+        "x-robots-tag": null,
+        "server": "cloudflare",
+        "cf-cache-status": "BYPASS"
+      }
+    },
+    {
+      "origin": "https://brightai-4x39.onrender.com",
+      "path": "/healthz/",
+      "status": 404,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "public, max-age=0, s-maxage=300",
+        "cdn-cache-control": null,
+        "x-robots-tag": null,
+        "server": "cloudflare",
+        "cf-cache-status": "BYPASS"
+      }
+    },
+    {
+      "origin": "https://brightai-4x39.onrender.com",
+      "path": "/app/api/kernel/members/",
+      "status": 404,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "public, max-age=0, s-maxage=300",
+        "cdn-cache-control": null,
+        "x-robots-tag": null,
+        "server": "cloudflare",
+        "cf-cache-status": "BYPASS"
+      }
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-16 PARTIAL Node origin: HEAD `fa3884d4217b77b411598a2095858d5938cbfff9`+tree؛ JWKS/SHA readiness شُدّد؛ build57/unit11/runtime19PASS+1SKIP؛6/6SSR محليGET/HEAD200،API401JSON؛ DB/Auth الفعلي وBrowserغيرمثبتين؛ Renderread نجح: العامةstatic_site/dist/client وdeploy `dep-dbte0qe417fc738h1fsg` بنفسSHA؛ أصلRenderوالدومين6/6+health/API404؛ `Audit/node-origin-2026-11-16/REPORT.md` وخطة `docs/NODE-ORIGIN-OPERATOR-2026-11-16.md`؛ لا نشر/DNS.
 - 2026-11-16 P01 drift: رأس البدايةf221ac4 ثمHEAD8b0aa3c بعمليةخارجالوكيل؛ لا فرق مصدر/اختبارات/إعدادات بينهما؛ رأسالتسليم264ملفًا/55مصدرًا، رأسالبداية245/55؛ `Audit/p01-delta-2026-11-16/final-delta.tsv`؛ آخرGitHubread=f221ac4،DeploySHA UNKNOWN.
 - 2026-11-16 VERIFIED P01 audit: HEAD/GitHub `f221ac4177d63dad649bfaf892868b5c6d971a0d`؛ delta245=R10099/reports84/source55/context7؛ live ست أمثلة تعليمية ×390/1440 بلا overflow، CTA5→404 وhealth/API404 بكاش300ث؛ unit42PASS؛ `Audit/p01-delta-2026-11-16/REPORT.md` يحوي13فجوة وخريطةP02–P13؛ لا تشغيل منتج حي مثبت.
 - 2026-11-11 PARTIAL D08: HEAD `38403763df2daf2baa60576def4d73215756f430`؛ Browser5routes×390/1440 RTL/overflow PASS؛ compassKeyboard/noJSdocs PASS؛ Hero baseline نص/روابط/أبعادمطابقة وصورة1440متطابقة؛ devLCP228ms/shift0.024تشخيصي؛ SR/INP/المصادق/المنشور NOT RUN؛ `Audit/d08-acceptance-2026-11-11/REPORT.md`؛ InternalNOTREADY/PublicCommercialNO-GO.

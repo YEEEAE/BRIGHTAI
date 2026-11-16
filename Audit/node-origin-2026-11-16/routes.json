@@ -1,0 +1,368 @@
+[
+  {
+    "source": "src/pages/app/api/firewall/evaluate.ts",
+    "path": "/app/api/firewall/evaluate/",
+    "methods": [
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/firewall/guarded-executions.ts",
+    "path": "/app/api/firewall/guarded-executions/",
+    "methods": [
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/firewall/rules.ts",
+    "path": "/app/api/firewall/rules/",
+    "methods": [
+      "GET",
+      "POST",
+      "PATCH",
+      "DELETE"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/human-gate/delegations/[delegationId]/revoke.ts",
+    "path": "/app/api/human-gate/delegations/[delegationId]/revoke/",
+    "methods": [
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/human-gate/delegations/index.ts",
+    "path": "/app/api/human-gate/delegations/",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/human-gate/policy.ts",
+    "path": "/app/api/human-gate/policy/",
+    "methods": [
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/human-gate/requests/[requestId]/cancel.ts",
+    "path": "/app/api/human-gate/requests/[requestId]/cancel/",
+    "methods": [
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/human-gate/requests/[requestId]/decide.ts",
+    "path": "/app/api/human-gate/requests/[requestId]/decide/",
+    "methods": [
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/human-gate/requests/[requestId]/execute.ts",
+    "path": "/app/api/human-gate/requests/[requestId]/execute/",
+    "methods": [
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/human-gate/requests/index.ts",
+    "path": "/app/api/human-gate/requests/",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/kernel.ts",
+    "path": "/app/api/kernel/",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/kernel/health.ts",
+    "path": "/app/api/kernel/health/",
+    "methods": [
+      "GET"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/kernel/invitations.ts",
+    "path": "/app/api/kernel/invitations/",
+    "methods": [
+      "GET"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/kernel/members.ts",
+    "path": "/app/api/kernel/members/",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/kernel/policies.ts",
+    "path": "/app/api/kernel/policies/",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/kernel/products.ts",
+    "path": "/app/api/kernel/products/",
+    "methods": [
+      "PATCH"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/kernel/trials/[trialId]/cancel.ts",
+    "path": "/app/api/kernel/trials/[trialId]/cancel/",
+    "methods": [
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/kernel/trials/[trialId]/submit.ts",
+    "path": "/app/api/kernel/trials/[trialId]/submit/",
+    "methods": [
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/kernel/trials/index.ts",
+    "path": "/app/api/kernel/trials/",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/ledger/events/[eventId]/export.ts",
+    "path": "/app/api/ledger/events/[eventId]/export/",
+    "methods": [
+      "GET"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/ledger/events/[eventId]/index.ts",
+    "path": "/app/api/ledger/events/[eventId]/",
+    "methods": [
+      "GET"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/ledger/events/[eventId]/verify.ts",
+    "path": "/app/api/ledger/events/[eventId]/verify/",
+    "methods": [
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/ledger/events/index.ts",
+    "path": "/app/api/ledger/events/",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/operator/trials/[trialId]/activate.ts",
+    "path": "/app/api/operator/trials/[trialId]/activate/",
+    "methods": [
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/operator/trials/[trialId]/close.ts",
+    "path": "/app/api/operator/trials/[trialId]/close/",
+    "methods": [
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/operator/trials/[trialId]/decide.ts",
+    "path": "/app/api/operator/trials/[trialId]/decide/",
+    "methods": [
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/operator/trials/[trialId]/expire.ts",
+    "path": "/app/api/operator/trials/[trialId]/expire/",
+    "methods": [
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/operator/trials/index.ts",
+    "path": "/app/api/operator/trials/",
+    "methods": [
+      "GET"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/risk-engine/actions.ts",
+    "path": "/app/api/risk-engine/actions/",
+    "methods": [
+      "GET"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/risk-engine/assets/[assetId]/assessments.ts",
+    "path": "/app/api/risk-engine/assets/[assetId]/assessments/",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/risk-engine/assets/[assetId]/index.ts",
+    "path": "/app/api/risk-engine/assets/[assetId]/",
+    "methods": [
+      "PATCH",
+      "DELETE"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/risk-engine/assets/[assetId]/revisions.ts",
+    "path": "/app/api/risk-engine/assets/[assetId]/revisions/",
+    "methods": [
+      "GET"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/risk-engine/assets/[assetId]/treatments.ts",
+    "path": "/app/api/risk-engine/assets/[assetId]/treatments/",
+    "methods": [
+      "GET",
+      "POST",
+      "PATCH"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/risk-engine/assets/index.ts",
+    "path": "/app/api/risk-engine/assets/",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/risk-engine/export.ts",
+    "path": "/app/api/risk-engine/export/",
+    "methods": [
+      "GET"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/secure-chat/messages.ts",
+    "path": "/app/api/secure-chat/messages/",
+    "methods": [
+      "POST",
+      "DELETE"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/api/secure-chat/models.ts",
+    "path": "/app/api/secure-chat/models/",
+    "methods": [
+      "GET"
+    ],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/firewall/index.astro",
+    "path": "/app/firewall/",
+    "methods": [],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/human-gate/index.astro",
+    "path": "/app/human-gate/",
+    "methods": [],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/index.astro",
+    "path": "/app/",
+    "methods": [],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/kernel/index.astro",
+    "path": "/app/kernel/",
+    "methods": [],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/ledger/index.astro",
+    "path": "/app/ledger/",
+    "methods": [],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/operator/trials/index.astro",
+    "path": "/app/operator/trials/",
+    "methods": [],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/risk-engine/[assetId].astro",
+    "path": "/app/risk-engine/[assetId]/",
+    "methods": [],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/risk-engine/index.astro",
+    "path": "/app/risk-engine/",
+    "methods": [],
+    "ssr": true
+  },
+  {
+    "source": "src/pages/app/secure-chat/index.astro",
+    "path": "/app/secure-chat/",
+    "methods": [],
+    "ssr": true
+  }
+]

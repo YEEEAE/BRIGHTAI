@@ -221,6 +221,18 @@ await withServer(4398, {
   AIGAS_DEPLOY_ID: 'dep-local-proof',
   DATABASE_URL: `postgresql://p04:${SECRET_MARKER}@127.0.0.1:1/aigas`,
 }, async base => {
+  await check('B0 six SSR workspaces are reachable with private headers', async () => {
+    for (const slug of ['kernel', 'firewall', 'ledger', 'human-gate', 'risk-engine', 'secure-chat']) {
+      for (const method of ['GET', 'HEAD']) {
+        const page = await fetch(`${base}/app/${slug}/`, { method, redirect: 'manual' });
+        assert.equal(page.status, 200, `${method} /app/${slug}/`);
+        assert.match(page.headers.get('content-type') ?? '', /text\/html/);
+        assert.match(page.headers.get('cache-control') ?? '', /private, no-store/);
+        assert.equal(page.headers.get('x-robots-tag'), 'noindex, nofollow');
+        if (method === 'HEAD') assert.equal(await page.text(), '');
+      }
+    }
+  });
   await check('B1 unauthenticated API answers 401 JSON', async () => {
     const api = await fetch(`${base}/app/api/kernel/members/`);
     const json = await api.json();
