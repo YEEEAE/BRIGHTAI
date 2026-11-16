@@ -1,0 +1,82 @@
+{
+  "generatedAt": "2026-11-16T12:42:17Z",
+  "source": "Neon control plane + read-only SQL via MCP (no writes, no branch creation)",
+  "project": "lucky-salad-43566291",
+  "projectName": "aigas-staging",
+  "branch": "br-rough-wind-bdkmg13n",
+  "branchName": "staging",
+  "database": "neondb",
+  "postgres": 18,
+  "counts": {
+    "publicTables": 42,
+    "aigasTables": 42,
+    "policies": 90,
+    "rlsEnabled": 42,
+    "rlsForced": 2,
+    "tablesWithoutRls": 0,
+    "clientTablesWithPrivileges": 0,
+    "clientFunctionsExecutable": 0,
+    "runtimeSelectTables": 37,
+    "runtimeExecutableFunctions": 15,
+    "ledgerRows": 29,
+    "ledgerApplied": 29,
+    "ledgerFailed": 0
+  },
+  "forcedRlsTables": [
+    "aigas_sc_conversations",
+    "aigas_sc_messages"
+  ],
+  "roles": {
+    "aigas_runtime": { "login": false, "inherit": false, "bypassrls": false, "createrole": false },
+    "aigas_t03_exploration_login": { "login": true, "inherit": false, "bypassrls": false },
+    "neondb_owner": { "login": true, "bypassrls": true },
+    "cloud_admin": { "superuser": true, "bypassrls": true }
+  },
+  "grants": {
+    "loginCanSetRuntime": true,
+    "runtimeCanSetOwner": false,
+    "runtimeIsOwnerMember": false,
+    "runtimeIsMemberOfClientRoles": false
+  },
+  "definerFunctions": {
+    "count": 15,
+    "allHaveSearchPath": true,
+    "owner": "neondb_owner",
+    "publicExecuteRevoked": true
+  },
+  "ledger": {
+    "schema": "ops",
+    "table": "aigas_migration_ledger",
+    "sha256MatchAgainstLocalFiles": "29/29"
+  },
+  "exploration": {
+    "grants": 10,
+    "active": 0,
+    "revoked": 0,
+    "usedUnits": 0,
+    "limitUnitsPerProduct": 200,
+    "missingRestrictiveClientDeny": ["aigas_exploration_grants"]
+  },
+  "trialGate": {
+    "operators": 1,
+    "releaseReadinessRows": 0,
+    "approvedQuotaProfiles": 0,
+    "trialRequests": 0,
+    "quotaUsageRows": 0,
+    "activationPossible": false
+  },
+  "isolationProbe": {
+    "method": "DBA session, transaction-local SET ROLE aigas_runtime and set_config; SELECT only; RESET ROLE; no writes",
+    "tenantAProductAccessRows": 5,
+    "tenantBProductAccessRows": 0,
+    "tenantAAuditRows": 1,
+    "tenantBAuditRows": 0,
+    "tenantAScope": true,
+    "tenantBScope": false,
+    "outsiderVisibleTenants": 0,
+    "outsiderScope": false
+  },
+  "dataApi": "absent (404 data api not found)",
+  "branchProtection": false,
+  "storePasswords": true
+}

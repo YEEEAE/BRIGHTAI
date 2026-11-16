@@ -1,0 +1,65 @@
+{
+  "generatedAt": "2026-11-16T12:42:17Z",
+  "source": "Neon control plane + read-only SQL via MCP",
+  "project": "young-frog-60183055",
+  "projectName": "AIGAS Kernel",
+  "branch": "br-young-bird-b43proeb",
+  "branchName": "production",
+  "database": "neondb",
+  "postgres": 18,
+  "counts": {
+    "publicTables": 31,
+    "aigasTables": 31,
+    "nonAigasTables": 0,
+    "nonAigasFunctions": 0,
+    "policies": 2,
+    "rlsEnabled": 31,
+    "rlsForced": 0,
+    "authenticatedTablesWithPrivileges": 31,
+    "aigasRuntimeRoles": 0,
+    "migrationLedgerRows": 0
+  },
+  "roles": {
+    "aigas_runtime": null,
+    "neondb_owner": { "login": true, "bypassrls": true, "superuser": false },
+    "authenticated": { "login": false, "bypassrls": false },
+    "anonymous": { "login": false, "bypassrls": false }
+  },
+  "policies": [
+    "public.aigas_sc_cancellations.sc_cancellation_owner (PERMISSIVE, ALL, TO PUBLIC, aigas.sc_* GUCs)",
+    "public.aigas_sc_requests.sc_request_owner (PERMISSIVE, ALL, TO PUBLIC, aigas.sc_* GUCs)"
+  ],
+  "dataApi": {
+    "status": "active",
+    "db_schemas": ["public"],
+    "db_anon_role": "anonymous",
+    "db_aggregates_enabled": true,
+    "jwt_role_claim_key": ".role"
+  },
+  "branchProtection": {
+    "production": false,
+    "p08-restore-20261110": false,
+    "storePasswords": true,
+    "historyRetentionSeconds": 21600
+  },
+  "missingTablesVsStagingHead": [
+    "aigas_exploration_grants",
+    "aigas_hg_delegations",
+    "aigas_hg_grants",
+    "aigas_release_readiness",
+    "aigas_trial_entitlements",
+    "aigas_trial_events",
+    "aigas_trial_operators",
+    "aigas_trial_quota_limits",
+    "aigas_trial_quota_reservations",
+    "aigas_trial_quota_usage",
+    "aigas_trial_requests"
+  ],
+  "partialObjectDrift": [
+    "aigas_audit_events lacks correlation_id, policy_version, idempotency_key (0017)",
+    "aigas_ld_events lacks chain guard function/trigger (0013)",
+    "aigas_fw_decisions / aigas_sc_requests global unique reference indexes absent (0022)",
+    "aigas_re_treatment_revisions lacks residual_* and acceptance_policy_version columns (0026)",
+    "aigas_policy_versions already has required_approvals (0020 partially present)"
+  ]
+}
