@@ -1,4 +1,5 @@
 ---
+import SecureChatDemo from './SecureChatDemo.astro';
 import RiskWorkspace from './RiskWorkspace.astro';
 import HumanGateDemo from './HumanGateDemo.astro';
 import FirewallWorkspace from './FirewallWorkspace.astro';
@@ -20,7 +21,7 @@ const chats = [
   ['بيانات داخلية', 'أحتاج تلخيص رسالة عمل داخلية. ما الذي أراجعه أولًا؟', 'تحقق من التصنيف وصلاحية المشاركة واعتماد الأداة والحساب والوجهة. عند الغموض، توقف وراجع المالك.', 'المشاركة مقيدة بتصنيف البيانات؛ لا تُدخل محتوى داخليًا في هذا المختبر.'],
 ];
 ---
-{kind === 'risk-engine' ? <RiskWorkspace demo /> : kind === 'human-gate' ? <HumanGateDemo /> : kind === 'firewall' ? <FirewallWorkspace /> : <section class={`lab-experience lab-${kind}`} data-lab-experience data-kind={kind} aria-label={brief.task}>
+{kind === 'secure-chat' ? <SecureChatDemo /> : kind === 'risk-engine' ? <RiskWorkspace demo /> : kind === 'human-gate' ? <HumanGateDemo /> : kind === 'firewall' ? <FirewallWorkspace /> : <section class={`lab-experience lab-${kind}`} data-lab-experience data-kind={kind} aria-label={brief.task}>
   <div class="lab-workbench">
     <div class="lab-instruction"><p class="hub-kicker">01 / {brief.task}</p><h2>{brief.example}</h2><p>{brief.outcome}</p></div>
     {kind === 'human-gate' && <>

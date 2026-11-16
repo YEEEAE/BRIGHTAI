@@ -81,8 +81,9 @@ export async function listModels(request) {
       } catch { /* A dependency or authorization failure closes sending only. */ }
     }
   }
+  // Eligibility is not evidence of an authorized model completion.
   const sendable = policyReady.length > 0;
-  const models = policyReady.map(model => ({ id: model.id, label: model.label, region: model.region, ready: true, state: 'READY' }));
+  const models = policyReady.map(model => ({ id: model.id, label: model.label, region: model.region, ready: true, state: 'ELIGIBLE' }));
   const available = sendable;
   const allExpired = states.length > 0 && states.every(item => item.state === 'EXPIRED');
   const dependencyStatus = available ? 'available'
@@ -110,6 +111,7 @@ export async function listModels(request) {
               ? 'تكامل سياسات Kernel وFirewall للمحادثة غير مهيأ؛ الإرسال موقوف ولم يُرسل أي محتوى.'
               : 'لا يوجد نموذج معتمد ومهيأ لهذه المؤسسة؛ لم يُرسل أي محتوى إلى مزود AI.';
   return {
+    liveSend: { status: 'NOT_VERIFIED', completionVerified: false },
     models, available, dependencyStatus, availabilityCode, tenant: { id: tenant.tenant_id, name: tenant.name },
     conversationMode: 'EPHEMERAL_TAB_ONLY',
     retention: { enabled: false, contentStored: false, message: 'لا تُحفظ نصوص المحادثة أو مسوداتها؛ تُحفظ بيانات طلب وصفية لمنع التكرار وضبط الاستخدام. لم تعتمد سياسة حفظ المتن.' },

@@ -1,0 +1,242 @@
+- generic [active] [ref=f1e1]:
+  - link "تخطّ إلى المحتوى" [ref=f1e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=f1e3]:
+    - link "BRIGHTAI — الرئيسية" [ref=f1e4] [cursor=pointer]:
+      - /url: /
+      - img "BRIGHTAI — AI Governance and Safety (AIGAS)" [ref=f1e5]
+    - group [ref=f1e6]:
+      - navigation "التنقل الرئيسي" [ref=f1e7]:
+        - link "المنتجات" [ref=f1e8] [cursor=pointer]:
+          - /url: /products/
+        - link "الحلول" [ref=f1e9] [cursor=pointer]:
+          - /url: /#solutions
+        - link "الخدمات" [ref=f1e10] [cursor=pointer]:
+          - /url: /services/
+        - link "الأسعار" [ref=f1e11] [cursor=pointer]:
+          - /url: /pricing/
+        - link "مركز المعرفة" [ref=f1e12] [cursor=pointer]:
+          - /url: /docs/
+    - link "اطلب معلومات" [ref=f1e13] [cursor=pointer]:
+      - /url: /contact/
+      - text: اطلب معلومات
+      - generic [aria-hidden] [ref=f1e14]: ↗
+  - main [ref=f1e15]:
+    - navigation "مسار التنقل" [ref=f1e16]:
+      - link "الرئيسية" [ref=f1e17] [cursor=pointer]:
+        - /url: /
+      - generic [aria-hidden] [ref=f1e18]: /
+      - link "المنتجات" [ref=f1e19] [cursor=pointer]:
+        - /url: /products/
+      - generic [aria-hidden] [ref=f1e20]: /
+      - generic [ref=f1e21]: AIGAS Secure Chat
+    - region "مختبر Secure Chat" [ref=f1e22]:
+      - complementary [ref=f1e23]:
+        - paragraph [ref=f1e24]: AIGAS / LABS
+        - group [ref=f1e25]:
+          - navigation "مختبرات المنتجات" [ref=f1e26]:
+            - link "مركز التجارب" [ref=f1e27] [cursor=pointer]:
+              - /url: /products/
+              - text: مركز التجارب
+              - generic [aria-hidden] [ref=f1e28]: ↗
+            - link "Firewall" [ref=f1e29] [cursor=pointer]:
+              - /url: /products/firewall/#lab
+            - link "Ledger" [ref=f1e34] [cursor=pointer]:
+              - /url: /products/ledger/#lab
+            - link "Human Gate" [ref=f1e40] [cursor=pointer]:
+              - /url: /products/human-gate/#lab
+            - link "Risk Engine" [ref=f1e46] [cursor=pointer]:
+              - /url: /products/risk-engine/#lab
+            - link "Secure Chat" [ref=f1e52] [cursor=pointer]:
+              - /url: /products/secure-chat/#lab
+              - generic [aria-hidden] [ref=f1e58]: ←
+            - link "بوابة Kernel" [ref=f1e59] [cursor=pointer]:
+              - /url: /app/kernel/
+              - generic [aria-hidden] [ref=f1e60]: ◈
+              - text: بوابة Kernel
+        - paragraph [ref=f1e61]: انتقل بحرية.تُحفظ خطوتك في هذه الجلسة فقط.
+      - generic [ref=f1e62]:
+        - generic [ref=f1e63]:
+          - generic [ref=f1e69]:
+            - heading "Secure Chat" [level=1] [ref=f1e70]
+            - paragraph [ref=f1e71]: حاور ضمن حدود / مختبر عام
+          - link "تجربة تشغيلية 48 ساعة ↗" [ref=f1e72] [cursor=pointer]:
+            - /url: /auth/sign-up/?returnTo=%2Fapp%2Fsecure-chat%2F
+        - generic [ref=f1e73]:
+          - generic [ref=f1e74]: مثال تعليمي · دون اتصال بخدمة
+          - generic [ref=f1e75]: اختر مثالًا للبدء
+        - region "محادثة محاكاة محلية" [ref=f1e76]:
+          - generic [ref=f1e77]:
+            - generic [ref=f1e78]:
+              - paragraph [ref=f1e79]: BRIGHT AI / SECURE CHAT
+              - heading "مساحة هادئة لتجربة طلبك" [level=2] [ref=f1e80]
+            - generic [ref=f1e81]: محاكاة محلية فقط
+          - paragraph [ref=f1e82]: ردود محددة مسبقًا، وليست من Groq أو نموذج متصل. لا تدخل بيانات حقيقية؛ قواعد المثال محدودة ولا تثبت حماية إنتاجية.
+          - generic [ref=f1e83]:
+            - button "محادثة جديدة" [ref=f1e84] [cursor=pointer]
+            - button "إعادة الضبط" [ref=f1e85] [cursor=pointer]
+            - generic [ref=f1e86]: Live send · غير جاهز / NOT VERIFIED
+          - generic "سيناريوهات المحاكاة" [ref=f1e87]:
+            - button "طلب عام" [ref=f1e88] [cursor=pointer]
+            - button "بيانات افتراضية حساسة" [ref=f1e89] [cursor=pointer]
+            - button "طلب ترفضه السياسة" [ref=f1e90] [cursor=pointer]
+          - list "رسائل المحاكاة" [ref=f1e91]:
+            - listitem [ref=f1e92]: اختر مثالًا أو اكتب طلبًا افتراضيًا؛ الرد التالي محاكاة محددة.
+          - generic [ref=f1e93]:
+            - generic [ref=f1e94]: رسالتك الافتراضية
+            - textbox "رسالتك الافتراضية" [ref=f1e95]:
+              - /placeholder: اكتب طلبًا عامًا أو اختر مثالًا أعلاه
+            - generic [ref=f1e96]:
+              - button "أرسل للمحاكاة" [ref=f1e97] [cursor=pointer]
+              - generic [ref=f1e98]: لا إرسال لمزود · لا حفظ للمحتوى أو المسودة
+          - status
+          - group [ref=f1e99]:
+            - generic "حدود التجربة التشغيلية · 48 ساعة" [ref=f1e100] [cursor=pointer]
+        - generic [ref=f1e101]:
+          - link "← كل التجارب" [ref=f1e102] [cursor=pointer]:
+            - /url: /products/
+          - link "عن المنتج وحدود الاستخدام ↓" [ref=f1e103] [cursor=pointer]:
+            - /url: "#product-details"
+          - button "إعادة ضبط المثال" [ref=f1e104] [cursor=pointer]
+    - generic [ref=f1e105]:
+      - generic [ref=f1e106]:
+        - paragraph [ref=f1e107]: AIGAS / جرّب إمكانيات المنتج
+        - heading "AIGAS Secure Chat" [level=2] [ref=f1e108]
+        - paragraph [ref=f1e109]: محادثة ضمن حدود واضحة
+        - paragraph [ref=f1e110]: تصور لواجهة محادثة مؤسسية يمكن أن تخضع لسياسات اختيار الأدوات والمراجعة بعد إثبات البنية والتكاملات.
+      - complementary [ref=f1e111]:
+        - generic [ref=f1e117]:
+          - paragraph [ref=f1e118]: منتج مستقل ضمن المنظومة
+          - link "كل المنتجات ←" [ref=f1e119] [cursor=pointer]:
+            - /url: /products/
+    - paragraph [ref=f1e120]: المخططات تعليمية وتصف نطاقاً مستهدفاً وفق Blueprint. لا تثبت وجود خدمة عاملة أو تكامل أو مستوى حماية أو اعتماد. لا توجد أسعار نهائية معتمدة.
+    - generic [ref=f1e121]:
+      - generic [ref=f1e122]:
+        - paragraph [ref=f1e123]: قبل أي استخدام فعلي
+        - heading "ثلاثة أسئلة تستحق المراجعة." [level=2] [ref=f1e124]: ثلاثة أسئلةتستحق المراجعة.
+      - list [ref=f1e125]:
+        - listitem [ref=f1e126]: ما الخدمات والنماذج التي ستُعتمد؟
+        - listitem [ref=f1e127]: ما إعدادات الحساب والعقد؟
+        - listitem [ref=f1e128]: كيف يتحقق الموظف من الإجابة؟
+    - generic [ref=f1e129]:
+      - heading "مكان المنتج في التصور" [level=2] [ref=f1e130]
+      - paragraph [ref=f1e131]: AIGAS Kernel مكوّن مشترك يوفر الحد الأدنى اللازم للمنتجات، ولا يُباع كمنتج مرخص مستقل. أما المنتجات الخمسة فتُصمم كوحدات مستقلة وظيفياً وتجارياً وفق الـBlueprint.
+      - generic [ref=f1e132]:
+        - link "اطلب معلومات أو عرض سعر" [ref=f1e133] [cursor=pointer]:
+          - /url: /contact/
+        - link "استعراض المنتجات" [ref=f1e134] [cursor=pointer]:
+          - /url: /products/
+    - region "مسار AIGAS Secure Chat" [ref=f1e135]:
+      - heading "خطوتك التالية مع Secure Chat" [level=2] [ref=f1e136]
+      - paragraph [ref=f1e137]: محادثة اصطناعية ضمن سياسة المؤسسة ونماذجها المعتمدة.
+      - generic [ref=f1e138]:
+        - link "جرّب الآن — Secure Chat" [ref=f1e139] [cursor=pointer]:
+          - /url: /products/secure-chat/#lab
+          - generic [ref=f1e140]: جرّب الآن
+          - generic [aria-hidden] [ref=f1e141]: ←
+        - link "تجربة تشغيلية 48 ساعة — Secure Chat" [ref=f1e142] [cursor=pointer]:
+          - /url: /auth/sign-up/?returnTo=%2Fapp%2Fsecure-chat%2F
+          - text: تجربة تشغيلية 48 ساعة
+          - generic [aria-hidden] [ref=f1e143]: ↗
+      - paragraph [ref=f1e144]:
+        - text: المختبر عام وتعليمي. التجربة التشغيلية لمدة 48 ساعة تتطلب حسابًا وتفعيلًا مؤهلًا بعد التحقق من الوصول في الخادم؛ تسجيل الدخول وحده لا يفعّلها.
+        - link "تواصل بشأن الاشتراك" [ref=f1e145] [cursor=pointer]:
+          - /url: /contact/?topic=%D8%B7%D9%84%D8%A8%20%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%D9%83%20%D9%85%D8%B3%D8%AA%D9%82%D9%84%20%E2%80%94%20AIGAS%20Secure%20Chat
+    - generic [ref=f1e146]:
+      - paragraph [ref=f1e147]: دليل اختيار المنتج · قدرات مستهدفة وفق Blueprint · 31 أكتوبر 2026
+      - generic [ref=f1e148]:
+        - heading "محادثة مؤسسية ضمن سياسة واضحة" [level=2] [ref=f1e149]
+        - paragraph [ref=f1e150]: يستهدف AIGAS Secure Chat محادثة عربية بسيطة مع نماذج معتمدة، مع حدود للمستخدم والبيانات والمورد والتكلفة. وهو منتج مخطط لمرحلة لاحقة؛ المثال المعروض لا يتصل بنموذج ولا يثبت تقديم خدمة محادثة حالية.
+        - paragraph [ref=f1e151]: لا يتضمن النطاق الأساسي المعتمد رفع ملفات أو RAG أو نظام إدارة معرفة شامل. اختيار المحادثة لا يعني تلقائياً اعتماد كل نموذج أو السماح بكل أنواع البيانات.
+      - generic [ref=f1e152]:
+        - heading "قبل الرسالة وأثناءها وبعدها" [level=2] [ref=f1e153]
+        - list [ref=f1e154]:
+          - listitem [ref=f1e155]:
+            - strong [ref=f1e156]: "قبل الإرسال:"
+            - text: تأكد من الحساب والنموذج المسموح وفئة البيانات والغرض، ومن وجود مسار معالجة معتمد.
+          - listitem [ref=f1e157]:
+            - strong [ref=f1e158]: "أثناء المعالجة:"
+            - text: المطلوب تطبيق ضوابط الخصوصية والحماية الأساسية حتى دون شراء Firewall منفرداً.
+          - listitem [ref=f1e159]:
+            - strong [ref=f1e160]: "بعد الإجابة:"
+            - text: تحقق من الدقة قبل الاعتماد، ومن سياسة الحفظ والمشاركة والتصدير؛ المشاركة مغلقة افتراضياً في التصميم المعتمد.
+      - generic [ref=f1e161]:
+        - heading "خصوصية المحادثة ومسؤولية المنشأة" [level=2] [ref=f1e162]
+        - paragraph [ref=f1e163]: يفصل التصور بين محتوى المحادثة وسجل الأمان الأدنى، ويجعل خصوصية المحادثة عن مسؤولي المؤسسة هي الأصل، مع وصول استثنائي مشروع ومفوض ومسجل. سياسة No-Training متطلب قطعي لدى BRIGHT AI ومورديها؛ تنفيذها يحتاج عقداً وإعداداً ودليلاً قبل استخدام بيانات العميل.
+        - paragraph [ref=f1e164]:
+          - text: اقرأ
+          - link "كيف تحمي بيانات منشأتك قبل إدخالها في مساعد AI" [ref=f1e165] [cursor=pointer]:
+            - /url: /knowledge/protect-company-data-chatgpt/
+          - text: و
+          - link "حدود معلومات الخصوصية الحالية" [ref=f1e166] [cursor=pointer]:
+            - /url: /privacy/
+          - text: . لا نفترض احتفاظاً صفرياً أو استضافة سعودية مثبتة أو مورداً محدداً.
+  - contentinfo [ref=f1e167]:
+    - generic [ref=f1e168]:
+      - link "BRIGHTAI — الرئيسية" [ref=f1e169] [cursor=pointer]:
+        - /url: /
+        - img "BRIGHTAI — AI Governance and Safety (AIGAS)" [ref=f1e170]
+      - paragraph [ref=f1e171]: ذكاء اصطناعي تثق به... وتحاسبه.
+    - generic [ref=f1e172]:
+      - generic [ref=f1e173]:
+        - heading "المنصة" [level=2] [ref=f1e174]
+        - list [ref=f1e175]:
+          - listitem [ref=f1e176]:
+            - link "Kernel والمنتجات" [ref=f1e177] [cursor=pointer]:
+              - /url: /products/
+              - generic [ref=f1e178]: Kernel
+              - text: والمنتجات
+          - listitem [ref=f1e179]:
+            - link "محاكاة توضيحية" [ref=f1e180] [cursor=pointer]:
+              - /url: /kernel/
+          - listitem [ref=f1e181]:
+            - link "طلب عرض سعر" [ref=f1e182] [cursor=pointer]:
+              - /url: /pricing/
+          - listitem [ref=f1e183]:
+            - link "مركز المعرفة" [ref=f1e184] [cursor=pointer]:
+              - /url: /docs/
+      - generic [ref=f1e185]:
+        - heading "الحوكمة" [level=2] [ref=f1e186]
+        - list [ref=f1e187]:
+          - listitem [ref=f1e188]:
+            - link "السلامة" [ref=f1e189] [cursor=pointer]:
+              - /url: /pillars/safety/
+          - listitem [ref=f1e190]:
+            - link "الشفافية" [ref=f1e191] [cursor=pointer]:
+              - /url: /pillars/transparency/
+          - listitem [ref=f1e192]:
+            - link "الخصوصية" [ref=f1e193] [cursor=pointer]:
+              - /url: /pillars/privacy/
+          - listitem [ref=f1e194]:
+            - link "الامتثال" [ref=f1e195] [cursor=pointer]:
+              - /url: /compliance/
+      - generic [ref=f1e196]:
+        - heading "الشركة" [level=2] [ref=f1e197]
+        - list [ref=f1e198]:
+          - listitem [ref=f1e199]:
+            - link "الخدمات" [ref=f1e200] [cursor=pointer]:
+              - /url: /services/
+          - listitem [ref=f1e201]:
+            - link "من نحن" [ref=f1e202] [cursor=pointer]:
+              - /url: /about/
+          - listitem [ref=f1e203]:
+            - link "مركز الثقة" [ref=f1e204] [cursor=pointer]:
+              - /url: /trust/
+          - listitem [ref=f1e205]:
+            - link "تواصل معنا" [ref=f1e206] [cursor=pointer]:
+              - /url: /contact/
+      - generic [ref=f1e207]:
+        - heading "قانوني" [level=2] [ref=f1e208]
+        - list [ref=f1e209]:
+          - listitem [ref=f1e210]:
+            - link "سياسة الخصوصية" [ref=f1e211] [cursor=pointer]:
+              - /url: /privacy/
+          - listitem [ref=f1e212]:
+            - link "الشروط والأحكام" [ref=f1e213] [cursor=pointer]:
+              - /url: /terms/
+    - generic [ref=f1e214]: © 2026 BRIGHTAI
+  - generic [ref=f1e217]:
+    - button "Menu" [ref=f1e218]
+    - button "Inspect" [ref=f1e224]
+    - button "Audit" [ref=f1e228]
+    - button "Settings" [ref=f1e236]
