@@ -1,0 +1,11 @@
+[
+  {
+    "database": "neondb",
+    "public_tables": "31",
+    "tables_with_policy": "2",
+    "authenticated_grants": "124",
+    "runtime": null,
+    "ledger": null,
+    "exploration": null
+  }
+]

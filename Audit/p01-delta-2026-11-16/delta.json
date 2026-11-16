@@ -1,0 +1,1816 @@
+[
+  {
+    "status": "M",
+    "paths": [
+      ".agents/mind/01-mind-latest.md"
+    ],
+    "category": "context"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/BRIGHTAI-AIGAS-EXPERIENCE-13-PROMPTS-2026-11-16.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/EXECUTIVE-CLOSURE.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/GENERATED-REMEDIATION-PROMPTS.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/LINEAR-IMPORT.csv"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/README.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/SHA256SUMS.txt"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/evidence/browser-use-result.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/evidence/connector-readback.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/evidence/firecrawl-solutions.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/evidence/http-readback.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/evidence/local-tests.tap"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/evidence/migration-comparison.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/prompt-manifest.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/prompts/D01.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/prompts/D02.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/prompts/D03.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/prompts/D04.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/prompts/D05.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/prompts/D06.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/prompts/D07.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/prompts/D08.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/prompts/T01.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/prompts/T02.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/prompts/T03.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/prompts/T04.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/prompts/T05.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/prompts/T06.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/prompts/T07.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/REPORT.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/local-db-initial-failure.tap"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/local-db-sandbox-blocked.txt"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/local-db.tap"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/REPORT.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d01-solutions-2026-11-11/REPORT.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d01-solutions-2026-11-11/after-local-solutions.png"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d01-solutions-2026-11-11/before-live-solutions.png"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d01-solutions-2026-11-11/origin-evidence.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d02-journey-2026-11-11/REPORT.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d02-journey-2026-11-11/catalog-1440.png"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d02-journey-2026-11-11/journey-results.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d02-journey-2026-11-11/product-detail-390.png"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d04-section-compass-2026-11-11/REPORT.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d05-accessibility-2026-11-11/REPORT.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d05-accessibility-2026-11-11/evidence.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d06-kernel-2026-11-11/REPORT.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/d07-knowledge-2026-11-11/REPORT.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/observability-privacy-2026-11-11/payload-preview.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/scenario.mjs"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t01-node-ssr-2026-11-11/REPORT.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t01-node-ssr-2026-11-11/version.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/REPORT.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/apply-staging.mjs"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/data-api-surface.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/fresh-plan.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/migration-order.tap"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/production-delta-plan.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/production-readonly.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/rehearsal.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/runtime-rls.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/staging-after.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/staging-before.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/staging-final.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/staging-ledger-before.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/staging-runtime.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/verification-index.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/verify-staging-ledger.mjs"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t02-schema-rls-2026-11-11/verify-staging-runtime.mjs"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t03-exploration-2026-11-11/EXECUTED.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t03-exploration-2026-11-11/RECHECK.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t03-exploration-2026-11-11/REPORT.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t03-exploration-2026-11-11/current-db.tap"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t03-exploration-2026-11-11/local-db.tap"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t04-products-2026-11-11/REPORT.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t04-products-2026-11-11/SOURCE-SHA256.txt"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t04-products-2026-11-11/initial-fixture-failure.tap"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t04-products-2026-11-11/local-db.tap"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/t04-products-2026-11-11/scenario.mjs"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t05-secure-chat-2026-11-11/unit.tap"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t06-observability-2026-11-11/RECHECK.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t06-observability-2026-11-11/REPORT.md"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t06-observability-2026-11-11/local-tests.tap"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t06-observability-2026-11-11/payload-preview.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/brightai-closure/t06-observability-2026-11-11/recheck-payload-preview.json"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "Audit/outhers/BRIGHTAI-AIGAS-FINAL-360-CONSOLIDATED-REPORT-2026-11-11.html"
+    ],
+    "category": "reports"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/00-START-HERE.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/00-START-HERE.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/01-TRUTH-AND-RELEASE-BASELINE.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/01-TRUTH-AND-RELEASE-BASELINE.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/02-PUBLIC-DESIGN-FINAL-DELTA.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/02-PUBLIC-DESIGN-FINAL-DELTA.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/03-KNOWLEDGE-SEO-ACCESSIBILITY.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/03-KNOWLEDGE-SEO-ACCESSIBILITY.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/04-ASTRO-NODE-PORTAL-RUNTIME.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/04-ASTRO-NODE-PORTAL-RUNTIME.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/05-NEON-STAGING-MIGRATION-PARITY.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/05-NEON-STAGING-MIGRATION-PARITY.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/06-NEON-LEAST-PRIVILEGE-RLS.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/06-NEON-LEAST-PRIVILEGE-RLS.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/07-AUTH-FIRST-TENANT-INVITES.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/07-AUTH-FIRST-TENANT-INVITES.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/08-KERNEL-POLICIES-GRANTS-TRIAL.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/08-KERNEL-POLICIES-GRANTS-TRIAL.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/09-FIREWALL-PROVIDER-DECISIONS.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/09-FIREWALL-PROVIDER-DECISIONS.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/10-LEDGER-CHAIN-VERIFY-EXPORT.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/10-LEDGER-CHAIN-VERIFY-EXPORT.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/11-HUMAN-GATE-SOD-LIFECYCLE.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/11-HUMAN-GATE-SOD-LIFECYCLE.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/12-RISK-ENGINE-ASSETS-LIFECYCLE.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/12-RISK-ENGINE-ASSETS-LIFECYCLE.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/13-SECURE-CHAT-APPROVAL-PRIVACY-QUOTAS.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/13-SECURE-CHAT-APPROVAL-PRIVACY-QUOTAS.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/14-PRIVACY-INCIDENTS-CSP-OPERATIONS.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/14-PRIVACY-INCIDENTS-CSP-OPERATIONS.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/15-BETA-RELEASE-GO-NOGO-HANDOFF.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/15-FINAL-OPENCODE-PROMPTS/15-BETA-RELEASE-GO-NOGO-HANDOFF.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/ALL-15-PRE-BETA-PROMPTS.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/ALL-15-PRE-BETA-PROMPTS.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/EXECUTION-PROMPTS.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/EXECUTION-PROMPTS.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/FINAL-AUDIT-REPORT.html",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/FINAL-AUDIT-REPORT.html"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/FINAL-AUDIT-REPORT.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/FINAL-AUDIT-REPORT.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/SCORING-METHOD.json",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/SCORING-METHOD.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p05-auth-identity-2026-11-10/REPORT.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p05-auth-identity-2026-11-10/REPORT.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p06-trial-2026-11-10/REPORT.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p06-trial-2026-11-10/REPORT.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p07-firewall-2026-11-10/REPORT.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p07-firewall-2026-11-10/REPORT.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p08-ledger-2026-11-10/REPORT.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p08-ledger-2026-11-10/REPORT.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p09-human-gate-2026-11-10/REPORT.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p09-human-gate-2026-11-10/REPORT.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p10-risk-engine-2026-11-10/REPORT.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p10-risk-engine-2026-11-10/REPORT.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p11-secure-chat-2026-11-10/REPORT.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p11-secure-chat-2026-11-10/REPORT.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p12-product-journey-2026-11-10/REPORT.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p12-product-journey-2026-11-10/REPORT.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p12-product-journey-2026-11-10/browser-results.json",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p12-product-journey-2026-11-10/browser-results.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p12-product-journey-2026-11-10/design-results.json",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p12-product-journey-2026-11-10/design-results.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p13-observability-2026-11-10/REPORT.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p13-observability-2026-11-10/REPORT.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p13-observability-2026-11-10/payload-preview.json",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p13-observability-2026-11-10/payload-preview.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p14-seo-links-2026-11-10/REPORT.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p14-seo-links-2026-11-10/REPORT.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p16-dependency-security-2026-11-10/REPORT.md",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p16-dependency-security-2026-11-10/REPORT.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p16-dependency-security-2026-11-10/dependency-paths.txt",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p16-dependency-security-2026-11-10/dependency-paths.txt"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p16-dependency-security-2026-11-10/licenses-2026-11-10.txt",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p16-dependency-security-2026-11-10/licenses-2026-11-10.txt"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p16-dependency-security-2026-11-10/npm-audit-2026-11-10.json",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p16-dependency-security-2026-11-10/npm-audit-2026-11-10.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p17-restore-rehearsal-2026-11-10/evidence/local-measurements-20261110T221917Z.json",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p17-restore-rehearsal-2026-11-10/evidence/local-measurements-20261110T221917Z.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p17-restore-rehearsal-2026-11-10/evidence/local-measurements-20261110T222807Z.json",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p17-restore-rehearsal-2026-11-10/evidence/local-measurements-20261110T222807Z.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p17-restore-rehearsal-2026-11-10/evidence/local-measurements-20261110T223011Z.json",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p17-restore-rehearsal-2026-11-10/evidence/local-measurements-20261110T223011Z.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p17-restore-rehearsal-2026-11-10/evidence/local-measurements-20261110T223231Z.json",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p17-restore-rehearsal-2026-11-10/evidence/local-measurements-20261110T223231Z.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p17-restore-rehearsal-2026-11-10/evidence/local-measurements-20261110T223332Z.json",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p17-restore-rehearsal-2026-11-10/evidence/local-measurements-20261110T223332Z.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p17-restore-rehearsal-2026-11-10/evidence/local-verify-20261110T221917Z.json",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p17-restore-rehearsal-2026-11-10/evidence/local-verify-20261110T221917Z.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p17-restore-rehearsal-2026-11-10/evidence/local-verify-20261110T222807Z.json",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p17-restore-rehearsal-2026-11-10/evidence/local-verify-20261110T222807Z.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p17-restore-rehearsal-2026-11-10/evidence/local-verify-20261110T223011Z.json",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p17-restore-rehearsal-2026-11-10/evidence/local-verify-20261110T223011Z.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p17-restore-rehearsal-2026-11-10/evidence/local-verify-20261110T223332Z.json",
+      "Audit/outhers/final-360-2026-11-10/BRIGHTAI-BETA-GATE-FINAL-2026-11-08/p17-restore-rehearsal-2026-11-10/evidence/local-verify-20261110T223332Z.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/FINAL-360-AUDIT.html",
+      "Audit/outhers/final-360-2026-11-10/FINAL-360-AUDIT.html"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/FINAL-360-AUDIT.md",
+      "Audit/outhers/final-360-2026-11-10/FINAL-360-AUDIT.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/INDEPENDENT-REVIEW.md",
+      "Audit/outhers/final-360-2026-11-10/INDEPENDENT-REVIEW.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/REAL-TRIAL-SPEC.md",
+      "Audit/outhers/final-360-2026-11-10/REAL-TRIAL-SPEC.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/REQUIREMENTS.md",
+      "Audit/outhers/final-360-2026-11-10/REQUIREMENTS.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/additional-evidence.json",
+      "Audit/outhers/final-360-2026-11-10/additional-evidence.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/build-report.mjs",
+      "Audit/outhers/final-360-2026-11-10/build-report.mjs"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/calculate.py",
+      "Audit/outhers/final-360-2026-11-10/calculate.py"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/capabilities.json",
+      "Audit/outhers/final-360-2026-11-10/capabilities.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/catalog-queries.sql",
+      "Audit/outhers/final-360-2026-11-10/catalog-queries.sql"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/catalog-summary.json",
+      "Audit/outhers/final-360-2026-11-10/catalog-summary.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/credentials.json",
+      "Audit/outhers/final-360-2026-11-10/credentials.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/deliverable-checks.json",
+      "Audit/outhers/final-360-2026-11-10/deliverable-checks.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/dependencies.txt",
+      "Audit/outhers/final-360-2026-11-10/dependencies.txt"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/firewall-harness-source.mjs",
+      "Audit/outhers/final-360-2026-11-10/firewall-harness-source.mjs"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/html-source-manifest.json",
+      "Audit/outhers/final-360-2026-11-10/html-source-manifest.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/html-verification.json",
+      "Audit/outhers/final-360-2026-11-10/html-verification.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/http.json",
+      "Audit/outhers/final-360-2026-11-10/http.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/live-evidence.json",
+      "Audit/outhers/final-360-2026-11-10/live-evidence.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/local-http.json",
+      "Audit/outhers/final-360-2026-11-10/local-http.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/migration-catalog.json",
+      "Audit/outhers/final-360-2026-11-10/migration-catalog.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/prompt-expansion.json",
+      "Audit/outhers/final-360-2026-11-10/prompt-expansion.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/prompt-plan-checks.json",
+      "Audit/outhers/final-360-2026-11-10/prompt-plan-checks.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/readability-overrides.json",
+      "Audit/outhers/final-360-2026-11-10/readability-overrides.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/report-client.js",
+      "Audit/outhers/final-360-2026-11-10/report-client.js"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/report.css",
+      "Audit/outhers/final-360-2026-11-10/report.css"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/requirements.csv",
+      "Audit/outhers/final-360-2026-11-10/requirements.csv"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/requirements.json",
+      "Audit/outhers/final-360-2026-11-10/requirements.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/scores.json",
+      "Audit/outhers/final-360-2026-11-10/scores.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/seo-crawl.json",
+      "Audit/outhers/final-360-2026-11-10/seo-crawl.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/skill-index.txt",
+      "Audit/outhers/final-360-2026-11-10/skill-index.txt"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/tests.tap",
+      "Audit/outhers/final-360-2026-11-10/tests.tap"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/verification-manifest.json",
+      "Audit/outhers/final-360-2026-11-10/verification-manifest.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/final-360-2026-11-10/write_prompts.py",
+      "Audit/outhers/final-360-2026-11-10/write_prompts.py"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/knowledge-publication-2026-11-08/REPORT.md",
+      "Audit/outhers/knowledge-publication-2026-11-08/REPORT.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/knowledge-publication-2026-11-08/articles.json",
+      "Audit/outhers/knowledge-publication-2026-11-08/articles.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/knowledge-publication-2026-11-08/browser-evidence/page-2026-11-08T16-57-06-497Z.yml",
+      "Audit/outhers/knowledge-publication-2026-11-08/browser-evidence/page-2026-11-08T16-57-06-497Z.yml"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/knowledge-publication-2026-11-08/browser-evidence/page-2026-11-08T16-58-28-054Z.yml",
+      "Audit/outhers/knowledge-publication-2026-11-08/browser-evidence/page-2026-11-08T16-58-28-054Z.yml"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/local-trial-2026-11-11/PRODUCT-ENTRY-LINKS.md",
+      "Audit/outhers/local-trial-2026-11-11/PRODUCT-ENTRY-LINKS.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/local-trial-2026-11-11/REPORT.md",
+      "Audit/outhers/local-trial-2026-11-11/REPORT.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p02-staging-parity-2026-11-10/REPORT.md",
+      "Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/REPORT.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p02-staging-parity-2026-11-10/live-catalog.json",
+      "Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/live-catalog.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p02-staging-parity-2026-11-10/migration-ledger.json",
+      "Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/migration-ledger.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p03-runtime-rls-2026-11-10/REPORT.md",
+      "Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/p03-runtime-rls-2026-11-10/REPORT.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p03-runtime-rls-2026-11-10/local-runtime-rls.json",
+      "Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/p03-runtime-rls-2026-11-10/local-runtime-rls.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p03-runtime-rls-2026-11-10/neon-staging-posture.json",
+      "Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/p03-runtime-rls-2026-11-10/neon-staging-posture.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p04-node-ssr-2026-11-10/REPORT.md",
+      "Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/p03-runtime-rls-2026-11-10/p04-node-ssr-2026-11-10/REPORT.md"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p02-staging-parity-2026-11-10/parity-target.json",
+      "Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/parity-target.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p02-staging-parity-2026-11-10/parity.json",
+      "Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/parity.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p02-staging-parity-2026-11-10/rehearsal.json",
+      "Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/rehearsal.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p02-staging-parity-2026-11-10/staging-catalog.json",
+      "Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/staging-catalog.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "R100",
+    "paths": [
+      "Audit/p02-staging-parity-2026-11-10/staging-posture.json",
+      "Audit/outhers/local-trial-2026-11-11/p02-staging-parity-2026-11-10/staging-posture.json"
+    ],
+    "category": "rename_only"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "docs/APP-PORTAL-RUNTIME-HANDOFF.md"
+    ],
+    "category": "context"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "docs/DATA-API-EXPOSURE-DECISION.md"
+    ],
+    "category": "context"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "docs/MONITORING-AND-ANALYTICS-WIRING.md"
+    ],
+    "category": "context"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "docs/RUNTIME-RLS-PERMISSION-MATRIX.md"
+    ],
+    "category": "context"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "migrations/0032_aigas_trial_trigger_execute_lock.sql"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "migrations/0033_aigas_exploration.sql"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "opencode.json"
+    ],
+    "category": "context"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "public/llms.txt"
+    ],
+    "category": "context"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "redirects.json"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "scripts/apply-migrations.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "scripts/db-migration-rehearsal.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "scripts/migration-order.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "scripts/operator-exploration.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "scripts/preview-observability-payload.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "scripts/verify-chat-policy-local.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "scripts/verify-contracts-local.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "scripts/verify-exploration-local.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "scripts/verify-node-runtime.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "scripts/verify-products-local.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "scripts/verify-runtime-rls.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "scripts/verify-trial-local.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/components/InteriorController.astro"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/components/PageShell.astro"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/components/ProductJourney.astro"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/layouts/BaseLayout.astro"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/middleware.ts"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/pages/app/kernel/index.astro"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/pages/docs.astro"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/pages/index.astro"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/pages/solutions/[sector].astro"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "src/pages/solutions/index.astro"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/scripts/kernel.ts"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/scripts/workspace-context.ts"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/server/firewall/escalation.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/server/firewall/guard.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/server/firewall/service.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/server/human-gate/service.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/server/kernel/access.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "src/server/kernel/exploration.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "src/server/kernel/guidance.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "src/server/kernel/operator-exploration.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/server/kernel/service.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/server/ledger/service.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/server/observability/url-policy.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/server/risk-engine/service.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "src/server/secure-chat/integration.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/server/secure-chat/service.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/shared/product-navigation.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/styles/interior.css"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/styles/kernel.css"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/styles/knowledge-center.css"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/styles/risk-engine.css"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/styles/secure-chat.css"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/styles/tokens.json"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "src/styles/variables.css"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "tests/exploration-db.test.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "tests/firewall-review-binding.test.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "tests/kernel-guidance.test.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "tests/migration-order.test.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "M",
+    "paths": [
+      "tests/observability.test.mjs"
+    ],
+    "category": "source"
+  },
+  {
+    "status": "A",
+    "paths": [
+      "tests/secure-chat-policy.test.mjs"
+    ],
+    "category": "source"
+  }
+]

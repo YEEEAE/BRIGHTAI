@@ -1,0 +1,30 @@
+[
+  {
+    "filename": "0030_aigas_trial_server_cycle.sql",
+    "sha256": "325cd0881522311dd815b9d48d0117228eea5fd06604f57b07eb85f37d9c3df3",
+    "status": "APPLIED",
+    "local_sha256": "325cd0881522311dd815b9d48d0117228eea5fd06604f57b07eb85f37d9c3df3",
+    "match": true
+  },
+  {
+    "filename": "0031_aigas_risk_treatment_runtime_lock.sql",
+    "sha256": "c33189f3debc821cc07a101aa5405843602a7171d0c3df0591a53b31db138e0a",
+    "status": "APPLIED",
+    "local_sha256": "c33189f3debc821cc07a101aa5405843602a7171d0c3df0591a53b31db138e0a",
+    "match": true
+  },
+  {
+    "filename": "0032_aigas_trial_trigger_execute_lock.sql",
+    "sha256": "1f3bce9c6b26e3bac6b89f1af17c69b37788529f5fccab2760aad152cdb43164",
+    "status": "APPLIED",
+    "local_sha256": "1f3bce9c6b26e3bac6b89f1af17c69b37788529f5fccab2760aad152cdb43164",
+    "match": true
+  },
+  {
+    "filename": "0033_aigas_exploration.sql",
+    "sha256": "faa5dc3b8554c6c11663e936b6c3b58e62b7fd12ff11c07a750ce79f3f028d34",
+    "status": "APPLIED",
+    "local_sha256": "faa5dc3b8554c6c11663e936b6c3b58e62b7fd12ff11c07a750ce79f3f028d34",
+    "match": true
+  }
+]

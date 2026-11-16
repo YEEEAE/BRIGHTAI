@@ -1,0 +1,1109 @@
+
+### src/pages/app/index.astro
+1: ---
+2: export const prerender = false;
+3: const workspace = Astro.url.searchParams.get('workspace');
+4: return Astro.redirect(`/app/kernel/${workspace ? `?workspace=${encodeURIComponent(workspace)}` : ''}`, 302);
+5: ---
+
+
+### src/pages/app/ledger/index.astro
+1: ---
+2: import { productEntryPath } from '../../../shared/product-navigation.mjs';
+3: import AppLayout from '../../../layouts/AppLayout.astro';
+4: import { authConfig } from '../../../server/kernel/auth.mjs';
+5: import '../../../styles/ledger.css';
+6: export const prerender = false;
+7: const config = authConfig();
+8: ---
+9: <AppLayout title="سجل أدلة Ledger">
+10:  <section class="kernel ledger" data-ledger data-auth-url={config?.base ?? ''}>
+11:   <div class="page-heading"><div><p class="overline">03 / AIGAS LEDGER</p><h1>أثر واضح.<span>وسلامة قابلة للفحص.</span></h1><p class="intro">أحداث مسارات AIGAS الخادمية المربوطة بالسجل عند تفعيله. أحداث Firewall وHuman Gate الحالية تجريبية موسومة؛ لا تعني إرسالًا لمزود أو عملية خارجية.</p></div><span class="connection">سجل أدلة المؤسسة</span></div>
+12:   <section class="notice"><div><h2>حالة الوصول</h2><p data-status role="status" aria-live="polite">{config ? 'جارٍ التحقق من الدخول…' : 'يلزم إعداد الدخول عبر Neon Auth.'}</p><a href={productEntryPath('ledger')}>الدخول وإدارة المؤسسة عبر Kernel ←</a><a href="/products/ledger/">التعريف العام بـLedger وحدود الدليل ←</a></div><button type="button" data-reload>تحديث السجل</button></section>
+13:   <noscript><p class="notice">يلزم JavaScript لاستعادة جلسة Kernel وعرض البيانات الخاصة.</p></noscript>
+14:   <div data-private hidden>
+15:    <section class="panel ledger-controls"><div><label for="ld-workspace">المؤسسة</label><select id="ld-workspace" data-workspace></select><p data-role></p></div><div><label for="ld-search">بحث بمعرّف الحدث أو مرجع العملية</label><input id="ld-search" data-search-input type="search" maxlength="80" autocomplete="off" placeholder="اكتب جزءًا من المعرّف" /></div><button type="button" data-search>بحث</button><div><label for="ld-type">نوع الحدث</label><select id="ld-type" data-type><option value="">كل الأنواع</option><option value="firewall.decision.recorded">قرار Firewall</option><option value="human_gate.request.created">طلب Human Gate</option><option value="human_gate.decision.recorded">قرار Human Gate</option><option value="human_gate.demo_note.completed">تنفيذ ملاحظة تجريبية</option><option value="risk_engine.asset.created">إنشاء أصل</option><option value="risk_engine.asset.updated">تحديث أصل</option><option value="risk_engine.assessment.created">تقييم مخاطر</option><option value="kernel.audit.recorded">إجراء Kernel</option><option value="synthetic.test.created">اختبار اصطناعي</option><option value="synthetic.review.recorded">مراجعة اصطناعية</option></select></div><div><label for="ld-source">المصدر</label><select id="ld-source" data-source><option value="">كل المصادر</option><option value="firewall">Firewall</option><option value="human-gate">Human Gate</option><option value="risk-engine">Risk Engine</option><option value="kernel">Kernel</option><option value="ledger.synthetic-lab">مختبر Ledger</option></select></div><div><label for="ld-classification">الحالة / طبيعة الحدث</label><select id="ld-classification" data-classification><option value="">كل الأحداث</option><option value="operational">تشغيلي داخل التطبيق</option><option value="synthetic">اصطناعي / مسار تجريبي</option></select></div><div><label for="ld-period">الفترة</label><select id="ld-period" data-period><option value="all">كل الفترات</option><option value="1">آخر 24 ساعة</option><option value="7">آخر 7 أيام</option><option value="30">آخر 30 يومًا</option></select></div></section>
+16:    <section class="panel" data-create-panel hidden><h2>إضافة حدث تجريبي منظم</h2><p>الخادم ينشئ الوقت وهوية الفاعل ومرجع قرار اصطناعي والبصمة. القيم محصورة؛ لا يوجد حقل لحفظ محادثات أو أسرار.</p><form data-create class="ledger-controls"><div><label for="ld-event-type">النوع الاصطناعي</label><select id="ld-event-type" name="event_type"><option value="synthetic.test.created">اختبار اصطناعي</option><option value="synthetic.review.recorded">مراجعة اصطناعية</option></select></div><div><label for="ld-scenario">سيناريو الاختبار</label><select id="ld-scenario" name="scenario"><option value="integrity-check">فحص السلامة</option><option value="access-check">فحص الوصول</option></select></div><button type="submit">حفظ حدث تجريبي</button></form></section>
+17:    <section class="panel"><div class="section-heading"><h2>أحداث المؤسسة</h2><span data-page></span></div><p>25 حدثًا لكل صفحة، بحد أقصى 100 صفحة. فحص السلسلة يشمل بادئتها كاملة حتى الحدث المعروض، حتى 10000 حدث، بصرف النظر عن التصفية.</p><p data-chain role="status" aria-live="polite"></p><p data-empty role="status" hidden>لا توجد أحداث ضمن هذه التصفية. لا تُنشأ أحداث تلقائية لملء السجل.</p><div class="ledger-table" tabindex="0" role="region" aria-label="جدول الأحداث، يمكن تمريره أفقيًا"><table><caption class="sr-only">أحداث المؤسسة المحفوظة</caption><thead><tr><th scope="col">الوقت</th><th scope="col">النوع / المصدر</th><th scope="col">مرجع العملية</th><th scope="col">الفاعل</th><th scope="col">سلامة الحدث / حزمة الصفحة</th><th scope="col">التفاصيل</th></tr></thead><tbody data-events></tbody></table></div><div class="ledger-pagination"><button type="button" data-prev>السابق</button><button type="button" data-next>التالي</button></div></section>
+18:   </div>
+19:   <dialog data-detail aria-labelledby="ld-detail-title"><div class="ledger-detail"><div class="section-heading"><h2 id="ld-detail-title">تفاصيل الحدث</h2><button type="button" data-close>إغلاق</button></div><p data-event-classification></p><dl data-fields></dl><div class="ledger-actions"><button type="button" data-verify>تحقق من سلامة الحدث</button><button type="button" data-export hidden>تنزيل حزمة JSON</button></div><p data-integrity role="status" aria-live="polite">لم يُفحص بعد.</p></div></dialog>
+20:   <p class="notice">البصمة SHA-256 تربط الأحداث بتسلسل داخل المؤسسة. الحزمة تضم الأحداث من بداية السجل إلى الحدث المحدد، دون إثبات أن هذا آخر حدث أو أن الواقعة صحيحة؛ إعادة كتابة السلسلة كاملة من مسؤول قاعدة البيانات ليست محمية بتوقيع أو مرساة خارجية. لا أرشفة قانونية أو احتفاظ أبدي أو Legal Hold. تدقيق Kernel الأساسي مستقل عن شراء Ledger؛ لا تُستخدم الأدلة لتدريب النماذج.</p>
+21:   <section class="notice"><div><h2>فحص الحزمة خارج التطبيق</h2><p>نزّل ملف JSON والفاحص المستقل، ثم شغّله محليًا باستخدام Node 22 دون اتصال بخادم التطبيق. MATCH يعني اتساق الحزمة الموردة فقط؛ لا يثبت صحة المصدر أو شهادة امتثال. تسجّل الحزمة إصدار الفاحص، وإن اختلف إصدار الفاحص عن المسجل تُرجع النتيجة غير محسومة بدل المطابقة.</p><a href="/downloads/aigas-ledger-verifier.mjs" download>تنزيل الفاحص المستقل</a><pre dir="ltr"><code>node aigas-ledger-verifier.mjs ledger-EVENT_ID.json</code></pre><p>أي فشل في المطابقة أو نقص في الروابط يظهر صراحةً في نتيجة الفاحص: <bdi>VERIFIED_WITHIN_SCOPE</bdi> تعني اتساق البادئة الموردة فقط، و<bdi>TAMPERED</bdi> تعني تعارضًا مرصودًا، و<bdi>UNVERIFIED</bdi> تعني أن الدليل غير كافٍ للحسم. حد الحزمة الأساسية 10000 حدث؛ لا يجري تنزيل حزمة مبتورة. عند تعديل الدليل أو سلسلته تعرض الواجهة حالة محجوبة أو غير متحققة، لا نجاحًا ضمنيًا.</p><p>حالات الخادم ثلاث فقط: <bdi>VERIFIED</bdi> تعني تطابق بصمة الحدث وبادئة السلسلة الموردة، و<bdi>UNVERIFIED</bdi> تعني أن الدليل غير كافٍ للحسم، و<bdi>BLOCKED</bdi> تعني تعارضًا مرصودًا أو حدًا تقنيًا/بنية غير مدعومة تمنع إثبات السلامة. لا تُعرض أي حالة نجاح عند تحميل الصفحة قبل أن يفحص الخادم البادئة فعلًا.</p></div></section>
+22:  </section>
+23: </AppLayout>
+24: <script src="../../../scripts/ledger.ts"></script>
+
+
+### src/pages/app/human-gate/index.astro
+1: ---
+2: import { productEntryPath } from '../../../shared/product-navigation.mjs';
+3: import AppLayout from '../../../layouts/AppLayout.astro';
+4: import { authConfig } from '../../../server/kernel/auth.mjs';
+5: import '../../../styles/human-gate.css';
+6: export const prerender=false;
+7: const config=authConfig();
+8: ---
+9: <AppLayout title="المراجعة البشرية Human Gate">
+10:  <section class="kernel human-gate" data-human-gate data-auth-url={config?.base??''}>
+11:   <div class="page-heading"><div><p class="overline">04 / HUMAN GATE</p><h1>موافقة محددة.<span>وتنفيذ مرة واحدة.</span></h1><p class="intro">راجع تغيير اسم مساحة العمل داخل AIGAS قبل تطبيقه. الموافقة مرتبطة بالاسم والنسخة والسياسة والمهلة والمورد؛ التنفيذ من الخادم بعد مراجعة مستقلة وبإذن يُستهلك مرة واحدة. يمكن إلغاء الطلب قبل التنفيذ، وتفويض مراجعة مؤقت محدد العملية والمستوى والتاريخ. الملاحظة الداخلية مسار تجريبي منفصل.</p></div><span class="connection">موافقة أحادية المرحلة</span></div>
+12:   <section class="notice"><div><h2>حالة الوصول</h2><p data-status role="status" aria-live="polite">{config?'جارٍ التحقق من الدخول…':'يلزم إعداد الدخول عبر Neon Auth.'}</p><a href={productEntryPath('human-gate')}>الدخول وإدارة المؤسسة عبر Kernel ←</a></div><button type="button" data-reload>تحديث الطلبات</button></section>
+13:   <noscript><p class="notice">يلزم JavaScript لاستعادة جلسة Kernel وعرض بيانات المؤسسة.</p></noscript>
+14:   <div data-private hidden>
+15:    <section class="panel"><label for="hg-workspace">المؤسسة</label><select id="hg-workspace" data-workspace></select><p data-role></p><p>المالك والمسؤول يطلبان تغيير اسم المساحة ويراجعان طلبات غيرهما فقط. العضو ينشئ ملاحظة تجريبية ويعرض طلباته. التنفيذ لمقدم الطلب بعد إعادة فحص صلاحية الطرفين وإذن التنفيذ. يمكن للمالك أو المسؤول تفويض مراجعة مؤقتة عند تفعيلها في السياسة، دون تجاوز صلاحية المفوّض أو فصل المهام.</p></section>
+16:    <section class="panel"><h2>سياسة المدة والنطاق</h2><p data-policy-summary></p><p>تغيير الاسم متاح للمالك والمسؤول فقط؛ المراجعة تتطلب المستوى المحدد في السياسة، ومراجعًا مستقلًا عند اشتراط فصل المهام. التفويض المؤقت يبقى محدد العملية والمستوى والمدة، ولا يتجاوز صلاحية المفوّض.</p>
+17:     <form data-policy class="hg-form" hidden>
+18:      <div><label for="hg-pending">المهلة القصوى للطلب بالدقائق</label><input id="hg-pending" name="pending_minutes" type="number" required min="1" max="1440" step="1" /></div>
+19:      <div><label for="hg-approval">صلاحية الموافقة بالدقائق</label><input id="hg-approval" name="approval_minutes" type="number" required min="1" max="1440" step="1" /></div>
+20:      <div><label for="hg-level">الحد الأدنى لمستوى المراجع</label><select id="hg-level" name="review_level"><option value="ADMIN">مدير أو مالك</option><option value="OWNER">مالك المؤسسة فقط</option></select></div>
+21:      <label class="hg-check"><input name="enabled" type="checkbox" /> تفعيل استقبال الطلبات والتنفيذ ضمن هذه السياسة</label>
+22:      <label class="hg-check"><input name="separation_of_duties" type="checkbox" /> اشتراط فصل المهام: لا يعتمد مقدم الطلب طلبه (يبقى إلزاميًا لتغيير اسم المساحة)</label>
+23:      <label class="hg-check"><input name="delegation_enabled" type="checkbox" /> السماح بتفويض مراجعة مؤقت محدد العملية والمدة</label>
+24:      <p>اختر القيم حسب سياسة مؤسستك؛ النطاق من دقيقة إلى 1440 حد تقني، وليس مدة ترخيص أو SLA. الموافقة لا تمدد مهلة الطلب الأصلية. أي حفظ للسياسة يبطل الطلبات المعلقة والموافقات وأذونات التنفيذ السابقة.</p>
+25:      <button type="submit">حفظ السياسة وإبطال الطلبات السابقة</button>
+26:     </form>
+27:    </section>
+28:    <section class="panel" data-delegation-panel hidden><h2>تفويض مراجعة مؤقت</h2><p>التفويض محدد بمؤسسة وعملية ومستوى ومدة وتاريخ انتهاء من الخادم. لا يتجاوز صلاحية المفوّض، ولا يسمح باعتماد صاحب الطلب طلبه عند اشتراط فصل المهام. الإلغاء يمنع القرارات الجديدة فورًا.</p>
+29:     <form data-delegate class="hg-form">
+30:      <div><label for="hg-delegate-user">العضو المفوّض</label><select id="hg-delegate-user" name="delegatee_id" required data-delegate-user></select></div>
+31:      <div><label for="hg-delegate-scope">نطاق التفويض</label><select id="hg-delegate-scope" name="operation_type"><option value="KERNEL_WORKSPACE_RENAME">تغيير اسم مساحة العمل</option><option value="INTERNAL_DEMO_NOTE">الملاحظة التجريبية</option></select></div>
+32:      <div><label for="hg-delegate-level">أعلى مستوى مفوّض</label><select id="hg-delegate-level" name="level"><option value="ADMIN">مدير</option><option value="OWNER">مالك</option></select></div>
+33:      <div><label for="hg-delegate-minutes">مدة التفويض بالدقائق</label><input id="hg-delegate-minutes" name="minutes" type="number" required min="1" max="1440" step="1" /></div>
+34:      <div><label for="hg-delegate-reason">سبب التفويض</label><textarea id="hg-delegate-reason" name="reason" required minlength="2" maxlength="500" rows="2"></textarea></div>
+35:      <button type="submit">إنشاء التفويض المؤقت</button>
+36:     </form>
+37:     <p data-delegation-empty hidden>لا توجد تفويضات مسجلة ضمن صلاحيتك.</p><ul data-delegations class="hg-delegations"></ul>
+38:    </section>
+39:    <section class="panel"><h2>طلب مراجعة جديد</h2><p class="hg-scope-note"><strong>عملية AIGAS محدودة:</strong> النطاق الحالي هو تغيير اسم مساحة العمل داخل Kernel أو ملاحظة داخلية تجريبية فقط؛ لا موافقة على تشغيل أنظمة خارجية ولا تكامل مزود AI.</p><p id="hg-help">استخدم مساحة تجريبية ونصوصًا غير حساسة؛ لا بيانات عميل حقيقية أو معلومات شخصية أو أسرار. تغيير الاسم يعدّل اسم هذه المساحة فعلًا عند التنفيذ، ولا يغيّر صلاحياتها أو إعدادات الدخول.</p>
+40:     <form data-create class="hg-form" aria-describedby="hg-help">
+41:      <div><label for="hg-title">العنوان</label><input id="hg-title" name="title" required minlength="2" maxlength="120" /></div>
+42:      <div><label for="hg-scope">العملية</label><select id="hg-scope" name="operation_type"><option value="KERNEL_WORKSPACE_RENAME">تغيير اسم مساحة العمل في Kernel</option><option value="INTERNAL_DEMO_NOTE">ملاحظة داخلية تجريبية</option></select></div>
+43:      <div data-rename><label for="hg-name">اسم المساحة الجديد</label><input id="hg-name" name="new_name" required minlength="2" maxlength="100" autocomplete="off" /><p>يُثبت الاسم الحالي ونسخة المساحة من الخادم وقت إنشاء الطلب.</p></div>
+44:      <div><label for="hg-description">وصف مختصر غير حساس</label><textarea id="hg-description" name="description" required minlength="2" maxlength="500" rows="3"></textarea></div>
+45:      <div><label for="hg-reason">سبب طلب المراجعة</label><textarea id="hg-reason" name="reason" required minlength="2" maxlength="500" rows="3"></textarea></div>
+46:      <label class="hg-check"><input name="synthetic_confirmed" type="checkbox" required /> أؤكد استخدام مساحة تجريبية ونصوص غير حساسة دون بيانات عميل حقيقية.</label>
+47:      <button type="submit" data-create-submit>إرسال للمراجعة</button>
+48:     </form>
+49:    </section>
+50:    <section class="panel"><h2>لوحة الطلبات</h2>
+51:     <div class="hg-tabs" role="group" aria-label="نطاق عرض الطلبات"><button type="button" data-view="mine" aria-pressed="true">طلباتي</button><button type="button" data-view="review" aria-pressed="false">تحتاج مراجعتي</button><button type="button" data-view="completed" aria-pressed="false">منتهية</button></div>
+52:     <label for="hg-status">حالة الطلب</label><select id="hg-status" data-filter><option value="">جميع الحالات ضمن اللوحة</option><option value="PENDING">بانتظار المراجعة</option><option value="APPROVED">معتمد — لم يُنفذ</option><option value="REJECTED">مرفوض</option><option value="EXPIRED">منتهي الصلاحية</option><option value="CANCELLED">ملغى</option><option value="EXECUTED">نُفّذ</option></select>
+53:     <p data-empty hidden>لا توجد طلبات ضمن هذا العرض.</p><p data-review-notice hidden>المراجعة متاحة للمالك أو المسؤول، أو لعضو يحمل تفويضًا مؤقتًا نشطًا لنطاق العملية.</p><p data-refreshed></p><div data-requests class="hg-requests"></div><div class="hg-pagination"><button type="button" data-prev>السابق</button><span data-page></span><button type="button" data-next>التالي</button></div>
+54:    </section>
+55:   </div>
+56:   <p class="notice">الإيقاف الأساسي عند سياسة Kernel التي تطلب مراجعة (REQUEST_APPROVAL/ESCALATE) يبقى داخل Kernel ولا يشترط ترخيص Human Gate. هذه الصفحة تضيف التفويض المؤقت وربط القرار بعملية واحدة وإذن تنفيذ يُستهلك مرة واحدة، مع تدقيق أساسي مستقل عن Ledger. تغيير اسم مساحة Kernel هو الأثر الفعلي المحدود في هذه النسخة؛ لا تفعيل سياسة Firewall أو تغيير تصنيف Risk Engine أو تنفيذ أنظمة خارجية. لا تُرسل البيانات لمزود AI ولا تُستخدم للتدريب. الموافقات المتعددة المراحل والتصعيد التلقائي والتنبيهات الخارجية غير متاحة هنا؛ المراجعة أحادية المرحلة وتتطلب مراجعًا مستقلًا واحدًا على الأقل، لذا لا تكتمل الدورة في مؤسسة بعضو واحد.</p>
+57:  </section>
+58: </AppLayout>
+59: <script src="../../../scripts/human-gate.ts"></script>
+
+
+### src/pages/app/firewall/index.astro
+1: ---
+2: import { productEntryPath } from '../../../shared/product-navigation.mjs';
+3: import AppLayout from '../../../layouts/AppLayout.astro';
+4: import { authConfig } from '../../../server/kernel/auth.mjs';
+5: import '../../../styles/firewall.css';
+6: export const prerender = false;
+7: const config = authConfig();
+8: ---
+9: <AppLayout title="جدار حماية AI — سياسات وفحص">
+10:  <section class="kernel firewall" data-firewall data-auth-url={config?.base ?? ''}>
+11:   <div class="page-heading"><div><p class="overline">02 / AIGAS FIREWALL</p><h1>اضبط السياسة.<span>واحكم مسار الطلب.</span></h1><p class="intro">قواعد حرفية محفوظة وتقييم من الخادم بخمس حالات: ALLOW وWARN وREDACT وESCALATE وDENY، مع مسار تنفيذ مستقل يفرض الحجب والتصعيد والتنقيح قبل أي اتصال بمزود معتمد. النصوص الاصطناعية فقط في هذه النسخة.</p></div><span class="connection">تنفيذ محلي · غير منشور</span></div>
+12:   <section class="notice"><div><h2>حالة الوصول</h2><p data-status role="status" aria-live="polite">{config ? 'جارٍ التحقق من الدخول…' : 'يلزم إعداد الدخول عبر Neon Auth.'}</p><a href={productEntryPath('firewall')}>الدخول وإدارة مساحة العمل عبر Kernel ←</a></div><button type="button" data-reload>تحديث</button></section>
+13:   <noscript><p class="notice">يلزم JavaScript لاستعادة جلسة Kernel؛ لا تُعرض بيانات خاصة بدونه.</p></noscript>
+14:   <section class="notice" data-setup-panel hidden><div><h2>التهيئة غير مكتملة</h2><p data-setup-message role="alert"></p><p>لم تُعرض أي بيانات ولم يصدر أي قرار. طبّق ترحيل Firewall المعتمد في بيئة معتمدة ثم أعد التحميل؛ غياب البيانات ليس سماحًا.</p></div></section>
+15:   <div data-private hidden>
+16:    <section class="panel"><label for="fw-workspace">المؤسسة</label><select id="fw-workspace" data-workspace></select><p data-scope></p></section>
+17:    <section class="panel fw-integration"><p class="overline">INTEGRATION / INPUT ONLY</p><h2>حالة مسار التنفيذ</h2><p data-provider role="status">جارٍ تحميل حالة المزود…</p><p>التكامل داخل <bdi>/app/api/firewall/guarded-executions/</bdi> فقط. يختار الخادم المؤسسة من العضويات، ويحفظ القرار قبل الإرسال. لا يسمح العميل باختيار عنوان وجهة أو تجاوز القرار.</p><details><summary>عقد الاستدعاء للتطبيقات</summary><p>أرسل POST بهوية مستخدم Neon Auth في Authorization: Bearer، ومعرّف المؤسسة في workspace. JSON: <bdi>{'{"text":"نص اصطناعي","synthetic":true,"request_id":"UUID جديد"}'}</bdi>. لا تعِد العملية تلقائيًا؛ المعرف مخصص لطلب واحد ويُربط ببصمة قرار محفوظة وبنسخة السياسة. لا مفاتيح خدمة أو وجهات حرة أو دعم مخرجات/بث في هذه النسخة.</p><p>DENY: رفض قبل المزود. ESCALATE: يتوقف قبل المزود؛ تكامل Human Gate غير مهيأ فلا يُنشأ طلب موافقة. WARN: تحذير لا يمرر تلقائيًا. REDACT: النص المنقّح وحده. ALLOW: تمرير للمزود المعتمد فقط. غياب سياسة Kernel أو بصمة الربط يحجب التنفيذ؛ غياب المزود يرجع PROVIDER_NOT_CONFIGURED. نجاح التقييم وحده لا يثبت إرسالًا.</p></details></section>
+18:    <div class="fw-counts" aria-label="عدادات القرارات المحفوظة"><article class="panel fw-count-allow"><bdi>ALLOW</bdi><strong data-count="ALLOW">—</strong></article><article class="panel fw-count-warn"><bdi>WARN</bdi><strong data-count="WARN">—</strong></article><article class="panel fw-count-redact"><bdi>REDACT</bdi><strong data-count="REDACT">—</strong></article><article class="panel fw-count-escalate"><bdi>ESCALATE</bdi><strong data-count="ESCALATE">—</strong></article><article class="panel fw-count-deny"><bdi>DENY</bdi><strong data-count="DENY">—</strong></article></div>
+19:    <div class="fw-columns">
+20:     <section class="panel">
+21:      <p class="overline">01 / POLICY</p><h2>قواعد المؤسسة</h2>
+22:      <p>الترتيب الدفاعي: DENY يتقدّم على ESCALATE ثم REDACT ثم WARN ثم ALLOW، ولا تسمح قاعدة ALLOW أو WARN بتجاوز قاعدة أعلى منها. رقم الأولوية الأقل يُعرض أولًا ويُذكر في القرار عند تعدد القواعد المطابقة للإجراء نفسه.</p>
+23:      <p class="fw-hint">النمط نص حرفي يُطابق احتواءً دون اعتبار حالة الأحرف اللاتينية؛ لا يُقبل تعبير نمطي (RegExp) ولا رموز تحكم. الحفظ يتحقق في الخادم فقط.</p>
+24:      <p class="fw-meta"><span data-rule-count>0</span> قاعدة مسجلة؛ الحد يشمل القواعد المعطّلة أيضًا، ويمكن تعديل قاعدة قائمة عند بلوغه. النسخة المنسوخة تُنشأ معطّلة حتى تُراجع.</p>
+25:      <div data-rules></div>
+26:      <div data-empty-rules hidden class="fw-empty">لا توجد قواعد بعد. أضف قاعدة مخصصة أو قالبًا جاهزًا؛ بلا قاعدة مفعّلة يحجب الفحص ولا يصدر سماح.</div>
+27:      <form data-create-rule hidden>
+28:       <fieldset><legend>إضافة قاعدة حرفية</legend>
+29:        <label for="fw-name">اسم القاعدة</label><input id="fw-name" name="name" type="text" maxlength="60" required autocomplete="off">
+30:        <label for="fw-pattern">النمط الحرفي</label><input id="fw-pattern" name="pattern" type="text" maxlength="80" required autocomplete="off" spellcheck="false">
+31:        <label for="fw-action">الإجراء</label><select id="fw-action" name="action"><option value="DENY">DENY — حجب</option><option value="ESCALATE">ESCALATE — تصعيد للموافقة البشرية</option><option value="REDACT">REDACT — تنقيح</option><option value="WARN">WARN — تحذير لا يمرر تلقائيًا</option><option value="ALLOW">ALLOW — سماح</option></select>
+32:        <label for="fw-priority">الأولوية (1–999، الأقل أولًا)</label><input id="fw-priority" name="priority" type="number" min="1" max="999" step="1" value="100" required>
+33:        <p data-create-error class="fw-error" role="alert"></p>
+34:        <button type="submit">حفظ القاعدة</button>
+35:       </fieldset>
+36:      </form>
+37:      <div data-templates hidden class="fw-templates"><p>قوالب خادم محمية، للتفعيل والتعطيل أو النسخ فقط؛ القاعدة المخصصة تتيح تغيير الاسم والنمط والإجراء والأولوية. القاعدة المنسوخة تُنشأ معطّلة وقابلة للتعديل:</p><div class="fw-examples"><button type="button" data-template="public">سماح: معلومة عامة</button><button type="button" data-template="identifier">تنقيح: DEMO-ID-1234</button><button type="button" data-template="prohibited">حجب: DEMO-BLOCK</button></div></div>
+38:      <p data-role></p>
+39:     </section>
+40:     <section class="panel">
+41:      <p class="overline">02 / EVALUATE OR ENFORCE</p><h2>جرب فحصًا — تقييم النص أو طلب تنفيذه</h2>
+42:      <p>استخدم بيانات مصطنعة فقط. النص لا يُحفظ في سجل القرارات؛ يُحفظ القرار وسببه ومرجع القاعدة ونسختها ووقته فقط. تعرض النتيجة المدخل والقرار والسبب ووقت التقييم وحالة التنفيذ بصدق.</p>
+43:      <div class="fw-examples"><button type="button" data-example="معلومة عامة عن حوكمة الذكاء الاصطناعي">بيانات عامة</button><button type="button" data-example="معرّف اختباري DEMO-ID-1234 فقط">معرّف افتراضي</button><button type="button" data-example="محتوى اختباري DEMO-BLOCK">محتوى محظور</button></div>
+44:      <form data-evaluate>
+45:       <label for="fw-text">النص الاصطناعي</label><textarea id="fw-text" name="text" rows="5" maxlength="4000" required autocomplete="off" spellcheck="false"></textarea>
+46:       <label class="fw-check"><input type="checkbox" data-synthetic> أؤكد أن النص اصطناعي ولا يحتوي بيانات عميل أو أسرارًا.</label>
+47:       <label for="fw-eval-mode">المسار</label><select id="fw-eval-mode" data-eval-mode><option value="LAB">تقييم تجريبي فقط — دون إرسال</option><option value="GUARD">مسار التنفيذ — يتطلب مزودًا معتمدًا</option></select>
+48:       <p data-eval-error class="fw-error" role="alert"></p>
+49:       <button type="submit" data-eval-submit disabled>فحص من الخادم</button>
+50:      </form>
+51:      <div class="fw-result" data-result role="status" aria-live="polite">اختر مثالًا، أكّد أنه اصطناعي، ثم افحصه.</div>
+52:      <p class="fw-hint">التقييم <bdi>/app/api/firewall/evaluate/</bdi> لا ينفذ طلب AI؛ عدم المطابقة فيه ALLOW تجريبي وليس إثبات سلامة. مسار التنفيذ يحجب عدم المطابقة، ويتوقف عند WARN وESCALATE بدل تمريرهما. لا حماية لتطبيقات تستدعي مزودًا مباشرة ولا فحص للمخرجات هنا.</p>
+53:     </section>
+54:    </div>
+55:    <section class="panel">
+56:     <div class="section-heading"><div><p class="overline">03 / DECISION LOG</p><h2>سجل قرارات المؤسسة</h2></div><div class="fw-filters"><div><label for="fw-filter">الإجراء</label><select id="fw-filter" data-filter><option value="">كل الإجراءات</option><option>ALLOW</option><option>WARN</option><option>REDACT</option><option>ESCALATE</option><option>DENY</option></select></div><div><label for="fw-reason">السبب</label><select id="fw-reason" data-reason><option value="">كل الأسباب</option><option value="RULE_DENY">حجب بقاعدة</option><option value="RULE_ESCALATE">تصعيد بقاعدة</option><option value="RULE_REDACT">تنقيح بقاعدة</option><option value="RULE_WARN">تحذير بقاعدة</option><option value="RULE_ALLOW">سماح بقاعدة</option><option value="NO_MATCH_LAB_ONLY">دون مطابقة تجريبية</option><option value="NO_MATCH_ENFORCED">حجب التنفيذ دون مطابقة</option><option value="NO_ACTIVE_POLICY">لا سياسة مفعّلة</option><option value="INVALID_POLICY">سياسة غير صالحة</option><option value="KERNEL_POLICY_DENIED">منعت سياسة Kernel العليا</option></select></div><div><label for="fw-log-mode">المسار</label><select id="fw-log-mode" data-log-mode><option value="">كل المسارات</option><option value="LAB">تقييم تجريبي</option><option value="GUARD">مسار التنفيذ</option></select></div><div><label for="fw-from">من تاريخ (UTC)</label><input type="date" id="fw-from" data-from /></div><div><label for="fw-to">إلى تاريخ (UTC)</label><input type="date" id="fw-to" data-to /></div></div></div>
+57:     <p>12 قرارًا في الصفحة؛ الوقت معروض بتوقيت الرياض والتصفية حسب أيام UTC. معرّف القرار وإجراؤه وسببه ومرجع القاعدة ونسختها فقط، دون النص أو قيمة المطابقة. سجل قرار السياسة لا يثبت وصول الطلب للمزود ولا يُعد Ledger موقّعًا. تدقيق Kernel الأساسي لا يتطلب شراء Ledger.</p>
+58:     <ol class="fw-decisions" data-decisions></ol>
+59:     <nav class="fw-pagination" aria-label="صفحات سجل القرارات"><button type="button" data-prev disabled>الأحدث</button><span data-page>الصفحة 1</span><button type="button" data-next disabled>الأقدم</button></nav>
+60:    </section>
+61:   </div>
+62:   <p class="notice">النطاق قواعد حرفية على المدخل في مسار التنفيذ المحدد فقط؛ لا Proxy عام أو DLP شامل أو كشف دلالي لحقن التعليمات. ESCALATE يوقف التنفيذ ولا ينشئ طلب موافقة لأن تكامل Human Gate غير مهيأ. لا مزود معتمد حاليًا ولا إرسال بيانات حقيقية أو تدريب عليها. الاشتراك وتجربة 48 ساعة غير مهيأين.</p>
+63:  </section>
+64: </AppLayout>
+65: <script src="../../../scripts/firewall.ts"></script>
+
+
+### src/pages/app/risk-engine/[assetId].astro
+1: ---
+2: import RiskWorkspace from '../../../components/RiskWorkspace.astro';
+3: import { uuid } from '../../../server/risk-engine/core.mjs';
+4: export const prerender=false;
+5: const assetId=Astro.params.assetId || '';
+6: if(!uuid(assetId))return new Response('معرّف الأصل غير صالح.',{status:404,headers:{'Cache-Control':'private, no-store','X-Robots-Tag':'noindex, nofollow','Content-Type':'text/plain; charset=utf-8'}});
+7: ---
+8: <RiskWorkspace assetId={assetId} />
+
+
+### src/pages/app/risk-engine/index.astro
+1: ---
+2: import RiskWorkspace from '../../../components/RiskWorkspace.astro';
+3: export const prerender=false;
+4: ---
+5: <RiskWorkspace />
+
+
+### src/pages/app/api/kernel.ts
+1: import type { APIRoute } from 'astro';
+2: import { kernelHandler, exact, headers } from '../../../server/kernel/http.mjs';
+3: import { dashboard, createWorkspace } from '../../../server/kernel/service.mjs';
+4: export const prerender = false;
+5: export const GET = kernelHandler(dashboard);
+6: const create = kernelHandler(async (identity: { userId: string }, _workspace: string | null, body: { name?: unknown }) => {
+7:   exact(body, ['name']);
+8:   const tenantId = await createWorkspace(identity, body.name);
+9:   // Creation committed. Keep its result independent of a subsequent dashboard read.
+10:   try { return { ...await dashboard(identity, tenantId), persisted: true, tenantId }; }
+11:   catch { return { persisted: true, tenantId, refreshRequired: true }; }
+12: }, true);
+13: export const POST: APIRoute = async (context) => {
+14:   const response = await create(context);
+15:   if (!response.ok) return response;
+16:   return new Response(response.body, { status: 201, headers });
+17: };
+
+
+### src/pages/app/secure-chat/index.astro
+1: ---
+2: import AppLayout from '../../../layouts/AppLayout.astro';
+3: import '../../../styles/secure-chat.css';
+4: import { authConfig } from '../../../server/kernel/auth.mjs';
+5: export const prerender = false;
+6: const config = authConfig();
+7: ---
+8: <AppLayout title="Secure Chat">
+9:   <section class="secure-chat" data-secure-chat data-auth-url={config?.base ?? ''}>
+10:     <aside class="chat-sidebar" aria-label="جلسات المحادثة">
+11:       <div class="sidebar-brand"><span class="sidebar-mark" aria-hidden="true">◈</span><div><bdi>Secure Chat</bdi><small>مساحة مؤسسية</small></div></div>
+12:       <button type="button" class="new-chat" data-new-chat>＋ <span>محادثة جديدة</span></button>
+13:       <p class="sidebar-label">الجلسات</p>
+14:       <div class="session-list" data-session-list><p>لا توجد جلسات محفوظة.</p></div>
+15:       <div class="sidebar-foot">الجلسة الحالية مؤقتة في هذه الصفحة.</div>
+16:     </aside>
+17:     <div class="chat-main">
+18:       <header class="chat-header"><div><p class="overline">AIGAS / PRIVATE WORKSPACE</p><h1>محادثة مؤسسية</h1></div><span class="chat-state" data-connection>يلزم التحقق من الدخول</span></header>
+19:       <section class="access-panel" aria-labelledby="access-title">
+20:         <div><p class="overline">حالة الوصول</p><h2 id="access-title" data-state-title>التحقق من الهوية والإعداد</h2><p role="status" aria-live="polite" data-status>لا تُعرض بيانات المؤسسة قبل التحقق من عضوية Kernel.</p></div>
+21:         <div class="access-actions"><button type="button" data-retry>إعادة المحاولة</button><button type="button" data-sign-out hidden>تسجيل الخروج</button></div>
+22:       </section>
+23:       <form class="login-form" data-login hidden>
+24:         <h2>دخول مساحة العمل</h2><p>استخدم حساب Neon Auth الخاص بك.</p>
+25:         <label for="secure-email">البريد الإلكتروني</label><input id="secure-email" name="email" type="email" autocomplete="username" required maxlength="254" />
+26:         <label for="secure-password">كلمة المرور</label><input id="secure-password" name="password" type="password" autocomplete="current-password" required maxlength="128" />
+27:         <button type="submit">تسجيل الدخول</button>
+28:       </form>
+29:       <div class="workspace-switch" data-workspace-wrap hidden><label for="secure-workspace">المؤسسة</label><select id="secure-workspace" data-workspace></select><span data-role></span></div>
+30:       <div class="chat-grid" data-chat-area hidden>
+31:         <section class="conversation" aria-label="محتوى المحادثة">
+32:           <div class="empty-chat" data-empty>
+33:             <span class="empty-glyph" aria-hidden="true">◈</span>
+34:             <h2>ابدأ جلسة مؤقتة</h2>
+35:             <p>اختر نموذجًا معتمدًا ومهيأً عند توفره. متن المحادثة مؤقت في هذه الصفحة، ولا يقرأه مسؤول المؤسسة عبر المنتج.</p>
+36:           </div>
+37:           <ol class="messages" data-messages aria-live="polite" aria-relevant="additions text"></ol>
+38:           <div class="send-error" data-send-error role="alert" hidden><p data-send-error-text></p><button type="button" data-retry-send hidden>إعادة التحقق من النماذج</button></div>
+39:           <form class="composer" data-composer>
+40:             <label for="chat-message">رسالتك</label>
+41:             <textarea id="chat-message" name="message" maxlength="4000" rows="4" placeholder="اكتب رسالتك هنا…" aria-describedby="message-limit privacy-note" required></textarea>
+42:             <div class="composer-meta"><span id="message-limit" data-count>0 / 4000</span><span id="privacy-note">لا ترسل بيانات حساسة في هذه المرحلة.</span></div>
+43:             <label class="synthetic-consent"><input type="checkbox" data-synthetic required /> أؤكد أن النصوص اصطناعية ولا تتضمن بيانات عميل حقيقية.</label>
+44:             <p class="policy-note" data-policy-note></p>
+45:             <p class="composer-state" data-composer-state role="status" aria-live="polite" hidden></p>
+46:             <div class="composer-actions"><button type="button" class="cancel-send" data-cancel hidden>طلب إيقاف</button><button type="submit" data-send disabled>إرسال</button></div>
+47:           </form>
+48:         </section>
+49:         <aside class="chat-details" aria-label="إعدادات الجلسة">
+50:           <div class="detail-block"><p class="overline">النموذج</p><label for="chat-model">نموذج معتمد</label><select id="chat-model" data-model disabled><option>لا يوجد نموذج متاح</option></select><p data-model-status>لا يوجد نموذج معتمد ومهيأ لهذه المؤسسة.</p></div>
+51:           <div class="detail-block"><p class="overline">الخصوصية</p><ul><li>الجلسة لا تُحفظ؛ مسودتك في هذه الصفحة فقط.</li><li>لا نرسل محتوى إلى مزود غير معتمد.</li><li>متن المحادثة لا يظهر لمسؤول المؤسسة عبر المنتج، ولا يُرسل إلى Audit أو Analytics.</li><li>تُحفظ معرّفات الطلب والنتيجة والاستخدام؛ لا يُحفظ المتن في سجل الأمن.</li></ul></div>
+52:           <div class="detail-block usage"><p class="overline">حدود الاستخدام</p><p><span data-usage>الرموز الفعلية: غير متاح. التكلفة: غير متاح.</span></p><p data-limits>الحصص غير مفعّلة حتى اعتمادها.</p><p>المشاركة والتصدير والملفات وRAG غير متاحة. الحفظ الدائم غير مفعّل حتى اعتماد سياسة الاحتفاظ وحماية البيانات.</p></div>
+53:         </aside>
+54:       </div>
+55:       <noscript><p class="access-panel">يلزم JavaScript للتحقق من Neon Auth. لا تُحمّل بيانات خاصة بدونه.</p></noscript>
+56:     </div>
+57:   </section>
+58: </AppLayout>
+59: <script src="../../../scripts/secure-chat.ts"></script>
+
+
+### src/pages/app/kernel/index.astro
+1: ---
+2: import { productForReturnTo, productContactPath } from '../../../shared/product-navigation.mjs';
+3: import AppLayout from '../../../layouts/AppLayout.astro';
+4: import { authConfig } from '../../../server/kernel/auth.mjs';
+5: import { products } from '../../../server/kernel/core.mjs';
+6: export const prerender = false;
+7: const config = authConfig();
+8: const intendedProduct = productForReturnTo(Astro.url.searchParams.get('returnTo'));
+9: const signupPath = `/auth/sign-up/${intendedProduct ? `?returnTo=${encodeURIComponent(intendedProduct.workspacePath)}` : ''}`;
+10: ---
+11: <AppLayout title="نواة المنظومة">
+12:   <section class="kernel" data-kernel data-return-to={intendedProduct?.workspacePath} data-auth-url={config?.base ?? ''}>
+13:     {intendedProduct && <section class="notice" aria-label="المنتج المختار"><div><h2>متابعة إلى <bdi dir="ltr">{intendedProduct.name}</bdi></h2><p data-product-intent role="status" aria-live="polite">سجّل الدخول ثم اختر مساحة عملك للمتابعة.</p><a href={intendedProduct.publicPath}>العودة إلى تفاصيل المنتج</a> · <a href={productContactPath(intendedProduct.slug)}>استفسار عن تقييم</a></div></section>}
+14:     <div class="page-heading"><div><p class="overline">01 / SHARED FOUNDATION</p><h1>نواة المنظومة<span>مساحتك، ومنها تبدأ.</span></h1><p class="intro">مؤسستك ومنتجاتك في مساحة عمل واحدة، بصلاحيات مرتبطة بعضويتك. دور المالك أو المدير يخص المؤسسة المحددة؛ ولا يمنح صلاحية مشغّل التجارب.</p></div><span class="connection" data-connection>لم يُتحقق من الربط</span></div>
+15: 
+16:     <section class="health" aria-labelledby="health-title"><div class="section-heading"><div><p class="overline">00 / RUNTIME</p><h2 id="health-title">حالة التشغيل</h2></div><button type="button" data-health-refresh>إعادة الفحص</button></div><ul class="health-list" data-health-list aria-live="polite" aria-atomic="true"><li>جارٍ فحص الدخول والقاعدة…</li></ul><p class="health-meta" data-health-updated>لم يكتمل الفحص بعد.</p><p class="health-error" data-health-error hidden>نوع الخطأ: <bdi data-health-error-type></bdi></p><p class="health-note">الحالة تعرض إعداد الخادم واتصال قاعدة البيانات ومخطط Kernel؛ إعداد Auth لا يثبت نجاح تسجيل الدخول. لا تعرض أي إعداد سري.</p></section>
+17: 
+18:     <section class="notice" aria-labelledby="session-title"><div><p class="overline">حالة الوصول</p><h2 id="session-title" data-state-title>{config ? 'تحقق من جلسة الدخول' : 'يلزم إعداد الدخول'}</h2><p role="status" aria-live="polite" data-status>{config ? 'جارٍ التحقق من الجلسة…' : 'لم يُهيأ Neon Auth لهذا التشغيل.'}</p><p class="health-meta" data-dashboard-updated hidden></p><p class="health-error" data-dashboard-error hidden>نوع الخطأ: <bdi data-dashboard-error-type></bdi></p></div><button type="button" data-retry hidden>إعادة المحاولة</button><button type="button" data-sign-out hidden>تسجيل الخروج</button></section>
+19: 
+20:     {config && <form class="panel login-form" data-login hidden><h2>دخول مساحة العمل</h2><p>استخدم حساب Neon Auth الخاص بك.</p><label for="email">البريد الإلكتروني</label><input id="email" name="email" type="email" autocomplete="username" dir="ltr" required maxlength="254" aria-describedby="login-email-error" /><p id="login-email-error" class="field-error" data-login-email-error hidden></p><label for="password">كلمة المرور</label><div class="password-control"><input id="password" name="password" type="password" autocomplete="current-password" dir="ltr" required maxlength="128" aria-describedby="login-password-error" /><button type="button" data-login-password-toggle aria-pressed="false" aria-controls="password">إظهار كلمة المرور</button></div><p id="login-password-error" class="field-error" data-login-password-error hidden></p><button type="submit" data-login-submit>تسجيل الدخول</button><p><a href={signupPath}>إنشاء حساب</a> · هذه البوابة لا تتضمن أي تتبع.</p></form>}
+21: 
+22:     <section class="panel incoming" data-incoming-panel hidden aria-labelledby="incoming-title"><h2 id="incoming-title">دعوات الانضمام</h2><p>تظهر الدعوات المسجلة لبريدك الموثّق. قبول Auth وحده لا يمنح صلاحية Kernel حتى يعتمدها الخادم.</p><ul class="member-list" data-incoming></ul><p data-incoming-state role="status"></p></section>
+23:     <p class="admin-status" data-admin-status role="status" aria-live="polite"></p>
+24:     <div class="workspace-row"><section class="panel institution"><p class="overline">المؤسسة</p><h2 data-tenant-name>لا توجد مساحة محمّلة</h2><p data-tenant-detail>تظهر بيانات المؤسسة بعد توثيق الهوية والتحقق من العضوية في الخادم. تسجيل الدخول يثبت هويتك؛ اختيار المؤسسة يحدد سياق العمل، والمنحة السارية تحدد العمليات المتاحة.</p><div data-selector hidden><label for="workspace">اختر مؤسستك</label><select id="workspace" data-workspace dir="auto"></select><p data-selector-note></p></div><form data-create hidden><label for="workspace-name">اسم المؤسسة</label><input id="workspace-name" name="name" dir="auto" required minlength="2" maxlength="100" /><button type="submit">إنشاء مؤسسة</button><p>يمكن لحسابك إنشاء أكثر من مؤسسة. المؤسسة الجديدة تبدأ بعضويتك كمالك وحيد فقط، ولا تنسخ أعضاء أو سياسات أو دعوات أو قرارات إتاحة من مؤسسة أخرى، ولا تفعّل اشتراكًا أو تجربة مدفوعة.</p></form></section>
+25:     <section class="panel system-diagram" aria-label="Kernel يربط الهوية والمؤسسة والوصول بالمنتجات الخمسة"><p class="overline">خريطة المنظومة</p><div class="diagram-core"><span aria-hidden="true">◈</span><bdi>Kernel</bdi><small>هوية · مؤسسة · وصول</small></div><svg viewBox="0 0 480 48" aria-hidden="true"><path d="M240 0V20M40 48V20H440V48M140 48V20M240 48V20M340 48V20" fill="none" stroke="currentColor" /></svg><div class="diagram-products">{products.map(p => <bdi>{p.name}</bdi>)}</div><p>أساس واحد، وخمسة منتجات مستقلة.</p></section></div>
+26: 
+27:     <section class="panel" data-next-step hidden aria-labelledby="next-step-title"><h2 id="next-step-title">خطوتك التالية</h2><p data-next-step-message role="status" aria-live="polite"></p><div data-next-step-action></div></section>
+28: 
+29:     <section class="metrics" data-metrics hidden aria-label="ملخص المؤسسة">
+30:       <article class="panel metric"><p class="overline">MEMBERS</p><strong data-metric="members">—</strong><span>أعضاء المؤسسة</span></article>
+31:       <article class="panel metric"><p class="overline">PRODUCT COVERAGE</p><strong data-metric="coverage">—</strong><span>منتجات بقرار إتاحة ساري من خمسة</span></article>
+32:       <article class="panel metric"><p class="overline">AUDIT EVENTS</p><strong data-metric="events">—</strong><span>أحداث التدقيق</span></article>
+33:     </section>
+34: 
+35:     <section aria-labelledby="products-title"><div class="section-heading"><div><p class="overline">02 / YOUR PRODUCTS</p><h2 id="products-title">المنتجات</h2></div><p>الإتاحة من سجل وصول المؤسسة، لا من الواجهة.</p></div><div class="product-grid">{products.map((p, i) => <article class="product-card" data-product={p.slug}><div class="card-top"><span class="product-number">0{i + 1}</span><span class="wave">الموجة {p.wave === 1 ? 'الأولى' : 'الثانية'}</span></div><h3><bdi>{p.name}</bdi></h3><p>{p.benefit}</p><span class="availability" data-product-status>يلزم تسجيل الدخول لمعرفة الإتاحة</span><p class="product-setup" data-product-setup>حالة الإعداد غير محمّلة.</p><details><summary>شروط الإتاحة والتجربة</summary><p class="product-terms" data-product-terms>الإتاحة الإدارية وتجربة 48 ساعة والاشتراك والترخيص مصادر منفصلة.</p><p class="product-terms" data-product-commercial>تظهر الحالة والأوقات بعد التحقق من العضوية؛ لا يبدأ عدّاد من تسجيل الدخول، وطلب التجربة لا ينشئ استحقاقًا.</p></details><div data-product-admin hidden></div><div data-product-action><button type="button" disabled>لم يجهز بعد</button></div></article>)}</div></section>
+36:     <section class="panel commercial-policy" aria-labelledby="trial-title"><h2 id="trial-title">التجربة والاشتراك والترخيص</h2><p><bdi>Kernel</bdi> أساس مشترك دون رسم ترخيص منفصل؛ المنتجات الخمسة مستقلة، ولا تُشترط إضافة مدفوعة لتنفيذ أمان <bdi>Kernel</bdi> الأساسي. التمكين أعلاه قرار وصول إداري أو استحقاق تجربة مفعّل، وليس شراءً أو تفعيلًا تلقائيًا.</p><p class="trial-summary" data-trial-summary>حالة التجربة غير محمّلة؛ لا تفعيل ذاتي ولا تحويل تلقائي.</p><p>مسار التجربة المحدود: <bdi>REQUESTED</bdi> ← <bdi>ELIGIBILITY_REVIEW</bdi> ← <bdi>APPROVED</bdi> ← <bdi>ACTIVATED</bdi> ← <bdi>EXPIRED</bdi> ← <bdi>CLOSED</bdi>، مع <bdi>REJECTED</bdi> و<bdi>CANCELLED</bdi> صريحتين. طلب التجربة لا ينشئ استحقاقًا، والموافقة لا تبدأ العداد، والتفعيل وحده يثبت <bdi>activated_at</bdi>. التجربة الحالية غير مهيأة للتفعيل الذاتي، ولا تحويل لمدفوع ولا خصم ولا تجديد دون طلب شراء مستقل.</p><p>عند اعتماد تشغيلها تبدأ فقط من <bdi>activated_at</bdi> بعد موافقة وتهيئة صالحة، وتنتهي بعد <bdi>172800</bdi> ثانية بالضبط. إثبات القيمة <bdi>Proof of Value</bdi> مسودة من سجلات موجودة فعلًا، لا نسبة إنجاز ولا محتوى عميل؛ أما <bdi>Pilot</bdi> فله عقد ونطاق مستقلان.</p><p>بيانات اصطناعية افتراضيًا. بيانات العميل الحقيقية غير مؤهلة دون موافقة مكتوبة وبيئة معالجة معتمدة؛ قرار الإتاحة الإداري أو استحقاق التجربة لا يحقق هذين الشرطين. ممنوع استخدام بيانات العميل للتدريب لدى <bdi>BRIGHT AI</bdi> أو أي مزود؛ موافقة التشغيل ليست موافقة تدريب.</p><ul><li><bdi>SaaS</bdi> / اشتراك: غير مهيأ تجاريًا؛ يلزم اعتماد العرض ومعالجة البيانات وتهيئة الخدمة. لا سعر أو SLA معتمد.</li><li><bdi>On-Prem</bdi> / ترخيص: غير متحقق تشغيليًا؛ يلزم اعتماد البنية والهوية والترخيص والتحديثات المحلية. لا مُصدر ترخيص محلي بعد.</li><li><bdi>Air-Gapped</bdi> / ترخيص محلي: غير متحقق؛ يلزم هوية ونماذج وتحقق رخصة وتحديثات دون اعتماد إلزامي على الإنترنت. بوابة <bdi>Neon</bdi> الحالية ليست دليلًا على جاهزيته.</li></ul><p class="health-note">الأسعار والحصص التجارية وأعداد المستخدمين و<bdi>SLA</bdi> غير مقررة هنا. حدود الحماية التقنية ليست باقات أو أسعارًا. لا توجد بوابة دفع أو فاتورة أو تجديد تلقائي في هذه اللوحة.</p></section>
+37:     <section class="panel policy-status" aria-labelledby="policy-status-title"><div><p class="overline">POLICY MODEL</p><h2 id="policy-status-title">سياسات Kernel</h2><span class="availability" data-policy-state>غير مهيأ</span><p class="health-meta" data-policy-count>لم تُحمّل حالة السياسات.</p></div><div><p>الترتيب: <bdi>Enterprise → Department → Product → User</bdi>. لا يخفف المستوى الأدنى منعًا أعلى، ولا ترفع موافقة بشرية منعًا إلزاميًا. يلزم معتمد مختلف عن منشئ النسخة، ويمكن اشتراط مراجعين مختلفين؛ النشر لمالك ثالث لا ينشئ النسخة ولا يعتمدها.</p><p data-policy-detail>حالة مخطط السياسات غير محمّلة؛ لا يُدّعى تفعيل الهرمية. تحقق الوصول يظل مستقلًا: العضوية، وتمكين المنتج، والمنحة الإدارية السارية، ومخطط المنتج.</p></div></section>
+38: 
+39:     <section class="panel policy-console" data-policy-console hidden aria-labelledby="policy-console-title">
+40:       <div class="section-heading"><div><p class="overline">POLICY WORKSPACE</p><h2 id="policy-console-title">إدارة السياسات</h2></div><button type="button" data-policy-refresh>تحديث القائمة</button></div>
+41:       <p data-policy-console-state role="status" aria-live="polite">تُحمّل السياسات بعد التحقق من صلاحيتك.</p>
+42:       <ul class="member-list" data-policy-list></ul>
+43:       <details class="policy-editor"><summary>إنشاء نسخة مسودة</summary><form data-policy-create>
+44:         <label for="policy-scope">المستوى</label><select id="policy-scope" name="scope"><option value="ENTERPRISE">المؤسسة</option><option value="DEPARTMENT">الإدارة</option><option value="PRODUCT">المنتج</option><option value="USER">المستخدم</option></select>
+45:         <div data-policy-department-field hidden><label for="policy-department">الإدارة</label><select id="policy-department" name="departmentId" data-policy-department><option value="">حمّل الإدارات أولًا</option></select></div>
+46:         <div data-policy-product-field hidden><label for="policy-product">المنتج</label><select id="policy-product" name="productSlug" data-policy-product><option value="firewall">Firewall</option><option value="ledger">Ledger</option><option value="human-gate">Human Gate</option><option value="risk-engine">Risk Engine</option><option value="secure-chat">Secure Chat</option></select></div>
+47:         <div data-policy-user-field hidden><label for="policy-user">عضو المؤسسة</label><select id="policy-user" name="userId" data-policy-user><option value="">حمّل الأعضاء أولًا</option></select></div>
+48:         <label for="policy-family">مجال السياسة</label><input id="policy-family" name="family" required minlength="2" maxlength="80" />
+49:         <label for="policy-rule-key">مفتاح القاعدة</label><input id="policy-rule-key" name="ruleKey" required minlength="2" maxlength="100" dir="ltr" />
+50:         <label for="policy-effect">الأثر</label><select id="policy-effect" name="effect"><option>ALLOW</option><option>BLOCK</option><option>HARD_DENY</option><option>REDACT</option><option>REQUEST_APPROVAL</option><option>WARN</option></select>
+51:         <label for="policy-required-approvals">عدد المراجعين المستقلين المطلوب</label><select id="policy-required-approvals" name="requiredApprovals"><option value="1">مراجع واحد</option><option value="2">مراجعان مختلفان (يلزم ترحيل 0020)</option></select>
+52:         <label for="policy-operation">العملية (اختياري)</label><input id="policy-operation" name="operation" maxlength="120" dir="ltr" />
+53:         <label for="policy-reason">سبب التغيير</label><textarea id="policy-reason" name="reason" required minlength="3" maxlength="500"></textarea>
+54:         <button type="submit">حفظ كمسودة</button><p>التغيير لا يسري قبل مراجعة منفصلة ونشر نسخة جديدة. شروط التنفيذ تقبل نصوص سياق محددة فقط.</p>
+55:       </form></details>
+56:       <details class="policy-editor" data-policy-department-tools><summary>إدارة الأقسام والتفويض المحدود</summary>
+57:         <form data-department-create><label for="department-name">اسم الإدارة</label><input id="department-name" name="name" required minlength="2" maxlength="100" /><label for="department-reason">سبب الإنشاء</label><textarea id="department-reason" name="reason" required minlength="3" maxlength="500"></textarea><button type="submit">إنشاء إدارة</button></form>
+58:         <form data-department-member><label for="department-member-ref">الإدارة</label><select id="department-member-ref" name="departmentId" data-department-member-ref></select><label for="department-user-id">عضو المؤسسة</label><select id="department-user-id" name="userId" data-department-user required></select><label for="department-member-reason">السبب</label><textarea id="department-member-reason" name="reason" required minlength="3" maxlength="500"></textarea><button type="submit">إضافة للعضوية</button><button type="button" data-department-member-remove>إيقاف العضوية</button></form>
+59:         <form data-policy-delegate><label for="policy-delegate-user">عضو بدور ADMIN</label><select id="policy-delegate-user" name="userId" data-policy-delegate-user required></select><label for="policy-delegate-expiry">ينتهي التفويض</label><input id="policy-delegate-expiry" name="expiresAt" type="datetime-local" required /><label for="policy-delegate-reason">سبب التفويض</label><textarea id="policy-delegate-reason" name="reason" required minlength="3" maxlength="500"></textarea><button type="submit">تفويض المراجعة</button></form>
+60:       </details>
+61:     </section>
+62: 
+63:     <div class="ops-row">
+64:       <section class="panel members" aria-labelledby="members-title">
+65:         <div class="section-heading"><div><p class="overline">03 / MEMBERS</p><h2 id="members-title">أعضاء المؤسسة</h2></div><span class="count" data-member-count></span></div>
+66:         <p data-members-state role="status" aria-live="polite">تُحمّل الأعضاء بعد التحقق من العضوية.</p>
+67:         <ul class="member-list" data-members></ul>
+68:         <div class="member-actions"><p id="invite-note" data-invite-note>تظهر إمكانية الدعوة بعد التحقق من المؤسسة وصلاحيتك.</p>
+69:           <div data-auth-link hidden><h3>ربط مؤسسة الدخول</h3><label for="auth-organization">مؤسسة Auth تملكها بحسابك</label><select id="auth-organization" data-auth-organizations dir="auto"></select><button type="button" data-link-existing>ربط المؤسسة المختارة</button><button type="button" data-create-auth>إنشاء مؤسسة Auth وربطها</button><p>الربط لا يستورد أعضاء أو أدوارًا تلقائيًا، ولا ينقل ملكية.</p></div>
+70:           <form data-invite hidden><label for="invite-email">بريد العضو المدعو</label><input id="invite-email" name="email" type="email" autocomplete="off" dir="ltr" required maxlength="254" /><button type="submit">دعوة بدور عضو</button><p>العضوية تُمنح بعد قبول دعوة صحيحة ببريد موثّق. لا ترقيات أو نقل ملكية.</p></form>
+71:           <button type="button" data-register-invite hidden>إكمال تسجيل الدعوة المعلقة</button>
+72:           <ul class="member-list" data-invitations></ul>
+73:           <div class="departments" data-departments-panel hidden>
+74:             <h3>الإدارات</h3>
+75:             <p data-departments-state role="status" aria-live="polite">تُحمّل الإدارات بعد التحقق من العضوية.</p>
+76:             <ul class="member-list" data-departments></ul>
+77:             <p class="health-note">إدارة الإدارات وعضوياتها من لوحة السياسات للمالك. العضو يرى الإدارات التي ينتمي إليها فقط؛ ولا يكفي إخفاء الواجهة لعزل سياسات إدارة أخرى.</p>
+78:           </div>
+79:         </div>
+80:       </section>
+81:       <section class="panel" aria-labelledby="activity-title">
+82:         <div class="section-heading"><div><p class="overline">04 / ACTIVITY</p><h2 id="activity-title">آخر أنشطة المؤسسة</h2></div></div>
+83:         <p data-activity-state role="status" aria-live="polite">تُحمّل الأنشطة بعد التحقق من العضوية.</p>
+84:         <p class="health-meta" data-evidence-summary>ملخص السجلات غير محمّل.</p><ol class="activity" data-activity></ol>
+85:         <p class="health-note">المصدر: سجل تدقيق Kernel لهذه المؤسسة فقط، بلا نصوص طلبات أو بيانات شخصية. العدد والأوقات لجميع السجلات المحتفظ بها، وليست فترة تجربة. تقرير <bdi>Proof of Value</bdi> غير مهيأ: لا توجد بداية ونهاية تجربة مسجلتان، ولا يثبت عدد الأحداث نجاح منتج أو وفرًا أو امتثالًا. الأنشطة المعروضة آخر ثمانية فقط.</p>
+86:       </section>
+87:     </div>
+88: 
+89:     <noscript><p class="notice">يلزم JavaScript للتحقق من جلسة Neon Auth وتحميل بيانات المؤسسة. لا تُعرض أي بيانات خاصة بدونه.</p></noscript>
+90:   </section>
+91: </AppLayout>
+92: <script src="../../../scripts/kernel.ts"></script>
+
+
+### src/pages/app/operator/trials/index.astro
+1: ---
+2: import AppLayout from '../../../../layouts/AppLayout.astro';
+3: import { authConfig } from '../../../../server/kernel/auth.mjs';
+4: export const prerender = false;
+5: const config = authConfig();
+6: ---
+7: <AppLayout title="قناة المشغل — التجارب">
+8:   <section class="kernel" data-operator-trials data-auth-url={config?.base ?? ''}>
+9:     <div class="page-heading"><div><p class="overline">OPERATOR / TRIAL CYCLE</p><h1>قناة المشغل<span>قرارات التجربة لا تمنحها الواجهة.</span></h1><p class="intro">هذه القناة لهويات المشغّل المسجّلة في قاعدة البيانات فقط. الطلب والموافقة والتفعيل خطوات منفصلة، والتفعيل يبقى مغلقًا حتى توجد نتيجة جاهزية حديثة للمنتج نفسه على الإصدار والبيئة نفسيهما، مع حصة معتمدة.</p></div><span class="connection">مشغّل معتمد</span></div>
+10: 
+11:     <section class="panel" aria-labelledby="op-title">
+12:       <div class="section-heading"><div><p class="overline">01 / REQUESTS</p><h2 id="op-title">طلبات التجربة</h2></div><button type="button" data-op-refresh>تحديث القائمة</button></div>
+13:       <p data-op-state role="status" aria-live="polite">تُحمّل القائمة بعد التحقق من صلاحية المشغّل.</p>
+14:       <div data-op-list></div>
+15:       <p class="health-note">لا تعرض هذه القناة محتوى عميل ولا مفاتيح. الموافقة لا تبدأ عدّاد التجربة، والتفعيل وحده يثبت <bdi>activated_at</bdi> لمدة <bdi>172800</bdi> ثانية. لا دفع ولا تجديد ولا تحويل تلقائي، والتصدير والحذف والاحتفاظ مسؤولية مستقلة.</p>
+16:       {!config && <p class="health-error">لم يُهيأ Neon Auth على هذا التشغيل؛ سجّل الدخول من <a href="/app/kernel/">نواة المنظومة</a> بعد التهيئة.</p>}
+17:     </section>
+18: 
+19:     <noscript><p class="notice">يلزم JavaScript للتحقق من جلسة المشغّل.</p></noscript>
+20:   </section>
+21: </AppLayout>
+22: <script src="../../../../scripts/operator-trials.ts"></script>
+
+
+### src/pages/app/api/human-gate/policy.ts
+1: import type { APIRoute } from 'astro';
+2: import { handle } from '../../../../server/human-gate/http.mjs';
+3: export const prerender=false;
+4: export const POST:APIRoute=({request})=>handle(request,'policy');
+
+
+### src/pages/app/api/firewall/evaluate.ts
+1: import type { APIRoute } from 'astro';
+2: import { handle } from '../../../../server/firewall/http.mjs';
+3: export const prerender = false;
+4: export const POST: APIRoute = ({request}) => handle(request,'evaluate');
+
+
+### src/pages/app/api/firewall/rules.ts
+1: import type { APIRoute } from 'astro';
+2: import { handle } from '../../../../server/firewall/http.mjs';
+3: export const prerender = false;
+4: export const GET: APIRoute = ({request}) => handle(request,'dashboard');
+5: export const POST: APIRoute = ({request}) => handle(request,'create');
+6: export const PATCH: APIRoute = ({request}) => handle(request,'update');
+7: export const DELETE: APIRoute = ({request}) => handle(request,'delete');
+
+
+### src/pages/app/api/firewall/guarded-executions.ts
+1: import type { APIRoute } from 'astro';
+2: import { handle } from '../../../../server/firewall/http.mjs';
+3: export const prerender = false;
+4: export const POST: APIRoute = ({ request }) => handle(request, 'enforce');
+
+
+### src/pages/app/api/risk-engine/export.ts
+1: import type { APIRoute } from 'astro';
+2: import { handle } from '../../../../server/risk-engine/http.mjs';
+3: export const prerender=false;
+4: export const GET:APIRoute=({request})=>handle(request,'export');
+
+
+### src/pages/app/api/risk-engine/actions.ts
+1: import type { APIRoute } from 'astro';
+2: import { handle } from '../../../../server/risk-engine/http.mjs';
+3: export const prerender=false;
+4: export const GET:APIRoute=({request})=>handle(request,'actions');
+
+
+### src/pages/app/api/secure-chat/messages.ts
+1: import type { APIRoute } from 'astro';
+2: import { errorResponse, privateHeaders, sendMessage, cancelMessage } from '../../../../server/secure-chat/service.mjs';
+3: import { KernelError } from '../../../../server/kernel/core.mjs';
+4: export const prerender = false;
+5: 
+6: async function bodyFor(request: Request, keys: string[]) {
+7:   if (request.headers.get('origin') !== new URL(request.url).origin) throw new KernelError(403,'ORIGIN_REJECTED','مصدر الطلب غير مسموح.');
+8:   if (request.headers.get('content-type')?.split(';')[0].trim() !== 'application/json') throw new KernelError(415,'INVALID_BODY','صيغة الطلب غير مدعومة.');
+9:   const reader=request.body?.getReader();
+10:   if (!reader) throw new KernelError(400,'INVALID_BODY','الطلب فارغ.');
+11:   const decoder=new TextDecoder();
+12:   let raw='',bytes=0;
+13:   try {
+14:     while (true) {
+15:       const {done,value}=await reader.read();
+16:       if (done) break;
+17:       bytes+=value.byteLength;
+18:       if (bytes>131072) { await reader.cancel(); throw new KernelError(413,'BODY_TOO_LARGE','الطلب أكبر من الحد التقني المسموح.'); }
+19:       raw+=decoder.decode(value,{stream:true});
+20:     }
+21:     raw+=decoder.decode();
+22:   } finally { reader.releaseLock(); }
+23:   let body;
+24:   try { body=JSON.parse(raw); } catch { throw new KernelError(400,'INVALID_BODY','تعذر قراءة الطلب.'); }
+25:   if (!body || typeof body!=='object' || Array.isArray(body) || Object.keys(body).some(key=>!keys.includes(key))) throw new KernelError(400,'INVALID_BODY','حقول الطلب غير مدعومة.');
+26:   return body;
+27: }
+28: export const POST: APIRoute = async ({request}) => {
+29:   try {
+30:     const body=await bodyFor(request,['requestId','modelId','message','history','syntheticAcknowledged']);
+31:     return Response.json(await sendMessage(request,body),{headers:privateHeaders});
+32:   } catch(error) { return errorResponse(error); }
+33: };
+34: export const DELETE: APIRoute = async ({request}) => {
+35:   try {
+36:     const body=await bodyFor(request,['requestId']);
+37:     return Response.json(await cancelMessage(request,body.requestId),{headers:privateHeaders});
+38:   } catch(error) { return errorResponse(error); }
+39: };
+
+
+### src/pages/app/api/secure-chat/models.ts
+1: import type { APIRoute } from 'astro';
+2: import { errorResponse, listModels, privateHeaders } from '../../../../server/secure-chat/service.mjs';
+3: 
+4: export const prerender = false;
+5: 
+6: export const GET: APIRoute = async ({ request }) => {
+7:   try {
+8:     return Response.json(await listModels(request), { headers: privateHeaders });
+9:   } catch (error) {
+10:     return errorResponse(error);
+11:   }
+12: };
+
+
+### src/pages/app/api/kernel/policies.ts
+1: import type { APIRoute } from 'astro';
+2: import { kernelHandler } from '../../../../server/kernel/http.mjs';
+3: import { policyOperation } from '../../../../server/kernel/policies.mjs';
+4: export const prerender = false;
+5: export const GET: APIRoute = async (context) => {
+6:   const policyId = new URL(context.request.url).searchParams.get('policy_id');
+7:   const operation = policyId ? { operation:'history',policyId } : { operation:'list' };
+8:   return kernelHandler((identity, workspace) => policyOperation(identity, workspace, operation))(context);
+9: };
+10: export const POST = kernelHandler(policyOperation, true);
+
+
+### src/pages/app/api/kernel/invitations.ts
+1: import { kernelHandler } from '../../../../server/kernel/http.mjs';
+2: import { incomingInvitations } from '../../../../server/kernel/administration.mjs';
+3: export const prerender = false;
+4: export const GET = kernelHandler(incomingInvitations);
+
+
+### src/pages/app/api/kernel/products.ts
+1: import { kernelHandler } from '../../../../server/kernel/http.mjs';
+2: import { updateProduct } from '../../../../server/kernel/administration.mjs';
+3: export const prerender = false;
+4: // The product toggle accepts only FOUNDATION/ENABLED/DISABLED and a version.
+5: // It never accepts a trial, subscription, perpetual, or on-premise licence field;
+6: // those decisions are operator-owned and require their own approval path.
+7: export const PATCH = kernelHandler(updateProduct, true);
+
+
+### src/pages/app/api/kernel/health.ts
+1: import type { APIRoute } from 'astro';
+2: import { operationalHealth } from '../../../../server/kernel/service.mjs';
+3: export const prerender = false;
+4: // Anonymous liveness: returns setup-state codes only, never configuration values or connection details.
+5: const headers = { 'Cache-Control': 'private, no-store', 'X-Robots-Tag': 'noindex, nofollow', 'X-Content-Type-Options': 'nosniff' };
+6: export const GET: APIRoute = async () => {
+7:   try {
+8:     const result = await operationalHealth();
+9:     return Response.json(result, { headers, status: result.state === 'blocked' ? 503 : 200 });
+10:   } catch {
+11:     return Response.json({ status: 'degraded', state: 'degraded', errorType: 'HEALTH_CHECK_FAILED', updatedAt: new Date().toISOString(), configuration: { auth: 'UNKNOWN', database: 'UNKNOWN', policyEngine:'UNKNOWN' }, checks: { auth: 'UNKNOWN', database: 'DB_UNAVAILABLE', schema: 'NOT_CHECKED', administration: 'NOT_CHECKED', policyEngine:'NOT_CHECKED' } }, { headers, status: 503 });
+12:   }
+13: };
+
+
+### src/pages/app/api/kernel/members.ts
+1: import { kernelHandler } from '../../../../server/kernel/http.mjs';
+2: import { tenantMembers } from '../../../../server/kernel/service.mjs';
+3: import { manageInvitation, manageMember } from '../../../../server/kernel/administration.mjs';
+4: type KernelIdentity = { userId: string };
+5: export const prerender = false;
+6: export const GET = kernelHandler(tenantMembers);
+7: export const POST = kernelHandler(async (identity: KernelIdentity, workspace: string | null, body: Record<string, unknown>) => ['accept','cancel','register','link'].includes(String(body.operation))
+8:   ? manageInvitation(identity, workspace, body)
+9:   : manageMember(identity, workspace, body), true);
+
+
+### src/pages/app/api/kernel/trials/index.ts
+1: import { kernelHandler } from '../../../../../server/kernel/http.mjs';
+2: import { requestTrial } from '../../../../../server/kernel/trial-service.mjs';
+3: import { trialLifecycle } from '../../../../../server/kernel/trial.mjs';
+4: import { transaction } from '../../../../../server/kernel/db.mjs';
+5: import { tenantGuard } from '../../../../../server/kernel/service.mjs';
+6: export const prerender = false;
+7: // A trial request is an eligibility request, not an approval or an activation.
+8: // The response always says activation is closed until product readiness exists.
+9: export const GET = kernelHandler(async (identity, workspace) => {
+10:   return transaction(async db => {
+11:     const scope = await tenantGuard(identity, workspace, db);
+12:     if (!scope.tenant) return { configured: false, state: 'NO_WORKSPACE', lifecycle: null, activationClosed: true };
+13:     return { configured: true, lifecycle: await trialLifecycle(db, scope.tenant.tenant_id), activationClosed: true };
+14:   });
+15: });
+16: export const POST = kernelHandler(requestTrial, true);
+
+
+### src/pages/app/api/kernel/trials/[trialId]/cancel.ts
+1: import type { APIRoute } from 'astro';
+2: import { kernelHandler } from '../../../../../../server/kernel/http.mjs';
+3: import { cancelTrial } from '../../../../../../server/kernel/trial-service.mjs';
+4: export const prerender = false;
+5: export const POST: APIRoute = async context => {
+6:   const handler = kernelHandler((identity, workspace, body) =>
+7:     cancelTrial(identity, workspace, context.params.trialId, body), true);
+8:   return handler(context);
+9: };
+
+
+### src/pages/app/api/kernel/trials/[trialId]/submit.ts
+1: import type { APIRoute } from 'astro';
+2: import { kernelHandler } from '../../../../../../server/kernel/http.mjs';
+3: import { submitTrial } from '../../../../../../server/kernel/trial-service.mjs';
+4: export const prerender = false;
+5: // Tenant path only: REQUESTED -> ELIGIBILITY_REVIEW. It approves nothing.
+6: export const POST: APIRoute = async context => {
+7:   const handler = kernelHandler((identity, workspace, body) =>
+8:     submitTrial(identity, workspace, context.params.trialId, body), true);
+9:   return handler(context);
+10: };
+
+
+### src/pages/app/api/operator/trials/index.ts
+1: import { kernelHandler } from '../../../../../server/kernel/http.mjs';
+2: import { operatorListTrials } from '../../../../../server/kernel/trial-service.mjs';
+3: export const prerender = false;
+4: // Named operator channel. Authorization is an owner-provisioned row, not a token
+5: // claim; a non-operator receives OPERATOR_REQUIRED and sees no tenant data.
+6: export const GET = kernelHandler(operatorListTrials);
+
+
+### src/pages/app/api/operator/trials/[trialId]/activate.ts
+1: import type { APIRoute } from 'astro';
+2: import { kernelHandler } from '../../../../../../server/kernel/http.mjs';
+3: import { operatorActivateTrial } from '../../../../../../server/kernel/trial-service.mjs';
+4: export const prerender = false;
+5: // Refuses by design until readiness exists for this product, release and
+6: // environment. The refusal is the P06-A acceptance condition, not a placeholder.
+7: export const POST: APIRoute = async context => {
+8:   const handler = kernelHandler((identity, _workspace, body) =>
+9:     operatorActivateTrial(identity, context.params.trialId, body), true);
+10:   return handler(context);
+11: };
+
+
+### src/pages/app/api/operator/trials/[trialId]/expire.ts
+1: import type { APIRoute } from 'astro';
+2: import { kernelHandler } from '../../../../../../server/kernel/http.mjs';
+3: import { operatorExpireTrial } from '../../../../../../server/kernel/trial-service.mjs';
+4: export const prerender = false;
+5: export const POST: APIRoute = async context => {
+6:   const handler = kernelHandler((identity) => operatorExpireTrial(identity, context.params.trialId), true);
+7:   return handler(context);
+8: };
+
+
+### src/pages/app/api/operator/trials/[trialId]/decide.ts
+1: import type { APIRoute } from 'astro';
+2: import { kernelHandler } from '../../../../../../server/kernel/http.mjs';
+3: import { operatorDecideTrial } from '../../../../../../server/kernel/trial-service.mjs';
+4: export const prerender = false;
+5: export const POST: APIRoute = async context => {
+6:   const handler = kernelHandler((identity, _workspace, body) =>
+7:     operatorDecideTrial(identity, context.params.trialId, body), true);
+8:   return handler(context);
+9: };
+
+
+### src/pages/app/api/operator/trials/[trialId]/close.ts
+1: import type { APIRoute } from 'astro';
+2: import { kernelHandler } from '../../../../../../server/kernel/http.mjs';
+3: import { operatorCloseTrial } from '../../../../../../server/kernel/trial-service.mjs';
+4: export const prerender = false;
+5: export const POST: APIRoute = async context => {
+6:   const handler = kernelHandler((identity, _workspace, body) =>
+7:     operatorCloseTrial(identity, context.params.trialId, body), true);
+8:   return handler(context);
+9: };
+
+
+### src/pages/app/api/risk-engine/assets/index.ts
+1: import type { APIRoute } from 'astro';
+2: import { handle } from '../../../../../server/risk-engine/http.mjs';
+3: export const prerender=false;
+4: export const GET:APIRoute=({request})=>handle(request,'list');
+5: export const POST:APIRoute=({request})=>handle(request,'create');
+
+
+### src/pages/app/api/risk-engine/assets/[assetId]/assessments.ts
+1: import type { APIRoute } from 'astro';
+2: import { handle } from '../../../../../../server/risk-engine/http.mjs';
+3: export const prerender=false;
+4: export const GET:APIRoute=({request,params})=>handle(request,'history',params.assetId);
+5: export const POST:APIRoute=({request,params})=>handle(request,'assess',params.assetId);
+
+
+### src/pages/app/api/risk-engine/assets/[assetId]/treatments.ts
+1: import type { APIRoute } from 'astro';
+2: import { handle } from '../../../../../../server/risk-engine/http.mjs';
+3: export const prerender=false;
+4: export const GET:APIRoute=({request,params})=>handle(request,'treatments',params.assetId);
+5: // Each update appends a full treatment revision; prior decisions stay immutable.
+6: export const POST:APIRoute=({request,params})=>handle(request,'save-treatment',params.assetId);
+7: export const PATCH:APIRoute=({request,params})=>handle(request,'save-treatment',params.assetId);
+
+
+### src/pages/app/api/risk-engine/assets/[assetId]/revisions.ts
+1: import type { APIRoute } from 'astro';
+2: import { handle } from '../../../../../../server/risk-engine/http.mjs';
+3: export const prerender=false;
+4: export const GET:APIRoute=({request,params})=>handle(request,'revisions',params.assetId);
+
+
+### src/pages/app/api/risk-engine/assets/[assetId]/index.ts
+1: import type { APIRoute } from 'astro';
+2: import { handle } from '../../../../../../server/risk-engine/http.mjs';
+3: export const prerender=false;
+4: export const PATCH:APIRoute=({request,params})=>handle(request,'update',params.assetId);
+5: export const DELETE:APIRoute=({request,params})=>handle(request,'archive',params.assetId);
+
+
+### src/pages/app/api/human-gate/requests/index.ts
+1: import type { APIRoute } from 'astro';
+2: import { handle } from '../../../../../server/human-gate/http.mjs';
+3: export const prerender=false;
+4: export const GET:APIRoute=({request})=>handle(request,'list');
+5: export const POST:APIRoute=({request})=>handle(request,'create');
+
+
+### src/pages/app/api/human-gate/delegations/index.ts
+1: import type { APIRoute } from 'astro';
+2: import { handle } from '../../../../../server/human-gate/http.mjs';
+3: export const prerender=false;
+4: export const GET:APIRoute=({request})=>handle(request,'delegations');
+5: export const POST:APIRoute=({request})=>handle(request,'delegate');
+
+
+### src/pages/app/api/human-gate/delegations/[delegationId]/revoke.ts
+1: import type { APIRoute } from 'astro';
+2: import { handle } from '../../../../../../server/human-gate/http.mjs';
+3: export const prerender=false;
+4: export const POST:APIRoute=({request,params})=>handle(request,'revoke-delegation',params.delegationId);
+
+
+### src/pages/app/api/human-gate/requests/[requestId]/decide.ts
+1: import type { APIRoute } from 'astro';
+2: import { handle } from '../../../../../../server/human-gate/http.mjs';
+3: export const prerender=false;
+4: export const POST:APIRoute=({request,params})=>handle(request,'decide',params.requestId);
+
+
+### src/pages/app/api/human-gate/requests/[requestId]/execute.ts
+1: import type { APIRoute } from 'astro';
+2: import { handle } from '../../../../../../server/human-gate/http.mjs';
+3: export const prerender=false;
+4: export const POST:APIRoute=({request,params})=>handle(request,'execute',params.requestId);
+
+
+### src/pages/app/api/human-gate/requests/[requestId]/cancel.ts
+1: import type { APIRoute } from 'astro';
+2: import { handle } from '../../../../../../server/human-gate/http.mjs';
+3: export const prerender=false;
+4: export const POST:APIRoute=({request,params})=>handle(request,'cancel',params.requestId);
+
+
+### src/pages/app/api/ledger/events/index.ts
+1: import type { APIRoute } from 'astro';
+2: import { handle } from '../../../../../server/ledger/http.mjs';
+3: export const prerender = false;
+4: export const GET: APIRoute = ({request}) => handle(request,'list');
+5: export const POST: APIRoute = ({request}) => handle(request,'create');
+
+
+### src/pages/app/api/ledger/events/[eventId]/verify.ts
+1: import type { APIRoute } from 'astro';
+2: import { handle } from '../../../../../../server/ledger/http.mjs';
+3: export const prerender = false;
+4: export const POST: APIRoute = ({request,params}) => handle(request,'verify',params.eventId);
+
+
+### src/pages/app/api/ledger/events/[eventId]/export.ts
+1: import type { APIRoute } from 'astro';
+2: import { handle } from '../../../../../../server/ledger/http.mjs';
+3: export const prerender = false;
+4: export const GET: APIRoute = ({request,params}) => handle(request,'export',params.eventId);
+
+
+### src/pages/app/api/ledger/events/[eventId]/index.ts
+1: import type { APIRoute } from 'astro';
+2: import { handle } from '../../../../../../server/ledger/http.mjs';
+3: export const prerender = false;
+4: export const GET: APIRoute = ({request,params}) => handle(request,'detail',params.eventId);
+
+
+### src/pages/products/[product].astro
+1: ---
+2: import ProductJourney from '../../components/ProductJourney.astro';
+3: import ProductContentExtension from '../../components/ProductContentExtension.astro';
+4: import PageShell from '../../components/PageShell.astro';
+5: import ProductExperience from '../../components/ProductExperience.astro';
+6: import ProductIcon from '../../components/ProductIcon.astro';
+7: export const prerender = true;
+8: export const products = [
+9:   { slug: 'firewall', name: 'AIGAS Firewall', purpose: 'تصور منتج لفحص مدخلات ومخرجات الذكاء الاصطناعي بحثاً عن معلومات أو تعليمات قد تتطلب معالجة وفق سياسة المنشأة.', questions: ['ما فئات المعلومات التي تحتاج إلى ضوابط؟', 'كيف تُراجع نتيجة الفحص وحدودها؟', 'ما الإجراء عند اكتشاف مادة حساسة؟'] },
+10:   { slug: 'risk-engine', name: 'AIGAS Risk Engine', purpose: 'تصور لتقييم مخاطر حالة الاستخدام وربطها بضوابط ومراجعات يحددها مالك المنشأة.', questions: ['من يحدد منهج التقييم ومعاييره؟', 'كيف تُوثق أسباب القرار؟', 'متى يُعاد التقييم؟'] },
+11:   { slug: 'human-gate', name: 'AIGAS Human Gate', purpose: 'تصور لمسار مراجعة بشرية قبل اعتماد مخرجات محددة وفق سياسة الجهة، مع تحديد صاحب الصلاحية ومسار التصعيد.', questions: ['أي قرارات تتطلب مراجعة؟', 'من المخول بالاعتماد أو الرفض؟', 'كيف تسجل المراجعة والاعتراض؟'] },
+12:   { slug: 'ledger', name: 'AIGAS Ledger', purpose: 'تصور لحفظ أدلة تشغيلية مرتبطة بالاستخدام والقرارات وفق ضوابط وصول واحتفاظ تعتمدها الجهة.', questions: ['ما الحد الأدنى اللازم من الأدلة؟', 'من يستطيع الاطلاع عليها؟', 'ما أساس ومدة الاحتفاظ المعتمدة؟'] },
+13:   { slug: 'secure-chat', name: 'AIGAS Secure Chat', purpose: 'تصور لواجهة محادثة مؤسسية يمكن أن تخضع لسياسات اختيار الأدوات والمراجعة بعد إثبات البنية والتكاملات.', questions: ['ما الخدمات والنماذج التي ستُعتمد؟', 'ما إعدادات الحساب والعقد؟', 'كيف يتحقق الموظف من الإجابة؟'] },
+14: ];
+15: export function getStaticPaths() { return products.map(({ slug, ...props }) => ({ params: { product: slug }, props: { ...props, slug } })); }
+16: const { name, purpose, questions, slug } = Astro.props;
+17: const roles: Record<string,string> = { firewall: 'من الطلب إلى القرار', 'risk-engine': 'المخاطر في سياقها', 'human-gate': 'مراجعة لها صاحب صلاحية', ledger: 'لكل قرار أثر', 'secure-chat': 'محادثة ضمن حدود واضحة' };
+18: const searchTopics: Record<string, string> = {
+19:   firewall: 'جدار حماية الذكاء الاصطناعي',
+20:   'risk-engine': 'تقييم مخاطر الذكاء الاصطناعي',
+21:   'human-gate': 'الموافقات البشرية على قرارات AI',
+22:   ledger: 'سجل تدقيق الذكاء الاصطناعي',
+23:   'secure-chat': 'محادثة ذكاء اصطناعي مؤسسية',
+24: };
+25: const description = `${searchTopics[slug]} للمنشآت السعودية: ${purpose}`;
+26: const productSchema = {
+27:   '@context': 'https://schema.org',
+28:   '@type': 'Product',
+29:   name,
+30:   description,
+31:   category: 'حوكمة وأمان الذكاء الاصطناعي',
+32:   brand: { '@type': 'Organization', name: 'BRIGHTAI', url: 'https://brightai.live/' },
+33:   url: new URL(`/products/${slug}/`, 'https://brightai.live').href,
+34: };
+35: ---
+36: <PageShell title={`${searchTopics[slug]} | ${name} — BRIGHTAI`} description={description} crumbs={[{ name: 'المنتجات', href: '/products/' }, { name }]} structuredData={productSchema}>
+37:   <div class="product-intro">
+38:     <div><p class="eyebrow"><bdi dir="ltr">AIGAS</bdi> / جرّب إمكانيات المنتج</p><h1><bdi dir="ltr" style={`view-transition-name:product-${slug}`}>{name}</bdi></h1><p class="product-role">{roles[slug]}</p><p class="lead">{purpose}</p></div>
+39:     <aside class="product-meta"><span class="product-mark"><ProductIcon kind={slug}/></span><div><p>منتج مستقل ضمن المنظومة</p><a class="ghost" href="/products/">كل المنتجات ←</a></div></aside>
+40:   </div>
+41:   <ProductExperience kind={slug}/>
+42:   <p class="note">المخططات تعليمية وتصف نطاقاً مستهدفاً وفق Blueprint. لا تثبت وجود خدمة عاملة أو تكامل أو مستوى حماية أو اعتماد. لا توجد أسعار نهائية معتمدة.</p>
+43:   <section class="block review-questions"><div><p class="eyebrow">قبل أي استخدام فعلي</p><h2>ثلاثة أسئلة<br/>تستحق المراجعة.</h2></div><ol>{questions.map((question: string) => <li>{question}</li>)}</ol></section>
+44:   <section class="block"><h2>مكان المنتج في التصور</h2><p><bdi dir="ltr">AIGAS Kernel</bdi> مكوّن مشترك يوفر الحد الأدنى اللازم للمنتجات، ولا يُباع كمنتج مرخص مستقل. أما المنتجات الخمسة فتُصمم كوحدات مستقلة وظيفياً وتجارياً وفق الـBlueprint.</p><div class="actions"><a class="button" href="/contact/">اطلب معلومات أو عرض سعر</a><a class="ghost" href="/products/">استعراض المنتجات</a></div></section>
+45:   <ProductJourney slug={slug} />
+46:   <ProductContentExtension kind={slug}/>
+47: </PageShell>
+
+
+### src/pages/products/index.astro
+1: ---
+2: import ProductCatalog from '../../components/ProductCatalog.astro';
+3: import ContentExtension from '../../components/ContentExtension.astro';
+4: import PageShell from '../../components/PageShell.astro';
+5: import SystemMap from '../../components/SystemMap.astro';
+6: export const prerender = true;
+7: 
+8: ---
+9: <PageShell title="منتجات حوكمة وأمان الذكاء الاصطناعي AIGAS | BRIGHTAI" description="قارن الأدوار المستهدفة لمنتجات AIGAS للمنشآت السعودية: حماية الطلبات، تقييم المخاطر، الموافقات البشرية، سجل التدقيق والمحادثة المؤسسية." crumbs={[{ name: 'المنتجات' }]}>
+10:   <p class="eyebrow"><bdi dir="ltr">AIGAS</bdi> / المنتجات</p><h1>مكوّن مشترك.<br /><span class="muted">وخمسة منتجات مستقلة.</span></h1>
+11:   <p class="lead"><bdi dir="ltr">AIGAS Kernel</bdi> أساس مشترك غير مفوتر كمنتج مستقل وفق الـBlueprint. المنتجات الخمسة مصممة كوحدات مستقلة وظيفياً وتجاريًا.</p>
+12:   <p class="note">المعلومات التالية تصف التوجه المستهدف، ولا تعني أن المنتج أو التكامل أو الضابط يعمل الآن. لا توجد أسعار أو باقات نهائية معتمدة.</p>
+13:   <section class="block"><SystemMap compact /></section>
+14:   <ProductCatalog />
+15:   <section class="block" aria-labelledby="verification-title"><h2 id="verification-title">ما الذي يتطلب تحققاً؟</h2><p>قبل أي اعتماد تجاري، يلزم إثبات حالة التشغيل، ونطاق الوظائف، ومقدمي الخدمات ومناطق المعالجة، وضوابط الأمن والخصوصية، وشروط الخدمة والاحتفاظ. لا تثبت هذه الصفحة وجود أي من ذلك.</p><div class="actions"><a class="button" href="/pricing/">اطلب عرض سعر</a><a class="ghost" href="/docs/">اقرأ مركز المعرفة</a></div></section>
+16: 
+17:     <ContentExtension>
+18: 
+19: <section><h2>أي دور تحتاجه أولاً؟</h2><div class="extension-scroll"><table><caption>خريطة الاحتياجات وأدوار المنتجات</caption><thead><tr><th>سؤالك</th><th>الدور المستهدف</th><th>ابدأ هنا</th></tr></thead><tbody><tr><td>كيف أضبط طلبات AI عند نقطة التكامل؟</td><td>تطبيق قرارات الحماية</td><td><a href="/products/firewall/">Firewall</a></td></tr><tr><td>كيف أوثّق سبب تقييم الخطر؟</td><td>تقييم قابل للتفسير والمراجعة</td><td><a href="/products/risk-engine/">Risk Engine</a></td></tr><tr><td>من يوافق قبل الإجراء الحساس؟</td><td>مراجعة بشرية وإنفاذ قرارها</td><td><a href="/products/human-gate/">Human Gate</a></td></tr><tr><td>كيف أفحص دليل القرار؟</td><td>تصدير وتحقق من سلامة الأدلة</td><td><a href="/products/ledger/">Ledger</a></td></tr><tr><td>كيف يراسل الموظف نموذجاً معتمداً؟</td><td>محادثة مؤسسية محكومة</td><td><a href="/products/secure-chat/">Secure Chat</a></td></tr></tbody></table></div></section>
+20: <section><h2>استقلال المنتج والتكامل الاختياري</h2><p>المتطلب المعتمد أن تعمل الوظيفة الأساسية لكل منتج مشترى دون اشتراط شراء منتج ثانٍ. يوفر Kernel الأمن والسياسات والتدقيق الأساسي اللازم؛ أما التكامل بين المنتجات فيضيف وظائف متقدمة ضمن نطاق معلن.</p><p>ترتيب التنفيذ المستهدف يبدأ بـKernel ثم Firewall وLedger وHuman Gate، ويتبعه Risk Engine وSecure Chat. هذا ترتيب خطة، وليس إعلان إطلاق. <a href="/pricing/">راجع الفرق بين التجربة والعرض التجاري</a>.</p></section>
+21: 
+22: <section id="deployment-options"><h2>النشر السحابي والمحلي والمعزول: قارن الاعتماديات</h2><div class="extension-scroll"><table><caption>مقارنة خيارات النشر وفق Blueprint</caption><thead><tr><th>البيئة</th><th>سؤال القرار</th><th>ما الذي يلزم إثباته؟</th></tr></thead><tbody><tr><td><bdi>SaaS</bdi></td><td>من يدير الخدمة وأين تحفظ البيانات وتعالج طلبات AI؟</td><td>عقود الموردين، العزل، المناطق والصلاحيات والاستعادة.</td></tr><tr><td><bdi>On-Premise</bdi></td><td>ما الذي يعمل داخل بيئة العميل وما الاتصال الخارجي المصرح؟</td><td>مسؤوليات التشغيل والهوية والمفاتيح والتحديث والدعم المؤقت.</td></tr><tr><td><bdi>Air-Gapped</bdi></td><td>هل تبقى الوظائف الأساسية مستقلة تماماً دون إنترنت؟</td><td>هوية وتراخيص ونماذج ومراقبة محلية، وحزم تحديث Offline موثقة.</td></tr></tbody></table></div><p>النشر المحلي المتصل لا يساوي بيئة معزولة. اطلب اختبار انقطاع الإنترنت واستقلال الاعتماديات عند تقييم Air-Gapped. لا تعني هذه المقارنة وجود نسخة عاملة أو تعهداً بمكان استضافة حالي.</p></section>
+23:     </ContentExtension>
+24: </PageShell>
+
+
+### src/components/ProductExperience.astro
+1: ---
+2: import ProductIcon from './ProductIcon.astro';
+3: import DecisionCircuit from './DecisionCircuit.astro';
+4: import RedactionDemo from './RedactionDemo.astro';
+5: interface Props { kind: string }
+6: const { kind } = Astro.props;
+7: const decisions = [
+8:   ['سماح', 'طلب بمحتوى عام', 'يمر الطلب عندما تسمح السياسة المعتمدة والنطاق والصلاحية.'],
+9:   ['تحذير', 'مخرج يحتاج تحققاً', 'يظهر تنبيه للمستخدم كي يراجع الدقة وحدود الاستخدام.'],
+10:   ['تنقيح', 'معرّف افتراضي', 'يُستبدل المعرّف بعبارة [بيانات منقحة] قبل متابعة المسار المسموح.'],
+11:   ['موافقة بشرية', 'إجراء ذو أثر', 'يتوقف الإجراء حتى قرار مخوّل لمهمة محددة؛ لا تكفي إشارة الواجهة.'],
+12:   ['حظر', 'تعارض مع قيد إلزامي', 'يتوقف الطلب. لا تُستخدم الموافقة لتجاوز حظر إلزامي.'],
+13: ];
+14: ---
+15: <section class={`experience experience-${kind}`} aria-label="شرح تفاعلي لتصور المنتج">
+16:   <div class="experience-bar"><span><ProductIcon kind={kind} size={24} /> مختبر الفكرة</span><span class="map-status">توضيح تعليمي · لا اتصال بخدمة</span></div>
+17:   {kind === 'firewall' && <div class="protection-layout">
+18:     <DecisionCircuit />
+19:     <div><h2>خمس قرارات.<br /><span class="muted">لكل منها سبب.</span></h2><p class="diagram-help">اختر قراراً لقراءة مثال على معناه، وليس لإجراء فحص أمني.</p><div class="decision-options">{decisions.map(([label, scenario, text], i) => <button type="button" disabled data-example={text} data-scenario={scenario} aria-pressed={i === 0 ? 'true' : 'false'}>{label}</button>)}</div><div class="example-result" role="status" aria-live="polite"><strong data-scenario-output>{decisions[0][1]}</strong><p data-example-output>{decisions[0][2]}</p></div><noscript><dl>{decisions.map(([label, , text]) => <><dt>{label}</dt><dd>{text}</dd></>)}</dl></noscript></div>
+20:   </div>}
+21:   {kind === 'risk-engine' && <div class="risk-layout">
+22:     <div><h2>افهم السبب،<br /><span class="muted">قبل التصنيف.</span></h2><p class="diagram-help">مصفوفة تعليمية للاحتمال والأثر. لا تمثل منهجاً معتمداً أو تقييماً لحالة فعلية.</p><div class="example-result" role="status" aria-live="polite"><strong data-scenario-output>احتمال محدود · أثر محدود</strong><p data-example-output>ابدأ بتوثيق الحالة والمالك والضابط، ثم اعتمد منهج التقييم مع المختص.</p></div></div>
+23:     <div class="risk-chart"><span>الأثر المحتمل ←</span><div class="risk-matrix">{['مرتفع', 'متوسط', 'محدود'].map((likelihood, row) => ['محدود', 'متوسط', 'مرتفع'].map((impact, col) => <button type="button" disabled class={`risk-cell level-${row === 0 || col === 2 ? 'high' : row === 1 || col === 1 ? 'medium' : 'low'}`} aria-label={`احتمال ${likelihood} وأثر ${impact}`} aria-pressed={row === 2 && col === 0 ? 'true' : 'false'} data-scenario={`احتمال ${likelihood} · أثر ${impact}`} data-example={row === 0 || col === 2 ? 'في هذا التصور، تستحق الحالة مراجعة أعمق للضوابط والآثار قبل الاعتماد. لا يُستنتج حظر آلي من لون الخلية.' : 'وثّق السبب والضابط والمالك وموعد المراجعة. يبقى التصنيف النهائي للمنهج والجهة المخولة.'}><span>{likelihood}</span><small>أثر {impact}</small></button>))}</div><span>↑ الاحتمال المحتمل</span><noscript><p>تزداد حاجة المراجعة مع زيادة احتمال الضرر أو أثره وفق المنهج المعتمد لدى الجهة.</p></noscript></div>
+24:   </div>}
+25:   {kind === 'human-gate' && <div class="human-layout"><div><h2>القرار لصاحب<br /><span class="muted">الصلاحية.</span></h2><p class="diagram-help">افتح كل مرحلة لفهم مسؤوليتها. لا ينشئ هذا الرسم طلب موافقة أو قراراً فعلياً.</p></div><ol class="approval-flow">{[
+26:     ['طلب محدد', 'مالك الحالة يصف الإجراء والسبب والسياق ونسخة السياسة.'],
+27:     ['مراجعة مستقلة', 'المراجع المخول يتحقق من النطاق وفصل المهام؛ مقدم الطلب لا يعتمد طلبه عندما يُشترط الفصل.'],
+28:     ['قرار مسبب', 'موافقة محددة أو رفض موثق؛ لا يغيّر القرار قيود الحظر الأعلى.'],
+29:     ['تنفيذ أو إيقاف آمن', 'لا استكمال قبل موافقة صالحة. انتهاء المهلة أو غياب الرد لا يعني موافقة.'],
+30:   ].map(([label, text], i) => <li><span aria-hidden="true">0{i + 1}</span><details open={i === 0}><summary>{label}</summary><p>{text}</p></details></li>)}</ol></div>}
+31:   {kind === 'ledger' && <div class="ledger-layout"><div><h2>من الحدث،<br /><span class="muted">إلى الدليل.</span></h2><p class="diagram-help">تتبّع متطلبات الدليل. فتح المراحل لا يحفظ أحداثاً ولا يولّد توقيعاً أو تحققاً تشفيرياً.</p><div class="evidence-seal" aria-hidden="true"><ProductIcon kind="ledger"/><span>المصدر<br />القرار<br />السياسة</span></div>
+32:     <div class="integrity-example"><p class="diagram-help">قارن حالتين افتراضيتين للدليل:</p><div class="decision-options"><button type="button" disabled data-integrity="valid" aria-pressed="true">مثال سليم</button><button type="button" disabled data-integrity="changed" aria-pressed="false">مثال معدّل</button></div><p class="integrity-result" role="status" aria-live="polite" data-integrity-output>في المثال السليم تتوافق البيانات مع مرجع التحقق. هذا وصف تعليمي ولا يفحص ملفاً أو توقيعاً.</p><noscript><p>في المثال المعدّل تختلف البيانات عن مرجع التحقق؛ المطلوب أن يكشف التنفيذ الفعلي ذلك قبل قبول الدليل.</p></noscript></div></div><ol class="evidence-timeline">{[
+33:     ['التقاط الحد الأدنى', 'مصدر الحدث وهوية الفاعل المخول ووقت القرار ونسخة السياسة، دون محتوى حساس غير لازم.'],
+34:     ['ربط سلامة الدليل', 'Hash أو توقيع مناسب ضمن تنفيذ مثبت، مع مفاتيح وصلاحيات وإدارة دورة حياة.'],
+35:     ['حفظ وفق السياسة', 'احتفاظ ووصول وحذف وقيود قانونية تحددها الجهة والعقد.'],
+36:     ['تصدير وفحص مستقل', 'حزمة دليل وأداة تحقق مفوضة. تعديل الدليل يجب أن يظهر في نتيجة فحص حقيقية.'],
+37:   ].map(([label, text], i) => <li><span class="event-point" aria-hidden="true">0{i + 1}</span><details open={i === 0}><summary>{label}</summary><p>{text}</p></details></li>)}</ol></div>}
+38:   {kind === 'secure-chat' && <div class="chat-layout"><div><h2>مساحة أبسط.<br /><span class="muted">وحدود أوضح.</span></h2><p class="diagram-help">قصة توضيحية جاهزة، وليست محادثة مع نموذج. لا تكتب بيانات أو ملفات هنا.</p><ul class="chat-principles"><li>اختيار نموذج مصرح به</li><li>حفظ المحتوى حسب سياسة المؤسسة</li><li>مشاركة وتصدير مغلقان افتراضياً</li></ul></div><div class="chat-preview"><div class="chat-toolbar"><span>محادثة توضيحية</span><span>بلا اتصال</span></div><div class="chat-examples decision-options" aria-label="اختيار مثال جاهز"><button type="button" disabled data-chat-example="public" aria-pressed="true">بيانات عامة</button><button type="button" disabled data-chat-example="internal" aria-pressed="false">بيانات داخلية</button></div><p class="chat-bubble user">كيف أكتب طلباً يحترم بيانات المنشأة؟</p><p class="chat-bubble assistant" role="status" aria-live="polite">ابدأ بالغرض. استخدم معلومات عامة أو بيانات مصرحاً بها، وتحقق من المخرج قبل الاعتماد.</p><details><summary>ما الذي يضبط هذا المسار؟</summary><p>صلاحية الاستخدام والنموذج والوجهة والميزانية. لا نفترض وجود نموذج أو تكامل عامل في هذا التصور.</p></details><div class="chat-footer">مثال جاهز / لا إرسال أو رفع ملفات</div></div></div>}
+39: </section>
+40: {kind === 'firewall' && <RedactionDemo />}
+41: {kind === 'secure-chat' && <><p class="note">النموذج المصرح: تسمية توضيحية فقط؛ لم يُختر أو يُربط مورد فعلي.</p><RedactionDemo example="CHAT-DEMO-0000" /></>}
+42: {kind === 'human-gate' && <section class="motion-study" data-approval-demo aria-label="مسارات موافقة خيالية">
+43:   <h2>جرّب قرار المراجع في مثال خيالي</h2>
+44:   <p>لا تُرسل هذه الأزرار موافقة أو رفضاً لأي نظام.</p>
+45:   <svg class="approval-lock" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path class="lock-shackle" d="M20 28V19a12 12 0 0 1 24 0v9"/><rect x="14" y="28" width="36" height="28" rx="3"/><path d="M32 38v9"/></svg>
+46:   <div class="decision-options"><button type="button" data-approval="pending" aria-pressed="true" disabled>انتظار توضيحي</button><button type="button" data-approval="allow" aria-pressed="false" disabled>موافقة توضيحية</button><button type="button" data-approval="block" aria-pressed="false" disabled>رفض توضيحي</button></div>
+47:   <p data-approval-output role="status">انتظار مراجعة مستقلة في المثال. غياب الرد لا يعني موافقة.</p>
+48:   <noscript><p>الموافقة تسمح باستكمال النطاق المحدد فقط؛ الرفض يوقف المثال. الحظر الإلزامي لا تتجاوزه الموافقة.</p></noscript>
+49: </section>}
+50: {kind === 'ledger' && <div class="motion-study educational-hash"><p>تمثيل تعليمي مبسّط للربط، لا Hash أو توقيع محسوب:</p><ol data-motion="stagger"><li><code>DEMO-A → REF-A</code></li><li><code>REF-A + DEMO-B → REF-B</code></li><li><code>DEMO-B* ≠ REF-B</code> · تعديل محتوى المثال يستلزم كشف الاختلاف في تنفيذ حقيقي.</li></ol></div>}
+51: <script>
+52:   // Local educational state only. Progressive enhancement, scoped to each diagram.
+53:   document.querySelectorAll<HTMLElement>('.experience').forEach(root => {
+54:     root.querySelectorAll<HTMLButtonElement>('button[data-example]').forEach(button => {
+55:       button.addEventListener('click', () => {
+56:         root.querySelectorAll('button[data-example]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+57:         const heading = root.querySelector('[data-scenario-output]');
+58:         const output = root.querySelector('[data-example-output]');
+59:         if (heading) heading.textContent = button.dataset.scenario ?? '';
+60:         if (output) output.textContent = button.dataset.example ?? '';
+61:       });
+62:       button.disabled = false;
+63:     });
+64:     root.querySelectorAll<HTMLButtonElement>('button[data-integrity]').forEach(button => {
+65:       button.addEventListener('click', () => {
+66:         root.querySelectorAll('button[data-integrity]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+67:         root.setAttribute('data-integrity-state', button.dataset.integrity ?? 'valid');
+68:         const output = root.querySelector('[data-integrity-output]');
+69:         if (output) output.textContent = button.dataset.integrity === 'changed'
+70:           ? 'في المثال المعدّل تختلف البيانات عن مرجع التحقق. يجب أن يكشف التنفيذ الفعلي التغيير؛ لا يجري هنا فحص تشفيري.'
+71:           : 'في المثال السليم تتوافق البيانات مع مرجع التحقق. هذا وصف تعليمي ولا يفحص ملفاً أو توقيعاً.';
+72:       });
+73:       button.disabled = false;
+74:     });
+75:     root.querySelectorAll<HTMLButtonElement>('button[data-chat-example]').forEach(button => {
+76:       button.addEventListener('click', () => {
+77:         root.querySelectorAll('button[data-chat-example]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+78:         const internal = button.dataset.chatExample === 'internal';
+79:         const user = root.querySelector('.chat-bubble.user');
+80:         const assistant = root.querySelector('.chat-bubble.assistant');
+81:         if (user) user.textContent = internal ? 'أحتاج تلخيص رسالة عمل داخلية. ما الذي أراجعه أولاً؟' : 'كيف أكتب طلباً يحترم بيانات المنشأة؟';
+82:         if (assistant) assistant.textContent = internal ? 'تحقق من تصنيف البيانات وصلاحية مشاركتها ومن اعتماد الأداة والحساب والوجهة. عند الغموض، توقف وراجع المالك المختص قبل إدخال المحتوى.' : 'ابدأ بالغرض. استخدم معلومات عامة أو بيانات مصرحاً بها، وتحقق من المخرج قبل الاعتماد.';
+83:       });
+84:       button.disabled = false;
+85:     });
+86:   });
+87: </script>
+
+
+### src/components/ProductJourney.astro
+1: ---
+2: import { productForSlug, productEntryPath, productContactPath } from '../shared/product-navigation.mjs';
+3: const { slug, compact = false } = Astro.props;
+4: const product = productForSlug(slug);
+5: ---
+6: {product && <section class:list={['product-journey', { compact }]} aria-label={`مسار AIGAS ${product.name}`}>
+7:   {!compact && <h2>خطوتك التالية مع <bdi dir="ltr">{product.name}</bdi></h2>}
+8:   <p>{product.scope}</p>
+9:   <div class="actions">
+10:     <a class="journey-entry" href={productEntryPath(slug)} aria-label={`الدخول إلى مساحة ${product.name}`}><span>{compact ? 'الدخول' : 'الدخول إلى المساحة'}</span><span class="journey-arrow" aria-hidden="true">↖</span></a>
+11:     <a class="journey-contact" href={productContactPath(slug)} aria-label={`استفسار عن تقييم ${product.name}`}>استفسار عن تقييم <span aria-hidden="true">←</span></a>
+12:   </div>
+13:   {!compact && <p>الدخول يتحقق من الهوية وقرار الإتاحة في الخادم؛ والمخططات أعلاه تعليمية. الاستفسار رسالة تواصل لا تفعّل تجربة ولا تمنح ترخيصًا. طلب الاشتراك مستقل، والتكامل مع المنتجات الأخرى اختياري. <a href={productContactPath(slug, true)}>تواصل بشأن الاشتراك</a></p>}
+14: </section>}
+15: <style>
+16:   .product-journey { margin-block:32px; padding:clamp(24px,4vw,40px); border-radius:20px; background:#ffffff04; box-shadow:inset 0 1px 0 #ffffff10; }
+17:   .product-journey.compact { margin:0; padding:24px 0 0; background:none; box-shadow:none; }
+18:   .product-journey p { margin-block:0 20px; line-height:1.9; }
+19:   .product-journey h2 { margin-block-end:20px; }
+20:   .actions { display:flex; flex-wrap:wrap; align-items:center; gap:12px 24px; }
+21:   .actions a { display:inline-flex; align-items:center; justify-content:center; gap:20px; min-block-size:48px; overflow-wrap:anywhere; font-size:14px; text-decoration:none; }
+22:   .journey-entry { padding:6px 6px 6px 22px; border-radius:99px; color:#100d16; background:#e8d9ff; font-weight:600; }
+23:   .journey-arrow { display:grid; place-items:center; inline-size:34px; block-size:34px; flex-shrink:0; border-radius:50%; background:#120b1910; font-size:19px; }
+24:   .journey-contact { color:var(--ui-ink,#f4f1f8); }
+25:   .journey-contact>span { color:var(--ui-violet,#c7adff); }
+26:   .product-journey:not(.compact)>p:last-child { margin-block:24px 0; font-size:14px; color:var(--ui-muted,#b9b3c4); }
+27:   a:focus-visible { outline:3px solid var(--ui-focus,#f5b544); outline-offset:4px; }
+28:   @media (prefers-reduced-motion:no-preference) {
+29:     .actions a, .journey-arrow { transition:transform var(--motion-hover) var(--ease-out); }
+30:     .actions a:active { transform:scale(.98); }
+31:     @media (hover:hover) and (pointer:fine) {
+32:       .journey-entry:hover .journey-arrow { transform:translate(-2px,-2px); }
+33:       .journey-contact:hover>span { transform:translateX(-3px); }
+34:     }
+35:   }
+36:   @media(max-width:390px) { .actions { gap:12px 20px; } .actions a { gap:12px; } }
+37: </style>
+
+
+### render.yaml
+1: # BrightAI Render Blueprint — Astro with the standalone Node adapter.
+2: # npm start applies redirects.json before static files via scripts/server.mjs;
+3: # src/middleware.ts also resolves aliases that reach Astro.
+4: 
+5: services:
+6:   - type: web
+7:     runtime: node
+8:     name: brightai-site
+9:     # The committed lockfile is package-lock.json; no pnpm lockfile is present.
+10:     buildCommand: npm ci && npm run build
+11:     # Operator: attach the domain to this Node web service, not dist/client.
+12:     # Forward /app/* and /app/api/* unchanged; bypass every CDN cache for /app/*.
+13:     # Existing static hosting requires an operator-managed origin change; not deployed here.
+14:     startCommand: npm start
+15:     # Readiness, not liveness: a failed database or auth dependency keeps the
+16:     # deploy unhealthy instead of routing traffic to an unready process.
+17:     # /healthz/ answers JSON with dependency states and the build identity.
+18:     healthCheckPath: /healthz/
+19:     envVars:
+20:       - key: NODE_VERSION
+21:         value: 22.22.2
+22:       - key: HOST
+23:         value: 0.0.0.0
+24:       - key: PORT
+25:         value: 10000
+26:       # Enable only after the owner authorizes exposing the portal on this Node service.
+27:       - key: AIGAS_APP_ENABLED
+28:         value: "false"
+29:       # The full CSP is defined in src/middleware.ts and shipped as Report-Only.
+30:       # Set true only after an authorized browser check of the public site, the
+31:       # GA4 tag and the Neon Auth sign-in flow. See docs/PRE-BETA-SECURITY-AND-OPERATIONS-RUNBOOK.md.
+32:       - key: AIGAS_CSP_ENFORCE
+33:         value: "false"
+34:       # Readiness probes the auth JWKS host (2s timeout, 15s cache). It is the
+35:       # only readiness check that leaves the service; disable it only if the
+36:       # deployment cannot reach the auth host at all.
+37:       - key: AIGAS_HEALTH_AUTH_PROBE
+38:         value: "true"
+39:       # Runtime secret names required for a working service. Values are set in
+40:       # the Render dashboard only, never in this file:
+41:       #   DATABASE_URL, NEON_AUTH_BASE_URL, NEON_AUTH_JWKS_URL.
+42:       # Staging additionally decides AIGAS_REQUIRE_RLS=true once DATABASE_URL
+43:       # uses the least-privilege runtime role (see docs/RUNTIME-RLS-PERMISSION-MATRIX.md).
+44:       # Traceability: RENDER_SERVICE_ID / RENDER_SERVICE_NAME / RENDER_GIT_COMMIT
+45:       # are injected by Render; AIGAS_DEPLOY_ID and AIGAS_IMAGE_DIGEST are
+46:       # optional operator/CI values that /healthz/ reports when present.
+47:       - key: DATABASE_URL
+48:         sync: false
+49:       - key: NEON_AUTH_BASE_URL
+50:         sync: false
+51:       - key: NEON_AUTH_JWKS_URL
+52:         sync: false
+53:       # Preserved for existing dashboard compatibility; the current site has no chat API.
+54:       - key: REDIS_URL
+55:         sync: false
+56:     # Operator runbook: docs/APP-PORTAL-RUNTIME-HANDOFF.md
+57:     # Data/secret handling and rotation: docs/DATA-PRIVACY-AND-SECURITY.md
+58:     # Branch protection, backup/restore and rollback: docs/NEON-BRANCH-PROTECTION-RUNBOOK.md
+59:     # DATABASE_URL must be a least-privilege runtime role before the portal is enabled;
+60:     # never paste a secret value into this file or any tracked file.
+61:     # Static-site header rules do not belong to this Node web service.
+62:     # src/middleware.ts sets baseline headers (framing, referrer, permissions,
+63:     # HSTS on HTTPS) and private /app/* no-store/noindex headers.
+64:     # Keep TLS termination at the operator-managed edge; do not downgrade to HTTP.
+
+
+### migrations/0032_aigas_trial_trigger_execute_lock.sql
+1: -- Forward-only repair for 0030: trigger execution does not require caller EXECUTE.
+2: -- Do not rewrite the 0030 hash. The SECURITY DEFINER trigger is not a client RPC.
+3: BEGIN;
+4: REVOKE ALL ON FUNCTION public.aigas_trial_readiness_guard() FROM PUBLIC;
+5: DO $$
+6: DECLARE client_role text;
+7: BEGIN
+8:   FOREACH client_role IN ARRAY ARRAY['authenticated', 'anonymous', 'aigas_runtime'] LOOP
+9:     IF to_regrole(client_role) IS NOT NULL THEN
+10:       EXECUTE format('REVOKE ALL ON FUNCTION public.aigas_trial_readiness_guard() FROM %I', client_role);
+11:     END IF;
+12:   END LOOP;
+13: END $$;
+14: COMMIT;
+
+
+### migrations/0033_aigas_exploration.sql
+1: -- Local draft: separate internal exploration; never a product readiness receipt.
+2: BEGIN;
+3: CREATE TABLE public.aigas_exploration_grants (
+4:  tenant_id uuid NOT NULL REFERENCES public.aigas_tenants(id),
+5:  product_slug text NOT NULL CHECK(product_slug IN ('firewall','ledger','human-gate','risk-engine','secure-chat')),
+6:  starts_at timestamptz NOT NULL DEFAULT clock_timestamp(),
+7:  ends_at timestamptz NOT NULL,
+8:  limit_units integer NOT NULL CHECK(limit_units BETWEEN 1 AND 10000),
+9:  used integer NOT NULL DEFAULT 0 CHECK(used>=0 AND used<=limit_units),
+10:  approved_by uuid NOT NULL REFERENCES neon_auth."user"(id),
+11:  approval_reference text NOT NULL CHECK(length(btrim(approval_reference)) BETWEEN 10 AND 180),
+12:  revoked_at timestamptz,
+13:  PRIMARY KEY(tenant_id,product_slug),
+14:  CHECK(ends_at=starts_at+interval '48 hours')
+15: );
+16: ALTER TABLE public.aigas_exploration_grants ENABLE ROW LEVEL SECURITY;
+17: REVOKE ALL ON public.aigas_exploration_grants FROM PUBLIC;
+18: GRANT SELECT ON public.aigas_exploration_grants TO aigas_runtime;
+19: CREATE POLICY exploration_read ON public.aigas_exploration_grants FOR SELECT TO aigas_runtime
+20:  USING(public.aigas_tenant_scope(tenant_id));
+21: -- Only a fixed browse capability is exposed. Caller scope is established by the
+22: -- authenticated server, and membership is rechecked by aigas_tenant_scope.
+23: CREATE FUNCTION public.aigas_exploration_consume(wanted uuid, product text)
+24: RETURNS TABLE(allowed boolean, reason text) LANGUAGE plpgsql SECURITY DEFINER
+25: SET search_path=pg_catalog,public AS $$
+26: DECLARE g public.aigas_exploration_grants;
+27: BEGIN
+28:  IF NOT public.aigas_tenant_scope(wanted) THEN
+29:   RETURN QUERY SELECT false,'MEMBERSHIP_REQUIRED'::text; RETURN;
+30:  END IF;
+31:  SELECT * INTO g FROM public.aigas_exploration_grants WHERE tenant_id=wanted AND product_slug=product FOR UPDATE;
+32:  IF NOT FOUND THEN RETURN QUERY SELECT false,'EXPLORATION_NOT_GRANTED'::text; RETURN; END IF;
+33:  IF g.revoked_at IS NOT NULL OR g.starts_at>clock_timestamp() OR g.ends_at<=clock_timestamp() THEN
+34:   RETURN QUERY SELECT false,'EXPLORATION_EXPIRED'::text; RETURN;
+35:  END IF;
+36:  IF g.used>=g.limit_units THEN RETURN QUERY SELECT false,'EXPLORATION_QUOTA_EXCEEDED'::text; RETURN; END IF;
+37:  UPDATE public.aigas_exploration_grants SET used=used+1 WHERE tenant_id=wanted AND product_slug=product;
+38:  INSERT INTO public.aigas_audit_events(id,tenant_id,actor_user_id,action)
+39:  VALUES(gen_random_uuid(),wanted,public.aigas_actor(),'exploration.browse.'||product);
+40:  RETURN QUERY SELECT true,'EXPLORATION_ALLOWED'::text;
+41: END $$;
+42: REVOKE ALL ON FUNCTION public.aigas_exploration_consume(uuid,text) FROM PUBLIC;
+43: GRANT EXECUTE ON FUNCTION public.aigas_exploration_consume(uuid,text) TO aigas_runtime;
+44: DO $$ BEGIN
+45:  IF to_regrole('authenticated') IS NOT NULL THEN
+46:   REVOKE ALL ON public.aigas_exploration_grants FROM authenticated;
+47:   REVOKE ALL ON FUNCTION public.aigas_exploration_consume(uuid,text) FROM authenticated;
+48:  END IF;
+49:  IF to_regrole('anonymous') IS NOT NULL THEN
+50:   REVOKE ALL ON public.aigas_exploration_grants FROM anonymous;
+51:   REVOKE ALL ON FUNCTION public.aigas_exploration_consume(uuid,text) FROM anonymous;
+52:  END IF;
+53: END $$;
+54: COMMIT;

@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-16 VERIFIED P01 audit: HEAD/GitHub `f221ac4177d63dad649bfaf892868b5c6d971a0d`؛ delta245=R10099/reports84/source55/context7؛ live ست أمثلة تعليمية ×390/1440 بلا overflow، CTA5→404 وhealth/API404 بكاش300ث؛ unit42PASS؛ `Audit/p01-delta-2026-11-16/REPORT.md` يحوي13فجوة وخريطةP02–P13؛ لا تشغيل منتج حي مثبت.
 - 2026-11-11 PARTIAL D08: HEAD `38403763df2daf2baa60576def4d73215756f430`؛ Browser5routes×390/1440 RTL/overflow PASS؛ compassKeyboard/noJSdocs PASS؛ Hero baseline نص/روابط/أبعادمطابقة وصورة1440متطابقة؛ devLCP228ms/shift0.024تشخيصي؛ SR/INP/المصادق/المنشور NOT RUN؛ `Audit/d08-acceptance-2026-11-11/REPORT.md`؛ InternalNOTREADY/PublicCommercialNO-GO.
 - 2026-11-11 PARTIAL D07: HEAD `b0c1bd415911aec4d24326a7c89dc5f3811c8ae8`؛ لا تعديل مصدر؛ wrapper301→docs200/query PASS وsearch3PASS؛ devdocs/article200 لكنdevaliasqueryغيرمحفوظ؛ artifactقديم؛ الحيknowledge404؛ BrowserBLOCKED/OpenSEO0/GSCNOTVERIFIED؛ `Audit/d07-knowledge-2026-11-11/REPORT.md`؛ InternalNOTREADY/PublicCommercialNO-GO.
 - 2026-11-11 PARTIAL T03 execution: staging0033 APPLIED ledger29/29؛4Auth اصطناعية/مؤسستان/100browse لكلمنتج48h؛runtime LOGIN محدود SET ROLE مثبت؛esbuild أصلح؛Auth token wrapper أصلح؛unit7 PASS؛Browser النهائي NOT VERIFIED وDB اتصال متقطع؛ `Audit/t03-exploration-2026-11-11/EXECUTED.md`.
@@ -39,7 +40,7 @@
 ## Open Issues / Blockers
 - 2026-11-11 PARTIAL D05: عيبHero يبقى استثناءً مفتوحًا؛ pricing `<aside class=quote-scope>` landmark moderate خارج نطاق D05؛ قارئ شاشة فعلي وEscape في Ledger المصادق NOT RUN؛ لا شهادة WCAG شاملة.
 - 2026-11-11 PARTIAL D02: المصدر محليًا مغلق؛ الرحلة الحية محجوبة بنشر Node SSR (T01) وبجلسة/عضويات/منح حقيقية (T03)؛InternalNOTREADY/PublicCommercialNO-GO.
-- 2026-11-11 D01: `/solutions/` الحي ما زال الأثر القديم حتى النشر؛ تفعيل تحويلات الـ19 على الاستضافة Static يحتاج تفويض DevOps/edge، و`/sw.js` القديم ما زال على الحافة ويحتاج مهمة منفصلة.
+- 2026-11-16 D01: `/solutions/` الحي200 بالمركز الجديد؛ أُغلق وصف الأثر القديم لهذا المسار بقراءة اليوم؛ تحويلات19 وSW لم تُعد فحوصها، فتظل NOT VERIFIED؛ `Audit/p01-delta-2026-11-16/http.json`.
 - 2026-11-11 T05: المالكحددBRIGHT AI/5طلبات+30000توكنيوميًاللمؤسسة/48h؛وثيقةخصوصيةغائبة؛exacttenantغيرموجودباتصال.envالمقروء؛registryفارغوAIGAS_SCغيرمهيأ؛Identity/DBAللنطاقوAI Systems/Privacyلاعتمادالموصل؛InternalNOTREADY/PublicCommercialNO-GO.
 - 2026-11-11 PARTIAL T04: registryالتصعيدفارغ؛Backend/AI Governance لاعتمادoperationType وعقدمحتوىالمراجعةومحولذري؛بديلالحجبالمحددمثبت،لاpendingreviewحقيقية؛Neonقراءةoperators0/readiness0/explorationغائب؛InternalNOTREADY/PublicCommercialNO-GO.
 - 2026-11-11 PARTIAL T03: Neon Staging0033 مطبق ومشغل اصطناعي ومنح اختبار موجودة؛ Identity/Kernel للتحقق من pool ورحلةAuth النهائية؛ DevOpsNode للنشر؛ close لا يبطلAuthsessions؛ purge ينتظرالاحتفاظ؛ InternalNOTREADY/PublicCommercialNO-GO.

@@ -1,0 +1,262 @@
+TAP version 13
+# Subtest: pending Firewall review requires the exact tenant/request/policy/fingerprint and operation
+ok 1 - pending Firewall review requires the exact tenant/request/policy/fingerprint and operation
+  ---
+  duration_ms: 1.553375
+  type: 'test'
+  ...
+# Subtest: AU01 identity: EdDSA only, required claims, bounded age, issuer and UUID subject
+ok 2 - AU01 identity: EdDSA only, required claims, bounded age, issuer and UUID subject
+  ---
+  duration_ms: 8.233792
+  type: 'test'
+  ...
+# Subtest: AU01/AU02 auth setup: same-origin HTTPS JWKS only, no false readiness, bounded header
+ok 3 - AU01/AU02 auth setup: same-origin HTTPS JWKS only, no false readiness, bounded header
+  ---
+  duration_ms: 9.251208
+  type: 'test'
+  ...
+# Subtest: AU07 entitlement: purchase, trial, administrative grant and licence stay separate
+ok 4 - AU07 entitlement: purchase, trial, administrative grant and licence stay separate
+  ---
+  duration_ms: 0.616042
+  type: 'test'
+  ...
+# Subtest: AU06 policy: top-level mandatory deny cannot be softened by a lower scope
+ok 5 - AU06 policy: top-level mandatory deny cannot be softened by a lower scope
+  ---
+  duration_ms: 0.318375
+  type: 'test'
+  ...
+# Subtest: identity without membership receives no product destination
+ok 6 - identity without membership receives no product destination
+  ---
+  duration_ms: 0.610958
+  type: 'test'
+  ...
+# Subtest: exploration guidance does not promise execution or elevate an institution admin
+ok 7 - exploration guidance does not promise execution or elevate an institution admin
+  ---
+  duration_ms: 0.120917
+  type: 'test'
+  ...
+# Subtest: unavailable schema or revoked access never becomes a next destination
+ok 8 - unavailable schema or revoked access never becomes a next destination
+  ---
+  duration_ms: 0.058625
+  type: 'test'
+  ...
+# Subtest: Arabic diacritics, hamza, tatweel and word order
+ok 9 - Arabic diacritics, hamza, tatweel and word order
+  ---
+  duration_ms: 1.661333
+  type: 'test'
+  ...
+# Subtest: OR within products and AND across groups
+ok 10 - OR within products and AND across groups
+  ---
+  duration_ms: 0.20475
+  type: 'test'
+  ...
+# Subtest: Extract actual headings and reading words, excluding scripts
+ok 11 - Extract actual headings and reading words, excluding scripts
+  ---
+  duration_ms: 1.4515
+  type: 'test'
+  ...
+# Subtest: delta includes treatment lock after all its dependencies
+ok 12 - delta includes treatment lock after all its dependencies
+  ---
+  duration_ms: 0.744916
+  type: 'test'
+  ...
+# Subtest: 25 matching receipts resume with 0030–0033 only; complete ledger is a no-op
+ok 13 - 25 matching receipts resume with 0030–0033 only; complete ledger is a no-op
+  ---
+  duration_ms: 0.274459
+  type: 'test'
+  ...
+# Subtest: resume refuses changed hashes, failed rows, holes, unknown and empty ledgers
+ok 14 - resume refuses changed hashes, failed rows, holes, unknown and empty ledgers
+  ---
+  duration_ms: 0.333083
+  type: 'test'
+  ...
+# Subtest: all planned SQL files support an atomic schema and receipt transaction
+ok 15 - all planned SQL files support an atomic schema and receipt transaction
+  ---
+  duration_ms: 0.8505
+  type: 'test'
+  ...
+# Subtest: target delta runner never replays baseline CREATE migrations
+ok 16 - target delta runner never replays baseline CREATE migrations
+  ---
+  duration_ms: 57.458667
+  type: 'test'
+  ...
+# Subtest: default is inert: no approval means no layer and no transport
+ok 17 - default is inert: no approval means no layer and no transport
+  ---
+  duration_ms: 3.989084
+  type: 'test'
+  ...
+# Subtest: common gates require an approval reference, an approved environment and a full release SHA
+ok 18 - common gates require an approval reference, an approved environment and a full release SHA
+  ---
+  duration_ms: 0.579458
+  type: 'test'
+  ...
+# Subtest: each layer keeps its own approval and a different environment scope
+ok 19 - each layer keeps its own approval and a different environment scope
+  ---
+  duration_ms: 0.359625
+  type: 'test'
+  ...
+# Subtest: Sentry DSN parsing rejects every transport shape it must not use
+ok 20 - Sentry DSN parsing rejects every transport shape it must not use
+  ---
+  duration_ms: 0.197416
+  type: 'test'
+  ...
+# Subtest: a DSN that does not match the approved origin never sends
+ok 21 - a DSN that does not match the approved origin never sends
+  ---
+  duration_ms: 0.3645
+  type: 'test'
+  ...
+# Subtest: PostHog host and key are exact, and the endpoint is fixed
+ok 22 - PostHog host and key are exact, and the endpoint is fixed
+  ---
+  duration_ms: 25.084833
+  type: 'test'
+  ...
+# Subtest: Sentry event carries only allowlisted constants, never the error, URL, SQL or token
+ok 23 - Sentry event carries only allowlisted constants, never the error, URL, SQL or token
+  ---
+  duration_ms: 9.982667
+  type: 'test'
+  ...
+# Subtest: capture policy: 5xx always, 4xx only for the named categories
+ok 24 - capture policy: 5xx always, 4xx only for the named categories
+  ---
+  duration_ms: 0.105167
+  type: 'test'
+  ...
+# Subtest: ledger integrity is an incident even when the HTTP result is not an exception
+ok 25 - ledger integrity is an incident even when the HTTP result is not an exception
+  ---
+  duration_ms: 0.31275
+  type: 'test'
+  ...
+# Subtest: product events are an explicit allowlist and cannot be extended by a caller
+ok 26 - product events are an explicit allowlist and cannot be extended by a caller
+  ---
+  duration_ms: 0.334375
+  type: 'test'
+  ...
+# Subtest: product event payload is anonymous, environment-tagged and URL-free
+ok 27 - product event payload is anonymous, environment-tagged and URL-free
+  ---
+  duration_ms: 0.376125
+  type: 'test'
+  ...
+# Subtest: kill switches are independent, checked at send time, and never depend on the portal flag
+ok 28 - kill switches are independent, checked at send time, and never depend on the portal flag
+  ---
+  duration_ms: 0.260417
+  type: 'test'
+  ...
+# Subtest: collector failure never throws, retries or changes the caller result
+ok 29 - collector failure never throws, retries or changes the caller result
+  ---
+  duration_ms: 0.51375
+  type: 'test'
+  ...
+# Subtest: route and section labels are fixed and cannot carry a query, fragment or identifier
+ok 30 - route and section labels are fixed and cannot carry a query, fragment or identifier
+  ---
+  duration_ms: 0.245084
+  type: 'test'
+  ...
+# Subtest: URL/referrer policy drops a free query and an unknown referrer instead of forwarding it
+ok 31 - URL/referrer policy drops a free query and an unknown referrer instead of forwarding it
+  ---
+  duration_ms: 0.406291
+  type: 'test'
+  ...
+# Subtest: a private surface never forwards a path segment, only its section root
+ok 32 - a private surface never forwards a path segment, only its section root
+  ---
+  duration_ms: 0.078833
+  type: 'test'
+  ...
+# Subtest: the shipped GA4 snippet obeys the same allowlist as the policy module
+ok 33 - the shipped GA4 snippet obeys the same allowlist as the policy module
+  ---
+  duration_ms: 2.822375
+  type: 'test'
+  ...
+# Subtest: the CSP hash of the shipped GA4 snippet matches the middleware allowlist
+ok 34 - the CSP hash of the shipped GA4 snippet matches the middleware allowlist
+  ---
+  duration_ms: 0.49375
+  type: 'test'
+  ...
+# Subtest: public layout has no external analytics loader before consent approval
+ok 35 - public layout has no external analytics loader before consent approval
+  ---
+  duration_ms: 0.1985
+  type: 'test'
+  ...
+# Subtest: all five product entry paths preserve only canonical allowlisted destinations
+ok 36 - all five product entry paths preserve only canonical allowlisted destinations
+  ---
+  duration_ms: 1.495417
+  type: 'test'
+  ...
+# Subtest: external, encoded, recursive and non-product return paths cannot redirect
+ok 37 - external, encoded, recursive and non-product return paths cannot redirect
+  ---
+  duration_ms: 0.231459
+  type: 'test'
+  ...
+# Subtest: only a server-authorized product and canonical tenant selector produce a destination
+ok 38 - only a server-authorized product and canonical tenant selector produce a destination
+  ---
+  duration_ms: 0.480792
+  type: 'test'
+  ...
+# Subtest: policy inspects and redacts every role while preserving immutable context
+ok 39 - policy inspects and redacts every role while preserving immutable context
+  ---
+  duration_ms: 1.721167
+  type: 'test'
+  ...
+# Subtest: history deny, escalation, warning, secret and missing allow all stop egress
+ok 40 - history deny, escalation, warning, secret and missing allow all stop egress
+  ---
+  duration_ms: 10.773208
+  type: 'test'
+  ...
+# Subtest: redaction cannot become an implicit allow or expose a hidden deny
+ok 41 - redaction cannot become an implicit allow or expose a hidden deny
+  ---
+  duration_ms: 0.30175
+  type: 'test'
+  ...
+# Subtest: expired and unavailable model approval fail before any fetch
+ok 42 - expired and unavailable model approval fail before any fetch
+  ---
+  duration_ms: 0.144375
+  type: 'test'
+  ...
+1..42
+# tests 42
+# suites 0
+# pass 42
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 169.522333

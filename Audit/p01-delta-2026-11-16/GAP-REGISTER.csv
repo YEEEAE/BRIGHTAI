@@ -1,0 +1,14 @@
+id,priority_status,gap,owner_prompt,closure
+G01,P0 BLOCKED,app/health/API404؛ خمسة dead ends,DevOps / P02,origin Node مربوط بـSHA؛6مساحات تصل للدخول؛JSON صحيح حسب الحالة؛no-store؛readiness يفحص التبعيات
+G02,P1 SOURCE_ONLY,مداخل المختبر/Trial غير منفصلة؛ CTA بعيد بالجوال,Product / P03,دعوتان واضحتان وأول قيمة عملية قبل النصوص الطويلة؛ لا تغيير Hero
+G03,P0 SOURCE_ONLY,لا عقد scenario/input/decision/reset مشترك,Sandbox / P04,6مسارات أو مكافئات؛ حالتان لكل تجربة؛Reset؛0وصول إلى tenantAPI/DB/provider
+G04,P1 SOURCE_ONLY,Firewall يختار وصف القرار بدل تقييم مدخل demo,Firewall UX / P05,5قرارات معللة مرتبطة بالمدخل؛تنقيح قبل/بعد؛حظر لا يُتجاوز؛Reset
+G05,P1 SOURCE_ONLY,Ledger يبدل نصًا بلا سلسلة محسوبة,Evidence UX / P06,حدثان؛تحقق؛تعديل؛كشف موضع الخلل؛وسم Synthetic لأي حزمة
+G06,P1 SOURCE_ONLY,Human Gate بلا Queue/persona/SoD عام,Workflow / P07,دورة اصطناعية بحالات الخادم؛رفض self-approval؛ربط demo مستقل
+G07,P1 SOURCE_ONLY,Risk بلا أصل/معالجة/residual,Risk UX / P08,تغيير السياق والضابط يغير النتيجة بسبب مفهوم؛منهج demo معلن
+G08,P1 SOURCE_ONLY,Chat قصتان بلا محرر أو قرار محاكاة,Conversation / P09,3سيناريوهات موسومة؛new-chat/reset؛لا إيهام بوجود provider
+G09,P1 SOURCE_ONLY,Kernel مثال واحد بلا state handoff,Kernel UX / P10,رحلة سياسة→دليل؛ScenarioID اصطناعي؛Reset حقيقي؛لا tenant عام
+G10,P0 BLOCKED,Production31/سياسات على2؛runtime/ledger غائبان,DBA/Security / P11,delta واستعادة وتفويض؛A/B محدود الصلاحية على البيئة العاملة؛لا rebuild لـStaging
+G11,P1 BLOCKED,0033 browse-only؛UI تقول لا self-activation؛Auth404,Identity/FinOps / P12,بريد موثق→tenant→grants→حصة48h→expiry/revocation؛A/B؛اعتماد policy/cost/provider للإرسال
+G12,P1 UNKNOWN,قبول شامل/CWV/SR/consent privacy/UI مصادق غير مقاسة,QA/Release / P13,أدلة النسخة النهائية؛قرارات مستقلة للديمو وTrial وEnterprise
+G13,P1 BLOCKED,knowledge query404 مع redirect مصدر موجود,DevOps / P02؛SEO / P13,301واحد إلىdocs يحفظ query والمقالات؛لا إعادة محرك البحث
