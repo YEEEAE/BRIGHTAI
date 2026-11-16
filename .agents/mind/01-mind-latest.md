@@ -46,8 +46,16 @@
 - 2026-11-10 VERIFIED LOCAL+LIVE (P05): HEAD `7954bb6f` + working tree؛ إصلاح قفل الفاعل في `manageMember`/`policies` عبر `aigas_lock_member` ورفض self-role/revoke مبكرًا وتغليف 42501 في `createWorkspace`؛ contracts42/42 وbuild55 PASS؛ live Auth staging PASS (signup/login/restore/sign-out؛ JWT EdDSA/iss/ttl900؛ 5 هويات اصطناعية/0 جلسات/0 tenants)؛ دليل `Audit/p05-auth-identity-2026-11-10/REPORT.md`.
 - 2026-11-10 STAGING FREE (Render): `brightai-staging-node`=`srv-dbpj8jajnfac739je6lg` خطة free/oregon، auto-deploy من `main`، بلا دومين؛ كشف أول نشر أن `scripts/server.mjs` يستمع على loopback ⇒ صار الافتراضي `0.0.0.0`. الخدمة المرجعية `srv-d7m5bcjbc2fs73826v20` ليست في workspace الـCLI (`tea-dade102fngtc739064v0`).
 - 2026-11-10 PARTIAL (P13): HEAD `c5ef5547` + working tree؛ اختبارات المحولات 16/16 محليًا؛ مسودة URL غير معتمدة؛ لا وجهة أو ingestion؛ `Audit/p13-observability-2026-11-10/REPORT.md`؛ 2026-11-11: ثغرة `page_referrer` وطي المسارات الخاصة أُغلقتا (18/18) وبقيت الوجهة/canary مفتوحة.
+- 2026-11-16 حزمة الإغلاق النشطة `Audit/prompts.md` v2.1 مشتقة من `Audit/BRIGHT-AI-2026-FINAL-360-AUDIT.html`: 16 برومبتًا/G-01…G-16/W1–W9؛ سجل 50 متطلبًا معلن غير مسرود؛ رأس التقرير `7385200` والرأس الحالي `cb9863f`؛ `Audit/final-360-2026-11-10/*` غير موجود على القرص.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-16] — حزمة برومبتات H v2.1
+- **تم:** `Audit/prompts.md` مزامَنة مع `Audit/BRIGHT-AI-2026-FINAL-360-AUDIT.html`: الأحكام الثلاثة، 22 مقياسًا، مسار P-01…P-16، سجل عدم اليقين 8%، وموجات W1–W9.
+- **تم:** مخطط بطاقة ثابت، خطوات بمخرجات، تحقق قبل التعديل، سجل فجوات G-01…G-16 بدليل ملف:سطر، وبوابات G1–G9.
+- **التحقق:** PASS — 16/16 بطاقة مكتملة، 0 خطأ جداول، 0 تعارض تبعيات، `HEAD=cb9863f` مقابل رأس التقرير `7385200`.
+- **الحالة:** DONE (مستندي؛ لا برومبت منفّذ).
+- **ملفات:** `Audit/prompts.md`.
 
 ## [2026-11-16] — Verified-email trial
 - **تم:** تهيئةذاتيةلمشاركفقطببريدموثق،بياناتSyntheticومنحقراءةمحدودة؛0034علىStagingفقط.
