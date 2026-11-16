@@ -127,7 +127,11 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
       if(result.error)throw new Error('Verification rejected');
       status!.textContent='نجح التحقق. إذا لم تبدأ جلسة، اختر تسجيل الدخول برمز؛ الخادم يتحقق قبل إنشاء التجربة.';
       const session=await auth.getSession({fetchOptions:{headers:{'X-Force-Fetch':'true'}}});
-      if(session.data?.user?.emailVerified)showUser(session.data.user.email);
+      if(session.error || !session.data?.session || !session.data?.user?.emailVerified){
+        status!.textContent='لم تُثبت جلسة موثقة بعد. اختر تسجيل الدخول برمز واطلب رمزًا جديدًا؛ لم تبدأ تجربة جديدة.';
+        return;
+      }
+      showUser(session.data.user.email,true);
     });});
     let mode: 'sign-up' | 'sign-in' = 'sign-up';
 

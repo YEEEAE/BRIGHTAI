@@ -13,13 +13,14 @@ async function api(method='GET',body?:object){
  if(!auth)throw new Error('خدمة الدخول غير مهيأة لهذا التشغيل.');
  const response=await appFetch(auth,`/app/api/trial/${tenant?`?workspace=${encodeURIComponent(tenant)}`:''}`,{method,...(body?{headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:{})});
  const data=await response.json();
+ if(response.status===401)throw Object.assign(new Error('انتهت صلاحية رمز الدخول (15 دقيقة). اطلب رمز دخول جديدًا من رابط تسجيل الدخول ثم حدّث حالة الخادم؛ مدة التجربة وحصتها لا تتجددان.'),{unauthorized:true});
  if(!response.ok)throw new Error(data.message||'تعذر التحقق من التجربة.');
  return data;
 }
 function clear(){clearTimeout(timer);clearInterval(clock);grid.replaceChildren();root.querySelector<HTMLElement>('[data-trial-summary]')!.hidden=true;root.querySelector<HTMLElement>('[data-trial-signin]')!.hidden=false;start.hidden=false;}
 async function run(work:()=>Promise<void>){
  if(busy)return;busy=true;start.disabled=refresh.disabled=true;
- try{await work();}catch(e){clear();status.textContent=e instanceof Error?e.message:'تعذر التحقق؛ أعد المحاولة.';}
+ try{await work();}catch(e){clear();if((e as {unauthorized?:boolean})?.unauthorized){start.hidden=true;const link=root.querySelector<HTMLAnchorElement>('[data-trial-signin]')!;const target=new URL('/auth/sign-up/',location.origin);target.searchParams.set('trial','48h');link.href=target.pathname+target.search;link.textContent='طلب رمز دخول جديد';}status.textContent=e instanceof Error?e.message:'تعذر التحقق؛ أعد المحاولة.';}
  finally{busy=false;start.disabled=refresh.disabled=false;}
 }
 function element(tag:string,text:string){const e=document.createElement(tag);e.textContent=text;return e;}
