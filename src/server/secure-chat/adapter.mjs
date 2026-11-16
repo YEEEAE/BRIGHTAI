@@ -1,5 +1,6 @@
 import { KernelError } from '../kernel/core.mjs';
-import { env } from '../kernel/env.mjs';
+import { resolveProviderSecret } from '../kernel/env.mjs';
+import { groqRequest } from '../ai/groq-gateway.mjs';
 
 // Two distinct fail-closed outcomes. Neither one ever names a destination,
 // key, provider or region in the response.
@@ -25,7 +26,8 @@ export function providerConfiguration(model) {
         !/^AIGAS_SC_[A-Z0-9_]+_API_KEY$/.test(model.apiKeyEnv)) throw approvedModelUnavailable();
     const destination = new URL(model.endpoint);
     if (destination.protocol !== 'https:' || destination.username || destination.password || destination.hash || destination.search) throw approvedModelUnavailable();
-    const key = env(model.apiKeyEnv);
+    let key;
+    try { key = resolveProviderSecret(model.apiKeyEnv); } catch { throw providerUnavailable(); }
     if (!key || /[\r\n]/.test(key)) throw providerUnavailable();
     return { endpoint: destination.href, key };
   } catch (error) {
@@ -49,34 +51,9 @@ export function providerReady(model) {
   return providerState(model) === 'READY';
 }
 
-async function boundedJson(response) {
-  const reader = response.body?.getReader();
-  if (!reader) throw new Error('EMPTY_RESPONSE');
-  const decoder = new TextDecoder();
-  let text = '', size = 0;
-  try {
-    while (true) {
-      const { value, done } = await reader.read();
-      if (done) break;
-      size += value.byteLength;
-      if (size > 131072) throw new Error('RESPONSE_LIMIT');
-      text += decoder.decode(value, { stream: true });
-    }
-    return JSON.parse(text + decoder.decode());
-  } finally { await reader.cancel().catch(() => {}); reader.releaseLock(); }
-}
-
 export async function complete(model, messages, signal) {
-  const { endpoint, key } = providerConfiguration(model);
-  // Single non-streamed request. No redirects, retries, tools or fallback.
-  // Server-side byte bounds and validated provider usage enforce the approved request ceiling.
-  const response = await fetch(endpoint, {
-    method: 'POST', redirect: 'error', signal,
-    headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ model: model.providerModel, messages, stream: false, n: 1, max_tokens: model.maxOutputTokens }),
-  });
-  if (!response.ok) { await response.body?.cancel(); throw new Error('PROVIDER_REJECTED'); }
-  const body = await boundedJson(response);
+  providerConfiguration(model);
+  const body = await groqRequest({ model, messages, signal });
   const choice = body.choices?.[0];
   if (choice?.finish_reason !== 'stop' || choice.message?.role !== 'assistant' ||
       choice.message?.tool_calls || typeof choice.message?.content !== 'string' ||

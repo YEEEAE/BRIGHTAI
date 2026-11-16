@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-16 PARTIAL LOCAL Groq: بوابةموحدةوحجزتكلفةدائم/timeout15s/429محاولتان/concurrency5/circuit5×60s؛unit19/build/client-key-scan0 PASS؛registryفارغ؛يلزمسعران inputUsdPerMillion/outputUsdPerMillion وAIGAS_GROQ_BUDGET_FILE مشتركودائمومهيأ؛crash يحتفظبالحجز/slot للمصالحة؛الاتصالوتدويرالمفتاح NOT RUN؛القاطع503 دونتحويلحتميآلي.
 - 2026-11-16 VERIFIED STAGING 0035/0036: ledger32/32 APPLIED/hash32مطابقة؛43جدولًا/93سياسة؛A→B guard403/write42501 وruntimeRLS=true؛reverse/owner503/finalposture NOT VERIFIED لاتصالمتقطع؛Production protected=false/PITR21600s بقراءةCLI؛لاكتابةإنتاج؛ `audit/production-hardening-2026-11-16/REPORT.md`.
 - 2026-11-16 VERIFIED LOCAL isolation closure: 0035/0036؛ fresh/delta posture identical PG18.6؛ order6/RLS84 PASS؛ runtime bootstrap+invitation SQL مثبتان وdirect INSERT42501؛ HTTP invitation integration مفتوح؛ لا تطبيق خارجي؛ `audit/runtime-isolation-2026-11-16/REPORT.md`.
 - 2026-11-16 PARTIAL UX release audit: HEAD `738520067de19ae3bb5380beb292cd4d44861b69` rebuilt;92 views/4sizes no overflow/45tests PASS؛Ledger embedded preset≠full demo؛live Trial/API404 publiccache؛serverpayloads/realAuth/INP NOT VERIFIED؛PUBLIC_DEMO/TRIAL_48H/ENTERPRISE NO-GO؛ `Audit/release-ux-2026-11-16/REPORT.md`.
