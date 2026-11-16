@@ -1,5 +1,6 @@
 ---
 // Workspace/inspector reference: UI by Made Good Designs — https://madegooddesigns.com/inspiration/ui/ai-workspace-web-minimal-2660226124ab
+import ScenarioContext from './ScenarioContext.astro';
 import WorkspaceNavigation from './WorkspaceNavigation.astro';
 import ProductIcon from './ProductIcon.astro';
 import { productForSlug } from '../shared/product-navigation.mjs';
@@ -12,6 +13,8 @@ const product = productForSlug(kind)!;
   <aside class="lab-sidebar"><p class="hub-kicker"><bdi dir="ltr">AIGAS / LABS</bdi></p><WorkspaceNavigation current={kind}/><p class="lab-sidebar-note">انتقل بحرية.<br/>تُحفظ خطوتك في هذه الجلسة فقط.</p></aside>
   <div class="lab-body"><header class="lab-header"><div><ProductIcon kind={kind} size={24}/><div><h1><bdi dir="ltr">{product.name}</bdi></h1><p>{labBriefs[kind].task} / مختبر عام</p></div></div><a class="lab-auth" href={`/auth/sign-up/?returnTo=${encodeURIComponent(product.workspacePath)}`}>تجربة تشغيلية 48 ساعة ↗</a></header>
   <div class="lab-context"><span>مثال تعليمي · دون اتصال بخدمة</span><span data-lab-progress>اختر مثالًا للبدء</span></div>
+  <ScenarioContext next={({firewall:"human-gate", "human-gate":"ledger", ledger:"risk-engine", "risk-engine":"secure-chat", "secure-chat":"firewall"})[kind]} />
   <slot />
+  <p class="lab-terms">بدء 48 ساعة يتطلب حسابًا وعضوية وصلاحيات وتهيئة وموافقة تشغيل من الخادم؛ يبدأ العداد عند التفعيل فقط، ولا تحويل تلقائي لمدفوع. Kernel بنية مشتركة لا تُفوتر منفصلًا.</p>
   <footer class="lab-footer"><a href="/products/">← كل التجارب</a><a href="#product-details">عن المنتج وحدود الاستخدام ↓</a><button type="button" data-lab-reset hidden>إعادة ضبط المثال</button></footer></div>
 </section>

@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-16 VERIFIED LOCAL Kernel demo: Control Center أصل/سياسة→فحص→مراجعة→دليل؛ 6 Scenario IDs اصطناعية بين المختبرات وعودة بالسياق؛ لا هوية/tenant/نصوص؛ unit6/build57 وBrowser390/1440 PASS؛ app/kernel وguidance بلا تعديل؛ النشر/Auth الفعلي NOT RUN؛ `Audit/kernel-demo-2026-11-16/REPORT.md`.
 - 2026-11-16 VERIFIED LOCAL Secure Chat demo: محرر/3سيناريوهات ALLOW-REDACT-BLOCK وردمحاكاة/قبل-بعد/نسخ/reset/loader؛ unit13/build57/Browser390+1440 PASS؛ لاخروجمتنمرصود؛Live NOT_VERIFIED وregistryفارغ،48hوسقفتكلفة/Auth/tenantغيرمثبتة؛ `Audit/secure-chat-demo-2026-11-16/REPORT.md`؛لانشر.
 - 2026-11-16 VERIFIED LOCAL Risk demo: RiskWorkspace demo mode؛ أصلان خياليان/Matrix/معالجة/Inspector/قبول اصطناعي يُلغى بالتغيير/SyntheticJSON؛ unit5/build57/Browser390 PASS؛ لاAPIأوقبولمؤسسيأونشر؛ `Audit/risk-demo-2026-11-16/REPORT.md`.
 - 2026-11-16 VERIFIED LOCAL Human Gate demo: Queue وPersona محلية فقط؛ lifecycle مطابق للخادم، SoD وقرار≠تنفيذ وإذن أحادي ورفض/إلغاء/مهلة/تفويض؛ توضيح ملاحظةPENDING؛ Firewall→fixture وLedger preview بلاAPI؛ unit6/build57/Browser390+1440 PASS؛ `Audit/human-gate-demo-2026-11-16/REPORT.md`؛ لا نشر.

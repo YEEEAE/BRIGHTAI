@@ -9,7 +9,7 @@ const links = productNavigation.map(p => ({ ...p, href: mode === 'lab' ? `${p.pu
   <nav aria-label={mode === 'lab' ? 'مختبرات المنتجات' : 'تنقل النظام'}>
     <a href="/products/">مركز التجارب <span aria-hidden="true">↗</span></a>
     {links.map(p => <a href={p.href} aria-current={current === p.slug ? 'page' : undefined}><ProductIcon kind={p.slug} size={20}/><bdi dir="ltr">{p.name}</bdi><span class="workspace-current" aria-hidden="true">←</span></a>)}
-    <a href="/app/kernel/" aria-current={current === 'kernel' ? 'page' : undefined}><span aria-hidden="true">◈</span> بوابة Kernel</a>
+    <a href={mode === 'lab' ? '/kernel/#lab' : '/app/kernel/'} aria-current={current === 'kernel' ? 'page' : undefined}><span aria-hidden="true">◈</span> بوابة Kernel</a>
   </nav>
 </details>
 <script>

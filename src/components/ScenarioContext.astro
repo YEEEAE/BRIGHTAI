@@ -1,0 +1,14 @@
+---
+const { next = 'firewall' } = Astro.props;
+---
+<section class="scenario-context" data-scenario-context>
+  <p>سياق الرحلة العام: <bdi data-scenario-id>demo-v1-summary-redact</bdi></p>
+  <p data-scenario-summary>مساعد تلخيص افتراضي · تنقيح المعرّف الخيالي</p>
+  <p>معرّف مثال مشترك فقط؛ اختيارات كل مختبر مستقلة ولا تمثل قرارًا تشغيليًا.</p>
+  <a href="/kernel/#lab">ارجع إلى مسار السياسة والدليل ←</a>
+  <a href={`/products/${next}/#lab`}>جرب المنتج التالي ←</a>
+</section>
+<script src="../scripts/scenario-context.ts"></script>
+<style>
+.scenario-context{padding:18px 24px;border-block:1px solid var(--border-strong);background:var(--surface-raised);font-size:13px;overflow-wrap:anywhere}.scenario-context p{margin:4px 0}.scenario-context a{display:inline-flex;min-height:44px;align-items:center;margin-inline-end:24px;color:var(--color-focus)}
+</style>
