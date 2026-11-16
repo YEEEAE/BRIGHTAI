@@ -277,6 +277,9 @@ async function main() {
   const delta = await phase('delta', DELTA_BASELINE, DELTA_ORDER, files);
   evidence.postures.delta = await posture(delta.database);
 
+  evidence.negative.push({ case: 'fresh and delta have identical final security posture',
+    ok: JSON.stringify(evidence.postures.fresh) === JSON.stringify(evidence.postures.delta) });
+
   // Chain-guard behaviour on the repaired delta database: a forged link must fail,
   // and a well-formed genesis row must be accepted so the guard is not simply broken.
   evidence.negative.push(await withClient(delta.database, async client => {
@@ -348,8 +351,8 @@ async function main() {
       await applyMigration(client, file);
     }
     const after = (await client.query('SELECT * FROM ops.aigas_migration_ledger ORDER BY filename')).rows;
-    evidence.negative.push({case: 'resume applies only 0030/0031/0032, preserves all 25 receipts, and rerun is empty',
-      ok: pending.map(f => f.key).join(',') === '0030,0031,0032' &&
+    evidence.negative.push({case: 'resume applies the current suffix, preserves all 25 receipts, and rerun is empty',
+      ok: JSON.stringify(pending.map(f => f.key)) === JSON.stringify(freshKeys.filter(key => key >= '0030')) &&
         before.every(row => JSON.stringify(row) === JSON.stringify(after.find(r => r.filename === row.filename))) &&
         resumeOrder(files, after).length === 0});
     // A failed receipt must roll the schema back too.

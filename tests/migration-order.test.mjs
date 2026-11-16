@@ -14,10 +14,10 @@ test('delta includes treatment lock after all its dependencies', () => {
   for (const key of ['0026','0028','0030']) assert(DELTA_ORDER.indexOf('0031') > DELTA_ORDER.indexOf(key));
   assert.deepEqual(UPGRADE_ONLY, ['0011','0012','0013','0019']);
 });
-test('25 matching receipts resume with 0030–0033 only; complete ledger is a no-op', () => {
+test('25 matching receipts resume with 0030–0036 only; complete ledger is a no-op', () => {
   assert.equal(prefix.length,25);
   const pending=resumeOrder(files,prefix);
-  assert.deepEqual(pending.map(f=>f.key),['0030','0031','0032','0033']);
+  assert.deepEqual(pending.map(f=>f.key),['0030','0031','0032','0033','0034','0035','0036']);
   assert.deepEqual(resumeOrder(files,[...prefix,...pending.map(f=>({filename:f.name,sha256:f.sha256,status:'APPLIED'}))]),[]);
 });
 test('resume refuses changed hashes, failed rows, holes, unknown and empty ledgers', () => {
@@ -33,4 +33,10 @@ test('target delta runner never replays baseline CREATE migrations', () => {
   const result = JSON.parse(execFileSync(process.execPath, ['scripts/apply-migrations.mjs','--mode','delta','--dry-run'], {encoding:'utf8'}));
   assert.deepEqual(result.steps.map(s=>s.file.slice(0,4)), DELTA_ORDER);
   assert(!result.steps.some(s=>['0001','0002','0003','0011','0012','0019'].includes(s.file.slice(0,4))));
+});
+
+test('fresh and delta include the identical complete closure suffix', () => {
+  const suffix = freshOrder(files).filter(key => key >= '0030');
+  assert.deepEqual(DELTA_ORDER.filter(key => key >= '0030'), suffix);
+  assert.deepEqual(suffix.slice(-3), ['0034','0035','0036']);
 });

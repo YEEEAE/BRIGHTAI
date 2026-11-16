@@ -169,45 +169,15 @@ export async function audit(db, identity, tenantId, action, context = {}) {
   }
   throw new KernelError(503, 'AUDIT_UNAVAILABLE', 'تعذر حفظ سجل الإدارة؛ لم تكتمل العملية.');
 }
-// A creation ceiling for abuse control, not a commercial plan or seat quota.
-const MAX_WORKSPACES_PER_USER = 10;
 export async function createWorkspace(identity, name) {
   const validated = workspaceName(name);
   return transaction(async db => {
-    await db.query('SELECT pg_advisory_xact_lock(hashtextextended($1, 0))', [identity.userId]);
-    // Actor scope is required before reading membership rows under the runtime RLS policy.
     await setActorScope(db, identity.userId);
     try {
-      // The account must still exist and be active; the token alone is not the directory.
-      const account = await db.query('SELECT id FROM neon_auth."user" WHERE id=$1 AND banned IS NOT TRUE FOR SHARE', [identity.userId]);
-      if (!account.rowCount) throw new KernelError(401, 'UNAUTHORIZED', 'يلزم حساب مستخدم موثّق.');
-      // Serialized by the advisory lock so concurrent requests cannot both pass the ceiling.
-      const owned = (await db.query("SELECT count(*)::int AS count FROM public.aigas_memberships WHERE user_id=$1 AND role='OWNER'", [identity.userId])).rows[0].count;
-      if (owned >= MAX_WORKSPACES_PER_USER) throw new KernelError(409, 'WORKSPACE_LIMIT', 'بلغت الحد الأقصى للمؤسسات التي تملكها بهذا الحساب؛ تواصل مع مشغّل المنصة.');
-      // A new workspace always starts with its creator as the only OWNER. Existing members,
-      // policies, invitations and product approvals are never copied from another tenant.
-      // No role, tenant id or membership is accepted from the request body; the role below
-      // is a server literal. Under the NOBYPASSRLS runtime role this path has no INSERT
-      // policy by design: first workspace provisioning must run through an approved
-      // privileged path, not a self-grant.
-      const id = randomUUID();
-      // The generated tenant must not already exist and must receive exactly one
-      // membership — the caller as OWNER — before anything else is written.
-      const collision = await db.query('SELECT 1 FROM public.aigas_tenants WHERE id=$1', [id]);
-      if (collision.rowCount) throw new KernelError(409, 'WORKSPACE_EXISTS', 'تعذر إنشاء مساحة جديدة؛ أعد المحاولة.');
-      await db.query('INSERT INTO public.aigas_tenants (id, name) VALUES ($1, $2)', [id, validated]);
-      await db.query("INSERT INTO public.aigas_memberships (tenant_id, user_id, role) VALUES ($1, $2, 'OWNER')", [id, identity.userId]);
-      // Read back the bootstrap result so a trigger, policy change or driver cannot
-      // silently create a second owner or a higher role for another account.
-      const bootstrap = (await db.query('SELECT user_id, role FROM public.aigas_memberships WHERE tenant_id=$1', [id])).rows;
-      if (bootstrap.length !== 1 || bootstrap[0].user_id !== identity.userId || bootstrap[0].role !== 'OWNER') {
-        throw new KernelError(409, 'WORKSPACE_BOOTSTRAP_CONFLICT', 'تعذر تأكيد مالك المساحة الوحيد؛ لم تُنشأ مساحة.');
-      }
-      await db.query("INSERT INTO public.aigas_product_access (tenant_id, product_slug) SELECT $1, unnest($2::text[])", [id, ['firewall', 'ledger', 'human-gate', 'risk-engine', 'secure-chat']]);
-      await audit(db, identity, id, 'workspace.created');
-      return id;
+      return (await db.query('SELECT public.aigas_bootstrap_workspace($1) AS id', [validated])).rows[0].id;
     } catch (error) {
-      if (error?.code === '42501') throw new KernelError(503, 'WORKSPACE_PROVISIONING_REQUIRED', 'إنشاء أول مساحة عمل يتطلب مسار تهيئة معتمدًا قبل تفعيل دور التشغيل المقيد. لم تُنشأ أي مساحة.');
+      if (error?.code === '42501') throw new KernelError(403, 'WORKSPACE_FORBIDDEN', 'الحساب غير مؤهل لإنشاء مؤسسة.');
+      if (error?.code === '54000') throw new KernelError(409, 'WORKSPACE_LIMIT', 'بلغت الحد الأقصى للمؤسسات التي تملكها بهذا الحساب.');
       throw error;
     }
   });

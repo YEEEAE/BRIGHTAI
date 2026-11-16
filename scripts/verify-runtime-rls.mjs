@@ -372,7 +372,7 @@ async function structural() {
       uncovered.map(r => r.relname), uncovered.length === 0);
 
     // Exact verb matrix that 0025 §3 promises, compared against the catalog.
-    const readOnly = ['aigas_trial_operators','aigas_release_readiness','aigas_product_grants','aigas_ld_evidence_requirements','aigas_trial_requests'];
+    const readOnly = ['aigas_exploration_grants','aigas_self_service_trials','aigas_trial_operators','aigas_release_readiness','aigas_product_grants','aigas_ld_evidence_requirements','aigas_trial_requests'];
     const appendOnly = ['aigas_audit_events','aigas_ld_events','aigas_kernel_policy_decisions','aigas_fw_decisions',
       'aigas_hg_decisions','aigas_hg_events','aigas_department_events','aigas_policy_approvals',
       'aigas_re_asset_revisions','aigas_re_treatment_revisions','aigas_sc_cancellations','aigas_trial_events'];
@@ -726,6 +726,54 @@ async function behavioral() {
   } finally { await owner.end(); }
 }
 
+// Bootstrap probes use a real NOINHERIT login and the runtime role, never an owner session.
+async function bootstrapProbes() {
+  const c = await admin(DB, 'p03_runtime_login');
+  const setup = await admin();
+  const org = '88888888-8888-4888-8888-888888888888';
+  const invitation = '99999999-9999-4999-8999-999999999998';
+  const probe = async (id, actor, sql, params, expectedCode) => {
+    await c.query('BEGIN');
+    try {
+      await c.query('SET LOCAL ROLE aigas_runtime');
+      await scope(c, null, actor);
+      const value = await c.query(sql, params);
+      record('DB06', id, expectedCode ? `denied with ${expectedCode}` : 'guarded runtime operation succeeds', { rows: value.rows }, !expectedCode);
+      await c.query('COMMIT');
+      return value.rows;
+    } catch (e) {
+      await c.query('ROLLBACK');
+      record('DB06', id, expectedCode ? `denied with ${expectedCode}` : 'guarded runtime operation succeeds', { code:e.code, message:e.message }, e.code === expectedCode);
+    }
+  };
+  try {
+    const rows = await probe('bootstrap-runtime', OWNER_A, 'SELECT public.aigas_bootstrap_workspace($1) AS id', ['Synthetic bootstrap']);
+    const tenant = rows?.[0]?.id;
+    if (!tenant) return;
+    const facts = (await setup.query(`SELECT
+      (SELECT count(*)::int FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2 AND role='OWNER') AS owners,
+      (SELECT count(*)::int FROM public.aigas_audit_events WHERE tenant_id=$1 AND action='workspace.created') AS events`, [tenant,OWNER_A])).rows[0];
+    record('DB06','bootstrap-atomic-evidence','one owner and one creation event',facts,facts.owners===1 && facts.events===1);
+    await probe('bootstrap-direct-denied', OWNER_A, "INSERT INTO public.aigas_tenants(id,name) VALUES(gen_random_uuid(),'Denied')", [], '42501');
+    await probe('bootstrap-no-actor', null, "SELECT public.aigas_bootstrap_workspace('Denied')", [], '42501');
+    await probe('bootstrap-invalid-name', OWNER_A, "SELECT public.aigas_bootstrap_workspace('x')", [], '22023');
+    await setup.query('UPDATE neon_auth."user" SET banned=true WHERE id=$1',[OUTSIDER]);
+    await probe('bootstrap-banned', OUTSIDER, "SELECT public.aigas_bootstrap_workspace('Denied')", [], '42501');
+    await setup.query('UPDATE neon_auth."user" SET banned=false,"emailVerified"=true WHERE id=$1',[OUTSIDER]);
+    await setup.query('INSERT INTO neon_auth.organization(id,name) VALUES($1,$2)',[org,'Synthetic organization']);
+    await setup.query('INSERT INTO public.aigas_auth_organizations(tenant_id,organization_id,linked_by) VALUES($1,$2,$3)',[tenant,org,OWNER_A]);
+    for (const [user,role] of [[OWNER_A,'owner'],[OUTSIDER,'member']]) await setup.query('INSERT INTO neon_auth.member(id,"organizationId","userId",role) VALUES(gen_random_uuid(),$1,$2,$3)',[org,user,role]);
+    await setup.query(`INSERT INTO neon_auth.invitation(id,email,status,"expiresAt","organizationId","inviterId",role)
+      SELECT $1,email,'accepted',now()+interval '1 day',$2,$3,'member' FROM neon_auth."user" WHERE id=$4`,[invitation,org,OWNER_A,OUTSIDER]);
+    await setup.query('INSERT INTO public.aigas_member_invitations(invitation_id,tenant_id,invited_by) VALUES($1,$2,$3)',[invitation,tenant,OWNER_A]);
+    await probe('invitation-wrong-actor', MEMBER_A, 'SELECT public.aigas_accept_workspace_invitation($1)', [invitation], '42501');
+    await probe('invitation-runtime', OUTSIDER, 'SELECT public.aigas_accept_workspace_invitation($1)', [invitation]);
+    await probe('invitation-replay', OUTSIDER, 'SELECT public.aigas_accept_workspace_invitation($1)', [invitation]);
+    await setup.query('DELETE FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2',[tenant,OUTSIDER]);
+    await probe('invitation-revoked-no-regrant', OUTSIDER, 'SELECT public.aigas_accept_workspace_invitation($1)', [invitation], '42501');
+  } finally { await c.end(); await setup.end(); }
+}
+
 // ------------------------------------------------------------------ export
 async function exportProbe() {
   const sql = [
@@ -768,6 +816,7 @@ try {
   step('structural:done');
   await behavioral();
   step('behavioral:done');
+  await bootstrapProbes();
   await exportProbe();
   step('export:done');
 } catch (error) {
