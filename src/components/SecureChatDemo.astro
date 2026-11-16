@@ -3,12 +3,15 @@ import {chatScenarios} from '../shared/secure-chat-demo.mjs';
 ---
 <section class="sc-demo ph-no-capture" data-chat-demo data-ph-no-capture aria-label="محادثة محاكاة محلية">
  <header><div><p>BRIGHT AI / SECURE CHAT</p><h2>مساحة هادئة لتجربة طلبك</h2></div><span>محاكاة محلية فقط</span></header>
- <p>ردود محددة مسبقًا، وليست من Groq أو نموذج متصل. لا تدخل بيانات حقيقية؛ قواعد المثال محدودة ولا تثبت حماية إنتاجية.</p>
+ <p>الوضع الافتراضي ردود محددة مسبقًا؛ المسار الحي اختياري بعد الموافقة. لا تدخل بيانات حقيقية؛ قواعد المثال محدودة ولا تثبت حماية إنتاجية.</p>
  <div class="sc-tools"><button type="button" data-new>محادثة جديدة</button><button type="button" data-reset>إعادة الضبط</button><span>Live send · غير جاهز / NOT VERIFIED</span></div>
+ <button type="button" data-live>تفعيل المسار الحي الاختياري</button>
+ <dialog data-consent><p>ترسل التجربة نصًا اصطناعيًا إلى Groq خارج المختبر المحلي. أوافق على المنطقة وشروط المزود، وأتعهد بعدم إدخال بيانات حقيقية أو أسرار. الحد 400 حرف و3 طلبات كل 10 دقائق. موافقة المالك لازمة قبل التفعيل العام.</p><button type="button" data-accept>أوافق على الشرطين وأفعّل</button><button type="button" data-cancel>إلغاء</button></dialog>
+ <p data-live-status role="status">المحاكي الافتراضي يعمل؛ لم يُفحص اتصال النموذج.</p>
  <div class="sc-scenarios" aria-label="سيناريوهات المحاكاة">{chatScenarios.map((s,i)=><button type="button" data-scenario={i}>{s.label}</button>)}</div>
  <ol data-thread aria-label="رسائل المحاكاة"><li>اختر مثالًا أو اكتب طلبًا افتراضيًا؛ الرد التالي محاكاة محددة.</li></ol>
  <p data-loading hidden role="status">جارٍ إعداد رد المحاكاة محليًا…</p>
- <form novalidate><label for="sc-demo-input">رسالتك الافتراضية</label><textarea id="sc-demo-input" rows="3" maxlength="2000" autocomplete="off" data-private placeholder="اكتب طلبًا عامًا أو اختر مثالًا أعلاه"></textarea><div class="sc-tools"><button type="submit">أرسل للمحاكاة</button><span>لا إرسال لمزود · لا حفظ للمحتوى أو المسودة</span></div></form>
+ <form novalidate><label for="sc-demo-input">رسالتك الافتراضية</label><textarea id="sc-demo-input" rows="3" maxlength="2000" autocomplete="off" data-private placeholder="اكتب طلبًا عامًا أو اختر مثالًا أعلاه"></textarea><div class="sc-tools"><button type="submit">أرسل للمحاكاة</button><span>المحاكي محلي؛ المسار الاختياري يرسل نصًا منقحًا إلى Groq</span></div></form>
  <p role="status" aria-live="polite" data-feedback></p>
  <details><summary>حدود التجربة التشغيلية · 48 ساعة</summary><p>مسار منفصل يتطلب Auth ومؤسسة وصلاحية خادمية، اعتماد المزود والمنطقة والخروج، قرار ALLOW وحصة وسقف تكلفة. لا تعني تهيئة الموصل READY؛ يلزم رد نموذج فعلي بإذن. المختبر هنا يستمر دون مزود.</p></details>
  <noscript>تحتاج المحادثة المحلية JavaScript. لا يوجد اتصال بنموذج.</noscript>
@@ -17,24 +20,40 @@ import {chatScenarios} from '../shared/secure-chat-demo.mjs';
 import {chatScenarios,simulateChat} from '../shared/secure-chat-demo.mjs';
 document.querySelectorAll<HTMLElement>('[data-chat-demo]').forEach(root=>{
  const input=root.querySelector('textarea')!,form=root.querySelector('form')!,thread=root.querySelector<HTMLOListElement>('[data-thread]')!,loading=root.querySelector<HTMLElement>('[data-loading]')!,feedback=root.querySelector<HTMLElement>('[data-feedback]')!,send=form.querySelector('button')!;
+ let live=false;
+ const liveStatus=root.querySelector<HTMLElement>('[data-live-status]')!;
+ const dialog=root.querySelector<HTMLDialogElement>('[data-consent]')!;
+ const sessionId=crypto.randomUUID();
+ root.querySelector<HTMLButtonElement>('[data-live]')!.onclick=()=>{if(live){live=false;liveStatus.textContent='أُغلق المسار الحي؛ المحاكي يعمل.';}else dialog.showModal();};
+ root.querySelector<HTMLButtonElement>('[data-cancel]')!.onclick=()=>dialog.close();
+ root.querySelector<HTMLButtonElement>('[data-accept]')!.onclick=()=>{live=true;dialog.close();liveStatus.textContent='موافقة مسجلة لهذه الصفحة؛ الاتصال غير مفحوص حتى نجاح رد فعلي.';};
  let generation=0,timer:ReturnType<typeof setTimeout>|undefined;
  const say=(s:string)=>feedback.textContent=s;
- function clear(){generation++;clearTimeout(timer);thread.replaceChildren();input.value='';loading.hidden=true;send.disabled=false;form.removeAttribute('aria-busy');say('محادثة محلية جديدة؛ أُزيل المحتوى من العرض.');input.focus();}
+ function clear(){live=false;generation++;clearTimeout(timer);thread.replaceChildren();input.value='';loading.hidden=true;send.disabled=false;form.removeAttribute('aria-busy');say('محادثة محلية جديدة؛ أُزيل المحتوى من العرض.');input.focus();}
  root.querySelector<HTMLElement>('[data-new]')!.onclick=clear;
  root.querySelector<HTMLElement>('[data-reset]')!.onclick=clear;
  const shellReset=root.closest('[data-lab-shell]')?.querySelector<HTMLButtonElement>('[data-lab-reset]');if(shellReset){shellReset.hidden=false;shellReset.onclick=clear;}
  root.querySelectorAll<HTMLButtonElement>('[data-scenario]').forEach(b=>b.onclick=()=>{input.value=chatScenarios[Number(b.dataset.scenario)].text;input.focus();say('حُمّل المثال؛ اضغط أرسل للمحاكاة.');});
- form.onsubmit=e=>{e.preventDefault();if(send.disabled)return;let result;try{result=simulateChat(input.value);}catch{say('اكتب نصًا افتراضيًا بين 1 و2000 حرف، أو اختر مثالًا.');input.focus();return;}
+ form.onsubmit=async e=>{e.preventDefault();if(send.disabled)return;let result;try{result=simulateChat(input.value);}catch{say('اكتب نصًا افتراضيًا بين 1 و2000 حرف، أو اختر مثالًا.');input.focus();return;}
  const epoch=++generation;loading.hidden=false;send.disabled=true;form.setAttribute('aria-busy','true');say('');
+ let liveReply:string|undefined;
+ if(live){
+  try{
+   const res=await fetch('/api/public-demo/groq-sandbox',{method:'POST',headers:{'Content-Type':'application/json'},signal:AbortSignal.timeout(16000),body:JSON.stringify({text:input.value,sessionId,consent:{syntheticOnly:true,regionAndTermsAccepted:true}})});
+   const data=await res.json();if(!res.ok||data.code!=='LIVE_SUCCESS'||typeof data.reply!=='string')throw Error(data.code||'UNAVAILABLE');
+   liveReply=data.reply;liveStatus.textContent='نجح رد فعلي من النموذج لهذه الرسالة.';
+  }catch(error){live=false;liveStatus.textContent='عاد للمحاكي: '+(error instanceof Error?error.message:'UNAVAILABLE');}
+ }
+ if(epoch!==generation)return;
  timer=setTimeout(()=>{if(epoch!==generation)return;
  const item=document.createElement('li');item.className='sc-turn';
  const add=(tag:string,text:string)=>{const el=document.createElement(tag);el.textContent=text;item.append(el);return el;};
  add('small','أنت · قبل التنقيح (محلي فقط)');add('p',result.before);
- add('small','BRIGHT AI · رد محاكاة');const reply=add('p',result.reply);reply.className='sc-reply';
+ add('small',liveReply?'BRIGHT AI · رد نموذج حي':'BRIGHT AI · رد محاكاة');const reply=add('p',liveReply||result.reply);reply.className='sc-reply';
  add('p',`Firewall: ${result.decision} · Kernel: ${result.kernel} · قرارات محاكاة`);
  add('p',result.reason);add('small','بعد التنقيح / حدود الخروج المحاكى');add('pre',result.after);
- const copy=add('button','نسخ رد المحاكاة') as HTMLButtonElement;copy.type='button';copy.onclick=async()=>{try{await navigator.clipboard.writeText('رد محاكاة\n'+result.reply);say('نُسخ رد المحاكاة.');}catch{say('تعذر النسخ؛ حدد نص الرد وانسخه يدويًا.');}};
- thread.append(item);while(thread.children.length>12)thread.firstElementChild?.remove();input.value='';loading.hidden=true;send.disabled=false;form.removeAttribute('aria-busy');say('اكتمل رد المحاكاة؛ لم يُرسل المحتوى إلى خادم أو مزود.');
+ const copy=add('button','نسخ رد المحاكاة') as HTMLButtonElement;copy.type='button';copy.onclick=async()=>{try{await navigator.clipboard.writeText((liveReply?'رد نموذج حي\n':'رد محاكاة\n')+(liveReply||result.reply));say('نُسخ رد المحاكاة.');}catch{say('تعذر النسخ؛ حدد نص الرد وانسخه يدويًا.');}};
+ thread.append(item);while(thread.children.length>12)thread.firstElementChild?.remove();input.value='';loading.hidden=true;send.disabled=false;form.removeAttribute('aria-busy');say(liveReply?'اكتمل الرد الحي؛ أُرسل النص المنقح إلى Groq.':live?'اكتملت المحاكاة.':'اكتمل رد المحاكاة؛ راجع حالة المسار الحي أعلاه.');
  },400);
  };
 });
