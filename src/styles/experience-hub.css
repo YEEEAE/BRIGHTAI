@@ -1,5 +1,7 @@
 /* Brand primitives remain owned by variables.css. Hub and labs only. */
 .experience-hub,.lab-shell{font-family:var(--font-arabic);color:var(--color-text);line-height:var(--leading-ar-body);letter-spacing:0}
+.experience-hub#lab{scroll-margin-block-start:24px}
+.experience-hub#lab:focus{outline:3px solid var(--color-focus);outline-offset:4px}
 .hub-kicker{color:var(--color-focus);font-size:var(--type-caption);margin:0 0 12px}
 .hub-heading{display:flex;align-items:end;justify-content:space-between;gap:24px;padding-block:28px 24px}
 .page .hub-heading h1{font-size:clamp(32px,4.5vw,60px);margin:0 0 12px;font-weight:400;line-height:1.4}

@@ -8,11 +8,12 @@ import { labBriefs } from '../shared/lab-briefs';
 import '../styles/experience-hub.css';
 const { kind } = Astro.props;
 const product = productForSlug(kind)!;
+const labConnectionLabel = kind === 'secure-chat' ? 'محاكاة محلية افتراضيًا · إرسال خارجي اختياري' : 'مثال تعليمي · دون اتصال بخدمة';
 ---
 <section class="lab-shell" id="lab" tabindex="-1" aria-label={`مختبر ${product.name}`} data-lab-shell data-product={kind}>
   <div class="lab-sidebar"><p class="hub-kicker"><bdi dir="ltr">AIGAS / LABS</bdi></p><WorkspaceNavigation current={kind}/><p class="lab-sidebar-note">انتقل بحرية.<br/>تُحفظ خطوتك في هذه الجلسة فقط.</p></div>
   <div class="lab-body"><header class="lab-header"><div><ProductIcon kind={kind} size={24}/><div><h1><bdi dir="ltr">{product.name}</bdi></h1><p>{labBriefs[kind].task} / مختبر عام</p></div></div><a class="lab-auth" href={productContactPath(kind)}>اطلب استكشافًا محدودًا ↗</a></header>
-  <div class="lab-context"><span>مثال تعليمي · دون اتصال بخدمة</span><span data-lab-progress>اختر مثالًا للبدء</span></div>
+  <div class="lab-context"><span>{labConnectionLabel}</span><span data-lab-progress>اختر مثالًا للبدء</span></div>
   {kind !== "ledger" && <ScenarioContext next={({firewall:"human-gate", "human-gate":"ledger", ledger:"risk-engine", "risk-engine":"secure-chat", "secure-chat":"firewall"})[kind]} />}
   <slot />
   {kind === "ledger" && <p class="ledger-state-key" aria-label="دليل الحالات">○ Empty — فارغ · ◷ Loading — جارٍ التحقق · ✓ Verified — تم التحقق محليًا · ⛔ Blocked — تعذر التحقق أو اكتُشف خلل</p>}

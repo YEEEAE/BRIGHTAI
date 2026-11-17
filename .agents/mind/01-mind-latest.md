@@ -73,6 +73,25 @@
 
 ## Ledger (الأحدث أولًا)
 
+
+## [2026-11-18] — إفصاح Secure Chat عن الإرسال الاختياري UX-04
+- **تم:** توضيح المحلية الافتراضية ومسار النص إلى خادم الموقع ثم احتمال Groq بعد التنقيح؛ الإلغاء لا يرسل، والفشل برسالة تحفظية.
+- **التحقق:** PASS — اختبارات Secure Chat/المزود الوهمي 9/9 و`git diff --check`؛ Browser/build NOT RUN.
+- **الحالة:** PARTIAL — اختبار الواجهة عقدي بالمصدر؛ لا اختبار متصفح أو اتصال حي.
+- **ملفات:** `src/components/SecureChatDemo.astro`، `src/components/LabShell.astro`، اختبارات المختبر.
+
+## [2026-11-18] — توحيد عقد التحويلات UX-03
+- **تم:** توحيد قرار301/الوجهة/query بين Astro middleware وخادم Node؛ تغطية152 alias وGET/HEAD مع الترميز العربي.
+- **التحقق:** PASS — unit3 وJavaScript syntax و`git diff --check`؛ dev HTTP BLOCKED بـ`EPERM`، build وخادم Node NOT RUN لاختلاف Astro المثبت عن lockfile.
+- **الحالة:** PARTIAL — العقد البرمجي مشترك؛ استجابات البيئتين الفعلية غير مثبتة.
+- **ملفات:** `src/middleware.ts`، `src/server/seo/redirects.mjs`، `tests/seo-redirects.test.mjs`.
+
+## [2026-11-18] — إصلاح UX-02 لمرساة المختبر العام
+- **تم:** أضيفت `#lab` لقسم الكتالوج مع `tabindex="-1"` ومؤشر تركيز وهامش تمرير؛ لم تتغير DNS.
+- **التحقق:** PASS — عقد المصدر وinternal-link-graph 5/5؛ build BLOCKED لاختلاف Astro المثبت 7.4.12 عن lockfile 6.4.8.
+- **الحالة:** PARTIAL — HTML المتولد وتفاعل المتصفح NOT VERIFIED.
+- **ملفات:** `src/components/ProductCatalog.astro`، `src/styles/experience-hub.css`.
+
 ## [2026-11-17] — مراجعة الهوية وإرث `/en/`
 - **تم:** توحيد صفحة «عنّا» حول الاسم المتداول BRIGHT AI والعلامة BRIGHTAI ومجال AIGAS دون إثبات قانوني أو ادعاءات تشغيلية؛ حفظ مراجعة سبع صفحات إنجليزية ومسودات اعتماد خارجية.
 - **التحقق:** PASS — مراجعة GET/HTML ونتائج بحث مقتطفة؛ `git diff --check` وفحص تغطية المسارات PASS؛ build BLOCKED بـNode 22.22.2 دون تغيير البيئة.

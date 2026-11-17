@@ -2,7 +2,7 @@ import { createServer as httpServer } from 'node:http';
 import { createServer as httpsServer } from 'node:https';
 import { readFileSync } from 'node:fs';
 import { applySecurityPolicy } from '../src/server/observability/security-policy.mjs';
-import { publicRedirect } from '../src/server/seo/redirects.mjs';
+import { publicRedirectForRequest } from '../src/server/seo/redirects.mjs';
 
 // The standalone adapter serves /page/index.html from disk before Astro
 // middleware. Apply only the explicit public redirect table before that handler.
@@ -69,9 +69,9 @@ const listener = (request, response) => {
     response.end(request.method === 'HEAD' ? undefined : readFileSync(new URL('../dist/client/404.html', import.meta.url)));
     return;
   }
-  const destination = ['GET', 'HEAD'].includes(request.method) && publicRedirect(url.pathname);
-  if (destination) {
-    response.writeHead(301, { Location: destination + url.search, 'X-Content-Type-Options': 'nosniff' });
+  const redirect = publicRedirectForRequest(request.method, url.pathname, url.search);
+  if (redirect) {
+    response.writeHead(redirect.status, { Location: redirect.location, 'X-Content-Type-Options': 'nosniff' });
     response.end();
     return;
   }

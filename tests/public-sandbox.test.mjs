@@ -12,3 +12,13 @@ test('transitive sandbox import graph has no database driver or query',async()=>
  async function walk(url){if(seen.has(url.href))return;seen.add(url.href);const source=await readFile(url,'utf8');assert.doesNotMatch(source,/from\s+['"](?:pg|@neon)|\b(?:pool\.query|connectDatabase|DATABASE_URL)\b/);for(const m of source.matchAll(/from\s+['"](\.[^'"]+)['"]/g))await walk(new URL(m[1],url));}
  await walk(new URL('../src/server/ai/public-sandbox-limiter.mjs',import.meta.url));
 });
+
+test('provider destination is reached only after server-side consent and failure is generic',async()=>{
+ let calls=0,seenUrl='';
+ const run=createSandbox({env,fetcher:async(url)=>{calls++;seenUrl=url;throw Error('private provider diagnostic');}});
+ const denied=await run(req({consent:{syntheticOnly:true}}),'consent-check');
+ assert.equal(denied.status,403);assert.equal(calls,0);
+ const failed=await run(req(),'approved-session');
+ assert.equal(failed.status,503);assert.equal(seenUrl,'https://api.groq.com/openai/v1/chat/completions');
+ assert.equal(calls,1);assert.doesNotMatch(await failed.text(),/private provider diagnostic|private-test-key/);
+});

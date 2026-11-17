@@ -1,12 +1,9 @@
 import { applySecurityPolicy } from './server/observability/security-policy.mjs';
 import { defineMiddleware } from 'astro:middleware';
-import { redirects } from '../redirects.json';
+import { publicRedirectForRequest } from './server/seo/redirects.mjs';
 import { env, isPortalEnabled } from './server/kernel/env.mjs';
 import { portalUnavailableJson, portalUnavailablePage } from './server/kernel/unavailable.mjs';
 import { captureServerFailure } from './server/observability/index.mjs';
-
-// Node web services do not consume redirects.json automatically.
-const destinations = new Map(redirects.map(({ source, destination }) => [source, destination]));
 
 function addVary(headers: Headers, value: string) {
   if (headers.get('Vary') === '*') return;
@@ -93,16 +90,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return harden(response, { portal: true, secureTransport });
   }
 
-  // Page aliases and the conventional /sitemap.xml entry share redirects.json.
-  let decodedPath = path;
-  try { decodedPath = decodeURIComponent(path); } catch { /* Keep malformed paths unmatched. */ }
-  const destination = destinations.get(path)
-    ?? destinations.get(decodedPath)
-    ?? destinations.get(decodedPath.replace(/\/$/, ''))
-    ?? destinations.get(normalizedPath)
-    ?? destinations.get(normalizedPath.replace(/\/$/, ''));
-  const response = destination && ['GET', 'HEAD'].includes(context.request.method)
-    ? context.redirect(`${destination}${context.url.search}`, 301)
+  // Use the original request URL so dev and the Node service preserve the same query.
+  const requestSearch = new URL(context.request.url).search;
+  const redirect = publicRedirectForRequest(context.request.method, path, requestSearch, normalizedPath);
+  const response = redirect
+    ? new Response(null, { status: redirect.status, headers: { Location: redirect.location } })
     : await next();
   const authPage = normalizedPath === '/auth' || normalizedPath.startsWith('/auth/');
   if (['/404', '/404/', '/404.html'].includes(normalizedPath)) {

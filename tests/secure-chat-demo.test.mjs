@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {chatScenarios,simulateChat} from '../src/shared/secure-chat-demo.mjs';
+
 test('three scenarios produce distinct deterministic decisions and replies',()=>{
  const results=chatScenarios.map(s=>simulateChat(s.text));
  assert.deepEqual(results.map(r=>r.decision),['ALLOW','REDACT','BLOCK']);
@@ -15,8 +16,16 @@ test('empty and oversized input rejected; untrusted HTML remains plain text',()=
  for(const value of ['', ' ', null,'x'.repeat(2001)])assert.throws(()=>simulateChat(value));
  assert.equal(simulateChat('<img onerror=alert(1)>').before,'<img onerror=alert(1)>');
 });
-test('public conversation has no network, content analytics or persistence APIs',()=>{
+test('local mode is the default and optional network request is gated by explicit consent',()=>{
  const code=readFileSync(new URL('../src/components/SecureChatDemo.astro',import.meta.url),'utf8');
- assert.doesNotMatch(code,/\b(?:fetch|XMLHttpRequest|WebSocket|sendBeacon|localStorage|sessionStorage|captureProductEvent|innerHTML)\b/);
- assert.match(code,/رد محاكاة/);assert.match(code,/data-ph-no-capture/);
+ assert.match(code,/let live=false/);
+ assert.match(code,/\[data-accept\][\s\S]*?live=true/);
+ assert.match(code,/\[data-cancel\][\s\S]*?live=false/);
+ assert.match(code,/if\(live\)\s*\{[\s\S]*?fetch\('\/api\/public-demo\/groq-sandbox'/);
+ assert.match(code,/إلى خادم BRIGHT AI على brightai\.live[\s\S]*?قد يرسل النص المنقّح إلى Groq/);
+ assert.match(code,/aria-labelledby="sc-consent-title"/);
+ assert.match(code,/لم يُرسل نص/);
+ assert.match(code,/قد يكون النص وصل إلى خادم الموقع أو إلى مزود النموذج/);
+ assert.doesNotMatch(code,/error\.message/);
+ assert.match(code,/data-ph-no-capture/);
 });

@@ -8,3 +8,9 @@ export function publicRedirect(pathname) {
   try { decoded = decodeURIComponent(pathname); } catch { return undefined; }
   return destinations.get(pathname) ?? destinations.get(decoded) ?? destinations.get(decoded.replace(/\/$/, ''));
 }
+
+export function publicRedirectForRequest(method, pathname, search = '', normalizedPath = pathname) {
+  if (!['GET', 'HEAD'].includes(method)) return undefined;
+  const destination = publicRedirect(pathname) ?? publicRedirect(normalizedPath);
+  return destination ? { status: 301, location: `${destination}${search}` } : undefined;
+}
