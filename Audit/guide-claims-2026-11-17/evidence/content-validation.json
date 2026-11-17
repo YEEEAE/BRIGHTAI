@@ -1,0 +1,53 @@
+{
+  "status": "PASS",
+  "rendered": [
+    {
+      "guide": "ai-governance-saudi",
+      "source_sha256": "d3f5b161edd4619ca51c896941d12d09c4476289fbee9f77c9b84209304f578c",
+      "anchors_valid": true,
+      "unique_ids": true,
+      "h1": 1,
+      "article_dateModified": "2026-11-17",
+      "faq_parity": true
+    },
+    {
+      "guide": "pdpl-and-ai",
+      "source_sha256": "a766ca11ec3addb85759eeb5a77301f7fb8534c7f23ccb5d55fc542ed8b69de9",
+      "anchors_valid": true,
+      "unique_ids": true,
+      "h1": 1,
+      "article_dateModified": "2026-11-17",
+      "faq_parity": true
+    },
+    {
+      "guide": "ai-risk-assessment",
+      "source_sha256": "9144f292e2337d0a41ed8353882c863c092f766a9e5d67c5491e54b674b0a3bb",
+      "anchors_valid": true,
+      "unique_ids": true,
+      "h1": 1,
+      "article_dateModified": "2026-11-17",
+      "faq_parity": true
+    },
+    {
+      "guide": "ai-use-policy-employees",
+      "source_sha256": "7c11dfdc7e749e324a847e0d3e6d8c0b4831b32218de68c26cae4e45f4dd5877",
+      "anchors_valid": true,
+      "unique_ids": true,
+      "h1": 1,
+      "article_dateModified": "2026-11-17",
+      "faq_parity": true
+    }
+  ],
+  "component_sha256": "a943a861c7c59ef717dcaee6ebbf3eaa5659661c4a926a5145098e56eca53cd0",
+  "source_parity": "5/5 identical to isolated final build input",
+  "material_claims_reviewed": 31,
+  "browser": "8 cases:4 guides ×390/1440; RTL/no horizontal overflow/no missing anchors",
+  "decision_tree": "5 paths + back/reset; no automatic processor; no permission verdict; source links in each result",
+  "build": "Astro6.4.8 from identical lockfile; Node22.22.2;57 public pages",
+  "not_verified": [
+    "legal signoff for a real case",
+    "production deployment",
+    "independent effective date of government guidelines",
+    "full paid ISO text"
+  ]
+}

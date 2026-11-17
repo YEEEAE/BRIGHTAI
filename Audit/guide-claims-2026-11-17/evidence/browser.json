@@ -1,0 +1,90 @@
+[
+  {
+    "viewport": "390x844x1,mobile,touch",
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Script ran on page and returned:\n```json\n{\"path\":\"/knowledge/ai-governance-saudi/\",\"width\":390,\"height\":844,\"scrollWidth\":390,\"dir\":\"rtl\",\"h1\":1,\"articleText\":5907,\"sourceCount\":5,\"brokenAnchors\":[]}\n```"
+        }
+      ]
+    }
+  },
+  {
+    "viewport": "390x844x1,mobile,touch",
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Script ran on page and returned:\n```json\n{\"path\":\"/knowledge/ai-risk-assessment/\",\"width\":390,\"height\":844,\"scrollWidth\":390,\"dir\":\"rtl\",\"h1\":1,\"articleText\":4341,\"sourceCount\":2,\"brokenAnchors\":[]}\n```"
+        }
+      ]
+    }
+  },
+  {
+    "viewport": "390x844x1,mobile,touch",
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Script ran on page and returned:\n```json\n{\"path\":\"/knowledge/ai-use-policy-employees/\",\"width\":390,\"height\":844,\"scrollWidth\":390,\"dir\":\"rtl\",\"h1\":1,\"articleText\":5817,\"sourceCount\":4,\"brokenAnchors\":[]}\n```"
+        }
+      ]
+    }
+  },
+  {
+    "viewport": "390x844x1,mobile,touch",
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Script ran on page and returned:\n```json\n{\"path\":\"/knowledge/pdpl-and-ai/\",\"width\":390,\"height\":844,\"scrollWidth\":390,\"dir\":\"rtl\",\"h1\":1,\"articleText\":8745,\"sourceCount\":4,\"brokenAnchors\":[]}\n```"
+        }
+      ]
+    }
+  },
+  {
+    "viewport": "1440x900x1",
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Script ran on page and returned:\n```json\n{\"path\":\"/knowledge/ai-governance-saudi/\",\"width\":1440,\"height\":900,\"scrollWidth\":1440,\"dir\":\"rtl\",\"h1\":1,\"articleText\":5907,\"sourceCount\":5,\"brokenAnchors\":[]}\n```"
+        }
+      ]
+    }
+  },
+  {
+    "viewport": "1440x900x1",
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Script ran on page and returned:\n```json\n{\"path\":\"/knowledge/ai-risk-assessment/\",\"width\":1440,\"height\":900,\"scrollWidth\":1440,\"dir\":\"rtl\",\"h1\":1,\"articleText\":4341,\"sourceCount\":2,\"brokenAnchors\":[]}\n```"
+        }
+      ]
+    }
+  },
+  {
+    "viewport": "1440x900x1",
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Script ran on page and returned:\n```json\n{\"path\":\"/knowledge/ai-use-policy-employees/\",\"width\":1440,\"height\":900,\"scrollWidth\":1440,\"dir\":\"rtl\",\"h1\":1,\"articleText\":5817,\"sourceCount\":4,\"brokenAnchors\":[]}\n```"
+        }
+      ]
+    }
+  },
+  {
+    "viewport": "1440x900x1",
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Script ran on page and returned:\n```json\n{\"path\":\"/knowledge/pdpl-and-ai/\",\"width\":1440,\"height\":900,\"scrollWidth\":1440,\"dir\":\"rtl\",\"h1\":1,\"articleText\":8745,\"sourceCount\":4,\"brokenAnchors\":[]}\n```"
+        }
+      ]
+    }
+  }
+]

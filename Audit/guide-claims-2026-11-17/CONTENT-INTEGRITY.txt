@@ -1,0 +1,32 @@
+=== CONTENT INTEGRITY REPORT ===
+Trigger: طلب مراجعة الادعاءات وتحسين أربعة أدلة.
+Content Reviewed: ai-governance-saudi / pdpl-and-ai / ai-risk-assessment / ai-use-policy-employees + GuideSources
+Review Depth: document
+
+--- CRITICAL ISSUES (must fix) ---
+[pdpl-and-ai:decision tree] ROLE_INFERENCE: الإجابة لا لا تثبت جهة معالجة -> Fix applied: دور يحتاج تحققًا ونتيجة نطاق تحفظية بمراجع.
+
+--- HIGH ISSUES (should fix) ---
+[pdpl-and-ai:basis/rights] SCOPE: تعميم الموافقة والأثر والإشعار -> Fix applied: المسوغ أولًا والشروط والمواد المحددة.
+[guides:sources] SOURCE_PRECISION: بوابة عامة وخبر بدل النص -> Fix applied: نصوص أولية ونسخة ونطاق ونفاذ أو عدم إثباته.
+[ai-use-policy-employees:exceptions] POLICY_SCOPE: سياسة المشروع الخاصة ضمن دليل عام -> Fix applied: توصية داخلية موسومة لا حظر قانوني مخترع.
+
+--- MEDIUM ISSUES (quality improvement) ---
+[guides:steps/examples] ACTIONABILITY: أمثلة لا تنتهي بمخرج ومالك وقرار -> Fix applied: خطوات وأمثلة اصطناعية وحدود وخطوة تالية.
+[pdpl-and-ai:markup] STRUCTURE: divإضافي -> Fix applied: إصلاح إغلاق البنية وإعادة buildوفحصالمتصفح.
+
+--- LOW ISSUES (polish) ---
+[guides:metadata] DATE: تواريخ مراجعة لا تطابق التعديل -> Fix applied: تاريخ17نوفمبر2026مع حفظ النشر.
+
+--- INTEGRATION SUMMARY ---
+New content fits: yes — نفس عناوينURLونطاق الأدلة.
+Flow preserved: yes — إجابة ثم مرجع ثم خطوات ومثال وحدود.
+Consistency maintained: yes — FAQمن مصدر النص نفسه ومرجع مشترك للنسخ.
+Cross-references valid: yes — HTMLوالBrowserإحالات سليمة.
+
+--- STATISTICS ---
+Issues Found: critical1/high3/medium2/low1 — مجموعات مراجعة وليست عدد المواد القانونية.
+Issues Auto-Fixed: 7 مجموعات تحريرية؛ لا اعتماد قانوني آلي.
+Issues Needing Manual Review: تحديد انطباق النص على كل واقعة؛ تاريخ نفاذ مستقل للمبادئ الحكومية غير مثبت.
+Content Quality Score: غير محسوب؛ لا مقياس رقمي صالح لإثبات الدقة أو الامتثال.
+=== END REPORT ===

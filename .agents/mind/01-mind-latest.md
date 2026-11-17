@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-17 VERIFIED LOCAL guides4:حوكمة/PDPL/مخاطر/موظفين؛31ادعاءبمصدرونوعونسخةونطاق؛نقل1840/2024ومبادئP116v1مايو2025؛build57بـAstro6.4.8lockمطابق/Browser8×390و1440/tree5PASS؛نفاذحكوميمستقلغيرمثبت/لامراجعةقانونيةلواقعة/لانشر؛ `audit/guide-claims-2026-11-17/REPORT.md`.
 - 2026-11-17 VERIFIED ANALYSIS intent map:311صفحة/32دليل/254إرث؛GSCwebfinal18أكتوبر–14نوفمبر9clicks/970impressions؛أولويةحكومة→صحة→مصارف→تنفيذ→استشارات؛49mergeتوصياتفقط/رياضتبقىمؤقتًا؛صونURLsالإرثقبلنشر57؛ `audit/intent-map-2026-11-17/REPORT.md`؛لاتعديلصفحاتأونشر.
 - 2026-11-17 VERIFIED LOCAL GA4 attribution: موافقةالمالكGoogle/Bingأربعةexacthosts→originفقط؛التحريريمحجوبحتىاعتمادنطاقه؛unit45/Chrome20double-init/CSP PASS؛SDK/ingestion/account NOT VERIFIED؛لاتصحيحDirectتاريخي/لانشر؛ `audit/ga4-attribution-2026-11-17/REPORT.md`.
 - 2026-11-17 VERIFIED LOCAL sitemap contract: سياسةAstro/buildموحدة؛57/57 GET+HEAD/canonical/index PASS،aliases138/276 وunit5/buildPASS؛404المباشرومفقود404؛حي sitemap.xml200/264يتضمنdemoمفهرس و404/200،current57PASS؛اتحاد311مفحوص؛لانشر/GSC؛ `audit/sitemap-contract-2026-11-17/REPORT.md` وخطةOPERATOR-PLAN.
@@ -63,6 +64,12 @@
 - 2026-11-16 حزمة الإغلاق النشطة `Audit/prompts.md` v2.1 مشتقة من `Audit/BRIGHT-AI-2026-FINAL-360-AUDIT.html`: 16 برومبتًا/G-01…G-16/W1–W9؛ سجل 50 متطلبًا معلن غير مسرود؛ رأس التقرير `7385200` والرأس الحالي `cb9863f`؛ `Audit/final-360-2026-11-10/*` غير موجود على القرص.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-17] — مراجعة أربعة أدلة
+- **تم:** إجابات وخطوات وأمثلةاصطناعيةوحدودومختص؛إحالات31ادعاءًونوعالمرجعونسخته؛تصحيحاستنتاجالمعالجالتلقائيومسوغالموافقة.
+- **التحقق:** PASS — lockfilebuild57/source5/HTML4/Browser8/tree5+back/reset؛NodeالجذربلاوافقAstro7فاستُخدماعتماد6.4.8معزولمطابق.
+- **الحالة:** DONE محليًا؛لانشرأودمجURLأواعتمادواقعة؛تاريخنفاذP116مستقلغيرمثبتومعلن.
+- **ملفات:** `audit/guide-claims-2026-11-17/REPORT.md`،`audit/guide-claims-2026-11-17/claim-register.csv`.
 
 ## [2026-11-17] — خريطة نوايا المحتوى
 - **تم:** خريطة311صفحةوخطةتحرير؛تخصيصhubللمرجع/docsللتنفيذ/servicesللنطاقوحفظالقطاعاتالمنشورة؛لاURLsجديدة.

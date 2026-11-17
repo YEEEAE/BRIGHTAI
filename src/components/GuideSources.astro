@@ -1,0 +1,30 @@
+---
+interface Props { sources: string[] }
+const { sources } = Astro.props;
+const registry: Record<string, { title: string; href: string; kind: string; version: string; effect: string; scope: string }> = {
+  law: { title: 'نظام حماية البيانات الشخصية — النص المعدل، سدايا', href: 'https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPL', kind: 'نظام ملزم عند انطباق نطاقه', version: 'المرسوم م/19 بتاريخ 9/2/1443هـ، المعدل بم/148 بتاريخ 5/9/1444هـ', effect: '14 سبتمبر 2023؛ لا يُحسب من نشر النسخة الأصلية وحدها.', scope: 'نطاق المعالجة في المادة 2؛ راجع المادة المحددة بجوار الادعاء.' },
+  regulation: { title: 'اللائحة التنفيذية — النص الرسمي في أم القرى', href: 'https://www.uqn.gov.sa/details?p=23595', kind: 'لائحة ملزمة في نطاق النظام', version: 'قرار 1516 بتاريخ 19/2/1445هـ؛ النشر 7 سبتمبر 2023', effect: '14 سبتمبر 2023؛ المادة 38 تربط العمل بها بنفاذ النظام.', scope: 'تفاصيل الحقوق والموافقة والمعالج وتقويم الأثر؛ رقم المادة مذكور في النص.' },
+  transfer: { title: 'لائحة النقل — قرار 1840، أم القرى', href: 'https://www.uqn.gov.sa/details?p=25412', kind: 'لائحة ملزمة عند النقل أو الإفصاح الخارجي', version: 'قرار 1840 بتاريخ 27/2/1446هـ؛ النشر 1 سبتمبر 2024', effect: 'من النشر، 1 سبتمبر 2024، وفق المادة 9.', scope: 'تُقرأ مع المادة 29 من النظام؛ هذه نسخة 2024، وليست نسخة 2023.' },
+  government: { title: 'سدايا: مبادئ الذكاء الاصطناعي التوليدي للجهات الحكومية (PDF)', href: 'https://sdaia.gov.sa/ar/MediaCenter/KnowledgeCenter/ResearchLibrary/AIGuidelinesForGovernment.pdf', kind: 'وثيقة مبادئ تتضمن متطلبات إلزامية ضمن نطاقها الحكومي', version: 'SDAIA-P116، الإصدار 1؛ مايو 2025؛ الأقسام 2 و3 و3.5 و4.1', effect: 'لم يُثبت تاريخ نفاذ مستقل من النسخة المقروءة؛ لا نساوي سنة الإصدار بتاريخ النفاذ.', scope: 'التعاملات والبيانات الحكومية ومستخدموها، ويشمل تعريف المستخدم المقاولين وغيرهم؛ لا تُعمم أحكامها على كل شركة.' },
+  nist: { title: 'NIST AI RMF 1.0 — الوثيقة الأصلية NIST AI 100-1', href: 'https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf', kind: 'إطار إرشادي طوعي', version: '1.0؛ 26 يناير 2023؛ القسم 5 ووظائف GOVERN / MAP / MEASURE / MANAGE', effect: 'لا تاريخ نفاذ نظامي سعودي لهذا الإطار الطوعي.', scope: 'تنظيم إدارة مخاطر AI؛ لا يحل محل النظام أو متطلبات القطاع ولا يمنح شهادة.' },
+  iso: { title: 'ISO/IEC 42001:2023 — صفحة المعيار الرسمية', href: 'https://www.iso.org/standard/42001', kind: 'معيار لنظام إدارة الذكاء الاصطناعي', version: 'الإصدار الأول؛ ديسمبر 2023', effect: 'تاريخ إصدار معيار، وليس تاريخ نفاذ نظام سعودي.', scope: 'وصف نظام إدارة AI؛ لا يُستنتج من المعيار وحده التزام على كل جهة. هذه الإحالة للتعريف العام، وليست ادعاء مراجعة نص المعيار المدفوع كاملًا.' },
+  commencement: { title: 'سدايا: دليل النظام لجهات التحكم والمعالجة — تاريخ النفاذ', href: 'https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPLCP', kind: 'دليل إرشادي رسمي، ليس مصدر التزام مستقل', version: 'صفحة الدليل الرسمية المقروءة في 17 نوفمبر 2026؛ لا رقم إصدار ظاهر في صفحة HTML', effect: 'يوضح نفاذ النظام في 14 سبتمبر 2023؛ التزاماته من النظام واللائحة.', scope: 'شرح تاريخ النفاذ والتطبيق؛ يُرجع للنصوص الملزمة عند التعارض.' },
+};
+---
+<section class="block guide-sources" aria-label="المصادر ونسخها ونطاقها">
+  <h2>المصادر: النوع والنسخة والنطاق</h2>
+  <p>مراجعة الإحالات: <time datetime="2026-11-17">17 نوفمبر 2026</time>. هذه النسخ التي بُني عليها الشرح؛ أعد التحقق من أي تعديل أو متطلب قطاعي قبل اعتماد واقعة جديدة. المسودة المعروضة للمرئيات لا تُعامل كنص نافذ.</p>
+  <ul class="list">
+    {sources.map(id => { const source = registry[id]; return <li id={`source-${id}`}>
+      <h3><a href={source.href} target="_blank" rel="noopener noreferrer">{source.title}</a></h3>
+      <p><strong>الصفة:</strong> {source.kind}. <strong>النسخة:</strong> {source.version}.</p>
+      <p><strong>النفاذ أو الإصدار:</strong> {source.effect} <strong>النطاق:</strong> {source.scope}</p>
+    </li>; })}
+  </ul>
+  <p class="note">الجداول وخطوات العمل والأمثلة في هذا الدليل منهج تعليمي مقترح من BRIGHTAI، وليست نصًا رسميًا أو اختبار امتثال أو اعتمادًا لتشغيل منتج.</p>
+</section>
+<style>
+  .guide-sources li { scroll-margin-block-start: 6rem; }
+  .guide-sources h3 { font-size: 1rem; }
+  .guide-sources p { overflow-wrap: anywhere; }
+</style>
