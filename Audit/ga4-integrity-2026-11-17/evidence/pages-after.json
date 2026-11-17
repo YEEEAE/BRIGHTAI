@@ -1,0 +1,570 @@
+{
+  "status": "ok",
+  "source": {
+    "provider": "google_analytics",
+    "propertyId": "properties/551941072",
+    "propertyDisplayName": "BRIGHT AI"
+  },
+  "request": {
+    "requestedDateRange": {
+      "startDate": "2026-11-04",
+      "endDate": "2026-11-17"
+    },
+    "resolvedDateRange": {
+      "startDate": "2026-11-04",
+      "endDate": "2026-11-16"
+    },
+    "propertyTimeZone": "Asia/Riyadh",
+    "currencyCode": "SAR",
+    "channel": "all",
+    "reportKind": "page_performance",
+    "breakdown": "page",
+    "dimensions": [
+      "hostName",
+      "pagePath"
+    ],
+    "metrics": [
+      "screenPageViews",
+      "activeUsers",
+      "userEngagementDuration",
+      "keyEvents"
+    ],
+    "flags": {
+      "includeDate": false,
+      "onlyWithTransactions": false
+    },
+    "limit": 100,
+    "offset": 0
+  },
+  "rowCount": 60,
+  "totalRowCount": 60,
+  "rows": [
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/",
+      "screenPageViews": 45,
+      "activeUsers": 22,
+      "userEngagementDuration": 746,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/docs/",
+      "screenPageViews": 29,
+      "activeUsers": 9,
+      "userEngagementDuration": 536,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/products/",
+      "screenPageViews": 29,
+      "activeUsers": 8,
+      "userEngagementDuration": 303,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "127.0.0.1",
+      "pagePath": "/products/",
+      "screenPageViews": 28,
+      "activeUsers": 2,
+      "userEngagementDuration": 1958,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/contact/",
+      "screenPageViews": 21,
+      "activeUsers": 6,
+      "userEngagementDuration": 128,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/app/kernel/",
+      "screenPageViews": 20,
+      "activeUsers": 7,
+      "userEngagementDuration": 44,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/products/firewall/",
+      "screenPageViews": 19,
+      "activeUsers": 7,
+      "userEngagementDuration": 1312,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/pricing/",
+      "screenPageViews": 13,
+      "activeUsers": 4,
+      "userEngagementDuration": 132,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/products/human-gate/",
+      "screenPageViews": 13,
+      "activeUsers": 6,
+      "userEngagementDuration": 20,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/products/risk-engine/",
+      "screenPageViews": 13,
+      "activeUsers": 4,
+      "userEngagementDuration": 15,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/products/ledger/",
+      "screenPageViews": 12,
+      "activeUsers": 5,
+      "userEngagementDuration": 11,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/products/secure-chat/",
+      "screenPageViews": 12,
+      "activeUsers": 5,
+      "userEngagementDuration": 3,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/about/",
+      "screenPageViews": 11,
+      "activeUsers": 5,
+      "userEngagementDuration": 138,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/app/",
+      "screenPageViews": 11,
+      "activeUsers": 7,
+      "userEngagementDuration": 47,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/kernel/",
+      "screenPageViews": 11,
+      "activeUsers": 4,
+      "userEngagementDuration": 40,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "127.0.0.1",
+      "pagePath": "/docs/",
+      "screenPageViews": 10,
+      "activeUsers": 2,
+      "userEngagementDuration": 346,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/knowledge/ai-governance-saudi/",
+      "screenPageViews": 10,
+      "activeUsers": 5,
+      "userEngagementDuration": 55,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "127.0.0.1",
+      "pagePath": "/kernel/",
+      "screenPageViews": 9,
+      "activeUsers": 2,
+      "userEngagementDuration": 596,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "127.0.0.1",
+      "pagePath": "/services/",
+      "screenPageViews": 7,
+      "activeUsers": 1,
+      "userEngagementDuration": 712,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/trust/",
+      "screenPageViews": 7,
+      "activeUsers": 2,
+      "userEngagementDuration": 0,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/services/",
+      "screenPageViews": 6,
+      "activeUsers": 3,
+      "userEngagementDuration": 2,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "127.0.0.1",
+      "pagePath": "/knowledge/ai-governance-saudi/",
+      "screenPageViews": 5,
+      "activeUsers": 1,
+      "userEngagementDuration": 241,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "127.0.0.1",
+      "pagePath": "/solutions/government/",
+      "screenPageViews": 5,
+      "activeUsers": 1,
+      "userEngagementDuration": 460,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/app/human-gate/",
+      "screenPageViews": 5,
+      "activeUsers": 4,
+      "userEngagementDuration": 1,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/app/ledger/",
+      "screenPageViews": 5,
+      "activeUsers": 4,
+      "userEngagementDuration": 1,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/app/risk-engine/",
+      "screenPageViews": 5,
+      "activeUsers": 4,
+      "userEngagementDuration": 1,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/app/secure-chat/",
+      "screenPageViews": 5,
+      "activeUsers": 4,
+      "userEngagementDuration": 103,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/app/firewall/",
+      "screenPageViews": 4,
+      "activeUsers": 4,
+      "userEngagementDuration": 1,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/knowledge/protect-company-data-chatgpt/",
+      "screenPageViews": 4,
+      "activeUsers": 3,
+      "userEngagementDuration": 102,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/privacy/",
+      "screenPageViews": 4,
+      "activeUsers": 1,
+      "userEngagementDuration": 0,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/terms/",
+      "screenPageViews": 4,
+      "activeUsers": 1,
+      "userEngagementDuration": 0,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "127.0.0.1",
+      "pagePath": "/",
+      "screenPageViews": 3,
+      "activeUsers": 1,
+      "userEngagementDuration": 0,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "127.0.0.1",
+      "pagePath": "/pillars/safety/",
+      "screenPageViews": 3,
+      "activeUsers": 1,
+      "userEngagementDuration": 375,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "127.0.0.1",
+      "pagePath": "/products/firewall/",
+      "screenPageViews": 2,
+      "activeUsers": 1,
+      "userEngagementDuration": 9,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/blog/pdpl-executive-regulations-explained/",
+      "screenPageViews": 2,
+      "activeUsers": 1,
+      "userEngagementDuration": 0,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/compliance/",
+      "screenPageViews": 2,
+      "activeUsers": 1,
+      "userEngagementDuration": 12,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/go/whatsapp/",
+      "screenPageViews": 2,
+      "activeUsers": 1,
+      "userEngagementDuration": 0,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/knowledge/",
+      "screenPageViews": 2,
+      "activeUsers": 2,
+      "userEngagementDuration": 0,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/knowledge/ai-bias-fairness/",
+      "screenPageViews": 2,
+      "activeUsers": 1,
+      "userEngagementDuration": 82,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/pillars/safety/",
+      "screenPageViews": 2,
+      "activeUsers": 1,
+      "userEngagementDuration": 16,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/solutions/ai-firewall/",
+      "screenPageViews": 2,
+      "activeUsers": 1,
+      "userEngagementDuration": 19,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "127.0.0.1",
+      "pagePath": "/knowledge/data-breach-72-hours-ai/",
+      "screenPageViews": 1,
+      "activeUsers": 1,
+      "userEngagementDuration": 81,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "127.0.0.1",
+      "pagePath": "/knowledge/pdpl-and-ai/",
+      "screenPageViews": 1,
+      "activeUsers": 1,
+      "userEngagementDuration": 0,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "127.0.0.1",
+      "pagePath": "/products/human-gate/",
+      "screenPageViews": 1,
+      "activeUsers": 1,
+      "userEngagementDuration": 6,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "127.0.0.1",
+      "pagePath": "/products/ledger/",
+      "screenPageViews": 1,
+      "activeUsers": 1,
+      "userEngagementDuration": 6,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "127.0.0.1",
+      "pagePath": "/products/risk-engine/",
+      "screenPageViews": 1,
+      "activeUsers": 1,
+      "userEngagementDuration": 6,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "127.0.0.1",
+      "pagePath": "/products/secure-chat/",
+      "screenPageViews": 1,
+      "activeUsers": 1,
+      "userEngagementDuration": 8,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/app/api/kernel/health",
+      "screenPageViews": 1,
+      "activeUsers": 1,
+      "userEngagementDuration": 0,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/blog/pdpl-employee-data-rights-saudi/",
+      "screenPageViews": 1,
+      "activeUsers": 1,
+      "userEngagementDuration": 146,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/design/buttons/",
+      "screenPageViews": 1,
+      "activeUsers": 1,
+      "userEngagementDuration": 0,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/design/cards/",
+      "screenPageViews": 1,
+      "activeUsers": 1,
+      "userEngagementDuration": 0,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/design/colors/",
+      "screenPageViews": 1,
+      "activeUsers": 1,
+      "userEngagementDuration": 0,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/knowledge/ai-risk-assessment/",
+      "screenPageViews": 1,
+      "activeUsers": 1,
+      "userEngagementDuration": 0,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/knowledge/ai-use-policy-employees/",
+      "screenPageViews": 1,
+      "activeUsers": 1,
+      "userEngagementDuration": 0,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/knowledge/iso-42001-saudi/",
+      "screenPageViews": 1,
+      "activeUsers": 1,
+      "userEngagementDuration": 4,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/knowledge/prompt-injection/",
+      "screenPageViews": 1,
+      "activeUsers": 1,
+      "userEngagementDuration": 0,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/knowledge/sdaia-ai-ethics-self-assessment/",
+      "screenPageViews": 1,
+      "activeUsers": 1,
+      "userEngagementDuration": 0,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/lp/government/",
+      "screenPageViews": 1,
+      "activeUsers": 1,
+      "userEngagementDuration": 0,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/solutions/healthcare-ai-governance/mecca/",
+      "screenPageViews": 1,
+      "activeUsers": 1,
+      "userEngagementDuration": 0,
+      "keyEvents": 0
+    },
+    {
+      "hostName": "brightai.live",
+      "pagePath": "/solutions/healthcare-ai-governance/",
+      "screenPageViews": 0,
+      "activeUsers": 1,
+      "userEngagementDuration": 3,
+      "keyEvents": 0
+    }
+  ],
+  "pageInfo": {
+    "offset": 0,
+    "limit": 100,
+    "hasMore": false,
+    "nextOffset": null
+  },
+  "reportMetadata": {
+    "dataLossFromOtherRow": false,
+    "subjectToThresholding": false,
+    "sampling": [],
+    "restrictedMetrics": [],
+    "emptyReason": null,
+    "hasLimitedData": false
+  },
+  "quota": {
+    "tokensPerDay": {
+      "consumed": 1,
+      "remaining": 199891
+    },
+    "tokensPerHour": {
+      "consumed": 1,
+      "remaining": 39896
+    },
+    "concurrentRequests": {
+      "consumed": 0,
+      "remaining": 10
+    },
+    "serverErrorsPerProjectPerHour": {
+      "consumed": 0,
+      "remaining": 10
+    },
+    "potentiallyThresholdedRequestsPerHour": {
+      "consumed": 0,
+      "remaining": 120
+    },
+    "tokensPerProjectPerHour": {
+      "consumed": 1,
+      "remaining": 13999
+    }
+  },
+  "warnings": [
+    "end_date_clamped"
+  ],
+  "diagnostics": [],
+  "meta": {
+    "projectId": "42dc000d-5c6a-4016-8710-f9a88d5be3b4"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "ok": true,
+  "accounts": [
+    {
+      "accountId": "118228837164945942115",
+      "email": "zezo--09@hotmail.com",
+      "requiresReconnect": false,
+      "propertiesUnavailable": false,
+      "properties": [
+        {
+          "propertyId": "properties/551941072",
+          "displayName": "BRIGHT AI",
+          "accountDisplayName": "BRIGHT AI ",
+          "isSelected": true
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "projectId": "42dc000d-5c6a-4016-8710-f9a88d5be3b4"
+  }
+}
