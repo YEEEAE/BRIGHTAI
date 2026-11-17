@@ -73,6 +73,12 @@
 
 ## Ledger (الأحدث أولًا)
 
+## [2026-11-17] — مراجعة الهوية وإرث `/en/`
+- **تم:** توحيد صفحة «عنّا» حول الاسم المتداول BRIGHT AI والعلامة BRIGHTAI ومجال AIGAS دون إثبات قانوني أو ادعاءات تشغيلية؛ حفظ مراجعة سبع صفحات إنجليزية ومسودات اعتماد خارجية.
+- **التحقق:** PASS — مراجعة GET/HTML ونتائج بحث مقتطفة؛ `git diff --check` وفحص تغطية المسارات PASS؛ build BLOCKED بـNode 22.22.2 دون تغيير البيئة.
+- **الحالة:** PARTIAL — توصيات الإزالة/الدمج/الترجمة لا تُطبق على الحي قبل مراجعة واعتماد.
+- **ملفات:** `src/pages/about.astro`، `Audit/outhers/identity-and-en-review-2026-11-17/REPORT.md`.
+
 ## [2026-11-17] — تسجيل 0037 في Delta وإعادة المصفوفة
 - **تم:** `'0037'` أُضيف إلى `DELTA_ORDER` بعد `0036`؛ توقعات `tests/migration-order.test.mjs` صارت pending `0030`–`0037` وsuffix أخير أربعة ملفات.
 - **تم:** تصحيح خطة Delta: الرأس 23 خطوة تنتهي `0037`، وG4/G5 يطابقان 43 جدولًا/93 سياسة.
@@ -181,4 +187,3 @@
 - 2026-11-11 APPROVED CONDITIONAL T02: المالكاعتمدDataAPIخيارA(تعطيلالإنتاج)بشرطاستيفاءبوابةالاستعادة؛التنفيذNOT RUN؛productionمازالactive/public/anonymous/aggregates=true،Staging404؛HEAD3×400بلامتنليسإغلاقًا؛ `docs/DATA-API-EXPOSURE-DECISION.md`.
 - 2026-11-10 BLOCKED (P13): لا وجهة معتمدة — Sentry صفر مشاريع، وPostHog مشروع واحد `720936` على حد الخطة (free، أحداث 0/1M) وإعداداته (IP غير مجهول/console/perf/retention12m) غير معتمدة؛ P21 بلا وثيقة URL؛ لا ingestion/تنبيهات (P22).
 - 2026-11-10 OPEN: Bootstrap/RLS وtrial/purge وموافقات المزودين والـUAT ما زالت مفتوحة.
-
