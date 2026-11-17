@@ -19,8 +19,8 @@ test('empty and oversized input rejected; untrusted HTML remains plain text',()=
 test('local mode is the default and optional network request is gated by explicit consent',()=>{
  const code=readFileSync(new URL('../src/components/SecureChatDemo.astro',import.meta.url),'utf8');
  assert.match(code,/let live=false/);
- assert.match(code,/\[data-accept\][\s\S]*?live=true/);
- assert.match(code,/\[data-cancel\][\s\S]*?live=false/);
+ assert.match(code,/\[data-accept\][^}]*setLive\(true\)/);
+ assert.match(code,/\[data-cancel\][^}]*setLive\(false\)/);
  assert.match(code,/if\(live\)\s*\{[\s\S]*?fetch\('\/api\/public-demo\/groq-sandbox'/);
  assert.match(code,/إلى خادم BRIGHT AI على brightai\.live[\s\S]*?قد يرسل النص المنقّح إلى Groq/);
  assert.match(code,/aria-labelledby="sc-consent-title"/);

@@ -21,7 +21,7 @@ const nextProduct = next && productForSlug(next.slug);
   <LabShell kind={station.slug} complaintStep={index + 1}>
     <section class="complaint-station" aria-labelledby="complaint-question" data-complaint={station.slug}>
       <h2 id="complaint-question">{station.question}</h2>
-      <noscript><p>تحتاج هذه الرحلة JavaScript لتسجيل الأفعال وحفظها بين المحطات.</p></noscript>
+      <noscript><p>تحتاج هذه الرحلة JavaScript لحفظ خطواتك بين المحطات. يمكنك <a href="/services/#workshop-sample-title">قراءة شكوى محلولة وقرار المشرف</a> دون تشغيل المختبر.</p></noscript>
       <p role="status" data-journey-status></p>
       <a data-journey-resume hidden>تابع من المحطة المتاحة ←</a>
 

@@ -10,9 +10,10 @@ import {chatScenarios} from '../shared/secure-chat-demo.mjs';
  <p data-live-status role="status">المحاكي المحلي يعمل؛ لم يُرسل نص ولم يُفحص اتصال النموذج.</p>
  <div class="sc-scenarios" aria-label="سيناريوهات المحاكاة">{chatScenarios.map((s,i)=><button type="button" data-scenario={i}>{s.label}</button>)}</div>
  <ol data-thread aria-label="رسائل المحاكاة"><li>اختر مثالًا أو اكتب طلبًا افتراضيًا؛ الرد التالي محاكاة محددة.</li></ol>
- <p data-loading hidden role="status">جارٍ إعداد الرد محليًا…</p>
  <form novalidate><label for="sc-demo-input">رسالتك الافتراضية</label><textarea id="sc-demo-input" rows="3" maxlength="2000" autocomplete="off" data-private placeholder="اكتب طلبًا عامًا أو اختر مثالًا أعلاه"></textarea><div class="sc-tools"><button type="submit">أرسل للمحاكاة</button><span>يبقى النص في المتصفح ما دمت تستخدم المحاكاة</span></div></form>
+ <p data-loading hidden role="status"></p>
  <p role="status" aria-live="polite" data-feedback></p>
+ <button type="button" data-retry-live hidden>إعادة المحاولة</button>
  <details><summary>حدود التجربة التشغيلية · 48 ساعة</summary><p>مسار منفصل يتطلب Auth ومؤسسة وصلاحية خادمية، اعتماد المزود والمنطقة والخروج، قرار ALLOW وحصة وسقف تكلفة. لا تعني تهيئة الموصل READY؛ يلزم رد نموذج فعلي بإذن. المختبر هنا يستمر دون مزود.</p></details>
  <noscript>تحتاج المحادثة المحلية JavaScript. لا يوجد اتصال بنموذج.</noscript>
 </section>
@@ -22,45 +23,72 @@ import {chatScenarios,simulateChat} from '../shared/secure-chat-demo.mjs';
 document.querySelectorAll<HTMLElement>('[data-chat-demo]').forEach(root=>{
  const input=root.querySelector('textarea')!,form=root.querySelector('form')!,thread=root.querySelector<HTMLOListElement>('[data-thread]')!,loading=root.querySelector<HTMLElement>('[data-loading]')!,feedback=root.querySelector<HTMLElement>('[data-feedback]')!,send=form.querySelector('button')!;
  let live=false;
+ const retry=root.querySelector<HTMLButtonElement>('[data-retry-live]')!;
  const liveStatus=root.querySelector<HTMLElement>('[data-live-status]')!;
  const dialog=root.querySelector<HTMLDialogElement>('[data-consent]')!;
  const sessionId=crypto.randomUUID();
- root.querySelector<HTMLButtonElement>('[data-live]')!.onclick=()=>{if(live){live=false;liveStatus.textContent='أُوقف الإرسال الاختياري؛ الرسائل التالية ستبقى في المتصفح.';}else dialog.showModal();};
- root.querySelector<HTMLButtonElement>('[data-cancel]')!.onclick=()=>{dialog.close();live=false;liveStatus.textContent='أُلغيت الموافقة؛ لم يُرسل نص. المحاكاة المحلية متاحة.';};
+ function setLive(enabled:boolean){live=enabled;send.textContent=enabled?'أرسل عبر المسار الاختياري':'أرسل للمحاكاة';}
+ retry.onclick=()=>dialog.showModal();
+ root.querySelector<HTMLButtonElement>('[data-live]')!.onclick=()=>{if(live){setLive(false);liveStatus.textContent='أُوقف الإرسال الاختياري؛ الرسائل التالية ستبقى في المتصفح.';}else dialog.showModal();};
+ root.querySelector<HTMLButtonElement>('[data-cancel]')!.onclick=()=>{dialog.close();setLive(false);liveStatus.textContent='أُلغيت الموافقة؛ لم يُرسل نص. المحاكاة المحلية متاحة.';};
  dialog.addEventListener('close',()=>{if(!live)liveStatus.textContent='أُغلقت نافذة الموافقة؛ لم يُرسل نص. المحاكاة المحلية متاحة.';});
- root.querySelector<HTMLButtonElement>('[data-accept]')!.onclick=()=>{live=true;dialog.close();liveStatus.textContent='وافقت لهذه الصفحة. عند إرسال رسالة سيصل النص أولًا إلى خادم الموقع؛ وقد يصل النص المنقّح إلى Groq إذا كان المسار مهيأً.';};
+ root.querySelector<HTMLButtonElement>('[data-accept]')!.onclick=()=>{
+  setLive(true);
+  dialog.close();
+  liveStatus.textContent='وافقت لهذه الصفحة. عند إرسال رسالة سيصل النص أولًا إلى خادم الموقع؛ وقد يصل النص المنقّح إلى Groq إذا كان المسار مهيأً.';
+  if(!retry.hidden){retry.hidden=true;say('أرسل المسودة مرة أخرى لمحاولة الاتصال بالنموذج.');send.focus();}
+ };
  let generation=0,timer:ReturnType<typeof setTimeout>|undefined;
  const say=(s:string)=>feedback.textContent=s;
- function clear(){resetLab(root);live=false;generation++;clearTimeout(timer);thread.replaceChildren();input.value='';loading.hidden=true;send.disabled=false;form.removeAttribute('aria-busy');say('محادثة محلية جديدة؛ أُزيل المحتوى من العرض.');liveStatus.textContent='المحاكي المحلي يعمل؛ لم يُرسل نص.';input.focus();}
+ function clear(){resetLab(root);setLive(false);generation++;clearTimeout(timer);thread.replaceChildren();input.value='';loading.hidden=true;retry.hidden=true;send.disabled=false;form.removeAttribute('aria-busy');say('محادثة محلية جديدة؛ أُزيل المحتوى من العرض.');liveStatus.textContent='المحاكي المحلي يعمل؛ لم يُرسل نص.';input.focus();}
  root.querySelector<HTMLElement>('[data-new]')!.onclick=clear;
  root.querySelector<HTMLElement>('[data-reset]')!.onclick=clear;
  const shellReset=root.closest('[data-lab-shell]')?.querySelector<HTMLButtonElement>('[data-lab-reset]');if(shellReset){shellReset.hidden=false;shellReset.onclick=clear;}
  root.querySelectorAll<HTMLButtonElement>('[data-scenario]').forEach(b=>b.onclick=()=>{input.value=chatScenarios[Number(b.dataset.scenario)].text;input.focus();say('حُمّل المثال؛ اضغط أرسل للمحاكاة.');});
  form.onsubmit=async e=>{e.preventDefault();if(send.disabled)return;let result;try{result=simulateChat(input.value);}catch{say('اكتب نصًا افتراضيًا بين 1 و2000 حرف، أو اختر مثالًا.');input.focus();return;}
- startLab(root,'secure-chat'); const epoch=++generation;loading.hidden=false;send.disabled=true;form.setAttribute('aria-busy','true');say('');
- let liveReply:string|undefined,liveFailure='';
+ startLab(root,'secure-chat'); const epoch=++generation;const submittedText=input.value;
+ loading.textContent=live?'جارٍ انتظار نتيجة الإرسال الاختياري…':'جارٍ إعداد الرد محليًا…';
+ loading.hidden=false;retry.hidden=true;send.disabled=true;form.setAttribute('aria-busy','true');say('');
+ loading.scrollIntoView({block:'nearest'});
+ let liveReply:string|undefined;
  if(live){
   liveStatus.textContent='جارٍ إرسال النص إلى خادم الموقع؛ وقد يصل النص المنقّح إلى Groq إذا كان المسار مهيأً.';
   try{
-   const res=await fetch('/api/public-demo/groq-sandbox',{method:'POST',headers:{'Content-Type':'application/json'},signal:AbortSignal.timeout(16000),body:JSON.stringify({text:input.value,sessionId,consent:{syntheticOnly:true,regionAndTermsAccepted:true}})});
+   const res=await fetch('/api/public-demo/groq-sandbox',{method:'POST',headers:{'Content-Type':'application/json'},signal:AbortSignal.timeout(16000),body:JSON.stringify({text:submittedText,sessionId,consent:{syntheticOnly:true,regionAndTermsAccepted:true}})});
    const data=await res.json();if(!res.ok||data.code!=='LIVE_SUCCESS'||typeof data.reply!=='string')throw Error(data.code||'UNAVAILABLE');
+   if(epoch!==generation)return;
    liveReply=data.reply;liveStatus.textContent='وصل رد فعلي من النموذج لهذه الرسالة؛ أُرسل النص إلى خادم الموقع ثم إلى Groq بعد التنقيح.';
-  }catch{live=false;liveFailure='تعذر إكمال الإرسال الاختياري. قد يكون النص وصل إلى خادم الموقع أو إلى مزود النموذج؛ لم نعرض ردًا حيًا. استخدم المحاكاة المحلية أو حاول لاحقًا.';liveStatus.textContent=liveFailure;}
+  }catch{
+   if(epoch!==generation)return;
+   setLive(false);
+   liveStatus.textContent='المحاكاة المحلية متاحة لهذه المسودة.';
+   retry.hidden=false;
+   loading.hidden=true;
+   send.disabled=false;
+   form.removeAttribute('aria-busy');
+   say('تعذر إكمال الإرسال الاختياري. قد يكون النص وصل إلى خادم الموقع أو إلى مزود النموذج. المسودة متاحة للمحاكاة المحلية أو لإعادة المحاولة.');
+   retry.focus();
+   return;
+  }
  }
  if(epoch!==generation)return;
  timer=setTimeout(()=>{if(epoch!==generation)return;
  const item=document.createElement('li');item.className='sc-turn';
  const add=(tag:string,text:string)=>{const el=document.createElement(tag);el.textContent=text;item.append(el);return el;};
- add('small','أنت · قبل التنقيح (محلي فقط)');add('p',result.before);
+ add('small',liveReply?'أنت · النص الأصلي المرسل إلى خادم الموقع':'أنت · النص الأصلي في هذه المحاكاة');add('p',result.before);
  add('small',liveReply?'BRIGHT AI · رد نموذج حي':'BRIGHT AI · رد محاكاة');const reply=add('p',liveReply||result.reply);reply.className='sc-reply';
  add('p',`Firewall: ${result.decision} · Kernel: ${result.kernel} · قرارات محاكاة`);
  add('p',result.reason);add('small','بعد التنقيح / حدود الخروج المحاكى');add('pre',result.after);
  const copy=add('button','نسخ الرد') as HTMLButtonElement;copy.type='button';copy.onclick=async()=>{try{await navigator.clipboard.writeText((liveReply?'رد نموذج حي\n':'رد محاكاة\n')+(liveReply||result.reply));say('نُسخ الرد.');}catch{say('تعذر النسخ؛ حدد نص الرد وانسخه يدويًا.');}};
- thread.append(item); if(!liveReply)completeLab(root,'secure-chat');while(thread.children.length>12)thread.firstElementChild?.remove();input.value='';loading.hidden=true;send.disabled=false;form.removeAttribute('aria-busy');say(liveReply?'اكتمل الرد الحي؛ أُرسل النص إلى خادم الموقع ثم إلى Groq بعد التنقيح.':liveFailure?liveFailure:'اكتمل رد المحاكاة المحلي؛ لم يُرسل النص.');
+ thread.append(item); if(!liveReply)completeLab(root,'secure-chat');while(thread.children.length>12)thread.firstElementChild?.remove();
+ if(input.value===submittedText)input.value='';
+ loading.hidden=true;send.disabled=false;form.removeAttribute('aria-busy');say(liveReply?'اكتمل الرد الحي؛ أُرسل النص إلى خادم الموقع ثم إلى Groq بعد التنقيح.':'اكتمل رد المحاكاة المحلي؛ لم يُرسل النص.');
+ reply.tabIndex=-1;
+ reply.focus();
  },400);
  };
 });
 </script>
 <style>
-.sc-demo{padding:clamp(18px,4vw,36px);overflow-wrap:anywhere;color:var(--color-text,#f2f4ff)}header,.sc-tools,.sc-scenarios{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}header p,small,.sc-tools span{font-size:13px;color:var(--color-text-muted,#c7c9df)}h2{font-size:clamp(22px,3vw,30px);margin:8px 0}p{line-height:1.9}.sc-scenarios{justify-content:start;margin-block:24px}button,textarea{font:inherit;color:inherit;background:var(--surface-raised,#202b43);border:1px solid var(--border-strong,#69738a);border-radius:12px;padding:12px;min-height:44px;box-sizing:border-box}button{cursor:pointer}button:disabled{opacity:.6;cursor:wait}textarea{display:block;width:100%;resize:vertical;margin-block:12px}button:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--color-focus,#cbbaff);outline-offset:3px}ol{list-style:none;padding:0;min-height:160px}li{padding:22px;margin-block:18px;border:1px solid var(--border-strong,#69738a);border-radius:16px;background:var(--surface-raised,#202b43)}.sc-reply{border-inline-start:3px solid var(--color-focus,#cbbaff);padding-inline-start:18px;font-size:18px}pre{white-space:pre-wrap;font:inherit;line-height:1.8}form,details{border-block-start:1px solid var(--border-strong,#69738a);padding-block-start:20px}summary{cursor:pointer;min-height:44px}[data-loading]{padding:16px;border-inline-start:3px solid var(--color-focus,#cbbaff)}[hidden]{display:none}
+.sc-demo{padding:clamp(18px,4vw,36px);overflow-wrap:anywhere;color:var(--color-text,#f2f4ff)}header,.sc-tools,.sc-scenarios{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}header p,small,.sc-tools span{font-size:13px;color:var(--color-text-muted,#c7c9df)}h2{font-size:clamp(22px,3vw,30px);margin:8px 0}p{line-height:1.9}.sc-scenarios{justify-content:start;margin-block:24px}button,textarea{font:inherit;color:inherit;background:var(--surface-raised,#202b43);border:1px solid var(--border-strong,#69738a);border-radius:12px;padding:12px;min-height:44px;box-sizing:border-box}button{cursor:pointer}button:disabled{opacity:.6;cursor:wait}textarea{display:block;width:100%;resize:vertical;margin-block:12px}button:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--color-focus,#cbbaff);outline-offset:3px}ol{list-style:none;padding:0;min-height:160px}li{padding:22px;margin-block:18px;border:1px solid var(--border-strong,#69738a);border-radius:16px;background:var(--surface-raised,#202b43)}.sc-reply{font-size:18px}pre{white-space:pre-wrap;font:inherit;line-height:1.8}form,details{border-block-start:1px solid var(--border-strong,#69738a);padding-block-start:20px}summary{cursor:pointer;min-height:44px}[data-loading]{padding:16px;border:1px solid var(--border-strong,#69738a);border-radius:12px}[hidden]{display:none}
 </style>
