@@ -23,3 +23,9 @@ Reviewed knowledge catalog, employee-use policy, risk-assessment guide, RACI gui
 
 ## Limits
 No publish, commit or remote write. Public production URLs are not activated by local implementation. Actual Excel/LibreOffice GUI import and screen-reader use NOT RUN; CSV parsing and UTF-8 BOM verified. Sector adaptations and real internal approvals remain the user's responsibility. No SDAIA endorsement, legal advice, certification or comprehensive accessibility claim.
+
+## Current-request recheck — 2026-11-17
+- Existing three resources reused after source review; no duplicate resource pages created. Download directory now derives from each resource version/date rather than a fixed literal.
+- Fresh isolated npm run build PASS (64 public pages); src, resource files, config and lockfile match workspace byte-for-byte. Root build BLOCKED by installed Astro requiring Node >=22.23.4 while host is 22.22.2; dependencies unchanged.
+- Fresh Chrome PASS: 8 views at 390/1440, RTL, no page overflow, JavaScript disabled, download bodies HTTP 200, keyboard table focus. Six editable files verified; CSV template/example values match HTML data; three instructions present.
+- Local verification only; no production activation, commit or push.

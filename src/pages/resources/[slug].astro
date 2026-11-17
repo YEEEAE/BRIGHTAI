@@ -5,7 +5,7 @@ import '../../styles/resources.css';
 export const prerender = true;
 export function getStaticPaths(){return assets.map(asset=>({params:{slug:asset.slug},props:{asset}}));}
 const {asset:a}=Astro.props;
-const base='/resources/v1.0-2026-11-17/';
+const base=`/resources/v${a.version}-${a.date}/`;
 const url=`https://brightai.live/resources/${a.slug}/`;
 const sectors=[['enterprise','الشركات: الأدوات والبيانات والتدريب'],['government','الحكومة: صلاحية القرار وأثره على المستفيد'],['healthcare','الصحة: البيانات الصحية والمراجعة المهنية'],['finance','المالية: بيانات العملاء والقرارات المؤثرة']];
 ---

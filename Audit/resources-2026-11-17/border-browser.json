@@ -1,0 +1,134 @@
+[
+  {
+    "slug": "ai-use-policy",
+    "width": 390,
+    "rtl": "rtl",
+    "overflow": false,
+    "borders": [
+      [
+        "1px",
+        "1px",
+        "1px",
+        "1px",
+        "rgb(85, 67, 101)"
+      ],
+      [
+        "1px",
+        "1px",
+        "1px",
+        "1px",
+        "rgb(85, 67, 101)"
+      ]
+    ]
+  },
+  {
+    "slug": "ai-risk-register",
+    "width": 390,
+    "rtl": "rtl",
+    "overflow": false,
+    "borders": [
+      [
+        "1px",
+        "1px",
+        "1px",
+        "1px",
+        "rgb(85, 67, 101)"
+      ],
+      [
+        "1px",
+        "1px",
+        "1px",
+        "1px",
+        "rgb(85, 67, 101)"
+      ]
+    ]
+  },
+  {
+    "slug": "responsibility-evidence-matrix",
+    "width": 390,
+    "rtl": "rtl",
+    "overflow": false,
+    "borders": [
+      [
+        "1px",
+        "1px",
+        "1px",
+        "1px",
+        "rgb(85, 67, 101)"
+      ],
+      [
+        "1px",
+        "1px",
+        "1px",
+        "1px",
+        "rgb(85, 67, 101)"
+      ]
+    ]
+  },
+  {
+    "slug": "ai-use-policy",
+    "width": 1440,
+    "rtl": "rtl",
+    "overflow": false,
+    "borders": [
+      [
+        "1px",
+        "1px",
+        "1px",
+        "1px",
+        "rgb(85, 67, 101)"
+      ],
+      [
+        "1px",
+        "1px",
+        "1px",
+        "1px",
+        "rgb(85, 67, 101)"
+      ]
+    ]
+  },
+  {
+    "slug": "ai-risk-register",
+    "width": 1440,
+    "rtl": "rtl",
+    "overflow": false,
+    "borders": [
+      [
+        "1px",
+        "1px",
+        "1px",
+        "1px",
+        "rgb(85, 67, 101)"
+      ],
+      [
+        "1px",
+        "1px",
+        "1px",
+        "1px",
+        "rgb(85, 67, 101)"
+      ]
+    ]
+  },
+  {
+    "slug": "responsibility-evidence-matrix",
+    "width": 1440,
+    "rtl": "rtl",
+    "overflow": false,
+    "borders": [
+      [
+        "1px",
+        "1px",
+        "1px",
+        "1px",
+        "rgb(85, 67, 101)"
+      ],
+      [
+        "1px",
+        "1px",
+        "1px",
+        "1px",
+        "rgb(85, 67, 101)"
+      ]
+    ]
+  }
+]
