@@ -7,6 +7,8 @@ export const prerender = true;
   <h1>ما القرار الذي تحتاج مساعدة فيه؟</h1>
   <p class="lead">يمكنك الآن الاستفسار عن منتج، أو مناقشة نطاق دعم، أو طلب عرض سعر للمراجعة. أي سعر أو موعد أو تشغيل مؤسسي يحتاج اتفاقًا مكتوبًا؛ الاستفسار لا يحجز موعدًا ولا يفعّل تجربة.</p>
   <section id="contact" class="card contact-form ph-no-capture" aria-labelledby="draft-title" data-ph-no-capture data-ph-mask>
+    <span class="draft-anchor" id="workshop"></span>
+    <span class="draft-anchor" id="workshop-lab"></span>
     <h2 id="draft-title">1. جهّز رسالتك — اختياري</h2>
     <p id="draft-help">اكتب الهدف والمخرج المطلوب، والمنتج أو بيئة النشر إن عرفتها. لا نحتاج اسمك أو اسم الجهة هنا. المسودة تبقى في الصفحة ولا يرسلها الموقع أو يحفظها على خادم.</p>
     <label for="contact-draft">مسودة الاستفسار</label>
@@ -26,11 +28,15 @@ export const prerender = true;
   <section class="block"><h2>3. أرسل من تطبيقك وانتظر تأكيدًا</h2>
     <p>فتح البريد أو واتساب لا يرسل طلبًا. راجع الوجهة والنص ثم اضغط إرسال داخل التطبيق. الموقع لا يستطيع التحقق من الإرسال أو التسليم، ولا يعرض تأكيد استلام؛ استلام الطلب يتأكد برد من الفريق. لا توجد مدة رد معلنة.</p>
     <p>إذا لم يصلك رد، تابع عبر القناة الأخرى؛ لا تفترض أن الطلب وصل أو أن موعدًا حُجز.</p>
+    <a id="return-to-result" class="button" href="/products/ledger/complaint/#lab" hidden>ارجع إلى نتيجة المختبر</a>
   </section>
   <section class="block"><h2>تريد الاطلاع أولًا؟</h2><p><a href="/products/#lab">افتح المختبر العام بلا حساب</a> ببيانات اصطناعية، أو راجع <a href="/services/">موضوعات الدعم</a> و<a href="/pricing/">ما يحدد عرض السعر</a>. التشغيل المؤسسي منفصل ويحتاج مراجعة وموافقة.</p></section>
 </PageShell>
 <style>
-  #copy-draft[hidden] { display: none !important; }
+  .contact-form { position: relative; }
+  .draft-anchor { position: absolute; inset-block-start: 0; scroll-margin-block-start: 6rem; }
+  .contact-form .button, .contact-options .button, #return-to-result { min-block-size: 48px; }
+  #copy-draft[hidden], #return-to-result[hidden] { display: none !important; }
 </style>
 <script>
   const draft = document.querySelector<HTMLTextAreaElement>('#contact-draft');
@@ -38,6 +44,15 @@ export const prerender = true;
   const status = document.querySelector('#contact-status');
   if (draft && copy && status) {
     copy.hidden = false;
+    const fromLab = location.hash === '#workshop-lab';
+    if (fromLab || location.hash === '#workshop') {
+      if (!draft.value) {
+        draft.value = 'أرغب في الاستفسار عن ورشة الرد على شكاوى العملاء بالذكاء الاصطناعي لفريق خدمة العملاء لدينا. أود معرفة النطاق والسعر والمواعيد المتاحة.';
+      }
+      if (fromLab) {
+        document.querySelector<HTMLAnchorElement>('#return-to-result')!.hidden = false;
+      }
+    }
     copy.addEventListener('click', async () => {
       if (!draft.value.trim()) {
         status.textContent = 'اكتب وصفًا عامًا لاحتياجك أولًا، أو افتح قناة التواصل مباشرة.';

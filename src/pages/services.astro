@@ -6,6 +6,26 @@ export const prerender = true;
 <PageShell title="حوكمة الذكاء الاصطناعي للمنشآت: نطاق الدعم | BRIGHTAI" description="جهّز استفسارك عن سياسة استخدام الذكاء الاصطناعي وتقييم المخاطر وتوثيق الضوابط. اطّلع على مواد تعليمية متاحة؛ أي نطاق عمل أو سعر يحتاج اتفاقاً مكتوباً." crumbs={[{ name: 'الخدمات' }]}>
   <p class="eyebrow">الدعم والنطاق</p><h1>ابدأ بتحديد السؤال</h1>
   <p class="lead">يمكنك الآن مناقشة احتياج مؤسستك: ما المشكلة، وما المخرج الذي يساعدك على القرار؟ نراجع النطاق المطلوب قبل الاتفاق على العمل والسعر والموعد. لا يوجد حجز أو تعاقد تلقائي عبر الموقع.</p>
+  <section id="workshop" class="card workshop" aria-labelledby="workshop-title">
+    <h2 id="workshop-title">ورشة الرد على شكاوى العملاء بالذكاء الاصطناعي</h2>
+    <p><strong>٩٠ دقيقة عن بُعد</strong> لفريق خدمة عملاء واحد. يتدرّب الفريق على تنقيح الشكوى، وصياغة رد بالعربية، ومراجعته وفق سياسة المنشأة قبل الإرسال.</p>
+    <h3>ما يستلمه فريقك</h3>
+    <ul class="list">
+      <li>قالب قابل للتحرير لتنقيح الشكوى وصياغة الرد.</li>
+      <li>قائمة فحص وسجل قرار للمشرف لتوثيق الاعتماد أو التعديل أو التصعيد.</li>
+      <li>مثال محلول من التمرين يوضح الرد وسبب قرار المشرف.</li>
+    </ul>
+    <a class="button" href="/contact/#workshop">استفسر عن ورشة لفريقي</a>
+    <p class="note">نراجع النطاق والسعر وموعد الجلسة معك قبل الاتفاق.</p>
+    <section class="workshop-sample" aria-labelledby="workshop-sample-title">
+      <h3 id="workshop-sample-title">عينة من التسليم · حالة تدريبية</h3>
+      <dl>
+        <dt>الشكوى بعد التنقيح</dt><dd>تأخرت الشحنة يومين، وهي قيد النقل. يطلب العميل الإلغاء والاسترجاع.</dd>
+        <dt>مسودة الرد</dt><dd>نعتذر عن التأخير. بنتحقق مع الناقل من إمكانية إيقاف التسليم، وبنوضح لك خطوة الاسترجاع المتاحة بعد التحقق.</dd>
+        <dt>قرار المشرف وسببه</dt><dd>يعتمد الرد ويحيل طلب الإيقاف إلى فريق الشحن. يبقى الاسترجاع معلّقًا حتى يؤكد الناقل إيقاف التسليم أو عودة الشحنة.</dd>
+      </dl>
+    </section>
+  </section>
   <section class="block"><h2>موضوعات للاستفسار</h2><ul class="list"><li>تحديد حالة استخدام ومخاطرها الأولية.</li><li>إعداد مسودة سياسة داخلية تحتاج اعتماد الجهة.</li><li>فهم متطلبات توثيق الاستخدام والضوابط.</li><li>الاستفسار عن التصور المستهدف لمنتجات AIGAS.</li></ul><p>هذه أمثلة لموضوعات نقاش وليست قائمة خدمات متعاقد عليها. يتحدد أي نطاق عمل وسعر ومسؤولية واتفاق بعد مراجعة مكتوبة.</p><a class="button" href="/contact/">جهّز استفسارك واختر قناة التواصل</a></section>
 
     <ContentExtension>
@@ -14,3 +34,12 @@ export const prerender = true;
 <section><h2>ابدأ بمواد متاحة للقراءة</h2><p>يمكن لفريقك قراءة <a href="/knowledge/ai-use-policy-employees/">دليل سياسة استخدام AI للموظفين</a> و<a href="/knowledge/ai-risk-assessment/">ورقة عمل المخاطر</a> قبل مناقشة نطاق مؤسسي. صف الاحتياج بصورة عامة عبر <a href="/contact/">صفحة التواصل</a>؛ لا ترسل ملفات عملاء أو بيانات حساسة.</p></section>
     </ContentExtension>
 </PageShell>
+<style>
+  .workshop { scroll-margin-block-start: 6rem; }
+  .workshop .button { min-block-size: 48px; }
+  .workshop-sample { margin-block-start: 1.5rem; padding-inline-start: 1rem; border-inline-start: 2px solid var(--border-strong); }
+  .workshop-sample dl { margin-block-end: 0; }
+  .workshop-sample dt { font-weight: 600; }
+  .workshop-sample dd { margin: .25rem 0 1rem; }
+  .workshop-sample dd:last-child { margin-block-end: 0; }
+</style>

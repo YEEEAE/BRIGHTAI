@@ -17,3 +17,4 @@
 - 2026-11-17 VERIFIED LOCAL SEO discovery+fixes: جرد492URL/مخطط؛57صفحةعامة/build/routesPASS وunit4؛READMEحُذف/demo6description/حارسHTML؛138aliasمحليPASS لكنحي77×200/61×404؛sitemapقديم264/حالي57؛235صفحةحيةبلامصدرحالي؛التسجيلحي404؛لا نشر؛ `audit/repository-seo-discovery-2026-11-17/REPORT.md`.
 - 2026-11-18 PARTIAL LOCAL UX-07: فصل Auth غير المهيأ عن بوابة التسجيل المغلقة مع رابط `/contact/`؛ الاختبارات 3/3 PASS؛ build/browser/المنشور NOT VERIFIED لاختلاف Node24.20.0/Astro7.4.12 عن Astro6.4.8 في lock؛ `outputs/AUDIT-UX-2026.md`.
 - 2026-11-18 VERIFIED LOCAL رحلة الشكوى: خمس محطات تحت `/products/[product]/complaint/` بسياق تأخر شحنة افتراضي؛ المختبرات المستقلة متاحة؛ build Astro6.4.8/Playwright لمس390 PASS؛ لا نشر.
+- 2026-11-18 VERIFIED LOCAL ورشة الشكاوى: عرض ٩٠ دقيقة وعينة في الخدمات؛ السعر الخاص بانتظار الاعتماد؛ نتيجة Ledger تفتح مسودة ورشة ثابتة بلا نص شكوى وتتيح العودة؛ build64/Playwright لمس390 والنسخ وفتح واتساب بمحاكاة PASS؛ لا نشر أو إرسال.
