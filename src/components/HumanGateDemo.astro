@@ -12,6 +12,7 @@
  </article></div><noscript>فعّل JavaScript لتشغيل Queue المحلية. لا تُستخدم صلاحيات فعلية في هذا المختبر.</noscript>
 </section>
 <script>
+import {startLab,completeLab,resetLab} from '../scripts/measurement';
 import {createQueue,act,ledgerEvent} from '../shared/human-gate-demo.mjs';
 document.querySelectorAll<HTMLElement>('[data-hg-demo]').forEach(root=>{
  let queue=createQueue(),selected=queue[0].id,events=new Map();
@@ -35,9 +36,9 @@ document.querySelectorAll<HTMLElement>('[data-hg-demo]').forEach(root=>{
   get('[data-history]').replaceChildren(...r.history.map(t=>{const li=document.createElement('li');li.textContent=t;return li;}));
   get('[data-event]').textContent=events.has(r.id)?JSON.stringify(events.get(r.id),null,2):'لم يولّد حدث في هذه الدورة.';
  }
- root.querySelectorAll<HTMLButtonElement>('[data-act]').forEach(b=>b.onclick=()=>{try{const r=queue.find(r=>r.id===selected)!;const next=act(r,persona.value,b.dataset.act,reason.value);queue=queue.map(q=>q.id===selected?next:q);if(['APPROVE','REJECT','EXECUTE'].includes(b.dataset.act!))events.set(selected,ledgerEvent(next));render();say(b.dataset.act==='CLARIFY'?'سُجل توضيح محلي؛ الحالة PENDING دون قرار خادمي.':'اكتمل إجراء المحاكاة: '+next.status);}catch(e){say(e instanceof Error?e.message:'تعذر الإجراء.');}});
+ root.querySelectorAll<HTMLButtonElement>('[data-act]').forEach(b=>b.onclick=()=>{try{const r=queue.find(r=>r.id===selected)!;const next=act(r,persona.value,b.dataset.act,reason.value);startLab(root,'human-gate');if(['EXECUTED','REJECTED','CANCELLED','EXPIRED'].includes(next.status))completeLab(root,'human-gate');queue=queue.map(q=>q.id===selected?next:q);if(['APPROVE','REJECT','EXECUTE'].includes(b.dataset.act!))events.set(selected,ledgerEvent(next));render();say(b.dataset.act==='CLARIFY'?'سُجل توضيح محلي؛ الحالة PENDING دون قرار خادمي.':'اكتمل إجراء المحاكاة: '+next.status);}catch(e){say(e instanceof Error?e.message:'تعذر الإجراء.');}});
  persona.onchange=()=>{render();say('تغيّرت شخصية demo فقط؛ صلاحيات حسابك لم تتغير.');};filter.onchange=render;
- const reset=()=>{queue=createQueue();selected=queue[0].id;events.clear();persona.value='requester';filter.value='all';reason.value='';render();say('أعيدت بيانات المحاكاة؛ لم تحفظ قرارات.');};
+ const reset=()=>{resetLab(root);queue=createQueue();selected=queue[0].id;events.clear();persona.value='requester';filter.value='all';reason.value='';render();say('أعيدت بيانات المحاكاة؛ لم تحفظ قرارات.');};
  get('[data-reset]').onclick=reset;
  get('[data-new]').onclick=()=>{const r={...createQueue()[0],id:'HG-DEMO-'+String(queue.length+1).padStart(2,'0')};queue.push(r);selected=r.id;filter.value='all';reason.value='';render();say('أُنشئ طلب اصطناعي جديد.');};
  const shellReset=root.closest('[data-lab-shell]')?.querySelector<HTMLButtonElement>('[data-lab-reset]');if(shellReset){shellReset.hidden=false;shellReset.onclick=reset;}

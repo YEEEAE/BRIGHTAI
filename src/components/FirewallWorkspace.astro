@@ -30,6 +30,7 @@ import {examples, rules} from '../shared/firewall-demo.mjs';
   <noscript>الفحص يحتاج JavaScript؛ سياسة المثال وأسبابه الخمسة ظاهرة أعلاه.</noscript>
 </section>
 <script>
+import {startLab,completeLab,resetLab} from '../scripts/measurement';
 import {evaluateDemo, examples} from '../shared/firewall-demo.mjs';
 document.querySelectorAll<HTMLElement>('[data-demo-workspace]').forEach(root => {
  const field = root.querySelector<HTMLTextAreaElement>('textarea')!;
@@ -52,14 +53,14 @@ document.querySelectorAll<HTMLElement>('[data-demo-workspace]').forEach(root => 
  });
  check.disabled = clear.disabled = false;
  field.addEventListener('input', () => invalidate());
- const reset = () => {field.value=''; invalidate('أُعيد الضبط. لم يُفحص أي طلب.'); field.focus();};
+ const reset = () => {resetLab(root);field.value=''; invalidate('أُعيد الضبط. لم يُفحص أي طلب.'); field.focus();};
  clear.addEventListener('click',reset);
  const shellReset = root.closest('[data-lab-shell]')?.querySelector<HTMLButtonElement>('[data-lab-reset]');
  if(shellReset) {shellReset.hidden=false; shellReset.addEventListener('click',reset);}
  check.addEventListener('click', () => {
    invalidate(); const input = field.value; const decision = evaluateDemo(input);
    if ('error' in decision) {status.textContent=decision.error!; field.setAttribute('aria-invalid','true'); return;}
-   field.removeAttribute('aria-invalid'); check.disabled=true; root.setAttribute('aria-busy','true');
+   startLab(root,'firewall'); field.removeAttribute('aria-invalid'); check.disabled=true; root.setAttribute('aria-busy','true');
    status.textContent='جارٍ تطبيق قواعد demo محليًا…';
    timer=setTimeout(() => {
      root.setAttribute('aria-busy','false'); check.disabled=false; result.hidden=false;
@@ -73,7 +74,7 @@ document.querySelectorAll<HTMLElement>('[data-demo-workspace]').forEach(root => 
      circuit.dataset.state=String(index); circuit.style.setProperty('--branch-color','var(--color-focus)');
      set('[data-path-label]',decision.label);
      const packet=root.querySelector('[data-decision-packet]')!; packet.setAttribute('cx',String(60+index*120));
-     status.textContent='اكتمل المثال: '+decision.label;
+     status.textContent='اكتمل المثال: '+decision.label; completeLab(root,'firewall');
    },250);
  });
 });

@@ -7,6 +7,7 @@
   <p>مسار المثال: Firewall → Human Gate → Ledger. <a href="/demo/firewall/">شاهد Firewall</a> · <a href="/demo/human-gate/">شاهد Human Gate</a> — أمثلة معزولة؛ لا تُنقل بيانات بينها.</p>
 </section>
 <script>
+import {startLab,completeLab,resetLab} from '../scripts/measurement';
 import {createEvent,verifyChain,exportDemo} from '../shared/ledger-demo.mjs';
 const root=document.querySelector('#ledger-demo');
 if(root){
@@ -21,11 +22,11 @@ function render(){
 }
 async function run(action){if(busy)return;busy=true;root.querySelectorAll('.tools button').forEach(b=>b.disabled=true);
 try{
-if(action==='reset'){events=[await createEvent(0,'GENESIS')];selected=0;setStatus('غير مفحوصة · حدث افتراضي واحد جاهز.');}
-if(action==='add'){if(events.length>=3){setStatus('اكتمل المثال: ثلاثة أحداث. أعد الضبط لتكراره.');return;}while(events.length<3){events.push(await createEvent(events.length,events.at(-1)?.hash||'GENESIS'));}setStatus('أُضيف حدثا Firewall وHuman Gate. افتح سجلًا ثم تحقق.');}
+if(action==='reset'){resetLab(root);events=[await createEvent(0,'GENESIS')];selected=0;setStatus('غير مفحوصة · حدث افتراضي واحد جاهز.');}
+if(action==='add'){startLab(root,'ledger');if(events.length>=3){setStatus('اكتمل المثال: ثلاثة أحداث. أعد الضبط لتكراره.');return;}while(events.length<3){events.push(await createEvent(events.length,events.at(-1)?.hash||'GENESIS'));}setStatus('أُضيف حدثا Firewall وHuman Gate. افتح سجلًا ثم تحقق.');}
 if(action==='empty'){events=[];selected=0;setStatus('EMPTY · السلسلة فارغة؛ لا توجد أدلة للتحقق.');}
 if(action==='alter'&&events.length){events[selected].reason='سبب معدّل في المثال';setStatus(`تم تغيير سبب الحدث ${selected+1} مع إبقاء hash المحفوظ؛ تحقق لاكتشاف الخلل.`);}
-if(action==='verify'){setStatus('جارٍ حساب SHA-256…');const result=await verifyChain(events);setStatus(result.state==='empty'?'EMPTY · لا توجد أحداث للتحقق.':result.state==='valid'?`VALID ✓ · ${events.length} أحداث متسقة في هذا المثال المحلي.`:`ALTERED ✕ · أول خلل في الحدث ${result.index+1}: ${result.reason}. قارن hash المحفوظ بالمحسوب في Inspector.`);if(result.index!==undefined){selected=result.index;render();const p=document.createElement('p');p.textContent=`hash المحسوب: ${result.computed}`;inspector.append(p);return;}}
+if(action==='verify'){setStatus('جارٍ حساب SHA-256…');const result=await verifyChain(events);if(result.state!=='empty'){startLab(root,'ledger');completeLab(root,'ledger');}setStatus(result.state==='empty'?'EMPTY · لا توجد أحداث للتحقق.':result.state==='valid'?`VALID ✓ · ${events.length} أحداث متسقة في هذا المثال المحلي.`:`ALTERED ✕ · أول خلل في الحدث ${result.index+1}: ${result.reason}. قارن hash المحفوظ بالمحسوب في Inspector.`);if(result.index!==undefined){selected=result.index;render();const p=document.createElement('p');p.textContent=`hash المحسوب: ${result.computed}`;inspector.append(p);return;}}
 if(action==='export'){const blob=new Blob([exportDemo(events)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='ledger-demo-synthetic.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);setStatus('تم تصدير JSON محلي بوسم DEMO / SYNTHETIC؛ أحداث اصطناعية فقط.');}
 render();
 }catch{setStatus('تعذر الحساب. يلزم متصفح يدعم Web Crypto وسياق HTTPS أو localhost.');}finally{busy=false;root.querySelectorAll('.tools button').forEach(b=>b.disabled=false);}}

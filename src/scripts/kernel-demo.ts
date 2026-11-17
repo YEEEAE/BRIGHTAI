@@ -1,3 +1,4 @@
+import {startLab,completeLab,resetLab} from './measurement';
 import { parseScenario, scenarioEvidence } from '../shared/kernel-demo.mjs';
 const root = document.querySelector<HTMLElement>('[data-kernel-demo]')!;
 const asset = root.querySelector<HTMLSelectElement>('[name=asset]')!;
@@ -32,10 +33,10 @@ function render(save = true) {
   try {sessionStorage.setItem('aigas:scenario:kernel', url.search);root.querySelector('[data-kernel-storage]')!.textContent='سياق عام محفوظ لهذه الجلسة؛ لا نصوص أو هوية.';} catch {root.querySelector('[data-kernel-storage]')!.textContent='التخزين غير متاح؛ سياق Kernel محفوظ في رابط المثال فقط.';}
   window.dispatchEvent(new Event('aigas:scenario-change'));
 }
-root.querySelector('form')!.addEventListener('submit',e=>{e.preventDefault();applied=true;review='pending';render();});
+root.querySelector('form')!.addEventListener('submit',e=>{e.preventDefault();startLab(root,'kernel');applied=true;review='pending';render();if(policy.value!=='review')completeLab(root,'kernel');});
 [asset,policy].forEach(el=>el.addEventListener('change',()=>{applied=false;review='pending';render();}));
-root.querySelectorAll<HTMLButtonElement>('[data-review]').forEach(button=>button.addEventListener('click',()=>{review=button.dataset.review!;render();}));
-root.querySelector('[data-kernel-reset]')!.addEventListener('click',()=>{asset.value='summary';policy.value='redact';applied=false;review='pending';render();});
+root.querySelectorAll<HTMLButtonElement>('[data-review]').forEach(button=>button.addEventListener('click',()=>{review=button.dataset.review!;render();completeLab(root,'kernel');}));
+root.querySelector('[data-kernel-reset]')!.addEventListener('click',()=>{resetLab(root);asset.value='summary';policy.value='redact';applied=false;review='pending';render();});
 window.addEventListener('popstate',restore);
 // Resume only the matching public fixture; never read workspace or identity state.
 try {const saved=sessionStorage.getItem('aigas:scenario:kernel');if(saved){const prior=new URLSearchParams(saved);const current=new URLSearchParams(location.search);if(!current.has('stage')&&(!current.has('scenario')||current.get('scenario')===prior.get('scenario')))history.replaceState({},'',location.pathname+saved+location.hash);}} catch { /* URL still works. */ }

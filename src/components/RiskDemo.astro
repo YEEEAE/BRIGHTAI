@@ -15,6 +15,7 @@ const initial = riskDemo({asset:'privacy',context:'sandbox',likelihood:3,impact:
  <noscript>فعّل JavaScript لاختيار السيناريو وإعادة الحساب والتصدير. التقدير الافتراضي أعلاه للقراءة فقط.</noscript>
 </section>
 <script>
+import {startLab,completeLab,resetLab} from '../scripts/measurement';
 import { riskAssets, riskDemo } from '../shared/risk-demo.mjs';
 document.querySelectorAll<HTMLElement>('[data-risk-demo]').forEach(root=>{
  const field=(name:string)=>root.querySelector<HTMLSelectElement>(`[data-field="${name}"]`)!;
@@ -30,11 +31,11 @@ document.querySelectorAll<HTMLElement>('[data-risk-demo]').forEach(root=>{
   set('[data-decision-status]',decision==='accepted'?`مقبول تجريبيًا · Accepted · ${result.residual.score}/9 — قبول خيالي دون صلاحية تشغيل`:decision==='review'?'قيد مراجعة خيالية · لم يُقبل':'غير مقبول · يلزم قرار جديد بعد أي تغيير');
   root.querySelector<HTMLButtonElement>('[data-decision="accepted"]')!.disabled=field('treatment').value!=='reduce';
  }
- root.querySelectorAll<HTMLSelectElement>('[data-field]').forEach(el=>el.addEventListener('change',()=>{if(el===field('asset')){const a=riskAssets[el.value];field('likelihood').value=String(a.likelihood);field('impact').value=String(a.impact);field('control').value='none';field('treatment').value='reduce';}decision='unaccepted';set('[data-export-status]','');render();}));
+ root.querySelectorAll<HTMLSelectElement>('[data-field]').forEach(el=>el.addEventListener('change',()=>{startLab(root,'risk-engine');if(el===field('asset')){const a=riskAssets[el.value];field('likelihood').value=String(a.likelihood);field('impact').value=String(a.impact);field('control').value='none';field('treatment').value='reduce';}decision='unaccepted';set('[data-export-status]','');render();}));
  root.querySelectorAll<HTMLButtonElement>('button').forEach(b=>b.disabled=false);
- root.querySelectorAll<HTMLButtonElement>('[data-matrix]').forEach(b=>b.addEventListener('click',()=>{const [l,i]=b.dataset.matrix!.split('-');field('likelihood').value=l;field('impact').value=i;decision='unaccepted';render();}));
- root.querySelectorAll<HTMLButtonElement>('[data-decision]').forEach(b=>b.addEventListener('click',()=>{decision=b.dataset.decision!;render();}));
- root.querySelector('[data-reset-risk]')!.addEventListener('click',()=>{for(const [key,value] of Object.entries({asset:'privacy',context:'sandbox',likelihood:'3',impact:'3',treatment:'reduce',control:'none'}))field(key).value=value;decision='unaccepted';set('[data-export-status]','');render();});
+ root.querySelectorAll<HTMLButtonElement>('[data-matrix]').forEach(b=>b.addEventListener('click',()=>{startLab(root,'risk-engine');const [l,i]=b.dataset.matrix!.split('-');field('likelihood').value=l;field('impact').value=i;decision='unaccepted';render();}));
+ root.querySelectorAll<HTMLButtonElement>('[data-decision]').forEach(b=>b.addEventListener('click',()=>{startLab(root,'risk-engine');decision=b.dataset.decision!;render();completeLab(root,'risk-engine');}));
+ root.querySelector('[data-reset-risk]')!.addEventListener('click',()=>{resetLab(root);for(const [key,value] of Object.entries({asset:'privacy',context:'sandbox',likelihood:'3',impact:'3',treatment:'reduce',control:'none'}))field(key).value=value;decision='unaccepted';set('[data-export-status]','');render();});
  root.querySelector('[data-export-risk]')!.addEventListener('click',()=>{const blob=new Blob([JSON.stringify({...result,decision,accepted:decision==='accepted'?{marking:'Synthetic',score:result.residual.score,operationalAcceptance:false}:null,reviewer:'نورة · مراجعة مستقلة افتراضية',review:'بعد 7 أيام افتراضية أو فور تغير المدخلات',assumptions:'Demo ordinal scale; assumed effectiveness; no real data or regulatory thresholds'},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='Synthetic-risk-demo.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);set('[data-export-status]','أُنشئ ملخص Synthetic محليًا؛ لا قبول مؤسسي.');});
  const reset=root.closest('[data-lab-shell]')?.querySelector<HTMLButtonElement>('[data-lab-reset]');if(reset){reset.hidden=false;reset.addEventListener('click',()=>root.querySelector<HTMLButtonElement>('[data-reset-risk]')!.click());}
  render();

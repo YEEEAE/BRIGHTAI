@@ -306,7 +306,7 @@ test('route and section labels are fixed and cannot carry a query, fragment or i
 
 test('URL/referrer policy drops a free query and an unknown referrer instead of forwarding it', () => {
   const policy = describeUrlPolicy();
-  assert.deepEqual(policy.pageQueryAllowlist, ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']);
+  assert.deepEqual(policy.pageQueryAllowlist, ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content']);
   assert.deepEqual(policy.referrerHostAllowlist, ['brightai.live', 'www.brightai.live']);
   assert.equal(policy.fragment, 'dropped');
 
@@ -392,7 +392,7 @@ test('the CSP hash of the shipped GA4 snippet matches the middleware allowlist',
 
 test('GA4 loader is shared by every HTML template', () => {
   const snippet = readFileSync(new URL('../src/components/GoogleAnalytics.astro', import.meta.url), 'utf8');
-  assert.match(snippet, /async src="https:\/\/www.googletagmanager.com\/gtag\/js\?id=G-9LMB4PGTWJ"/);
+  assert.match(snippet, /type="module" src="\/measurement.mjs"/);
   for (const path of ['layouts/BaseLayout.astro', 'layouts/AppLayout.astro', 'pages/demo/[product].astro']) {
     const source = readFileSync(new URL('../src/' + path, import.meta.url), 'utf8');
     assert.equal((source.match(/<GoogleAnalytics \/>/g) ?? []).length, 1, path);
@@ -436,7 +436,24 @@ test('one global kill switch stops both transports at send time', async () => {
 
 test('sensitive free-form fields never become product payloads', () => {
   approveAll();
-  for (const field of ['email', 'tenant_id', 'message', 'chat', 'prompt', 'body']) {
+  for (const field of ['email', 'tenant_id', 'tenantId', 'tenant_ids', 'message', 'chat', 'prompt', 'body', 'search', 'search_term', 'form', 'form_values']) {
     assert.equal(buildProductEvent('login_flow_result', { status_code: 200, [field]: 'SYNTHETIC_PRIVATE' }), null);
   }
+});
+
+test('global kill switch takes effect after successful sends in the same process and resumes without replay', async () => {
+  approveAll();
+  assert.equal(await captureProductEvent('portal_viewed', { section: 'portal' }), true);
+  assert.equal(await captureServerFailure(null, { status: 503, surface: 'kernel' }), true);
+  const sentBeforeKill = calls.length;
+  assert.equal(sentBeforeKill, 2);
+  process.env.AIGAS_MONITORING_KILL_SWITCH = 'true';
+  for (let i = 0; i < 3; i++) {
+    assert.equal(await captureProductEvent('portal_viewed', { section: 'portal' }), false);
+    assert.equal(await captureServerFailure(null, { status: 503, surface: 'kernel' }), false);
+  }
+  assert.equal(calls.length, sentBeforeKill);
+  process.env.AIGAS_MONITORING_KILL_SWITCH = 'false';
+  assert.equal(await captureProductEvent('portal_viewed', { section: 'portal' }), true);
+  assert.equal(calls.length, sentBeforeKill + 1, 'disabled calls are not replayed');
 });

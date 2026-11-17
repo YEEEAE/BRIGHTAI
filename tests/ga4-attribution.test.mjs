@@ -21,7 +21,7 @@ for (const [name, referrer, expected] of fixtures) {
 }
 test('UTM survives independently of missing referrer; unsafe campaign values are dropped', () => {
   assert.equal(safeAnalyticsUrl('https://brightai.live/?utm_source=google&utm_medium=cpc&utm_campaign=launch&utm_term=ai&utm_content=hero&gclid=SECRET#SECRET'),
-    'https://brightai.live/?utm_source=google&utm_medium=cpc&utm_campaign=launch&utm_term=ai&utm_content=hero');
+    'https://brightai.live/?utm_source=google&utm_medium=cpc&utm_campaign=launch&utm_content=hero');
   assert.equal(safeAnalyticsUrl('https://brightai.live/?utm_source=person%40example.test&utm_campaign=' + 'a'.repeat(65)), 'https://brightai.live/');
   const call = executeSnippet(inline, 'https://brightai.live/?utm_source=google&utm_medium=cpc', '')[1];
   assert.equal(call[2].page_referrer, '');
@@ -30,7 +30,7 @@ test('UTM survives independently of missing referrer; unsafe campaign values are
 test('portal gate ships the identical init; each active template has one loader', async () => {
   const html = await portalUnavailablePage().text();
   assert.equal(inlineSnippet(html), inline);
-  assert.equal((html.match(/googletagmanager.com\/gtag\/js/g) || []).length, 1);
+  assert.equal((html.match(/src="\/measurement.mjs"/g) || []).length, 1);
   for (const file of ['layouts/BaseLayout.astro', 'layouts/AppLayout.astro', 'pages/demo/[product].astro']) {
     const src = readFileSync(new URL('../src/' + file, import.meta.url), 'utf8');
     assert.equal((src.match(/<GoogleAnalytics \/>/g) || []).length, 1);

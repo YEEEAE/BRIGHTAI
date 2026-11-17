@@ -14,6 +14,7 @@ const PAGE = `<!doctype html>
       (function () {
       if (window.__brightaiGa4Initialized) return;
       window.__brightaiGa4Initialized = true;
+      window['ga-disable-G-9LMB4PGTWJ'] = true;
       window.dataLayer = window.dataLayer || [];
       function gtag(){window.dataLayer.push(arguments);}
       window.gtag = gtag;
@@ -22,7 +23,7 @@ const PAGE = `<!doctype html>
       // that forwards whatever is left. Unknown query keys and the whole
       // fragment are dropped; an unknown referrer host becomes an explicit
       // empty page_referrer instead of falling back to document.referrer.
-      const analyticsQueryAllowlist = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+      const analyticsQueryAllowlist = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'];
       const analyticsReferrerHosts = ['brightai.live', 'www.brightai.live'];
       // Owner-approved locally 2026-11-17. Exact hosts; no wildcard/subdomains.
       const analyticsAttributionHosts = ['google.com', 'www.google.com', 'bing.com', 'www.bing.com'];
@@ -74,7 +75,7 @@ const PAGE = `<!doctype html>
       gtag('config', 'G-9LMB4PGTWJ', analyticsPage);
       })();
     </script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9LMB4PGTWJ"></script>
+    <script is:inline type="module" src="/measurement.mjs"></script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex, nofollow" />
