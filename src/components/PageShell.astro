@@ -54,5 +54,6 @@ const minutes = Math.max(1, Math.ceil(words / 180));
     {!['docs', 'knowledge', 'products'].includes(family) && <PageMotionStudy family={family} segment={segment}/>}
   </main>
   {!['docs', 'knowledge', 'products'].includes(family) && <><InteriorController /><InteriorMotion /></>}
+  <script>import '../scripts/knowledge-context';</script>
   <Footer />
 </BaseLayout>

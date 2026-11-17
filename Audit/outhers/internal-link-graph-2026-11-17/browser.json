@@ -1,0 +1,596 @@
+[
+  {
+    "path": "/knowledge/ai-audit-trail/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 8,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/ai-bias-fairness/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/ai-contract-clauses/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/ai-cybersecurity-nca/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/ai-data-residency-saudi/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 8,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/ai-employee-training/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 4
+  },
+  {
+    "path": "/knowledge/ai-governance-committee-raci/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/ai-governance-financial-sector/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 8,
+    "related": 3,
+    "practical": 4
+  },
+  {
+    "path": "/knowledge/ai-governance-healthcare/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 8,
+    "related": 3,
+    "practical": 4
+  },
+  {
+    "path": "/knowledge/ai-governance-saudi/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 8,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/ai-hallucinations-controls/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/ai-impact-assessment/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/ai-inventory-register/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/ai-risk-assessment/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/ai-use-policy-employees/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 8,
+    "related": 3,
+    "practical": 4
+  },
+  {
+    "path": "/knowledge/ai-vendor-assessment/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/choose-ai-governance-platform/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 8,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/data-breach-72-hours-ai/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/data-classification-for-ai/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/data-governance-vs-ai-governance/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 8,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/deepfake-policy-organizations/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/iso-42001-saudi/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 12,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/pdpl-and-ai/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 11,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/prompt-injection/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 4,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/protect-company-data-chatgpt/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 5,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/saudi-ai-ethics-principles/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 13,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/saudi-ai-law-binding-vs-guidance/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 12,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/saudi-ai-regulators-map/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/sdaia-ai-adoption-framework/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 15,
+    "related": 3,
+    "practical": 4
+  },
+  {
+    "path": "/knowledge/sdaia-ai-ethics-self-assessment/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 13,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/sdaia-generative-ai-guidelines/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 12,
+    "related": 3,
+    "practical": 4
+  },
+  {
+    "path": "/knowledge/shadow-ai-detection/",
+    "width": 390,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 4
+  },
+  {
+    "width": 390,
+    "journey": "search → guide → related → TOC → lab → contact → results",
+    "passed": true,
+    "restoredScroll": 1226,
+    "returnTo": "/docs/?q=%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA&topic=privacy&view=expanded#kc-scroll=1226"
+  },
+  {
+    "path": "/knowledge/ai-audit-trail/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 8,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/ai-bias-fairness/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/ai-contract-clauses/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/ai-cybersecurity-nca/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/ai-data-residency-saudi/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 8,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/ai-employee-training/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 4
+  },
+  {
+    "path": "/knowledge/ai-governance-committee-raci/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/ai-governance-financial-sector/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 8,
+    "related": 3,
+    "practical": 4
+  },
+  {
+    "path": "/knowledge/ai-governance-healthcare/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 8,
+    "related": 3,
+    "practical": 4
+  },
+  {
+    "path": "/knowledge/ai-governance-saudi/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 8,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/ai-hallucinations-controls/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/ai-impact-assessment/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/ai-inventory-register/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/ai-risk-assessment/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/ai-use-policy-employees/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 8,
+    "related": 3,
+    "practical": 4
+  },
+  {
+    "path": "/knowledge/ai-vendor-assessment/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/choose-ai-governance-platform/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 8,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/data-breach-72-hours-ai/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/data-classification-for-ai/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/data-governance-vs-ai-governance/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 8,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/deepfake-policy-organizations/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/iso-42001-saudi/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 12,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/pdpl-and-ai/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 11,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/prompt-injection/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 4,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/protect-company-data-chatgpt/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 5,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/saudi-ai-ethics-principles/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 13,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/saudi-ai-law-binding-vs-guidance/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 12,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/saudi-ai-regulators-map/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/sdaia-ai-adoption-framework/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 15,
+    "related": 3,
+    "practical": 4
+  },
+  {
+    "path": "/knowledge/sdaia-ai-ethics-self-assessment/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 13,
+    "related": 3,
+    "practical": 3
+  },
+  {
+    "path": "/knowledge/sdaia-generative-ai-guidelines/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 12,
+    "related": 3,
+    "practical": 4
+  },
+  {
+    "path": "/knowledge/shadow-ai-detection/",
+    "width": 1440,
+    "overflow": false,
+    "rtl": "rtl",
+    "toc": 7,
+    "related": 3,
+    "practical": 4
+  },
+  {
+    "width": 1440,
+    "journey": "search → guide → related → TOC → lab → contact → results",
+    "passed": true,
+    "restoredScroll": 907,
+    "returnTo": "/docs/?q=%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA&topic=privacy&view=expanded#kc-scroll=907"
+  },
+  {
+    "noJS": true,
+    "staticLinksAndTOC": true
+  }
+]

@@ -3,7 +3,6 @@ import AnswerUnits from '../../components/AnswerUnits.astro';
 import PageShell from '../../components/PageShell.astro';
 import { articleStructuredData } from '../../data/structured-data';
 import { newGuides, type Guide } from '../../data/knowledge-guides';
-import { articles } from '../../data/knowledge';
 
 export const prerender = true;
 export function getStaticPaths() {
@@ -19,7 +18,6 @@ const article = {
 const faq = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: guide.faqs.map(item => ({
   '@type': 'Question', name: item.question, acceptedAnswer: { '@type': 'Answer', text: item.answer },
 })) };
-const related = guide.related.map(slug => articles.find(item => item.href === `/knowledge/${slug}/`)).filter(Boolean);
 ---
 <PageShell title={`${guide.title} | BRIGHTAI`} description={guide.description} crumbs={[{ name: 'مركز المعرفة', href: '/docs/' }, { name: guide.title }]} ogType="article" structuredData={article} editorial={guide.editorial}>
   <article class="practical-guide">
@@ -46,7 +44,7 @@ const related = guide.related.map(slug => articles.find(item => item.href === `/
     <section class="block"><h2>المصادر الرسمية وحدود الاستشهاد</h2><p>تاريخ الاطلاع الموثق في بيانات التحرير أعلاه يخص المصادر وقت إعداد الدليل، ولا يثبت استمرار سريانها أو مراجعة تخصصية. الإحالات تدعم الموضوع المحدد في وصفها؛ الجداول والأمثلة والخطوات المقترحة صياغة تعليمية من BRIGHT AI، وليست نصوصًا منقولة عن الجهات.</p>
       <ul class="list">{guide.sources.map(source => <li><a href={source.url} target="_blank" rel="noopener noreferrer">{source.label}</a><p>{source.note}</p></li>)}</ul>
     </section>
-    <section class="block"><h2>أدلة تكمل الموضوع</h2><ul class="list">{related.map(item => item && <li><a href={item.href}>{item.title}</a><p>{item.text}</p></li>)}</ul><a class="ghost" href="/docs/">تصفح جميع أدلة المعرفة ←</a></section>
+
   </article>
   <script type="application/ld+json" set:html={JSON.stringify(faq).replace(/</g, '\\u003c')} />
 </PageShell>

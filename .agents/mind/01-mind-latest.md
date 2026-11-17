@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-17 VERIFIED LOCAL internal links: graphHTML71/2886anchors؛32دليلًا بعلاقاتتحريرية+أصل/منتج/قطاععندالحاجة؛حفظبحث/فهرس/عودةعبرlab/contact؛GET135كلها200بلاredirect/أقساممكسورة؛unit5/build64/Browser64+8sector+رحلتينPASS؛لانشر؛ `audit/internal-link-graph-2026-11-17/REPORT.md`.
 - 2026-11-17 VERIFIED RESEARCH links: 4 فرص بصفحة وقناة مهنية + AMSA معلقة بالقناة؛5 مسودات بلا إرسال؛Ahrefs baseline BLOCKED بـInsufficient plan؛لا broken/unlinked مؤكدة؛إتاحة resources الحية NOT VERIFIED؛ `audit/link-opportunities-2026-11-17/REPORT.md`.
 - 2026-11-17 VERIFIED LOCAL resources: /resources/ وثلاثةأصولعربيةHTML+MD/CSVوأمثلةاصطناعية/CC BY4.0/v1.0-2026-11-17/دونبريد؛build64/Browser8×390و1440/RTL/noJS/downloads/37links PASS؛لانشر؛ `audit/resources-2026-11-17/REPORT.md`.
 - 2026-11-17 VERIFIED LOCAL answer units:3أسئلةGSCمباشرة+5وحداتموضوعية/7صفحاتقائمة؛40استعلامًامربوطًا؛build60/HTML/FAQparity/Browser14PASS؛مصدرأسئلةالجمهورغيرمتاح/الفهرسةالفعليةوالنشرNOT RUN؛ `audit/answer-units-2026-11-17/REPORT.md`.

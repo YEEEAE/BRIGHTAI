@@ -1,10 +1,11 @@
 ---
-import { articles, topics } from '../data/knowledge';
+import { articles } from '../data/knowledge';
+import { relatedSlugs, journeyFor } from '../data/knowledge-journeys';
 import '../styles/knowledge-reader.css';
 interface Props { content: string; toc: {id:string;title:string}[]; minutes: number; path: string }
 const {content, toc, minutes, path} = Astro.props;
-const current = articles.find(a => a.href === path);
-const related = articles.filter(a => a.href !== path && a.topic === current?.topic).slice(0,3);
+const related = relatedSlugs(path).map(slug => articles.find(a => a.href === `/knowledge/${slug}/`)).filter(Boolean);
+const journey = journeyFor(path, articles.find(a => a.href === path)!.title);
 ---
 <div class="kr" data-knowledge-reader>
   <div class="kr-bar"><a href="/docs/" data-back-center>← عودة لمركز المعرفة</a><span><bdi>AIGAS / KNOWLEDGE</bdi> · {minutes} دقائق قراءة تقديرية</span></div>
@@ -12,6 +13,7 @@ const related = articles.filter(a => a.href !== path && a.topic === current?.top
     <aside class="kr-sidebar"><div class="kr-side-inner"><p class="kr-label">داخل هذا الدليل</p><progress class="kr-progress" max="100" value="0" aria-label="تقدم قراءة الدليل"/><details open><summary>فهرس الأقسام</summary><nav aria-label="فهرس الدليل">{toc.map((h,i) => <a href={`#${h.id}`}><bdi>{String(i+1).padStart(2,'0')}</bdi><span set:html={h.title}/></a>)}</nav></details><p class="kr-disclaimer">محتوى تعليمي · راجع المراجع الرسمية قبل اتخاذ القرار.</p></div></aside>
     <div class="kr-content" data-knowledge-content><Fragment set:html={content}/><!--knowledge-content-end--></div>
   </div>
-  {related.length > 0 && <section class="kr-related" aria-label="أدلة مرتبطة"><p class="kr-label">تابع في الموضوع نفسه · {topics.find(t => t[0] === current?.topic)?.[1]}</p><h2>أكمل الصورة</h2><div>{related.map(a => <a href={a.href}><span>{a.tag}</span><h3>{a.title}</h3><span aria-hidden="true">←</span></a>)}</div></section>}
+  {journey.length > 0 && <section class="kr-related" aria-label="من الفهم إلى التطبيق"><p class="kr-label">فهم المشكلة ← اتخاذ قرار ← تجربة تعليمية ← تواصل</p><h2>خطوتك التالية</h2><p>اختر ما يناسب حالتك؛ التجارب محاكاة تعليمية ولا تثبت إتاحة تشغيلية أو امتثالًا.</p><div>{journey.map(link => <a href={link.href}><span>{link.stage}</span><h3>{link.label}</h3><p>{link.reason}</p></a>)}</div></section>}
+  {related.length > 0 && <section class="kr-related" aria-label="أدلة مرتبطة"><p class="kr-label">قراءات مختارة بحسب السؤال والخطوة التالية</p><h2>أكمل الصورة</h2><div>{related.map(a => <a href={a.href}><span>{a.tag}</span><h3>{a.title}</h3><span aria-hidden="true">←</span></a>)}</div></section>}
 </div>
 <script>import '../scripts/knowledge-reader';</script>

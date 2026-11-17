@@ -1,0 +1,13 @@
+{
+  "pages": 71,
+  "edges": 2861,
+  "issues": 0,
+  "types": {},
+  "httpTargets": 0,
+  "unreachable": [
+    "/404.html",
+    "/authors/brightai-team/",
+    "/authors/",
+    "/authors/yazeed-alshareef/"
+  ]
+}
