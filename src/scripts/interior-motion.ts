@@ -180,18 +180,6 @@ export function initializeMotion() {
       play(bubble, [{ opacity: .65, transform: 'translateY(5px)' }, { opacity: 1, transform: 'none' }], 300);
     }, { signal }));
   });
-  // Only explain invalid mailto fields. No submission, tracking, or storage is added.
-  const form = root.querySelector<HTMLFormElement>('#contact');
-  form?.addEventListener('invalid', event => {
-    const field = event.target as HTMLInputElement;
-    field.setAttribute('aria-invalid', 'true');
-    field.setCustomValidity('أكمل هذا الحقل لفتح رسالة البريد. لم يُرسل طلب.');
-  }, { capture: true, signal });
-  form?.addEventListener('input', event => {
-    const field = event.target as HTMLInputElement;
-    if ('setCustomValidity' in field) { field.setCustomValidity(''); field.removeAttribute('aria-invalid'); }
-  }, { signal });
-
   // Product-specific focus relationships and native cross-document shared elements.
   const map = root.querySelector<HTMLElement>('.system-map');
   const focusMap = (target: EventTarget | null) => {

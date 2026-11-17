@@ -1,52 +1,58 @@
 ---
-import ContentExtension from '../components/ContentExtension.astro';
 import PageShell from '../components/PageShell.astro';
 export const prerender = true;
-const topics = ['استفسار عن المنتجات', 'طلب عرض سعر', 'استفسار عن تجربة 48 ساعة', 'استفسار عام', 'شراكة'];
 ---
-<PageShell title="تواصل مع BRIGHTAI | استفسار أو عرض سعر" description="أرسل استفساراً عن تصور منتجات BRIGHTAI أو اطلب عرض سعر. نموذج الموقع يفتح رسالة بريد ولا يؤكد إرسال الطلب." crumbs={[{ name: 'تواصل معنا' }]}>
+<PageShell title="تواصل مع BRIGHTAI | ناقش احتياجك أو عرض السعر" description="جهّز استفسارك محليًا ثم أرسله بنفسك عبر البريد أو واتساب. لا يستقبل الموقع الطلبات ولا يؤكد وصولها." crumbs={[{ name: 'تواصل معنا' }]}>
   <p class="eyebrow">تواصل معنا</p>
-  <h1>خلّنا نفهم احتياجك<br /><span class="muted">قبل أن نعرض عليك شيئاً.</span></h1>
-  <p class="lead">استخدم النموذج لفتح رسالة بريد تتضمن استفسارك. الإتاحة التشغيلية للمنتجات غير متحققة، ولا يؤكد الموقع استلام الرسالة أو حجز عرض أو تفعيل تجربة.</p>
-  <section class="card contact-options" aria-label="خيارات التواصل">
-    <h2>تواصل مباشرة</h2>
-    <p><a class="button" href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer">راسلنا على واتساب</a></p>
-    <p>أو عبر البريد: <a href="mailto:yzeed1job@gmail.com"><bdi dir="ltr">yzeed1job@gmail.com</bdi></a></p>
-  </section>
-  <form id="contact" class="card contact-form">
-    <label>الاسم<input name="name" required autocomplete="name" maxlength="80" /></label>
-    <label>الجهة<input name="org" required autocomplete="organization" maxlength="120" /></label>
-    <label>الموضوع<select name="topic">{topics.map(t => <option>{t}</option>)}</select></label>
-    <label>كيف نساعدك؟<textarea name="msg" rows="5" maxlength="2000"></textarea></label>
-    <button class="button" type="submit" disabled>افتح رسالة البريد <span aria-hidden="true">←</span></button>
+  <h1>ما القرار الذي تحتاج مساعدة فيه؟</h1>
+  <p class="lead">يمكنك الآن الاستفسار عن منتج، أو مناقشة نطاق دعم، أو طلب عرض سعر للمراجعة. أي سعر أو موعد أو تشغيل مؤسسي يحتاج اتفاقًا مكتوبًا؛ الاستفسار لا يحجز موعدًا ولا يفعّل تجربة.</p>
+  <section id="contact" class="card contact-form ph-no-capture" aria-labelledby="draft-title" data-ph-no-capture data-ph-mask>
+    <h2 id="draft-title">1. جهّز رسالتك — اختياري</h2>
+    <p id="draft-help">اكتب الهدف والمخرج المطلوب، والمنتج أو بيئة النشر إن عرفتها. لا نحتاج اسمك أو اسم الجهة هنا. المسودة تبقى في الصفحة ولا يرسلها الموقع أو يحفظها على خادم.</p>
+    <label for="contact-draft">مسودة الاستفسار</label>
+    <textarea id="contact-draft" rows="6" maxlength="2000" autocomplete="off" aria-describedby="draft-help draft-limit" placeholder="نريد مناقشة تقييم مخاطر استخدام الذكاء الاصطناعي، والمخرج المطلوب ورقة عمل يراجعها فريقنا."></textarea>
+    <p id="draft-limit" class="note">الحد الأقصى 2000 حرف. لا تكتب بيانات عملاء أو أسرارًا أو مفاتيح وصول.</p>
+    <button id="copy-draft" class="button" type="button" hidden>انسخ المسودة</button>
     <p id="contact-status" role="status" aria-live="polite"></p>
-    <noscript><p>للتواصل بدون JavaScript: <a href="mailto:yzeed1job@gmail.com">افتح تطبيق البريد</a>.</p></noscript>
-    <p class="note" style="margin:0">سيفتح تطبيق البريد لديك برسالة جاهزة إلى yzeed1job@gmail.com. راجعها وأرسلها بنفسك؛ لا يحفظ الموقع طلباً ولا يرسله أو يؤكد استلامه.</p>
-  </form>
-  <p class="note">لا تكتب بيانات شخصية حساسة؛ اكتفِ بوصف عام. بيانات التجربة اصطناعية، والواقعية ممنوعة بلا موافقة مكتوبة وبيئة معتمدة. منع التدريب ببيانات العملاء (<bdi dir="ltr">No-Training</bdi>) لا يُستثنى بموافقة تشغيلية.</p>
-
-    <ContentExtension>
-
-<section><h2>وش تكتب في استفسارك؟</h2><ul><li>القطاع والمهمة التي تريد حوكمتها، دون أسماء عملاء أو تفاصيل حساسة.</li><li>الدور المطلوب: حماية طلب، تقييم مخاطر، موافقة، دليل تدقيق أو محادثة.</li><li>بيئة النشر المستهدفة، والجهة التي ستراجع النطاق من طرفكم.</li></ul><p>للتجربة اذكر المنتج والهدف من التقييم؛ لعرض السعر اذكر النطاق التقريبي دون أرقام استهلاك سرية. لا تكتب مفاتيح API أو كلمات مرور أو بيانات صحية أو مالية أو سجلات خام.</p></section>
-<section><h2>ماذا يحصل بعد تجهيز الرسالة؟</h2><p>يفتح النموذج تطبيق البريد لديك. راجع النص والوجهة ثم أرسل الرسالة من تطبيقك؛ الموقع لا يثبت الإرسال أو الاستلام ولا يمنح ترخيصاً أو يؤكد موعداً. التجربة المؤسسية التشغيلية تتطلب موافقة مشغّل. أي تجربة مستقبلية تحتاج موافقة وتهيئة صالحة؛ الطلب يبدأ كطلب أهلية <bdi dir="ltr">REQUESTED</bdi> ولا ينشئ استحقاقاً، والموافقة <bdi dir="ltr">APPROVED</bdi> لا تبدأ العداد، والتفعيل <bdi dir="ltr">ACTIVATED</bdi> وحده يبدأ 48 ساعة من <bdi dir="ltr">activated_at</bdi> وينتهي عند <bdi dir="ltr">activated_at + 48h</bdi> بالضبط، دون خصم أو تحويل أو تجديد تلقائي. المنح الحالية إدارية غير مفوترة (<bdi dir="ltr">ADMIN_NON_BILLED</bdi>) فقط، وليست تجربة أو ترخيصاً؛ لا تهيئة تجارب أو تقارير <bdi dir="ltr">PoV</bdi> تلقائية، وسجل <bdi dir="ltr">Kernel</bdi> الإداري ليس نجاحاً تشغيلياً.</p><a href="/pricing/">اقرأ الفرق بين التجربة والعقد المؤسسي</a></section>
-    </ContentExtension>
-<section aria-label="مسارات التجربة"><h2>اختر المسار المناسب</h2><ul><li>مختبر عام فوري بلا حساب.</li><li>استكشاف 48 ساعة محدود بالقراءة لصاحب بريد موثق عند فتح البوابة.</li><li>تجربة مؤسسية تشغيلية بموافقة مشغّل.</li></ul></section>
+    <noscript><p>يمكنك الكتابة هنا وتحديد النص ونسخه يدويًا، ثم لصقه في البريد أو واتساب. لا تحتاج JavaScript.</p></noscript>
+  </section>
+  <section class="card contact-options" aria-labelledby="channel-title">
+    <h2 id="channel-title">2. افتح القناة والصق الرسالة</h2>
+    <p><a class="button" href="mailto:yzeed1job@gmail.com">افتح تطبيق البريد</a></p>
+    <p>الوجهة: <bdi dir="ltr">yzeed1job@gmail.com</bdi>. إذا لم يفتح التطبيق، انسخ العنوان واستخدم بريدك المعتاد.</p>
+    <p><a class="button" href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer">افتح واتساب (نافذة جديدة)</a></p>
+    <p>الرقم: <bdi dir="ltr">+966 53 822 9013</bdi>. إذا تعذر فتحه، استخدم البريد. لا ينقل أي رابط مسودتك تلقائيًا؛ القناة الخارجية تعالج ما ترسله وفق سياستها.</p>
+  </section>
+  <section class="block"><h2>3. أرسل من تطبيقك وانتظر تأكيدًا</h2>
+    <p>فتح البريد أو واتساب لا يرسل طلبًا. راجع الوجهة والنص ثم اضغط إرسال داخل التطبيق. الموقع لا يستطيع التحقق من الإرسال أو التسليم، ولا يعرض تأكيد استلام؛ استلام الطلب يتأكد برد من الفريق. لا توجد مدة رد معلنة.</p>
+    <p>إذا لم يصلك رد، تابع عبر القناة الأخرى؛ لا تفترض أن الطلب وصل أو أن موعدًا حُجز.</p>
+  </section>
+  <section class="block"><h2>تريد الاطلاع أولًا؟</h2><p><a href="/products/#lab">افتح المختبر العام بلا حساب</a> ببيانات اصطناعية، أو راجع <a href="/services/">موضوعات الدعم</a> و<a href="/pricing/">ما يحدد عرض السعر</a>. التشغيل المؤسسي منفصل ويحتاج مراجعة وموافقة.</p></section>
 </PageShell>
+<style>
+  #copy-draft[hidden] { display: none !important; }
+</style>
 <script>
-  const form = document.querySelector<HTMLFormElement>('#contact');
-  const submit = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+  const draft = document.querySelector<HTMLTextAreaElement>('#contact-draft');
+  const copy = document.querySelector<HTMLButtonElement>('#copy-draft');
   const status = document.querySelector('#contact-status');
-  const topic = new URLSearchParams(location.search).get('topic');
-  const select = form?.querySelector<HTMLSelectElement>('select');
-  if (topic && select && ![...select.options].some(o => o.value === topic)) select.add(new Option(topic, topic, true, true));
-  else if (topic && select) select.value = topic;
-  form?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const d = new FormData(form);
-    const body = `الاسم: ${d.get('name')}\nالجهة: ${d.get('org')}\n\n${d.get('msg')}`;
-    location.href = `mailto:yzeed1job@gmail.com?subject=${encodeURIComponent(`AIGAS — ${d.get('topic')}`)}&body=${encodeURIComponent(body)}`;
-    if (status) status.textContent = 'طلبنا فتح تطبيق البريد. راجع الرسالة وأرسلها منه؛ لم يحفظ الموقع طلباً أو يرسله أو يؤكد حجزاً.';
-  });
-  // Enable only after the handler is registered; avoid a native GET of personal data.
-  if (submit) submit.disabled = false;
+  if (draft && copy && status) {
+    copy.hidden = false;
+    copy.addEventListener('click', async () => {
+      if (!draft.value.trim()) {
+        status.textContent = 'اكتب وصفًا عامًا لاحتياجك أولًا، أو افتح قناة التواصل مباشرة.';
+        draft.focus();
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(draft.value);
+        status.textContent = 'نُسخت المسودة فقط. الصقها في تطبيقك وراجعها ثم أرسلها؛ لم يُرسل طلب من الموقع.';
+      } catch {
+        status.textContent = 'تعذر النسخ التلقائي. حدّد النص وانسخه يدويًا، ثم الصقه في تطبيقك. لم يُرسل طلب.';
+        draft.focus();
+        draft.select();
+      }
+    });
+    draft.addEventListener('input', () => { status.textContent = ''; });
+  }
 </script>
