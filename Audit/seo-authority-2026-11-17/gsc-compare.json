@@ -1,0 +1,2427 @@
+{
+  "rows": [
+    {
+      "keys": [
+        "https://brightai.live/authors/yazeed-alshareef/"
+      ],
+      "current": {
+        "clicks": 2,
+        "impressions": 9,
+        "ctr": 0.2222222222222222,
+        "position": 4
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 2.75
+      },
+      "delta": {
+        "clicks": 2,
+        "impressions": 5,
+        "ctr": 0.2222222222222222,
+        "position": 1.25
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/solutions/ai-risk-classification/"
+      ],
+      "current": {
+        "clicks": 2,
+        "impressions": 10,
+        "ctr": 0.2,
+        "position": 11.9
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 11,
+        "ctr": 0,
+        "position": 24.545454545454547
+      },
+      "delta": {
+        "clicks": 2,
+        "impressions": -1,
+        "ctr": 0.2,
+        "position": -12.645454545454546
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/pdpl-employee-data-rights-saudi/"
+      ],
+      "current": {
+        "clicks": 1,
+        "impressions": 2,
+        "ctr": 0.5,
+        "position": 3.5
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/demo/"
+      ],
+      "current": {
+        "clicks": 1,
+        "impressions": 5,
+        "ctr": 0.2,
+        "position": 5
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/kernel/scenarios/"
+      ],
+      "current": {
+        "clicks": 1,
+        "impressions": 6,
+        "ctr": 0.16666666666666666,
+        "position": 7.166666666666667
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 7
+      },
+      "delta": {
+        "clicks": 1,
+        "impressions": 3,
+        "ctr": 0.16666666666666666,
+        "position": 0.16666666666666696
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/solutions/ai-governance-platform/"
+      ],
+      "current": {
+        "clicks": 1,
+        "impressions": 22,
+        "ctr": 0.045454545454545456,
+        "position": 26.727272727272727
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 23,
+        "ctr": 0,
+        "position": 22.782608695652176
+      },
+      "delta": {
+        "clicks": 1,
+        "impressions": -1,
+        "ctr": 0.045454545454545456,
+        "position": 3.944664031620551
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/solutions/healthcare-ai-governance/"
+      ],
+      "current": {
+        "clicks": 1,
+        "impressions": 70,
+        "ctr": 0.014285714285714285,
+        "position": 16.814285714285717
+      },
+      "previous": {
+        "clicks": 2,
+        "impressions": 25,
+        "ctr": 0.08,
+        "position": 15
+      },
+      "delta": {
+        "clicks": -1,
+        "impressions": 45,
+        "ctr": -0.06571428571428571,
+        "position": 1.8142857142857167
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 13,
+        "ctr": 0,
+        "position": 14.461538461538462
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 16,
+        "ctr": 0,
+        "position": 12.6875
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": -3,
+        "ctr": 0,
+        "position": 1.7740384615384617
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/404/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 3.8
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 27
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": -23.2
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/about/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 3
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/answer/pdpl-ai-compliance/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 9
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 33.333333333333336
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": -2,
+        "ctr": 0,
+        "position": -24.333333333333336
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/answer/sama-ai/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 4
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 2
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0,
+        "position": 2
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/answer/sdaia-generative-ai/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 9
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/assessment/ai-governance-readiness/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 10
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 7
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 3
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/authors/compliance-officer/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 8,
+        "ctr": 0,
+        "position": 7.25
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": -2.75
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/authors/nasser-alabdullah/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 2
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 7
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0,
+        "position": -5
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 9
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 4.75
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": -1,
+        "ctr": 0,
+        "position": 4.25
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/ai-audit-trail-saudi/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 4.5
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 9
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": -4.5
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/ai-banking-saudi/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 11
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/ai-firewall-why-you-need-it/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 5
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/ai-governance-framework-saudi-model/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 30
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/ai-implementation-cost-saudi/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 5.5
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/ai-neom-smart-city/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 8
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 20
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": -12
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/ai-red-teaming-security-testing/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 4.166666666666666
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 9
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": -4.833333333333334
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/ai-vision-2030-saudi/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 2.666666666666667
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": -2,
+        "ctr": 0,
+        "position": 7.333333333333333
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/ai-vs-machine-learning-explained/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 7.5
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/appointing-dpo-saudi-data-protection/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 8,
+        "ctr": 0,
+        "position": 4.875
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 6.75
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": -1.875
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/best-ai-companies-saudi-2026/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 2
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 3
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0,
+        "position": -1
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/computer-vision-saudi-factories/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 4
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/ecc-2-2024/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 7
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 5
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": -2,
+        "ctr": 0,
+        "position": 2
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/ecc-audit/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 5.666666666666667
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 7
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": -1.333333333333333
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/ecc-vs-cscc-cybersecurity-controls/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 13,
+        "ctr": 0,
+        "position": 5.6923076923076925
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/ecc-vs-iso27001/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 3.8
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 2
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 1.7999999999999998
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/generative-ai-education-saudi/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 6
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/iso-42001-certification-cost-saudi/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 8,
+        "ctr": 0,
+        "position": 5.5
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/iso-42001-pdpl-data-protection-saudi/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 2
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/nca-cybersecurity-requirements-saudi/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 8,
+        "ctr": 0,
+        "position": 11.875
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 1.875
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/nca-ecc-ai-controls-guide/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 6
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0,
+        "position": 4
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/ndmo-data-governance-saudi/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 10
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 6.666666666666667
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 3.333333333333333
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/ndmo-roles-requirements-guide/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 10,
+        "ctr": 0,
+        "position": 6.8
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 10,
+        "ctr": 0,
+        "position": 9.1
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0,
+        "position": -2.3
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/pdpl-audit/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 11,
+        "ctr": 0,
+        "position": 19
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 17.25
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 1.75
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/pdpl-cross-border-data-transfer-ai/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 6
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/pdpl-data/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 12.5
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 11
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 1.5
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/pdpl-executive-regulations-explained/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 5
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 7.75
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": -3,
+        "ctr": 0,
+        "position": -2.75
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/pdpl-impact/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 9
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/pdpl-penalties-saudi-fines/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 3.5
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 5
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": -1.5
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/rpa-automation-saudi-savings/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 11
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/sama-ai/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 7
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/sama-banking/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 18
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 9
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0,
+        "position": 9
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/saudi-ai-landscape-sdaia-humain-allam-scai/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 7.666666666666667
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 9
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": -1.333333333333333
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/saudi-ai-regulators-guide/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 9
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 3
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": -2,
+        "ctr": 0,
+        "position": 6
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/sdaia-90-day-implementation-plan/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 2
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 18.8
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": -4,
+        "ctr": 0,
+        "position": -16.8
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/sdaia-allam-model-enterprise/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 5.333333333333333
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 7
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": -1.666666666666667
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/sdaia-audit-checklist-preparedness/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 1
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/sdaia-international-standards-unesco-oecd/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 3.6666666666666665
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 3.5
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 0.16666666666666652
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/sdaia-nca-pdpl-regulatory-map/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 4
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 3.3333333333333335
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": -2,
+        "ctr": 0,
+        "position": 0.6666666666666665
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/sdaia-seven-principles-practical-guide/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 10,
+        "ctr": 0,
+        "position": 6.8
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 8
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 9,
+        "ctr": 0,
+        "position": -1.2000000000000002
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/what-is-ai-governance-saudi-companies/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/contact/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 6.666666666666667
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 6.5
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 0.16666666666666696
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/data-processing-agreement/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 9.6
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 24.142857142857142
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": -2,
+        "ctr": 0,
+        "position": -14.542857142857143
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/docs/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 47
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 11
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 36
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/docs/ai-audit-readiness/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 43.285714285714285
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 11
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 32.285714285714285
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/docs/ai-governance-saudi-arabia/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 39,
+        "ctr": 0,
+        "position": 24.358974358974358
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 14,
+        "ctr": 0,
+        "position": 31.714285714285715
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 25,
+        "ctr": 0,
+        "position": -7.355311355311358
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/docs/ai-risk-management/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 13.333333333333334
+      },
+      "previous": {
+        "clicks": 1,
+        "impressions": 9,
+        "ctr": 0.1111111111111111,
+        "position": 51.111111111111114
+      },
+      "delta": {
+        "clicks": -1,
+        "impressions": -6,
+        "ctr": -0.1111111111111111,
+        "position": -37.77777777777778
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/docs/kernel-audit-trail/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 7
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/docs/kernel-evidence/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 7
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/docs/kernel-playground/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 47
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 8
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0,
+        "position": 39
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/docs/kernel-policies/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 97
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/docs/nca-ecc-ai-controls/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 1
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/docs/nca-ecc-ai-governance/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 4.5
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 6.571428571428571
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": -5,
+        "ctr": 0,
+        "position": -2.071428571428571
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/docs/nca-ecc-ai-guide/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 9
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 4.5
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 4.5
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/docs/pdpl-ai-complete-guide/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 11,
+        "ctr": 0,
+        "position": 20
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 9,
+        "ctr": 0,
+        "position": 14.555555555555555
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 5.444444444444445
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/docs/pdpl-ai-governance/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 4
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 36
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0,
+        "position": -32
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/docs/pdpl-chatgpt-data-protection/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 6.5
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/docs/sdaia-ai-risk-management-framework/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 5.8
+      },
+      "previous": {
+        "clicks": 2,
+        "impressions": 13,
+        "ctr": 0.15384615384615385,
+        "position": 4.6923076923076925
+      },
+      "delta": {
+        "clicks": -2,
+        "impressions": -8,
+        "ctr": -0.15384615384615385,
+        "position": 1.1076923076923073
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/docs/sdaia-generative-ai-guidelines/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 10,
+        "ctr": 0,
+        "position": 6
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/en/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 44,
+        "ctr": 0,
+        "position": 20.40909090909091
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 8,
+        "ctr": 0,
+        "position": 11.5
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 36,
+        "ctr": 0,
+        "position": 8.90909090909091
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/en/cookie-policy/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 6
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/en/pdpl-statement/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 7.666666666666667
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/en/privacy-policy/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 3
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/en/sales-deck/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 7.333333333333333
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 7.5
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": -0.16666666666666696
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/en/terms/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 8
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 5.5
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0,
+        "position": 2.5
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/hub/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 4.8
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 4.5
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 0.2999999999999998
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/hub/ai-governance/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 144,
+        "ctr": 0,
+        "position": 22.368055555555557
+      },
+      "previous": {
+        "clicks": 1,
+        "impressions": 136,
+        "ctr": 0.007352941176470588,
+        "position": 25.03676470588235
+      },
+      "delta": {
+        "clicks": -1,
+        "impressions": 8,
+        "ctr": -0.007352941176470588,
+        "position": -2.6687091503267943
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/hub/sdaia-ai-risk-management/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 6.666666666666667
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 5.571428571428571
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": -4,
+        "ctr": 0,
+        "position": 1.0952380952380958
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/kernel/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 4
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 7.2
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": -3,
+        "ctr": 0,
+        "position": -3.2
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/kernel/approvals/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 3.6666666666666665
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/kernel/audit/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 61.4
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/kernel/compliance/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 9.75
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 11
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": -1.25
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/kernel/connectors/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 78
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0,
+        "position": -68
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/kernel/evidence/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 7
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 4
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 3
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/kernel/policies/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 12
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 8
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0,
+        "position": 4
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/kernel/reports/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 9
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 4
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0,
+        "position": 5
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/kernel/stats/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 3
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/pdpl-statement/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 44,
+        "ctr": 0,
+        "position": 15.159090909090908
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 33,
+        "ctr": 0,
+        "position": 13.636363636363637
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 11,
+        "ctr": 0,
+        "position": 1.5227272727272716
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/pricing/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 8,
+        "ctr": 0,
+        "position": 3.25
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 4
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": -0.75
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/privacy/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 25
+      },
+      "previous": null,
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/referral/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 2
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 2
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 0
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/services/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 4.4
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 13.8
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0,
+        "position": -9.4
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/sitemap/"
+      ],
+      "current": {
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 5.666666666666667
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 13.25
+      },
+      "delta": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": -7.583333333333333
+      }
+    },
+    {
+      "keys": [
+        "https://brightai.live/solutions/government-ai-governance/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 1,
+        "impressions": 94,
+        "ctr": 0.010638297872340425,
+        "position": 19.925531914893618
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/answer/ai-firewall-saudi/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 3
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/ai-healthcare-saudi/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 9
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/ai-real-estate-saudi/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 7
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/ecc-ai-mapping/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 4
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/ecc-assess/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 6
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/enhance-privacy-pdpl-saudi/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 16
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/hidden-ai-risks-saudi-organizations/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 4
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/iso-27001-vs-iso-42001-ai-governance/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 5.666666666666667
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/iso-42001-policy-framework-saudi/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 1
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/pdpl-ai-compliance-guide/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 6
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/pdpl-breach/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 5
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/sama-ai-implementation/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 8
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/sama-cyber/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 34
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/blog/sdaia-generative-ai-guidelines-practical-compliance/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 8
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/customers/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 12
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/docs/governance-application/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 4
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/docs/kernel-datasets/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 9
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/go/whatsapp/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 6
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/hub/agentic-ai-governance/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 4
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/kernel/chat/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 9
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/kernel/eval/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 8
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/kernel/replay/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 6
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/solutions/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 10
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/solutions/ai-audit-trail/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 45,
+        "ctr": 0,
+        "position": 8.711111111111112
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/solutions/ai-evidence-file/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0,
+        "position": 3.8333333333333335
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/solutions/ai-firewall/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 17,
+        "ctr": 0,
+        "position": 4.411764705882353
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/solutions/banking-ai-governance/riyadh/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 50,
+        "ctr": 0,
+        "position": 14.9
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/solutions/continuous-ai-governance/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 83.4
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/solutions/government-ai-governance/dammam/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 6.25
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/solutions/government-ai-governance/madinah/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0,
+        "position": 7.25
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/solutions/healthcare-ai-governance/jeddah/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 19
+      },
+      "delta": null
+    },
+    {
+      "keys": [
+        "https://brightai.live/solutions/healthcare-ai-governance/mecca/"
+      ],
+      "current": null,
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 1
+      },
+      "delta": null
+    }
+  ],
+  "current_period": {
+    "start_date": "2026-10-18",
+    "end_date": "2026-11-14",
+    "search_type": "web",
+    "data_state": "final",
+    "dimensions": [
+      "page"
+    ],
+    "row_limit": 100,
+    "estimated_data_finalized_through": "2026-11-14"
+  },
+  "previous_period": {
+    "start_date": "2026-09-20",
+    "end_date": "2026-10-17",
+    "search_type": "web",
+    "data_state": "final",
+    "dimensions": [
+      "page"
+    ],
+    "row_limit": 100,
+    "estimated_data_finalized_through": "2026-11-14"
+  },
+  "current_truncated": true,
+  "previous_truncated": true
+}

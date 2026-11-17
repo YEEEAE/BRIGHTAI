@@ -1,0 +1,86 @@
+source,pattern,type,prerender,methods,metadata
+src/pages/404.astro,/404/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/about.astro,/about/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/api/observability.ts,/api/observability/,API,False,"[""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/api/public-demo/groq-sandbox.ts,/api/public-demo/groq-sandbox/,API,False,"[""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/firewall/evaluate.ts,/app/api/firewall/evaluate/,API,False,"[""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/firewall/guarded-executions.ts,/app/api/firewall/guarded-executions/,API,False,"[""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/firewall/rules.ts,/app/api/firewall/rules/,API,False,"[""GET"", ""POST"", ""PATCH"", ""DELETE""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/human-gate/delegations/[delegationId]/revoke.ts,/app/api/human-gate/delegations/[delegationId]/revoke/,API,False,"[""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/human-gate/delegations/index.ts,/app/api/human-gate/delegations/,API,False,"[""GET"", ""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/human-gate/policy.ts,/app/api/human-gate/policy/,API,False,"[""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/human-gate/requests/[requestId]/cancel.ts,/app/api/human-gate/requests/[requestId]/cancel/,API,False,"[""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/human-gate/requests/[requestId]/decide.ts,/app/api/human-gate/requests/[requestId]/decide/,API,False,"[""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/human-gate/requests/[requestId]/execute.ts,/app/api/human-gate/requests/[requestId]/execute/,API,False,"[""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/human-gate/requests/index.ts,/app/api/human-gate/requests/,API,False,"[""GET"", ""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/kernel.ts,/app/api/kernel/,API,False,"[""GET"", ""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/kernel/health.ts,/app/api/kernel/health/,API,False,"[""GET""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/kernel/invitations.ts,/app/api/kernel/invitations/,API,False,"[""GET""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/kernel/members.ts,/app/api/kernel/members/,API,False,"[""GET"", ""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/kernel/policies.ts,/app/api/kernel/policies/,API,False,"[""GET"", ""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/kernel/products.ts,/app/api/kernel/products/,API,False,"[""PATCH""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/kernel/trials/[trialId]/cancel.ts,/app/api/kernel/trials/[trialId]/cancel/,API,False,"[""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/kernel/trials/[trialId]/submit.ts,/app/api/kernel/trials/[trialId]/submit/,API,False,"[""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/kernel/trials/index.ts,/app/api/kernel/trials/,API,False,"[""GET"", ""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/ledger/events/[eventId]/export.ts,/app/api/ledger/events/[eventId]/export/,API,False,"[""GET""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/ledger/events/[eventId]/index.ts,/app/api/ledger/events/[eventId]/,API,False,"[""GET""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/ledger/events/[eventId]/verify.ts,/app/api/ledger/events/[eventId]/verify/,API,False,"[""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/ledger/events/index.ts,/app/api/ledger/events/,API,False,"[""GET"", ""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/operator/trials/[trialId]/activate.ts,/app/api/operator/trials/[trialId]/activate/,API,False,"[""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/operator/trials/[trialId]/close.ts,/app/api/operator/trials/[trialId]/close/,API,False,"[""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/operator/trials/[trialId]/decide.ts,/app/api/operator/trials/[trialId]/decide/,API,False,"[""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/operator/trials/[trialId]/expire.ts,/app/api/operator/trials/[trialId]/expire/,API,False,"[""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/operator/trials/index.ts,/app/api/operator/trials/,API,False,"[""GET""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/risk-engine/actions.ts,/app/api/risk-engine/actions/,API,False,"[""GET""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/risk-engine/assets/[assetId]/assessments.ts,/app/api/risk-engine/assets/[assetId]/assessments/,API,False,"[""GET"", ""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/risk-engine/assets/[assetId]/index.ts,/app/api/risk-engine/assets/[assetId]/,API,False,"[""PATCH"", ""DELETE""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/risk-engine/assets/[assetId]/revisions.ts,/app/api/risk-engine/assets/[assetId]/revisions/,API,False,"[""GET""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/risk-engine/assets/[assetId]/treatments.ts,/app/api/risk-engine/assets/[assetId]/treatments/,API,False,"[""GET"", ""POST"", ""PATCH""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/risk-engine/assets/index.ts,/app/api/risk-engine/assets/,API,False,"[""GET"", ""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/risk-engine/assist.ts,/app/api/risk-engine/assist/,API,False,"[""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/risk-engine/export.ts,/app/api/risk-engine/export/,API,False,"[""GET""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/secure-chat/messages.ts,/app/api/secure-chat/messages/,API,False,"[""POST"", ""DELETE""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/secure-chat/models.ts,/app/api/secure-chat/models/,API,False,"[""GET""]",N/A for API; runtime inspection required for SSR
+src/pages/app/api/trial.ts,/app/api/trial/,API,False,"[""GET"", ""POST""]",N/A for API; runtime inspection required for SSR
+src/pages/app/firewall/index.astro,/app/firewall/,private,False,[],N/A for API; runtime inspection required for SSR
+src/pages/app/human-gate/index.astro,/app/human-gate/,private,False,[],N/A for API; runtime inspection required for SSR
+src/pages/app/index.astro,/app/,private,False,[],N/A for API; runtime inspection required for SSR
+src/pages/app/kernel/index.astro,/app/kernel/,private,False,[],N/A for API; runtime inspection required for SSR
+src/pages/app/ledger/index.astro,/app/ledger/,private,False,[],N/A for API; runtime inspection required for SSR
+src/pages/app/operator/trials/index.astro,/app/operator/trials/,private,False,[],N/A for API; runtime inspection required for SSR
+src/pages/app/risk-engine/[assetId].astro,/app/risk-engine/[assetId]/,private,False,[],N/A for API; runtime inspection required for SSR
+src/pages/app/risk-engine/index.astro,/app/risk-engine/,private,False,[],N/A for API; runtime inspection required for SSR
+src/pages/app/secure-chat/index.astro,/app/secure-chat/,private,False,[],N/A for API; runtime inspection required for SSR
+src/pages/app/trial/index.astro,/app/trial/,private,False,[],N/A for API; runtime inspection required for SSR
+src/pages/auth/accept-invitation.astro,/auth/accept-invitation/,private,False,[],N/A for API; runtime inspection required for SSR
+src/pages/auth/sign-up.astro,/auth/sign-up/,private,False,[],N/A for API; runtime inspection required for SSR
+src/pages/compliance.astro,/compliance/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/contact.astro,/contact/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/demo/[product].astro,/demo/[product]/,demo,True,[],N/A for API; runtime inspection required for SSR
+src/pages/docs.astro,/docs/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/healthz.ts,/healthz/,API,False,"[""GET"", ""HEAD""]",N/A for API; runtime inspection required for SSR
+src/pages/index.astro,/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/kernel.astro,/kernel/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/knowledge/[article].astro,/knowledge/[article]/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/knowledge/ai-governance-saudi.astro,/knowledge/ai-governance-saudi/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/knowledge/ai-risk-assessment.astro,/knowledge/ai-risk-assessment/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/knowledge/ai-use-policy-employees.astro,/knowledge/ai-use-policy-employees/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/knowledge/iso-42001-saudi.astro,/knowledge/iso-42001-saudi/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/knowledge/pdpl-and-ai.astro,/knowledge/pdpl-and-ai/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/knowledge/prompt-injection.astro,/knowledge/prompt-injection/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/knowledge/protect-company-data-chatgpt.astro,/knowledge/protect-company-data-chatgpt/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/knowledge/saudi-ai-ethics-principles.astro,/knowledge/saudi-ai-ethics-principles/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/knowledge/saudi-ai-law-binding-vs-guidance.astro,/knowledge/saudi-ai-law-binding-vs-guidance/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/knowledge/sdaia-ai-adoption-framework.astro,/knowledge/sdaia-ai-adoption-framework/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/knowledge/sdaia-ai-ethics-self-assessment.astro,/knowledge/sdaia-ai-ethics-self-assessment/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/knowledge/sdaia-generative-ai-guidelines.astro,/knowledge/sdaia-generative-ai-guidelines/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/pillars/[pillar].astro,/pillars/[pillar]/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/pricing.astro,/pricing/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/privacy.astro,/privacy/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/products/[product].astro,/products/[product]/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/products/index.astro,/products/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/services.astro,/services/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/solutions/[sector].astro,/solutions/[sector]/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/solutions/index.astro,/solutions/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/terms.astro,/terms/,public,True,[],N/A for API; runtime inspection required for SSR
+src/pages/trust.astro,/trust/,public,True,[],N/A for API; runtime inspection required for SSR

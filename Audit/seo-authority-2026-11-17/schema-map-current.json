@@ -1,0 +1,5970 @@
+[
+  {
+    "path": "/404/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/404/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/404/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "صفحة غير موجودة",
+          "item": "https://brightai.live/404/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/about/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/about/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/about/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "عن BRIGHTAI",
+          "item": "https://brightai.live/about/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/compliance/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/compliance/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/compliance/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "الحوكمة والمتطلبات",
+          "item": "https://brightai.live/compliance/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/contact/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/contact/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/contact/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "تواصل معنا",
+          "item": "https://brightai.live/contact/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/docs/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/docs/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/docs/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/docs/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "مركز المعرفة — أدلة حوكمة وأمان الذكاء الاصطناعي",
+      "description": "أدلة عربية عملية عن حوكمة الذكاء الاصطناعي وحماية البيانات وتقييم المخاطر والسياسات في بيئة العمل السعودية.",
+      "url": "https://brightai.live/docs/",
+      "inLanguage": "ar-SA",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/"
+      },
+      "mainEntity": {
+        "@type": "ItemList",
+        "numberOfItems": 32,
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "حوكمة الذكاء الاصطناعي في السعودية",
+            "url": "https://brightai.live/knowledge/ai-governance-saudi/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "حماية بيانات المنشأة عند استخدام ChatGPT",
+            "url": "https://brightai.live/knowledge/protect-company-data-chatgpt/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "تقييم مخاطر الذكاء الاصطناعي",
+            "url": "https://brightai.live/knowledge/ai-risk-assessment/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "name": "Prompt Injection وطبقات الحماية",
+            "url": "https://brightai.live/knowledge/prompt-injection/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 5,
+            "name": "سياسة استخدام الذكاء الاصطناعي للموظفين",
+            "url": "https://brightai.live/knowledge/ai-use-policy-employees/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 6,
+            "name": "إطار تبني الذكاء الاصطناعي من سدايا",
+            "url": "https://brightai.live/knowledge/sdaia-ai-adoption-framework/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 7,
+            "name": "مبادئ أخلاقيات الذكاء الاصطناعي في السعودية",
+            "url": "https://brightai.live/knowledge/saudi-ai-ethics-principles/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 8,
+            "name": "مبادئ الذكاء الاصطناعي التوليدي من سدايا: نسختان",
+            "url": "https://brightai.live/knowledge/sdaia-generative-ai-guidelines/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 9,
+            "name": "PDPL والذكاء الاصطناعي: متى يخضع إدخال البيانات؟",
+            "url": "https://brightai.live/knowledge/pdpl-and-ai/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 10,
+            "name": "هل في السعودية قانون للذكاء الاصطناعي؟",
+            "url": "https://brightai.live/knowledge/saudi-ai-law-binding-vs-guidance/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 11,
+            "name": "أداة التقييم الذاتي لأخلاقيات الذكاء الاصطناعي من سدايا",
+            "url": "https://brightai.live/knowledge/sdaia-ai-ethics-self-assessment/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 12,
+            "name": "ISO/IEC 42001 للمنشآت السعودية: ما هو نظام إدارة الذكاء الاصطناعي ومتى تحتاجه؟",
+            "url": "https://brightai.live/knowledge/iso-42001-saudi/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 13,
+            "name": "اكتشاف Shadow AI: استخدامات الذكاء الاصطناعي غير المعتمدة",
+            "url": "https://brightai.live/knowledge/shadow-ai-detection/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 14,
+            "name": "هلوسة الذكاء الاصطناعي: ضوابط التحقق من الإجابات",
+            "url": "https://brightai.live/knowledge/ai-hallucinations-controls/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 15,
+            "name": "سياسة التزييف العميق للمنشآت: الصوت والصورة والتحقق",
+            "url": "https://brightai.live/knowledge/deepfake-policy-organizations/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 16,
+            "name": "سجل جرد استخدامات الذكاء الاصطناعي: الحقول ودورة التحديث",
+            "url": "https://brightai.live/knowledge/ai-inventory-register/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 17,
+            "name": "تدريب الموظفين على الذكاء الاصطناعي: من السياسة إلى السلوك",
+            "url": "https://brightai.live/knowledge/ai-employee-training/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 18,
+            "name": "تقييم موردي الذكاء الاصطناعي قبل التعاقد والتكامل",
+            "url": "https://brightai.live/knowledge/ai-vendor-assessment/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 19,
+            "name": "تصنيف البيانات قبل استخدامها في الذكاء الاصطناعي",
+            "url": "https://brightai.live/knowledge/data-classification-for-ai/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 20,
+            "name": "لجنة حوكمة الذكاء الاصطناعي ومصفوفة RACI للمسؤوليات",
+            "url": "https://brightai.live/knowledge/ai-governance-committee-raci/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 21,
+            "name": "تقييم أثر الذكاء الاصطناعي على الأشخاص والقرارات",
+            "url": "https://brightai.live/knowledge/ai-impact-assessment/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 22,
+            "name": "سجل تدقيق الذكاء الاصطناعي: ما الذي تحفظه كدليل؟",
+            "url": "https://brightai.live/knowledge/ai-audit-trail/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 23,
+            "name": "خريطة الجهات والمتطلبات المرتبطة بالذكاء الاصطناعي في السعودية",
+            "url": "https://brightai.live/knowledge/saudi-ai-regulators-map/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 24,
+            "name": "كيف تختار منصة حوكمة ذكاء اصطناعي للمنشأة؟",
+            "url": "https://brightai.live/knowledge/choose-ai-governance-platform/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 25,
+            "name": "حوكمة الذكاء الاصطناعي وضوابط NCA ECC: من المواءمة إلى الدليل",
+            "url": "https://brightai.live/knowledge/ai-cybersecurity-nca/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 26,
+            "name": "حوكمة الذكاء الاصطناعي في القطاع المالي السعودي",
+            "url": "https://brightai.live/knowledge/ai-governance-financial-sector/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 27,
+            "name": "حوكمة الذكاء الاصطناعي في الرعاية الصحية السعودية",
+            "url": "https://brightai.live/knowledge/ai-governance-healthcare/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 28,
+            "name": "العدالة والتحيز في أنظمة الذكاء الاصطناعي: ماذا تختبر؟",
+            "url": "https://brightai.live/knowledge/ai-bias-fairness/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 29,
+            "name": "بنود عقود الذكاء الاصطناعي: قائمة مراجعة قبل التوقيع",
+            "url": "https://brightai.live/knowledge/ai-contract-clauses/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 30,
+            "name": "تسرّب بيانات عبر AI: متى تبدأ مهلة 72 ساعة؟",
+            "url": "https://brightai.live/knowledge/data-breach-72-hours-ai/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 31,
+            "name": "إقامة بيانات الذكاء الاصطناعي في السعودية: ما الذي تتحقق منه؟",
+            "url": "https://brightai.live/knowledge/ai-data-residency-saudi/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 32,
+            "name": "حوكمة البيانات وحوكمة الذكاء الاصطناعي: الفرق والتكامل",
+            "url": "https://brightai.live/knowledge/data-governance-vs-ai-governance/"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "path": "/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/kernel/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/kernel/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/kernel/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Kernel",
+          "item": "https://brightai.live/kernel/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-audit-trail/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/ai-audit-trail/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/ai-audit-trail/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "سجل تدقيق الذكاء الاصطناعي: ما الذي تحفظه كدليل؟",
+          "item": "https://brightai.live/knowledge/ai-audit-trail/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-audit-trail/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/ai-audit-trail/#article",
+      "url": "https://brightai.live/knowledge/ai-audit-trail/",
+      "headline": "سجل تدقيق الذكاء الاصطناعي: ما الذي تحفظه كدليل؟",
+      "description": "صمّم أثرًا تدقيقيًا لقرارات AI يربط الاستخدام والسياسة والموافقة والتنفيذ، مع تقليل البيانات وضبط الوصول والتحقق من سلامة السجل.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/ai-audit-trail/",
+      "inLanguage": "ar-SA",
+      "dateModified": "2026-11-08",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "dateCreated": "2026-11-08",
+      "datePublished": "2026-11-08",
+      "citation": [
+        "https://nca.gov.sa/en/regulatory-documents/controls-list/ecc/"
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-audit-trail/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل يلزم حفظ كل نصوص المستخدمين؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا كقاعدة عامة. حدد الدليل اللازم والغرض والضوابط، ولا تجمع محتوى حساسًا لمجرد احتمال الاستفادة منه لاحقًا."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل سلسلة SHA-256 تثبت صحة القرار؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا؛ قد تدعم اكتشاف تغييرات ضمن تصميم محدد، لكنها لا تثبت صحة القرار أو اكتمال ما سُجل من المصدر."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-bias-fairness/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/ai-bias-fairness/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/ai-bias-fairness/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "العدالة والتحيز في أنظمة الذكاء الاصطناعي: ماذا تختبر؟",
+          "item": "https://brightai.live/knowledge/ai-bias-fairness/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-bias-fairness/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/ai-bias-fairness/#article",
+      "url": "https://brightai.live/knowledge/ai-bias-fairness/",
+      "headline": "العدالة والتحيز في أنظمة الذكاء الاصطناعي: ماذا تختبر؟",
+      "description": "دليل لفحص الإنصاف في استخدام AI: تحديد المتأثرين وأخطاء القرار وتمثيل البيانات وحدود المقاييس، مع مراجعة بشرية ومسار اعتراض مناسب.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/ai-bias-fairness/",
+      "inLanguage": "ar-SA",
+      "dateModified": "2026-11-08",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "dateCreated": "2026-11-08",
+      "datePublished": "2026-11-08",
+      "citation": [
+        "https://www.nist.gov/publications/towards-standard-identifying-and-managing-bias-artificial-intelligence"
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-bias-fairness/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل حذف سمة حساسة يمنع التحيز؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا بالضرورة؛ قد تحمل سمات أخرى معلومات مترابطة أو يبقى التفاوت في تصميم العملية. يحتاج الأمر اختبارًا وتفسيرًا مناسبين للسياق."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل تساوي نتيجة مقياس واحد يثبت العدالة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا. تفسير المقاييس يعتمد على الأثر والعينة والهدف والمفاضلات، ولا يستبدل مراجعة عملية القرار."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-contract-clauses/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/ai-contract-clauses/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/ai-contract-clauses/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "بنود عقود الذكاء الاصطناعي: قائمة مراجعة قبل التوقيع",
+          "item": "https://brightai.live/knowledge/ai-contract-clauses/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-contract-clauses/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/ai-contract-clauses/#article",
+      "url": "https://brightai.live/knowledge/ai-contract-clauses/",
+      "headline": "بنود عقود الذكاء الاصطناعي: قائمة مراجعة قبل التوقيع",
+      "description": "قائمة تحضير لمراجعة عقد AI: الغرض والبيانات والتدريب والمعالجون الفرعيون والحوادث والتغيير والخروج، مع فصل الشرط التعاقدي عن الدليل التقني.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/ai-contract-clauses/",
+      "inLanguage": "ar-SA",
+      "dateModified": "2026-11-08",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "dateCreated": "2026-11-08",
+      "datePublished": "2026-11-08",
+      "citation": [
+        "https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPL2/",
+        "https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/RegulationonPersonalDataTransferOutsidetheKingdom/"
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-contract-clauses/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل هذه البنود نموذج قانوني جاهز؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا. هي قائمة تحضير وأسئلة للمراجعة، وتحتاج الصياغة النهائية فحصًا متخصصًا يناسب الأطراف والوقائع."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل الوعد التعاقدي وحده يثبت خاصية تقنية؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا؛ يلزم ربط الالتزام بإعداد ودليل أو اختبار مناسب للنطاق، ومتابعة ما يتغير بعد التعاقد."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-cybersecurity-nca/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/ai-cybersecurity-nca/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/ai-cybersecurity-nca/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "حوكمة الذكاء الاصطناعي وضوابط NCA ECC: من المواءمة إلى الدليل",
+          "item": "https://brightai.live/knowledge/ai-cybersecurity-nca/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-cybersecurity-nca/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/ai-cybersecurity-nca/#article",
+      "url": "https://brightai.live/knowledge/ai-cybersecurity-nca/",
+      "headline": "حوكمة الذكاء الاصطناعي وضوابط NCA ECC: من المواءمة إلى الدليل",
+      "description": "كيف تربط استخدام AI بضوابط الأمن السيبراني المنطبقة؟ طريقة لتحديد النطاق والأصول والوصول والموردين والأدلة دون ادعاء شهادة أو امتثال تلقائي.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/ai-cybersecurity-nca/",
+      "inLanguage": "ar-SA",
+      "dateModified": "2026-11-08",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "dateCreated": "2026-11-08",
+      "datePublished": "2026-11-08",
+      "citation": [
+        "https://nca.gov.sa/en/regulatory-documents/controls-list/ecc/",
+        "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/"
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-cybersecurity-nca/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل مواءمة ECC تعني اعتماد NCA للمنتج؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا؛ المواءمة وصف لربط المتطلبات بالإجراءات والأدلة. لا تُعرض كشهادة أو اعتماد دون دليل مستقل يخص النطاق."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل حجب Prompt Injection يكفي للأمن؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا. تبقى الصلاحيات والمفاتيح والبيانات والتكاملات والمورد والحوادث ضمن التقييم الأمني بحسب النطاق."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-data-residency-saudi/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/ai-data-residency-saudi/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/ai-data-residency-saudi/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "إقامة بيانات الذكاء الاصطناعي في السعودية: ما الذي تتحقق منه؟",
+          "item": "https://brightai.live/knowledge/ai-data-residency-saudi/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-data-residency-saudi/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/ai-data-residency-saudi/#article",
+      "url": "https://brightai.live/knowledge/ai-data-residency-saudi/",
+      "headline": "إقامة بيانات الذكاء الاصطناعي في السعودية: ما الذي تتحقق منه؟",
+      "description": "افحص موقع معالجة بيانات AI والسجلات والدعم والنسخ والمعالجين، وميّز بين منطقة الاستضافة وضوابط نقل البيانات دون افتراض حظر أو سماح مطلق.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/ai-data-residency-saudi/",
+      "inLanguage": "ar-SA",
+      "dateModified": "2026-11-08",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "dateCreated": "2026-11-08",
+      "datePublished": "2026-11-08",
+      "citation": [
+        "https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/RegulationonPersonalDataTransferOutsidetheKingdom/"
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-data-residency-saudi/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل الاستضافة المحلية تثبت الامتثال؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا؛ هي عنصر ضمن تقييم المعالجة والضوابط والحقوق والعقد. تحتاج بقية المسارات والمتطلبات إلى تحقق."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل كل استخدام لمورد خارجي ممنوع؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا يمكن إطلاق حكم عام. يتحدد القرار بالبيانات والوقائع والمتطلبات والضمانات المنطبقة ومراجعة المختصين."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-employee-training/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/ai-employee-training/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/ai-employee-training/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "تدريب الموظفين على الذكاء الاصطناعي: من السياسة إلى السلوك",
+          "item": "https://brightai.live/knowledge/ai-employee-training/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-employee-training/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/ai-employee-training/#article",
+      "url": "https://brightai.live/knowledge/ai-employee-training/",
+      "headline": "تدريب الموظفين على الذكاء الاصطناعي: من السياسة إلى السلوك",
+      "description": "خطة تدريب عملي للموظفين على استخدام AI: اختيار البيانات، التحقق من الإجابات، التصعيد والإبلاغ، مع تمارين حسب الدور وقياس مهارات قابل للمراجعة.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/ai-employee-training/",
+      "inLanguage": "ar-SA",
+      "dateModified": "2026-11-08",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "dateCreated": "2026-11-08",
+      "datePublished": "2026-11-08",
+      "citation": [
+        "https://sdaia.gov.sa/en/SDAIA/about/Documents/ai-principles.pdf"
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-employee-training/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل دورة عامة واحدة تكفي لجميع الموظفين؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "قد توفر أساسًا مشتركًا، لكنها لا تغطي تلقائيًا اختلاف الصلاحيات والبيانات والأثر بين الأدوار. أضف تمارين مخصصة للمهمات الأعلى أثرًا."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "كيف نقيس نجاح التدريب؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "بقدرة المشاركين على تطبيق السياسة والتحقق والتصعيد في سيناريوهات ممثلة للعمل، مع توثيق الفجوات وإعادة اختبارها."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-governance-committee-raci/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/ai-governance-committee-raci/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/ai-governance-committee-raci/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "لجنة حوكمة الذكاء الاصطناعي ومصفوفة RACI للمسؤوليات",
+          "item": "https://brightai.live/knowledge/ai-governance-committee-raci/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-governance-committee-raci/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/ai-governance-committee-raci/#article",
+      "url": "https://brightai.live/knowledge/ai-governance-committee-raci/",
+      "headline": "لجنة حوكمة الذكاء الاصطناعي ومصفوفة RACI للمسؤوليات",
+      "description": "كيف تحدد من ينفذ ومن يعتمد ومن يُستشار في حوكمة AI؟ نموذج RACI عملي يفصل ملكية الاستخدام عن المراجعة وقبول الخطر وصلاحية الإيقاف.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/ai-governance-committee-raci/",
+      "inLanguage": "ar-SA",
+      "dateModified": "2026-11-08",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "dateCreated": "2026-11-08",
+      "datePublished": "2026-11-08",
+      "citation": [
+        "https://sdaia.gov.sa/en/SDAIA/about/Documents/ai-principles.pdf"
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-governance-committee-raci/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل يجب إنشاء لجنة مستقلة لكل منشأة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ليس هذا الدليل متطلبًا بذلك. اختر هيكلًا يوضح المسؤوليات والصلاحيات ويناسب حجم العمل والمخاطر والمتطلبات المنطبقة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل RACI تعطي صلاحية قانونية للتوقيع؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا؛ هي وسيلة تنظيم. مصدر الصلاحية هو تفويض الجهة والأنظمة والسياسات المنطبقة، ويجب أن تتسق المصفوفة معه."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-governance-financial-sector/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/ai-governance-financial-sector/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/ai-governance-financial-sector/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "حوكمة الذكاء الاصطناعي في القطاع المالي السعودي",
+          "item": "https://brightai.live/knowledge/ai-governance-financial-sector/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-governance-financial-sector/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/ai-governance-financial-sector/#article",
+      "url": "https://brightai.live/knowledge/ai-governance-financial-sector/",
+      "headline": "حوكمة الذكاء الاصطناعي في القطاع المالي السعودي",
+      "description": "دليل تحضير لاستخدام AI في القطاع المالي: فصل المسودة عن القرار المؤثر، اختبار الأخطاء والاعتراضات، وضبط المورد والصلاحيات والأثر التدقيقي.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/ai-governance-financial-sector/",
+      "inLanguage": "ar-SA",
+      "dateModified": "2026-11-08",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "dateCreated": "2026-11-08",
+      "datePublished": "2026-11-08",
+      "citation": [
+        "https://rulebook.sama.gov.sa/en/38-counter-fraud-technology"
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-governance-financial-sector/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل تنطبق المتطلبات نفسها على كل منشأة مالية؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا؛ يتحدد النطاق بحسب النشاط والترخيص والجهة المختصة والوقائع. ارجع إلى النص القطاعي المحدد والمختصين في الجهة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل موافقة موظف شكلية تعالج كل مخاطر القرار؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا. يلزم فحص ما يراه المراجع وقدرته ووقته وصلاحيته، وما إذا كانت المراجعة تغيّر التنفيذ فعلًا."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-governance-healthcare/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/ai-governance-healthcare/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/ai-governance-healthcare/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "حوكمة الذكاء الاصطناعي في الرعاية الصحية السعودية",
+          "item": "https://brightai.live/knowledge/ai-governance-healthcare/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-governance-healthcare/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/ai-governance-healthcare/#article",
+      "url": "https://brightai.live/knowledge/ai-governance-healthcare/",
+      "headline": "حوكمة الذكاء الاصطناعي في الرعاية الصحية السعودية",
+      "description": "دليل تحضير لحوكمة AI في الصحة: الغرض الطبي أو الإداري، البيانات والصلاحيات، التقييم السريري المناسب، وحدود المراجعة قبل استخدام مخرجات مؤثرة.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/ai-governance-healthcare/",
+      "inLanguage": "ar-SA",
+      "dateModified": "2026-11-08",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "dateCreated": "2026-11-08",
+      "datePublished": "2026-11-08",
+      "citation": [
+        "https://www.sfda.gov.sa/sites/default/files/2023-01/MDS_G010ML.pdf",
+        "https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPL/"
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-governance-healthcare/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل كل تطبيق AI صحي جهاز طبي؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا يُحسم ذلك من الاسم؛ يعتمد على الوظيفة والغرض والتصنيف والمتطلبات ذات الصلة. ارجع لهيئة الغذاء والدواء والمختصين."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل يصلح هذا المقال لاتخاذ قرار علاجي؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا. هو دليل تحضير للحوكمة وحدود الاستخدام، وليس مرجعًا للتشخيص أو العلاج أو اعتماد نظام سريري."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-governance-saudi/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/ai-governance-saudi/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/ai-governance-saudi/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "حوكمة الذكاء الاصطناعي في السعودية",
+          "item": "https://brightai.live/knowledge/ai-governance-saudi/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-governance-saudi/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/ai-governance-saudi/#article",
+      "url": "https://brightai.live/knowledge/ai-governance-saudi/",
+      "headline": "حوكمة الذكاء الاصطناعي في السعودية",
+      "description": "كيف تبدأ حوكمة الذكاء الاصطناعي في منشأتك السعودية؟ ست خطوات عملية، والمسؤوليات والوثائق المطلوبة، وروابط لسياسة الموظفين وتقييم المخاطر وحماية البيانات.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/ai-governance-saudi/",
+      "inLanguage": "ar-SA",
+      "datePublished": "2026-10-31",
+      "dateModified": "2026-11-08",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      }
+    }
+  },
+  {
+    "path": "/knowledge/ai-governance-saudi/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "من أين تبدأ المنشأة السعودية حوكمة الذكاء الاصطناعي؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ابدأ بحصر استخدام واحد وتحديد مالكه وغرضه والبيانات التي يعالجها والقرار المتأثر. ثم قيّم المخاطر وحدد الضوابط وصاحب الموافقة وموعد المراجعة قبل التوسع."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "من المسؤول عن حوكمة الذكاء الاصطناعي داخل المنشأة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "حدّد مالكاً للاستخدام وصاحب صلاحية لاعتماد القرار. يشارك فريق الأعمال والتقنية والأمن والخصوصية بحسب السياق، مع إشراك المختص النظامي عند الحاجة؛ الأداة وحدها لا تحدد المسؤوليات."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ما الوثائق التي أجهزها قبل اعتماد استخدام الذكاء الاصطناعي؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "جهّز وصف الاستخدام والبيانات والمورد، وسجل المخاطر والضوابط ومالكيها، وسياسة الموظفين، ومسار الموافقة والتصعيد، ودليل الاختبار وموعد المراجعة. هذه نقطة بداية تعليمية تتكيف مع نطاق المنشأة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل شراء منصة حوكمة ذكاء اصطناعي يكفي لتطبيق الحوكمة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا. تحتاج المنشأة مسؤوليات وسياسة معتمدة وتقييماً للمخاطر واختبارات ومراجعة مستمرة. قد تساعد الأدوات في تنفيذ الضوابط وتوثيق القرارات، ويجب التحقق من قدراتها الفعلية قبل الاعتماد عليها."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-hallucinations-controls/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/ai-hallucinations-controls/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/ai-hallucinations-controls/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "هلوسة الذكاء الاصطناعي: ضوابط التحقق من الإجابات",
+          "item": "https://brightai.live/knowledge/ai-hallucinations-controls/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-hallucinations-controls/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/ai-hallucinations-controls/#article",
+      "url": "https://brightai.live/knowledge/ai-hallucinations-controls/",
+      "headline": "هلوسة الذكاء الاصطناعي: ضوابط التحقق من الإجابات",
+      "description": "كيف تتعامل المنشأة مع إجابات AI غير الصحيحة؟ مسار للتحقق من المصادر واختبار الدقة وتحديد متى تُرفض الإجابة أو تُحال لمراجعة بشرية.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/ai-hallucinations-controls/",
+      "inLanguage": "ar-SA",
+      "dateModified": "2026-11-08",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "dateCreated": "2026-11-08",
+      "datePublished": "2026-11-08",
+      "citation": [
+        "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf"
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-hallucinations-controls/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل RAG يلغي الهلوسة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا. الاسترجاع يوفّر مواد مرجعية، لكن الإجابة قد تستند إلى مادة غير مناسبة أو تفسرها خطأ. تظل اختبارات الإسناد والمراجعة مطلوبة بحسب الأثر."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل ثقة النموذج في إجابته مقياس دقة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "الصياغة الواثقة وحدها ليست دليلًا. القبول يعتمد على صحة الادعاء والسند واختبار السلوك في سياق المهمة."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-impact-assessment/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/ai-impact-assessment/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/ai-impact-assessment/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "تقييم أثر الذكاء الاصطناعي على الأشخاص والقرارات",
+          "item": "https://brightai.live/knowledge/ai-impact-assessment/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-impact-assessment/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/ai-impact-assessment/#article",
+      "url": "https://brightai.live/knowledge/ai-impact-assessment/",
+      "headline": "تقييم أثر الذكاء الاصطناعي على الأشخاص والقرارات",
+      "description": "دليل عملي لتقييم أثر AI: من يتأثر بالقرار، وما بدائل الاستخدام، وكيف تختبر الضوابط وتوثق المراجعة دون الخلط مع تقييم أثر الخصوصية.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/ai-impact-assessment/",
+      "inLanguage": "ar-SA",
+      "dateModified": "2026-11-08",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "dateCreated": "2026-11-08",
+      "datePublished": "2026-11-08",
+      "citation": [
+        "https://www.nist.gov/itl/ai-risk-management-framework",
+        "https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPL/"
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-impact-assessment/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "ما الفرق عن سجل المخاطر؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "سجل المخاطر يتتبع أخطارًا وضوابط ومالكين، بينما يساعد تقييم الأثر على فهم الأشخاص ورحلة القرار والبدائل. يمكن ربطهما دون دمجهما في درجة واحدة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل تقييم أثر AI يثبت الامتثال؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا؛ هو دليل ضمن عملية المراجعة. الالتزامات والأذونات وقبول المخاطر تحتاج مصادرها وأصحاب الصلاحية المناسبين."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-inventory-register/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/ai-inventory-register/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/ai-inventory-register/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "سجل جرد استخدامات الذكاء الاصطناعي: الحقول ودورة التحديث",
+          "item": "https://brightai.live/knowledge/ai-inventory-register/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-inventory-register/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/ai-inventory-register/#article",
+      "url": "https://brightai.live/knowledge/ai-inventory-register/",
+      "headline": "سجل جرد استخدامات الذكاء الاصطناعي: الحقول ودورة التحديث",
+      "description": "ابنِ سجلًا لاستخدامات الذكاء الاصطناعي في منشأتك: الغرض والمالك والبيانات والمورد والصلاحيات وحالة القرار، مع مثال وطريقة تحديث دون تكرار.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/ai-inventory-register/",
+      "inLanguage": "ar-SA",
+      "dateModified": "2026-11-08",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "dateCreated": "2026-11-08",
+      "datePublished": "2026-11-08",
+      "citation": [
+        "https://www.nist.gov/itl/ai-risk-management-framework"
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-inventory-register/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل ملف جدول يكفي للبداية؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نعم إذا كانت الصلاحيات والتحديث والعلاقات والتاريخ واضحة وتناسب حجم العمل. شراء منصة لا يعالج غياب المالك أو القرار."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل نسجل ميزة AI داخل برنامج معتمد؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نعم عندما تضيف معالجة أو استخدامًا أو وصولًا يحتاج فهمًا مستقلًا. اعتماد البرنامج لا يثبت اعتماد كل ميزة جديدة فيه."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-risk-assessment/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/ai-risk-assessment/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/ai-risk-assessment/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "تقييم المخاطر",
+          "item": "https://brightai.live/knowledge/ai-risk-assessment/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-risk-assessment/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/ai-risk-assessment/#article",
+      "url": "https://brightai.live/knowledge/ai-risk-assessment/",
+      "headline": "تقييم مخاطر الذكاء الاصطناعي",
+      "description": "ورقة عمل تعليمية لتقييم مخاطر الذكاء الاصطناعي في المنشآت السعودية: وصف الاستخدام، تسجيل الخطر والأثر، تحديد الضوابط والمالك وخطة المراجعة، دون درجات رسمية.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/ai-risk-assessment/",
+      "inLanguage": "ar-SA",
+      "datePublished": "2026-10-31",
+      "dateModified": "2026-10-31",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      }
+    }
+  },
+  {
+    "path": "/knowledge/ai-use-policy-employees/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/ai-use-policy-employees/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/ai-use-policy-employees/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "سياسة الموظفين",
+          "item": "https://brightai.live/knowledge/ai-use-policy-employees/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-use-policy-employees/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/ai-use-policy-employees/#article",
+      "url": "https://brightai.live/knowledge/ai-use-policy-employees/",
+      "headline": "سياسة استخدام الذكاء الاصطناعي للموظفين",
+      "description": "خطوات وجدول قرارات لمساعدة المنشآت على صياغة سياسة داخلية واضحة لاستخدام أدوات الذكاء الاصطناعي.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/ai-use-policy-employees/",
+      "inLanguage": "ar-SA",
+      "datePublished": "2026-10-31",
+      "dateModified": "2026-10-31",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      }
+    }
+  },
+  {
+    "path": "/knowledge/ai-vendor-assessment/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/ai-vendor-assessment/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/ai-vendor-assessment/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "تقييم موردي الذكاء الاصطناعي قبل التعاقد والتكامل",
+          "item": "https://brightai.live/knowledge/ai-vendor-assessment/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-vendor-assessment/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/ai-vendor-assessment/#article",
+      "url": "https://brightai.live/knowledge/ai-vendor-assessment/",
+      "headline": "تقييم موردي الذكاء الاصطناعي قبل التعاقد والتكامل",
+      "description": "أسئلة تقييم مورد AI للمنشآت السعودية: البيانات والمناطق والمعالجون الفرعيون والصلاحيات والاختبار والخروج، مع فصل إجابات المورد عن الأدلة.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/ai-vendor-assessment/",
+      "inLanguage": "ar-SA",
+      "dateModified": "2026-11-08",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "dateCreated": "2026-11-08",
+      "datePublished": "2026-11-08",
+      "citation": [
+        "https://nca.gov.sa/en/regulatory-documents/controls-list/ecc/"
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/ai-vendor-assessment/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل شهادة أمنية للمورد تكفي؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "هي أحد الأدلة، وتحتاج مراجعة نطاقها وفترتها وصلتها بالخدمة. لا تثبت وحدها إعداد حسابك أو ملاءمة المعالجة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "متى نعيد تقييم المورد؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "عند تغيير مؤثر في النطاق أو البيانات أو المناطق أو المعالجين أو التكاملات، وفي دورة مراجعة تناسب الخطر والعقد."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/choose-ai-governance-platform/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/choose-ai-governance-platform/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/choose-ai-governance-platform/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "كيف تختار منصة حوكمة ذكاء اصطناعي للمنشأة؟",
+          "item": "https://brightai.live/knowledge/choose-ai-governance-platform/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/choose-ai-governance-platform/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/choose-ai-governance-platform/#article",
+      "url": "https://brightai.live/knowledge/choose-ai-governance-platform/",
+      "headline": "كيف تختار منصة حوكمة ذكاء اصطناعي للمنشأة؟",
+      "description": "معايير مقارنة منصات حوكمة AI: نطاق التكامل وإنفاذ السياسات والموافقات والأدلة والعزل والخروج، مع سيناريو اختبار ومقارنة دون وعود غير مثبتة.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/choose-ai-governance-platform/",
+      "inLanguage": "ar-SA",
+      "dateModified": "2026-11-08",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "dateCreated": "2026-11-08",
+      "datePublished": "2026-11-08",
+      "citation": [
+        "https://www.nist.gov/itl/ai-risk-management-framework"
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/choose-ai-governance-platform/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "ما أفضل منصة لحوكمة AI في السعودية؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا توجد إجابة مسؤولة دون نطاق وميزانية ومتطلبات وأدلة مقارنة حديثة. هذا الدليل يقدم طريقة اختبار، ولا يدعي ترتيبًا للموردين."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل AIGAS متاحة للتشغيل حاليًا؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "الموقع يصف منتجات مخططة؛ الإتاحة التشغيلية غير متحققة. لا تُعد هذه المقالات إعلان إطلاق أو إثباتًا لوظائف عاملة."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/data-breach-72-hours-ai/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/data-breach-72-hours-ai/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/data-breach-72-hours-ai/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "تسرّب بيانات عبر AI: متى تبدأ مهلة 72 ساعة؟",
+          "item": "https://brightai.live/knowledge/data-breach-72-hours-ai/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/data-breach-72-hours-ai/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/data-breach-72-hours-ai/#article",
+      "url": "https://brightai.live/knowledge/data-breach-72-hours-ai/",
+      "headline": "تسرّب بيانات عبر AI: متى تبدأ مهلة 72 ساعة؟",
+      "description": "شرح مشروط لمهلة إشعار تسرب البيانات الشخصية في السعودية، وما توثقه جهة التحكم عند الاشتباه أو العلم، مع فصل الإشعار النظامي عن الاحتواء التقني.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/data-breach-72-hours-ai/",
+      "inLanguage": "ar-SA",
+      "dateModified": "2026-11-08",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "dateCreated": "2026-11-08",
+      "datePublished": "2026-11-08",
+      "citation": [
+        "https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPL2/"
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/data-breach-72-hours-ai/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل كل إدخال خاطئ في AI يستلزم بلاغ 72 ساعة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ليس تلقائيًا. الحكم يتطلب تقييم طبيعة الواقعة والبيانات وشروط المادة 24 والالتزامات الأخرى المنطبقة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل ننتظر اكتمال التحقيق قبل التصعيد؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا. يبدأ التصعيد والتوثيق والتقييم فورًا، وتُدار المعلومات الناقصة ومسارات الإشعار وفق النص والوقائع بواسطة المخولين."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/data-classification-for-ai/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/data-classification-for-ai/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/data-classification-for-ai/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "تصنيف البيانات قبل استخدامها في الذكاء الاصطناعي",
+          "item": "https://brightai.live/knowledge/data-classification-for-ai/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/data-classification-for-ai/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/data-classification-for-ai/#article",
+      "url": "https://brightai.live/knowledge/data-classification-for-ai/",
+      "headline": "تصنيف البيانات قبل استخدامها في الذكاء الاصطناعي",
+      "description": "كيف تربط تصنيف البيانات بالغرض والقناة والصلاحيات قبل إدخالها في AI؟ أمثلة للبيانات العامة والداخلية والشخصية وحدود إخفاء الأسماء.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/data-classification-for-ai/",
+      "inLanguage": "ar-SA",
+      "dateModified": "2026-11-08",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "dateCreated": "2026-11-08",
+      "datePublished": "2026-11-08",
+      "citation": [
+        "https://sdaia.gov.sa/ndmo/Files/Policiesar.pdf",
+        "https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPL2/"
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/data-classification-for-ai/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل البيانات العامة مسموحة دائمًا لأي أداة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا بالضرورة؛ قد تبقى حقوق استخدام أو شروط تعاقدية أو قيود غرض. افحص السياق بدل الاعتماد على وصف عام فقط."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل حذف الاسم يكفي؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا؛ قد تتيح التفاصيل أو الربط بمصادر أخرى التعرف على الشخص. يلزم تقييم مناسب قبل اعتبار البيانات مجهولة الهوية."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/data-governance-vs-ai-governance/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/data-governance-vs-ai-governance/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/data-governance-vs-ai-governance/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "حوكمة البيانات وحوكمة الذكاء الاصطناعي: الفرق والتكامل",
+          "item": "https://brightai.live/knowledge/data-governance-vs-ai-governance/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/data-governance-vs-ai-governance/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/data-governance-vs-ai-governance/#article",
+      "url": "https://brightai.live/knowledge/data-governance-vs-ai-governance/",
+      "headline": "حوكمة البيانات وحوكمة الذكاء الاصطناعي: الفرق والتكامل",
+      "description": "مقارنة عملية بين حوكمة البيانات وحوكمة AI: الملكية والجودة والقرارات والمخاطر والأدلة، وكيف تربط المسارين دون تكرار اللجان والسجلات.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/data-governance-vs-ai-governance/",
+      "inLanguage": "ar-SA",
+      "dateModified": "2026-11-08",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "dateCreated": "2026-11-08",
+      "datePublished": "2026-11-08",
+      "citation": [
+        "https://sdaia.gov.sa/ndmo/Files/Policiesar.pdf",
+        "https://www.nist.gov/itl/ai-risk-management-framework"
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/data-governance-vs-ai-governance/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل تغني حوكمة البيانات عن حوكمة AI؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا؛ توفر أساسًا مهمًا، لكن تبقى أسئلة الغرض والسلوك والأثر والمراجعة وصلاحية التنفيذ."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل نحتاج لجنة مستقلة لكل مسار؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ليس بالضرورة. المهم وضوح المسؤوليات والقرارات والعلاقات؛ يمكن تنسيقها ضمن الهيكل المناسب للجهة."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/deepfake-policy-organizations/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/deepfake-policy-organizations/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/deepfake-policy-organizations/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "سياسة التزييف العميق للمنشآت: الصوت والصورة والتحقق",
+          "item": "https://brightai.live/knowledge/deepfake-policy-organizations/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/deepfake-policy-organizations/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/deepfake-policy-organizations/#article",
+      "url": "https://brightai.live/knowledge/deepfake-policy-organizations/",
+      "headline": "سياسة التزييف العميق للمنشآت: الصوت والصورة والتحقق",
+      "description": "ضوابط عملية للتعامل مع الصوت والصورة المولدة في المنشآت: التحقق من الطلبات الحساسة، الموافقات، الإفصاح، والاستجابة للاشتباه بالانتحال.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/deepfake-policy-organizations/",
+      "inLanguage": "ar-SA",
+      "dateModified": "2026-11-08",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "dateCreated": "2026-11-08",
+      "datePublished": "2026-11-08",
+      "citation": [
+        "https://www.nist.gov/publications/reducing-risks-posed-synthetic-content-overview-technical-approaches-digital-content"
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/deepfake-policy-organizations/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل نحتاج كاشف تزييف لكل مكالمة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ليس ذلك نقطة البداية. الأولوية لمسار تحقق واعتماد مستقل للطلبات الحساسة؛ أدوات الكشف قد تدعم المراجعة لكنها لا تثبت الهوية وحدها."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل يكفي وضع عبارة محتوى مولد؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "الإفصاح لا يحل محل الحقوق والموافقات وضوابط الغرض. يجب تقييم المحتوى والأشخاص المتأثرين وقناة الاستخدام."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/iso-42001-saudi/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/iso-42001-saudi/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/iso-42001-saudi/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "ISO/IEC 42001 للمنشآت السعودية: ما هو نظام إدارة الذكاء الاصطناعي ومتى تحتاجه؟",
+          "item": "https://brightai.live/knowledge/iso-42001-saudi/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/iso-42001-saudi/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/iso-42001-saudi/#article",
+      "url": "https://brightai.live/knowledge/iso-42001-saudi/",
+      "headline": "ISO/IEC 42001 للمنشآت السعودية: ما هو نظام إدارة الذكاء الاصطناعي ومتى تحتاجه؟",
+      "description": "دليل ISO/IEC 42001:2023 للمنشآت السعودية يشرح نظام إدارة الذكاء الاصطناعي، متطلبات AIMS وضوابط Annex A، رحلة الشهادة والفرق عن ISO 27001 وNIST AI RMF.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/iso-42001-saudi/",
+      "inLanguage": "ar-SA",
+      "datePublished": "2026-11-03",
+      "dateModified": "2026-11-03",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      }
+    }
+  },
+  {
+    "path": "/knowledge/iso-42001-saudi/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل ISO 42001 إلزامي في السعودية؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا ينشئ المعيار الدولي وحده التزاماً عاماً على كل منشأة في السعودية. قد يصبح تطبيقه أو تقديم شهادة به مطلوباً في عقد أو منافسة أو سياسة قطاعية أو قرار داخلي، لذلك تحقّق من النصوص والاشتراطات التي تنطبق على جهتك واستخدامك."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ما الفرق بينه وبين ISO 27001؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ISO/IEC 42001 ينظم نظام إدارة الذكاء الاصطناعي، بما فيه مسؤولياته ومخاطره وأثره عبر دورة الحياة. ISO/IEC 27001 يركز على نظام إدارة أمن المعلومات. يتكاملان في موضوعات مثل البيانات والضوابط الأمنية، لكن شهادة أحدهما لا تعني استيفاء الآخر."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل يغطي ISO/IEC 42001 الأدوات الجاهزة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نعم، يمكن أن يدخل استخدام المنشأة لأداة ذكاء اصطناعي جاهزة ضمن نطاق نظامها؛ فالمعيار موجه للمنظمات التي تطور أو تقدم أو تستخدم منتجات وخدمات قائمة على الذكاء الاصطناعي. تحديد النطاق يعتمد على الاستخدام الفعلي والسياق والمخاطر، وليس على كون النموذج مبنياً داخلياً."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "كم يأخذ الحصول على الشهادة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا توجد مدة واحدة تصلح لكل منشأة. تتغير المدة بحسب حجم النطاق وعدد المواقع والاستخدامات القائمة ونضج الوثائق والضوابط وتوفر الأدلة والموارد، إضافة إلى جدول جهة التدقيق. اطلب تقديراً مبنياً على نطاق مكتوب وتحليل فجوات؛ وأي مدة عامة بلا هذه التفاصيل تبقى تخميناً."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "من يمنح الشهادة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "تجري جهة منح شهادات مؤهلة تدقيق نظام الإدارة وتقرر إصدار الشهادة ضمن نطاق محدد. ISO تضع المعيار ولا تصدر شهادة للمنشأة. افحص اعتماد جهة المنح ونطاق اعتماده وصلاحية الشهادة مباشرة لدى جهة الاعتماد وجهة المنح قبل الاعتماد عليها."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/pdpl-and-ai/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/pdpl-and-ai/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/pdpl-and-ai/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "PDPL والذكاء الاصطناعي",
+          "item": "https://brightai.live/knowledge/pdpl-and-ai/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/pdpl-and-ai/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "نظام حماية البيانات الشخصية (PDPL) والذكاء الاصطناعي: متى يصبح إدخال البيانات في أداة معالجة خاضعة للنظام؟",
+      "description": "دليل عملي يشرح متى ينطبق نظام حماية البيانات الشخصية على إدخال البيانات في أدوات الذكاء الاصطناعي، وموقعك من المتحكم والمعالج، والأسئلة الست قبل أي إدخال.",
+      "inLanguage": "ar-SA",
+      "datePublished": "2026-11-03",
+      "dateModified": "2026-11-03",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "mainEntityOfPage": "https://brightai.live/knowledge/pdpl-and-ai/",
+      "author": {
+        "@type": "Organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "نظام حماية البيانات الشخصية"
+        },
+        {
+          "@type": "Thing",
+          "name": "PDPL الذكاء الاصطناعي"
+        },
+        {
+          "@type": "Thing",
+          "name": "المتحكم والمعالج"
+        },
+        {
+          "@type": "Thing",
+          "name": "نقل البيانات خارج المملكة"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/pdpl-and-ai/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل إدخال بيانات عميل في ChatGPT مخالفة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ليس مخالفة بذاته، والنظام لا يحظر أداة بعينها. المسألة أن الإدخال معالجة لبيانات شخصية: تحتاج مسوغاً نظامياً وغرضاً محدداً وحداً أدنى من البيانات، وحساباً وإعدادات مناسبة، وتقييم نقل إن كانت المعالجة خارج المملكة. إذا دخلت بيانات بلا أساس ولا ضوابط، فالمشكلة في المعالجة لا في اسم الأداة. راجع المختص قبل الحكم على واقعة محددة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل البيانات المجهولة تخضع للنظام؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "البيانات التي أُخفيت هويتها إخفاءً نهائياً لا يمكن معه إعادة التعريف لا تُعد بيانات شخصية وفق اللائحة التنفيذية. أما الترميز أو إزالة الاسم فقط فتبقى بيانات شخصية، لأن إعادة الربط ممكنة. لا تعتمد على «حذف الأسماء» كإخفاء هوية؛ تحقق من إمكانية إعادة التعريف ووثّق التقييم."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "من المسؤول إذا أخطأ المورد؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "جهة التحكم تبقى مسؤولة تجاه صاحب البيانات والجهة المختصة عند اختيارها جهة معالجة، وعليها التحقق من التزامها. المورد قد يتحمل مسؤولية تعاقدية أو نظامية بحسب دوره وفعله، لكن ذلك لا ينقل عنك مسؤولية الاختيار والغرض والضوابط."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل أحتاج موافقة صريحة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "الأصل موافقة صاحب البيانات، مع حالات لا تُشترط فيها الموافقة. والموافقة الصريحة مطلوبة في اللائحة التنفيذية عند معالجة بيانات حساسة أو ائتمانية أو اتخاذ قرارات مبنية كلياً على المعالجة الآلية. الموافقة يجب أن تكون محددة الغرض وقابلة للإثبات وقابلة للعدول."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل النظام يحدد أدوات معينة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا. النظام محايد تقنياً، وينطبق على المعالجة بغض النظر عن الأداة أو الوسيلة. ما يحدد الالتزام هو نوع البيانات والغرض والدور والنقل والأثر، لا اسم المنتج أو كونه سحابياً أو محلياً."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/prompt-injection/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/prompt-injection/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/prompt-injection/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Prompt Injection",
+          "item": "https://brightai.live/knowledge/prompt-injection/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/prompt-injection/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/prompt-injection/#article",
+      "url": "https://brightai.live/knowledge/prompt-injection/",
+      "headline": "Prompt Injection: افصل التعليمات الموثوقة عن المحتوى",
+      "description": "شرح عربي مبسط لهجمات Prompt Injection ومراحل التعامل مع المدخلات غير الموثوقة وحدود وسائل الحماية.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/prompt-injection/",
+      "inLanguage": "ar-SA",
+      "datePublished": "2026-10-31",
+      "dateModified": "2026-10-31",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      }
+    }
+  },
+  {
+    "path": "/knowledge/protect-company-data-chatgpt/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/protect-company-data-chatgpt/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/protect-company-data-chatgpt/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "حماية بيانات المنشأة",
+          "item": "https://brightai.live/knowledge/protect-company-data-chatgpt/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/protect-company-data-chatgpt/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/protect-company-data-chatgpt/#article",
+      "url": "https://brightai.live/knowledge/protect-company-data-chatgpt/",
+      "headline": "حماية بيانات المنشأة عند استخدام ChatGPT",
+      "description": "قائمة قرار عملية للموظفين قبل إدخال معلومات المنشأة في ChatGPT أو أي مساعد ذكاء اصطناعي خارجي.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/protect-company-data-chatgpt/",
+      "inLanguage": "ar-SA",
+      "datePublished": "2026-10-31",
+      "dateModified": "2026-10-31",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      }
+    }
+  },
+  {
+    "path": "/knowledge/saudi-ai-ethics-principles/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/saudi-ai-ethics-principles/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/saudi-ai-ethics-principles/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "مبادئ أخلاقيات الذكاء الاصطناعي",
+          "item": "https://brightai.live/knowledge/saudi-ai-ethics-principles/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/saudi-ai-ethics-principles/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "مبادئ أخلاقيات الذكاء الاصطناعي في السعودية: من المبدأ إلى الضابط العملي",
+      "description": "دليل عملي يحوّل مبادئ أخلاقيات الذكاء الاصطناعي في السعودية إلى ضوابط وأدلة ومالكين داخل المنشأة، مع المبادئ السبعة ومستويات المخاطر وأسئلة التحقق.",
+      "inLanguage": "ar-SA",
+      "datePublished": "2026-11-03",
+      "dateModified": "2026-11-03",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "mainEntityOfPage": "https://brightai.live/knowledge/saudi-ai-ethics-principles/",
+      "author": {
+        "@type": "Organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "مبادئ أخلاقيات الذكاء الاصطناعي"
+        },
+        {
+          "@type": "Thing",
+          "name": "أخلاقيات الذكاء الاصطناعي سدايا"
+        },
+        {
+          "@type": "Thing",
+          "name": "الذكاء الاصطناعي المسؤول"
+        },
+        {
+          "@type": "Thing",
+          "name": "مستويات مخاطر الذكاء الاصطناعي"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/saudi-ai-ethics-principles/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل هذه المبادئ ملزمة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "الوثيقة تصف نفسها بأنها وثيقة تنظيمية وتخاطب «الجهات المطبقة»، وتستخدم صيغة «يجب» في كثير من الضوابط، وتذكر آلية لقياس الالتزام. لكنها لا تنص على عقوبات خاصة بها، والأثر النظامي المباشر يأتي من الأنظمة السارية على نشاطك. تعامل معها كمرجع حوكمة جدي، وحدد مع مختصك النظامي ما إذا كانت منشأتك «جهة مطبقة» وما الالتزامات الأخرى المنطبقة عليها."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "كم عدد المبادئ وما هي؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "النسخة الحالية من الوثيقة، المؤرخة في مايو 2025، تتضمن سبعة مبادئ: النزاهة والإنصاف، والخصوصية والأمن، والإنسانية، والمنافع الاجتماعية والبيئية، والموثوقية والسلامة، والشفافية والقابلية للتفسير، والمساءلة والمسؤولية."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "كيف أثبت التزامي بالمبادئ؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "بثلاث طبقات: سجل يثبت الاستخدام والغرض والبيانات، وتقييم يثبت أنك نظرت في المخاطر والأثر، وأدلة تنفيذ تثبت أن الضابط عمل فعلاً. الوثيقة تضيف قائمة تحقق مرتبطة بمراحل دورة حياة النظام، وبعض أسئلتها موسومة بأنها ملزمة لأي طرف ثالث. لا توجد شهادة تلقائية، والتسجيل والشارات التي تذكرها الوثيقة آليات تحفيزية لا تثبت الامتثال وحدها."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل تنطبق على أدوات جاهزة مثل ChatGPT؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نعم من حيث المبدأ. نطاق الوثيقة يشمل كل من يصمم أو يطور أو ينشر أو يستخدم أنظمة الذكاء الاصطناعي داخل المملكة، والأداة الجاهزة لا تعفيك. المسؤولية تبقى على المنشأة كجهة مطبقة ومالكة للاستخدام: تصنيف البيانات، وضبط الإعدادات والصلاحيات، ومراجعة المخرجات، والتحقق من التزام المورد تعاقدياً."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "من يتحمل المسؤولية في المنشأة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "المسؤولية ليست موزعة على «الجميع» بلا اسم. الوثيقة تفرق بين مالك نظام الذكاء الاصطناعي ومطوره ومقيّمه ومسؤول البيانات ومسؤول الامتثال، وتشير إلى مسؤول للذكاء الاصطناعي المسؤول داخل الجهة. عملياً تحتاج مالك أعمال لكل استخدام، ومراجعاً مستقلاً، وجهة عليا تعتمد المخاطر المتبقية وتجيب عن الضرر."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/saudi-ai-law-binding-vs-guidance/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/saudi-ai-law-binding-vs-guidance/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/saudi-ai-law-binding-vs-guidance/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "قانون الذكاء الاصطناعي: الملزم والإرشادي",
+          "item": "https://brightai.live/knowledge/saudi-ai-law-binding-vs-guidance/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/saudi-ai-law-binding-vs-guidance/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "هل في السعودية قانون للذكاء الاصطناعي؟ الملزم مقابل الإرشادي",
+      "description": "هل يوجد قانون للذكاء الاصطناعي في السعودية؟ دليل يفرز الأنظمة الملزمة عن وثائق سدايا الإرشادية والمسودات، مع جدول وطبقات وأسئلة عملية قبل القرار.",
+      "inLanguage": "ar-SA",
+      "datePublished": "2026-11-03",
+      "dateModified": "2026-11-03",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "mainEntityOfPage": "https://brightai.live/knowledge/saudi-ai-law-binding-vs-guidance/",
+      "author": {
+        "@type": "Organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "قانون الذكاء الاصطناعي في السعودية"
+        },
+        {
+          "@type": "Thing",
+          "name": "تنظيم الذكاء الاصطناعي السعودية"
+        },
+        {
+          "@type": "Thing",
+          "name": "مبادئ أخلاقيات الذكاء الاصطناعي"
+        },
+        {
+          "@type": "Thing",
+          "name": "نظام حماية البيانات الشخصية"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/saudi-ai-law-binding-vs-guidance/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل يوجد قانون خاص بالذكاء الاصطناعي في السعودية؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "حتى 3 نوفمبر 2026، لا يظهر نظام مستقل للذكاء الاصطناعي صادر بمرسوم ملكي. التنظيم الملزم يأتي من أنظمة عامة، أبرزها حماية البيانات الشخصية، ومن متطلبات الأمن السيبراني والقطاعات المنظمة. وتوجد وثائق سدايا الإرشادية ومسودات لم تصدر كنظام. راجع النص الرسمي والمختص قبل أي قرار."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل إرشادات سدايا ملزمة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ليست نظاماً بعقوبات مستقلة في الأصل، لكنها قد تصبح ملزمة بطريق غير مباشر: عقد حكومي أو مشتريات أو تعميم قطاعي أو سياسة داخلية. وقد تتداخل مع PDPL. تعامل معها كحد أدنى مهني، لا كبديل عن النص النظامي."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل أتعرض لعقوبة إذا خالفتها؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "إذا خالفت نصاً نظامياً مثل PDPL أو ضوابط الأمن السيبراني أو متطلبات قطاعية، فقد تتعرض لعقوبات أو إجراءات رقابية. أما مخالفة وثيقة إرشادية بحد ذاتها فلا تحمل عقوبة مستقلة، لكنها قد تسبب آثاراً تعاقدية أو قطاعية أو سمعة. لا تجزم بالعقوبة قبل مراجعة النص والجهة المختصة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل ينطبق PDPL على الذكاء الاصطناعي؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نعم، ينطبق على معالجة البيانات الشخصية في أدوات الذكاء الاصطناعي إذا توفرت شروطه: بيانات شخصية، وسياق مهني، ومعالجة في المملكة أو تخص مقيماً فيها. النموذج قد يكون معالجاً ومنشأتك متحكمة. راجع دليل PDPL والذكاء الاصطناعي."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "كيف أعرف إذا صدر نظام جديد؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "تابع أم القرى، وصفحة الأنظمة في سدايا، والجهة المنظمة لقطاعك، ومنصة استطلاع للمسودات. صدور النظام يعني مرسوم ملكي أو لائحة نافذة، لا خبر أو ورشة. سجّل التاريخ والنسخة، وأعد التقييم عند أي تغيير."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/saudi-ai-regulators-map/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/saudi-ai-regulators-map/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/saudi-ai-regulators-map/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "خريطة الجهات والمتطلبات المرتبطة بالذكاء الاصطناعي في السعودية",
+          "item": "https://brightai.live/knowledge/saudi-ai-regulators-map/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/saudi-ai-regulators-map/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/saudi-ai-regulators-map/#article",
+      "url": "https://brightai.live/knowledge/saudi-ai-regulators-map/",
+      "headline": "خريطة الجهات والمتطلبات المرتبطة بالذكاء الاصطناعي في السعودية",
+      "description": "كيف تبدأ تحديد الجهات والمتطلبات المنطبقة على استخدام AI في السعودية؟ فرز البيانات والأمن والنشاط القطاعي، مع سجل يميز النظام والإرشاد والعقد.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/saudi-ai-regulators-map/",
+      "inLanguage": "ar-SA",
+      "dateModified": "2026-11-08",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "dateCreated": "2026-11-08",
+      "datePublished": "2026-11-08",
+      "citation": [
+        "https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPL/",
+        "https://nca.gov.sa/en/regulatory-documents/controls-list/ecc/",
+        "https://www.ia.gov.sa/ar/home"
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/saudi-ai-regulators-map/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل وجود سياسة AI يعني استيفاء بقية الأنظمة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا؛ السياسة تجمع إجراءات داخلية، ولا تستبدل متطلبات البيانات أو الأمن أو القطاع أو العقد."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل هذه الخريطة قائمة شاملة بكل الجهات؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا. هي طريقة لتحديد نقاط البدء؛ استكمال نطاق الواقعة يحتاج مراجعة المصادر والاختصاصات ذات الصلة."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/sdaia-ai-adoption-framework/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/sdaia-ai-adoption-framework/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/sdaia-ai-adoption-framework/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "إطار تبني الذكاء الاصطناعي",
+          "item": "https://brightai.live/knowledge/sdaia-ai-adoption-framework/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/sdaia-ai-adoption-framework/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "إطار تبني الذكاء الاصطناعي من سدايا: ماذا يعني لمنشأتك؟",
+      "description": "شرح عملي لإطار تبني الذكاء الاصطناعي من سدايا: لمن وُجّه، وما محاوره الثلاثة، ومستويات النضج، ومن وين تبدأ منشأتك، مع خطة 90 يوماً للمنشآت الصغيرة والكبيرة.",
+      "inLanguage": "ar-SA",
+      "datePublished": "2026-11-03",
+      "dateModified": "2026-11-03",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "mainEntityOfPage": "https://brightai.live/knowledge/sdaia-ai-adoption-framework/",
+      "author": {
+        "@type": "Organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "حوكمة الذكاء الاصطناعي"
+        },
+        {
+          "@type": "Thing",
+          "name": "تبني الذكاء الاصطناعي في المنشآت"
+        },
+        {
+          "@type": "Thing",
+          "name": "الهيئة السعودية للبيانات والذكاء الاصطناعي"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/sdaia-ai-adoption-framework/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل الإطار إلزامي؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا. وصفته سدايا بأنه دليل إرشادي، ولا يفرض وحده التزامات على المنشآت. الالتزامات الملزمة تأتي من الأنظمة واللوائح السارية على نشاطك، مثل حماية البيانات الشخصية وما يصدره المنظم القطاعي، ويبقى الإطار مرجعاً للبناء والتحضير."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "من أصدره ومتى؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "أصدرته الهيئة السعودية للبيانات والذكاء الاصطناعي (سدايا) في سبتمبر 2024، وأُعلن عنه رسمياً في بيان وكالة الأنباء السعودية بتاريخ 1 ديسمبر 2024. وهو امتداد لعمل سدايا في الإرشادات والأطر، ومنها مبادئ أخلاقيات الذكاء الاصطناعي الصادرة عام 2023."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل ينطبق على القطاع الخاص؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نعم، يخاطب الإطار الجهات الحكومية والخاصة بحسب نص الوثيقة والبيان الرسمي، ويستهدف القادة والمديرين التنفيذيين ومديري وحدات الأعمال والمتخصصين. لكن تطبيقه يظل إرشادياً، وتختلف أولوياته بحسب القطاع وحجم المنشأة ودرجة نضجها."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل يكفي الإطار وحده للامتثال؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا. الإطار مرجع للفهم والبناء، ولا يصدر شهادة ولا يثبت امتثالاً. الامتثال يحتاج تحديد الأنظمة المنطبقة، وتقييم المخاطر، وضوابط موثقة، وأدلة تنفيذ، ومراجعة بشرية مختصة، وقد تحتاج المنشأة متطلبات إضافية من جهة تنظيمية أخرى."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "من وين أبدأ إذا ما عندنا شيء؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ابدأ بسجل استخدامات بسيط: ما الأداة، ومن يستخدمها، ولأي غرض، وما البيانات التي تدخلها. بعدها سمِّ مالكاً واحداً للاستخدام، واكتب قراراً أولياً للمسموح والممنوع، ثم افحص المخاطر الأعلى قبل أي توسع. لا تبدأ بشراء منصة حوكمة."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/sdaia-ai-ethics-self-assessment/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/sdaia-ai-ethics-self-assessment/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/sdaia-ai-ethics-self-assessment/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "التقييم الذاتي لأخلاقيات الذكاء الاصطناعي",
+          "item": "https://brightai.live/knowledge/sdaia-ai-ethics-self-assessment/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/sdaia-ai-ethics-self-assessment/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "أداة التقييم الذاتي لأخلاقيات الذكاء الاصطناعي من سدايا: كيف تستعد قبل استخدامها؟",
+      "description": "دليل عملي للتحضير لأداة التقييم الذاتي لأخلاقيات الذكاء الاصطناعي من سدايا: ما تجمعه، وكيف تقرأ النتيجة، وكيف تعالج الفجوات دون نسخ أسئلة الأداة.",
+      "inLanguage": "ar-SA",
+      "datePublished": "2026-11-03",
+      "dateModified": "2026-11-03",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "mainEntityOfPage": "https://brightai.live/knowledge/sdaia-ai-ethics-self-assessment/",
+      "author": {
+        "@type": "Organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "تقييم أخلاقيات الذكاء الاصطناعي سدايا"
+        },
+        {
+          "@type": "Thing",
+          "name": "أداة التقييم الذاتي"
+        },
+        {
+          "@type": "Thing",
+          "name": "منصة حوكمة البيانات الوطنية"
+        },
+        {
+          "@type": "Thing",
+          "name": "قياس الالتزام بالمبادئ الأخلاقية"
+        },
+        {
+          "@type": "Thing",
+          "name": "جاهزية الذكاء الاصطناعي"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/sdaia-ai-ethics-self-assessment/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل التقييم إلزامي؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "الأداة تقييم ذاتي، ووصفتها سدايا بأنها وسيلة لمساعدة الجهات على قياس التزامها بالمعايير الأخلاقية، ولم ترد في صفحتها الرسمية صيغة تفرضها كالتزام مستقل. الالتزامات الملزمة تأتي من الأنظمة واللوائح السارية على نشاطك ومن متطلبات المنظم القطاعي. تحقق مع مختصك النظامي قبل أن تعتمد على أي استنتاج في هذا الشأن."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "من يمكنه استخدام الأداة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "بحسب إعلان الإطلاق الرسمي، الأداة متاحة للجهات الحكومية والخاصة وكذلك المطورين الأفراد، بهدف قياس مدى التزامهم بالمبادئ الأخلاقية عند تطوير وتطبيق تقنيات الذكاء الاصطناعي. وتصف صفحة الخدمة الرسمية الأداة بأنها تساعد جهات التحكم على إجراء تحليل شامل ومنهجي. الدخول يكون عبر منصة حوكمة البيانات الوطنية، وقد يتطلب حساباً على المنصة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "كم يستغرق التحضير؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا توجد مدة تحضير معلنة في المصدر الرسمي، والمدة تعتمد على عدد حالات الاستخدام وجودة وثائقك. عملياً، منشأة عندها سجل استخدامات محدث ومالكون معروفون تستطيع تجهيز ملفها في جلسة أو جلستين، ومنشأة تبدأ من الصفر تحتاج أسابيع لجمع الحد الأدنى. الأفضل تقسيم العمل إلى ثلاث جلسات: الجرد، ثم المالكين والأدلة، ثم مراجعة الإجابات."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل النتيجة تعني اعتماداً رسمياً؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا. الأداة تصدر نتيجة وتقريراً يوضح مستوى الالتزام أو النضج الأخلاقي في كل مبدأ، وهي أداة تقييم ذاتي وليست شهادة أو اعتماداً تنظيمياً. لا تنسب لمنشأتك اعتماداً بسبب نتيجة التقييم، ولا تستخدم النتيجة في عرض تسويقي يوحي بأن سدايا وثّقت التزامك. النتيجة نقطة بداية للمعالجة، والدليل هو ما يثبت الالتزام لاحقاً."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "كيف أحسّن نتيجتي؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا تحسّن النتيجة بالإجابة المتفائلة، بل بمعالجة الفجوة وإثبات المعالجة. ابدأ بأكبر فجوة في مبدأ يؤثر في حقوق الناس أو بياناتهم، وسمِّ مالكاً واحداً، واكتب الدليل المتوقع، وحدد موعداً لإعادة التقييم. الأداة نفسها مصممة لتُستخدم أكثر من مرة لتتبع التقدم، فالتحسن الحقيقي يظهر في تكرار القياس بعد تنفيذ إجراءات موثقة."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/sdaia-generative-ai-guidelines/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/sdaia-generative-ai-guidelines/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/sdaia-generative-ai-guidelines/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "إرشادات الذكاء الاصطناعي التوليدي",
+          "item": "https://brightai.live/knowledge/sdaia-generative-ai-guidelines/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/sdaia-generative-ai-guidelines/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "مبادئ الذكاء الاصطناعي التوليدي من سدايا: نسخة العموم مقابل نسخة الجهات الحكومية",
+      "description": "مقارنة عملية بين مبادئ الذكاء الاصطناعي التوليدي للعموم وللجهات الحكومية من سدايا: من تنطبق عليه كل نسخة، والفروقات، وأمثلة مسموح وممنوع، وخطوات التطبيق.",
+      "inLanguage": "ar-SA",
+      "datePublished": "2026-11-03",
+      "dateModified": "2026-11-03",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "mainEntityOfPage": "https://brightai.live/knowledge/sdaia-generative-ai-guidelines/",
+      "author": {
+        "@type": "Organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "مبادئ الذكاء الاصطناعي التوليدي"
+        },
+        {
+          "@type": "Thing",
+          "name": "إرشادات الذكاء الاصطناعي التوليدي"
+        },
+        {
+          "@type": "Thing",
+          "name": "استخدام الذكاء الاصطناعي التوليدي في الجهات الحكومية"
+        },
+        {
+          "@type": "Thing",
+          "name": "ضوابط الذكاء الاصطناعي التوليدي"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/sdaia-generative-ai-guidelines/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل الإرشادات ملزمة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "الوثيقتان مصنفتان رسمياً بأنهما «وثائق تنظيمية»، ونسخة الجهات الحكومية تصف مبادئها بأنها «إلزامية» وتستخدم صيغة «يجب». لكن هل يترتب على المخالفة جزاء مستقل بذات الوثيقة؟ هذا سؤال نظامي يحتاج رأياً قانونياً على حالتك. الأثر العملي الأوضح على الجهات الحكومية: منع إدخال البيانات المصنفة «مقيد» فأعلى، والامتناع عن استخدام الأدوات في القرارات الحاسمة التي تمس الأفراد أو المصالح الحيوية، وإجراء مراجعة بشرية للمخرجات."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل أقدر أستخدم ChatGPT في الشغل؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "الوثيقتان ما تحظران الأداة بذاتها، لكنهما تضعان شروطاً على البيانات والغرض والمراجعة. القاعدة المختصرة: لا تدخل بيانات شخصية أو سرية أو مصنفة في أداة غير معتمدة، ولا تعتمد مخرجاً دون تحقق بشري، وأفصح عن استخدام الأداة عند الحاجة. في الجهات الحكومية يضاف شرط اعتماد الأداة من مكتب إدارة البيانات بعد مراجعة سياسات الخصوصية والإفصاح."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "الفرق بين النسختين؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نسخة العموم (SDAIA-P115) دليل مرجعي للجميع: سبعة مبادئ، وسبع فئات مخاطر مع تدابير تخفيف، وفوائد الاستخدام. نسخة الجهات الحكومية (SDAIA-P116) أضيق جمهوراً وأكثر تفصيلاً: مبادئ إلزامية للتعامل مع البيانات الحكومية، وأدوار واضحة داخل الجهة تشمل مكتب إدارة البيانات، وأدلة عملية بصيغ أوامر جيدة وسيئة، وقائمة تحقق ختامية."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل تشمل الصور والأكواد؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نعم. النسختان تعرّفان الذكاء الاصطناعي التوليدي بأنه ينتج نصوصاً وصوراً وأصواتاً ورموزاً ومقاطع فيديو، وتذكران التزييف العميق والعلامات المائية ضمن المخاطر. وفيما يخص الأكواد، توصي نسخة العموم بوضع علامة توضيحية في الكود المولّد ومراجعته واختباره، وتضم قائمة تحقق الجهات الحكومية بنداً صريحاً للتحقق من دقة الكود قبل استخدامه."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "كيف أطبّقها بدون فريق كبير؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ابدأ بأربعة ملفات فقط: جرد للأدوات والحالات، وسياسة من صفحتين تحدد المسموح والمشروط والممنوع، وقائمة تحقق قبل النشر، وسجل قرارات ومراجعات. عيّن مالكاً واحداً لكل حالة استخدام، ودرّب الفريق على سيناريوهات حقيقية بدل محاضرة عامة، وراجع كل ربع سنة أو عند تغيير أداة أو بيانات."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/shadow-ai-detection/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/knowledge/shadow-ai-detection/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/knowledge/shadow-ai-detection/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز المعرفة",
+          "item": "https://brightai.live/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "اكتشاف Shadow AI: استخدامات الذكاء الاصطناعي غير المعتمدة",
+          "item": "https://brightai.live/knowledge/shadow-ai-detection/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/shadow-ai-detection/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/shadow-ai-detection/#article",
+      "url": "https://brightai.live/knowledge/shadow-ai-detection/",
+      "headline": "اكتشاف Shadow AI: استخدامات الذكاء الاصطناعي غير المعتمدة",
+      "description": "دليل للمنشآت السعودية لحصر أدوات الذكاء الاصطناعي غير المعتمدة ومعالجة مخاطرها، مع خطة جمع أدلة تراعي الخصوصية ومسار لاعتماد البدائل.",
+      "mainEntityOfPage": "https://brightai.live/knowledge/shadow-ai-detection/",
+      "inLanguage": "ar-SA",
+      "dateModified": "2026-11-08",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/about/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.live/images/brightai-logo.png"
+        }
+      },
+      "dateCreated": "2026-11-08",
+      "datePublished": "2026-11-08",
+      "citation": [
+        "https://nca.gov.sa/en/regulatory-documents/controls-list/ecc/",
+        "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf"
+      ]
+    }
+  },
+  {
+    "path": "/knowledge/shadow-ai-detection/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل حجب مواقع AI يكفي لاكتشاف Shadow AI؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا؛ توجد أدوات مدمجة وإضافات وحسابات وتكاملات. يحتاج الحصر مصادر متعددة مصرحًا بها وتحققًا من سياق العمل."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل كل استخدام غير معتمد حادث تسرب؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا. التصنيف يعتمد على البيانات والوصول وما وقع فعلًا. يُفعّل مسار الحوادث عند وجود مؤشرات مناسبة دون تحويل الشك إلى حقيقة."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "path": "/pillars/privacy/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/pillars/privacy/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/pillars/privacy/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "الأركان",
+          "item": "https://brightai.live/#principles"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "الخصوصية وحماية البيانات",
+          "item": "https://brightai.live/pillars/privacy/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/pillars/safety/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/pillars/safety/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/pillars/safety/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "الأركان",
+          "item": "https://brightai.live/#principles"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "السلامة والموثوقية",
+          "item": "https://brightai.live/pillars/safety/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/pillars/transparency/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/pillars/transparency/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/pillars/transparency/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "الأركان",
+          "item": "https://brightai.live/#principles"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "الشفافية والمساءلة",
+          "item": "https://brightai.live/pillars/transparency/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/pricing/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/pricing/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/pricing/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "الأسعار",
+          "item": "https://brightai.live/pricing/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/privacy/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/privacy/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/privacy/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "الخصوصية",
+          "item": "https://brightai.live/privacy/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/products/firewall/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/products/firewall/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/products/firewall/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "المنتجات",
+          "item": "https://brightai.live/products/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "AIGAS Firewall",
+          "item": "https://brightai.live/products/firewall/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/products/firewall/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "AIGAS Firewall",
+      "description": "جدار حماية الذكاء الاصطناعي للمنشآت السعودية: تصور منتج لفحص مدخلات ومخرجات الذكاء الاصطناعي بحثاً عن معلومات أو تعليمات قد تتطلب معالجة وفق سياسة المنشأة.",
+      "category": "حوكمة وأمان الذكاء الاصطناعي",
+      "brand": {
+        "@type": "Organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/"
+      },
+      "url": "https://brightai.live/products/firewall/"
+    }
+  },
+  {
+    "path": "/products/human-gate/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/products/human-gate/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/products/human-gate/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "المنتجات",
+          "item": "https://brightai.live/products/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "AIGAS Human Gate",
+          "item": "https://brightai.live/products/human-gate/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/products/human-gate/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "AIGAS Human Gate",
+      "description": "الموافقات البشرية على قرارات AI للمنشآت السعودية: تصور لمسار مراجعة بشرية قبل اعتماد مخرجات محددة وفق سياسة الجهة، مع تحديد صاحب الصلاحية ومسار التصعيد.",
+      "category": "حوكمة وأمان الذكاء الاصطناعي",
+      "brand": {
+        "@type": "Organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/"
+      },
+      "url": "https://brightai.live/products/human-gate/"
+    }
+  },
+  {
+    "path": "/products/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/products/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/products/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "المنتجات",
+          "item": "https://brightai.live/products/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/products/ledger/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/products/ledger/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/products/ledger/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "المنتجات",
+          "item": "https://brightai.live/products/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "AIGAS Ledger",
+          "item": "https://brightai.live/products/ledger/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/products/ledger/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "AIGAS Ledger",
+      "description": "سجل تدقيق الذكاء الاصطناعي للمنشآت السعودية: تصور لحفظ أدلة تشغيلية مرتبطة بالاستخدام والقرارات وفق ضوابط وصول واحتفاظ تعتمدها الجهة.",
+      "category": "حوكمة وأمان الذكاء الاصطناعي",
+      "brand": {
+        "@type": "Organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/"
+      },
+      "url": "https://brightai.live/products/ledger/"
+    }
+  },
+  {
+    "path": "/products/risk-engine/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/products/risk-engine/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/products/risk-engine/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "المنتجات",
+          "item": "https://brightai.live/products/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "AIGAS Risk Engine",
+          "item": "https://brightai.live/products/risk-engine/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/products/risk-engine/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "AIGAS Risk Engine",
+      "description": "تقييم مخاطر الذكاء الاصطناعي للمنشآت السعودية: تصور لتقييم مخاطر حالة الاستخدام وربطها بضوابط ومراجعات يحددها مالك المنشأة.",
+      "category": "حوكمة وأمان الذكاء الاصطناعي",
+      "brand": {
+        "@type": "Organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/"
+      },
+      "url": "https://brightai.live/products/risk-engine/"
+    }
+  },
+  {
+    "path": "/products/secure-chat/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/products/secure-chat/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/products/secure-chat/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "المنتجات",
+          "item": "https://brightai.live/products/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "AIGAS Secure Chat",
+          "item": "https://brightai.live/products/secure-chat/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/products/secure-chat/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "AIGAS Secure Chat",
+      "description": "محادثة ذكاء اصطناعي مؤسسية للمنشآت السعودية: تصور لواجهة محادثة مؤسسية يمكن أن تخضع لسياسات اختيار الأدوات والمراجعة بعد إثبات البنية والتكاملات.",
+      "category": "حوكمة وأمان الذكاء الاصطناعي",
+      "brand": {
+        "@type": "Organization",
+        "name": "BRIGHTAI",
+        "url": "https://brightai.live/"
+      },
+      "url": "https://brightai.live/products/secure-chat/"
+    }
+  },
+  {
+    "path": "/services/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/services/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/services/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "الخدمات",
+          "item": "https://brightai.live/services/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/solutions/enterprise/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/solutions/enterprise/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/solutions/enterprise/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "القطاعات",
+          "item": "https://brightai.live/solutions/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "المنشآت والشركات",
+          "item": "https://brightai.live/solutions/enterprise/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/solutions/finance/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/solutions/finance/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/solutions/finance/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "القطاعات",
+          "item": "https://brightai.live/solutions/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "القطاع المالي",
+          "item": "https://brightai.live/solutions/finance/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/solutions/government/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/solutions/government/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/solutions/government/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "القطاعات",
+          "item": "https://brightai.live/solutions/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "الجهات الحكومية",
+          "item": "https://brightai.live/solutions/government/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/solutions/healthcare/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/solutions/healthcare/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/solutions/healthcare/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "القطاعات",
+          "item": "https://brightai.live/solutions/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "الرعاية الصحية",
+          "item": "https://brightai.live/solutions/healthcare/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/solutions/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/solutions/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/solutions/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "القطاعات",
+          "item": "https://brightai.live/solutions/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/terms/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/terms/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/terms/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "الشروط",
+          "item": "https://brightai.live/terms/"
+        }
+      ]
+    }
+  },
+  {
+    "path": "/trust/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "alternateName": [
+        "BRIGHT AI",
+        "مؤسسة مُشرقة"
+      ],
+      "description": "مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).",
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "logo": "https://brightai.live/images/brightai-logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
+    }
+  },
+  {
+    "path": "/trust/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://brightai.live/#website",
+      "publisher": {
+        "@id": "https://brightai.live/#organization"
+      },
+      "name": "BRIGHTAI",
+      "url": "https://brightai.live",
+      "inLanguage": "ar-SA"
+    }
+  },
+  {
+    "path": "/trust/",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.live/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "الثقة",
+          "item": "https://brightai.live/trust/"
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,777 @@
+- generic [active] [ref=e1]:
+  - link "تخطّ إلى المحتوى" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=e3]:
+    - link "BRIGHTAI — الرئيسية" [ref=e4] [cursor=pointer]:
+      - /url: /
+      - img "BRIGHTAI — AI Governance and Safety (AIGAS)" [ref=e5]
+    - group [ref=e6]:
+      - navigation "التنقل الرئيسي" [ref=e7]:
+        - link "المنتجات" [ref=e8] [cursor=pointer]:
+          - /url: /products/
+        - link "الحلول" [ref=e9] [cursor=pointer]:
+          - /url: /#solutions
+        - link "الخدمات" [ref=e10] [cursor=pointer]:
+          - /url: /services/
+        - link "الأسعار" [ref=e11] [cursor=pointer]:
+          - /url: /pricing/
+        - link "مركز المعرفة" [ref=e12] [cursor=pointer]:
+          - /url: /docs/
+    - link "اطلب معلومات" [ref=e13] [cursor=pointer]:
+      - /url: /contact/
+      - text: اطلب معلومات
+      - generic [aria-hidden] [ref=e14]: ↗
+  - main [ref=e15]:
+    - navigation "مسار التنقل" [ref=e16]:
+      - link "الرئيسية" [ref=e17] [cursor=pointer]:
+        - /url: /
+      - generic [aria-hidden] [ref=e18]: /
+      - generic [ref=e19]: مركز المعرفة
+    - generic [ref=e20]:
+      - group [ref=e21]:
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - link "BRIGHTAI — الرئيسية" [ref=e24] [cursor=pointer]:
+              - /url: /
+              - img "BRIGHTAI — AI Governance and Safety (AIGAS)" [ref=e25]
+            - generic [ref=e26]: AIGAS / مساحة المعرفة
+          - navigation "مساحة المعرفة" [ref=e27]:
+            - button "الأدلة 32" [pressed] [ref=e28] [cursor=pointer]:
+              - text: الأدلة
+              - generic [ref=e31]: "32"
+            - button "معرفة منظومة AIGAS" [ref=e32] [cursor=pointer]:
+              - text: معرفة منظومة
+              - generic [ref=e33]: AIGAS
+            - button "الأسئلة الشائعة" [ref=e34] [cursor=pointer]
+          - paragraph [ref=e35]: تصفّح الموضوعات
+          - navigation "الموضوعات" [ref=e36]:
+            - button "كل الموضوعات 32" [pressed] [ref=e37] [cursor=pointer]:
+              - text: كل الموضوعات
+              - generic [ref=e38]: "32"
+            - button "حوكمة الذكاء الاصطناعي 13" [ref=e39] [cursor=pointer]:
+              - generic [ref=e40]: حوكمة الذكاء الاصطناعي
+              - generic [ref=e41]: "13"
+            - button "السلامة والموثوقية 6" [ref=e42] [cursor=pointer]:
+              - generic [ref=e43]: السلامة والموثوقية
+              - generic [ref=e44]: "6"
+            - button "الشفافية والمساءلة 10" [ref=e45] [cursor=pointer]:
+              - generic [ref=e46]: الشفافية والمساءلة
+              - generic [ref=e47]: "10"
+            - button "الخصوصية وحماية البيانات 5" [ref=e48] [cursor=pointer]:
+              - generic [ref=e49]: الخصوصية وحماية البيانات
+              - generic [ref=e50]: "5"
+            - button "الأدلة والإرشادات التقنية 3" [ref=e51] [cursor=pointer]:
+              - generic [ref=e52]: الأدلة والإرشادات التقنية
+              - generic [ref=e53]: "3"
+            - button "السياسات 4" [ref=e54] [cursor=pointer]:
+              - generic [ref=e55]: السياسات
+              - generic [ref=e56]: "4"
+            - button "الأسئلة الشائعة 28" [ref=e57] [cursor=pointer]:
+              - generic [ref=e58]: الأسئلة الشائعة
+              - generic [ref=e59]: "28"
+          - paragraph [ref=e60]: ● معرفة مفتوحة للجميعمحتوى تعليمي، لا يثبت امتثالًا.
+      - generic [ref=e61]:
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - paragraph [ref=e64]: ابحث. افهم. طبّق.
+            - heading [level=1] [ref=e65]:
+              - text: أدلة حوكمة الذكاء الاصطناعي
+              - emphasis [ref=e66]: في السعودية.
+            - paragraph [ref=e67]: أدلة عربية لقرارات أوضح في حوكمة وأمان الذكاء الاصطناعي.
+          - generic [ref=e68]:
+            - text: "32"
+            - generic [ref=e69]: دليلًا من محتوى الموقعللفهم والتطبيق
+        - search "البحث وتصفية الأدلة" [ref=e70]:
+          - generic [ref=e71]:
+            - generic [ref=e74]: ابحث في عناوين الأدلة وأوصافها وموضوعاتها
+            - searchbox "ابحث في عناوين الأدلة وأوصافها وموضوعاتها" [ref=e75]
+            - generic [aria-hidden] [ref=e76]: /
+          - paragraph [ref=e77]: يُطبّق البحث على العنوان والوصف والموضوع. يمكن اختيار أكثر من منتج، وتُعرض النتائج التي ترتبط بأي منتج مختار.
+          - generic [ref=e78]:
+            - generic [ref=e79]: "ابدأ من:"
+            - button "حماية البيانات" [ref=e80] [cursor=pointer]: حماية البيانات ↖
+            - button "المخاطر" [ref=e81] [cursor=pointer]: المخاطر ↖
+            - button "Prompt Injection" [ref=e82] [cursor=pointer]: Prompt Injection ↖
+          - group "المنتج المرتبط — حسب الروابط داخل الدليل" [ref=e83]:
+            - paragraph [ref=e85]: اختيار أكثر من منتج يعرض أي دليل مرتبط بأحدها. لا تُنشأ روابط لمقالات غير منشورة.
+            - button "Kernel" [ref=e86] [cursor=pointer]
+            - button "Firewall" [ref=e87] [cursor=pointer]
+            - button "Ledger" [ref=e88] [cursor=pointer]
+            - button "Human Gate" [ref=e89] [cursor=pointer]
+            - button "Risk Engine" [ref=e90] [cursor=pointer]
+            - button "Secure Chat" [ref=e91] [cursor=pointer]
+          - generic [ref=e92]:
+            - generic [ref=e93]:
+              - text: نوع المحتوى
+              - combobox "نوع المحتوى" [ref=e94]:
+                - option "كل الأنواع" [selected]
+                - option "إطار عمل"
+                - option "قائمة قرار"
+                - option "مصفوفة تعليمية"
+                - option "شرح تقني"
+                - option "سياسة داخلية"
+                - option "شرح عملي"
+                - option "دليل تشغيلي"
+                - option "قائمة تحقق"
+                - option "دليل سياسة"
+                - option "نموذج عملي"
+                - option "خطة تدريب"
+                - option "قائمة مشتريات"
+                - option "دليل قرار"
+                - option "نموذج مسؤوليات"
+                - option "ورقة عمل"
+                - option "دليل أدلة"
+                - option "خريطة مرجعية"
+                - option "دليل اختيار"
+                - option "دليل مواءمة"
+                - option "دليل قطاعي"
+                - option "دليل اختبار"
+                - option "قائمة تعاقد"
+                - option "دليل استجابة"
+                - option "دليل معالجة"
+                - option "دليل مقارنة"
+            - generic [ref=e95]:
+              - text: الموضوع
+              - combobox "الموضوع" [ref=e96]:
+                - option "كل الموضوعات" [selected]
+                - option "حوكمة الذكاء الاصطناعي"
+                - option "السلامة والموثوقية"
+                - option "الشفافية والمساءلة"
+                - option "الخصوصية وحماية البيانات"
+                - option "الأدلة والإرشادات التقنية"
+                - option "السياسات"
+                - option "الأسئلة الشائعة"
+            - button "عرض موسع" [ref=e97] [cursor=pointer]
+            - button "مسح الفلاتر" [ref=e98] [cursor=pointer]
+          - group "الفلاتر النشطة"
+        - generic [ref=e99]:
+          - status [ref=e100]: 32 نتائج من 32 أدلة
+          - generic [ref=e101]: قراءة تقديرية · 180 كلمة / دقيقة
+        - generic [ref=e102]:
+          - region "نتائج الأدلة" [ref=e103]:
+            - article [ref=e104]:
+              - generic [ref=e108]:
+                - generic [ref=e109]:
+                  - generic [ref=e110]: إطار عمل
+                  - generic [ref=e111]: DOC / 01
+                - heading [level=2] [ref=e112]:
+                  - link "حوكمة الذكاء الاصطناعي في السعودية" [ref=e113] [cursor=pointer]:
+                    - /url: /knowledge/ai-governance-saudi/?from=%2Fdocs%2F
+                - generic [ref=e114]:
+                  - generic [ref=e115]: حوكمة الذكاء الاصطناعي
+                  - generic [ref=e116]: 4 دقائق
+                - generic [ref=e117]:
+                  - button "معاينة سريعة" [ref=e118] [cursor=pointer]
+                  - link "افتح المقال" [ref=e119] [cursor=pointer]:
+                    - /url: /knowledge/ai-governance-saudi/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e120]: ←
+            - article [ref=e121]:
+              - generic [ref=e125]:
+                - generic [ref=e126]:
+                  - generic [ref=e127]: قائمة قرار
+                  - generic [ref=e128]: DOC / 02
+                - heading [level=2] [ref=e129]:
+                  - link "حماية بيانات المنشأة عند استخدام ChatGPT" [ref=e130] [cursor=pointer]:
+                    - /url: /knowledge/protect-company-data-chatgpt/?from=%2Fdocs%2F
+                - generic [ref=e131]:
+                  - generic [ref=e132]: Secure Chat
+                  - generic [ref=e133]: الخصوصية وحماية البيانات
+                  - generic [ref=e134]: 3 دقائق
+                - generic [ref=e135]:
+                  - button "معاينة سريعة" [ref=e136] [cursor=pointer]
+                  - link "افتح المقال" [ref=e137] [cursor=pointer]:
+                    - /url: /knowledge/protect-company-data-chatgpt/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e138]: ←
+            - article [ref=e139]:
+              - generic [ref=e143]:
+                - generic [ref=e144]:
+                  - generic [ref=e145]: مصفوفة تعليمية
+                  - generic [ref=e146]: DOC / 03
+                - heading [level=2] [ref=e147]:
+                  - link "تقييم مخاطر الذكاء الاصطناعي" [ref=e148] [cursor=pointer]:
+                    - /url: /knowledge/ai-risk-assessment/?from=%2Fdocs%2F
+                - generic [ref=e149]:
+                  - generic [ref=e150]: Human Gate
+                  - generic [ref=e151]: Risk Engine
+                  - generic [ref=e152]: السلامة والموثوقية
+                  - generic [ref=e153]: 3 دقائق
+                - generic [ref=e154]:
+                  - button "معاينة سريعة" [ref=e155] [cursor=pointer]
+                  - link "افتح المقال" [ref=e156] [cursor=pointer]:
+                    - /url: /knowledge/ai-risk-assessment/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e157]: ←
+            - article [ref=e158]:
+              - generic [ref=e162]:
+                - generic [ref=e163]:
+                  - generic [ref=e164]: شرح تقني
+                  - generic [ref=e165]: DOC / 04
+                - heading [level=2] [ref=e166]:
+                  - link "Prompt Injection وطبقات الحماية" [ref=e167] [cursor=pointer]:
+                    - /url: /knowledge/prompt-injection/?from=%2Fdocs%2F
+                - generic [ref=e168]:
+                  - generic [ref=e169]: Firewall
+                  - generic [ref=e170]: Human Gate
+                  - generic [ref=e171]: الأدلة والإرشادات التقنية
+                  - generic [ref=e172]: 3 دقائق
+                - generic [ref=e173]:
+                  - button "معاينة سريعة" [ref=e174] [cursor=pointer]
+                  - link "افتح المقال" [ref=e175] [cursor=pointer]:
+                    - /url: /knowledge/prompt-injection/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e176]: ←
+            - article [ref=e177]:
+              - generic [ref=e181]:
+                - generic [ref=e182]:
+                  - generic [ref=e183]: سياسة داخلية
+                  - generic [ref=e184]: DOC / 05
+                - heading [level=2] [ref=e185]:
+                  - link "سياسة استخدام الذكاء الاصطناعي للموظفين" [ref=e186] [cursor=pointer]:
+                    - /url: /knowledge/ai-use-policy-employees/?from=%2Fdocs%2F
+                - generic [ref=e187]:
+                  - generic [ref=e188]: Human Gate
+                  - generic [ref=e189]: السياسات
+                  - generic [ref=e190]: 3 دقائق
+                - generic [ref=e191]:
+                  - button "معاينة سريعة" [ref=e192] [cursor=pointer]
+                  - link "افتح المقال" [ref=e193] [cursor=pointer]:
+                    - /url: /knowledge/ai-use-policy-employees/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e194]: ←
+            - article [ref=e195]:
+              - generic [ref=e199]:
+                - generic [ref=e200]:
+                  - generic [ref=e201]: شرح عملي
+                  - generic [ref=e202]: DOC / 06
+                - heading [level=2] [ref=e203]:
+                  - link "إطار تبني الذكاء الاصطناعي من سدايا" [ref=e204] [cursor=pointer]:
+                    - /url: /knowledge/sdaia-ai-adoption-framework/?from=%2Fdocs%2F
+                - generic [ref=e205]:
+                  - generic [ref=e206]: حوكمة الذكاء الاصطناعي
+                  - generic [ref=e207]: 18 دقائق
+                - generic [ref=e208]:
+                  - button "معاينة سريعة" [ref=e209] [cursor=pointer]
+                  - link "افتح المقال" [ref=e210] [cursor=pointer]:
+                    - /url: /knowledge/sdaia-ai-adoption-framework/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e211]: ←
+            - article [ref=e212]:
+              - generic [ref=e216]:
+                - generic [ref=e217]:
+                  - generic [ref=e218]: مصفوفة تعليمية
+                  - generic [ref=e219]: DOC / 07
+                - heading [level=2] [ref=e220]:
+                  - link "مبادئ أخلاقيات الذكاء الاصطناعي في السعودية" [ref=e221] [cursor=pointer]:
+                    - /url: /knowledge/saudi-ai-ethics-principles/?from=%2Fdocs%2F
+                - generic [ref=e222]:
+                  - generic [ref=e223]: حوكمة الذكاء الاصطناعي
+                  - generic [ref=e224]: 18 دقائق
+                - generic [ref=e225]:
+                  - button "معاينة سريعة" [ref=e226] [cursor=pointer]
+                  - link "افتح المقال" [ref=e227] [cursor=pointer]:
+                    - /url: /knowledge/saudi-ai-ethics-principles/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e228]: ←
+            - article [ref=e229]:
+              - generic [ref=e233]:
+                - generic [ref=e234]:
+                  - generic [ref=e235]: شرح عملي
+                  - generic [ref=e236]: DOC / 08
+                - heading [level=2] [ref=e237]:
+                  - 'link "مبادئ الذكاء الاصطناعي التوليدي من سدايا: نسختان" [ref=e238] [cursor=pointer]':
+                    - /url: /knowledge/sdaia-generative-ai-guidelines/?from=%2Fdocs%2F
+                - generic [ref=e239]:
+                  - generic [ref=e240]: Firewall
+                  - generic [ref=e241]: Secure Chat
+                  - generic [ref=e242]: حوكمة الذكاء الاصطناعي
+                  - generic [ref=e243]: 18 دقائق
+                - generic [ref=e244]:
+                  - button "معاينة سريعة" [ref=e245] [cursor=pointer]
+                  - link "افتح المقال" [ref=e246] [cursor=pointer]:
+                    - /url: /knowledge/sdaia-generative-ai-guidelines/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e247]: ←
+            - article [ref=e248]:
+              - generic [ref=e252]:
+                - generic [ref=e253]:
+                  - generic [ref=e254]: شرح عملي
+                  - generic [ref=e255]: DOC / 09
+                - heading [level=2] [ref=e256]:
+                  - 'link "PDPL والذكاء الاصطناعي: متى يخضع إدخال البيانات؟" [ref=e257] [cursor=pointer]':
+                    - /url: /knowledge/pdpl-and-ai/?from=%2Fdocs%2F
+                - generic [ref=e258]:
+                  - generic [ref=e259]: Firewall
+                  - generic [ref=e260]: الخصوصية وحماية البيانات
+                  - generic [ref=e261]: 18 دقائق
+                - generic [ref=e262]:
+                  - button "معاينة سريعة" [ref=e263] [cursor=pointer]
+                  - link "افتح المقال" [ref=e264] [cursor=pointer]:
+                    - /url: /knowledge/pdpl-and-ai/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e265]: ←
+            - article [ref=e266]:
+              - generic [ref=e270]:
+                - generic [ref=e271]:
+                  - generic [ref=e272]: شرح عملي
+                  - generic [ref=e273]: DOC / 10
+                - heading [level=2] [ref=e274]:
+                  - link "هل في السعودية قانون للذكاء الاصطناعي؟" [ref=e275] [cursor=pointer]:
+                    - /url: /knowledge/saudi-ai-law-binding-vs-guidance/?from=%2Fdocs%2F
+                - generic [ref=e276]:
+                  - generic [ref=e277]: حوكمة الذكاء الاصطناعي
+                  - generic [ref=e278]: 18 دقائق
+                - generic [ref=e279]:
+                  - button "معاينة سريعة" [ref=e280] [cursor=pointer]
+                  - link "افتح المقال" [ref=e281] [cursor=pointer]:
+                    - /url: /knowledge/saudi-ai-law-binding-vs-guidance/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e282]: ←
+            - article [ref=e283]:
+              - generic [ref=e287]:
+                - generic [ref=e288]:
+                  - generic [ref=e289]: مصفوفة تعليمية
+                  - generic [ref=e290]: DOC / 11
+                - heading [level=2] [ref=e291]:
+                  - link "أداة التقييم الذاتي لأخلاقيات الذكاء الاصطناعي من سدايا" [ref=e292] [cursor=pointer]:
+                    - /url: /knowledge/sdaia-ai-ethics-self-assessment/?from=%2Fdocs%2F
+                - generic [ref=e293]:
+                  - generic [ref=e294]: Risk Engine
+                  - generic [ref=e295]: السلامة والموثوقية
+                  - generic [ref=e296]: 18 دقائق
+                - generic [ref=e297]:
+                  - button "معاينة سريعة" [ref=e298] [cursor=pointer]
+                  - link "افتح المقال" [ref=e299] [cursor=pointer]:
+                    - /url: /knowledge/sdaia-ai-ethics-self-assessment/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e300]: ←
+            - article [ref=e301]:
+              - generic [ref=e305]:
+                - generic [ref=e306]:
+                  - generic [ref=e307]: شرح عملي
+                  - generic [ref=e308]: DOC / 12
+                - heading [level=2] [ref=e309]:
+                  - 'link "ISO/IEC 42001 للمنشآت السعودية: ما هو نظام إدارة الذكاء الاصطناعي ومتى تحتاجه؟" [ref=e310] [cursor=pointer]':
+                    - /url: /knowledge/iso-42001-saudi/?from=%2Fdocs%2F
+                - generic [ref=e311]:
+                  - generic [ref=e312]: Ledger
+                  - generic [ref=e313]: حوكمة الذكاء الاصطناعي
+                  - generic [ref=e314]: 19 دقائق
+                - generic [ref=e315]:
+                  - button "معاينة سريعة" [ref=e316] [cursor=pointer]
+                  - link "افتح المقال" [ref=e317] [cursor=pointer]:
+                    - /url: /knowledge/iso-42001-saudi/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e318]: ←
+            - article [ref=e319]:
+              - generic [ref=e323]:
+                - generic [ref=e324]:
+                  - generic [ref=e325]: دليل تشغيلي
+                  - generic [ref=e326]: DOC / 13
+                - heading [level=2] [ref=e327]:
+                  - 'link "اكتشاف Shadow AI: استخدامات الذكاء الاصطناعي غير المعتمدة" [ref=e328] [cursor=pointer]':
+                    - /url: /knowledge/shadow-ai-detection/?from=%2Fdocs%2F
+                - generic [ref=e329]:
+                  - generic [ref=e330]: الأدلة والإرشادات التقنية
+                  - generic [ref=e331]: 4 دقائق
+                - generic [ref=e332]:
+                  - button "معاينة سريعة" [ref=e333] [cursor=pointer]
+                  - link "افتح المقال" [ref=e334] [cursor=pointer]:
+                    - /url: /knowledge/shadow-ai-detection/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e335]: ←
+            - article [ref=e336]:
+              - generic [ref=e340]:
+                - generic [ref=e341]:
+                  - generic [ref=e342]: قائمة تحقق
+                  - generic [ref=e343]: DOC / 14
+                - heading [level=2] [ref=e344]:
+                  - 'link "هلوسة الذكاء الاصطناعي: ضوابط التحقق من الإجابات" [ref=e345] [cursor=pointer]':
+                    - /url: /knowledge/ai-hallucinations-controls/?from=%2Fdocs%2F
+                - generic [ref=e346]:
+                  - generic [ref=e347]: السلامة والموثوقية
+                  - generic [ref=e348]: 4 دقائق
+                - generic [ref=e349]:
+                  - button "معاينة سريعة" [ref=e350] [cursor=pointer]
+                  - link "افتح المقال" [ref=e351] [cursor=pointer]:
+                    - /url: /knowledge/ai-hallucinations-controls/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e352]: ←
+            - article [ref=e353]:
+              - generic [ref=e357]:
+                - generic [ref=e358]:
+                  - generic [ref=e359]: دليل سياسة
+                  - generic [ref=e360]: DOC / 15
+                - heading [level=2] [ref=e361]:
+                  - 'link "سياسة التزييف العميق للمنشآت: الصوت والصورة والتحقق" [ref=e362] [cursor=pointer]':
+                    - /url: /knowledge/deepfake-policy-organizations/?from=%2Fdocs%2F
+                - generic [ref=e363]:
+                  - generic [ref=e364]: السياسات
+                  - generic [ref=e365]: 4 دقائق
+                - generic [ref=e366]:
+                  - button "معاينة سريعة" [ref=e367] [cursor=pointer]
+                  - link "افتح المقال" [ref=e368] [cursor=pointer]:
+                    - /url: /knowledge/deepfake-policy-organizations/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e369]: ←
+            - article [ref=e370]:
+              - generic [ref=e374]:
+                - generic [ref=e375]:
+                  - generic [ref=e376]: نموذج عملي
+                  - generic [ref=e377]: DOC / 16
+                - heading [level=2] [ref=e378]:
+                  - 'link "سجل جرد استخدامات الذكاء الاصطناعي: الحقول ودورة التحديث" [ref=e379] [cursor=pointer]':
+                    - /url: /knowledge/ai-inventory-register/?from=%2Fdocs%2F
+                - generic [ref=e380]:
+                  - generic [ref=e381]: حوكمة الذكاء الاصطناعي
+                  - generic [ref=e382]: 4 دقائق
+                - generic [ref=e383]:
+                  - button "معاينة سريعة" [ref=e384] [cursor=pointer]
+                  - link "افتح المقال" [ref=e385] [cursor=pointer]:
+                    - /url: /knowledge/ai-inventory-register/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e386]: ←
+            - article [ref=e387]:
+              - generic [ref=e391]:
+                - generic [ref=e392]:
+                  - generic [ref=e393]: خطة تدريب
+                  - generic [ref=e394]: DOC / 17
+                - heading [level=2] [ref=e395]:
+                  - 'link "تدريب الموظفين على الذكاء الاصطناعي: من السياسة إلى السلوك" [ref=e396] [cursor=pointer]':
+                    - /url: /knowledge/ai-employee-training/?from=%2Fdocs%2F
+                - generic [ref=e397]:
+                  - generic [ref=e398]: السياسات
+                  - generic [ref=e399]: 4 دقائق
+                - generic [ref=e400]:
+                  - button "معاينة سريعة" [ref=e401] [cursor=pointer]
+                  - link "افتح المقال" [ref=e402] [cursor=pointer]:
+                    - /url: /knowledge/ai-employee-training/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e403]: ←
+            - article [ref=e404]:
+              - generic [ref=e408]:
+                - generic [ref=e409]:
+                  - generic [ref=e410]: قائمة مشتريات
+                  - generic [ref=e411]: DOC / 18
+                - heading [level=2] [ref=e412]:
+                  - link "تقييم موردي الذكاء الاصطناعي قبل التعاقد والتكامل" [ref=e413] [cursor=pointer]:
+                    - /url: /knowledge/ai-vendor-assessment/?from=%2Fdocs%2F
+                - generic [ref=e414]:
+                  - generic [ref=e415]: حوكمة الذكاء الاصطناعي
+                  - generic [ref=e416]: 4 دقائق
+                - generic [ref=e417]:
+                  - button "معاينة سريعة" [ref=e418] [cursor=pointer]
+                  - link "افتح المقال" [ref=e419] [cursor=pointer]:
+                    - /url: /knowledge/ai-vendor-assessment/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e420]: ←
+            - article [ref=e421]:
+              - generic [ref=e425]:
+                - generic [ref=e426]:
+                  - generic [ref=e427]: دليل قرار
+                  - generic [ref=e428]: DOC / 19
+                - heading [level=2] [ref=e429]:
+                  - link "تصنيف البيانات قبل استخدامها في الذكاء الاصطناعي" [ref=e430] [cursor=pointer]:
+                    - /url: /knowledge/data-classification-for-ai/?from=%2Fdocs%2F
+                - generic [ref=e431]:
+                  - generic [ref=e432]: الخصوصية وحماية البيانات
+                  - generic [ref=e433]: 4 دقائق
+                - generic [ref=e434]:
+                  - button "معاينة سريعة" [ref=e435] [cursor=pointer]
+                  - link "افتح المقال" [ref=e436] [cursor=pointer]:
+                    - /url: /knowledge/data-classification-for-ai/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e437]: ←
+            - article [ref=e438]:
+              - generic [ref=e442]:
+                - generic [ref=e443]:
+                  - generic [ref=e444]: نموذج مسؤوليات
+                  - generic [ref=e445]: DOC / 20
+                - heading [level=2] [ref=e446]:
+                  - link "لجنة حوكمة الذكاء الاصطناعي ومصفوفة RACI للمسؤوليات" [ref=e447] [cursor=pointer]:
+                    - /url: /knowledge/ai-governance-committee-raci/?from=%2Fdocs%2F
+                - generic [ref=e448]:
+                  - generic [ref=e449]: حوكمة الذكاء الاصطناعي
+                  - generic [ref=e450]: 4 دقائق
+                - generic [ref=e451]:
+                  - button "معاينة سريعة" [ref=e452] [cursor=pointer]
+                  - link "افتح المقال" [ref=e453] [cursor=pointer]:
+                    - /url: /knowledge/ai-governance-committee-raci/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e454]: ←
+            - article [ref=e455]:
+              - generic [ref=e459]:
+                - generic [ref=e460]:
+                  - generic [ref=e461]: ورقة عمل
+                  - generic [ref=e462]: DOC / 21
+                - heading [level=2] [ref=e463]:
+                  - link "تقييم أثر الذكاء الاصطناعي على الأشخاص والقرارات" [ref=e464] [cursor=pointer]:
+                    - /url: /knowledge/ai-impact-assessment/?from=%2Fdocs%2F
+                - generic [ref=e465]:
+                  - generic [ref=e466]: السلامة والموثوقية
+                  - generic [ref=e467]: 4 دقائق
+                - generic [ref=e468]:
+                  - button "معاينة سريعة" [ref=e469] [cursor=pointer]
+                  - link "افتح المقال" [ref=e470] [cursor=pointer]:
+                    - /url: /knowledge/ai-impact-assessment/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e471]: ←
+            - article [ref=e472]:
+              - generic [ref=e476]:
+                - generic [ref=e477]:
+                  - generic [ref=e478]: دليل أدلة
+                  - generic [ref=e479]: DOC / 22
+                - heading [level=2] [ref=e480]:
+                  - 'link "سجل تدقيق الذكاء الاصطناعي: ما الذي تحفظه كدليل؟" [ref=e481] [cursor=pointer]':
+                    - /url: /knowledge/ai-audit-trail/?from=%2Fdocs%2F
+                - generic [ref=e482]:
+                  - generic [ref=e483]: الشفافية والمساءلة
+                  - generic [ref=e484]: 4 دقائق
+                - generic [ref=e485]:
+                  - button "معاينة سريعة" [ref=e486] [cursor=pointer]
+                  - link "افتح المقال" [ref=e487] [cursor=pointer]:
+                    - /url: /knowledge/ai-audit-trail/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e488]: ←
+            - article [ref=e489]:
+              - generic [ref=e493]:
+                - generic [ref=e494]:
+                  - generic [ref=e495]: خريطة مرجعية
+                  - generic [ref=e496]: DOC / 23
+                - heading [level=2] [ref=e497]:
+                  - link "خريطة الجهات والمتطلبات المرتبطة بالذكاء الاصطناعي في السعودية" [ref=e498] [cursor=pointer]:
+                    - /url: /knowledge/saudi-ai-regulators-map/?from=%2Fdocs%2F
+                - generic [ref=e499]:
+                  - generic [ref=e500]: حوكمة الذكاء الاصطناعي
+                  - generic [ref=e501]: 4 دقائق
+                - generic [ref=e502]:
+                  - button "معاينة سريعة" [ref=e503] [cursor=pointer]
+                  - link "افتح المقال" [ref=e504] [cursor=pointer]:
+                    - /url: /knowledge/saudi-ai-regulators-map/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e505]: ←
+            - article [ref=e506]:
+              - generic [ref=e510]:
+                - generic [ref=e511]:
+                  - generic [ref=e512]: دليل اختيار
+                  - generic [ref=e513]: DOC / 24
+                - heading [level=2] [ref=e514]:
+                  - link "كيف تختار منصة حوكمة ذكاء اصطناعي للمنشأة؟" [ref=e515] [cursor=pointer]:
+                    - /url: /knowledge/choose-ai-governance-platform/?from=%2Fdocs%2F
+                - generic [ref=e516]:
+                  - generic [ref=e517]: حوكمة الذكاء الاصطناعي
+                  - generic [ref=e518]: 4 دقائق
+                - generic [ref=e519]:
+                  - button "معاينة سريعة" [ref=e520] [cursor=pointer]
+                  - link "افتح المقال" [ref=e521] [cursor=pointer]:
+                    - /url: /knowledge/choose-ai-governance-platform/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e522]: ←
+            - article [ref=e523]:
+              - generic [ref=e527]:
+                - generic [ref=e528]:
+                  - generic [ref=e529]: دليل مواءمة
+                  - generic [ref=e530]: DOC / 25
+                - heading [level=2] [ref=e531]:
+                  - 'link "حوكمة الذكاء الاصطناعي وضوابط NCA ECC: من المواءمة إلى الدليل" [ref=e532] [cursor=pointer]':
+                    - /url: /knowledge/ai-cybersecurity-nca/?from=%2Fdocs%2F
+                - generic [ref=e533]:
+                  - generic [ref=e534]: الأدلة والإرشادات التقنية
+                  - generic [ref=e535]: 4 دقائق
+                - generic [ref=e536]:
+                  - button "معاينة سريعة" [ref=e537] [cursor=pointer]
+                  - link "افتح المقال" [ref=e538] [cursor=pointer]:
+                    - /url: /knowledge/ai-cybersecurity-nca/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e539]: ←
+            - article [ref=e540]:
+              - generic [ref=e544]:
+                - generic [ref=e545]:
+                  - generic [ref=e546]: دليل قطاعي
+                  - generic [ref=e547]: DOC / 26
+                - heading [level=2] [ref=e548]:
+                  - link "حوكمة الذكاء الاصطناعي في القطاع المالي السعودي" [ref=e549] [cursor=pointer]:
+                    - /url: /knowledge/ai-governance-financial-sector/?from=%2Fdocs%2F
+                - generic [ref=e550]:
+                  - generic [ref=e551]: حوكمة الذكاء الاصطناعي
+                  - generic [ref=e552]: 4 دقائق
+                - generic [ref=e553]:
+                  - button "معاينة سريعة" [ref=e554] [cursor=pointer]
+                  - link "افتح المقال" [ref=e555] [cursor=pointer]:
+                    - /url: /knowledge/ai-governance-financial-sector/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e556]: ←
+            - article [ref=e557]:
+              - generic [ref=e561]:
+                - generic [ref=e562]:
+                  - generic [ref=e563]: دليل قطاعي
+                  - generic [ref=e564]: DOC / 27
+                - heading [level=2] [ref=e565]:
+                  - link "حوكمة الذكاء الاصطناعي في الرعاية الصحية السعودية" [ref=e566] [cursor=pointer]:
+                    - /url: /knowledge/ai-governance-healthcare/?from=%2Fdocs%2F
+                - generic [ref=e567]:
+                  - generic [ref=e568]: السلامة والموثوقية
+                  - generic [ref=e569]: 4 دقائق
+                - generic [ref=e570]:
+                  - button "معاينة سريعة" [ref=e571] [cursor=pointer]
+                  - link "افتح المقال" [ref=e572] [cursor=pointer]:
+                    - /url: /knowledge/ai-governance-healthcare/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e573]: ←
+            - article [ref=e574]:
+              - generic [ref=e578]:
+                - generic [ref=e579]:
+                  - generic [ref=e580]: دليل اختبار
+                  - generic [ref=e581]: DOC / 28
+                - heading [level=2] [ref=e582]:
+                  - 'link "العدالة والتحيز في أنظمة الذكاء الاصطناعي: ماذا تختبر؟" [ref=e583] [cursor=pointer]':
+                    - /url: /knowledge/ai-bias-fairness/?from=%2Fdocs%2F
+                - generic [ref=e584]:
+                  - generic [ref=e585]: السلامة والموثوقية
+                  - generic [ref=e586]: 4 دقائق
+                - generic [ref=e587]:
+                  - button "معاينة سريعة" [ref=e588] [cursor=pointer]
+                  - link "افتح المقال" [ref=e589] [cursor=pointer]:
+                    - /url: /knowledge/ai-bias-fairness/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e590]: ←
+            - article [ref=e591]:
+              - generic [ref=e595]:
+                - generic [ref=e596]:
+                  - generic [ref=e597]: قائمة تعاقد
+                  - generic [ref=e598]: DOC / 29
+                - heading [level=2] [ref=e599]:
+                  - 'link "بنود عقود الذكاء الاصطناعي: قائمة مراجعة قبل التوقيع" [ref=e600] [cursor=pointer]':
+                    - /url: /knowledge/ai-contract-clauses/?from=%2Fdocs%2F
+                - generic [ref=e601]:
+                  - generic [ref=e602]: السياسات
+                  - generic [ref=e603]: 4 دقائق
+                - generic [ref=e604]:
+                  - button "معاينة سريعة" [ref=e605] [cursor=pointer]
+                  - link "افتح المقال" [ref=e606] [cursor=pointer]:
+                    - /url: /knowledge/ai-contract-clauses/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e607]: ←
+            - article [ref=e608]:
+              - generic [ref=e612]:
+                - generic [ref=e613]:
+                  - generic [ref=e614]: دليل استجابة
+                  - generic [ref=e615]: DOC / 30
+                - heading [level=2] [ref=e616]:
+                  - 'link "تسرّب بيانات عبر AI: متى تبدأ مهلة 72 ساعة؟" [ref=e617] [cursor=pointer]':
+                    - /url: /knowledge/data-breach-72-hours-ai/?from=%2Fdocs%2F
+                - generic [ref=e618]:
+                  - generic [ref=e619]: الخصوصية وحماية البيانات
+                  - generic [ref=e620]: 4 دقائق
+                - generic [ref=e621]:
+                  - button "معاينة سريعة" [ref=e622] [cursor=pointer]
+                  - link "افتح المقال" [ref=e623] [cursor=pointer]:
+                    - /url: /knowledge/data-breach-72-hours-ai/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e624]: ←
+            - article [ref=e625]:
+              - generic [ref=e629]:
+                - generic [ref=e630]:
+                  - generic [ref=e631]: دليل معالجة
+                  - generic [ref=e632]: DOC / 31
+                - heading [level=2] [ref=e633]:
+                  - 'link "إقامة بيانات الذكاء الاصطناعي في السعودية: ما الذي تتحقق منه؟" [ref=e634] [cursor=pointer]':
+                    - /url: /knowledge/ai-data-residency-saudi/?from=%2Fdocs%2F
+                - generic [ref=e635]:
+                  - generic [ref=e636]: الخصوصية وحماية البيانات
+                  - generic [ref=e637]: 4 دقائق
+                - generic [ref=e638]:
+                  - button "معاينة سريعة" [ref=e639] [cursor=pointer]
+                  - link "افتح المقال" [ref=e640] [cursor=pointer]:
+                    - /url: /knowledge/ai-data-residency-saudi/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e641]: ←
+            - article [ref=e642]:
+              - generic [ref=e646]:
+                - generic [ref=e647]:
+                  - generic [ref=e648]: دليل مقارنة
+                  - generic [ref=e649]: DOC / 32
+                - heading [level=2] [ref=e650]:
+                  - 'link "حوكمة البيانات وحوكمة الذكاء الاصطناعي: الفرق والتكامل" [ref=e651] [cursor=pointer]':
+                    - /url: /knowledge/data-governance-vs-ai-governance/?from=%2Fdocs%2F
+                - generic [ref=e652]:
+                  - generic [ref=e653]: حوكمة الذكاء الاصطناعي
+                  - generic [ref=e654]: 4 دقائق
+                - generic [ref=e655]:
+                  - button "معاينة سريعة" [ref=e656] [cursor=pointer]
+                  - link "افتح المقال" [ref=e657] [cursor=pointer]:
+                    - /url: /knowledge/data-governance-vs-ai-governance/?from=%2Fdocs%2F
+                    - text: افتح المقال
+                    - generic [aria-hidden] [ref=e658]: ←
+          - complementary "معاينة الدليل" [ref=e659]:
+            - generic [ref=e660]: معاينة سريعة
+            - generic [ref=e662]:
+              - heading "خذ نظرة قبل القراءة" [level=2] [ref=e666]
+              - paragraph [ref=e667]: اختر «معاينة سريعة» من أي دليل لعرض وصفه وأقسامه الفعلية هنا.
+              - text: العناوين من المقال الأصلي
+        - paragraph [ref=e668]: المواد توعوية ولا تمثل استشارة قانونية أو اعتمادًا تنظيميًا. راجع المصدر الرسمي الساري قبل اتخاذ قرار مؤسسي.
+  - contentinfo [ref=e669]:
+    - generic [ref=e670]:
+      - link "BRIGHTAI — الرئيسية" [ref=e671] [cursor=pointer]:
+        - /url: /
+        - img "BRIGHTAI — AI Governance and Safety (AIGAS)" [ref=e672]
+      - paragraph [ref=e673]: ذكاء اصطناعي تثق به... وتحاسبه.
+    - generic [ref=e674]:
+      - generic [ref=e675]:
+        - heading "المنصة" [level=2] [ref=e676]
+        - list [ref=e677]:
+          - listitem [ref=e678]:
+            - link "Kernel والمنتجات" [ref=e679] [cursor=pointer]:
+              - /url: /products/
+              - generic [ref=e680]: Kernel
+              - text: والمنتجات
+          - listitem [ref=e681]:
+            - link "محاكاة توضيحية" [ref=e682] [cursor=pointer]:
+              - /url: /kernel/
+          - listitem [ref=e683]:
+            - link "طلب عرض سعر" [ref=e684] [cursor=pointer]:
+              - /url: /pricing/
+          - listitem [ref=e685]:
+            - link "مركز المعرفة" [ref=e686] [cursor=pointer]:
+              - /url: /docs/
+      - generic [ref=e687]:
+        - heading "الحوكمة" [level=2] [ref=e688]
+        - list [ref=e689]:
+          - listitem [ref=e690]:
+            - link "السلامة" [ref=e691] [cursor=pointer]:
+              - /url: /pillars/safety/
+          - listitem [ref=e692]:
+            - link "الشفافية" [ref=e693] [cursor=pointer]:
+              - /url: /pillars/transparency/
+          - listitem [ref=e694]:
+            - link "الخصوصية" [ref=e695] [cursor=pointer]:
+              - /url: /pillars/privacy/
+          - listitem [ref=e696]:
+            - link "الامتثال" [ref=e697] [cursor=pointer]:
+              - /url: /compliance/
+      - generic [ref=e698]:
+        - heading "الشركة" [level=2] [ref=e699]
+        - list [ref=e700]:
+          - listitem [ref=e701]:
+            - link "الخدمات" [ref=e702] [cursor=pointer]:
+              - /url: /services/
+          - listitem [ref=e703]:
+            - link "من نحن" [ref=e704] [cursor=pointer]:
+              - /url: /about/
+          - listitem [ref=e705]:
+            - link "مركز الثقة" [ref=e706] [cursor=pointer]:
+              - /url: /trust/
+          - listitem [ref=e707]:
+            - link "تواصل معنا" [ref=e708] [cursor=pointer]:
+              - /url: /contact/
+      - generic [ref=e709]:
+        - heading "قانوني" [level=2] [ref=e710]
+        - list [ref=e711]:
+          - listitem [ref=e712]:
+            - link "سياسة الخصوصية" [ref=e713] [cursor=pointer]:
+              - /url: /privacy/
+          - listitem [ref=e714]:
+            - link "الشروط والأحكام" [ref=e715] [cursor=pointer]:
+              - /url: /terms/
+    - generic [ref=e716]: © 2026 BRIGHTAI

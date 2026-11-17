@@ -1,0 +1,36 @@
+{
+  "status": "done",
+  "data": [
+    {
+      "session_default_channel_group": "Direct",
+      "sessions": 162,
+      "active_users": 114,
+      "engaged_sessions": 76
+    },
+    {
+      "session_default_channel_group": "Unassigned",
+      "sessions": 11,
+      "active_users": 5,
+      "engaged_sessions": 4
+    },
+    {
+      "session_default_channel_group": "Organic Search",
+      "sessions": 4,
+      "active_users": 3,
+      "engaged_sessions": 1
+    },
+    {
+      "session_default_channel_group": "Referral",
+      "sessions": 2,
+      "active_users": 2,
+      "engaged_sessions": 2
+    },
+    {
+      "session_default_channel_group": "Organic Social",
+      "sessions": 1,
+      "active_users": 1,
+      "engaged_sessions": 0
+    }
+  ],
+  "total_rows": 5
+}

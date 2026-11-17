@@ -1,0 +1,26 @@
+{
+  "status": "done",
+  "data": [
+    {
+      "landing_page": "(not set)",
+      "sessions": 1,
+      "engaged_sessions": 0
+    },
+    {
+      "landing_page": "/contact",
+      "sessions": 1,
+      "engaged_sessions": 0
+    },
+    {
+      "landing_page": "/solutions/ai-governance-platform",
+      "sessions": 1,
+      "engaged_sessions": 1
+    },
+    {
+      "landing_page": "/solutions/ai-risk-classification",
+      "sessions": 1,
+      "engaged_sessions": 0
+    }
+  ],
+  "total_rows": 4
+}

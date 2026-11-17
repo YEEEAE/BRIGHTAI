@@ -1,0 +1,21 @@
+{
+  "sitemaps": [
+    {
+      "path": "https://brightai.live/sitemap.xml",
+      "lastSubmitted": "2026-11-08T16:21:15.860Z",
+      "isPending": false,
+      "isSitemapsIndex": false,
+      "type": "sitemap",
+      "lastDownloaded": "2026-11-08T16:21:17.138Z",
+      "warnings": "0",
+      "errors": "0",
+      "contents": [
+        {
+          "type": "web",
+          "submitted": "264",
+          "indexed": "0"
+        }
+      ]
+    }
+  ]
+}

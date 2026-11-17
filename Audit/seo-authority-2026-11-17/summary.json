@@ -1,0 +1,36 @@
+{
+  "built_html": 64,
+  "indexable": 57,
+  "sitemap": 57,
+  "source_files_scanned": 524,
+  "route_patterns": 85,
+  "titles_duplicate": {},
+  "descriptions_duplicate": {},
+  "h1_invalid": [],
+  "language_invalid": [
+    "/demo/firewall/",
+    "/demo/human-gate/",
+    "/demo/kernel/",
+    "/demo/ledger/",
+    "/demo/risk-engine/",
+    "/demo/secure-chat/"
+  ],
+  "schema_parse_errors": [],
+  "images": 117,
+  "images_missing_alt": 0,
+  "images_missing_dimensions": 0,
+  "articles": 32,
+  "articles_intro_40_70": 20,
+  "articles_toc": 0,
+  "articles_limit_section": 0,
+  "sitemap_lastmod_count": 0,
+  "schema_types": {
+    "Organization": 58,
+    "WebSite": 58,
+    "BreadcrumbList": 57,
+    "CollectionPage": 1,
+    "Article": 32,
+    "FAQPage": 28,
+    "Product": 5
+  }
+}
