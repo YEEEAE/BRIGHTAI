@@ -1,0 +1,68 @@
+{
+  "status": "ok",
+  "source": {
+    "provider": "google_analytics_admin",
+    "propertyId": "properties/518211586",
+    "propertyDisplayName": "Bright AI "
+  },
+  "summary": {
+    "dataStreamCount": 1,
+    "webStreamCount": 1,
+    "keyEventCount": 3,
+    "customDimensionCount": 0,
+    "customMetricCount": 0,
+    "issueCount": 0
+  },
+  "issues": [],
+  "webStreams": [
+    {
+      "streamId": "13234997510",
+      "displayName": "brightai.site",
+      "measurementId": "G-8LLESL207Q",
+      "defaultUri": "https://www.brightai.site",
+      "createTime": "2026-01-03T03:02:28.153Z",
+      "updateTime": "2026-01-03T03:02:28.153Z",
+      "enhancedMeasurement": {
+        "streamEnabled": true,
+        "scrollsEnabled": true,
+        "outboundClicksEnabled": true,
+        "siteSearchEnabled": true,
+        "videoEngagementEnabled": true,
+        "fileDownloadsEnabled": true,
+        "pageChangesEnabled": true,
+        "formInteractionsEnabled": true,
+        "searchQueryParameter": "q,s,search,query,keyword",
+        "uriQueryParameter": ""
+      }
+    }
+  ],
+  "otherStreams": [],
+  "keyEvents": [
+    {
+      "eventName": "purchase",
+      "createTime": "2026-01-03T03:02:28.153448Z",
+      "countingMethod": "ONCE_PER_EVENT"
+    },
+    {
+      "eventName": "close_convert_lead",
+      "createTime": "2026-01-03T03:01:50.006169Z",
+      "deletable": true,
+      "custom": true,
+      "countingMethod": "ONCE_PER_EVENT"
+    },
+    {
+      "eventName": "qualify_lead",
+      "createTime": "2026-01-03T03:01:50.006169Z",
+      "deletable": true,
+      "custom": true,
+      "countingMethod": "ONCE_PER_EVENT"
+    }
+  ],
+  "customDefinitions": {
+    "dimensions": [],
+    "metrics": []
+  },
+  "meta": {
+    "projectId": "42dc000d-5c6a-4016-8710-f9a88d5be3b4"
+  }
+}

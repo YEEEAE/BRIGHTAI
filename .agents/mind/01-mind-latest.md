@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-17 VERIFIED READONLY SEO/UX: HEAD eb1beded؛57/57 sitemap URLs حي200/metadata سليمة آليًا؛GSC18أكتوبر–14نوفمبر9clicks/970impressions مقابل7/688؛GA4 180sessions/Organic4؛privacy الحيةتنفيGA رغمتحميله؛GAيحذفexternalreferrer (أثرالإسناد NOT VERIFIED)؛Sentry0/PostHogلاeventsمرصودة30يومًا؛SemrushAPIunitsنفدت؛لا تنفيذ تحسينات/نشر.
 - 2026-11-17 VERIFIED LOCAL SEO discovery+fixes: جرد492URL/مخطط؛57صفحةعامة/build/routesPASS وunit4؛READMEحُذف/demo6description/حارسHTML؛138aliasمحليPASS لكنحي77×200/61×404؛sitemapقديم264/حالي57؛235صفحةحيةبلامصدرحالي؛التسجيلحي404؛لا نشر؛ `audit/repository-seo-discovery-2026-11-17/REPORT.md`.
 - 2026-11-17 VERIFIED build correction: lockfileAstro6.4.8+Node22.22.3 ينجح؛node_modulesالأصليAstro7.4.12غيرمطابق أظهرPDPLcompile/docs500؛لا تعتمد هذا الفشل كعيب فيbuildالعقدالحالي؛الاعتماداتالأصليةلمتُستبدل.
 - 2026-11-17 PARTIAL LOCAL GA4: طلب المستخدم التتبع لجميع الصفحات؛ shared G-9LMB4PGTWJ في public/app/auth/demo/closed portal وCSP؛unit22/hash PASS؛build BLOCKED بخطأ article في pdpl-and-ai:448،Browser profile locks؛Windsor read يعمل؛لا نشر/collection حي؛ `audit/ga4-2026-11-17/REPORT.md`.
@@ -59,6 +60,11 @@
 - 2026-11-16 حزمة الإغلاق النشطة `Audit/prompts.md` v2.1 مشتقة من `Audit/BRIGHT-AI-2026-FINAL-360-AUDIT.html`: 16 برومبتًا/G-01…G-16/W1–W9؛ سجل 50 متطلبًا معلن غير مسرود؛ رأس التقرير `7385200` والرأس الحالي `cb9863f`؛ `Audit/final-360-2026-11-10/*` غير موجود على القرص.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-17] — برومبتات السلطة والبحث وتجربة المستخدم
+- **تم:** مراجعة مصدر موجّهة وجرد آلي؛GSC/GA4/Firecrawl/Browser وقراءةSentry/PostHog/Linear؛حزمة توصيات للمستخدم فقط.
+- **التحقق:** PASS — public57HTTP/metadata وunit10؛sitemapقديم264/حالي57 والتسجيل404 والخصوصيةGAمتناقضة حيًا؛mobileطلب390أعاد500 فلايُدّعىقبول390.
+- **الحالة:** DONE للتحليل المحدد؛backlinks/fieldCWV/قبولUXشامل NOT VERIFIED؛Similarwebلميُستعلم.
 
 ## [2026-11-17] — Repository SEO discovery وإصلاح محلي
 - **تم:** جدول492صفًا وأدلةقبل/بعد؛إزالةREADMEالعامالفارغ،وصفdemo6،حارسمعلوماتHTML؛المستخدمأجازالإصلاحاتالمحليةبعدطلبتشخيصي.
