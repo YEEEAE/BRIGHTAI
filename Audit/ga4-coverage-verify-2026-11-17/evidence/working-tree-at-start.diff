@@ -1,0 +1,66 @@
+diff --git a/src/components/LabShell.astro b/src/components/LabShell.astro
+index d005f530..4ad9c8cf 100644
+--- a/src/components/LabShell.astro
++++ b/src/components/LabShell.astro
+@@ -3,7 +3,7 @@
+ import ScenarioContext from './ScenarioContext.astro';
+ import WorkspaceNavigation from './WorkspaceNavigation.astro';
+ import ProductIcon from './ProductIcon.astro';
+-import { productForSlug } from '../shared/product-navigation.mjs';
++import { productContactPath, productForSlug } from '../shared/product-navigation.mjs';
+ import { labBriefs } from '../shared/lab-briefs';
+ import '../styles/experience-hub.css';
+ const { kind } = Astro.props;
+@@ -11,7 +11,7 @@ const product = productForSlug(kind)!;
+ ---
+ <section class="lab-shell" id="lab" tabindex="-1" aria-label={`مختبر ${product.name}`} data-lab-shell data-product={kind}>
+   <aside class="lab-sidebar"><p class="hub-kicker"><bdi dir="ltr">AIGAS / LABS</bdi></p><WorkspaceNavigation current={kind}/><p class="lab-sidebar-note">انتقل بحرية.<br/>تُحفظ خطوتك في هذه الجلسة فقط.</p></aside>
+-  <div class="lab-body"><header class="lab-header"><div><ProductIcon kind={kind} size={24}/><div><h1><bdi dir="ltr">{product.name}</bdi></h1><p>{labBriefs[kind].task} / مختبر عام</p></div></div><a class="lab-auth" href={`/auth/sign-up/?returnTo=${encodeURIComponent(product.workspacePath)}`}>استكشاف محدود 48 ساعة ↗</a></header>
++  <div class="lab-body"><header class="lab-header"><div><ProductIcon kind={kind} size={24}/><div><h1><bdi dir="ltr">{product.name}</bdi></h1><p>{labBriefs[kind].task} / مختبر عام</p></div></div><a class="lab-auth" href={productContactPath(kind)}>اطلب استكشافًا محدودًا ↗</a></header>
+   <div class="lab-context"><span>مثال تعليمي · دون اتصال بخدمة</span><span data-lab-progress>اختر مثالًا للبدء</span></div>
+   {kind !== "ledger" && <ScenarioContext next={({firewall:"human-gate", "human-gate":"ledger", ledger:"risk-engine", "risk-engine":"secure-chat", "secure-chat":"firewall"})[kind]} />}
+   <slot />
+diff --git a/src/components/ProductCatalog.astro b/src/components/ProductCatalog.astro
+index 0a4be6fc..18538004 100644
+--- a/src/components/ProductCatalog.astro
++++ b/src/components/ProductCatalog.astro
+@@ -23,7 +23,7 @@ const products = order.map(slug => productNavigation.find(p => p.slug === slug)!
+     </article>)}
+     <article class="hub-kernel"><p class="hub-kicker">الأساس المشترك</p><h2><bdi dir="ltr">Kernel</bdi><span aria-hidden="true"> ◈</span></h2><p>تتبّع السياسة والفحص والمراجعة والدليل في سيناريو اصطناعي، دون تسجيل.</p><a href="/kernel/#lab">جرب مسار Kernel ←</a><small>مكوّن مشترك، وليس منتجًا سادسًا مدفوعًا.</small></article>
+   </div>
+-  <p class="hub-footnote">التجربة التشغيلية لمدة 48 ساعة تتطلب حسابًا وتفعيلًا مؤهلًا؛ تسجيل الدخول وحده لا يفعّلها.</p>
++  <p class="hub-footnote">المختبرات محاكاة اصطناعية منفصلة عن المنتج المؤسسي. طلب الاستكشاف لا يعني التفعيل؛ التسجيل الحي غير مثبت، واستكشاف 48 ساعة للقراءة المحدودة فقط.</p>
+ </section>
+ <script>
+   import { productForSlug } from '../shared/product-navigation.mjs';
+diff --git a/src/components/ProductJourney.astro b/src/components/ProductJourney.astro
+index 14ad2db4..84619a78 100644
+--- a/src/components/ProductJourney.astro
++++ b/src/components/ProductJourney.astro
+@@ -8,9 +8,9 @@ const product = productForSlug(slug);
+   {!compact && <p>{product.scope}</p>}
+   <div class="actions">
+     <a class="journey-entry" href={`${product.publicPath}#lab`} aria-label={`جرّب المختبر الآن بلا حساب — ${product.name}`}><span>جرّب المختبر الآن بلا حساب</span><span class="journey-arrow" aria-hidden="true">←</span></a>
+-    <a class="journey-contact" href={`/auth/sign-up/?trial=48h&returnTo=${encodeURIComponent(product.workspacePath)}`} aria-label={`ابدأ تجربة تشغيلية 48 ساعة — ${product.name}`}>ابدأ تجربة تشغيلية 48 ساعة <span aria-hidden="true">↗</span></a>
++    <a class="journey-contact" href={productContactPath(slug)} aria-label={`اطلب استكشافًا محدودًا — ${product.name}`}>اطلب استكشافًا محدودًا <span aria-hidden="true">↗</span></a>
+   </div>
+-  {!compact && <p>المختبر عام وتعليمي. التجربة التشغيلية لمدة 48 ساعة تتطلب حسابًا وتفعيلًا مؤهلًا بعد التحقق من الوصول في الخادم؛ تسجيل الدخول وحده لا يفعّلها. <a href={productContactPath(slug, true)}>تواصل بشأن الاشتراك</a></p>}
++  {!compact && <p>المختبر اصطناعي عام وتعليمي. التسجيل الحي غير مثبت حاليًا؛ طلب الاستكشاف لا ينشئ حسابًا ولا يفعّل منتجًا. استكشاف 48 ساعة، عند إتاحته، للقراءة المحدودة فقط. <a href={productContactPath(slug, true)}>تواصل بشأن الاشتراك</a></p>}
+ </section>}
+ <style>
+   .product-journey { margin-block:32px; padding:clamp(24px,4vw,40px); border-radius:20px; background:#ffffff04; box-shadow:inset 0 1px 0 #ffffff10; }
+diff --git a/src/pages/auth/sign-up.astro b/src/pages/auth/sign-up.astro
+index 64854846..dbbed50d 100644
+--- a/src/pages/auth/sign-up.astro
++++ b/src/pages/auth/sign-up.astro
+@@ -24,7 +24,9 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
+   <h1>ابدأ بحسابك</h1>
+   <p class="lead">سجّل بالبريد الإلكتروني وكلمة المرور. تُدار بيانات الدخول عبر Neon Managed Auth.</p>
+ 
+-  {authUrl ? (
++  <p>التسجيل لا يفعّل المنتج المؤسسي. استكشاف 48 ساعة، عند إتاحته، بيانات اصطناعية وقراءة محدودة فقط.</p>
++  <p><a href={intendedProduct ? `${intendedProduct.publicPath}#lab` : "/products/"}>العودة إلى المختبر العام</a> · <a href="/contact/">طلب استكشاف أو الإبلاغ عن تعذر الدخول</a></p>
++  {authUrl && portalEnabled ? (
+     <section class="card auth-card" data-auth-url={authUrl} data-workspace-path={workspacePath} data-product-intent={!!intendedProduct || trialIntent} data-trial-intent={trialIntent} data-portal-enabled={portalEnabled} aria-labelledby="auth-heading">
+       <div data-auth-form-view>
+         <h2 id="auth-heading">إنشاء حساب</h2>

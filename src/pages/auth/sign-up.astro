@@ -24,7 +24,9 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
   <h1>ابدأ بحسابك</h1>
   <p class="lead">سجّل بالبريد الإلكتروني وكلمة المرور. تُدار بيانات الدخول عبر Neon Managed Auth.</p>
 
-  {authUrl ? (
+  <p>التسجيل لا يفعّل المنتج المؤسسي. استكشاف 48 ساعة، عند إتاحته، بيانات اصطناعية وقراءة محدودة فقط.</p>
+  <p><a href={intendedProduct ? `${intendedProduct.publicPath}#lab` : "/products/"}>العودة إلى المختبر العام</a> · <a href="/contact/">طلب استكشاف أو الإبلاغ عن تعذر الدخول</a></p>
+  {authUrl && portalEnabled ? (
     <section class="card auth-card" data-auth-url={authUrl} data-workspace-path={workspacePath} data-product-intent={!!intendedProduct || trialIntent} data-trial-intent={trialIntent} data-portal-enabled={portalEnabled} aria-labelledby="auth-heading">
       <div data-auth-form-view>
         <h2 id="auth-heading">إنشاء حساب</h2>
