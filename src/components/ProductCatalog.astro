@@ -5,11 +5,12 @@ import ProductIcon from './ProductIcon.astro';
 import ProductSchematic from './ProductSchematic.astro';
 import { labBriefs } from '../shared/lab-briefs';
 import '../styles/experience-hub.css';
+import { complaintPath } from '../shared/complaint-journey';
 const order = ['firewall', 'risk-engine', 'human-gate', 'ledger', 'secure-chat'];
 const products = order.map(slug => productNavigation.find(p => p.slug === slug)!);
 ---
 <section id="lab" class="experience-hub" tabindex="-1" aria-labelledby="catalog-title">
-  <header class="hub-heading"><div><p class="hub-kicker"><bdi dir="ltr">AIGAS / EXPERIENCE HUB</bdi></p><h1 id="catalog-title">من الفكرة إلى التجربة.</h1><p>اختر مهمة. جرّب المثال مباشرة، وشاهد سبب النتيجة.</p></div><div class="hub-start"><a class="hub-quickstart" href="/products/firewall/#lab">جرّب Firewall الآن <span aria-hidden="true">←</span></a><a class="hub-resume" data-lab-resume hidden href="/products/firewall/#lab">أكمل آخر مختبر ←</a><small class="hub-resume-status" data-lab-resume-status role="status" aria-live="polite" hidden>تعذر الوصول إلى تخزين الجلسة؛ اختر مختبرًا من القائمة.</small></div></header>
+  <header class="hub-heading"><div><p class="hub-kicker"><bdi dir="ltr">AIGAS / EXPERIENCE HUB</bdi></p><h1 id="catalog-title">من الفكرة إلى التجربة.</h1><p>تابع شكوى تأخر شحنة عبر المنتجات، أو اختر مختبرًا لتجربته بشكل مستقل.</p></div><div class="hub-start"><a class="hub-quickstart" href={complaintPath()}>جرّب شكوى عميل <span aria-hidden="true">←</span></a><a class="hub-resume" data-lab-resume hidden href="/products/firewall/#lab">أكمل آخر مختبر ←</a><small class="hub-resume-status" data-lab-resume-status role="status" aria-live="polite" hidden>تعذر الوصول إلى تخزين الجلسة؛ اختر مختبرًا من القائمة.</small></div></header>
   <div class="hub-intro"><span>٥ مختبرات عامة · بلا حساب</span><span>أمثلة تعليمية محلية، دون اتصال بنموذج</span></div>
   <div class="hub-grid">
     {products.map((product, i) => <article class:list={['hub-card', { 'hub-featured': i === 0 }]}>

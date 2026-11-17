@@ -1,0 +1,57 @@
+---
+import PageShell from '../../../components/PageShell.astro';
+import LabShell from '../../../components/LabShell.astro';
+import { complaintStations, complaintPath } from '../../../shared/complaint-journey';
+import { productForSlug } from '../../../shared/product-navigation.mjs';
+
+export const prerender = true;
+export function getStaticPaths() {
+  return complaintStations.map((station, index) => ({
+    params: { product: station.slug },
+    props: { index },
+  }));
+}
+const { index }: { index: number } = Astro.props;
+const station = complaintStations[index];
+const next = complaintStations[index + 1];
+const product = productForSlug(station.slug)!;
+const nextProduct = next && productForSlug(next.slug);
+---
+<PageShell title={`شكوى تأخر الشحنة | ${product.name} — BRIGHTAI`} description={station.question} robots="noindex, follow" crumbs={[{ name: 'المنتجات', href: '/products/' }, { name: 'شكوى تأخر الشحنة' }]}>
+  <LabShell kind={station.slug} complaintStep={index + 1}>
+    <section class="complaint-station" aria-labelledby="complaint-question">
+      <h2 id="complaint-question">{station.question}</h2>
+      <details data-complaint-result>
+        <summary>{station.action}</summary>
+        <div class="complaint-result">
+          <h3>النتيجة في هذا المثال</h3>
+          <p>{station.result}</p>
+          {'example' in station && <blockquote>{station.example}</blockquote>}
+          {next ? <a href={complaintPath(next.slug)}>تابع إلى <bdi dir="ltr">{nextProduct?.name}</bdi> <span aria-hidden="true">←</span></a> : <a href="/products/">العودة للمنتجات <span aria-hidden="true">←</span></a>}
+        </div>
+      </details>
+    </section>
+  </LabShell>
+</PageShell>
+<script>
+  const result = document.querySelector<HTMLDetailsElement>('[data-complaint-result]');
+  document.querySelector('[data-complaint-restart]')?.addEventListener('click', event => {
+    if (!result || location.pathname !== '/products/firewall/complaint/') return;
+    if (!(event instanceof MouseEvent) || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    result.open = false;
+    result.querySelector('summary')?.focus();
+  });
+</script>
+<style>
+  .complaint-station { padding: clamp(18px, 4vw, 32px); }
+  .complaint-station h2 { margin-block: 0 16px; font-size: clamp(20px, 3vw, 28px); line-height: 1.5; }
+  details { padding: 0; border: 0; }
+  summary, .complaint-result a { min-block-size: 48px; padding: 10px 16px; border-radius: var(--radius-control); }
+  summary { inline-size: fit-content; background: var(--color-action); color: var(--color-action-contrast); cursor: pointer; }
+  summary:hover { background: var(--color-action-hover-strong); }
+  .complaint-result { margin-block-start: 16px; padding: 16px; border-inline-start: 3px solid var(--icon-accent); background: var(--surface-raised); }
+  .complaint-result h3, .complaint-result p { margin-block: 0 8px; }
+  blockquote { margin: 0 0 8px; overflow-wrap: anywhere; }
+  .complaint-result a { display: inline-block; padding-inline: 0; align-content: center; color: var(--color-focus); }
+</style>

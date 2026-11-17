@@ -6,22 +6,26 @@ import ProductIcon from './ProductIcon.astro';
 import { productContactPath, productForSlug } from '../shared/product-navigation.mjs';
 import { labBriefs } from '../shared/lab-briefs';
 import '../styles/experience-hub.css';
-const { kind } = Astro.props;
+import { complaintPath } from '../shared/complaint-journey';
+const { kind, complaintStep } = Astro.props;
 const product = productForSlug(kind)!;
 const labConnectionLabel = kind === 'secure-chat' ? 'محاكاة محلية افتراضيًا · إرسال خارجي اختياري' : 'مثال تعليمي · دون اتصال بخدمة';
 ---
-<section class="lab-shell" id="lab" tabindex="-1" aria-label={`مختبر ${product.name}`} data-lab-shell data-product={kind}>
-  <div class="lab-sidebar"><p class="hub-kicker"><bdi dir="ltr">AIGAS / LABS</bdi></p><WorkspaceNavigation current={kind}/><p class="lab-sidebar-note">انتقل بحرية.<br/>يُحفظ اسم هذا المختبر في هذه الجلسة فقط؛ لا يُحفظ نص المثال.</p></div>
-  <div class="lab-body"><header class="lab-header"><div><ProductIcon kind={kind} size={24}/><div><h1><bdi dir="ltr">{product.name}</bdi></h1><p>{labBriefs[kind].task} / مختبر عام</p></div></div><a class="lab-auth" href={productContactPath(kind)}>اطلب استكشافًا محدودًا ↗</a></header>
+<section class="lab-shell" id="lab" tabindex="-1" aria-label={`مختبر ${product.name}`} data-lab-shell data-complaint-step={complaintStep} data-product={kind}>
+  <div class="lab-sidebar"><p class="hub-kicker"><bdi dir="ltr">AIGAS / LABS</bdi></p><WorkspaceNavigation current={kind} complaint={Boolean(complaintStep)}/>{!complaintStep && <p class="lab-sidebar-note">انتقل بحرية.<br/>يُحفظ اسم هذا المختبر في هذه الجلسة فقط؛ لا يُحفظ نص المثال.</p>}</div>
+  <div class="lab-body"><header class="lab-header"><div><ProductIcon kind={kind} size={24}/><div><h1><bdi dir="ltr">{product.name}</bdi></h1><p>{complaintStep ? "محاكاة محلية ببيانات افتراضية" : `${labBriefs[kind].task} / مختبر عام`}</p></div></div>{!complaintStep && <a class="lab-auth" href={productContactPath(kind)}>اطلب استكشافًا محدودًا ↗</a>}</header>
+  {complaintStep ? <ScenarioContext complaintStep={complaintStep}/> : <>
   <div class="lab-context"><span>{labConnectionLabel}</span><span data-lab-progress>اختر مثالًا للبدء</span></div>
   {kind !== "ledger" && <ScenarioContext next={({firewall:"human-gate", "human-gate":"ledger", ledger:"risk-engine", "risk-engine":"secure-chat", "secure-chat":"firewall"})[kind]} />}
+  </>}
   <slot />
+  {complaintStep ? <footer class="lab-footer"><a href="/products/">العودة للمنتجات</a><a href={complaintPath()} data-complaint-restart>ابدأ الشكوى من جديد</a><a href={`${product.publicPath}#lab`}>جرّب المختبر المستقل</a></footer> : <>
   {kind === "ledger" && <p class="ledger-state-key" aria-label="دليل الحالات">○ Empty — فارغ · ◷ Loading — جارٍ التحقق · ✓ Verified — تم التحقق محليًا · ⛔ Blocked — تعذر التحقق أو اكتُشف خلل</p>}
   <p class="lab-terms">بدء 48 ساعة يتطلب حسابًا وعضوية وصلاحيات وتهيئة وموافقة تشغيل من الخادم؛ يبدأ العداد عند التفعيل فقط، ولا تحويل تلقائي لمدفوع. Kernel بنية مشتركة لا تُفوتر منفصلًا.</p>
-  <footer class="lab-footer"><a href="/products/">← كل التجارب</a><a href="#product-details">عن المنتج وحدود الاستخدام ↓</a><button type="button" data-lab-reset hidden>إعادة ضبط المثال</button></footer></div>
+  <footer class="lab-footer"><a href="/products/">← كل التجارب</a><a href="#product-details">عن المنتج وحدود الاستخدام ↓</a><button type="button" data-lab-reset hidden>إعادة ضبط المثال</button></footer></>}</div>
 </section>
 <script>
   import { rememberLastLab } from '../shared/lab-session.mjs';
-  const shell = document.querySelector<HTMLElement>('[data-lab-shell]');
+  const shell = document.querySelector<HTMLElement>('[data-lab-shell]:not([data-complaint-step])');
   if (shell?.dataset.product) rememberLastLab(shell.dataset.product);
 </script>
