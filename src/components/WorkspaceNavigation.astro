@@ -4,7 +4,7 @@ import ProductIcon from './ProductIcon.astro';
 const { mode = 'lab', current = '' } = Astro.props;
 const links = productNavigation.map(p => ({ ...p, href: mode === 'lab' ? `${p.publicPath}#lab` : p.workspacePath }));
 ---
-<details class="workspace-menu" open data-workspace-menu>
+<details class="workspace-menu" data-workspace-menu>
   <summary>التنقل بين {mode === 'lab' ? 'المختبرات' : 'المنتجات'} <span aria-hidden="true">⌄</span></summary>
   <nav aria-label={mode === 'lab' ? 'مختبرات المنتجات' : 'تنقل النظام'}>
     <a href="/products/">مركز التجارب <span aria-hidden="true">↗</span></a>

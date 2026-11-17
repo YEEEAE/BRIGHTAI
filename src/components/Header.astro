@@ -11,8 +11,8 @@ const links = [
 <a class="skip-link" href="#main">تخطّ إلى المحتوى</a>
 <header class="topbar wrap">
   <BrandLogo />
-  <details class="primary-navigation" data-primary-navigation open>
-    <summary aria-controls="primary-navigation-links" aria-expanded="true">القائمة</summary>
+  <details class="primary-navigation" data-primary-navigation>
+    <summary aria-controls="primary-navigation-links" aria-expanded="false">القائمة</summary>
     <nav id="primary-navigation-links" aria-label="التنقل الرئيسي">{links.map(l => <a href={l.href}>{l.label}</a>)}</nav>
   </details>
   <a class="ghost contact" href="/contact/">اطلب معلومات <span aria-hidden="true">↗</span></a>
@@ -39,6 +39,9 @@ const links = [
   nav a { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 400; color: #9a9a9a; }
   nav a:hover { color: #fff; }
   .primary-navigation summary { display: none; }
+  /* Start collapsed before JS on compact screens; keep a native no-JS opener
+     available on desktop until viewport initialization opens the navigation. */
+  .primary-navigation:not([open]) summary { display: flex; align-items: center; min-block-size: 44px; }
   .primary-navigation :is(summary, a):focus-visible { outline: 3px solid var(--color-focus); outline-offset: 4px; border-radius: 3px; }
   @media (max-width: 900px) {
     .topbar { flex-wrap: wrap; padding-block: 12px; gap: 12px; }

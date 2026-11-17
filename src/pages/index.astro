@@ -21,7 +21,7 @@ const sectors = [
 ---
 <BaseLayout title="حوكمة وأمان الذكاء الاصطناعي في السعودية | BRIGHTAI" description="أدلة عربية لحوكمة الذكاء الاصطناعي في السعودية: سياسة الموظفين، تقييم المخاطر وحماية البيانات. تعرّف على تصور منتجات AIGAS وحدود إتاحتها التشغيلية.">
   <Header />
-  <main id="main">
+  <main id="main" tabindex="-1">
     <section class="hero wrap" aria-labelledby="hero-title">
       <div class="hero-copy">
 
@@ -277,6 +277,8 @@ const sectors = [
   .hero { font-weight: 200; }
   .hero h1 { animation: none; text-wrap: wrap; }
   .hero .button { border-radius: var(--radius-buttons); transition: transform .2s, filter .2s; }
+  /* Keep the approved violet hue while preserving small-label contrast. */
+  .hero .button:is(:hover,:focus-visible) { background: var(--color-action-hover-strong); filter: none; }
   .hero :is(.button,.ghost) span { transition: none; }
   .hero :is(.button,.ghost):is(:hover,:focus-visible) span { transform: none; }
 </style>

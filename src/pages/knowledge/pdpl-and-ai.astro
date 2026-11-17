@@ -127,7 +127,7 @@ const checkpoints = [
             <p class="pd-answer">المسار يبدأ من قرار الموظف بالإدخال، ويمر بالقناة والأداة والمورد والنقل، وينتهي عند المخرجات والاحتفاظ. عند كل نقطة سؤال يحدد إن كانت المعالجة مضبوطة أو تحتاج توقفاً. اضغط أي نقطة لتفتح بطاقتها.</p>
             <div class="pd-journey" data-journey>
               <div class="pd-journey-scroll" tabindex="0" role="group" aria-label="مسار البيانات التفاعلي — استخدم الأسهم للتنقل بين النقاط">
-                <svg class="pd-route" viewBox="0 0 1000 230" role="img" aria-labelledby="route-title route-desc">
+                <svg class="pd-route" viewBox="0 0 1000 230" role="group" aria-labelledby="route-title route-desc">
                   <title id="route-title">مسار البيانات من الموظف إلى المخرجات عبر ست نقاط فحص</title>
                   <desc id="route-desc">رسم توضيحي اصطناعي يوضح انتقال البيانات من الموظف إلى القناة ثم الأداة فالمورد فالنقل ثم المخرجات. كل نقطة قابلة للنقر وتعرض سؤالاً وقاعدة.</desc>
                   <defs>
@@ -511,13 +511,16 @@ const checkpoints = [
     });
     select(0);
 
-    // Respect reduced motion for the SVG motion path.
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      const svg = root.querySelector('svg');
-      try { (svg as SVGSVGElement & { pauseAnimations?: () => void })?.pauseAnimations?.(); } catch { /* noop */ }
-      const dot = root.querySelector<SVGCircleElement>('.pd-route-dot');
-      if (dot) { dot.setAttribute('cx', '918'); dot.setAttribute('cy', '118'); }
-    }
+    // SMIL motion does not follow CSS animation overrides. Sync the live preference.
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const svg = root.querySelector<SVGSVGElement>('svg');
+    const syncMotion = () => {
+      if (motion.matches) svg?.pauseAnimations();
+      else svg?.unpauseAnimations();
+    };
+    syncMotion();
+    motion.addEventListener('change', syncMotion);
+    addEventListener('pagehide', () => motion.removeEventListener('change', syncMotion), { once: true });
   });
 
   // Decision tree: four questions, no data leaves the browser.

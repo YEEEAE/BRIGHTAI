@@ -97,6 +97,10 @@
 .kc-sidebar>summary {
   display:none
 }
+/* A closed server-rendered disclosure remains operable without JavaScript. */
+.kc-sidebar:not([open])>summary {
+  display:block
+}
 .kc-sidebar-inner {
   position:sticky;
   inset-block-start:20px;
