@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile, readdir, writeFile } from 'node:fs/promises';
 
-const site = 'https://brightai.live';
+import { publicSite as site, isPublicIndexPath } from '../src/server/seo/indexability.mjs';
 const locations = xml => [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map(([, url]) => url);
 const plain = text => text.replace(/<[^>]*>/g, '').replaceAll('&amp;', '&')
   .replaceAll('&quot;', '"').replaceAll('&#39;', "'").replace(/\s+/g, ' ').trim();
@@ -54,8 +54,10 @@ export default function seoBuild() {
           const url = html.match(/rel="canonical" href="([^"]+)"/)?.[1];
           assert(url, `Missing canonical: ${file.pathname}`);
           const canonical = new URL(url);
+          assert.equal([...html.matchAll(/<link\b[^>]*rel=["']canonical["'][^>]*>/gi)].length, 1, `Exactly one canonical: ${url}`);
+          assert(!canonical.hash, `Canonical fragment: ${url}`);
           assert.equal(canonical.origin, site, `Canonical origin: ${url}`);
-          assert(!/^\/(app|auth)(\/|$)/.test(canonical.pathname), `Private page indexed: ${url}`);
+          assert(isPublicIndexPath(canonical.pathname), `Private page indexed: ${url}`);
           assert(canonical.pathname.endsWith('/') && !canonical.search, `Unclean canonical: ${url}`);
           const expected = canonical.pathname === '/' ? 'index.html' : canonical.pathname.slice(1) + 'index.html';
           assert.equal(file.href, new URL(expected, client).href, `Canonical points to another page: ${url}`);
@@ -70,6 +72,7 @@ export default function seoBuild() {
         for (const { url, title, description } of pages) {
           assert(title && description, `Missing search metadata: ${url}`);
           const path = new URL(url).pathname;
+          assert(!redirects.some(item => item.source === path), `Redirect in sitemap: ${url}`);
           const aliases = path === '/' ? ['/index.html'] : [path.slice(0, -1) + '.html', path + 'index.html'];
           for (const alias of aliases) assert(redirects.some(item => item.source === alias && item.destination === path),
             `Add ${alias} -> ${path} to redirects.json`);

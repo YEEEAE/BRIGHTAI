@@ -1,0 +1,113 @@
+{
+  "local": 57,
+  "localFailures": 0,
+  "liveCurrent": 57,
+  "legacy": 264,
+  "liveChecked": 311,
+  "liveFailures": 1,
+  "probes": [
+    {
+      "url": "http://127.0.0.1:4467/sitemap.xml",
+      "method": "GET",
+      "status": 301,
+      "location": "/sitemap-index.xml"
+    },
+    {
+      "url": "http://127.0.0.1:4467/sitemap.xml",
+      "method": "HEAD",
+      "status": 301,
+      "location": "/sitemap-index.xml"
+    },
+    {
+      "url": "http://127.0.0.1:4467/404/",
+      "method": "GET",
+      "status": 404
+    },
+    {
+      "url": "http://127.0.0.1:4467/404/",
+      "method": "HEAD",
+      "status": 404
+    },
+    {
+      "url": "http://127.0.0.1:4467/404.html",
+      "method": "GET",
+      "status": 404
+    },
+    {
+      "url": "http://127.0.0.1:4467/404.html",
+      "method": "HEAD",
+      "status": 404
+    },
+    {
+      "url": "http://127.0.0.1:4467/missing-sitemap-contract-20261117/",
+      "method": "GET",
+      "status": 404
+    },
+    {
+      "url": "http://127.0.0.1:4467/missing-sitemap-contract-20261117/",
+      "method": "HEAD",
+      "status": 404
+    },
+    {
+      "url": "http://127.0.0.1:4467/knowledge/missing-sitemap-contract-20261117/",
+      "method": "GET",
+      "status": 404
+    },
+    {
+      "url": "http://127.0.0.1:4467/knowledge/missing-sitemap-contract-20261117/",
+      "method": "HEAD",
+      "status": 404
+    },
+    {
+      "url": "https://brightai.live/sitemap.xml",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://brightai.live/sitemap.xml",
+      "method": "HEAD",
+      "status": 200
+    },
+    {
+      "url": "https://brightai.live/404/",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://brightai.live/404/",
+      "method": "HEAD",
+      "status": 200
+    },
+    {
+      "url": "https://brightai.live/404.html",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://brightai.live/404.html",
+      "method": "HEAD",
+      "status": 200
+    },
+    {
+      "url": "https://brightai.live/missing-sitemap-contract-20261117/",
+      "method": "GET",
+      "status": 404
+    },
+    {
+      "url": "https://brightai.live/missing-sitemap-contract-20261117/",
+      "method": "HEAD",
+      "status": 404
+    },
+    {
+      "url": "https://brightai.live/knowledge/missing-sitemap-contract-20261117/",
+      "method": "GET",
+      "status": 404
+    },
+    {
+      "url": "https://brightai.live/knowledge/missing-sitemap-contract-20261117/",
+      "method": "HEAD",
+      "status": 404
+    }
+  ],
+  "lastmod": false
+}

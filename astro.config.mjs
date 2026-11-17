@@ -3,17 +3,14 @@ import node from '@astrojs/node';
 import sitemap from '@astrojs/sitemap';
 import seoBuild from './scripts/seo-build.mjs';
 import buildVersion from './scripts/build-version.mjs';
+import { publicSite, isPublicIndexPath } from './src/server/seo/indexability.mjs';
 
 export default defineConfig({
-  site: 'https://brightai.live',
+  site: publicSite,
   trailingSlash: 'always',
   // Keep bundled scripts external so runtime CSP can allow only same-origin modules.
   vite: { build: { assetsInlineLimit: 0 } },
   output: 'server',
   adapter: node({ mode: 'standalone' }),
-  integrations: [sitemap({ filter: (page) => {
-    const pathname = new URL(page).pathname;
-    if (['/healthz', '/healthz/'].includes(pathname)) return false;
-    return !pathname.startsWith('/demo/') && !pathname.startsWith('/app/') && !pathname.startsWith('/auth/') && !['/README/', '/404/'].includes(pathname);
-  } }), seoBuild(), buildVersion()],
+  integrations: [sitemap({ filter: page => isPublicIndexPath(new URL(page).pathname) }), seoBuild(), buildVersion()],
 });

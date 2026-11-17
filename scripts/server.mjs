@@ -62,6 +62,13 @@ const listener = (request, response) => {
   if (request.socket.encrypted || forwardedProto === 'https') {
     response.setHeader('Strict-Transport-Security', 'max-age=15552000');
   }
+  // The adapter serves prerendered 404.html as a normal file on explicit access.
+  // Serve that artifact with its real status, including the directory-style URL.
+  if (['/404', '/404/', '/404.html'].includes(url.pathname) && ['GET', 'HEAD'].includes(request.method)) {
+    response.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8', 'X-Robots-Tag': 'noindex, follow' });
+    response.end(request.method === 'HEAD' ? undefined : readFileSync(new URL('../dist/client/404.html', import.meta.url)));
+    return;
+  }
   const destination = ['GET', 'HEAD'].includes(request.method) && publicRedirect(url.pathname);
   if (destination) {
     response.writeHead(301, { Location: destination + url.search, 'X-Content-Type-Options': 'nosniff' });
