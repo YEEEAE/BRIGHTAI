@@ -1,0 +1,78 @@
+{
+  "rows": [
+    {
+      "keys": [
+        "https://brightai.live/docs/ai-governance-saudi-arabia/"
+      ],
+      "clicks": 0,
+      "impressions": 8,
+      "ctr": 0,
+      "position": 43.75
+    },
+    {
+      "keys": [
+        "https://brightai.live/hub/ai-governance/"
+      ],
+      "clicks": 0,
+      "impressions": 10,
+      "ctr": 0,
+      "position": 26.4
+    },
+    {
+      "keys": [
+        "https://brightai.live/solutions/ai-governance-platform/"
+      ],
+      "clicks": 0,
+      "impressions": 7,
+      "ctr": 0,
+      "position": 65.14285714285714
+    },
+    {
+      "keys": [
+        "https://brightai.live/solutions/continuous-ai-governance/"
+      ],
+      "clicks": 0,
+      "impressions": 7,
+      "ctr": 0,
+      "position": 81.42857142857143
+    },
+    {
+      "keys": [
+        "https://brightai.live/solutions/government-ai-governance/"
+      ],
+      "clicks": 0,
+      "impressions": 19,
+      "ctr": 0,
+      "position": 38.526315789473685
+    },
+    {
+      "keys": [
+        "https://brightai.live/solutions/manufacturing-ai-governance/"
+      ],
+      "clicks": 0,
+      "impressions": 10,
+      "ctr": 0,
+      "position": 55.7
+    }
+  ],
+  "row_count": 6,
+  "truncated": false,
+  "query": {
+    "start_date": "2026-10-18",
+    "end_date": "2026-11-14",
+    "search_type": "web",
+    "data_state": "final",
+    "dimensions": [
+      "page"
+    ],
+    "row_limit": 1000,
+    "filters": [
+      {
+        "dimension": "query",
+        "expression": "حوكمة الذكاء الاصطناعي",
+        "operator": "equals"
+      }
+    ],
+    "estimated_data_finalized_through": "2026-11-14"
+  }
+}

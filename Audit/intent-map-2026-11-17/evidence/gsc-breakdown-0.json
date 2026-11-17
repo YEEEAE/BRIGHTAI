@@ -1,0 +1,60 @@
+{
+  "rows": [
+    {
+      "keys": [
+        "https://brightai.live/docs/ai-governance-saudi-arabia/"
+      ],
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 21.5
+    },
+    {
+      "keys": [
+        "https://brightai.live/solutions/government-ai-governance/"
+      ],
+      "clicks": 0,
+      "impressions": 74,
+      "ctr": 0,
+      "position": 16.12162162162162
+    },
+    {
+      "keys": [
+        "https://brightai.live/solutions/government-ai-governance/madinah/"
+      ],
+      "clicks": 0,
+      "impressions": 3,
+      "ctr": 0,
+      "position": 23
+    },
+    {
+      "keys": [
+        "https://brightai.live/solutions/manufacturing-ai-governance/"
+      ],
+      "clicks": 0,
+      "impressions": 32,
+      "ctr": 0,
+      "position": 20.75
+    }
+  ],
+  "row_count": 4,
+  "truncated": false,
+  "query": {
+    "start_date": "2026-10-18",
+    "end_date": "2026-11-14",
+    "search_type": "web",
+    "data_state": "final",
+    "dimensions": [
+      "page"
+    ],
+    "row_limit": 1000,
+    "filters": [
+      {
+        "dimension": "query",
+        "expression": "حوكمة الذكاء الاصطناعي للحكومات",
+        "operator": "equals"
+      }
+    ],
+    "estimated_data_finalized_through": "2026-11-14"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "rows": [
+    {
+      "keys": [
+        "https://brightai.live/solutions/healthcare-ai-governance/"
+      ],
+      "clicks": 0,
+      "impressions": 60,
+      "ctr": 0,
+      "position": 17.466666666666665
+    },
+    {
+      "keys": [
+        "https://brightai.live/solutions/healthcare-ai-governance/mecca/"
+      ],
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 30
+    }
+  ],
+  "row_count": 2,
+  "truncated": false,
+  "query": {
+    "start_date": "2026-10-18",
+    "end_date": "2026-11-14",
+    "search_type": "web",
+    "data_state": "final",
+    "dimensions": [
+      "page"
+    ],
+    "row_limit": 1000,
+    "filters": [
+      {
+        "dimension": "query",
+        "expression": "حوكمة الذكاء الاصطناعي للرعاية الصحية",
+        "operator": "equals"
+      }
+    ],
+    "estimated_data_finalized_through": "2026-11-14"
+  }
+}

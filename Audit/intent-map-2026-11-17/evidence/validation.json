@@ -1,0 +1,18 @@
+{
+  "result": "PASS",
+  "unique_pages": 311,
+  "guides": 32,
+  "legacy_pages": 254,
+  "all_have_keyword_question_audience_stage_intent_decision_boundary_evidence": true,
+  "merge_targets_existing_and_terminal": true,
+  "decisions": {
+    "merge": 49,
+    "update": 237,
+    "keep": 25
+  },
+  "gsc_current_query_rows": 40,
+  "gsc_page_rows": 116,
+  "new_public_urls_proposed": 0,
+  "page_content_changes": 0,
+  "limitations": "semantic editorial review assisted by rules for legacy tail; not backlink, legal, causal or release verification"
+}

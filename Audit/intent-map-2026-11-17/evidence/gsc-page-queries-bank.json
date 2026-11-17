@@ -1,0 +1,43 @@
+{
+  "rows": [
+    {
+      "keys": [
+        "حوكمة البيانات في المصارف"
+      ],
+      "clicks": 0,
+      "impressions": 12,
+      "ctr": 0,
+      "position": 28.666666666666668
+    },
+    {
+      "keys": [
+        "حوكمة الذكاء الاصطناعي في المصارف"
+      ],
+      "clicks": 0,
+      "impressions": 56,
+      "ctr": 0,
+      "position": 15.607142857142858
+    }
+  ],
+  "row_count": 2,
+  "truncated": false,
+  "query": {
+    "start_date": "2026-10-18",
+    "end_date": "2026-11-14",
+    "search_type": "web",
+    "data_state": "final",
+    "dimensions": [
+      "query"
+    ],
+    "row_limit": 1000,
+    "filters": [
+      {
+        "dimension": "page",
+        "expression": "https://brightai.live/solutions/banking-ai-governance/riyadh/",
+        "operator": "equals"
+      }
+    ],
+    "estimated_data_finalized_through": "2026-11-14"
+  },
+  "anonymized_queries_note": "Rare queries are anonymised and withheld by Google, so query-level rows never sum to this page's totals."
+}

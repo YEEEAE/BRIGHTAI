@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-17",
+  "head": "85e7305efa816a4094cfea4958e2a1d7c5dfa873",
+  "gsc": "fresh connector sc-domain:brightai.live; web/final; 2026-10-18..2026-11-14; comparison 2026-09-20..2026-10-17",
+  "source_snapshots": [
+    "Audit/outhers/seo-authority-2026-11-17",
+    "Audit/outhers/repository-seo-discovery-2026-11-17/evidence/live-extra-routes.json.gz"
+  ],
+  "rows": 311,
+  "guides": 32,
+  "legacy": 254,
+  "legacy_with_body": 254,
+  "decisions": {
+    "merge": 49,
+    "update": 237,
+    "keep": 25
+  },
+  "network": "local urllib blocked DNS; five fresh Firecrawl reads succeeded",
+  "not_done": [
+    "no page edits",
+    "no redirects changed",
+    "no deploy",
+    "no full live recrawl",
+    "no causal cannibalization proof",
+    "no keyword search-volume measurement"
+  ]
+}

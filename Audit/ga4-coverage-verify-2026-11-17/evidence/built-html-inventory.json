@@ -1,0 +1,450 @@
+[
+ {
+  "page": "404.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "about/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "compliance/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "contact/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "demo/firewall/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "demo/human-gate/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "demo/kernel/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "demo/ledger/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "demo/risk-engine/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "demo/secure-chat/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "docs/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "kernel/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/ai-audit-trail/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/ai-bias-fairness/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/ai-contract-clauses/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/ai-cybersecurity-nca/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/ai-data-residency-saudi/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/ai-employee-training/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/ai-governance-committee-raci/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/ai-governance-financial-sector/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/ai-governance-healthcare/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/ai-governance-saudi/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/ai-hallucinations-controls/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/ai-impact-assessment/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/ai-inventory-register/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/ai-risk-assessment/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/ai-use-policy-employees/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/ai-vendor-assessment/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/choose-ai-governance-platform/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/data-breach-72-hours-ai/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/data-classification-for-ai/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/data-governance-vs-ai-governance/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/deepfake-policy-organizations/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/iso-42001-saudi/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/pdpl-and-ai/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/prompt-injection/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/protect-company-data-chatgpt/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/saudi-ai-ethics-principles/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/saudi-ai-law-binding-vs-guidance/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/saudi-ai-regulators-map/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/sdaia-ai-adoption-framework/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/sdaia-ai-ethics-self-assessment/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/sdaia-generative-ai-guidelines/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "knowledge/shadow-ai-detection/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "pillars/privacy/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "pillars/safety/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "pillars/transparency/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "pricing/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "privacy/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "products/firewall/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "products/human-gate/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "products/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "products/ledger/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "products/risk-engine/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "products/secure-chat/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "services/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "solutions/enterprise/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "solutions/finance/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "solutions/government/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "solutions/healthcare/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "solutions/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "terms/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ },
+ {
+  "page": "trust/index.html",
+  "loaders": 1,
+  "configs": 1,
+  "ids": "G-9LMB4PGTWJ",
+  "guarded": true
+ }
+]

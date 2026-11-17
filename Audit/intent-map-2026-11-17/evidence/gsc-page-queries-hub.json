@@ -1,0 +1,151 @@
+{
+  "rows": [
+    {
+      "keys": [
+        "أفضل ممارسات حكم الذكاء الاصطناعي الوكالي"
+      ],
+      "clicks": 0,
+      "impressions": 3,
+      "ctr": 0,
+      "position": 30
+    },
+    {
+      "keys": [
+        "استشارات حوكمة الذكاء الاصطناعي"
+      ],
+      "clicks": 0,
+      "impressions": 9,
+      "ctr": 0,
+      "position": 23.555555555555557
+    },
+    {
+      "keys": [
+        "الامتثال التنظيمي للذكاء الاصطناعي"
+      ],
+      "clicks": 0,
+      "impressions": 18,
+      "ctr": 0,
+      "position": 22.27777777777778
+    },
+    {
+      "keys": [
+        "الذكاء الاصطناعي في إدارة الهوية والوصول"
+      ],
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 28
+    },
+    {
+      "keys": [
+        "تحول الذكاء الاصطناعي مشكلة حوكمة"
+      ],
+      "clicks": 0,
+      "impressions": 9,
+      "ctr": 0,
+      "position": 26
+    },
+    {
+      "keys": [
+        "تنفيذ حوكمة الذكاء الاصطناعي"
+      ],
+      "clicks": 0,
+      "impressions": 17,
+      "ctr": 0,
+      "position": 25.941176470588236
+    },
+    {
+      "keys": [
+        "حوكمة الذكاء الاصطناعي"
+      ],
+      "clicks": 0,
+      "impressions": 10,
+      "ctr": 0,
+      "position": 26.4
+    },
+    {
+      "keys": [
+        "حوكمة الذكاء الاصطناعي الوكالي"
+      ],
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 29
+    },
+    {
+      "keys": [
+        "حوكمة الذكاء الاصطناعي والتعلم الآلي"
+      ],
+      "clicks": 0,
+      "impressions": 13,
+      "ctr": 0,
+      "position": 25.692307692307693
+    },
+    {
+      "keys": [
+        "حوكمة الهوية للوكلاء الذكية"
+      ],
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 23
+    },
+    {
+      "keys": [
+        "دليل حكم الذكاء الاصطناعي الوكالي"
+      ],
+      "clicks": 0,
+      "impressions": 10,
+      "ctr": 0,
+      "position": 27.6
+    },
+    {
+      "keys": [
+        "قائمة مراجعة حكم وأمن ذكاء اصطناعي llm"
+      ],
+      "clicks": 0,
+      "impressions": 5,
+      "ctr": 0,
+      "position": 27.4
+    },
+    {
+      "keys": [
+        "ما المقصود بحوكمة الذكاء الاصطناعي في تجارب المؤسسات؟"
+      ],
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 3
+    },
+    {
+      "keys": [
+        "نموذج نضج حوكمة الذكاء الاصطناعي"
+      ],
+      "clicks": 0,
+      "impressions": 15,
+      "ctr": 0,
+      "position": 25.733333333333334
+    }
+  ],
+  "row_count": 14,
+  "truncated": false,
+  "query": {
+    "start_date": "2026-10-18",
+    "end_date": "2026-11-14",
+    "search_type": "web",
+    "data_state": "final",
+    "dimensions": [
+      "query"
+    ],
+    "row_limit": 1000,
+    "filters": [
+      {
+        "dimension": "page",
+        "expression": "https://brightai.live/hub/ai-governance/",
+        "operator": "equals"
+      }
+    ],
+    "estimated_data_finalized_through": "2026-11-14"
+  },
+  "anonymized_queries_note": "Rare queries are anonymised and withheld by Google, so query-level rows never sum to this page's totals."
+}
