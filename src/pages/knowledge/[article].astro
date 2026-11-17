@@ -1,4 +1,5 @@
 ---
+import AnswerUnits from '../../components/AnswerUnits.astro';
 import PageShell from '../../components/PageShell.astro';
 import { articleStructuredData } from '../../data/structured-data';
 import { newGuides, type Guide } from '../../data/knowledge-guides';
@@ -28,6 +29,7 @@ const related = guide.related.map(slug => articles.find(item => item.href === `/
       <p class="lead">{guide.answer}</p>
       <p class="note">إعداد <a href="/about/">مؤسسة مُشرقة BRIGHT AI</a>. دليل تعليمي؛ الأمثلة افتراضية والنماذج الإجرائية مقترحة وليست نماذج تنظيمية معتمدة. راجع النص الرسمي والمختص المخول قبل تطبيق قرار نظامي أو صحي أو مالي.</p>
     </header>
+    <AnswerUnits slug={guide.slug} />
     {guide.sections.map((section, index) => <section class="block" aria-labelledby={`guide-section-${index + 1}`}>
       <h2 id={`guide-section-${index + 1}`}>{section.title}</h2>
       {section.paragraphs.map(paragraph => <p>{paragraph}</p>)}

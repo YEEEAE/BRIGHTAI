@@ -1,0 +1,15 @@
+---
+import units from '../data/answer-units.json';
+const { slug } = Astro.props;
+const selected = units.filter(unit => unit.path === slug);
+---
+{selected.length > 0 && <section class="block" aria-label="إجابات عن أسئلة البحث">
+  <h2>إجابات عن أسئلة البحث</h2>
+  {selected.map(unit => <section id={unit.id} class="answer-unit">
+    <h3>{unit.question}</h3><p>{unit.answer}</p>
+    <p><strong>الشروط والحدود:</strong> {unit.limits}</p>
+    <p><strong>المصدر:</strong> <a href={unit.source}>{unit.sourceLabel}</a>. الصياغة التطبيقية من BRIGHTAI.</p>
+    <details><summary>تفصيل اختياري</summary><p>{unit.detail}</p></details>
+  </section>)}
+</section>}
+<style>.answer-unit { margin-block: 2rem; scroll-margin-block-start: 7rem; overflow-wrap: anywhere; } summary { cursor: pointer; } summary:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }</style>

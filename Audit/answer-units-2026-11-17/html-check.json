@@ -1,0 +1,37 @@
+[
+  {
+    "id": "retail-transactions",
+    "path": "ai-governance-financial-sector",
+    "result": "PASS"
+  },
+  {
+    "id": "payment-consent",
+    "path": "ai-governance-financial-sector",
+    "result": "PASS"
+  },
+  {
+    "id": "bank-data",
+    "path": "data-governance-vs-ai-governance",
+    "result": "PASS"
+  },
+  {
+    "id": "health-data-benefits",
+    "path": "ai-governance-healthcare",
+    "result": "PASS"
+  },
+  {
+    "id": "storage-requirements",
+    "path": "ai-data-residency-saudi",
+    "result": "PASS"
+  },
+  {
+    "id": "log-analysis",
+    "path": "ai-audit-trail",
+    "result": "PASS"
+  },
+  {
+    "id": "maturity",
+    "path": "choose-ai-governance-platform",
+    "result": "PASS"
+  }
+]
