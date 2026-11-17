@@ -1,7 +1,6 @@
-import { readFileSync } from 'node:fs';
+import manifest from '../../../redirects.json' with { type: 'json' };
 
-const { redirects } = JSON.parse(readFileSync(new URL('../../../redirects.json', import.meta.url), 'utf8'));
-const destinations = new Map(redirects.map(({ source, destination }) => [source, destination]));
+const destinations = new Map(manifest.redirects.map(({ source, destination }) => [source, destination]));
 
 export function publicRedirect(pathname) {
   let decoded = pathname;
