@@ -1,6 +1,19 @@
 ---
-// Article JSON-LD is owned by the page through articleStructuredData.
-// Keep this component editorial-only to avoid conflicting Article entities.
-interface Props { headline: string }
+import { editorialFor, approvedReview, formatEditorialDate, type EditorialRecord } from '../data/editorial';
+import { organization } from '../data/organization';
+interface Props { editorial?: EditorialRecord }
+const { editorial = editorialFor(Astro.url.pathname) } = Astro.props;
+const review = approvedReview(editorial);
+const dates = [
+  ['النشر', editorial.published],
+  ['التحديث التحريري', editorial.modificationEvent ? editorial.modified : undefined],
+  ['الاطلاع على المصادر', editorial.sourcesAccessed],
+] as const;
 ---
-<p class="note article-context">محتوى تعليمي من <a href="/about/">مؤسسة مُشرقة BRIGHT AI</a>. تاريخ إضافة الأقسام الجديدة: <time datetime="2026-10-31">31 أكتوبر 2026</time>. المواد توعوية؛ اعتماد المراجعة التخصصية قبل النشر النهائي ما زال مطلوباً.</p>
+<aside class="note article-context" aria-label="بيانات التحرير والمراجعة">
+  <p>إعداد ونشر: <a href="/about/">{organization.name}</a>.</p>
+  <ul>{dates.map(([label, date]) => <li>{label}: {date ? <time datetime={date}>{formatEditorialDate(date)}</time> : 'غير موثق'}</li>)}</ul>
+  {review ? <p>المراجعة التخصصية المعتمدة: <a href={review.profileUrl}>{review.name}</a>؛ <time datetime={review.reviewedOn}>{formatEditorialDate(review.reviewedOn)}</time>.
+    نطاق المراجعة: {review.scope}. <a href={review.approval.evidenceUrl}>دليل الاعتماد</a>.</p>
+    : <p>المراجعة التخصصية: غير معتمدة؛ لا يوجد مراجع مختص موثق لهذه النسخة. الاطلاع على المصادر أو التحرير لا يثبت مراجعة تخصصية.</p>}
+</aside>

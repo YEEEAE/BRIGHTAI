@@ -1,11 +1,10 @@
 ---
-import ArticleContext from '../../components/ArticleContext.astro';
 import ContentExtension from '../../components/ContentExtension.astro';
 import PageShell from '../../components/PageShell.astro';
 import { articleStructuredData } from '../../data/structured-data';
 export const prerender = true;
 const description = 'شرح عربي مبسط لهجمات Prompt Injection ومراحل التعامل مع المدخلات غير الموثوقة وحدود وسائل الحماية.';
-const article = articleStructuredData('Prompt Injection: افصل التعليمات الموثوقة عن المحتوى', description, Astro.url.pathname, { published: '2026-10-31' });
+const article = articleStructuredData('Prompt Injection: افصل التعليمات الموثوقة عن المحتوى', description, Astro.url.pathname);
 ---
 <PageShell title="Prompt Injection وطبقات الحماية | BRIGHTAI" description={description} crumbs={[{ name: 'مركز المعرفة', href: '/docs/' }, { name: 'Prompt Injection' }]} ogType="article" structuredData={article}>
   <div class="reading-layout"><aside class="reading-nav" aria-label="في هذا الدليل"><h2>في هذا الدليل</h2><a href="#part-1">تدفق مبسط للمراجعة</a><a href="#part-2">طبقات دفاع تساعد على تقليل الخطر</a><a href="/docs/">← كل الأدلة</a></aside><article>
@@ -23,6 +22,5 @@ const article = articleStructuredData('Prompt Injection: افصل التعليم
 <section><h2>حقن مباشر وحقن غير مباشر</h2><div class="extension-columns"><div><h3>مباشر في الطلب</h3><p>تصل محاولة تغيير المهمة ضمن الرسالة المرسلة إلى النموذج. مصدر الطلب لا يمنحه صلاحية تجاوز سياسة النظام أو الوصول إلى بيانات إضافية.</p></div><div><h3>غير مباشر في المحتوى</h3><p>يقرأ المساعد صفحة أو مستنداً أو نتيجة أداة تتضمن تعليمات مضللة. الخطر أن يعامل المحتوى كأمر مخول، خصوصاً إذا كان يستطيع استخدام أدوات ذات أثر.</p></div></div><p>يوضح <a href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/" target="_blank" rel="noopener noreferrer">مرجع OWASP لحقن التعليمات</a> هذا التمييز، ويعرض وسائل لتقليل الأثر دون ضمان منع كل هجوم.</p></section>
 <section><h2>اختبار حدود الوكيل قبل ربط أدواته</h2><ol class="extension-path"><li>استخدم بيئة اختبار وبيانات اصطناعية وأداة لا تنفذ أثراً خارجياً.</li><li>قدّم محتوى خارجياً يطلب فعلاً خارج غرض المهمة، ثم افحص إن كانت طبقة الصلاحيات ترفضه بصورة مستقلة عن النص.</li><li>جرّب تغيير الوجهة أو نطاق البيانات؛ لا يكفي التحقق من اسم الأداة وحده.</li><li>سجّل النتيجة وراجع صلاحية الموافقة ونطاقها قبل تمكين أفعال حساسة.</li></ol><p>هذا اختبار تعليمي لا تقرير اختراق. تعرّف على <a href="/products/firewall/">نطاق AI Firewall المستهدف</a> و<a href="/products/human-gate/">دور Human Gate</a>؛ كلاهما يحتاج إثبات تشغيل قبل الاعتماد.</p></section>
     </ContentExtension>
-    <ArticleContext headline="Prompt Injection: افصل التعليمات الموثوقة عن المحتوى"/>
   </article></div>
 </PageShell>

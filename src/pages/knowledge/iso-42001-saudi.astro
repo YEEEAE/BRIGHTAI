@@ -6,7 +6,7 @@ export const prerender = true;
 const title = 'ISO 42001 السعودية: نظام إدارة الذكاء الاصطناعي';
 const description = 'دليل ISO/IEC 42001:2023 للمنشآت السعودية يشرح نظام إدارة الذكاء الاصطناعي، متطلبات AIMS وضوابط Annex A، رحلة الشهادة والفرق عن ISO 27001 وNIST AI RMF.';
 const headline = 'ISO/IEC 42001 للمنشآت السعودية: ما هو نظام إدارة الذكاء الاصطناعي ومتى تحتاجه؟';
-const article = { ...articleStructuredData(headline, description, Astro.url.pathname, { published: '2026-11-03' }), dateModified: '2026-11-03' };
+const article = articleStructuredData(headline, description, Astro.url.pathname);
 const faqItems = [
   { q: 'هل ISO 42001 إلزامي في السعودية؟', a: 'لا ينشئ المعيار الدولي وحده التزاماً عاماً على كل منشأة في السعودية. قد يصبح تطبيقه أو تقديم شهادة به مطلوباً في عقد أو منافسة أو سياسة قطاعية أو قرار داخلي، لذلك تحقّق من النصوص والاشتراطات التي تنطبق على جهتك واستخدامك.' },
   { q: 'ما الفرق بينه وبين ISO 27001؟', a: 'ISO/IEC 42001 ينظم نظام إدارة الذكاء الاصطناعي، بما فيه مسؤولياته ومخاطره وأثره عبر دورة الحياة. ISO/IEC 27001 يركز على نظام إدارة أمن المعلومات. يتكاملان في موضوعات مثل البيانات والضوابط الأمنية، لكن شهادة أحدهما لا تعني استيفاء الآخر.' },
@@ -25,7 +25,7 @@ const phases = [
 <PageShell title={`${title} | BRIGHTAI`} description={description} crumbs={[{ name: 'مركز المعرفة', href: '/docs/' }, { name: headline }]} ogType="article" structuredData={article}>
   <div class="iso-page">
     <header class="iso-hero">
-      <p class="iso-kicker"><span>دليل الحوكمة 07</span><span>آخر مراجعة: 3 نوفمبر 2026</span></p>
+      <p class="iso-kicker"><span>دليل الحوكمة 07</span><span>التواريخ موضحة في بيانات التحرير أعلاه</span></p>
       <h1>{headline}</h1>
       <p class="iso-deck">مرجع عملي يشرح معيار إدارة الذكاء الاصطناعي، وما يتطلبه من المنشأة قبل أن تقرر المواءمة أو الشهادة.</p>
       <div class="iso-facts"><span>حوكمة الذكاء الاصطناعي</span><span>شرح عملي</span><span>قراءة تقديرية · 16 دقيقة</span></div>
@@ -132,7 +132,7 @@ const phases = [
         <section class="iso-next"><h2>اقرأ بعد هذا</h2><div><a href="/knowledge/ai-risk-assessment/"><b>تقييم مخاطر الذكاء الاصطناعي</b><span>نظّم الخطر والضابط والمالك قبل تحديد المعالجة.</span></a><a href="/knowledge/pdpl-and-ai/"><b>PDPL والذكاء الاصطناعي</b><span>راجع حدود البيانات الشخصية عند تشغيل الأدوات.</span></a><a href="/knowledge/ai-governance-saudi/"><b>حوكمة الذكاء الاصطناعي في السعودية</b><span>ابدأ من دورة الاستخدام والمسؤوليات والمراجعة.</span></a></div>
           <p>وللاستفسار عن نطاق عام، <a href="/contact/">اطلب معلومات</a> عبر صفحة التواصل؛ النموذج يفتح رسالة بريد ولا يؤكد إرسالها أو استلامها.</p></section>
         <section class="iso-references"><h2>المراجع الرسمية</h2><ul><li><a href="https://www.iso.org/standard/42001" target="_blank" rel="noopener noreferrer">ISO: ISO/IEC 42001:2023 — AI management systems</a> — الاسم الرسمي والإصدار والنطاق العام.</li><li><a href="https://www.saso.gov.sa/ar/mediacenter/news/Pages/saso-news-1498.aspx" target="_blank" rel="noopener noreferrer">SASO: إعلان شهادة نظام إدارة الذكاء الاصطناعي لمختبراتها</a> — إعلان الجهة وتاريخه ونطاق الخبر.</li><li><a href="https://groupsiteppdmig.bsigroup.com/en-GB/insights-and-media/media-centre/press-releases/2026/march/saso-leads-the-way-with-iso-42001-certification/" target="_blank" rel="noopener noreferrer">BSI: شهادة SASO وفق ISO/IEC 42001</a> — توضيح جهة المنح من المعلن.</li><li><a href="https://iaf.nu/en/faq/" target="_blank" rel="noopener noreferrer">IAF: الأسئلة الشائعة حول الاعتماد والتحقق من الشهادة</a> — دور جهة الاعتماد وطريقة التحقق.</li><li><a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener noreferrer">NIST: AI Risk Management Framework</a> — طبيعة الإطار الطوعي ووظائفه وتحديثه.</li></ul>
-          <p>آخر مراجعة: 3 نوفمبر 2026 — يلزم اعتماد المراجع البشري المختص قبل النشر النهائي. هذا المقال مرجع للفهم والتحضير فقط، ولا يمثل استشارة قانونية ولا إثبات امتثال أو شهادة.</p></section>
+          <p>التواريخ موضحة في بيانات التحرير أعلاه — يلزم اعتماد المراجع البشري المختص قبل النشر النهائي. هذا المقال مرجع للفهم والتحضير فقط، ولا يمثل استشارة قانونية ولا إثبات امتثال أو شهادة.</p></section>
       </article>
     </div>
     <script type="application/ld+json" set:html={JSON.stringify(faq)} />

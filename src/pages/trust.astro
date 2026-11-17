@@ -1,4 +1,5 @@
 ---
+import { organization, identityLimit } from '../data/organization';
 import ContentExtension from '../components/ContentExtension.astro';
 import PageShell from '../components/PageShell.astro';
 export const prerender = true;
@@ -6,7 +7,9 @@ export const prerender = true;
 <PageShell title="الثقة والشفافية | BRIGHTAI" description="حالة الأدلة المعلنة عن منتجات BRIGHTAI والبيانات والموردين والضوابط، مع توضيح ما لم يتم التحقق منه." crumbs={[{ name: 'الثقة' }]}>
   <p class="eyebrow">ما نعرفه وما يحتاج إثباتاً</p><h1>الثقة تبدأ بحدود واضحة</h1>
   <p class="lead">نفرق بين التصور المنشور والدليل التشغيلي. لا تعني صفحات الموقع أن منتجاً يعمل أو أن تدقيقاً أمنياً أو اعتماداً تنظيمياً قد تم.</p>
+  <section class="block" aria-label="هوية الناشر"><h2>{organization.name}</h2><p>{organization.description}</p><a href={organization.url}>{organization.url}</a><p class="note">{identityLimit}</p></section>
   <section class="block"><h2>حالة المعلومات الحالية</h2><table><thead><tr><th>الموضوع</th><th>الحالة</th></tr></thead><tbody><tr><td>أسماء المنتجات والتوجه المستهدف</td><td>موصوفة في الـBlueprint؛ التشغيل غير متحقق</td></tr><tr><td>الموردون ومناطق المعالجة</td><td>غير متحقق من دليل تشغيلي معتمد</td></tr><tr><td>الاحتفاظ والحذف</td><td>مدد وآليات غير معتمدة للنشر</td></tr><tr><td>الشهادات والتدقيقات الأمنية</td><td>لا نعلن شهادة أو تدقيقاً مثبتاً</td></tr><tr><td>المواءمة التنظيمية</td><td>تحتاج تحديد النطاق والجهة المختصة؛ لا يوجد ادعاء امتثال</td></tr></tbody></table></section>
+  <section class="block"><h2>التحرير والمراجعون</h2><p>نفصل تاريخ النشر عن التحديث التحريري والاطلاع على المصادر والمراجعة التخصصية. لا نغيّر التواريخ مع البناء أو تصحيح القالب. يظهر اسم مراجع حقيقي فقط مع نطاق وتاريخ ودليل اعتماد للنسخة المعروضة؛ المراجعة غير المعتمدة معلّمة صراحة في كل دليل. ملفات المؤلفين القديمة ليست إثبات هوية أو مؤهلات.</p></section>
   <section class="block"><h2>قبل مشاركة البيانات</h2><p>لا ترسل بيانات حقيقية أو سرية عبر الموقع أو إلى خدمة غير موثقة. اطلب مستندات تعاقدية وأمنية معتمدة وتحقق من الموردين والمعالجة والاحتفاظ قبل أي استخدام مؤسسي.</p><a href="/contact/">أرسل استفساراً عاماً</a></section>
 
     <ContentExtension>

@@ -1,4 +1,6 @@
 ---
+import { editorialFor, formatEditorialDate } from '../data/editorial';
+const editorial = editorialFor(Astro.url.pathname);
 interface Props { sources: string[] }
 const { sources } = Astro.props;
 const registry: Record<string, { title: string; href: string; kind: string; version: string; effect: string; scope: string }> = {
@@ -13,7 +15,7 @@ const registry: Record<string, { title: string; href: string; kind: string; vers
 ---
 <section class="block guide-sources" aria-label="المصادر ونسخها ونطاقها">
   <h2>المصادر: النوع والنسخة والنطاق</h2>
-  <p>مراجعة الإحالات: <time datetime="2026-11-17">17 نوفمبر 2026</time>. هذه النسخ التي بُني عليها الشرح؛ أعد التحقق من أي تعديل أو متطلب قطاعي قبل اعتماد واقعة جديدة. المسودة المعروضة للمرئيات لا تُعامل كنص نافذ.</p>
+  <p>الاطلاع على المصادر: {editorial.sourcesAccessed ? <time datetime={editorial.sourcesAccessed}>{formatEditorialDate(editorial.sourcesAccessed)}</time> : 'غير موثق'}. هذه النسخ التي بُني عليها الشرح؛ أعد التحقق من أي تعديل أو متطلب قطاعي قبل اعتماد واقعة جديدة. المسودة المعروضة للمرئيات لا تُعامل كنص نافذ.</p>
   <ul class="list">
     {sources.map(id => { const source = registry[id]; return <li id={`source-${id}`}>
       <h3><a href={source.href} target="_blank" rel="noopener noreferrer">{source.title}</a></h3>

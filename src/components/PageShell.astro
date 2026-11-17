@@ -5,13 +5,15 @@ import InteriorController from './InteriorController.astro';
 import InteriorMotion from './InteriorMotion.astro';
 import PageMotionStudy from './PageMotionStudy.astro';
 import '../styles/interior-motion.css';
+import ArticleContext from './ArticleContext.astro';
+import type { EditorialRecord } from '../data/editorial';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 import KnowledgeReader from './KnowledgeReader.astro';
 interface Crumb { name: string; href?: string }
-interface Props { title: string; description: string; crumbs: Crumb[]; robots?: string; ogType?: 'website' | 'article'; structuredData?: Record<string, unknown> }
-const { title, description, crumbs, robots = 'index, follow', ogType = 'website', structuredData } = Astro.props;
+interface Props { title: string; description: string; crumbs: Crumb[]; robots?: string; ogType?: 'website' | 'article'; editorial?: EditorialRecord; structuredData?: Record<string, unknown> }
+const { title, description, crumbs, robots = 'index, follow', ogType = 'website', structuredData, editorial } = Astro.props;
 const family = Astro.url.pathname.split('/').filter(Boolean)[0] ?? 'home';
 const segment = Astro.url.pathname.split('/').filter(Boolean)[1] ?? 'index';
 // Opt in only the public editorial families; leave product and home styling alone.
@@ -36,7 +38,7 @@ const minutes = Math.max(1, Math.ceil(words / 180));
 ---
 <BaseLayout title={title} description={description} robots={robots} ogType={ogType}>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
-  {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
+  {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')} />}
   <Header />
   <main id="main" tabindex="-1" class={`wrap section page page-family-${family} interior-page interior-${family}-${segment}${publicContent ? ' public-content' : ''}`}>
     <nav class="breadcrumb" aria-label="مسار التنقل">
@@ -47,6 +49,7 @@ const minutes = Math.max(1, Math.ceil(words / 180));
       <nav id="section-compass-links" aria-label="فهرس أقسام الصفحة" data-section-links></nav>
     </details>}
     {reading && family !== 'knowledge' && <nav class="document-toc" aria-label="تنقل القراءة" data-document-toc><p>{family === 'knowledge' ? `وقت قراءة تقريبي: ${minutes} دقيقة، بافتراض 180 كلمة في الدقيقة.` : 'داخل هذه الوثيقة'}</p><details open><summary>انتقل إلى قسم</summary>{toc.map(item => <a href={`#${item.id}`}>{item.title}</a>)}</details></nav>}
+    {structuredData?.['@type'] === 'Article' && <ArticleContext editorial={editorial} />}
     {family === 'knowledge' ? <KnowledgeReader content={content} toc={toc} minutes={minutes} path={Astro.url.pathname}/> : <Fragment set:html={content} /> }
     {!['docs', 'knowledge', 'products'].includes(family) && <PageMotionStudy family={family} segment={segment}/>}
   </main>

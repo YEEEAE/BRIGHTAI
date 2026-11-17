@@ -551,6 +551,30 @@
     {
       "source": "/knowledge/data-governance-vs-ai-governance/index.html",
       "destination": "/knowledge/data-governance-vs-ai-governance/"
+    },
+    {
+      "source": "/authors.html",
+      "destination": "/authors/"
+    },
+    {
+      "source": "/authors/index.html",
+      "destination": "/authors/"
+    },
+    {
+      "source": "/authors/brightai-team.html",
+      "destination": "/authors/brightai-team/"
+    },
+    {
+      "source": "/authors/brightai-team/index.html",
+      "destination": "/authors/brightai-team/"
+    },
+    {
+      "source": "/authors/yazeed-alshareef.html",
+      "destination": "/authors/yazeed-alshareef/"
+    },
+    {
+      "source": "/authors/yazeed-alshareef/index.html",
+      "destination": "/authors/yazeed-alshareef/"
     }
   ]
 }

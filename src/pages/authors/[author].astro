@@ -1,0 +1,15 @@
+---
+import PageShell from '../../components/PageShell.astro';
+export const prerender = true;
+export function getStaticPaths() {
+  return ['brightai-team', 'yazeed-alshareef'].map(author => ({ params: { author } }));
+}
+const team = Astro.params.author === 'brightai-team';
+const title = team ? 'حالة ملف فريق التحرير القديم' : 'حالة ملف المؤلف الشخصي القديم';
+---
+<PageShell title={`${title} | BRIGHTAI`} description="ملف مؤلف قديم؛ الهوية والمؤهلات ونسبة التأليف والمراجعة لم تعتمد في سجل الأدلة الحالي." crumbs={[{name: 'الناشر والمساهمون', href: '/authors/'}, {name: title}]}>
+<h1>{title}</h1>
+<p class="note">المعلومات المهنية في النسخة القديمة غير مثبتة في سجل الأدلة الحالي. أُبقي المسار لبيان حالته؛ لا يثبت اسم المسار هوية شخص أو منصبًا أو مؤهلًا أو تأليفًا أو مراجعة تخصصية.</p>
+<p>لن ننسب مقالات أو مراجعات لهذا الملف قبل ورود دليل من المالك واعتماد نسبة المساهمة للنسخة المحددة. لا نعلن هنا سيرة أو صورة أو شهادات أو روابط حسابات خارجية.</p>
+<p><a href="/about/">هوية الناشر وحدودها</a> · <a href="/trust/">الثقة والأدلة</a> · <a href="/docs/">الأدلة الحالية</a></p>
+</PageShell>

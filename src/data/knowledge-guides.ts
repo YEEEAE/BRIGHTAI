@@ -1,4 +1,6 @@
+import { guideEditorial, type EditorialRecord } from './editorial';
 export interface Guide {
+  editorial: EditorialRecord;
   slug: string;
   title: string;
   description: string;
@@ -24,6 +26,7 @@ const ethics = { label: 'سدايا: مبادئ أخلاقيات الذكاء ا
 
 export const newGuides: Guide[] = [
   {
+    editorial: { ...guideEditorial },
     slug: 'shadow-ai-detection', title: 'اكتشاف Shadow AI: استخدامات الذكاء الاصطناعي غير المعتمدة',
     description: 'دليل للمنشآت السعودية لحصر أدوات الذكاء الاصطناعي غير المعتمدة ومعالجة مخاطرها، مع خطة جمع أدلة تراعي الخصوصية ومسار لاعتماد البدائل.',
     topic: 'technical', tag: 'دليل تشغيلي',
@@ -39,6 +42,7 @@ export const newGuides: Guide[] = [
     sources: [ecc, genai], related: ['ai-inventory-register', 'ai-vendor-assessment', 'ai-use-policy-employees'],
   },
   {
+    editorial: { ...guideEditorial },
     slug: 'ai-hallucinations-controls', title: 'هلوسة الذكاء الاصطناعي: ضوابط التحقق من الإجابات',
     description: 'كيف تتعامل المنشأة مع إجابات AI غير الصحيحة؟ مسار للتحقق من المصادر واختبار الدقة وتحديد متى تُرفض الإجابة أو تُحال لمراجعة بشرية.',
     topic: 'safety', tag: 'قائمة تحقق',
@@ -54,6 +58,7 @@ export const newGuides: Guide[] = [
     sources: [genai], related: ['ai-risk-assessment', 'ai-employee-training', 'ai-audit-trail'],
   },
   {
+    editorial: { ...guideEditorial },
     slug: 'deepfake-policy-organizations', title: 'سياسة التزييف العميق للمنشآت: الصوت والصورة والتحقق',
     description: 'ضوابط عملية للتعامل مع الصوت والصورة المولدة في المنشآت: التحقق من الطلبات الحساسة، الموافقات، الإفصاح، والاستجابة للاشتباه بالانتحال.',
     topic: 'policy', tag: 'دليل سياسة',
@@ -69,6 +74,7 @@ export const newGuides: Guide[] = [
     sources: [{ label: 'NIST AI 100-4: الحد من مخاطر المحتوى الاصطناعي', url: 'https://www.nist.gov/publications/reducing-risks-posed-synthetic-content-overview-technical-approaches-digital-content', note: 'يعرض مناهج تقنية وقيودها؛ مسار الاعتماد في هذا الدليل اقتراح تشغيلي.' }], related: ['ai-employee-training', 'ai-use-policy-employees', 'ai-hallucinations-controls'],
   },
   {
+    editorial: { ...guideEditorial },
     slug: 'ai-inventory-register', title: 'سجل جرد استخدامات الذكاء الاصطناعي: الحقول ودورة التحديث',
     description: 'ابنِ سجلًا لاستخدامات الذكاء الاصطناعي في منشأتك: الغرض والمالك والبيانات والمورد والصلاحيات وحالة القرار، مع مثال وطريقة تحديث دون تكرار.',
     topic: 'governance', tag: 'نموذج عملي',
@@ -84,6 +90,7 @@ export const newGuides: Guide[] = [
     sources: [rmf], related: ['shadow-ai-detection', 'ai-governance-committee-raci', 'ai-vendor-assessment'],
   },
   {
+    editorial: { ...guideEditorial },
     slug: 'ai-employee-training', title: 'تدريب الموظفين على الذكاء الاصطناعي: من السياسة إلى السلوك',
     description: 'خطة تدريب عملي للموظفين على استخدام AI: اختيار البيانات، التحقق من الإجابات، التصعيد والإبلاغ، مع تمارين حسب الدور وقياس مهارات قابل للمراجعة.',
     topic: 'policy', tag: 'خطة تدريب',
@@ -99,6 +106,7 @@ export const newGuides: Guide[] = [
     sources: [ethics], related: ['ai-use-policy-employees', 'ai-hallucinations-controls', 'deepfake-policy-organizations'],
   },
   {
+    editorial: { ...guideEditorial },
     slug: 'ai-vendor-assessment', title: 'تقييم موردي الذكاء الاصطناعي قبل التعاقد والتكامل',
     description: 'أسئلة تقييم مورد AI للمنشآت السعودية: البيانات والمناطق والمعالجون الفرعيون والصلاحيات والاختبار والخروج، مع فصل إجابات المورد عن الأدلة.',
     topic: 'governance', tag: 'قائمة مشتريات',
@@ -114,6 +122,7 @@ export const newGuides: Guide[] = [
     sources: [ecc], related: ['ai-contract-clauses', 'ai-data-residency-saudi', 'choose-ai-governance-platform'],
   },
   {
+    editorial: { ...guideEditorial },
     slug: 'data-classification-for-ai', title: 'تصنيف البيانات قبل استخدامها في الذكاء الاصطناعي',
     description: 'كيف تربط تصنيف البيانات بالغرض والقناة والصلاحيات قبل إدخالها في AI؟ أمثلة للبيانات العامة والداخلية والشخصية وحدود إخفاء الأسماء.',
     topic: 'privacy', tag: 'دليل قرار',
@@ -129,6 +138,7 @@ export const newGuides: Guide[] = [
     sources: [classification, regulation], related: ['pdpl-and-ai', 'protect-company-data-chatgpt', 'ai-data-residency-saudi'],
   },
   {
+    editorial: { ...guideEditorial },
     slug: 'ai-governance-committee-raci', title: 'لجنة حوكمة الذكاء الاصطناعي ومصفوفة RACI للمسؤوليات',
     description: 'كيف تحدد من ينفذ ومن يعتمد ومن يُستشار في حوكمة AI؟ نموذج RACI عملي يفصل ملكية الاستخدام عن المراجعة وقبول الخطر وصلاحية الإيقاف.',
     topic: 'governance', tag: 'نموذج مسؤوليات',
@@ -144,6 +154,7 @@ export const newGuides: Guide[] = [
     sources: [ethics], related: ['ai-inventory-register', 'ai-impact-assessment', 'ai-audit-trail'],
   },
   {
+    editorial: { ...guideEditorial },
     slug: 'ai-impact-assessment', title: 'تقييم أثر الذكاء الاصطناعي على الأشخاص والقرارات',
     description: 'دليل عملي لتقييم أثر AI: من يتأثر بالقرار، وما بدائل الاستخدام، وكيف تختبر الضوابط وتوثق المراجعة دون الخلط مع تقييم أثر الخصوصية.',
     topic: 'safety', tag: 'ورقة عمل',
@@ -159,6 +170,7 @@ export const newGuides: Guide[] = [
     sources: [rmf, { ...pdpl, note: 'المادة 22 تتعلق بتقييم أثر معالجة البيانات الشخصية؛ تحقّق من المتطلبات التفصيلية المنطبقة في اللائحة.' }], related: ['ai-risk-assessment', 'ai-bias-fairness', 'ai-governance-committee-raci'],
   },
   {
+    editorial: { ...guideEditorial },
     slug: 'ai-audit-trail', title: 'سجل تدقيق الذكاء الاصطناعي: ما الذي تحفظه كدليل؟',
     description: 'صمّم أثرًا تدقيقيًا لقرارات AI يربط الاستخدام والسياسة والموافقة والتنفيذ، مع تقليل البيانات وضبط الوصول والتحقق من سلامة السجل.',
     topic: 'transparency', tag: 'دليل أدلة',
@@ -174,6 +186,7 @@ export const newGuides: Guide[] = [
     sources: [ecc], related: ['ai-governance-committee-raci', 'ai-inventory-register', 'data-breach-72-hours-ai'],
   },
   {
+    editorial: { ...guideEditorial },
     slug: 'saudi-ai-regulators-map', title: 'خريطة الجهات والمتطلبات المرتبطة بالذكاء الاصطناعي في السعودية',
     description: 'كيف تبدأ تحديد الجهات والمتطلبات المنطبقة على استخدام AI في السعودية؟ فرز البيانات والأمن والنشاط القطاعي، مع سجل يميز النظام والإرشاد والعقد.',
     topic: 'governance', tag: 'خريطة مرجعية',
@@ -189,6 +202,7 @@ export const newGuides: Guide[] = [
     sources: [pdpl, ecc, { label: 'هيئة التأمين: البوابة الرسمية واللوائح', url: 'https://www.ia.gov.sa/ar/home', note: 'مصدر رسمي لبدء فحص النشاط التأميني؛ لا يُخلط مع نطاق نشاط مالي آخر.' }], related: ['saudi-ai-law-binding-vs-guidance', 'ai-cybersecurity-nca', 'ai-governance-financial-sector'],
   },
   {
+    editorial: { ...guideEditorial },
     slug: 'choose-ai-governance-platform', title: 'كيف تختار منصة حوكمة ذكاء اصطناعي للمنشأة؟',
     description: 'معايير مقارنة منصات حوكمة AI: نطاق التكامل وإنفاذ السياسات والموافقات والأدلة والعزل والخروج، مع سيناريو اختبار ومقارنة دون وعود غير مثبتة.',
     topic: 'governance', tag: 'دليل اختيار',
@@ -204,6 +218,7 @@ export const newGuides: Guide[] = [
     sources: [rmf], related: ['ai-vendor-assessment', 'ai-audit-trail', 'ai-contract-clauses'],
   },
   {
+    editorial: { ...guideEditorial },
     slug: 'ai-cybersecurity-nca', title: 'حوكمة الذكاء الاصطناعي وضوابط NCA ECC: من المواءمة إلى الدليل',
     description: 'كيف تربط استخدام AI بضوابط الأمن السيبراني المنطبقة؟ طريقة لتحديد النطاق والأصول والوصول والموردين والأدلة دون ادعاء شهادة أو امتثال تلقائي.',
     topic: 'technical', tag: 'دليل مواءمة',
@@ -219,6 +234,7 @@ export const newGuides: Guide[] = [
     sources: [ecc, { label: 'OWASP: مخاطر الصلاحيات المفرطة في تطبيقات LLM', url: 'https://genai.owasp.org/llmrisk/llm062025-excessive-agency/', note: 'مرجع تقني يوضح خطر الاستقلالية والصلاحيات؛ لا يُعد لائحة سعودية.' }], related: ['prompt-injection', 'ai-vendor-assessment', 'ai-audit-trail'],
   },
   {
+    editorial: { ...guideEditorial },
     slug: 'ai-governance-financial-sector', title: 'حوكمة الذكاء الاصطناعي في القطاع المالي السعودي',
     description: 'دليل تحضير لاستخدام AI في القطاع المالي: فصل المسودة عن القرار المؤثر، اختبار الأخطاء والاعتراضات، وضبط المورد والصلاحيات والأثر التدقيقي.',
     topic: 'governance', tag: 'دليل قطاعي',
@@ -234,6 +250,7 @@ export const newGuides: Guide[] = [
     sources: [{ label: 'البنك المركزي السعودي: تقنيات مكافحة الاحتيال، القسم 3.8', url: 'https://rulebook.sama.gov.sa/en/38-counter-fraud-technology', note: 'الاستشهاد لقابلية التدقيق في نطاق مكافحة الاحتيال المحدد، وليس قاعدة لكل نشاط مالي.' }], related: ['ai-impact-assessment', 'ai-bias-fairness', 'ai-audit-trail'],
   },
   {
+    editorial: { ...guideEditorial },
     slug: 'ai-governance-healthcare', title: 'حوكمة الذكاء الاصطناعي في الرعاية الصحية السعودية',
     description: 'دليل تحضير لحوكمة AI في الصحة: الغرض الطبي أو الإداري، البيانات والصلاحيات، التقييم السريري المناسب، وحدود المراجعة قبل استخدام مخرجات مؤثرة.',
     topic: 'safety', tag: 'دليل قطاعي',
@@ -249,6 +266,7 @@ export const newGuides: Guide[] = [
     sources: [{ label: 'هيئة الغذاء والدواء: دليل AI وML في الأجهزة الطبية MDS–G010', url: 'https://www.sfda.gov.sa/sites/default/files/2023-01/MDS_G010ML.pdf', note: 'دليل منشور بإصدار 1.0؛ تحقق من المتطلبات والتحديثات المنطبقة على الوظيفة قبل الاعتماد.' }, pdpl], related: ['ai-impact-assessment', 'data-classification-for-ai', 'ai-vendor-assessment'],
   },
   {
+    editorial: { ...guideEditorial },
     slug: 'ai-bias-fairness', title: 'العدالة والتحيز في أنظمة الذكاء الاصطناعي: ماذا تختبر؟',
     description: 'دليل لفحص الإنصاف في استخدام AI: تحديد المتأثرين وأخطاء القرار وتمثيل البيانات وحدود المقاييس، مع مراجعة بشرية ومسار اعتراض مناسب.',
     topic: 'safety', tag: 'دليل اختبار',
@@ -264,6 +282,7 @@ export const newGuides: Guide[] = [
     sources: [{ label: 'NIST SP 1270: تحديد التحيز وإدارته في AI', url: 'https://www.nist.gov/publications/towards-standard-identifying-and-managing-bias-artificial-intelligence', note: 'مرجع لفهم مصادر التحيز وحدود اختزاله في نموذج أو مقياس منفرد.' }], related: ['ai-impact-assessment', 'ai-governance-financial-sector', 'saudi-ai-ethics-principles'],
   },
   {
+    editorial: { ...guideEditorial },
     slug: 'ai-contract-clauses', title: 'بنود عقود الذكاء الاصطناعي: قائمة مراجعة قبل التوقيع',
     description: 'قائمة تحضير لمراجعة عقد AI: الغرض والبيانات والتدريب والمعالجون الفرعيون والحوادث والتغيير والخروج، مع فصل الشرط التعاقدي عن الدليل التقني.',
     topic: 'policy', tag: 'قائمة تعاقد',
@@ -279,6 +298,7 @@ export const newGuides: Guide[] = [
     sources: [{ ...regulation, note: 'المادة 17: اختيار جهة المعالجة واتفاقها؛ يلزم الرجوع إلى كامل النص وفق العلاقة الفعلية.' }, transfer], related: ['ai-vendor-assessment', 'ai-data-residency-saudi', 'data-breach-72-hours-ai'],
   },
   {
+    editorial: { ...guideEditorial },
     slug: 'data-breach-72-hours-ai', title: 'تسرّب بيانات عبر AI: متى تبدأ مهلة 72 ساعة؟',
     description: 'شرح مشروط لمهلة إشعار تسرب البيانات الشخصية في السعودية، وما توثقه جهة التحكم عند الاشتباه أو العلم، مع فصل الإشعار النظامي عن الاحتواء التقني.',
     topic: 'privacy', tag: 'دليل استجابة',
@@ -294,6 +314,7 @@ export const newGuides: Guide[] = [
     sources: [{ ...regulation, note: 'المادة 24 هي المرجع لشروط الإشعار والمهلة والمحتوى واستكمال المعلومات؛ الشرح هنا موجز ولا يستبدلها.' }], related: ['pdpl-and-ai', 'ai-audit-trail', 'ai-contract-clauses'],
   },
   {
+    editorial: { ...guideEditorial },
     slug: 'ai-data-residency-saudi', title: 'إقامة بيانات الذكاء الاصطناعي في السعودية: ما الذي تتحقق منه؟',
     description: 'افحص موقع معالجة بيانات AI والسجلات والدعم والنسخ والمعالجين، وميّز بين منطقة الاستضافة وضوابط نقل البيانات دون افتراض حظر أو سماح مطلق.',
     topic: 'privacy', tag: 'دليل معالجة',
@@ -309,6 +330,7 @@ export const newGuides: Guide[] = [
     sources: [transfer], related: ['ai-vendor-assessment', 'data-classification-for-ai', 'ai-contract-clauses'],
   },
   {
+    editorial: { ...guideEditorial },
     slug: 'data-governance-vs-ai-governance', title: 'حوكمة البيانات وحوكمة الذكاء الاصطناعي: الفرق والتكامل',
     description: 'مقارنة عملية بين حوكمة البيانات وحوكمة AI: الملكية والجودة والقرارات والمخاطر والأدلة، وكيف تربط المسارين دون تكرار اللجان والسجلات.',
     topic: 'governance', tag: 'دليل مقارنة',

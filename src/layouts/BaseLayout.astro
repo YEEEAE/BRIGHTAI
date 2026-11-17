@@ -4,6 +4,7 @@ import '../styles/site.css';
 import '../styles/experience.css';
 import GoogleAnalytics from '../components/GoogleAnalytics.astro';
 import MotionController from '../components/MotionController.astro';
+import { organization } from '../data/organization';
 import { brand } from '../data/brand';
 interface Props {
   title: string;
@@ -19,20 +20,7 @@ const isPrivateRoute = Astro.url.pathname.startsWith('/auth/');
 const robots = isPrivateRoute ? 'noindex, nofollow' : requestedRobots;
 const canonical = new URL(Astro.url.pathname, 'https://brightai.live').href;
 if (robots.includes('noindex')) Astro.response.headers.set('X-Robots-Tag', robots);
-const organizationSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  '@id': 'https://brightai.live/#organization',
-  alternateName: ['BRIGHT AI', 'مؤسسة مُشرقة'],
-  description: 'مؤسسة سعودية متخصصة في حوكمة وأمان الذكاء الاصطناعي (AIGAS).',
-  name: 'BRIGHTAI',
-  url: 'https://brightai.live',
-  logo: new URL(brand.logo, 'https://brightai.live').href,
-  areaServed: {
-    '@type': 'Country',
-    name: 'Saudi Arabia',
-  },
-};
+const organizationSchema = { '@context': 'https://schema.org', ...organization };
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',

@@ -4,13 +4,13 @@ import GuideSources from '../../components/GuideSources.astro';
 import { articleStructuredData } from '../../data/structured-data';
 export const prerender = true;
 const description = 'ابدأ حوكمة استخدام واحد بمالك ونطاق ومتطلبات وضوابط واختبار وقرار مراجعة، مع التمييز بين النظام والإرشاد والمعيار.';
-const article = { ...articleStructuredData('حوكمة الذكاء الاصطناعي في السعودية', description, Astro.url.pathname, { published: '2026-10-31' }), dateModified: '2026-11-17' };
+const article = articleStructuredData('حوكمة الذكاء الاصطناعي في السعودية', description, Astro.url.pathname);
 const faqs = [{"question": "هل شراء منصة يثبت تطبيق الحوكمة؟", "answer": "لا؛ تحتاج نطاقًا ومسؤوليات ومراجعات واختبارات وأدلة وقرارًا من المخول. المثال هنا تعليمي، ولا يثبت تشغيل منتج أو امتثال منشأة."}, {"question": "هل الخطوات الست متطلب رسمي؟", "answer": "لا؛ هي طريقة عمل تعليمية مقترحة. راجع جدول المصادر لتمييز النظام الملزم ووثيقة النطاق الحكومي والإطار الطوعي والمعيار."}];
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map(({ question, answer }) => ({ '@type': 'Question', name: question, acceptedAnswer: { '@type': 'Answer', text: answer } })) };
 ---
 <PageShell title="حوكمة الذكاء الاصطناعي في السعودية | BRIGHTAI" description={description} crumbs={[{ name: 'مركز المعرفة', href: '/docs/' }, { name: 'حوكمة الذكاء الاصطناعي في السعودية' }]} ogType="article" structuredData={article}>
   <div class="reading-layout"><aside class="reading-nav" aria-label="في هذا الدليل"><h2>في هذا الدليل</h2><a href="#part-1">صفة المرجع ونطاقه</a><a href="#part-2">خطوات العمل</a><a href="#decision">بوابات القرار</a><a href="#example">مثال اصطناعي</a><a href="#limits">الحدود والخطوة التالية</a><a href="/docs/">← كل الأدلة</a></aside><article>
-    <p class="eyebrow">دليل عملي · مراجعة الإحالات <time datetime="2026-11-17">17 نوفمبر 2026</time></p><h1>حوكمة الذكاء الاصطناعي في السعودية</h1>
+    <p class="eyebrow">دليل عملي · الاطلاع على المصادر موضح في بيانات التحرير</p><h1>حوكمة الذكاء الاصطناعي في السعودية</h1>
     <p class="lead">ابدأ باستخدام واحد: سمِّ مالكه، وحدد غرضه وبياناته والقرار الذي يؤثر فيه، ثم اجمع المراجعات اللازمة قبل إدخال بيانات فعلية. مخرجك الأول بطاقة استخدام وقرار اختبار محدود، لا شراء منصة ولا موافقة عامة على AI.</p>
     <section class="block" id="part-1"><h2>ما الملزم وما الإرشادي؟</h2>
       <ul class="list"><li><strong>نظام ملزم:</strong> إذا دخلت المعالجة في نطاق PDPL، راجع تعريف البيانات والمعالجة ونطاق الانطباق في <a href="#source-law">المادتين 1 و2 من النظام</a>. وجود نموذج AI لا يغيّر هذا النطاق.</li>

@@ -1,0 +1,293 @@
+{
+  "articles": [
+    {
+      "path": "knowledge/ai-audit-trail/index.html",
+      "published": "2026-11-08",
+      "modified": null,
+      "contextDates": [
+        "2026-11-08",
+        "2026-11-08"
+      ]
+    },
+    {
+      "path": "knowledge/ai-bias-fairness/index.html",
+      "published": "2026-11-08",
+      "modified": null,
+      "contextDates": [
+        "2026-11-08",
+        "2026-11-08"
+      ]
+    },
+    {
+      "path": "knowledge/ai-contract-clauses/index.html",
+      "published": "2026-11-08",
+      "modified": null,
+      "contextDates": [
+        "2026-11-08",
+        "2026-11-08"
+      ]
+    },
+    {
+      "path": "knowledge/ai-cybersecurity-nca/index.html",
+      "published": "2026-11-08",
+      "modified": null,
+      "contextDates": [
+        "2026-11-08",
+        "2026-11-08"
+      ]
+    },
+    {
+      "path": "knowledge/ai-data-residency-saudi/index.html",
+      "published": "2026-11-08",
+      "modified": null,
+      "contextDates": [
+        "2026-11-08",
+        "2026-11-08"
+      ]
+    },
+    {
+      "path": "knowledge/ai-employee-training/index.html",
+      "published": "2026-11-08",
+      "modified": null,
+      "contextDates": [
+        "2026-11-08",
+        "2026-11-08"
+      ]
+    },
+    {
+      "path": "knowledge/ai-governance-committee-raci/index.html",
+      "published": "2026-11-08",
+      "modified": null,
+      "contextDates": [
+        "2026-11-08",
+        "2026-11-08"
+      ]
+    },
+    {
+      "path": "knowledge/ai-governance-financial-sector/index.html",
+      "published": "2026-11-08",
+      "modified": null,
+      "contextDates": [
+        "2026-11-08",
+        "2026-11-08"
+      ]
+    },
+    {
+      "path": "knowledge/ai-governance-healthcare/index.html",
+      "published": "2026-11-08",
+      "modified": null,
+      "contextDates": [
+        "2026-11-08",
+        "2026-11-08"
+      ]
+    },
+    {
+      "path": "knowledge/ai-governance-saudi/index.html",
+      "published": "2026-10-31",
+      "modified": "2026-11-17",
+      "contextDates": [
+        "2026-10-31",
+        "2026-11-17",
+        "2026-11-17"
+      ]
+    },
+    {
+      "path": "knowledge/ai-hallucinations-controls/index.html",
+      "published": "2026-11-08",
+      "modified": null,
+      "contextDates": [
+        "2026-11-08",
+        "2026-11-08"
+      ]
+    },
+    {
+      "path": "knowledge/ai-impact-assessment/index.html",
+      "published": "2026-11-08",
+      "modified": null,
+      "contextDates": [
+        "2026-11-08",
+        "2026-11-08"
+      ]
+    },
+    {
+      "path": "knowledge/ai-inventory-register/index.html",
+      "published": "2026-11-08",
+      "modified": null,
+      "contextDates": [
+        "2026-11-08",
+        "2026-11-08"
+      ]
+    },
+    {
+      "path": "knowledge/ai-risk-assessment/index.html",
+      "published": "2026-10-31",
+      "modified": "2026-11-17",
+      "contextDates": [
+        "2026-10-31",
+        "2026-11-17",
+        "2026-11-17"
+      ]
+    },
+    {
+      "path": "knowledge/ai-use-policy-employees/index.html",
+      "published": "2026-10-31",
+      "modified": "2026-11-17",
+      "contextDates": [
+        "2026-10-31",
+        "2026-11-17",
+        "2026-11-17"
+      ]
+    },
+    {
+      "path": "knowledge/ai-vendor-assessment/index.html",
+      "published": "2026-11-08",
+      "modified": null,
+      "contextDates": [
+        "2026-11-08",
+        "2026-11-08"
+      ]
+    },
+    {
+      "path": "knowledge/choose-ai-governance-platform/index.html",
+      "published": "2026-11-08",
+      "modified": null,
+      "contextDates": [
+        "2026-11-08",
+        "2026-11-08"
+      ]
+    },
+    {
+      "path": "knowledge/data-breach-72-hours-ai/index.html",
+      "published": "2026-11-08",
+      "modified": null,
+      "contextDates": [
+        "2026-11-08",
+        "2026-11-08"
+      ]
+    },
+    {
+      "path": "knowledge/data-classification-for-ai/index.html",
+      "published": "2026-11-08",
+      "modified": null,
+      "contextDates": [
+        "2026-11-08",
+        "2026-11-08"
+      ]
+    },
+    {
+      "path": "knowledge/data-governance-vs-ai-governance/index.html",
+      "published": "2026-11-08",
+      "modified": null,
+      "contextDates": [
+        "2026-11-08",
+        "2026-11-08"
+      ]
+    },
+    {
+      "path": "knowledge/deepfake-policy-organizations/index.html",
+      "published": "2026-11-08",
+      "modified": null,
+      "contextDates": [
+        "2026-11-08",
+        "2026-11-08"
+      ]
+    },
+    {
+      "path": "knowledge/iso-42001-saudi/index.html",
+      "published": "2026-11-03",
+      "modified": null,
+      "contextDates": [
+        "2026-11-03"
+      ]
+    },
+    {
+      "path": "knowledge/pdpl-and-ai/index.html",
+      "published": "2026-11-03",
+      "modified": "2026-11-17",
+      "contextDates": [
+        "2026-11-03",
+        "2026-11-17",
+        "2026-11-17"
+      ]
+    },
+    {
+      "path": "knowledge/prompt-injection/index.html",
+      "published": "2026-10-31",
+      "modified": null,
+      "contextDates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "path": "knowledge/protect-company-data-chatgpt/index.html",
+      "published": "2026-10-31",
+      "modified": null,
+      "contextDates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "path": "knowledge/saudi-ai-ethics-principles/index.html",
+      "published": "2026-11-03",
+      "modified": null,
+      "contextDates": [
+        "2026-11-03"
+      ]
+    },
+    {
+      "path": "knowledge/saudi-ai-law-binding-vs-guidance/index.html",
+      "published": "2026-11-03",
+      "modified": null,
+      "contextDates": [
+        "2026-11-03"
+      ]
+    },
+    {
+      "path": "knowledge/saudi-ai-regulators-map/index.html",
+      "published": "2026-11-08",
+      "modified": null,
+      "contextDates": [
+        "2026-11-08",
+        "2026-11-08"
+      ]
+    },
+    {
+      "path": "knowledge/sdaia-ai-adoption-framework/index.html",
+      "published": "2026-11-03",
+      "modified": null,
+      "contextDates": [
+        "2026-11-03"
+      ]
+    },
+    {
+      "path": "knowledge/sdaia-ai-ethics-self-assessment/index.html",
+      "published": "2026-11-03",
+      "modified": null,
+      "contextDates": [
+        "2026-11-03"
+      ]
+    },
+    {
+      "path": "knowledge/sdaia-generative-ai-guidelines/index.html",
+      "published": "2026-11-03",
+      "modified": null,
+      "contextDates": [
+        "2026-11-03"
+      ]
+    },
+    {
+      "path": "knowledge/shadow-ai-detection/index.html",
+      "published": "2026-11-08",
+      "modified": null,
+      "contextDates": [
+        "2026-11-08",
+        "2026-11-08"
+      ]
+    }
+  ],
+  "count": 32,
+  "modified": 4,
+  "identityPages": 2,
+  "legacyPages": 3,
+  "result": "PASS"
+}

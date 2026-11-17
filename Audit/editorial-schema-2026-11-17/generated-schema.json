@@ -1,0 +1,151 @@
+[
+  {
+    "path": "knowledge/pdpl-and-ai/index.html",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "name": "مؤسسة مُشرقة BRIGHT AI",
+      "alternateName": [
+        "BRIGHT AI",
+        "BRIGHTAI"
+      ],
+      "description": "هوية متخصصة في حوكمة وأمان الذكاء الاصطناعي، ومنظومة AIGAS للمنتجات الموجهة للجهات الحكومية والقطاع الخاص السعودي.",
+      "url": "https://brightai.live/",
+      "logo": "https://brightai.live/images/brightai-logo.png"
+    }
+  },
+  {
+    "path": "knowledge/pdpl-and-ai/index.html",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/pdpl-and-ai/#article",
+      "url": "https://brightai.live/knowledge/pdpl-and-ai/",
+      "headline": "نظام حماية البيانات الشخصية (PDPL) والذكاء الاصطناعي: متى يصبح إدخال البيانات في أداة معالجة خاضعة للنظام؟",
+      "description": "دليل عملي يشرح متى ينطبق نظام حماية البيانات الشخصية على إدخال البيانات في أدوات الذكاء الاصطناعي، وموقعك من المتحكم والمعالج، والأسئلة الست قبل أي إدخال.",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://brightai.live/knowledge/pdpl-and-ai/"
+      },
+      "inLanguage": "ar-SA",
+      "datePublished": "2026-11-03",
+      "dateModified": "2026-11-17",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "مؤسسة مُشرقة BRIGHT AI",
+        "alternateName": [
+          "BRIGHT AI",
+          "BRIGHTAI"
+        ],
+        "description": "هوية متخصصة في حوكمة وأمان الذكاء الاصطناعي، ومنظومة AIGAS للمنتجات الموجهة للجهات الحكومية والقطاع الخاص السعودي.",
+        "url": "https://brightai.live/",
+        "logo": "https://brightai.live/images/brightai-logo.png"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "مؤسسة مُشرقة BRIGHT AI",
+        "alternateName": [
+          "BRIGHT AI",
+          "BRIGHTAI"
+        ],
+        "description": "هوية متخصصة في حوكمة وأمان الذكاء الاصطناعي، ومنظومة AIGAS للمنتجات الموجهة للجهات الحكومية والقطاع الخاص السعودي.",
+        "url": "https://brightai.live/",
+        "logo": "https://brightai.live/images/brightai-logo.png"
+      },
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "نظام حماية البيانات الشخصية"
+        },
+        {
+          "@type": "Thing",
+          "name": "PDPL الذكاء الاصطناعي"
+        },
+        {
+          "@type": "Thing",
+          "name": "المتحكم والمعالج"
+        },
+        {
+          "@type": "Thing",
+          "name": "نقل البيانات خارج المملكة"
+        }
+      ]
+    }
+  },
+  {
+    "path": "knowledge/shadow-ai-detection/index.html",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://brightai.live/#organization",
+      "name": "مؤسسة مُشرقة BRIGHT AI",
+      "alternateName": [
+        "BRIGHT AI",
+        "BRIGHTAI"
+      ],
+      "description": "هوية متخصصة في حوكمة وأمان الذكاء الاصطناعي، ومنظومة AIGAS للمنتجات الموجهة للجهات الحكومية والقطاع الخاص السعودي.",
+      "url": "https://brightai.live/",
+      "logo": "https://brightai.live/images/brightai-logo.png"
+    }
+  },
+  {
+    "path": "knowledge/shadow-ai-detection/index.html",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://brightai.live/knowledge/shadow-ai-detection/#article",
+      "url": "https://brightai.live/knowledge/shadow-ai-detection/",
+      "headline": "اكتشاف Shadow AI: استخدامات الذكاء الاصطناعي غير المعتمدة",
+      "description": "دليل للمنشآت السعودية لحصر أدوات الذكاء الاصطناعي غير المعتمدة ومعالجة مخاطرها، مع خطة جمع أدلة تراعي الخصوصية ومسار لاعتماد البدائل.",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://brightai.live/knowledge/shadow-ai-detection/"
+      },
+      "inLanguage": "ar-SA",
+      "datePublished": "2026-11-08",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://brightai.live/images/brightai-logo.png",
+        "width": 1536,
+        "height": 1024
+      },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "مؤسسة مُشرقة BRIGHT AI",
+        "alternateName": [
+          "BRIGHT AI",
+          "BRIGHTAI"
+        ],
+        "description": "هوية متخصصة في حوكمة وأمان الذكاء الاصطناعي، ومنظومة AIGAS للمنتجات الموجهة للجهات الحكومية والقطاع الخاص السعودي.",
+        "url": "https://brightai.live/",
+        "logo": "https://brightai.live/images/brightai-logo.png"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://brightai.live/#organization",
+        "name": "مؤسسة مُشرقة BRIGHT AI",
+        "alternateName": [
+          "BRIGHT AI",
+          "BRIGHTAI"
+        ],
+        "description": "هوية متخصصة في حوكمة وأمان الذكاء الاصطناعي، ومنظومة AIGAS للمنتجات الموجهة للجهات الحكومية والقطاع الخاص السعودي.",
+        "url": "https://brightai.live/",
+        "logo": "https://brightai.live/images/brightai-logo.png"
+      },
+      "citation": [
+        "https://nca.gov.sa/en/regulatory-documents/controls-list/ecc/",
+        "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf"
+      ]
+    }
+  }
+]

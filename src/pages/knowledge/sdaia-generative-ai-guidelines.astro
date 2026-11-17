@@ -1,27 +1,12 @@
 ---
+import { articleStructuredData } from '../../data/structured-data';
 import PageShell from '../../components/PageShell.astro';
-import { brand } from '../../data/brand';
 export const prerender = true;
 const description = 'مقارنة عملية بين مبادئ الذكاء الاصطناعي التوليدي للعموم وللجهات الحكومية من سدايا: من تنطبق عليه كل نسخة، والفروقات، وأمثلة مسموح وممنوع، وخطوات التطبيق.';
 const path = Astro.url.pathname;
 
 const article = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: 'مبادئ الذكاء الاصطناعي التوليدي من سدايا: نسخة العموم مقابل نسخة الجهات الحكومية',
-  description,
-  inLanguage: 'ar-SA',
-  datePublished: '2026-11-03',
-  dateModified: '2026-11-03',
-  image: { '@type': 'ImageObject', url: new URL(brand.logo, 'https://brightai.live').href, width: brand.width, height: brand.height },
-  mainEntityOfPage: new URL(path, 'https://brightai.live').href,
-  author: { '@type': 'Organization', name: 'BRIGHTAI', url: 'https://brightai.live/about/' },
-  publisher: {
-    '@type': 'Organization',
-    name: 'BRIGHTAI',
-    url: 'https://brightai.live/',
-    logo: { '@type': 'ImageObject', url: new URL(brand.logo, 'https://brightai.live').href },
-  },
+  ...articleStructuredData('مبادئ الذكاء الاصطناعي التوليدي من سدايا: نسخة العموم مقابل نسخة الجهات الحكومية', description, Astro.url.pathname),
   about: [
     { '@type': 'Thing', name: 'مبادئ الذكاء الاصطناعي التوليدي' },
     { '@type': 'Thing', name: 'إرشادات الذكاء الاصطناعي التوليدي' },
@@ -82,7 +67,7 @@ const faq = {
         <li>الحوكمة</li>
         <li>وثيقتان · إصدار 1</li>
         <li>قراءة 18 دقيقة</li>
-        <li>آخر مراجعة: 3 نوفمبر 2026</li>
+        <li>التواريخ موضحة في بيانات التحرير أعلاه</li>
       </ul>
 
       <div class="k3-hero-split" aria-label="الوثيقتان في سطرين">
@@ -100,7 +85,7 @@ const faq = {
       </div>
     </header>
 
-    <p class="k3-alert" role="note">هذا المحتوى توعوي ولا يمثل استشارة قانونية أو اعتماداً تنظيمياً، ولا يثبت امتثال أي منشأة. آخر مراجعة: 3 نوفمبر 2026 — يلزم اعتماد المراجع البشري المختص قبل النشر النهائي.</p>
+    <p class="k3-alert" role="note">هذا المحتوى توعوي ولا يمثل استشارة قانونية أو اعتماداً تنظيمياً، ولا يثبت امتثال أي منشأة. التواريخ موضحة في بيانات التحرير أعلاه — يلزم اعتماد المراجع البشري المختص قبل النشر النهائي.</p>
 
     <article class="k3-body">
       <section class="k3-tldr" aria-labelledby="tldr-title">
@@ -547,7 +532,7 @@ const faq = {
               <li><a href="https://sdaia.gov.sa/ar/SDAIA/about/Pages/RegulationsAndPolicies.aspx" rel="noopener noreferrer" target="_blank">سدايا: الأنظمة واللوائح والوثائق التنظيمية</a></li>
               <li><a href="https://dgp.sdaia.gov.sa/wps/portal/pdp" rel="noopener noreferrer" target="_blank">منصة حوكمة البيانات الوطنية — حماية البيانات الشخصية</a></li>
             </ul>
-            <p class="k3-fine">آخر مراجعة: 3 نوفمبر 2026 — يلزم اعتماد المراجع البشري المختص قبل النشر النهائي. هذا المحتوى توعوي ولا يمثل استشارة قانونية أو اعتماداً تنظيمياً.</p>
+            <p class="k3-fine">التواريخ موضحة في بيانات التحرير أعلاه — يلزم اعتماد المراجع البشري المختص قبل النشر النهائي. هذا المحتوى توعوي ولا يمثل استشارة قانونية أو اعتماداً تنظيمياً.</p>
           </section>
         </div>
       </div>

@@ -1,11 +1,13 @@
 ---
+import { organization, identityLimit } from '../data/organization';
 import ContentExtension from '../components/ContentExtension.astro';
 import PageShell from '../components/PageShell.astro';
 export const prerender = true;
 ---
 <PageShell title="عن BRIGHTAI | حوكمة وأمان الذكاء الاصطناعي" description="تعرف على توجه BRIGHTAI في حوكمة وأمان الذكاء الاصطناعي، وما هو مخطط وما لم يتم التحقق من تشغيله." crumbs={[{ name: 'عن BRIGHTAI' }]}>
   <p class="eyebrow">من نحن</p><h1>حوكمة وأمان الذكاء الاصطناعي</h1>
-  <p class="lead">BRIGHTAI هو اسم وهوية لمبادرة تركز على مساعدة المنشآت في التفكير المنهجي حول استخدام الذكاء الاصطناعي ومخاطره ومسؤولياته.</p>
+  <p class="lead">{organization.description}</p>
+  <section class="block" aria-label="هوية الناشر"><h2>{organization.name}</h2><p>{organization.description}</p><a href={organization.url}>{organization.url}</a><p class="note">{identityLimit}</p></section>
   <p class="note">لا تؤكد هذه الصفحة الشكل القانوني للكيان أو حالة تشغيل المنتجات أو وجود اعتماد تنظيمي. هوية الكيان القانونية وتفاصيل الخدمات تحتاج إلى تحقق واعتماد من المالك.</p>
   <section class="block"><h2>ما الذي نعمل على تصميمه؟</h2><p>يتضمن التصور AIGAS Kernel كمكوّن مشترك، وخمسة منتجات مستقلة وظيفياً وتجاريًا وفق الـBlueprint. الإتاحة التشغيلية لكل منتج غير متحققة حالياً. يشرح <a href="/products/">مركز المنتجات</a> حدود هذا التصور.</p></section>
   <section class="block"><h2>مبدأنا في المحتوى</h2><p>نوضح الفرق بين المتطلب والتصميم والتنفيذ المثبت. لا نقدم مواءمة تنظيمية أو شهادة أو ضماناً تشغيلياً ما لم توجد أدلة صالحة ومراجعة معتمدة.</p><a href="/docs/">تصفح مركز المعرفة</a></section>

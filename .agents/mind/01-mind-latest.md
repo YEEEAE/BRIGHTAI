@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-17 VERIFIED LOCAL editorial/schema:32دليلًا بسجلنشر/تحديثبحدث/اطلاع/مراجعةمستقلة؛4modifiedموثقةفقط؛Organizationمنمرجعالمالكبلاlegal/sameAs؛3authorsبدائلتوضحعدمالإثبات؛unit5/build60/HTML32/Browser500+1440و390×3PASS؛لامراجعشخصي معتمد/لانشر؛ `audit/editorial-schema-2026-11-17/SCHEMA-REPORT.md`.
 - 2026-11-17 VERIFIED LOCAL guides4:حوكمة/PDPL/مخاطر/موظفين؛31ادعاءبمصدرونوعونسخةونطاق؛نقل1840/2024ومبادئP116v1مايو2025؛build57بـAstro6.4.8lockمطابق/Browser8×390و1440/tree5PASS؛نفاذحكوميمستقلغيرمثبت/لامراجعةقانونيةلواقعة/لانشر؛ `audit/guide-claims-2026-11-17/REPORT.md`.
 - 2026-11-17 VERIFIED ANALYSIS intent map:311صفحة/32دليل/254إرث؛GSCwebfinal18أكتوبر–14نوفمبر9clicks/970impressions؛أولويةحكومة→صحة→مصارف→تنفيذ→استشارات؛49mergeتوصياتفقط/رياضتبقىمؤقتًا؛صونURLsالإرثقبلنشر57؛ `audit/intent-map-2026-11-17/REPORT.md`؛لاتعديلصفحاتأونشر.
 - 2026-11-17 VERIFIED LOCAL GA4 attribution: موافقةالمالكGoogle/Bingأربعةexacthosts→originفقط؛التحريريمحجوبحتىاعتمادنطاقه؛unit45/Chrome20double-init/CSP PASS؛SDK/ingestion/account NOT VERIFIED؛لاتصحيحDirectتاريخي/لانشر؛ `audit/ga4-attribution-2026-11-17/REPORT.md`.
@@ -64,6 +65,12 @@
 - 2026-11-16 حزمة الإغلاق النشطة `Audit/prompts.md` v2.1 مشتقة من `Audit/BRIGHT-AI-2026-FINAL-360-AUDIT.html`: 16 برومبتًا/G-01…G-16/W1–W9؛ سجل 50 متطلبًا معلن غير مسرود؛ رأس التقرير `7385200` والرأس الحالي `cb9863f`؛ `Audit/final-360-2026-11-10/*` غير موجود على القرص.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-17] — بيانات التحرير والهوية
+- **تم:** مصدرمشتركللتواريخوالناشر؛إزالةmodifiedالثابتوادعاءالمراجعة؛مراجعمرتبطباعتمادونسخةونطاق؛بدائلauthorsتحفظالمساراتوتوضحعدمالإثبات.
+- **التحقق:** PASS — unit5/build60/HTML32/Browser17؛390فعلي×3؛src/lockمطابقانلبناءمعزولAstro6.4.8.
+- **الحالة:** DONE محليًا؛المؤلفونالقدامىحيًالمتُغيرصفحاتهم؛لامراجعةتخصصيةفعليةأونشر.
+- **ملفات:** `docs/EDITORIAL-EVIDENCE.md`،`audit/editorial-schema-2026-11-17/SCHEMA-REPORT.md`.
 
 ## [2026-11-17] — مراجعة أربعة أدلة
 - **تم:** إجابات وخطوات وأمثلةاصطناعيةوحدودومختص؛إحالات31ادعاءًونوعالمرجعونسخته؛تصحيحاستنتاجالمعالجالتلقائيومسوغالموافقة.

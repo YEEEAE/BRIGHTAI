@@ -4,11 +4,11 @@ import GuideSources from '../../components/GuideSources.astro';
 import { articleStructuredData } from '../../data/structured-data';
 export const prerender = true;
 const description = 'ورقة عمل تعليمية تحول سيناريو الضرر إلى ضابط واختبار ومالك وقرار، وتفرق بين مخاطر AI وتقويم أثر الخصوصية.';
-const article = { ...articleStructuredData('تقييم مخاطر الذكاء الاصطناعي', description, Astro.url.pathname, { published: '2026-10-31' }), dateModified: '2026-11-17' };
+const article = articleStructuredData('تقييم مخاطر الذكاء الاصطناعي', description, Astro.url.pathname);
 ---
 <PageShell title="تقييم مخاطر الذكاء الاصطناعي | BRIGHTAI" description={description} crumbs={[{ name: 'مركز المعرفة', href: '/docs/' }, { name: 'تقييم مخاطر الذكاء الاصطناعي' }]} ogType="article" structuredData={article}>
   <div class="reading-layout"><aside class="reading-nav" aria-label="في هذا الدليل"><h2>في هذا الدليل</h2><a href="#part-1">المرجع والصفة</a><a href="#part-2">سجل من ست خطوات</a><a href="#part-3">مثال اصطناعي</a><a href="#decision">قرار بعد التقييم</a><a href="#limits">الحدود والخطوة التالية</a><a href="/docs/">← كل الأدلة</a></aside><article>
-    <p class="eyebrow">دليل عملي · مراجعة الإحالات <time datetime="2026-11-17">17 نوفمبر 2026</time></p><h1>تقييم مخاطر الذكاء الاصطناعي</h1>
+    <p class="eyebrow">دليل عملي · الاطلاع على المصادر موضح في بيانات التحرير</p><h1>تقييم مخاطر الذكاء الاصطناعي</h1>
     <p class="lead">اكتب سيناريو ضرر واحدًا بصيغة «إذا حدث سبب محدد، فقد يتضرر طرف محدد بهذه الطريقة»، ثم عيّن ضابطًا ومالكًا واختبارًا وقرارًا. لا تعطي درجة رقمية قبل تعريف معيار الاحتمال والأثر مع الجهة المختصة.</p>
     <p class="note">هذه ورقة عمل تعليمية؛ ليست تصنيف سدايا الرسمي، ولا نموذج قبول مخاطر معتمدًا، ولا نتيجة تقييم من Risk Engine.</p>
     <section class="block" id="part-1"><h2>ما أساس هذا التقييم؟</h2><p>نستأنس بـ<a href="#source-nist">NIST AI RMF 1.0، القسم 5</a> كإطار طوعي: افهم السياق، وقِس ما يمكن اختباره، ثم اختر المعالجة ضمن مسؤوليات واضحة. وظائفه متداخلة وليست قائمة خطية إلزامية.</p><p>إذا تضمنت الحالة بيانات شخصية، فالتقييم العام لا يغني عن <strong>تقويم أثر الخصوصية</strong>. تحدد <a href="#source-regulation">المادة 25 من اللائحة التنفيذية</a> حالات تستلزمه، ومنها البيانات الحساسة وربط مجموعات بيانات من مصادر مختلفة وحالات أخرى بالنص. اطلب من الخصوصية تحديد انطباقها ومحتوى التقويم؛ لا تختزلها إلى درجة خطر AI.</p></section>

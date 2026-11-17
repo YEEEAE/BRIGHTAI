@@ -12,10 +12,7 @@ interface Props { guide: Guide }
 const { guide } = Astro.props;
 const path = `/knowledge/${guide.slug}/`;
 const article = {
-  ...articleStructuredData(guide.title, guide.description, path),
-  dateCreated: '2026-11-08',
-  datePublished: '2026-11-08',
-  dateModified: '2026-11-08',
+  ...articleStructuredData(guide.title, guide.description, path, guide.editorial),
   citation: guide.sources.map(source => source.url),
 };
 const faq = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: guide.faqs.map(item => ({
@@ -23,10 +20,10 @@ const faq = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: 
 })) };
 const related = guide.related.map(slug => articles.find(item => item.href === `/knowledge/${slug}/`)).filter(Boolean);
 ---
-<PageShell title={`${guide.title} | BRIGHTAI`} description={guide.description} crumbs={[{ name: 'مركز المعرفة', href: '/docs/' }, { name: guide.title }]} ogType="article" structuredData={article}>
+<PageShell title={`${guide.title} | BRIGHTAI`} description={guide.description} crumbs={[{ name: 'مركز المعرفة', href: '/docs/' }, { name: guide.title }]} ogType="article" structuredData={article} editorial={guide.editorial}>
   <article class="practical-guide">
     <header>
-      <p class="eyebrow">{guide.tag} · إعداد وتحديث: <time datetime="2026-11-08">8 نوفمبر 2026</time></p>
+      <p class="eyebrow">{guide.tag}</p>
       <h1>{guide.title}</h1>
       <p class="lead">{guide.answer}</p>
       <p class="note">إعداد <a href="/about/">مؤسسة مُشرقة BRIGHT AI</a>. دليل تعليمي؛ الأمثلة افتراضية والنماذج الإجرائية مقترحة وليست نماذج تنظيمية معتمدة. راجع النص الرسمي والمختص المخول قبل تطبيق قرار نظامي أو صحي أو مالي.</p>
@@ -44,7 +41,7 @@ const related = guide.related.map(slug => articles.find(item => item.href === `/
     <section class="block"><h2>مثال تطبيقي افتراضي</h2><blockquote><p>{guide.example}</p></blockquote></section>
     <section class="block"><h2>قائمة تحقق للعمل</h2><ol class="list">{guide.checklist.map(item => <li>{item}</li>)}</ol></section>
     <section class="block"><h2>أسئلة شائعة</h2>{guide.faqs.map(item => <section><h3>{item.question}</h3><p>{item.answer}</p></section>)}</section>
-    <section class="block"><h2>المصادر الرسمية وحدود الاستشهاد</h2><p>اطُّلع على المصادر عند إعداد الدليل بتاريخ 8 نوفمبر 2026. الإحالات تدعم الموضوع المحدد في وصفها؛ الجداول والأمثلة والخطوات المقترحة صياغة تعليمية من BRIGHT AI، وليست نصوصًا منقولة عن الجهات.</p>
+    <section class="block"><h2>المصادر الرسمية وحدود الاستشهاد</h2><p>تاريخ الاطلاع الموثق في بيانات التحرير أعلاه يخص المصادر وقت إعداد الدليل، ولا يثبت استمرار سريانها أو مراجعة تخصصية. الإحالات تدعم الموضوع المحدد في وصفها؛ الجداول والأمثلة والخطوات المقترحة صياغة تعليمية من BRIGHT AI، وليست نصوصًا منقولة عن الجهات.</p>
       <ul class="list">{guide.sources.map(source => <li><a href={source.url} target="_blank" rel="noopener noreferrer">{source.label}</a><p>{source.note}</p></li>)}</ul>
     </section>
     <section class="block"><h2>أدلة تكمل الموضوع</h2><ul class="list">{related.map(item => item && <li><a href={item.href}>{item.title}</a><p>{item.text}</p></li>)}</ul><a class="ghost" href="/docs/">تصفح جميع أدلة المعرفة ←</a></section>

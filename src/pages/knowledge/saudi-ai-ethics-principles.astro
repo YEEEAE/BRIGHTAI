@@ -1,26 +1,11 @@
 ---
+import { articleStructuredData } from '../../data/structured-data';
 import PageShell from '../../components/PageShell.astro';
-import { brand } from '../../data/brand';
 export const prerender = true;
 const description = 'دليل عملي يحوّل مبادئ أخلاقيات الذكاء الاصطناعي في السعودية إلى ضوابط وأدلة ومالكين داخل المنشأة، مع المبادئ السبعة ومستويات المخاطر وأسئلة التحقق.';
 const path = Astro.url.pathname;
 const article = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: 'مبادئ أخلاقيات الذكاء الاصطناعي في السعودية: من المبدأ إلى الضابط العملي',
-  description,
-  inLanguage: 'ar-SA',
-  datePublished: '2026-11-03',
-  dateModified: '2026-11-03',
-  image: { '@type': 'ImageObject', url: new URL(brand.logo, 'https://brightai.live').href, width: brand.width, height: brand.height },
-  mainEntityOfPage: new URL(path, 'https://brightai.live').href,
-  author: { '@type': 'Organization', name: 'BRIGHTAI', url: 'https://brightai.live/about/' },
-  publisher: {
-    '@type': 'Organization',
-    name: 'BRIGHTAI',
-    url: 'https://brightai.live/',
-    logo: { '@type': 'ImageObject', url: new URL(brand.logo, 'https://brightai.live').href },
-  },
+  ...articleStructuredData('مبادئ أخلاقيات الذكاء الاصطناعي في السعودية: من المبدأ إلى الضابط العملي', description, Astro.url.pathname),
   about: [
     { '@type': 'Thing', name: 'مبادئ أخلاقيات الذكاء الاصطناعي' },
     { '@type': 'Thing', name: 'أخلاقيات الذكاء الاصطناعي سدايا' },
@@ -79,7 +64,7 @@ const faq = {
         <li>الحوكمة</li>
         <li>7 مبادئ · 4 مستويات</li>
         <li>قراءة 18 دقيقة</li>
-        <li>آخر مراجعة: 3 نوفمبر 2026</li>
+        <li>التواريخ موضحة في بيانات التحرير أعلاه</li>
       </ul>
       <ol class="k2-hero-matrix" aria-label="المبادئ السبعة في الوثيقة">
         <li><span>01</span><b>النزاهة والإنصاف</b></li>
@@ -92,7 +77,7 @@ const faq = {
       </ol>
     </header>
 
-    <p class="k2-alert" role="note">هذا المحتوى توعوي ولا يمثل استشارة قانونية أو اعتماداً تنظيمياً، ولا يثبت امتثال أي منشأة. آخر مراجعة: 3 نوفمبر 2026 — يلزم اعتماد المراجع البشري المختص قبل النشر النهائي.</p>
+    <p class="k2-alert" role="note">هذا المحتوى توعوي ولا يمثل استشارة قانونية أو اعتماداً تنظيمياً، ولا يثبت امتثال أي منشأة. التواريخ موضحة في بيانات التحرير أعلاه — يلزم اعتماد المراجع البشري المختص قبل النشر النهائي.</p>
 
     <article class="k2-body">
       <section class="k2-tldr" aria-labelledby="tldr-title">
@@ -528,7 +513,7 @@ const faq = {
               <li><a href="https://sdaia.gov.sa/en/SDAIA/about/Documents/ai-principles.pdf" rel="noopener noreferrer" target="_blank">SDAIA: AI Ethics Principles (English edition, May 2025)</a></li>
               <li><a href="https://sdaia.gov.sa/" rel="noopener noreferrer" target="_blank">الهيئة السعودية للبيانات والذكاء الاصطناعي (سدايا)</a></li>
             </ul>
-            <p class="k2-fine">آخر مراجعة: 3 نوفمبر 2026 — يلزم اعتماد المراجع البشري المختص قبل النشر النهائي. هذا المحتوى توعوي ولا يمثل استشارة قانونية أو اعتماداً تنظيمياً.</p>
+            <p class="k2-fine">التواريخ موضحة في بيانات التحرير أعلاه — يلزم اعتماد المراجع البشري المختص قبل النشر النهائي. هذا المحتوى توعوي ولا يمثل استشارة قانونية أو اعتماداً تنظيمياً.</p>
           </section>
         </div>
       </div>

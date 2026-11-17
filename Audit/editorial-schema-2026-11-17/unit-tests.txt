@@ -1,0 +1,42 @@
+TAP version 13
+# (node:13101) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: No fixed modified date or access-to-modified fallback
+ok 1 - No fixed modified date or access-to-modified fallback
+  ---
+  duration_ms: 0.555291
+  type: 'test'
+  ...
+# Subtest: Only documented substantive edits emit dateModified; original publication stays
+ok 2 - Only documented substantive edits emit dateModified; original publication stays
+  ---
+  duration_ms: 0.069125
+  type: 'test'
+  ...
+# Subtest: Pending, missing scope/evidence and stale version cannot appear as approved
+ok 3 - Pending, missing scope/evidence and stale version cannot appear as approved
+  ---
+  duration_ms: 1.828125
+  type: 'test'
+  ...
+# Subtest: First publication can be reviewed without inventing a modification; WebPage owns reviewedBy
+ok 4 - First publication can be reviewed without inventing a modification; WebPage owns reviewedBy
+  ---
+  duration_ms: 0.131584
+  type: 'test'
+  ...
+# Subtest: One publisher identity without invented legal or social claims
+ok 5 - One publisher identity without invented legal or social claims
+  ---
+  duration_ms: 0.681625
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 114.129125

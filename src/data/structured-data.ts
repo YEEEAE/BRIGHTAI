@@ -1,4 +1,6 @@
 import { brand } from './brand';
+import { organization } from './organization';
+import { editorialFor, approvedReview, type EditorialRecord } from './editorial';
 
 const site = 'https://brightai.live';
 
@@ -11,29 +13,22 @@ export const articleImage = {
   height: brand.height,
 };
 
-// `published` must come from a real publication date (page frontmatter or the
-// source file's creation date); it is never guessed.
+// One record feeds both ArticleContext and JSON-LD. Never use build time or a fixed fallback.
 export function articleStructuredData(headline: string, description: string, pathname: string,
-  { published }: { published?: string } = {}) {
+  editorial: EditorialRecord = editorialFor(pathname)) {
+  const review = approvedReview(editorial);
+  const url = new URL(pathname, site).href;
   return {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    '@id': `${new URL(pathname, site).href}#article`,
-    url: new URL(pathname, site).href,
-    headline,
-    description,
-    mainEntityOfPage: new URL(pathname, site).href,
-    inLanguage: 'ar-SA',
-    ...(published ? { datePublished: published } : {}),
-    dateModified: '2026-10-31',
-    image: articleImage,
-    author: { '@type': 'Organization', '@id': `${site}/#organization`, name: 'BRIGHTAI', url: `${site}/about/` },
-    publisher: {
-      '@type': 'Organization',
-      '@id': `${site}/#organization`,
-      name: 'BRIGHTAI',
-      url: `${site}/`,
-      logo: { '@type': 'ImageObject', url: new URL(brand.logo, site).href },
+    '@context': 'https://schema.org', '@type': 'Article', '@id': `${url}#article`,
+    url, headline, description, mainEntityOfPage: {
+      '@type': 'WebPage', '@id': url,
+      ...(review ? { reviewedBy: { '@type': 'Person', name: review.name, url: review.profileUrl },
+        lastReviewed: review.reviewedOn,
+        description: `نطاق المراجعة: ${review.scope}`, citation: review.approval.evidenceUrl } : {}),
     },
+    inLanguage: 'ar-SA',
+    ...(editorial.published ? { datePublished: editorial.published } : {}),
+    ...(editorial.modified && editorial.modificationEvent ? { dateModified: editorial.modified } : {}),
+    image: articleImage, author: organization, publisher: organization,
   };
 }

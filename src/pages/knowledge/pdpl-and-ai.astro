@@ -1,27 +1,12 @@
 ---
+import { articleStructuredData } from '../../data/structured-data';
 import GuideSources from '../../components/GuideSources.astro';
 import PageShell from '../../components/PageShell.astro';
-import { brand } from '../../data/brand';
 export const prerender = true;
 const description = 'دليل عملي يشرح متى ينطبق نظام حماية البيانات الشخصية على إدخال البيانات في أدوات الذكاء الاصطناعي، وموقعك من المتحكم والمعالج، والأسئلة الست قبل أي إدخال.';
 const path = Astro.url.pathname;
 const article = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: 'نظام حماية البيانات الشخصية (PDPL) والذكاء الاصطناعي: متى يصبح إدخال البيانات في أداة معالجة خاضعة للنظام؟',
-  description,
-  inLanguage: 'ar-SA',
-  datePublished: '2026-11-03',
-  dateModified: '2026-11-17',
-  image: { '@type': 'ImageObject', url: new URL(brand.logo, 'https://brightai.live').href, width: brand.width, height: brand.height },
-  mainEntityOfPage: new URL(path, 'https://brightai.live').href,
-  author: { '@type': 'Organization', name: 'BRIGHTAI', url: 'https://brightai.live/about/' },
-  publisher: {
-    '@type': 'Organization',
-    name: 'BRIGHTAI',
-    url: 'https://brightai.live/',
-    logo: { '@type': 'ImageObject', url: new URL(brand.logo, 'https://brightai.live').href },
-  },
+  ...articleStructuredData('نظام حماية البيانات الشخصية (PDPL) والذكاء الاصطناعي: متى يصبح إدخال البيانات في أداة معالجة خاضعة للنظام؟', description, Astro.url.pathname),
   about: [
     { '@type': 'Thing', name: 'نظام حماية البيانات الشخصية' },
     { '@type': 'Thing', name: 'PDPL الذكاء الاصطناعي' },
@@ -112,7 +97,7 @@ const checkpoints = [
           <li>البيانات</li>
           <li>6 نقاط فحص</li>
           <li>فرز وخطوات عمل</li>
-          <li>آخر مراجعة: 17 نوفمبر 2026</li>
+          <li>التواريخ موضحة في بيانات التحرير أعلاه</li>
         </ul>
       </div>
       <aside class="pd-pass" aria-label="مسار البيانات المختصر">
@@ -129,7 +114,7 @@ const checkpoints = [
       </aside>
     </header>
 
-    <p class="pd-alert" role="note">هذا شرح تعليمي للنصوص المحددة في المراجع، وليس إذنًا بمعالجة واقعة. مراجعة الإحالات: 17 نوفمبر 2026؛ تحديد المسوغ والنقل والأثر يحتاج المختص المخول.</p>
+    <p class="pd-alert" role="note">هذا شرح تعليمي للنصوص المحددة في المراجع، وليس إذنًا بمعالجة واقعة. التواريخ موضحة في بيانات التحرير أعلاه؛ تحديد المسوغ والنقل والأثر يحتاج المختص المخول.</p>
 
     <article class="pd-body"><div class="pd-layout">
       <aside class="pd-toc" aria-label="مسار القراءة"><h2>في هذا الدليل</h2><ol><li><a href="#scope">النطاق</a></li><li><a href="#defs">البيانات والأدوار</a></li><li><a href="#journey">نقاط الفحص</a></li><li><a href="#basis">المسوغ والموافقة</a></li><li><a href="#transfer">النقل</a></li><li><a href="#rights">الحقوق والحوادث</a></li><li><a href="#mistakes">مثال وخطوة تالية</a></li><li><a href="#refs-title">النسخ والمراجع</a></li></ol></aside>

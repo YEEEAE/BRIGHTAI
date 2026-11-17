@@ -1,26 +1,11 @@
 ---
+import { articleStructuredData } from '../../data/structured-data';
 import PageShell from '../../components/PageShell.astro';
-import { brand } from '../../data/brand';
 export const prerender = true;
 const description = 'دليل عملي للتحضير لأداة التقييم الذاتي لأخلاقيات الذكاء الاصطناعي من سدايا: ما تجمعه، وكيف تقرأ النتيجة، وكيف تعالج الفجوات دون نسخ أسئلة الأداة.';
 const path = Astro.url.pathname;
 const article = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: 'أداة التقييم الذاتي لأخلاقيات الذكاء الاصطناعي من سدايا: كيف تستعد قبل استخدامها؟',
-  description,
-  inLanguage: 'ar-SA',
-  datePublished: '2026-11-03',
-  dateModified: '2026-11-03',
-  image: { '@type': 'ImageObject', url: new URL(brand.logo, 'https://brightai.live').href, width: brand.width, height: brand.height },
-  mainEntityOfPage: new URL(path, 'https://brightai.live').href,
-  author: { '@type': 'Organization', name: 'BRIGHTAI', url: 'https://brightai.live/about/' },
-  publisher: {
-    '@type': 'Organization',
-    name: 'BRIGHTAI',
-    url: 'https://brightai.live/',
-    logo: { '@type': 'ImageObject', url: new URL(brand.logo, 'https://brightai.live').href },
-  },
+  ...articleStructuredData('أداة التقييم الذاتي لأخلاقيات الذكاء الاصطناعي من سدايا: كيف تستعد قبل استخدامها؟', description, Astro.url.pathname),
   about: [
     { '@type': 'Thing', name: 'تقييم أخلاقيات الذكاء الاصطناعي سدايا' },
     { '@type': 'Thing', name: 'أداة التقييم الذاتي' },
@@ -78,7 +63,7 @@ const faq = {
           <li>المخاطر</li>
           <li>81 سؤالاً · 7 مبادئ</li>
           <li>قراءة 18 دقيقة</li>
-          <li>آخر مراجعة: 3 نوفمبر 2026</li>
+          <li>التواريخ موضحة في بيانات التحرير أعلاه</li>
         </ul>
       </div>
       <aside class="sc-console" aria-labelledby="console-title">
@@ -115,7 +100,7 @@ const faq = {
       </aside>
     </header>
 
-    <p class="sc-alert" role="note">هذا المحتوى توعوي ولا يمثل استشارة قانونية أو اعتماداً تنظيمياً، ولا يثبت امتثال أي منشأة. آخر مراجعة: 3 نوفمبر 2026 — يلزم اعتماد المراجع البشري المختص قبل النشر النهائي.</p>
+    <p class="sc-alert" role="note">هذا المحتوى توعوي ولا يمثل استشارة قانونية أو اعتماداً تنظيمياً، ولا يثبت امتثال أي منشأة. التواريخ موضحة في بيانات التحرير أعلاه — يلزم اعتماد المراجع البشري المختص قبل النشر النهائي.</p>
 
     <article class="sc-body">
       <section class="sc-tldr" aria-labelledby="tldr-title">
@@ -643,7 +628,7 @@ const faq = {
               <li><a href="https://www.spa.gov.sa/N2210858" rel="noopener noreferrer" target="_blank">وكالة الأنباء السعودية: «سدايا» تطلق أداة التقييم الذاتي لأخلاقيات الذكاء الاصطناعي عبر منصة حوكمة البيانات الوطنية</a> — تفاصيل الإطلاق وعدد الأسئلة والمبادئ والمقياس.</li>
               <li><a href="https://sdaia.gov.sa/" rel="noopener noreferrer" target="_blank">الهيئة السعودية للبيانات والذكاء الاصطناعي (سدايا)</a> — الجهة المالكة للأداة ووثائقها.</li>
             </ul>
-            <p class="sc-fine">آخر مراجعة: 3 نوفمبر 2026 — يلزم اعتماد المراجع البشري المختص قبل النشر النهائي. هذا المحتوى توعوي ولا يمثل استشارة قانونية أو اعتماداً تنظيمياً.</p>
+            <p class="sc-fine">التواريخ موضحة في بيانات التحرير أعلاه — يلزم اعتماد المراجع البشري المختص قبل النشر النهائي. هذا المحتوى توعوي ولا يمثل استشارة قانونية أو اعتماداً تنظيمياً.</p>
           </section>
         </div>
       </div>
