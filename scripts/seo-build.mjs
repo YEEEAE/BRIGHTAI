@@ -6,6 +6,22 @@ const locations = xml => [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map(([, url]) =
 const plain = text => text.replace(/<[^>]*>/g, '').replaceAll('&amp;', '&')
   .replaceAll('&quot;', '"').replaceAll('&#39;', "'").replace(/\s+/g, ' ').trim();
 
+// Check every HTML artifact, including pages omitted from the sitemap. An
+// accidental Markdown route must not silently pass just because it has no head.
+export function verifyBuiltHtmlMetadata(html, label) {
+  const attribute = (tag, name) => tag.match(new RegExp(`\\b${name}=["']([^"']*)["']`, 'i'))?.[1];
+  const metas = [...html.matchAll(/<meta\b[^>]*>/gi)].map(([tag]) => tag);
+  const robots = metas.filter(tag => attribute(tag, 'name')?.toLowerCase() === 'robots');
+  assert.equal(robots.length, 1, `Exactly one robots directive required: ${label}`);
+  const tokens = (attribute(robots[0], 'content') ?? '').toLowerCase().split(/[\s,]+/);
+  assert(tokens.includes('index') !== tokens.includes('noindex'), `Explicit index or noindex required: ${label}`);
+  assert(plain(html.match(/<title\b[^>]*>(.*?)<\/title>/is)?.[1] ?? ''), `Missing title: ${label}`);
+  const descriptions = metas.filter(tag => attribute(tag, 'name')?.toLowerCase() === 'description');
+  assert.equal(descriptions.length, 1, `Exactly one description required: ${label}`);
+  assert(plain(attribute(descriptions[0], 'content') ?? ''), `Missing description: ${label}`);
+  return { indexable: !tokens.includes('noindex') };
+}
+
 async function htmlFiles(directory) {
   const files = [];
   for (const entry of await readdir(directory, { withFileTypes: true })) {
@@ -34,7 +50,7 @@ export default function seoBuild() {
         const pages = [];
         for (const file of await htmlFiles(client)) {
           const html = await readFile(file, 'utf8');
-          if (!html.includes('name="robots" content="index, follow"')) continue;
+          if (!verifyBuiltHtmlMetadata(html, file.pathname).indexable) continue;
           const url = html.match(/rel="canonical" href="([^"]+)"/)?.[1];
           assert(url, `Missing canonical: ${file.pathname}`);
           const canonical = new URL(url);

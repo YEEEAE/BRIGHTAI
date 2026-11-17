@@ -1,0 +1,15 @@
+[
+  {
+    "path": "/auth/sign-up/",
+    "status": 404,
+    "from": [
+      "/kernel/",
+      "/products/",
+      "/products/firewall/",
+      "/products/human-gate/",
+      "/products/ledger/",
+      "/products/risk-engine/",
+      "/products/secure-chat/"
+    ]
+  }
+]

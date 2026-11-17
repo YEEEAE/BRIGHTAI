@@ -1,0 +1,122 @@
+[
+  {
+    "path": "/",
+    "status": 200,
+    "canonical": [
+      "https://brightai.live/"
+    ],
+    "robots": "index, follow"
+  },
+  {
+    "path": "/?utm_source=audit",
+    "status": 200,
+    "canonical": [
+      "https://brightai.live/"
+    ],
+    "robots": "index, follow"
+  },
+  {
+    "path": "/?q=audit&returnTo=%2Fapp%2F",
+    "status": 200,
+    "canonical": [
+      "https://brightai.live/"
+    ],
+    "robots": "index, follow"
+  },
+  {
+    "path": "/products/firewall/",
+    "status": 200,
+    "canonical": [
+      "https://brightai.live/products/firewall/"
+    ],
+    "robots": "index, follow"
+  },
+  {
+    "path": "/products/firewall/?utm_source=audit",
+    "status": 200,
+    "canonical": [
+      "https://brightai.live/products/firewall/"
+    ],
+    "robots": "index, follow"
+  },
+  {
+    "path": "/products/firewall/?q=audit&returnTo=%2Fapp%2F",
+    "status": 200,
+    "canonical": [
+      "https://brightai.live/products/firewall/"
+    ],
+    "robots": "index, follow"
+  },
+  {
+    "path": "/solutions/finance/",
+    "status": 200,
+    "canonical": [
+      "https://brightai.live/solutions/finance/"
+    ],
+    "robots": "index, follow"
+  },
+  {
+    "path": "/solutions/finance/?utm_source=audit",
+    "status": 200,
+    "canonical": [
+      "https://brightai.live/solutions/finance/"
+    ],
+    "robots": "index, follow"
+  },
+  {
+    "path": "/solutions/finance/?q=audit&returnTo=%2Fapp%2F",
+    "status": 200,
+    "canonical": [
+      "https://brightai.live/solutions/finance/"
+    ],
+    "robots": "index, follow"
+  },
+  {
+    "path": "/knowledge/pdpl-and-ai/",
+    "status": 200,
+    "canonical": [
+      "https://brightai.live/knowledge/pdpl-and-ai/"
+    ],
+    "robots": "index, follow"
+  },
+  {
+    "path": "/knowledge/pdpl-and-ai/?utm_source=audit",
+    "status": 200,
+    "canonical": [
+      "https://brightai.live/knowledge/pdpl-and-ai/"
+    ],
+    "robots": "index, follow"
+  },
+  {
+    "path": "/knowledge/pdpl-and-ai/?q=audit&returnTo=%2Fapp%2F",
+    "status": 200,
+    "canonical": [
+      "https://brightai.live/knowledge/pdpl-and-ai/"
+    ],
+    "robots": "index, follow"
+  },
+  {
+    "path": "/auth/sign-up/",
+    "status": 200,
+    "canonical": [
+      "https://brightai.live/auth/sign-up/"
+    ],
+    "robots": "noindex, nofollow"
+  },
+  {
+    "path": "/auth/sign-up/?utm_source=audit",
+    "status": 200,
+    "canonical": [
+      "https://brightai.live/auth/sign-up/"
+    ],
+    "robots": "noindex, nofollow"
+  },
+  {
+    "path": "/auth/sign-up/?q=audit&returnTo=%2Fapp%2F",
+    "status": 200,
+    "canonical": [
+      "https://brightai.live/auth/sign-up/"
+    ],
+    "robots": "noindex, nofollow"
+  }
+]

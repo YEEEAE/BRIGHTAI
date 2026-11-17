@@ -1,0 +1,47 @@
+{
+  "summary": [
+    {
+      "issueType": "crawl-page-limit",
+      "title": "Crawl stopped early: page limit",
+      "severity": "warning",
+      "count": 1
+    },
+    {
+      "issueType": "meta-description-too-long",
+      "title": "Meta description too long",
+      "severity": "info",
+      "count": 1
+    }
+  ],
+  "issues": [
+    {
+      "severity": "warning",
+      "issueType": "crawl-page-limit",
+      "title": "Crawl stopped early: page limit",
+      "url": "https://brightai.live/",
+      "details": {
+        "pagesCrawled": 50,
+        "urlsNotCrawled": 282
+      },
+      "howToFix": "Re-run the audit with a higher page limit. If it is already at the maximum, add a robots.txt group for the \"OpenSEO-Audit\" user agent that disallows sections you don't need audited, such as tag archives or filtered listings, so the limit goes to the pages that matter: https://openseo.so/docs/crawler"
+    },
+    {
+      "severity": "info",
+      "issueType": "meta-description-too-long",
+      "title": "Meta description too long",
+      "url": "https://brightai.live/solutions/",
+      "details": {
+        "length": 161,
+        "max": 160,
+        "description": "أربعة مسارات تخطيط لحوكمة الذكاء الاصطناعي في السعودية: الجهات الحكومية والقطاع المالي والرعاية الصح…"
+      },
+      "howToFix": "Trim the description to roughly 70–160 characters while keeping the core message and call to action."
+    }
+  ],
+  "total": 2,
+  "page": 1,
+  "meta": {
+    "projectId": "42dc000d-5c6a-4016-8710-f9a88d5be3b4",
+    "url": "https://app.openseo.so/p/42dc000d-5c6a-4016-8710-f9a88d5be3b4/audit?auditId=3ac86631-1d42-4350-af16-3028f0508ba3"
+  }
+}

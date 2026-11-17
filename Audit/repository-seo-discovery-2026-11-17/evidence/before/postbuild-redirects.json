@@ -1,0 +1,968 @@
+[
+  {
+    "source": "/knowledge",
+    "destination": "/docs/",
+    "status": 301,
+    "location": "/docs/",
+    "PASS": true
+  },
+  {
+    "source": "/docs/حوكمة الذكاء الاصطناعي في السعودية",
+    "destination": "/knowledge/ai-governance-saudi/",
+    "status": 301,
+    "location": "/knowledge/ai-governance-saudi/",
+    "PASS": true
+  },
+  {
+    "source": "/about.html",
+    "destination": "/about/",
+    "status": 301,
+    "location": "/about/",
+    "PASS": true
+  },
+  {
+    "source": "/compliance.html",
+    "destination": "/compliance/",
+    "status": 301,
+    "location": "/compliance/",
+    "PASS": true
+  },
+  {
+    "source": "/contact.html",
+    "destination": "/contact/",
+    "status": 301,
+    "location": "/contact/",
+    "PASS": true
+  },
+  {
+    "source": "/docs.html",
+    "destination": "/docs/",
+    "status": 301,
+    "location": "/docs/",
+    "PASS": true
+  },
+  {
+    "source": "/kernel.html",
+    "destination": "/kernel/",
+    "status": 301,
+    "location": "/kernel/",
+    "PASS": true
+  },
+  {
+    "source": "/pillars/safety.html",
+    "destination": "/pillars/safety/",
+    "status": 301,
+    "location": "/pillars/safety/",
+    "PASS": true
+  },
+  {
+    "source": "/pillars/transparency.html",
+    "destination": "/pillars/transparency/",
+    "status": 301,
+    "location": "/pillars/transparency/",
+    "PASS": true
+  },
+  {
+    "source": "/pillars/privacy.html",
+    "destination": "/pillars/privacy/",
+    "status": 301,
+    "location": "/pillars/privacy/",
+    "PASS": true
+  },
+  {
+    "source": "/pricing.html",
+    "destination": "/pricing/",
+    "status": 301,
+    "location": "/pricing/",
+    "PASS": true
+  },
+  {
+    "source": "/privacy.html",
+    "destination": "/privacy/",
+    "status": 301,
+    "location": "/privacy/",
+    "PASS": true
+  },
+  {
+    "source": "/products/firewall.html",
+    "destination": "/products/firewall/",
+    "status": 301,
+    "location": "/products/firewall/",
+    "PASS": true
+  },
+  {
+    "source": "/products/risk-engine.html",
+    "destination": "/products/risk-engine/",
+    "status": 301,
+    "location": "/products/risk-engine/",
+    "PASS": true
+  },
+  {
+    "source": "/products/human-gate.html",
+    "destination": "/products/human-gate/",
+    "status": 301,
+    "location": "/products/human-gate/",
+    "PASS": true
+  },
+  {
+    "source": "/products/ledger.html",
+    "destination": "/products/ledger/",
+    "status": 301,
+    "location": "/products/ledger/",
+    "PASS": true
+  },
+  {
+    "source": "/products/secure-chat.html",
+    "destination": "/products/secure-chat/",
+    "status": 301,
+    "location": "/products/secure-chat/",
+    "PASS": true
+  },
+  {
+    "source": "/products.html",
+    "destination": "/products/",
+    "status": 301,
+    "location": "/products/",
+    "PASS": true
+  },
+  {
+    "source": "/services.html",
+    "destination": "/services/",
+    "status": 301,
+    "location": "/services/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions.html",
+    "destination": "/solutions/",
+    "status": 301,
+    "location": "/solutions/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/index.html",
+    "destination": "/solutions/",
+    "status": 301,
+    "location": "/solutions/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/government.html",
+    "destination": "/solutions/government/",
+    "status": 301,
+    "location": "/solutions/government/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/finance.html",
+    "destination": "/solutions/finance/",
+    "status": 301,
+    "location": "/solutions/finance/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/healthcare.html",
+    "destination": "/solutions/healthcare/",
+    "status": 301,
+    "location": "/solutions/healthcare/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/enterprise.html",
+    "destination": "/solutions/enterprise/",
+    "status": 301,
+    "location": "/solutions/enterprise/",
+    "PASS": true
+  },
+  {
+    "source": "/terms.html",
+    "destination": "/terms/",
+    "status": 301,
+    "location": "/terms/",
+    "PASS": true
+  },
+  {
+    "source": "/trust.html",
+    "destination": "/trust/",
+    "status": 301,
+    "location": "/trust/",
+    "PASS": true
+  },
+  {
+    "source": "/index.html",
+    "destination": "/",
+    "status": 301,
+    "location": "/",
+    "PASS": true
+  },
+  {
+    "source": "/products/index.html",
+    "destination": "/products/",
+    "status": 301,
+    "location": "/products/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/",
+    "destination": "/docs/",
+    "status": 301,
+    "location": "/docs/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge.html",
+    "destination": "/docs/",
+    "status": 301,
+    "location": "/docs/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/index.html",
+    "destination": "/docs/",
+    "status": 301,
+    "location": "/docs/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-governance-saudi.html",
+    "destination": "/knowledge/ai-governance-saudi/",
+    "status": 301,
+    "location": "/knowledge/ai-governance-saudi/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-risk-assessment.html",
+    "destination": "/knowledge/ai-risk-assessment/",
+    "status": 301,
+    "location": "/knowledge/ai-risk-assessment/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-use-policy-employees.html",
+    "destination": "/knowledge/ai-use-policy-employees/",
+    "status": 301,
+    "location": "/knowledge/ai-use-policy-employees/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/iso-42001-saudi.html",
+    "destination": "/knowledge/iso-42001-saudi/",
+    "status": 301,
+    "location": "/knowledge/iso-42001-saudi/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/pdpl-and-ai.html",
+    "destination": "/knowledge/pdpl-and-ai/",
+    "status": 301,
+    "location": "/knowledge/pdpl-and-ai/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/prompt-injection.html",
+    "destination": "/knowledge/prompt-injection/",
+    "status": 301,
+    "location": "/knowledge/prompt-injection/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/protect-company-data-chatgpt.html",
+    "destination": "/knowledge/protect-company-data-chatgpt/",
+    "status": 301,
+    "location": "/knowledge/protect-company-data-chatgpt/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/saudi-ai-ethics-principles.html",
+    "destination": "/knowledge/saudi-ai-ethics-principles/",
+    "status": 301,
+    "location": "/knowledge/saudi-ai-ethics-principles/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/saudi-ai-law-binding-vs-guidance.html",
+    "destination": "/knowledge/saudi-ai-law-binding-vs-guidance/",
+    "status": 301,
+    "location": "/knowledge/saudi-ai-law-binding-vs-guidance/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/sdaia-ai-adoption-framework.html",
+    "destination": "/knowledge/sdaia-ai-adoption-framework/",
+    "status": 301,
+    "location": "/knowledge/sdaia-ai-adoption-framework/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/sdaia-ai-ethics-self-assessment.html",
+    "destination": "/knowledge/sdaia-ai-ethics-self-assessment/",
+    "status": 301,
+    "location": "/knowledge/sdaia-ai-ethics-self-assessment/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/sdaia-generative-ai-guidelines.html",
+    "destination": "/knowledge/sdaia-generative-ai-guidelines/",
+    "status": 301,
+    "location": "/knowledge/sdaia-generative-ai-guidelines/",
+    "PASS": true
+  },
+  {
+    "source": "/about/index.html",
+    "destination": "/about/",
+    "status": 301,
+    "location": "/about/",
+    "PASS": true
+  },
+  {
+    "source": "/compliance/index.html",
+    "destination": "/compliance/",
+    "status": 301,
+    "location": "/compliance/",
+    "PASS": true
+  },
+  {
+    "source": "/contact/index.html",
+    "destination": "/contact/",
+    "status": 301,
+    "location": "/contact/",
+    "PASS": true
+  },
+  {
+    "source": "/docs/index.html",
+    "destination": "/docs/",
+    "status": 301,
+    "location": "/docs/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-governance-saudi/index.html",
+    "destination": "/knowledge/ai-governance-saudi/",
+    "status": 301,
+    "location": "/knowledge/ai-governance-saudi/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-risk-assessment/index.html",
+    "destination": "/knowledge/ai-risk-assessment/",
+    "status": 301,
+    "location": "/knowledge/ai-risk-assessment/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-use-policy-employees/index.html",
+    "destination": "/knowledge/ai-use-policy-employees/",
+    "status": 301,
+    "location": "/knowledge/ai-use-policy-employees/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/iso-42001-saudi/index.html",
+    "destination": "/knowledge/iso-42001-saudi/",
+    "status": 301,
+    "location": "/knowledge/iso-42001-saudi/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/pdpl-and-ai/index.html",
+    "destination": "/knowledge/pdpl-and-ai/",
+    "status": 301,
+    "location": "/knowledge/pdpl-and-ai/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/prompt-injection/index.html",
+    "destination": "/knowledge/prompt-injection/",
+    "status": 301,
+    "location": "/knowledge/prompt-injection/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/protect-company-data-chatgpt/index.html",
+    "destination": "/knowledge/protect-company-data-chatgpt/",
+    "status": 301,
+    "location": "/knowledge/protect-company-data-chatgpt/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/saudi-ai-ethics-principles/index.html",
+    "destination": "/knowledge/saudi-ai-ethics-principles/",
+    "status": 301,
+    "location": "/knowledge/saudi-ai-ethics-principles/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/saudi-ai-law-binding-vs-guidance/index.html",
+    "destination": "/knowledge/saudi-ai-law-binding-vs-guidance/",
+    "status": 301,
+    "location": "/knowledge/saudi-ai-law-binding-vs-guidance/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/sdaia-ai-adoption-framework/index.html",
+    "destination": "/knowledge/sdaia-ai-adoption-framework/",
+    "status": 301,
+    "location": "/knowledge/sdaia-ai-adoption-framework/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/sdaia-ai-ethics-self-assessment/index.html",
+    "destination": "/knowledge/sdaia-ai-ethics-self-assessment/",
+    "status": 301,
+    "location": "/knowledge/sdaia-ai-ethics-self-assessment/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/sdaia-generative-ai-guidelines/index.html",
+    "destination": "/knowledge/sdaia-generative-ai-guidelines/",
+    "status": 301,
+    "location": "/knowledge/sdaia-generative-ai-guidelines/",
+    "PASS": true
+  },
+  {
+    "source": "/pillars/privacy/index.html",
+    "destination": "/pillars/privacy/",
+    "status": 301,
+    "location": "/pillars/privacy/",
+    "PASS": true
+  },
+  {
+    "source": "/pillars/safety/index.html",
+    "destination": "/pillars/safety/",
+    "status": 301,
+    "location": "/pillars/safety/",
+    "PASS": true
+  },
+  {
+    "source": "/pillars/transparency/index.html",
+    "destination": "/pillars/transparency/",
+    "status": 301,
+    "location": "/pillars/transparency/",
+    "PASS": true
+  },
+  {
+    "source": "/pricing/index.html",
+    "destination": "/pricing/",
+    "status": 301,
+    "location": "/pricing/",
+    "PASS": true
+  },
+  {
+    "source": "/privacy/index.html",
+    "destination": "/privacy/",
+    "status": 301,
+    "location": "/privacy/",
+    "PASS": true
+  },
+  {
+    "source": "/products/firewall/index.html",
+    "destination": "/products/firewall/",
+    "status": 301,
+    "location": "/products/firewall/",
+    "PASS": true
+  },
+  {
+    "source": "/products/human-gate/index.html",
+    "destination": "/products/human-gate/",
+    "status": 301,
+    "location": "/products/human-gate/",
+    "PASS": true
+  },
+  {
+    "source": "/products/ledger/index.html",
+    "destination": "/products/ledger/",
+    "status": 301,
+    "location": "/products/ledger/",
+    "PASS": true
+  },
+  {
+    "source": "/products/risk-engine/index.html",
+    "destination": "/products/risk-engine/",
+    "status": 301,
+    "location": "/products/risk-engine/",
+    "PASS": true
+  },
+  {
+    "source": "/products/secure-chat/index.html",
+    "destination": "/products/secure-chat/",
+    "status": 301,
+    "location": "/products/secure-chat/",
+    "PASS": true
+  },
+  {
+    "source": "/services/index.html",
+    "destination": "/services/",
+    "status": 301,
+    "location": "/services/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/enterprise/index.html",
+    "destination": "/solutions/enterprise/",
+    "status": 301,
+    "location": "/solutions/enterprise/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/finance/index.html",
+    "destination": "/solutions/finance/",
+    "status": 301,
+    "location": "/solutions/finance/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/government/index.html",
+    "destination": "/solutions/government/",
+    "status": 301,
+    "location": "/solutions/government/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/healthcare/index.html",
+    "destination": "/solutions/healthcare/",
+    "status": 301,
+    "location": "/solutions/healthcare/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/ai-governance-platform/",
+    "destination": "/products/",
+    "status": 301,
+    "location": "/products/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/ai-firewall/",
+    "destination": "/products/firewall/",
+    "status": 301,
+    "location": "/products/firewall/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/ai-audit-trail/",
+    "destination": "/products/ledger/",
+    "status": 301,
+    "location": "/products/ledger/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/ai-evidence-file/",
+    "destination": "/products/ledger/",
+    "status": 301,
+    "location": "/products/ledger/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/human-approval-layer/",
+    "destination": "/products/human-gate/",
+    "status": 301,
+    "location": "/products/human-gate/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/ai-risk-classification/",
+    "destination": "/products/risk-engine/",
+    "status": 301,
+    "location": "/products/risk-engine/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/continuous-ai-governance/",
+    "destination": "/products/risk-engine/",
+    "status": 301,
+    "location": "/products/risk-engine/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/ai-use-case-discovery/",
+    "destination": "/products/",
+    "status": 301,
+    "location": "/products/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/policy-to-control-mapping/",
+    "destination": "/kernel/",
+    "status": 301,
+    "location": "/kernel/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/banking-ai-governance/",
+    "destination": "/solutions/finance/",
+    "status": 301,
+    "location": "/solutions/finance/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/government-ai-governance/",
+    "destination": "/solutions/government/",
+    "status": 301,
+    "location": "/solutions/government/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/healthcare-ai-governance/",
+    "destination": "/solutions/healthcare/",
+    "status": 301,
+    "location": "/solutions/healthcare/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/manufacturing-ai-governance/",
+    "destination": "/solutions/enterprise/",
+    "status": 301,
+    "location": "/solutions/enterprise/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/banking-ai-governance/khobar/",
+    "destination": "/solutions/finance/",
+    "status": 301,
+    "location": "/solutions/finance/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/banking-ai-governance/riyadh/",
+    "destination": "/solutions/finance/",
+    "status": 301,
+    "location": "/solutions/finance/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/government-ai-governance/dammam/",
+    "destination": "/solutions/government/",
+    "status": 301,
+    "location": "/solutions/government/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/government-ai-governance/madinah/",
+    "destination": "/solutions/government/",
+    "status": 301,
+    "location": "/solutions/government/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/healthcare-ai-governance/jeddah/",
+    "destination": "/solutions/healthcare/",
+    "status": 301,
+    "location": "/solutions/healthcare/",
+    "PASS": true
+  },
+  {
+    "source": "/solutions/healthcare-ai-governance/mecca/",
+    "destination": "/solutions/healthcare/",
+    "status": 301,
+    "location": "/solutions/healthcare/",
+    "PASS": true
+  },
+  {
+    "source": "/terms/index.html",
+    "destination": "/terms/",
+    "status": 301,
+    "location": "/terms/",
+    "PASS": true
+  },
+  {
+    "source": "/trust/index.html",
+    "destination": "/trust/",
+    "status": 301,
+    "location": "/trust/",
+    "PASS": true
+  },
+  {
+    "source": "/kernel/index.html",
+    "destination": "/kernel/",
+    "status": 301,
+    "location": "/kernel/",
+    "PASS": true
+  },
+  {
+    "source": "/sitemap.xml",
+    "destination": "/sitemap-index.xml",
+    "status": 301,
+    "location": "/sitemap-index.xml",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/shadow-ai-detection.html",
+    "destination": "/knowledge/shadow-ai-detection/",
+    "status": 301,
+    "location": "/knowledge/shadow-ai-detection/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/shadow-ai-detection/index.html",
+    "destination": "/knowledge/shadow-ai-detection/",
+    "status": 301,
+    "location": "/knowledge/shadow-ai-detection/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-hallucinations-controls.html",
+    "destination": "/knowledge/ai-hallucinations-controls/",
+    "status": 301,
+    "location": "/knowledge/ai-hallucinations-controls/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-hallucinations-controls/index.html",
+    "destination": "/knowledge/ai-hallucinations-controls/",
+    "status": 301,
+    "location": "/knowledge/ai-hallucinations-controls/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/deepfake-policy-organizations.html",
+    "destination": "/knowledge/deepfake-policy-organizations/",
+    "status": 301,
+    "location": "/knowledge/deepfake-policy-organizations/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/deepfake-policy-organizations/index.html",
+    "destination": "/knowledge/deepfake-policy-organizations/",
+    "status": 301,
+    "location": "/knowledge/deepfake-policy-organizations/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-inventory-register.html",
+    "destination": "/knowledge/ai-inventory-register/",
+    "status": 301,
+    "location": "/knowledge/ai-inventory-register/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-inventory-register/index.html",
+    "destination": "/knowledge/ai-inventory-register/",
+    "status": 301,
+    "location": "/knowledge/ai-inventory-register/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-employee-training.html",
+    "destination": "/knowledge/ai-employee-training/",
+    "status": 301,
+    "location": "/knowledge/ai-employee-training/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-employee-training/index.html",
+    "destination": "/knowledge/ai-employee-training/",
+    "status": 301,
+    "location": "/knowledge/ai-employee-training/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-vendor-assessment.html",
+    "destination": "/knowledge/ai-vendor-assessment/",
+    "status": 301,
+    "location": "/knowledge/ai-vendor-assessment/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-vendor-assessment/index.html",
+    "destination": "/knowledge/ai-vendor-assessment/",
+    "status": 301,
+    "location": "/knowledge/ai-vendor-assessment/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/data-classification-for-ai.html",
+    "destination": "/knowledge/data-classification-for-ai/",
+    "status": 301,
+    "location": "/knowledge/data-classification-for-ai/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/data-classification-for-ai/index.html",
+    "destination": "/knowledge/data-classification-for-ai/",
+    "status": 301,
+    "location": "/knowledge/data-classification-for-ai/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-governance-committee-raci.html",
+    "destination": "/knowledge/ai-governance-committee-raci/",
+    "status": 301,
+    "location": "/knowledge/ai-governance-committee-raci/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-governance-committee-raci/index.html",
+    "destination": "/knowledge/ai-governance-committee-raci/",
+    "status": 301,
+    "location": "/knowledge/ai-governance-committee-raci/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-impact-assessment.html",
+    "destination": "/knowledge/ai-impact-assessment/",
+    "status": 301,
+    "location": "/knowledge/ai-impact-assessment/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-impact-assessment/index.html",
+    "destination": "/knowledge/ai-impact-assessment/",
+    "status": 301,
+    "location": "/knowledge/ai-impact-assessment/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-audit-trail.html",
+    "destination": "/knowledge/ai-audit-trail/",
+    "status": 301,
+    "location": "/knowledge/ai-audit-trail/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-audit-trail/index.html",
+    "destination": "/knowledge/ai-audit-trail/",
+    "status": 301,
+    "location": "/knowledge/ai-audit-trail/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/saudi-ai-regulators-map.html",
+    "destination": "/knowledge/saudi-ai-regulators-map/",
+    "status": 301,
+    "location": "/knowledge/saudi-ai-regulators-map/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/saudi-ai-regulators-map/index.html",
+    "destination": "/knowledge/saudi-ai-regulators-map/",
+    "status": 301,
+    "location": "/knowledge/saudi-ai-regulators-map/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/choose-ai-governance-platform.html",
+    "destination": "/knowledge/choose-ai-governance-platform/",
+    "status": 301,
+    "location": "/knowledge/choose-ai-governance-platform/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/choose-ai-governance-platform/index.html",
+    "destination": "/knowledge/choose-ai-governance-platform/",
+    "status": 301,
+    "location": "/knowledge/choose-ai-governance-platform/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-cybersecurity-nca.html",
+    "destination": "/knowledge/ai-cybersecurity-nca/",
+    "status": 301,
+    "location": "/knowledge/ai-cybersecurity-nca/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-cybersecurity-nca/index.html",
+    "destination": "/knowledge/ai-cybersecurity-nca/",
+    "status": 301,
+    "location": "/knowledge/ai-cybersecurity-nca/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-governance-financial-sector.html",
+    "destination": "/knowledge/ai-governance-financial-sector/",
+    "status": 301,
+    "location": "/knowledge/ai-governance-financial-sector/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-governance-financial-sector/index.html",
+    "destination": "/knowledge/ai-governance-financial-sector/",
+    "status": 301,
+    "location": "/knowledge/ai-governance-financial-sector/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-governance-healthcare.html",
+    "destination": "/knowledge/ai-governance-healthcare/",
+    "status": 301,
+    "location": "/knowledge/ai-governance-healthcare/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-governance-healthcare/index.html",
+    "destination": "/knowledge/ai-governance-healthcare/",
+    "status": 301,
+    "location": "/knowledge/ai-governance-healthcare/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-bias-fairness.html",
+    "destination": "/knowledge/ai-bias-fairness/",
+    "status": 301,
+    "location": "/knowledge/ai-bias-fairness/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-bias-fairness/index.html",
+    "destination": "/knowledge/ai-bias-fairness/",
+    "status": 301,
+    "location": "/knowledge/ai-bias-fairness/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-contract-clauses.html",
+    "destination": "/knowledge/ai-contract-clauses/",
+    "status": 301,
+    "location": "/knowledge/ai-contract-clauses/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-contract-clauses/index.html",
+    "destination": "/knowledge/ai-contract-clauses/",
+    "status": 301,
+    "location": "/knowledge/ai-contract-clauses/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/data-breach-72-hours-ai.html",
+    "destination": "/knowledge/data-breach-72-hours-ai/",
+    "status": 301,
+    "location": "/knowledge/data-breach-72-hours-ai/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/data-breach-72-hours-ai/index.html",
+    "destination": "/knowledge/data-breach-72-hours-ai/",
+    "status": 301,
+    "location": "/knowledge/data-breach-72-hours-ai/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-data-residency-saudi.html",
+    "destination": "/knowledge/ai-data-residency-saudi/",
+    "status": 301,
+    "location": "/knowledge/ai-data-residency-saudi/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/ai-data-residency-saudi/index.html",
+    "destination": "/knowledge/ai-data-residency-saudi/",
+    "status": 301,
+    "location": "/knowledge/ai-data-residency-saudi/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/data-governance-vs-ai-governance.html",
+    "destination": "/knowledge/data-governance-vs-ai-governance/",
+    "status": 301,
+    "location": "/knowledge/data-governance-vs-ai-governance/",
+    "PASS": true
+  },
+  {
+    "source": "/knowledge/data-governance-vs-ai-governance/index.html",
+    "destination": "/knowledge/data-governance-vs-ai-governance/",
+    "status": 301,
+    "location": "/knowledge/data-governance-vs-ai-governance/",
+    "PASS": true
+  }
+]

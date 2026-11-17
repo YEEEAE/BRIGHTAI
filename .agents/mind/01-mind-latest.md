@@ -1,7 +1,8 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
-- 2026-11-17 PARTIAL SEO audit: live449GET=383×200/66×404؛sitemapقديم264/حالي57؛138aliasحي=77×200/61×404بلا301؛GSC9clicks/970impressions(18Oct–14Nov)؛baseline2459b39build/routesPASS،HEAD292e3b21buildFAILبوسمPDPL:448؛خطةفقطبانتظارالاعتماد؛ `audit/seo-authority-2026-11-17/REPORT.md`.
+- 2026-11-17 VERIFIED LOCAL SEO discovery+fixes: جرد492URL/مخطط؛57صفحةعامة/build/routesPASS وunit4؛READMEحُذف/demo6description/حارسHTML؛138aliasمحليPASS لكنحي77×200/61×404؛sitemapقديم264/حالي57؛235صفحةحيةبلامصدرحالي؛التسجيلحي404؛لا نشر؛ `audit/repository-seo-discovery-2026-11-17/REPORT.md`.
+- 2026-11-17 VERIFIED build correction: lockfileAstro6.4.8+Node22.22.3 ينجح؛node_modulesالأصليAstro7.4.12غيرمطابق أظهرPDPLcompile/docs500؛لا تعتمد هذا الفشل كعيب فيbuildالعقدالحالي؛الاعتماداتالأصليةلمتُستبدل.
 - 2026-11-17 PARTIAL LOCAL GA4: طلب المستخدم التتبع لجميع الصفحات؛ shared G-9LMB4PGTWJ في public/app/auth/demo/closed portal وCSP؛unit22/hash PASS؛build BLOCKED بخطأ article في pdpl-and-ai:448،Browser profile locks؛Windsor read يعمل؛لا نشر/collection حي؛ `audit/ga4-2026-11-17/REPORT.md`.
 - 2026-11-17 PARTIAL LOCAL G-12: CSP موحدةNode+middleware/quotedhashes/externalmodules؛global monitoring kill؛privacy draft؛unit22/build57 PASS؛Chrome public2clear/auth+appZod eval issue؛لافرضحي/قانونية/retention/Auth حقيقي؛ `audit/csp-observability-2026-11-17/REPORT.md`.
 - 2026-11-17 PARTIAL LOCAL Risk Assist G-10: OWNER/ADMIN+synthetic+tenant/product guard؛Groq registry مغلق/فارغ؛strict advisory JSON إلىوصفالسياقفقط؛core/acceptance بلا تغيير؛unit11/build PASS؛Browser فصلapp/demo PASS،Auth insertion/provider NOT VERIFIED؛ `Audit/risk-assist-2026-11-17/REPORT.md`.
@@ -58,6 +59,12 @@
 - 2026-11-16 حزمة الإغلاق النشطة `Audit/prompts.md` v2.1 مشتقة من `Audit/BRIGHT-AI-2026-FINAL-360-AUDIT.html`: 16 برومبتًا/G-01…G-16/W1–W9؛ سجل 50 متطلبًا معلن غير مسرود؛ رأس التقرير `7385200` والرأس الحالي `cb9863f`؛ `Audit/final-360-2026-11-10/*` غير موجود على القرص.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-17] — Repository SEO discovery وإصلاح محلي
+- **تم:** جدول492صفًا وأدلةقبل/بعد؛إزالةREADMEالعامالفارغ،وصفdemo6،حارسمعلوماتHTML؛المستخدمأجازالإصلاحاتالمحليةبعدطلبتشخيصي.
+- **التحقق:** PASS — lockfilebuild57،unit4،routes57/3304reference/276redirect؛snapshotالمصدرمطابق؛OpenSEO50صفحةفقط.
+- **الحالة:** DONE محليًا؛اختلافاتالأصلالحيواعتمادالمراجعوالتحريرمفتوحة؛لانشر.
+- **ملفات:** `audit/repository-seo-discovery-2026-11-17/REPORT.md`،`scripts/seo-build.mjs`.
 
 ## [2026-11-17] — SEO authority audit
 - **تم:** جرد505صفوف للمسارات و16موضوعًا و15issue وخطةمحلية؛لا تعديل مصدر أو نشر.

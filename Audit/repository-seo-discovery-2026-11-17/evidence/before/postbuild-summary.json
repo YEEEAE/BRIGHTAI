@@ -1,0 +1,148 @@
+{
+  "routes": 119,
+  "source_patterns": 86,
+  "built_html_files": 64,
+  "indexable_public": 57,
+  "sitemap_count": 57,
+  "llms_built_urls": 58,
+  "redirect_PASS": 138,
+  "redirect_total": 138,
+  "broken_internal_404": [
+    {
+      "path": "/404/",
+      "status": 404,
+      "location": "",
+      "incoming": [
+        "/404/"
+      ]
+    }
+  ],
+  "blocked_internal_503": [
+    {
+      "path": "/app/firewall/",
+      "status": 503,
+      "location": "",
+      "incoming": [
+        "/app/firewall/",
+        "/app/human-gate/",
+        "/app/kernel/",
+        "/app/ledger/",
+        "/app/operator/trials/",
+        "/app/risk-engine/",
+        "/app/risk-engine/[assetId]/",
+        "/app/secure-chat/",
+        "/app/trial/"
+      ]
+    },
+    {
+      "path": "/app/human-gate/",
+      "status": 503,
+      "location": "",
+      "incoming": [
+        "/app/firewall/",
+        "/app/human-gate/",
+        "/app/kernel/",
+        "/app/ledger/",
+        "/app/operator/trials/",
+        "/app/risk-engine/",
+        "/app/risk-engine/[assetId]/",
+        "/app/secure-chat/",
+        "/app/trial/"
+      ]
+    },
+    {
+      "path": "/app/kernel/",
+      "status": 503,
+      "location": "",
+      "incoming": [
+        "/app/firewall/",
+        "/app/human-gate/",
+        "/app/kernel/",
+        "/app/ledger/",
+        "/app/operator/trials/",
+        "/app/risk-engine/",
+        "/app/risk-engine/[assetId]/",
+        "/app/secure-chat/",
+        "/app/trial/"
+      ]
+    },
+    {
+      "path": "/app/ledger/",
+      "status": 503,
+      "location": "",
+      "incoming": [
+        "/app/firewall/",
+        "/app/human-gate/",
+        "/app/kernel/",
+        "/app/ledger/",
+        "/app/operator/trials/",
+        "/app/risk-engine/",
+        "/app/risk-engine/[assetId]/",
+        "/app/secure-chat/",
+        "/app/trial/"
+      ]
+    },
+    {
+      "path": "/app/operator/trials/",
+      "status": 503,
+      "location": "",
+      "incoming": [
+        "/app/operator/trials/"
+      ]
+    },
+    {
+      "path": "/app/risk-engine/",
+      "status": 503,
+      "location": "",
+      "incoming": [
+        "/app/firewall/",
+        "/app/human-gate/",
+        "/app/kernel/",
+        "/app/ledger/",
+        "/app/operator/trials/",
+        "/app/risk-engine/",
+        "/app/risk-engine/[assetId]/",
+        "/app/secure-chat/",
+        "/app/trial/"
+      ]
+    },
+    {
+      "path": "/app/risk-engine/[assetId]/",
+      "status": 503,
+      "location": "",
+      "incoming": [
+        "/app/risk-engine/[assetId]/"
+      ]
+    },
+    {
+      "path": "/app/secure-chat/",
+      "status": 503,
+      "location": "",
+      "incoming": [
+        "/app/firewall/",
+        "/app/human-gate/",
+        "/app/kernel/",
+        "/app/ledger/",
+        "/app/operator/trials/",
+        "/app/risk-engine/",
+        "/app/risk-engine/[assetId]/",
+        "/app/secure-chat/",
+        "/app/trial/"
+      ]
+    },
+    {
+      "path": "/app/trial/",
+      "status": 503,
+      "location": "",
+      "incoming": [
+        "/app/trial/"
+      ]
+    }
+  ],
+  "orphans": [],
+  "missing_metadata": [],
+  "canonical_errors": [],
+  "schema_parse_errors": [],
+  "dev_build_differences": [],
+  "live_build_differences": []
+}

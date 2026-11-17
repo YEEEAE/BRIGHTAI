@@ -1,0 +1,1082 @@
+[
+  {
+    "file": "src/middleware.ts",
+    "sha256": "dcb9fb2fa363826c9ac2a5f4224deb27ea86bd59a7635bc8f79384729edbff4d",
+    "lines": 109
+  },
+  {
+    "file": "src/env.d.ts",
+    "sha256": "9c9283a414423d9223e5ea86941b142443b8af7a007f77612dc2c098de2d2500",
+    "lines": 1
+  },
+  {
+    "file": "src/demo/engine.mjs",
+    "sha256": "4a3d11662cf8b2606e5a76d56b8b264bfc4bad4fe853f1488c80e1cf590cf941",
+    "lines": 10
+  },
+  {
+    "file": "src/shared/human-gate-demo.mjs",
+    "sha256": "a26cbf134293dc86d1f9168be2ce0f7e71c3a11d95263e724a2a6ef0e8bd2d70",
+    "lines": 32
+  },
+  {
+    "file": "src/shared/secure-chat-demo.mjs",
+    "sha256": "7b56e16e83ee56914a0e57b01cb94f573d340c43dfd12be6be5eef0c7021f3fe",
+    "lines": 14
+  },
+  {
+    "file": "src/shared/risk-demo.mjs",
+    "sha256": "61b9dca508d521b4b6be256bc911e8f60ba72e58ed6995286cc5b79c502b8ef3",
+    "lines": 24
+  },
+  {
+    "file": "src/shared/ledger-demo.mjs",
+    "sha256": "1a2426f0f8e88fd09bc3ab5b8a9dbb7a77c5134d753f1e4c2395752393261b74",
+    "lines": 13
+  },
+  {
+    "file": "src/shared/product-navigation.mjs",
+    "sha256": "66651d69fa6e6e81838a0e7531b5f89f4e08077de9febbba5a49f6c3595d8f3a",
+    "lines": 30
+  },
+  {
+    "file": "src/shared/lab-briefs.ts",
+    "sha256": "4e2f121928daa7ee46ab16c73eda598accddfef585af89f2251fc8d1769f7a97",
+    "lines": 7
+  },
+  {
+    "file": "src/shared/kernel-demo.mjs",
+    "sha256": "3e2983048d4a11d65561ef410b1db9852e92bcb37b38305548030e8e810b5269",
+    "lines": 18
+  },
+  {
+    "file": "src/shared/firewall-demo.mjs",
+    "sha256": "bd69ca6ee11e5b43becc7ab079368e6a5aed22fabd1df283a251e2b84805d9b8",
+    "lines": 21
+  },
+  {
+    "file": "src/components/MotionController.astro",
+    "sha256": "4e9d1c8525bf4ecc2025aa2e94fd0cc74bdeedf535ff1f507787439d5a4bc0d0",
+    "lines": 48
+  },
+  {
+    "file": "src/components/HumanGateDemo.astro",
+    "sha256": "784112ab6b547df167a8cb3b67f63c8c803742812aa63d84fc87592a5bffc57f",
+    "lines": 49
+  },
+  {
+    "file": "src/components/ProductIcon.astro",
+    "sha256": "b0192c5ead5285fed44d66270e3f922f38b3c8142122593cd85ee849706f82fe",
+    "lines": 78
+  },
+  {
+    "file": "src/components/ScopeComposer.astro",
+    "sha256": "759f57d424155af5c5e8658d25dd43948c9870a9a3d241d71e177dbc2d27a293",
+    "lines": 27
+  },
+  {
+    "file": "src/components/InteriorMotion.astro",
+    "sha256": "9d8a797b081741f3b3dc7d9cd64686a678f6c1c00bc03059bc0ecc93eec1e83a",
+    "lines": 10
+  },
+  {
+    "file": "src/components/ContentExtension.astro",
+    "sha256": "d72bdb88a9f5513e5857da12a41ce9ca817284a949a5bff7fbc2164f3c0df3e7",
+    "lines": 23
+  },
+  {
+    "file": "src/components/GoogleAnalytics.astro",
+    "sha256": "589f0f13ab458635c691f9693b9f392ac93948daefd00d994a3965374739013e",
+    "lines": 54
+  },
+  {
+    "file": "src/components/Constellation.astro",
+    "sha256": "00aaf7f29a1a9e9f007e0f47f480470b36f58e487cdf0220169a303fbe023139",
+    "lines": 119
+  },
+  {
+    "file": "src/components/Footer.astro",
+    "sha256": "886237a7fced3a88b8585453799e2f87a96c1ed3e657afc47defaf70452fbb9d",
+    "lines": 26
+  },
+  {
+    "file": "src/components/ArticleContext.astro",
+    "sha256": "8ac6eac63c13eb1d755635dfc6f19e4c0f949b80a28092649a86f6743104c201",
+    "lines": 6
+  },
+  {
+    "file": "src/components/ProductCatalog.astro",
+    "sha256": "ce28d0bdae1222ebee45877d04de427060424148f7fd5d0df98a2805b76857f8",
+    "lines": 35
+  },
+  {
+    "file": "src/components/RiskWorkspace.astro",
+    "sha256": "74a7f4a44e9fd87e2396c1961757a6c9997574f4a849b4b3fe451e34619658a8",
+    "lines": 74
+  },
+  {
+    "file": "src/components/SecureChatDemo.astro",
+    "sha256": "f074d0a42eab827bada97c2f094cf29a8947d9bf0e4cd2594f40468555377aa8",
+    "lines": 63
+  },
+  {
+    "file": "src/components/GoogleAnalytics 2.astro",
+    "sha256": "77c8a7cc24d0ee23c07ca2bc10426af69dc9b22f65a430159c68806b72fc3ce8",
+    "lines": 54
+  },
+  {
+    "file": "src/components/KernelSequence.astro",
+    "sha256": "b48ef1f5e5ba5612dcec993311a8126326fa7b295d53b33c3d6683489be60d3f",
+    "lines": 13
+  },
+  {
+    "file": "src/components/InteriorController.astro",
+    "sha256": "d704f3868f6b2c098b5cc2c0c27de9751f015b28a9ce8898d008af3134691fb7",
+    "lines": 141
+  },
+  {
+    "file": "src/components/KnowledgeReader.astro",
+    "sha256": "2a56ecc8a31eee1fca4b246342b0f9782c49f40b15cb921dedc65abf0144fdd4",
+    "lines": 17
+  },
+  {
+    "file": "src/components/LabShell.astro",
+    "sha256": "fe94b4460178e09352b1bbdc477efc5ab0cd9e6a86b18da1b78f9a52a31f1001",
+    "lines": 21
+  },
+  {
+    "file": "src/components/PillarContentExtension.astro",
+    "sha256": "d5f7813a6a80dead44d8d3a47e4df93f06e106a673518fb250f1fb06e68a2067",
+    "lines": 10
+  },
+  {
+    "file": "src/components/MonitoringGate.astro",
+    "sha256": "6c14d028dd27871d7f14d21b4ba4c8bc6fd2f142085dd07f264e6647679d9f90",
+    "lines": 11
+  },
+  {
+    "file": "src/components/SectorDiagram.astro",
+    "sha256": "7cd4f2e6e0be8871a01e9819bf69ae0d7bf733d5380311876822ee393ffedf20",
+    "lines": 64
+  },
+  {
+    "file": "src/components/KnowledgeIcon.astro",
+    "sha256": "1a1efab2c1b0f4a1159e9b25ea3bafedfcfa686037bbaae6e8019f0a81e19bef",
+    "lines": 40
+  },
+  {
+    "file": "src/components/LedgerDemo.astro",
+    "sha256": "6afaee3c468627296ba65a5d43f871eda3cde6219df4d201050c8ad0791ff5a9",
+    "lines": 39
+  },
+  {
+    "file": "src/components/ProductSchematic.astro",
+    "sha256": "71ec1f721b357002ca8b34d802323ab10491bef10bc59e27adeb1b9a9d62250e",
+    "lines": 71
+  },
+  {
+    "file": "src/components/PageShell.astro",
+    "sha256": "3d5a23e8f6e34158515cd246511f7deb1b09c440b1c1d48ca27c02d464833e2f",
+    "lines": 55
+  },
+  {
+    "file": "src/components/FirewallWorkspace.astro",
+    "sha256": "8c14e00b081a59cbf85a95fd03e430e82c61b603e2c0070416a13834b7d134d8",
+    "lines": 91
+  },
+  {
+    "file": "src/components/BrandLogo.astro",
+    "sha256": "599730c92bbe7144c0d1487c5e3ed5e3e76544aa00b38f0571944a022ec81b8e",
+    "lines": 14
+  },
+  {
+    "file": "src/components/SectorContentExtension.astro",
+    "sha256": "8226432fa58fe0de17d3882df9af8b915834ea1a80ec69e54e55b2d85ca590d5",
+    "lines": 16
+  },
+  {
+    "file": "src/components/SystemMap.astro",
+    "sha256": "46fa4e2cbf78379aa765250fb4ea40dfb39be3a289b5d411edb1b7377d381d04",
+    "lines": 30
+  },
+  {
+    "file": "src/components/WorkspaceNavigation.astro",
+    "sha256": "558add357e09b18d7e16564e8fdc3ff40117778bb9b92304fe24cfab4fd3b043",
+    "lines": 38
+  },
+  {
+    "file": "src/components/ProductJourney.astro",
+    "sha256": "a35b67c936264743e18f178076fccd0fe6fe309aae7b9be7e79d485a13fc3b2a",
+    "lines": 38
+  },
+  {
+    "file": "src/components/PageMotionStudy.astro",
+    "sha256": "4b88a8106b8040d362698812e3956968f73e4ddc906c5c06e72e121784389870",
+    "lines": 50
+  },
+  {
+    "file": "src/components/DecisionCircuit.astro",
+    "sha256": "3cebca094feff472cd5a77e98be057028390aceb7aed35d8204917c8b9f62146",
+    "lines": 43
+  },
+  {
+    "file": "src/components/Header.astro",
+    "sha256": "eeec65c579df87fe312ee5be2f84deb68f3330c8df4272ef0ec42d4beecbde7c",
+    "lines": 52
+  },
+  {
+    "file": "src/components/RedactionDemo.astro",
+    "sha256": "c67b1483c55e21b9fd1a95094d9cc3f7390c72d5c811a6d8b6fb8a7e071b6f03",
+    "lines": 11
+  },
+  {
+    "file": "src/components/ScenarioContext.astro",
+    "sha256": "26436ab5f6b8d32e670722d831ba5af3aff674309dd6a3ddb70bbe6ea7f3894d",
+    "lines": 14
+  },
+  {
+    "file": "src/components/ProductExperience.astro",
+    "sha256": "874a59a211f7151cb9df33a014e50f9ba7853ffefb288b779a7e67174059077f",
+    "lines": 10
+  },
+  {
+    "file": "src/components/ProductContentExtension.astro",
+    "sha256": "6b4a9e9b95fcd4643bf01af53fcfe5bd16912f56b3d752ba0dcb7c5185292342",
+    "lines": 33
+  },
+  {
+    "file": "src/components/RiskDemo.astro",
+    "sha256": "c587a0951410745e6a9e746d752a63c459bd3e4c8d38159bcd19b74242c33607",
+    "lines": 45
+  },
+  {
+    "file": "src/layouts/AppLayout.astro",
+    "sha256": "ba4d036f3b3bcf7fa3e7458770a44f3f650ad5d3634dbc942cbc7e7dae8f3ff3",
+    "lines": 68
+  },
+  {
+    "file": "src/layouts/BaseLayout.astro",
+    "sha256": "102b010e8f76bb1623c11143e049ac13a4eba01181cf6d830ddd473f2040887a",
+    "lines": 86
+  },
+  {
+    "file": "src/scripts/scenario-context.ts",
+    "sha256": "1f66bf850f858dfb6f0a792e0b675ed33774a5e16d54885676250d259d187efd",
+    "lines": 33
+  },
+  {
+    "file": "src/scripts/interior-motion.ts",
+    "sha256": "ffae705f93904d508615e69312b10eb35d2cf3b00d8a2e79a573d2a33efd4c4f",
+    "lines": 261
+  },
+  {
+    "file": "src/scripts/product-showcase.ts",
+    "sha256": "02a6a3e4c141bbdef676426f1e3c43769ada01c9174ead791d1418510d4ced4a",
+    "lines": 48
+  },
+  {
+    "file": "src/scripts/knowledge-reader.ts",
+    "sha256": "dd5c045150dc4508bc67d89a84ed0231d318a139a3f4ad09ef21240b95df523b",
+    "lines": 34
+  },
+  {
+    "file": "src/scripts/workspace-context.ts",
+    "sha256": "2d2004493e1c05207df3d62ff0ee2ca8cf10b1645bdb6adad9606128c8c3c485",
+    "lines": 113
+  },
+  {
+    "file": "src/scripts/operator-trials.ts",
+    "sha256": "14d5177e3336a294aa0d072ca3c9b02db94cdd52e1e88db4927d96373b44409c",
+    "lines": 131
+  },
+  {
+    "file": "src/scripts/knowledge-search.mjs",
+    "sha256": "bde904ede481684ce3ddbfe68406615925c16934b3818d58bdadd08283e52ef6",
+    "lines": 5
+  },
+  {
+    "file": "src/scripts/kernel-demo.ts",
+    "sha256": "5518b60aaca51ba1a633dfcba32ea0eedbf189240f459499c66f98c15d657c64",
+    "lines": 42
+  },
+  {
+    "file": "src/scripts/ledger.ts",
+    "sha256": "86074024d86491adcffae1c625102c26f94f29f8e516b0c61d79d8c85e1d20c1",
+    "lines": 95
+  },
+  {
+    "file": "src/scripts/knowledge-center.ts",
+    "sha256": "cf887d71e8702d01958362bfff442ff0e31922a963c426fd4e9708c1b5211565",
+    "lines": 179
+  },
+  {
+    "file": "src/scripts/monitoring.ts",
+    "sha256": "47145c7d23a03b922896ecf923c9d21625a7e4dd87ee39e4bdcc8e10390f49ce",
+    "lines": 49
+  },
+  {
+    "file": "src/scripts/risk-engine.ts",
+    "sha256": "945dddf8bb9d1251c969fe9d4f8e213b8bdd412ba0749fef165ab9bf0ce89e54",
+    "lines": 171
+  },
+  {
+    "file": "src/scripts/trial-home.ts",
+    "sha256": "6aeddc5346a915049367af735f405afbed8c5c467c5da3097264a1d5c3cddb8e",
+    "lines": 56
+  },
+  {
+    "file": "src/scripts/secure-chat.ts",
+    "sha256": "5329d609877e3aff2b7cfec37bd27894672132a25c9fcd6c9a932addb0169741",
+    "lines": 418
+  },
+  {
+    "file": "src/scripts/firewall.ts",
+    "sha256": "c43b05c8f8bde4a006b2bd7828adf3d65695bd8be68abcdfbe809d231e411be6",
+    "lines": 422
+  },
+  {
+    "file": "src/scripts/kernel.ts",
+    "sha256": "50f427a37a3d3d53ab9abfc3b8236972e3e00f03a4e866c81717b3e17aba5c88",
+    "lines": 781
+  },
+  {
+    "file": "src/scripts/human-gate.ts",
+    "sha256": "519035c740ab77085ec0ad2260374452afb39c29e2f9dcb1818ee9ec38b73c87",
+    "lines": 150
+  },
+  {
+    "file": "src/data/brand.ts",
+    "sha256": "545fce5d8d14816a6d5d0a369ef7006c6e62a93e86378fc6acfaa98b6503623b",
+    "lines": 12
+  },
+  {
+    "file": "src/data/knowledge.ts",
+    "sha256": "0de752c3b9742b4fc5f8be8f7b65dfbbd4bbf0b6372d5d90a0b9660886f315e2",
+    "lines": 26
+  },
+  {
+    "file": "src/data/structured-data.ts",
+    "sha256": "244af33da0289174dd97f6b6284ecb9111b9e5e57b4190adcb1dce19c7e9873a",
+    "lines": 39
+  },
+  {
+    "file": "src/data/knowledge-guides.ts",
+    "sha256": "36c54a94750b7712d49a1b0c6a6dc01c7209fa16108f5bb3cad32880204593d7",
+    "lines": 326
+  },
+  {
+    "file": "src/pages/404.astro",
+    "sha256": "52ee002bdce7a6bcd3384ec4229be9e31b363e4f15843d3fb837160b1db7f684",
+    "lines": 9
+  },
+  {
+    "file": "src/pages/terms.astro",
+    "sha256": "dc104c103e76b9498fc4efb2a322e1cbea444d3bc6963445d3912540fc51776a",
+    "lines": 17
+  },
+  {
+    "file": "src/pages/about.astro",
+    "sha256": "a7293ca128d935262dfb87d4b088250dd6b3dbd4f9eac7b3ee37dede45b4a686",
+    "lines": 18
+  },
+  {
+    "file": "src/pages/privacy.astro",
+    "sha256": "e1d85e7bbb1df41c67b903cecde172ce222b5f6ad0959bb077ac04c7c2c4cd04",
+    "lines": 19
+  },
+  {
+    "file": "src/pages/trust.astro",
+    "sha256": "dee270d524cc2dcabb2466ae4ab8f2e8e46a531ed1e8af624d78054cbcaf3ae4",
+    "lines": 17
+  },
+  {
+    "file": "src/pages/healthz.ts",
+    "sha256": "e49cdb21575777897516af5218c51135d53782cb8e86f72ae07e1cdff716daf7",
+    "lines": 42
+  },
+  {
+    "file": "src/pages/index.astro",
+    "sha256": "52cf0935bdcf3ed9cfb84b727b5e98803edcf2972618a76f22727e3fdc2ff280",
+    "lines": 480
+  },
+  {
+    "file": "src/pages/kernel.astro",
+    "sha256": "186d72e9ab91c26e72800a3666a332d98949fde1ad1b564b9b4c8cf40116dfa0",
+    "lines": 27
+  },
+  {
+    "file": "src/pages/services.astro",
+    "sha256": "9dc901eaa7e478dc54e1d7fb256d1139a7df6a4afb7c245c6f4d5e92abd011f7",
+    "lines": 16
+  },
+  {
+    "file": "src/pages/README.md",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "lines": 0
+  },
+  {
+    "file": "src/pages/contact.astro",
+    "sha256": "2a6edd571e101affda9aecf8935ea469ac84afa83c3fac2a54ce7ea67e29f848",
+    "lines": 52
+  },
+  {
+    "file": "src/pages/compliance.astro",
+    "sha256": "7011eafd7cf6894c7843c6ff7942447a26e2ee54337e0c283042c635aba53cad",
+    "lines": 19
+  },
+  {
+    "file": "src/pages/pricing.astro",
+    "sha256": "7bb55661d99d2cbedf042fb89c3394bb5b96022ed3026ff5002f34d539d8a6ba",
+    "lines": 20
+  },
+  {
+    "file": "src/pages/docs.astro",
+    "sha256": "5e4273d9d6a48b0d02829b7b47b43b7319f0d8b06ac18ad670529527e0404413",
+    "lines": 90
+  },
+  {
+    "file": "src/pages/demo/[product].astro",
+    "sha256": "791e4ba1b56a1adbbe72bb89110708ce14b6890a07ecde516854a4328ab64167",
+    "lines": 24
+  },
+  {
+    "file": "src/pages/products/[product].astro",
+    "sha256": "8f877f881c47df4691e24dc1fbd87ca6f1ca071ed04dcfa5a83419bafb66ae95",
+    "lines": 48
+  },
+  {
+    "file": "src/pages/products/index.astro",
+    "sha256": "103b0f9205203ec6edf3617f007054dff30cf398fc4983167fdf669ad00f7448",
+    "lines": 21
+  },
+  {
+    "file": "src/pages/app/index.astro",
+    "sha256": "06a7096c84ba83ce52259d2cdd63e61e3758089522e8a0499fe4e8514b885ac9",
+    "lines": 5
+  },
+  {
+    "file": "src/pages/auth/sign-up.astro",
+    "sha256": "3db84d6ff9906bd9b0f63c0ca3097f578b87982a3b9056de24e8760c77cf2f4c",
+    "lines": 357
+  },
+  {
+    "file": "src/pages/auth/accept-invitation.astro",
+    "sha256": "c53dbef91c688fd60a43702c3b4d009caf1eb606d7d2d8b10efdefe5e4122333",
+    "lines": 191
+  },
+  {
+    "file": "src/pages/solutions/index.astro",
+    "sha256": "2912c1b5c1e6e0f2ed5a4082921f44aef2b2b2f0a36248cc06ccbfa951213289",
+    "lines": 56
+  },
+  {
+    "file": "src/pages/solutions/[sector].astro",
+    "sha256": "d4a3affda21f3deaaa7adb06d96ae712ac94a9b046c4eefd4f7523125968ba19",
+    "lines": 33
+  },
+  {
+    "file": "src/pages/knowledge/protect-company-data-chatgpt.astro",
+    "sha256": "399b2438116d0f24f353797cf8427fd2e96c480268ca5d65474f7c02e8ba3330",
+    "lines": 26
+  },
+  {
+    "file": "src/pages/knowledge/[article].astro",
+    "sha256": "a5267aa918f062060faa96b96ba9d06aa1252cca6ac828625d58b2546dd6416d",
+    "lines": 62
+  },
+  {
+    "file": "src/pages/knowledge/sdaia-generative-ai-guidelines.astro",
+    "sha256": "dff7c0656e3ab4755677934648bf6e5c16289f400a12b8cd8c18d0a79c47cc4e",
+    "lines": 1596
+  },
+  {
+    "file": "src/pages/knowledge/sdaia-ai-ethics-self-assessment.astro",
+    "sha256": "ca480ed79a796c92be30e92bc3ce0d3b8992d50332c5f4d2ae1c1e84e8d6e4b0",
+    "lines": 1205
+  },
+  {
+    "file": "src/pages/knowledge/prompt-injection.astro",
+    "sha256": "d185481adac0e6f29b26503b6d2e93388c69f91c7969ce3f31190f8cb2dbb75b",
+    "lines": 28
+  },
+  {
+    "file": "src/pages/knowledge/sdaia-ai-adoption-framework.astro",
+    "sha256": "41c066d5ebdf1cb211aacb903d3bc3d33844a5c7fd6f3bf98f84c00b5ebb1be4",
+    "lines": 1299
+  },
+  {
+    "file": "src/pages/knowledge/ai-governance-saudi.astro",
+    "sha256": "8ef2ffcf9f8928d9917f24911a540344c9223ca63a909262b67abaf365d3bdc1",
+    "lines": 49
+  },
+  {
+    "file": "src/pages/knowledge/iso-42001-saudi.astro",
+    "sha256": "5772bc63e690299d3301e81ea516439e09a91408104b545555bea98748c7c1b2",
+    "lines": 181
+  },
+  {
+    "file": "src/pages/knowledge/saudi-ai-law-binding-vs-guidance.astro",
+    "sha256": "95140758dacc41c48985f0fdbb7291dc97761c0d729131e3bb059127a999c63e",
+    "lines": 903
+  },
+  {
+    "file": "src/pages/knowledge/ai-use-policy-employees.astro",
+    "sha256": "e19b2f8b4a7da41867d3b389ba1f5079aaffacbc9417519f6c010a95f1deb5c8",
+    "lines": 25
+  },
+  {
+    "file": "src/pages/knowledge/ai-risk-assessment.astro",
+    "sha256": "630fe35bd6f2670ddf7a2eb7aba5d9aeef2d6c3786ddd8369faff1fe2d4aa375",
+    "lines": 28
+  },
+  {
+    "file": "src/pages/knowledge/saudi-ai-ethics-principles.astro",
+    "sha256": "cb19e17ab80fc83c3ddbf586c6cc8ee26f2153acad53e5da1901e58fe64e3b39",
+    "lines": 1392
+  },
+  {
+    "file": "src/pages/knowledge/pdpl-and-ai.astro",
+    "sha256": "08f6d6e68a39471b77859ab176c5e9dace83a32c531284a516e3997f84f90e17",
+    "lines": 846
+  },
+  {
+    "file": "src/pages/pillars/[pillar].astro",
+    "sha256": "68edfe86ccca28c0b3a60c3838c3b5ba3039d834fe3f996f879f40405c2bb350",
+    "lines": 19
+  },
+  {
+    "file": "src/pages/api/observability.ts",
+    "sha256": "e4f0ac596e314f561381825eb786bcac10eac24d65cd25a6b1edaf020207b50c",
+    "lines": 55
+  },
+  {
+    "file": "src/pages/api/public-demo/groq-sandbox.ts",
+    "sha256": "5f71ee812415fcde7c40fcbefd702c1e4365904402fba797307ea1ea73b6d22f",
+    "lines": 5
+  },
+  {
+    "file": "src/pages/app/ledger/index.astro",
+    "sha256": "dd8954fd6e8ca33b8f18c4f69e9f6b29e9ef611d8d84c1ff5053c9f18448ad78",
+    "lines": 24
+  },
+  {
+    "file": "src/pages/app/trial/index.astro",
+    "sha256": "9932500c44fa72c77ab61a2cbf9594c41bed0fe6a8d22bd00f062ad5e6a1bf17",
+    "lines": 32
+  },
+  {
+    "file": "src/pages/app/human-gate/index.astro",
+    "sha256": "dabffde84ae4f72955ab38f2e3ec5a67692a4a295d8312087b174cbcc7031d08",
+    "lines": 59
+  },
+  {
+    "file": "src/pages/app/firewall/index.astro",
+    "sha256": "0b932458caed3b274d09e75cf83d1b333c628b09a5b0d4cf12092663b588a416",
+    "lines": 65
+  },
+  {
+    "file": "src/pages/app/risk-engine/[assetId].astro",
+    "sha256": "61a3e2a82a602eb131f9a93b42e46c2780c9fad26f738b2f250b921ce3450672",
+    "lines": 8
+  },
+  {
+    "file": "src/pages/app/risk-engine/index.astro",
+    "sha256": "f32a17bad369a86afc4a34d1a0a08e1ed3f4461333098cea3e77782b7dacb1b4",
+    "lines": 5
+  },
+  {
+    "file": "src/pages/app/api/kernel.ts",
+    "sha256": "6e9ba1fbaeb2e59393a049b41d35fb57cf6c56e355996f01e42b5f4cf8ebe1b5",
+    "lines": 17
+  },
+  {
+    "file": "src/pages/app/api/trial.ts",
+    "sha256": "35d025cb67b8b484a683ddffddbf0477696e0e471681f4ed7fc10e5a58ce1196",
+    "lines": 11
+  },
+  {
+    "file": "src/pages/app/secure-chat/index.astro",
+    "sha256": "45c21f17941590f94276519bef99f20fed811e902a07b5611bc2fdd4c9f0cf1c",
+    "lines": 59
+  },
+  {
+    "file": "src/pages/app/kernel/index.astro",
+    "sha256": "0ec15f07d5e37aa9b82906c8b4b818e6e9e8abbf56864f89a1cc0bf69b097083",
+    "lines": 92
+  },
+  {
+    "file": "src/pages/app/operator/trials/index.astro",
+    "sha256": "43c7a95c74cb746e26f3811b183adcd7b57ae9c219ff5187dfbeb562b9ebcd92",
+    "lines": 22
+  },
+  {
+    "file": "src/pages/app/api/human-gate/policy.ts",
+    "sha256": "53bfd0cc963f12a3f8c897f7a626c2feefec09bfda36163133c64d316ec886e8",
+    "lines": 4
+  },
+  {
+    "file": "src/pages/app/api/firewall/evaluate.ts",
+    "sha256": "2c33168402cff6fc435de8c4d8b00b58cc69e569ff7125f2b283cf8a5eac475f",
+    "lines": 4
+  },
+  {
+    "file": "src/pages/app/api/firewall/rules.ts",
+    "sha256": "ffd1ee8379edaef5dbf674a7a339cd3c4667ffeeca03ebd10a64ad61d20e0628",
+    "lines": 7
+  },
+  {
+    "file": "src/pages/app/api/firewall/guarded-executions.ts",
+    "sha256": "fa35305565efce6c04b1daef04c36378d5db52c3fc308810c740262196ee75e3",
+    "lines": 4
+  },
+  {
+    "file": "src/pages/app/api/risk-engine/export.ts",
+    "sha256": "880f96d50c7d3a3c27fb336fd3de201a222fc4f81ba9e9b9109946555c301591",
+    "lines": 4
+  },
+  {
+    "file": "src/pages/app/api/risk-engine/assist.ts",
+    "sha256": "5c22bb06b7ac6a1938a421a894e2e61e8ca286bb3c2c1db1a7c445b7f93fb7e2",
+    "lines": 4
+  },
+  {
+    "file": "src/pages/app/api/risk-engine/actions.ts",
+    "sha256": "06c1c96da62a405cd61e7c155410aa2c875d287dbb73103d1258ec1e923d0690",
+    "lines": 4
+  },
+  {
+    "file": "src/pages/app/api/secure-chat/messages.ts",
+    "sha256": "6b3ba7ea4c51505b6d6186ee21f33e3d965ef246083fec1e7001f3ebd85c90dc",
+    "lines": 39
+  },
+  {
+    "file": "src/pages/app/api/secure-chat/models.ts",
+    "sha256": "627691ea408c1e5b2563e9b2c5c381ea3088024b6fa72468a0582e1522f71461",
+    "lines": 12
+  },
+  {
+    "file": "src/pages/app/api/kernel/policies.ts",
+    "sha256": "2df593c8621d23a0bbe282a4d751b7302922d711bdf0fb3f7f658c335e89ec4e",
+    "lines": 10
+  },
+  {
+    "file": "src/pages/app/api/kernel/invitations.ts",
+    "sha256": "85dd4d84bcab3f8f847338632f90d00ec26551a4c3dc91f899e8c0bede51b64e",
+    "lines": 4
+  },
+  {
+    "file": "src/pages/app/api/kernel/products.ts",
+    "sha256": "7ec59f8857a9c531cc06fbeb8f3c78905668cef20af206f0c1a05449659b288c",
+    "lines": 7
+  },
+  {
+    "file": "src/pages/app/api/kernel/health.ts",
+    "sha256": "8a85563cf947aed33f6746d2e42f13c1091b43e527a348e5d7c86637f2684d40",
+    "lines": 13
+  },
+  {
+    "file": "src/pages/app/api/kernel/members.ts",
+    "sha256": "a34f83a6a0f56a077b3fbc8593eec9fea373bd44340a689e0b9e19f05b6b9b4f",
+    "lines": 9
+  },
+  {
+    "file": "src/pages/app/api/kernel/trials/index.ts",
+    "sha256": "7e90fcb20c28ca084fe7b14f67ea3ffcd69489295afb68fc86d9fb515f404b3e",
+    "lines": 16
+  },
+  {
+    "file": "src/pages/app/api/kernel/trials/[trialId]/cancel.ts",
+    "sha256": "c53148e3917bb86e460edb7d5848ea4e378bda55858b56ea7b15e63c9aee1eaa",
+    "lines": 9
+  },
+  {
+    "file": "src/pages/app/api/kernel/trials/[trialId]/submit.ts",
+    "sha256": "0afb6332fb0124f1c14aba4ea7186cedc7ecdb2f2dab77d008ecca62dcdd7cf4",
+    "lines": 10
+  },
+  {
+    "file": "src/pages/app/api/operator/trials/index.ts",
+    "sha256": "2f40687825db4d055bfcf9affde34d8817cd6bd19053eefc59d0c1fe2c4c6f65",
+    "lines": 6
+  },
+  {
+    "file": "src/pages/app/api/operator/trials/[trialId]/activate.ts",
+    "sha256": "30b1068f9431e55a791a72e9e6860e55368b6929e405c5f67689045093bcf4fa",
+    "lines": 11
+  },
+  {
+    "file": "src/pages/app/api/operator/trials/[trialId]/expire.ts",
+    "sha256": "32f91dcbec8202b2f171e5ede33dcd3267aec3de78908515be0d5cdfcd4fbc85",
+    "lines": 8
+  },
+  {
+    "file": "src/pages/app/api/operator/trials/[trialId]/decide.ts",
+    "sha256": "199d18d1aeb5bb5a3b74d68d7d31a89de55587cd8e2a1bccf06928736e07e2d5",
+    "lines": 9
+  },
+  {
+    "file": "src/pages/app/api/operator/trials/[trialId]/close.ts",
+    "sha256": "966782e25b68e48c2c1aba43ac0be5decfea02c2bc80b2e90dc90aedb5b69c3b",
+    "lines": 9
+  },
+  {
+    "file": "src/pages/app/api/risk-engine/assets/index.ts",
+    "sha256": "24e4a46f38326d7ca797cf4740df633f57f6947398eedb97063d75f3ab3d3929",
+    "lines": 5
+  },
+  {
+    "file": "src/pages/app/api/risk-engine/assets/[assetId]/assessments.ts",
+    "sha256": "796d6e394fa1637c136a39654b735bffa182f4a16b0a79b9454d0e1bd80450b3",
+    "lines": 5
+  },
+  {
+    "file": "src/pages/app/api/risk-engine/assets/[assetId]/treatments.ts",
+    "sha256": "6f5307496a58194df040a14ed590ba420fc139566b0e45cca603db11ba4d80f6",
+    "lines": 7
+  },
+  {
+    "file": "src/pages/app/api/risk-engine/assets/[assetId]/revisions.ts",
+    "sha256": "46bb88086f9553861255542f65b8ec2d3304bfb458e4c58c12d1213430109ce9",
+    "lines": 4
+  },
+  {
+    "file": "src/pages/app/api/risk-engine/assets/[assetId]/index.ts",
+    "sha256": "0da70807fc8521890f75216d077eaaaa30d91edb4189adc81aa44f492c946799",
+    "lines": 5
+  },
+  {
+    "file": "src/pages/app/api/human-gate/requests/index.ts",
+    "sha256": "97ce435bbdeb06484027a4de36da9ab94a00ca2405383910df235d2dfe94eca8",
+    "lines": 5
+  },
+  {
+    "file": "src/pages/app/api/human-gate/delegations/index.ts",
+    "sha256": "9e8b3a06de2720f2d32db236514f4d374a6fd4774d6593e6a37c1ec1cfd1dec9",
+    "lines": 5
+  },
+  {
+    "file": "src/pages/app/api/human-gate/delegations/[delegationId]/revoke.ts",
+    "sha256": "b8ada9770556de22614c555624a35854b9f6fdd42042911287e38f0e21a2314c",
+    "lines": 4
+  },
+  {
+    "file": "src/pages/app/api/human-gate/requests/[requestId]/decide.ts",
+    "sha256": "3ab5b3d96651453297ec54a3096788b6a4022382e07df35cb5967ea7c0a7fc4b",
+    "lines": 4
+  },
+  {
+    "file": "src/pages/app/api/human-gate/requests/[requestId]/execute.ts",
+    "sha256": "1838238928d23abf6289832efe0b9212e59e872cadfd4653514eb969f71ed5cb",
+    "lines": 4
+  },
+  {
+    "file": "src/pages/app/api/human-gate/requests/[requestId]/cancel.ts",
+    "sha256": "d42646f9d9d76286a46bf91d35472eb4a4b5f596e5a3c77b29d3ae1219e2a292",
+    "lines": 4
+  },
+  {
+    "file": "src/pages/app/api/ledger/events/index.ts",
+    "sha256": "3eb0ba5a585237ae42ca9ec83a3d2ca2219d0f2f1067574f3b03abb9c837333e",
+    "lines": 5
+  },
+  {
+    "file": "src/pages/app/api/ledger/events/[eventId]/verify.ts",
+    "sha256": "2a3f97ee487ec0d5a06cfe26514300a9b7068b6805230594d4771af62b4b1a4d",
+    "lines": 4
+  },
+  {
+    "file": "src/pages/app/api/ledger/events/[eventId]/export.ts",
+    "sha256": "dc633087d2f70f49affed3561eeb5c6dbbf6a5bfa8ba08d51ee09921a0dfdcdd",
+    "lines": 4
+  },
+  {
+    "file": "src/pages/app/api/ledger/events/[eventId]/index.ts",
+    "sha256": "98ffc1b06907075acecc79c85e50c48608099b5494760b25494537c4c82a65e7",
+    "lines": 4
+  },
+  {
+    "file": "src/server/ledger/core.mjs",
+    "sha256": "777b69fbd3795c07832c275e303f6bc7341c368132147dfd0da6c81e76851045",
+    "lines": 123
+  },
+  {
+    "file": "src/server/ledger/writer.mjs",
+    "sha256": "78d0a995e156e90af02150daa1c64afe3bfe36b05efe7b1a7189b06173a98428",
+    "lines": 142
+  },
+  {
+    "file": "src/server/ledger/service.mjs",
+    "sha256": "72be1778b68c897b996a49d24da77b972bb2b22e5d1b1ab394e17009c971ce6c",
+    "lines": 90
+  },
+  {
+    "file": "src/server/ledger/http.mjs",
+    "sha256": "21f81ba3927df2b61619733f32ea9906f2cbbb5447ab45a900b51e86516a1551",
+    "lines": 45
+  },
+  {
+    "file": "src/server/human-gate/core.mjs",
+    "sha256": "31505aedf02dfdeac8c37c7e09a1ef3105ef19b6993b1e9d0b09e27bdf450dd3",
+    "lines": 62
+  },
+  {
+    "file": "src/server/human-gate/service.mjs",
+    "sha256": "f84fae4d809f3b83bbf1680ecc0b39ff8cc1dba4b1ca1cf0cc006b1f34b04435",
+    "lines": 409
+  },
+  {
+    "file": "src/server/human-gate/http.mjs",
+    "sha256": "ac9023445b377165a29e7fc520ae40915ef2d701c838ea703a50152cc833ed3c",
+    "lines": 50
+  },
+  {
+    "file": "src/server/observability/redact.mjs",
+    "sha256": "884352f0aaf456b0374ee3e1ec349dec92ffd04d5e1bf23418b54493fe61f5dc",
+    "lines": 119
+  },
+  {
+    "file": "src/server/observability/url-policy.mjs",
+    "sha256": "8c8be5e058204cfcfc2ddd8218eb309ce36e578e1c7d915aa30eaf887f838092",
+    "lines": 106
+  },
+  {
+    "file": "src/server/observability/security-policy.mjs",
+    "sha256": "c9b2a0b1cf418c2545b5d6a0d5f475e2fac1d7abd5f3c1b580c1d36eb7da8284",
+    "lines": 105
+  },
+  {
+    "file": "src/server/observability/posthog.mjs",
+    "sha256": "674de9f10b6ad428a0918270c2682b76a264d816c6a804cc52c3785b936da5c1",
+    "lines": 87
+  },
+  {
+    "file": "src/server/observability/index.mjs",
+    "sha256": "2fc62d912721e766929350e3082b5348f4e36e5c9d1b1ec96d5059047c1b4090",
+    "lines": 6
+  },
+  {
+    "file": "src/server/observability/sentry.mjs",
+    "sha256": "da5b05072754d99acd70e9b2609dc68f353e1853b8bc5bab79375ab3eb1533cd",
+    "lines": 140
+  },
+  {
+    "file": "src/server/observability/config.mjs",
+    "sha256": "452a8323fbbb61fd53566058bf872d87070ce2c0cbb6286d9c0ccfb2eb844534",
+    "lines": 126
+  },
+  {
+    "file": "src/server/firewall/provider.mjs",
+    "sha256": "83c8e67040ff9dd32277b3b88aac23e15089861894b7ce18258081d010e7364a",
+    "lines": 49
+  },
+  {
+    "file": "src/server/firewall/binding.mjs",
+    "sha256": "a45ca562644957e431cc99012c82ceee3838563f3ae1bd2a42f8b9b96c43d2f9",
+    "lines": 23
+  },
+  {
+    "file": "src/server/firewall/core.mjs",
+    "sha256": "1919baf7a160bec32db60a54d6595799d0d70d85ec6ab01849ed997cac0b60c1",
+    "lines": 120
+  },
+  {
+    "file": "src/server/firewall/escalation.mjs",
+    "sha256": "cb0979a583abf4ab39f50f6b3aa12166587784e007f2723443c4d5cd3e7828d9",
+    "lines": 96
+  },
+  {
+    "file": "src/server/firewall/service.mjs",
+    "sha256": "009b099c9c1a69dc0a52adf6077ed77f27cb90b8aad7be17eef3ede6f293b179",
+    "lines": 333
+  },
+  {
+    "file": "src/server/firewall/local-adapter.mjs",
+    "sha256": "935d87cc60979ac22a817a374c78273f2a7404174afc7ecdfeb40e1418640ec5",
+    "lines": 29
+  },
+  {
+    "file": "src/server/firewall/guard.mjs",
+    "sha256": "2960cf4c5f1ffba3b41b8ca380d6838f7a7c23fa3b68aff7f01b2674772780bf",
+    "lines": 169
+  },
+  {
+    "file": "src/server/firewall/http.mjs",
+    "sha256": "3e00325224884a3dc039cfef1adc61a64aadfa9fad5aedc456747ec379dac784",
+    "lines": 69
+  },
+  {
+    "file": "src/server/risk-engine/core.mjs",
+    "sha256": "011c1d4c79c5be2998db3f4461de6b06d5b02f9fdc1969b1956a4e0bedf14c5b",
+    "lines": 151
+  },
+  {
+    "file": "src/server/risk-engine/assist.mjs",
+    "sha256": "fdab790055c40311324737c612182756d876c0d431cc95a20d3a7d755890d891",
+    "lines": 68
+  },
+  {
+    "file": "src/server/risk-engine/service.mjs",
+    "sha256": "1094f02b4a47e716f0f8f33776bf1d314041eff1c141600c06ae1d5527d72bec",
+    "lines": 207
+  },
+  {
+    "file": "src/server/risk-engine/http.mjs",
+    "sha256": "84a581103138d4dd1bea7087d9d75c12c7ed23f8c68536b8265b96bf08aa324c",
+    "lines": 41
+  },
+  {
+    "file": "src/server/knowledge/document.mjs",
+    "sha256": "34e3884cd88fe5d41e972022c7262b1ff5b7dedd9b52a7eba7c34b773b78dc06",
+    "lines": 7
+  },
+  {
+    "file": "src/server/knowledge/catalog.ts",
+    "sha256": "654c07026394bdd48db27420ce514ad3aee2b1c830cb42470febc8fce8164d75",
+    "lines": 32
+  },
+  {
+    "file": "src/server/ai/groq-gateway.mjs",
+    "sha256": "7865b3e8655da9e5924414975cfa354b6537a9fe02215cb071415dc0b8700a5e",
+    "lines": 152
+  },
+  {
+    "file": "src/server/ai/public-sandbox-limiter.mjs",
+    "sha256": "accbd10a00a8657c308c1f792994530a85190e8f9acae93f986143758ac23fdb",
+    "lines": 34
+  },
+  {
+    "file": "src/server/seo/redirects.mjs",
+    "sha256": "3bb572f19013862bafa85b0916c61340afd3e7542e0ddd0ae6bc0cd60649a657",
+    "lines": 10
+  },
+  {
+    "file": "src/server/secure-chat/integration.mjs",
+    "sha256": "ad4fa806cf3541c3db616ed3912686871a756ec8b7e5a5a9793ac98a4de1078c",
+    "lines": 54
+  },
+  {
+    "file": "src/server/secure-chat/adapter.mjs",
+    "sha256": "576a29e25b8e9e34353ac0ce844274de0e4edadfbb0680ecea97a3da1b493c4a",
+    "lines": 67
+  },
+  {
+    "file": "src/server/secure-chat/models.mjs",
+    "sha256": "86cb78de9dedbaaa5dac498d12e44eea5613f3154f8462485a223ee0e6e7e805",
+    "lines": 30
+  },
+  {
+    "file": "src/server/secure-chat/requests.mjs",
+    "sha256": "f4baf2d1055afcf7fed53b3354f944dfb50b9d9abd80979be2efde477333c075",
+    "lines": 99
+  },
+  {
+    "file": "src/server/secure-chat/policy.mjs",
+    "sha256": "e445268f73aac879803a7c79950a0971f8c6bd91e6e6b798a64dbf99e48d5592",
+    "lines": 81
+  },
+  {
+    "file": "src/server/secure-chat/service.mjs",
+    "sha256": "cfbea9a7345ae93f8af3dcddaf1ab761e9e846296fad55508b41892d25c9fd2b",
+    "lines": 283
+  },
+  {
+    "file": "src/server/kernel/version.mjs",
+    "sha256": "11dc31c2c02fa612efee513fb9f8813da21c38c7585c258706e6944f92e7f030",
+    "lines": 90
+  },
+  {
+    "file": "src/server/kernel/db.mjs",
+    "sha256": "0dc1db5299f5df46b1c91264d9f47d6ed2afb8a691aae3473e86d432cd805e71",
+    "lines": 136
+  },
+  {
+    "file": "src/server/kernel/unavailable.mjs",
+    "sha256": "aba9c36e4fb0049276738097f277ee4f1a0075d26db4431c861709bfa6ef285a",
+    "lines": 128
+  },
+  {
+    "file": "src/server/kernel/trial-service.mjs",
+    "sha256": "5debbdd0e3dfcec657f277e45f58020b1a5ce764947ac1c6200e346a54291d17",
+    "lines": 378
+  },
+  {
+    "file": "src/server/kernel/self-service-trial.mjs",
+    "sha256": "5285dcd116b79c9d4f5e8aecad2283703b30775fa6f4941478738031c20c9d36",
+    "lines": 51
+  },
+  {
+    "file": "src/server/kernel/core.mjs",
+    "sha256": "4750165b5689f39d7571af9876bfc7347e9652186a960f45d23f23576cc89b23",
+    "lines": 90
+  },
+  {
+    "file": "src/server/kernel/contracts.mjs",
+    "sha256": "22e7622c654fbf775431f8fa2152f952830a0134074eef308e73a36c5549c445",
+    "lines": 70
+  },
+  {
+    "file": "src/server/kernel/administration.mjs",
+    "sha256": "a1465bc52f1b59c1330f8f5f47d9357f71f58932806cab6fe7e8f381fa3c9039",
+    "lines": 250
+  },
+  {
+    "file": "src/server/kernel/access.mjs",
+    "sha256": "d11f0a22aee3347f6ba1544a45f67a28761609e1293f54d1068acfc6ee0395e1",
+    "lines": 206
+  },
+  {
+    "file": "src/server/kernel/guidance.mjs",
+    "sha256": "9ad558b706e2d90d53b137232bfa1365b2f17fbb8d31792d9ac56e121236c2df",
+    "lines": 14
+  },
+  {
+    "file": "src/server/kernel/policies.mjs",
+    "sha256": "741f03ae4d59d154b45b17760a2d161d0ff57e637a548fec68c0d6f099fe1bbb",
+    "lines": 375
+  },
+  {
+    "file": "src/server/kernel/auth.mjs",
+    "sha256": "909644ff8564e45133e28405fc448186e799ffe9eb051e1745726bb8ec5b96d9",
+    "lines": 33
+  },
+  {
+    "file": "src/server/kernel/operator-exploration.mjs",
+    "sha256": "e394cb497bfd17a752c89995ea157df64d36671262b7b710f35715524103bc24",
+    "lines": 67
+  },
+  {
+    "file": "src/server/kernel/env.mjs",
+    "sha256": "c6ceb9e8a38d13c74f69ad82c67b1e29ef02e4ca8118c536f563523c24ddf84e",
+    "lines": 24
+  },
+  {
+    "file": "src/server/kernel/trial.mjs",
+    "sha256": "bb5eb24500cabbf2a1c58a5fcad5944c4d03aac2c4e4842de4e6d989398ccb71",
+    "lines": 336
+  },
+  {
+    "file": "src/server/kernel/exploration.mjs",
+    "sha256": "51b66ace03b05371ee5d28e266e0e38a49aa87d6e03bb559449f7ce02a34c8cd",
+    "lines": 31
+  },
+  {
+    "file": "src/server/kernel/service.mjs",
+    "sha256": "7d391a28f4fd8ec3ff9933583106929cf0ad3f448ebb261ce1ec95cce89fa676",
+    "lines": 211
+  },
+  {
+    "file": "src/server/kernel/readiness.mjs",
+    "sha256": "465d698fd1b45eed9f80aeb6f312621b1529412941add1969b36dbedf047c1c7",
+    "lines": 88
+  },
+  {
+    "file": "src/server/kernel/http.mjs",
+    "sha256": "88056880f69d848f57ffc1e4e726c998fef69cd7d3f89779b3662a5cc77a593f",
+    "lines": 79
+  },
+  {
+    "file": "src/server/kernel/events.mjs",
+    "sha256": "cdf059d84619952fd841773ee10fcb095609be2f29c9484e50042d8fd61864da",
+    "lines": 105
+  }
+]

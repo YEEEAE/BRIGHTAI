@@ -1,0 +1,11 @@
+{
+  "baseline_HEAD": "bbcd8546086b6e3c3ad8370ad396e23ae1f70938",
+  "node_build": "22.22.3",
+  "astro_lockfile": "6.4.8",
+  "isolated_build": true,
+  "source_differences": [],
+  "npm_ci": true,
+  "route_rows": 119,
+  "all_discovered_rows": 492,
+  "asset_rows": 12
+}

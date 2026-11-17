@@ -1,0 +1,44 @@
+[
+  {
+    "path": "/README/",
+    "status": 404,
+    "description": null,
+    "robots": null
+  },
+  {
+    "path": "/demo/firewall/",
+    "status": 200,
+    "description": "مختبر Firewall: محاكاة تعليمية ببيانات افتراضية لفهم القرارات وحدودها، دون اتصال ببيانات المؤسسات أو إثبات حماية إنتاجية.",
+    "robots": "noindex, follow"
+  },
+  {
+    "path": "/demo/ledger/",
+    "status": 200,
+    "description": "مختبر Ledger: محاكاة تعليمية ببيانات افتراضية لفهم القرارات وحدودها، دون اتصال ببيانات المؤسسات أو إثبات حماية إنتاجية.",
+    "robots": "noindex, follow"
+  },
+  {
+    "path": "/demo/human-gate/",
+    "status": 200,
+    "description": "مختبر Human Gate: محاكاة تعليمية ببيانات افتراضية لفهم القرارات وحدودها، دون اتصال ببيانات المؤسسات أو إثبات حماية إنتاجية.",
+    "robots": "noindex, follow"
+  },
+  {
+    "path": "/demo/risk-engine/",
+    "status": 200,
+    "description": "مختبر Risk Engine: محاكاة تعليمية ببيانات افتراضية لفهم القرارات وحدودها، دون اتصال ببيانات المؤسسات أو إثبات حماية إنتاجية.",
+    "robots": "noindex, follow"
+  },
+  {
+    "path": "/demo/secure-chat/",
+    "status": 200,
+    "description": "مختبر Secure Chat: محاكاة تعليمية ببيانات افتراضية لفهم القرارات وحدودها، دون اتصال ببيانات المؤسسات أو إثبات حماية إنتاجية.",
+    "robots": "noindex, follow"
+  },
+  {
+    "path": "/demo/kernel/",
+    "status": 200,
+    "description": "مختبر Kernel: محاكاة تعليمية ببيانات افتراضية لفهم القرارات وحدودها، دون اتصال ببيانات المؤسسات أو إثبات حماية إنتاجية.",
+    "robots": "noindex, follow"
+  }
+]

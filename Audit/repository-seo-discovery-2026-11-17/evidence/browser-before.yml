@@ -1,0 +1,269 @@
+- generic [active] [ref=f2e1]:
+  - link "تخطّ إلى المحتوى" [ref=f2e2] [cursor=pointer]:
+    - /url: /products/firewall/?utm_source=audit&scenario=demo-v1-summary-redact#main
+  - banner [ref=f2e3]:
+    - link "BRIGHTAI — الرئيسية" [ref=f2e4] [cursor=pointer]:
+      - /url: /
+      - img "BRIGHTAI — AI Governance and Safety (AIGAS)" [ref=f2e5]
+    - group [ref=f2e6]:
+      - navigation "التنقل الرئيسي" [ref=f2e7]:
+        - link "المنتجات" [ref=f2e8] [cursor=pointer]:
+          - /url: /products/
+        - link "الحلول" [ref=f2e9] [cursor=pointer]:
+          - /url: /#solutions
+        - link "الخدمات" [ref=f2e10] [cursor=pointer]:
+          - /url: /services/
+        - link "الأسعار" [ref=f2e11] [cursor=pointer]:
+          - /url: /pricing/
+        - link "مركز المعرفة" [ref=f2e12] [cursor=pointer]:
+          - /url: /docs/
+    - link "اطلب معلومات" [ref=f2e13] [cursor=pointer]:
+      - /url: /contact/
+      - text: اطلب معلومات
+      - generic [aria-hidden] [ref=f2e14]: ↗
+  - main [ref=f2e15]:
+    - navigation "مسار التنقل" [ref=f2e16]:
+      - link "الرئيسية" [ref=f2e17] [cursor=pointer]:
+        - /url: /
+      - generic [aria-hidden] [ref=f2e18]: /
+      - link "المنتجات" [ref=f2e19] [cursor=pointer]:
+        - /url: /products/
+      - generic [aria-hidden] [ref=f2e20]: /
+      - generic [ref=f2e21]: AIGAS Firewall
+    - region "مختبر Firewall" [ref=f2e22]:
+      - complementary [ref=f2e23]:
+        - paragraph [ref=f2e24]: AIGAS / LABS
+        - group [ref=f2e25]:
+          - navigation "مختبرات المنتجات" [ref=f2e26]:
+            - link "مركز التجارب" [ref=f2e27] [cursor=pointer]:
+              - /url: /products/
+              - text: مركز التجارب
+              - generic [aria-hidden] [ref=f2e28]: ↗
+            - link "Firewall" [ref=f2e29] [cursor=pointer]:
+              - /url: /products/firewall/?scenario=demo-v1-summary-redact#lab
+              - generic [aria-hidden] [ref=f2e34]: ←
+            - link "Ledger" [ref=f2e35] [cursor=pointer]:
+              - /url: /products/ledger/?scenario=demo-v1-summary-redact#lab
+            - link "Human Gate" [ref=f2e41] [cursor=pointer]:
+              - /url: /products/human-gate/?scenario=demo-v1-summary-redact#lab
+            - link "Risk Engine" [ref=f2e47] [cursor=pointer]:
+              - /url: /products/risk-engine/?scenario=demo-v1-summary-redact#lab
+            - link "Secure Chat" [ref=f2e53] [cursor=pointer]:
+              - /url: /products/secure-chat/?scenario=demo-v1-summary-redact#lab
+            - link "بوابة Kernel" [ref=f2e59] [cursor=pointer]:
+              - /url: /kernel/?scenario=demo-v1-summary-redact#lab
+              - generic [aria-hidden] [ref=f2e60]: ◈
+              - text: بوابة Kernel
+        - paragraph [ref=f2e61]: انتقل بحرية.تُحفظ خطوتك في هذه الجلسة فقط.
+      - generic [ref=f2e62]:
+        - generic [ref=f2e63]:
+          - generic [ref=f2e68]:
+            - heading "Firewall" [level=1] [ref=f2e69]
+            - paragraph [ref=f2e70]: احمِ الطلب / مختبر عام
+          - link "استكشاف محدود 48 ساعة ↗" [ref=f2e71] [cursor=pointer]:
+            - /url: /auth/sign-up/?returnTo=%2Fapp%2Ffirewall%2F
+        - generic [ref=f2e72]:
+          - generic [ref=f2e73]: مثال تعليمي · دون اتصال بخدمة
+          - generic [ref=f2e74]: اختر مثالًا للبدء
+        - generic [ref=f2e75]:
+          - paragraph [ref=f2e76]: "سياق الرحلة العام: demo-v1-summary-redact"
+          - paragraph [ref=f2e77]: مساعد تلخيص افتراضي · تنقيح المعرّف الخيالي · REDACT
+          - paragraph [ref=f2e78]: معرّف مثال مشترك فقط؛ اختيارات كل مختبر مستقلة ولا تمثل قرارًا تشغيليًا.
+          - link "ارجع إلى مسار السياسة والدليل ←" [ref=f2e79] [cursor=pointer]:
+            - /url: /kernel/?scenario=demo-v1-summary-redact#lab
+          - link "جرب المنتج التالي ←" [ref=f2e80] [cursor=pointer]:
+            - /url: /products/human-gate/?scenario=demo-v1-summary-redact#lab
+        - region "Workspace قرار Firewall التعليمي" [ref=f2e81]:
+          - generic [ref=f2e82]:
+            - generic [ref=f2e83]:
+              - paragraph [ref=f2e84]: 01 / الإدخال
+              - heading "افهم أثر الطلب على القرار" [level=2] [ref=f2e85]
+              - paragraph [ref=f2e86]: demo محلي حتمي، وليس فحصًا أمنيًا حقيقيًا. لا مزوّد AI ولا إرسال أو حفظ للنص. استخدم نصوصًا خيالية فقط.
+              - generic [ref=f2e87]:
+                - button "سماح ALLOW" [ref=f2e88] [cursor=pointer]
+                - button "تحذير WARN" [ref=f2e89] [cursor=pointer]
+                - button "تنقيح REDACT" [ref=f2e90] [cursor=pointer]
+                - button "تصعيد للمراجعة البشرية ESCALATE" [ref=f2e91] [cursor=pointer]
+                - button "حظر BLOCK" [ref=f2e92] [cursor=pointer]
+              - generic [ref=f2e93]: نص الطلب — حتى 500 حرف
+              - textbox "نص الطلب — حتى 500 حرف" [ref=f2e94]
+              - paragraph [ref=f2e95]: المطابقة حرفية وحساسة لحالة الأحرف. اختيار المثال يملأ النص؛ اضغط الفحص لحساب القرار.
+              - button "افحص الطلب" [ref=f2e96] [cursor=pointer]
+              - button "إعادة ضبط" [ref=f2e97] [cursor=pointer]
+              - status [ref=f2e98]: لم يُفحص أي طلب بعد.
+              - group [ref=f2e99]:
+                - generic "Inspector / سياسة demo-v1" [ref=f2e100] [cursor=pointer]
+                - paragraph [ref=f2e101]: أول قاعدة مطابقة حسب الترتيب أدناه تفوز. لا فهم دلالي ولا كشف بيانات شخصية.
+                - list [ref=f2e102]:
+                  - listitem [ref=f2e103]: "BLOCK — يحتوي النص حرفيًا على «تجاوز»: تطابق لفظ تجاوز مع قيد الحظر في demo؛ لا موافقة تتجاوز هذا القرار."
+                  - listitem [ref=f2e104]: "ESCALATE — يحتوي النص حرفيًا على «خارج المؤسسة»: تغيير نطاق المشاركة يطابق قاعدة التصعيد؛ يلزم استعراض مراجعة مستقلة."
+                  - listitem [ref=f2e105]: "REDACT — يحتوي النص حرفيًا على «DEMO-0000»: يوجد المعرّف الخيالي DEMO-0000؛ يُستبدل محليًا قبل عرض المخرج."
+                  - listitem [ref=f2e106]: "WARN — يحتوي النص حرفيًا على «دون مراجعة»: طلب الاعتماد دون مراجعة يطابق قاعدة التحذير؛ تحقق من المصدر قبل الاستخدام."
+                  - listitem [ref=f2e107]: "ALLOW — أي نص آخر غير فارغ ضمن الحد: لم تطابق أي عبارة demo السابقة؛ هذا سماح تعليمي افتراضي وليس إثبات سلامة."
+                - paragraph [ref=f2e108]: "القاعدة المطابقة: لم يُفحص."
+            - figure "خريطة تعليمية لمرور الطلب إلى السياسة ثم قرار محدد" [ref=f2e110]:
+              - generic [ref=f2e111]:
+                - generic [ref=f2e112]: 01 / المدخل
+                - strong [ref=f2e113]: طلب ذكاء اصطناعي
+                - generic [ref=f2e114]: بيانات افتراضية فقط
+              - generic [ref=f2e115]: قاعدة demo
+              - generic [aria-hidden] [ref=f2e137]:
+                - generic [ref=f2e138]: سماح
+                - generic [ref=f2e139]: تحذير
+                - generic [ref=f2e140]: تنقيح
+                - generic [ref=f2e141]: تصعيد
+                - generic [ref=f2e142]: حظر
+              - generic [ref=f2e143]:
+                - generic [ref=f2e144]: 03 / المخرج
+                - strong [ref=f2e145]: قرار محدد بالسياق
+                - generic [ref=f2e146]: لم يُفحص
+        - paragraph [ref=f2e147]: بدء 48 ساعة يتطلب حسابًا وعضوية وصلاحيات وتهيئة وموافقة تشغيل من الخادم؛ يبدأ العداد عند التفعيل فقط، ولا تحويل تلقائي لمدفوع. Kernel بنية مشتركة لا تُفوتر منفصلًا.
+        - generic [ref=f2e148]:
+          - link "← كل التجارب" [ref=f2e149] [cursor=pointer]:
+            - /url: /products/
+          - link "عن المنتج وحدود الاستخدام ↓" [ref=f2e150] [cursor=pointer]:
+            - /url: /products/firewall/?utm_source=audit&scenario=demo-v1-summary-redact#product-details
+          - button "إعادة ضبط المثال" [ref=f2e151] [cursor=pointer]
+    - generic [ref=f2e152]:
+      - generic [ref=f2e153]:
+        - paragraph [ref=f2e154]: AIGAS / جرّب إمكانيات المنتج
+        - heading "AIGAS Firewall" [level=2] [ref=f2e155]
+        - paragraph [ref=f2e156]: من الطلب إلى القرار
+        - paragraph [ref=f2e157]: تصور منتج لفحص مدخلات ومخرجات الذكاء الاصطناعي بحثاً عن معلومات أو تعليمات قد تتطلب معالجة وفق سياسة المنشأة.
+      - complementary [ref=f2e158]:
+        - generic [ref=f2e163]:
+          - paragraph [ref=f2e164]: منتج مستقل ضمن المنظومة
+          - link "كل المنتجات ←" [ref=f2e165] [cursor=pointer]:
+            - /url: /products/
+    - paragraph [ref=f2e166]: المخططات تعليمية وتصف نطاقاً مستهدفاً وفق Blueprint. لا تثبت وجود خدمة عاملة أو تكامل أو مستوى حماية أو اعتماد. لا توجد أسعار نهائية معتمدة.
+    - generic [ref=f2e167]:
+      - generic [ref=f2e168]:
+        - paragraph [ref=f2e169]: قبل أي استخدام فعلي
+        - heading "ثلاثة أسئلة تستحق المراجعة." [level=2] [ref=f2e170]: ثلاثة أسئلةتستحق المراجعة.
+      - list [ref=f2e171]:
+        - listitem [ref=f2e172]: ما فئات المعلومات التي تحتاج إلى ضوابط؟
+        - listitem [ref=f2e173]: كيف تُراجع نتيجة الفحص وحدودها؟
+        - listitem [ref=f2e174]: ما الإجراء عند اكتشاف مادة حساسة؟
+    - generic [ref=f2e175]:
+      - heading "مكان المنتج في التصور" [level=2] [ref=f2e176]
+      - paragraph [ref=f2e177]: AIGAS Kernel مكوّن مشترك يوفر الحد الأدنى اللازم للمنتجات، ولا يُباع كمنتج مرخص مستقل. أما المنتجات الخمسة فتُصمم كوحدات مستقلة وظيفياً وتجارياً وفق الـBlueprint.
+      - generic [ref=f2e178]:
+        - link "اطلب معلومات أو عرض سعر" [ref=f2e179] [cursor=pointer]:
+          - /url: /contact/
+        - link "استعراض المنتجات" [ref=f2e180] [cursor=pointer]:
+          - /url: /products/
+    - region "مسار AIGAS Firewall" [ref=f2e181]:
+      - heading "خطوتك التالية مع Firewall" [level=2] [ref=f2e182]
+      - paragraph [ref=f2e183]: فحص نص اصطناعي ومراجعة القرار ومراجعه.
+      - generic [ref=f2e184]:
+        - link "جرّب المختبر الآن بلا حساب — Firewall" [ref=f2e185] [cursor=pointer]:
+          - /url: /products/firewall/?scenario=demo-v1-summary-redact#lab
+          - generic [ref=f2e186]: جرّب المختبر الآن بلا حساب
+          - generic [aria-hidden] [ref=f2e187]: ←
+        - link "ابدأ تجربة تشغيلية 48 ساعة — Firewall" [ref=f2e188] [cursor=pointer]:
+          - /url: /auth/sign-up/?trial=48h&returnTo=%2Fapp%2Ffirewall%2F
+          - text: ابدأ تجربة تشغيلية 48 ساعة
+          - generic [aria-hidden] [ref=f2e189]: ↗
+      - paragraph [ref=f2e190]:
+        - text: المختبر عام وتعليمي. التجربة التشغيلية لمدة 48 ساعة تتطلب حسابًا وتفعيلًا مؤهلًا بعد التحقق من الوصول في الخادم؛ تسجيل الدخول وحده لا يفعّلها.
+        - link "تواصل بشأن الاشتراك" [ref=f2e191] [cursor=pointer]:
+          - /url: /contact/?topic=%D8%B7%D9%84%D8%A8%20%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%D9%83%20%D9%85%D8%B3%D8%AA%D9%82%D9%84%20%E2%80%94%20AIGAS%20Firewall
+    - generic [ref=f2e192]:
+      - paragraph [ref=f2e193]: دليل اختيار المنتج · قدرات مستهدفة وفق Blueprint · 31 أكتوبر 2026
+      - generic [ref=f2e194]:
+        - heading "متى تحتاج طبقة AI Firewall؟" [level=2] [ref=f2e195]
+        - paragraph [ref=f2e196]: عندما ترسل تطبيقات المنشأة طلبات إلى نماذج ذكاء اصطناعي، تحتاج إلى تحديد ما يجوز إرساله وما يجب إيقافه أو تنقيحه. جدار حماية الذكاء الاصطناعي يستهدف تطبيق السياسة عند نقطة تكامل معروفة؛ نطاقه يقتصر على الحركة التي تمر عبره، ولا يشمل تلقائياً كل حساب أو جهاز داخل المنشأة.
+        - paragraph [ref=f2e197]: في تصور AIGAS Firewall، تشمل القرارات السماح والتحذير والتنقيح وطلب الموافقة والحظر. فحص النص وحده لا يغني عن التحقق من هوية المستخدم وصلاحية العملية والوجهة.
+      - generic [ref=f2e198]:
+        - heading "من المراقبة إلى تطبيق القرار" [level=2] [ref=f2e199]
+        - list [ref=f2e200]:
+          - listitem [ref=f2e201]:
+            - strong [ref=f2e202]: حدّد نقطة المرور.
+            - text: تطبيق أو API أو Proxy مصرح به، مع توثيق الحركة التي لا تمر عبره.
+          - listitem [ref=f2e203]:
+            - strong [ref=f2e204]: عرّف البيانات والسياسة.
+            - text: اختر فئات البيانات والوجهات المسموحة ومالك اعتماد التغيير.
+          - listitem [ref=f2e205]:
+            - strong [ref=f2e206]: اختبر حالات اصطناعية.
+            - text: اطلب دليلاً على السماح والحظر والتنقيح والتصعيد، بما فيها حالات فشل الاتصال.
+          - listitem [ref=f2e207]:
+            - strong [ref=f2e208]: راجع قبل التفعيل.
+            - text: قيّم الإنذارات الخاطئة وأثر القرار؛ المراقبة الأولية لا تبرر تجاوز حظر إلزامي.
+      - generic [ref=f2e209]:
+        - heading "وش الفرق بين حماية الطلب وحماية الشبكة؟" [level=2] [ref=f2e210]
+        - paragraph [ref=f2e211]: حماية الشبكة تضبط الاتصالات والبنية، بينما حماية طلب AI تفحص سياق المدخلات والمخرجات والسياسة. تحتاج المنشأة إلى تحديد مسؤولية كل طبقة، خصوصاً عندما يستطيع النموذج استدعاء أدوات. لا توجد طبقة تضمن اكتشاف جميع هجمات Prompt Injection.
+        - paragraph [ref=f2e212]:
+          - text: اقرأ
+          - link "شرح حقن التعليمات وطبقات الدفاع" [ref=f2e213] [cursor=pointer]:
+            - /url: /knowledge/prompt-injection/
+          - text: و
+          - link "قائمة حماية بيانات المنشأة" [ref=f2e214] [cursor=pointer]:
+            - /url: /knowledge/protect-company-data-chatgpt/
+          - text: . التكامل المتقدم مع
+          - link "Risk Engine" [ref=f2e215] [cursor=pointer]:
+            - /url: /products/risk-engine/?scenario=demo-v1-summary-redact
+          - text: اختياري؛ الوظيفة الأساسية المستهدفة لا تشترط شراء منتج آخر.
+  - contentinfo [ref=f2e216]:
+    - generic [ref=f2e217]:
+      - link "BRIGHTAI — الرئيسية" [ref=f2e218] [cursor=pointer]:
+        - /url: /
+        - img "BRIGHTAI — AI Governance and Safety (AIGAS)" [ref=f2e219]
+      - paragraph [ref=f2e220]: ذكاء اصطناعي تثق به... وتحاسبه.
+    - generic [ref=f2e221]:
+      - generic [ref=f2e222]:
+        - heading "المنصة" [level=2] [ref=f2e223]
+        - list [ref=f2e224]:
+          - listitem [ref=f2e225]:
+            - link "Kernel والمنتجات" [ref=f2e226] [cursor=pointer]:
+              - /url: /products/
+              - generic [ref=f2e227]: Kernel
+              - text: والمنتجات
+          - listitem [ref=f2e228]:
+            - link "محاكاة توضيحية" [ref=f2e229] [cursor=pointer]:
+              - /url: /kernel/?scenario=demo-v1-summary-redact
+          - listitem [ref=f2e230]:
+            - link "طلب عرض سعر" [ref=f2e231] [cursor=pointer]:
+              - /url: /pricing/
+          - listitem [ref=f2e232]:
+            - link "مركز المعرفة" [ref=f2e233] [cursor=pointer]:
+              - /url: /docs/
+      - generic [ref=f2e234]:
+        - heading "الحوكمة" [level=2] [ref=f2e235]
+        - list [ref=f2e236]:
+          - listitem [ref=f2e237]:
+            - link "السلامة" [ref=f2e238] [cursor=pointer]:
+              - /url: /pillars/safety/
+          - listitem [ref=f2e239]:
+            - link "الشفافية" [ref=f2e240] [cursor=pointer]:
+              - /url: /pillars/transparency/
+          - listitem [ref=f2e241]:
+            - link "الخصوصية" [ref=f2e242] [cursor=pointer]:
+              - /url: /pillars/privacy/
+          - listitem [ref=f2e243]:
+            - link "الامتثال" [ref=f2e244] [cursor=pointer]:
+              - /url: /compliance/
+      - generic [ref=f2e245]:
+        - heading "الشركة" [level=2] [ref=f2e246]
+        - list [ref=f2e247]:
+          - listitem [ref=f2e248]:
+            - link "الخدمات" [ref=f2e249] [cursor=pointer]:
+              - /url: /services/
+          - listitem [ref=f2e250]:
+            - link "من نحن" [ref=f2e251] [cursor=pointer]:
+              - /url: /about/
+          - listitem [ref=f2e252]:
+            - link "مركز الثقة" [ref=f2e253] [cursor=pointer]:
+              - /url: /trust/
+          - listitem [ref=f2e254]:
+            - link "تواصل معنا" [ref=f2e255] [cursor=pointer]:
+              - /url: /contact/
+      - generic [ref=f2e256]:
+        - heading "قانوني" [level=2] [ref=f2e257]
+        - list [ref=f2e258]:
+          - listitem [ref=f2e259]:
+            - link "سياسة الخصوصية" [ref=f2e260] [cursor=pointer]:
+              - /url: /privacy/
+          - listitem [ref=f2e261]:
+            - link "الشروط والأحكام" [ref=f2e262] [cursor=pointer]:
+              - /url: /terms/
+    - generic [ref=f2e263]: © 2026 BRIGHTAI
