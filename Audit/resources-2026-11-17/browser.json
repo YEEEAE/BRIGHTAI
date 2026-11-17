@@ -1,0 +1,114 @@
+[
+  {
+    "width": 390,
+    "slug": "",
+    "status": 200,
+    "rtl": "rtl",
+    "overflow": false,
+    "heading": "من الفهم إلى وثيقة قابلة للعمل",
+    "downloads": [],
+    "email": 0,
+    "columnWidth": null
+  },
+  {
+    "width": 390,
+    "slug": "ai-use-policy/",
+    "status": 200,
+    "rtl": "rtl",
+    "overflow": false,
+    "heading": "قالب سياسة استخدام الذكاء الاصطناعي",
+    "downloads": [
+      "http://127.0.0.1:4459/resources/v1.0-2026-11-17/ai-use-policy-template.md",
+      "http://127.0.0.1:4459/resources/v1.0-2026-11-17/ai-use-policy-example.md",
+      "http://127.0.0.1:4459/resources/v1.0-2026-11-17/ai-use-policy-README.txt"
+    ],
+    "email": 0,
+    "columnWidth": 240
+  },
+  {
+    "width": 390,
+    "slug": "ai-risk-register/",
+    "status": 200,
+    "rtl": "rtl",
+    "overflow": false,
+    "heading": "سجل مخاطر الذكاء الاصطناعي",
+    "downloads": [
+      "http://127.0.0.1:4459/resources/v1.0-2026-11-17/ai-risk-register-template.csv",
+      "http://127.0.0.1:4459/resources/v1.0-2026-11-17/ai-risk-register-example.csv",
+      "http://127.0.0.1:4459/resources/v1.0-2026-11-17/ai-risk-register-README.txt"
+    ],
+    "email": 0,
+    "columnWidth": 240
+  },
+  {
+    "width": 390,
+    "slug": "responsibility-evidence-matrix/",
+    "status": 200,
+    "rtl": "rtl",
+    "overflow": false,
+    "heading": "مصفوفة المسؤوليات والأدلة",
+    "downloads": [
+      "http://127.0.0.1:4459/resources/v1.0-2026-11-17/responsibility-evidence-matrix-template.csv",
+      "http://127.0.0.1:4459/resources/v1.0-2026-11-17/responsibility-evidence-matrix-example.csv",
+      "http://127.0.0.1:4459/resources/v1.0-2026-11-17/responsibility-evidence-matrix-README.txt"
+    ],
+    "email": 0,
+    "columnWidth": 240
+  },
+  {
+    "width": 1440,
+    "slug": "",
+    "status": 200,
+    "rtl": "rtl",
+    "overflow": false,
+    "heading": "من الفهم إلى وثيقة قابلة للعمل",
+    "downloads": [],
+    "email": 0,
+    "columnWidth": null
+  },
+  {
+    "width": 1440,
+    "slug": "ai-use-policy/",
+    "status": 200,
+    "rtl": "rtl",
+    "overflow": false,
+    "heading": "قالب سياسة استخدام الذكاء الاصطناعي",
+    "downloads": [
+      "http://127.0.0.1:4459/resources/v1.0-2026-11-17/ai-use-policy-template.md",
+      "http://127.0.0.1:4459/resources/v1.0-2026-11-17/ai-use-policy-example.md",
+      "http://127.0.0.1:4459/resources/v1.0-2026-11-17/ai-use-policy-README.txt"
+    ],
+    "email": 0,
+    "columnWidth": 548.5
+  },
+  {
+    "width": 1440,
+    "slug": "ai-risk-register/",
+    "status": 200,
+    "rtl": "rtl",
+    "overflow": false,
+    "heading": "سجل مخاطر الذكاء الاصطناعي",
+    "downloads": [
+      "http://127.0.0.1:4459/resources/v1.0-2026-11-17/ai-risk-register-template.csv",
+      "http://127.0.0.1:4459/resources/v1.0-2026-11-17/ai-risk-register-example.csv",
+      "http://127.0.0.1:4459/resources/v1.0-2026-11-17/ai-risk-register-README.txt"
+    ],
+    "email": 0,
+    "columnWidth": 240
+  },
+  {
+    "width": 1440,
+    "slug": "responsibility-evidence-matrix/",
+    "status": 200,
+    "rtl": "rtl",
+    "overflow": false,
+    "heading": "مصفوفة المسؤوليات والأدلة",
+    "downloads": [
+      "http://127.0.0.1:4459/resources/v1.0-2026-11-17/responsibility-evidence-matrix-template.csv",
+      "http://127.0.0.1:4459/resources/v1.0-2026-11-17/responsibility-evidence-matrix-example.csv",
+      "http://127.0.0.1:4459/resources/v1.0-2026-11-17/responsibility-evidence-matrix-README.txt"
+    ],
+    "email": 0,
+    "columnWidth": 240
+  }
+]

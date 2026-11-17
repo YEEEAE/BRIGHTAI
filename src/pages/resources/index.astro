@@ -1,0 +1,16 @@
+---
+import PageShell from '../../components/PageShell.astro';
+import assets from '../../data/resources.json';
+import '../../styles/resources.css';
+export const prerender = true;
+---
+<PageShell title="أصول حوكمة الذكاء الاصطناعي العربية | BRIGHTAI" description="ثلاثة أصول عربية أصلية: سياسة استخدام AI وسجل مخاطر ومصفوفة مسؤوليات وأدلة، مع ملفات قابلة للتحرير وأمثلة اصطناعية دون اشتراط بريد." crumbs={[{name:'الأصول العملية'}]}>
+<div class="resource-library" dir="rtl">
+<p class="resource-kicker">BRIGHTAI / أدوات العمل / الإصدار 1.0 · 2026-11-17</p>
+<h1>من الفهم إلى وثيقة قابلة للعمل</h1>
+<p class="resource-lead">ابدأ بسياسة، وثّق الخطر، ثم اربط المسؤولية بالدليل. ثلاثة أصول عربية أصلية تكمل أدلة الموقع، متاحة للقراءة والتنزيل دون حساب أو بريد.</p>
+<div class="resource-grid">{assets.map((a,i)=><article><p class="resource-kicker">0{i+1} / {a.format.toUpperCase()} + HTML</p><h2><a href={`/resources/${a.slug}/`}>{a.title}</a></h2><p>{a.summary}</p><a class="resource-action" href={`/resources/${a.slug}/`}>افتح القالب والملفات ←</a></article>)}</div>
+<section><h2>كيف تتصل الأصول ببعضها؟</h2><p>أعطِ السياسة معرفًا مثل POL-001 والاستخدام UC-001. اربط صف الخطر R-001 بهما، ثم سجّل النشاط ACT-001 والدليل E-001 في المصفوفة. اجعل الدليل في مستودعك المقيد؛ لا تضع بيانات حساسة في نسخة عامة.</p></section>
+<section><h2>الترخيص والحدود</h2><p>© 2026 BRIGHTAI. نصوص هذه الأصول وملفاتها تحت <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>: يسمح بالنسخ والتعديل والاستخدام التجاري مع نسب الأصل ورابط الترخيص وبيان التعديلات، دون الإيحاء بتأييد الناشر. الترخيص لا يشمل شعار الموقع أو مواد الغير المرتبطة.</p><p>هذه أدوات تنظيم عمل تحتاج تخصيصًا ومراجعة واعتمادًا داخليًا؛ ليست نموذجًا معتمدًا من SDAIA أو شهادة امتثال أو استشارة قانونية.</p></section>
+</div>
+</PageShell>

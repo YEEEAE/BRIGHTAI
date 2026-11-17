@@ -575,6 +575,38 @@
     {
       "source": "/authors/yazeed-alshareef/index.html",
       "destination": "/authors/yazeed-alshareef/"
+    },
+    {
+      "source": "/resources.html",
+      "destination": "/resources/"
+    },
+    {
+      "source": "/resources/index.html",
+      "destination": "/resources/"
+    },
+    {
+      "source": "/resources/ai-use-policy.html",
+      "destination": "/resources/ai-use-policy/"
+    },
+    {
+      "source": "/resources/ai-use-policy/index.html",
+      "destination": "/resources/ai-use-policy/"
+    },
+    {
+      "source": "/resources/ai-risk-register.html",
+      "destination": "/resources/ai-risk-register/"
+    },
+    {
+      "source": "/resources/ai-risk-register/index.html",
+      "destination": "/resources/ai-risk-register/"
+    },
+    {
+      "source": "/resources/responsibility-evidence-matrix.html",
+      "destination": "/resources/responsibility-evidence-matrix/"
+    },
+    {
+      "source": "/resources/responsibility-evidence-matrix/index.html",
+      "destination": "/resources/responsibility-evidence-matrix/"
     }
   ]
 }
