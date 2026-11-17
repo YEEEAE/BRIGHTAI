@@ -1,0 +1,305 @@
+{
+  "scope": "Offline gtag command payloads; no SDK or GA4 ingestion",
+  "rows": [
+    {
+      "name": "google",
+      "referrer": "https://www.google.com/search?q=SYNTHETIC_SECRET#SYNTHETIC_SECRET",
+      "before": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "after": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "https://www.google.com/",
+        "page_title": "Documentation"
+      },
+      "expectedReferrer": "https://www.google.com/"
+    },
+    {
+      "name": "google-bare",
+      "referrer": "https://google.com/search?q=SYNTHETIC_SECRET",
+      "before": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "after": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "https://google.com/",
+        "page_title": "Documentation"
+      },
+      "expectedReferrer": "https://google.com/"
+    },
+    {
+      "name": "bing",
+      "referrer": "https://www.bing.com/search?q=SYNTHETIC_SECRET",
+      "before": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "after": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "https://www.bing.com/",
+        "page_title": "Documentation"
+      },
+      "expectedReferrer": "https://www.bing.com/"
+    },
+    {
+      "name": "bing-bare",
+      "referrer": "https://bing.com/search?q=SYNTHETIC_SECRET",
+      "before": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "after": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "https://bing.com/",
+        "page_title": "Documentation"
+      },
+      "expectedReferrer": "https://bing.com/"
+    },
+    {
+      "name": "editorial-unapproved",
+      "referrer": "https://www.reuters.com/technology/SYNTHETIC_SECRET?email=private@example.test#SYNTHETIC_SECRET",
+      "before": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "after": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "expectedReferrer": ""
+    },
+    {
+      "name": "direct",
+      "referrer": "",
+      "before": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "after": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "expectedReferrer": ""
+    },
+    {
+      "name": "credentials",
+      "referrer": "https://user:SYNTHETIC_SECRET@www.google.com/search",
+      "before": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "after": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "expectedReferrer": ""
+    },
+    {
+      "name": "suffix-attack",
+      "referrer": "https://www.google.com.evil.test/SYNTHETIC_SECRET",
+      "before": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "after": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "expectedReferrer": ""
+    },
+    {
+      "name": "subdomain-sensitive",
+      "referrer": "https://SYNTHETIC_SECRET.google.com/",
+      "before": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "after": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "expectedReferrer": ""
+    },
+    {
+      "name": "lookalike",
+      "referrer": "https://evil-brightai.live/",
+      "before": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "after": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "expectedReferrer": ""
+    },
+    {
+      "name": "script",
+      "referrer": "javascript:alert(1)",
+      "before": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "after": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "expectedReferrer": ""
+    },
+    {
+      "name": "local-ip",
+      "referrer": "http://127.0.0.1/private",
+      "before": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "after": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "expectedReferrer": ""
+    },
+    {
+      "name": "private-ip",
+      "referrer": "https://192.168.1.1/private",
+      "before": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "after": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "expectedReferrer": ""
+    },
+    {
+      "name": "nondefault-port",
+      "referrer": "https://www.google.com:8443/private",
+      "before": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "after": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "expectedReferrer": ""
+    },
+    {
+      "name": "relative",
+      "referrer": "/private",
+      "before": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "after": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "expectedReferrer": ""
+    },
+    {
+      "name": "backslash",
+      "referrer": "https://www.google.com\\private",
+      "before": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "after": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "expectedReferrer": ""
+    },
+    {
+      "name": "whitespace",
+      "referrer": " https://www.google.com/",
+      "before": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "after": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "expectedReferrer": ""
+    },
+    {
+      "name": "oversized",
+      "referrer": "https://www.google.com/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "before": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "after": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "",
+        "page_title": "Documentation"
+      },
+      "expectedReferrer": ""
+    },
+    {
+      "name": "internal",
+      "referrer": "https://brightai.live/docs/?token=SYNTHETIC_SECRET#SYNTHETIC_SECRET",
+      "before": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "https://brightai.live/docs/",
+        "page_title": "Documentation"
+      },
+      "after": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "https://brightai.live/docs/",
+        "page_title": "Documentation"
+      },
+      "expectedReferrer": "https://brightai.live/docs/"
+    },
+    {
+      "name": "internal-private",
+      "referrer": "https://brightai.live/auth/callback/SYNTHETIC_SECRET",
+      "before": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "https://brightai.live/auth/",
+        "page_title": "Documentation"
+      },
+      "after": {
+        "page_location": "https://brightai.live/docs/?utm_source=newsletter&utm_medium=email",
+        "page_referrer": "https://brightai.live/auth/",
+        "page_title": "Documentation"
+      },
+      "expectedReferrer": "https://brightai.live/auth/"
+    }
+  ]
+}

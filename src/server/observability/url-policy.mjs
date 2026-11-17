@@ -8,8 +8,9 @@
 // and are a common place for client-only secrets.
 //
 // The approved list belongs to the P21 URL privacy decision. Until that
-// document exists this module is the local default: widening either list is a
-// privacy decision that needs the same approval P21 requires, not a code change.
+// document exists this module is the local default. The owner approved the
+// exact Google/Bing origin-only addition on 2026-11-17; other additions still
+// require a named privacy decision. This is not blanket P21/legal approval.
 //
 // Sentry and PostHog payloads built in this directory carry no URL field at all;
 // they use fixed route labels from redact.mjs. This module exists for the
@@ -26,6 +27,10 @@ export const PAGE_QUERY_ALLOWLIST = Object.freeze([
 
 // Exact hostnames only. No wildcard, no suffix match: `evil-brightai.live`
 // must not inherit the allowance of `brightai.live`.
+// Owner approval in this chat (2026-11-17): origin-only Google/Bing.
+// Editorial domains remain denied until separately named and approved.
+export const ATTRIBUTION_HOST_ALLOWLIST = Object.freeze(['google.com', 'www.google.com', 'bing.com', 'www.bing.com']);
+
 export const REFERRER_HOST_ALLOWLIST = Object.freeze(['brightai.live', 'www.brightai.live']);
 
 // Campaign values stay short, printable and free of separators that could carry
@@ -79,12 +84,14 @@ export function safeAnalyticsUrl(value, base) {
   return out.href;
 }
 
-// Allowed for a referrer: same origin, or an explicitly listed external host,
-// and then only origin + pathname. Query and fragment are never forwarded, and
-// a private pathname collapses exactly like a page location.
+// Referrers require absolute HTTP(S), no credentials, whitespace, backslashes
+// or non-default ports. Google/Bing use origin only; internal origins retain
+// the existing collapsed pathname contract. Unknown/editorial hosts are denied.
 export function safeAnalyticsReferrer(value, selfOrigin) {
-  const url = parse(value, selfOrigin);
-  if (!url) return null;
+  if (typeof value !== 'string' || /[\\\s]/.test(value)) return null;
+  const url = parse(value);
+  if (!url || url.port) return null;
+  if (ATTRIBUTION_HOST_ALLOWLIST.includes(url.hostname.toLowerCase())) return `${url.origin}/`;
   let self = null;
   try { self = selfOrigin ? new URL(selfOrigin) : null; } catch { self = null; }
   const sameOrigin = Boolean(self) && bareOrigin(url) === bareOrigin(self);
@@ -98,6 +105,8 @@ export function describeUrlPolicy() {
   return {
     pageQueryAllowlist: [...PAGE_QUERY_ALLOWLIST],
     referrerHostAllowlist: [...REFERRER_HOST_ALLOWLIST],
+    attributionHostAllowlist: [...ATTRIBUTION_HOST_ALLOWLIST],
+    externalAttribution: 'approved exact hosts, origin only',
     privatePath: 'collapsed to /auth/, /app/ or /api/',
     fragment: 'dropped',
     unknownQuery: 'dropped',

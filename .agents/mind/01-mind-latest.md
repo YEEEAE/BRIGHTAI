@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-17 VERIFIED LOCAL GA4 attribution: موافقةالمالكGoogle/Bingأربعةexacthosts→originفقط؛التحريريمحجوبحتىاعتمادنطاقه؛unit45/Chrome20double-init/CSP PASS؛SDK/ingestion/account NOT VERIFIED؛لاتصحيحDirectتاريخي/لانشر؛ `audit/ga4-attribution-2026-11-17/REPORT.md`.
 - 2026-11-17 VERIFIED LOCAL sitemap contract: سياسةAstro/buildموحدة؛57/57 GET+HEAD/canonical/index PASS،aliases138/276 وunit5/buildPASS؛404المباشرومفقود404؛حي sitemap.xml200/264يتضمنdemoمفهرس و404/200،current57PASS؛اتحاد311مفحوص؛لانشر/GSC؛ `audit/sitemap-contract-2026-11-17/REPORT.md` وخطةOPERATOR-PLAN.
 - 2026-11-17 VERIFIED READONLY SEO/UX: HEAD eb1beded؛57/57 sitemap URLs حي200/metadata سليمة آليًا؛GSC18أكتوبر–14نوفمبر9clicks/970impressions مقابل7/688؛GA4 180sessions/Organic4؛privacy الحيةتنفيGA رغمتحميله؛GAيحذفexternalreferrer (أثرالإسناد NOT VERIFIED)؛Sentry0/PostHogلاeventsمرصودة30يومًا؛SemrushAPIunitsنفدت؛لا تنفيذ تحسينات/نشر.
 - 2026-11-17 VERIFIED LOCAL SEO discovery+fixes: جرد492URL/مخطط؛57صفحةعامة/build/routesPASS وunit4؛READMEحُذف/demo6description/حارسHTML؛138aliasمحليPASS لكنحي77×200/61×404؛sitemapقديم264/حالي57؛235صفحةحيةبلامصدرحالي؛التسجيلحي404؛لا نشر؛ `audit/repository-seo-discovery-2026-11-17/REPORT.md`.
@@ -61,6 +62,12 @@
 - 2026-11-16 حزمة الإغلاق النشطة `Audit/prompts.md` v2.1 مشتقة من `Audit/BRIGHT-AI-2026-FINAL-360-AUDIT.html`: 16 برومبتًا/G-01…G-16/W1–W9؛ سجل 50 متطلبًا معلن غير مسرود؛ رأس التقرير `7385200` والرأس الحالي `cb9863f`؛ `Audit/final-360-2026-11-10/*` غير موجود على القرص.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-17] — إسناد GA4 بأقل إفصاح
+- **تم:** Google/Bing origin-only بموافقةمحليةصريحة؛حارسinitواحدومزامنةgate/CSPوإشعارالخصوصية؛التحريرييبقىمحجوبًا.
+- **التحقق:** PASS — unit45/Chrome20/compile2؛أدلةpayloadقبل/بعد؛SDKوالحساب NOT VERIFIED.
+- **الحالة:** DONE محليًا؛لانشرأوتعديلحسابأوتصحيحالتقاريرالتاريخية.
+- **ملفات:** `audit/ga4-attribution-2026-11-17/REPORT.md`.
 
 ## [2026-11-17] — Sitemap contract و404
 - **تم:** توحيد سياسة الفهرسة وتشديدcanonical/redirect؛404حقيقي صريح؛خطةأصل/حافةمستقلة.

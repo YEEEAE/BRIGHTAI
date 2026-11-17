@@ -11,8 +11,12 @@ const PAGE = `<!doctype html>
 <html lang="ar-SA" dir="rtl">
 <head>
 <script is:inline>
+      (function () {
+      if (window.__brightaiGa4Initialized) return;
+      window.__brightaiGa4Initialized = true;
       window.dataLayer = window.dataLayer || [];
       function gtag(){window.dataLayer.push(arguments);}
+      window.gtag = gtag;
       gtag('js', new Date());
       // Mirrors src/server/observability/url-policy.mjs: allowlist, not a filter
       // that forwards whatever is left. Unknown query keys and the whole
@@ -20,6 +24,8 @@ const PAGE = `<!doctype html>
       // empty page_referrer instead of falling back to document.referrer.
       const analyticsQueryAllowlist = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
       const analyticsReferrerHosts = ['brightai.live', 'www.brightai.live'];
+      // Owner-approved locally 2026-11-17. Exact hosts; no wildcard/subdomains.
+      const analyticsAttributionHosts = ['google.com', 'www.google.com', 'bing.com', 'www.bing.com'];
       // Private surfaces collapse to a section root: an auth callback code,
       // invitation token or record id can sit in a path segment, not only in
       // the query string. Public paths are forwarded only while short and plain.
@@ -32,6 +38,7 @@ const PAGE = `<!doctype html>
       }
       function analyticsUrl(value, base) {
         try {
+          if (typeof value !== 'string' || !value || value.length > 2048) return null;
           const url = new URL(value, base);
           if (!/^https?:$/.test(url.protocol) || url.username || url.password) return null;
           const out = new URL(url.protocol + '//' + url.host + analyticsPath(url.pathname));
@@ -46,8 +53,11 @@ const PAGE = `<!doctype html>
       }
       function analyticsReferrer(value) {
         try {
+          if (typeof value !== 'string' || !value || value.length > 2048 || /[\\\\\\s]/.test(value)) return null;
           const url = new URL(value);
           if (!/^https?:$/.test(url.protocol) || url.username || url.password) return null;
+          if (url.port) return null;
+          if (analyticsAttributionHosts.includes(url.hostname.toLowerCase())) return url.origin + '/';
           if (url.origin !== window.location.origin && !analyticsReferrerHosts.includes(url.hostname.toLowerCase())) return null;
           return url.protocol + '//' + url.host + analyticsPath(url.pathname);
         } catch {
@@ -60,7 +70,9 @@ const PAGE = `<!doctype html>
       // exists to drop. An empty string records "no referrer".
       analyticsPage.page_referrer = (document.referrer ? analyticsReferrer(document.referrer) : null) || '';
       analyticsPage.page_title = /^\\/(app|auth)(\\/|$)/.test(window.location.pathname) ? 'BRIGHTAI' : document.title;
+      // One automatic page_view via config; never add a manual page_view here.
       gtag('config', 'G-9LMB4PGTWJ', analyticsPage);
+      })();
     </script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9LMB4PGTWJ"></script>
 <meta charset="utf-8" />

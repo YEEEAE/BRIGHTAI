@@ -318,7 +318,7 @@ test('URL/referrer policy drops a free query and an unknown referrer instead of 
   assert.equal(safeAnalyticsUrl('https://user:pw@brightai.live/', 'https://brightai.live/'), null);
 
   assert.equal(safeAnalyticsReferrer('https://brightai.live/docs/?q=secret', 'https://brightai.live'), 'https://brightai.live/docs/');
-  assert.equal(safeAnalyticsReferrer('https://www.google.com/search?q=SYNTHETIC', 'https://brightai.live'), null);
+  assert.equal(safeAnalyticsReferrer('https://www.google.com/search?q=SYNTHETIC', 'https://brightai.live'), 'https://www.google.com/');
   assert.equal(safeAnalyticsReferrer('https://evil-brightai.live/', 'https://brightai.live'), null);
   assert.equal(safeAnalyticsReferrer('', 'https://brightai.live'), null);
   assert.equal(safeAnalyticsReferrer('https://app.brightai.live/x?y=1', 'https://app.brightai.live'), 'https://app.brightai.live/x');
@@ -359,9 +359,8 @@ test('the shipped GA4 snippet obeys the same allowlist as the policy module', ()
   }
 
   const leaked = analyticsPage('https://brightai.live/docs/?q=SYNTHETIC&token=SYNTHETIC&utm_source=newsletter#fragment', 'https://www.google.com/search?q=SYNTHETIC');
-  // page_referrer must be present and empty: omitting it lets gtag fall back to
-  // the raw document.referrer this policy exists to drop.
-  assert.deepEqual(leaked, { page_location: 'https://brightai.live/docs/?utm_source=newsletter', page_referrer: '' });
+  // Approved search referrers carry only their origin; raw query never leaves.
+  assert.deepEqual(leaked, { page_location: 'https://brightai.live/docs/?utm_source=newsletter', page_referrer: 'https://www.google.com/' });
   assert.equal(JSON.stringify(leaked).includes('SYNTHETIC'), false);
 
   assert.deepEqual(analyticsPage('https://brightai.live/pricing/?utm_medium=email&email=a@b.test', ''), { page_location: 'https://brightai.live/pricing/?utm_medium=email', page_referrer: '' });
