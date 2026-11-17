@@ -2,11 +2,12 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createRiskAssist,createAssistHandler,validateDraft} from '../src/server/risk-engine/assist.mjs';
 import {evaluate,acceptanceDecision} from '../src/server/risk-engine/core.mjs';
+process.env.GROQ_MODEL = 'isolated-test-model';
 const draft={scenarios:['سيناريو اصطناعي'],suggestedControls:['مراجعة بشرية'],reviewQuestions:['ما حدود الاستخدام؟']};
 const body={purpose:'غرض اصطناعي',data_classification:'PUBLIC',synthetic:true};
 function fixture(options={}){
  let calls=0;
- const assist=createRiskAssist({transact:fn=>fn({}),guard:async()=>({tenant:{tenant_id:'tenant-a'}}),access:async()=>({role:'OWNER'}),models:tenant=>{assert.equal(tenant,'tenant-a');return [{}];},request:async input=>{calls++;assert.ok(!JSON.stringify(input).includes('person@example.com'));return {choices:[{message:{content:JSON.stringify(draft)}}]};},...options});
+ const assist=createRiskAssist({transact:fn=>fn({}),guard:async()=>({tenant:{tenant_id:'tenant-a'}}),access:async()=>({role:'OWNER'}),models:tenant=>{assert.equal(tenant,'tenant-a');return [{providerModel:'other-model'}, {providerModel:'isolated-test-model'}];},request:async input=>{calls++;assert.equal(input.model.providerModel,'isolated-test-model');assert.ok(!JSON.stringify(input).includes('person@example.com'));return {choices:[{message:{content:JSON.stringify(draft)}}]};},...options});
  return {assist,calls:()=>calls};
 }
 test('strict complete output, no extra/nested/numeric/empty fields or malformed JSON',()=>{

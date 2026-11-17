@@ -70,3 +70,37 @@ test('input exceeding reserved bound never dispatches',async t=>{
   let calls=0;const gateway=fixture(t,async()=>{calls++;return ok();});
   await assert.rejects(gateway({model,messages:[{role:'user',content:'x'.repeat(81)}]}),{code:'REQUEST_LIMIT_REACHED'});assert.equal(calls,0);
 });
+
+test('ten synthetic complaints exercise the Chat egress policy at the isolated fetch boundary', async t => {
+  const { protectContext } = await import('../src/server/secure-chat/integration.mjs');
+  const cases = JSON.parse(readFileSync(new URL('../audit/groq-complaints-2026-11-18/cases.json', import.meta.url)));
+  const wireModel = { ...model, maxRequestTokens: 2048, maxOutputTokens: 256 };
+  const rules = [{ id:'allow-test-marker', name:'Test only', match_type:'CONTAINS', pattern:'SYNTHETIC', action:'ALLOW', priority:10, enabled:true, version:1 }];
+  let dispatched = 0;
+  let scenario;
+  const gateway = fixture(t, async (_url, { body }) => {
+    dispatched++;
+    const payload = JSON.parse(body);
+    assert.equal(payload.model, process.env.GROQ_MODEL);
+    for (const sensitive of scenario.remove) assert.ok(!body.includes(sensitive), scenario.id);
+    if (scenario.remove.length) assert.match(payload.messages[0].content, /\[بيانات منقحة\]/);
+    assert.equal(payload.messages[0].content, `SYNTHETIC ${scenario.text.normalize('NFKC').replace(/[٠-٩]/g, digit => String(digit.charCodeAt(0) - 0x660)).replace(/demo@example\.invalid|SA0{22}|0500000000|1000000000/g, '[بيانات منقحة]')}`);
+    return Response.json({
+      choices:[{finish_reason:'stop',message:{role:'assistant',content:scenario.reference}}],
+      usage:{prompt_tokens:180,completion_tokens:60,total_tokens:240},
+    });
+  }, { registry:[wireModel] });
+  for (scenario of cases) {
+    const send = async () => gateway({
+      model: wireModel,
+      messages: protectContext([{role:'user',content:`SYNTHETIC ${scenario.text}`}], rules),
+    });
+    if (scenario.blocked) {
+      await assert.rejects(send(), {code:'SENSITIVE_CONTENT_BLOCKED'});
+      continue;
+    }
+    const reply = (await send()).choices[0].message.content;
+    for (const fact of scenario.facts) assert.ok(reply.includes(fact), scenario.id);
+  }
+  assert.equal(dispatched, 9);
+});

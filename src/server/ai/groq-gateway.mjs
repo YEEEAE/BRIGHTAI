@@ -5,7 +5,19 @@ import { KernelError } from '../kernel/core.mjs';
 import { resolveProviderSecret } from '../kernel/env.mjs';
 import { APPROVED_MODELS } from '../secure-chat/models.mjs';
 
-const failure = (code, status = 503) => new KernelError(status, code, 'تعذر الاتصال بالمزود؛ استخدم المسار الحتمي دون إرسال خارجي.');
+const failureMessages = {
+  REQUEST_LIMIT_REACHED: 'تجاوز النص حد الإدخال للنموذج. اختصر النص قبل المحاولة.',
+  BUDGET_CAP_REACHED: 'بلغت ميزانية الاستخدام حدّها. انتظر تجددها أو تواصل مع مسؤول المؤسسة.',
+  GROQ_CONCURRENCY_LIMIT: 'وصل عدد الطلبات الجارية إلى الحد. حاول بعد انتهاء الطلبات الحالية.',
+  GROQ_RATE_LIMIT: 'بلغ المزود حد الطلبات مؤقتًا. انتظر قليلًا قبل المحاولة.',
+  PROVIDER_TIMEOUT: 'انتهت مهلة المزود قبل تأكيد الرد. قد يكون المزود عالج الطلب.',
+  NO_APPROVED_MODEL: 'لا يوجد نموذج معتمد يطابق إعداد الخادم. لم يُرسل النص.',
+  PROVIDER_NOT_CONFIGURED: 'المزود غير مهيأ على الخادم. لم يُرسل النص.',
+  BUDGET_STORE_UNAVAILABLE: 'تعذر التحقق من ميزانية الاستخدام. تواصل مع مسؤول المؤسسة.',
+  GROQ_CONFIG_INVALID: 'إعداد حدود المزود غير صالح. لم يُرسل النص.',
+};
+const failure = (code, status = 503) => new KernelError(status, code,
+  failureMessages[code] ?? 'تعذر الحصول على رد من المزود. يمكنك متابعة العمل يدويًا.');
 const positive = (value, fallback) => {
   const n = Number(value ?? fallback);
   if (!Number.isFinite(n) || n <= 0) throw failure('GROQ_CONFIG_INVALID');
@@ -135,7 +147,7 @@ export function createGroqGateway({ registry = APPROVED_MODELS, fetchImpl = (...
     } catch (error) {
       // Discard upstream messages, bodies, causes and headers entirely.
       if (error instanceof KernelError) throw error;
-      throw failure(deadline.aborted ? 'PROVIDER_TIMEOUT' : 'PROVIDER_UNAVAILABLE', 502);
+      throw deadline.aborted ? failure('PROVIDER_TIMEOUT', 504) : failure('PROVIDER_UNAVAILABLE', 502);
     } finally {
       transact(path, state => {
         state.active--;

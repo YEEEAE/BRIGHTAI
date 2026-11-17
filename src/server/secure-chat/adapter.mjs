@@ -17,6 +17,7 @@ export function providerConfiguration(model) {
     if (Number.isFinite(expiresAt) && expiresAt <= Date.now()) throw approvedModelUnavailable('expired');
     if (!approval?.reference || approval.noTraining !== true || !approval.retentionReference || !approval.regionReference ||
         !Number.isFinite(expiresAt) || model.protocol !== 'CHAT_COMPLETIONS_V1' || !model.region || !model.providerModel ||
+        model.providerModel !== process.env.GROQ_MODEL ||
         !Number.isSafeInteger(model.maxOutputTokens) || model.maxOutputTokens < 1 ||
         !Number.isSafeInteger(model.maxRequestTokens) || model.maxRequestTokens <= model.maxOutputTokens ||
         !Number.isSafeInteger(model.maxInputBytes) || model.maxInputBytes < 1 ||

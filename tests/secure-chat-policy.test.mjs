@@ -51,11 +51,19 @@ test('model reply uses baseline and enforced Firewall before disclosure', () => 
 });
 
 
-test('reviewed 8000-byte cap is independent of the conservative request token bound', () => {
+test('reviewed 8000-byte cap is independent of the conservative request token bound', (t) => {
+  const prior = process.env.GROQ_MODEL;
+  t.after(() => {
+    if (prior === undefined) delete process.env.GROQ_MODEL;
+    else process.env.GROQ_MODEL = prior;
+  });
+  delete process.env.GROQ_MODEL;
   const model = { protocol: 'CHAT_COMPLETIONS_V1', region: 'SYNTHETIC', providerModel: 'SYNTHETIC',
     endpoint: 'https://api.groq.com/openai/v1/chat/completions', apiKeyEnv: 'AIGAS_SC_FIXTURE_API_KEY',
     maxOutputTokens: 1024, maxRequestTokens: 4096, maxInputBytes: 8000, inputOverheadTokens: 512, timeoutMs: 20000,
     approval: { reference: 'SYNTHETIC', expiresAt: '2099-01-01T00:00:00Z', noTraining: true, retentionReference: 'SYNTHETIC', regionReference: 'SYNTHETIC' } };
+  assert.throws(() => providerConfiguration(model), { code: 'NO_APPROVED_MODEL' });
+  process.env.GROQ_MODEL = model.providerModel;
   // Passing the reviewed shape does not invent a provider secret or send data.
   assert.throws(() => providerConfiguration(model), { code: 'PROVIDER_NOT_CONFIGURED' });
 });

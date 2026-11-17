@@ -373,6 +373,7 @@ composer.addEventListener('submit', event => {
         return;
       }
       if (value.unauthorized || value.status === 403) { showError(friendlyError(value), !!value.unauthorized); return; }
+      const gatewayLimit = ['BUDGET_CAP_REACHED', 'GROQ_CONCURRENCY_LIMIT', 'GROQ_RATE_LIMIT', 'REQUEST_LIMIT_REACHED'].includes(value.code ?? '');
       const failure = value.code === 'PROVIDER_TIMEOUT'
         ? 'انتهت مهلة المزود قبل تأكيد رد مكتمل؛ قد يكون الاستهلاك حدث. لا تُعد الإرسال تلقائيًا.'
         : value.code === 'REQUEST_CANCELLED'
@@ -394,6 +395,7 @@ composer.addEventListener('submit', event => {
       status.textContent = 'لم يصل رد من نموذج.';
       if (value.code === 'PROVIDER_TIMEOUT') setComposerState('TIMEOUT', 'انتهت المهلة قبل تأكيد الرد. الحصة قد تبقى محجوزة؛ لا إعادة إرسال تلقائية.');
       else if (value.code === 'REQUEST_CANCELLED') setComposerState('CANCELLED', 'أُوقف الطلب؛ قد يكون المزود استهلكه. بقيت المسودة في الحقل.');
+      else if (gatewayLimit) setComposerState('LIMIT', failure);
       else if (value.code === 'USAGE_LIMIT_REACHED') setComposerState('LIMIT', 'وصلت إلى حد الاستخدام المعتمد؛ الإرسال متوقف حتى تتجدد الحصة.');
       else if (value.code === 'USAGE_POLICY_NOT_CONFIGURED' || value.code === 'USAGE_POLICY_INVALID' || value.code === 'USAGE_POLICY_NOT_READY') setComposerState('NO_QUOTA', 'الإرسال متوقف: لا توجد حصة استخدام معتمدة وقابلة للقياس.');
       else if (value.code === 'PROVIDER_UNAVAILABLE' || value.code === 'PROVIDER_REJECTED') setComposerState('PROVIDER_OFFLINE', 'المزود غير متاح أو رفض الطلب؛ لا تأكيد لنجاح ولا إعادة إرسال تلقائية.');
