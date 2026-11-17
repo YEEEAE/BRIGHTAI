@@ -4,7 +4,7 @@ const { complaintStep, next = 'firewall' } = Astro.props;
 ---
 {complaintStep ? <section class="scenario-context" aria-label="سياق الشكوى">
   <p><strong>شكوى تأخر الشحنة</strong> · المحطة {complaintStep} من {complaintStations.length}</p>
-  <p>{complaintStep === 1 ? complaint : complaintStations[0].example}</p>
+  {complaintStep === 1 && <p>{complaint}</p>}
 </section> : <section class="scenario-context" data-scenario-context>
   <p>سياق الرحلة العام: <bdi data-scenario-id>demo-v1-summary-redact</bdi></p>
   <p data-scenario-summary>مساعد تلخيص افتراضي · تنقيح المعرّف الخيالي</p>

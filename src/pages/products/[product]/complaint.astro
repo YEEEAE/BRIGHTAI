@@ -19,39 +19,76 @@ const nextProduct = next && productForSlug(next.slug);
 ---
 <PageShell title={`شكوى تأخر الشحنة | ${product.name} — BRIGHTAI`} description={station.question} robots="noindex, follow" crumbs={[{ name: 'المنتجات', href: '/products/' }, { name: 'شكوى تأخر الشحنة' }]}>
   <LabShell kind={station.slug} complaintStep={index + 1}>
-    <section class="complaint-station" aria-labelledby="complaint-question">
+    <section class="complaint-station" aria-labelledby="complaint-question" data-complaint={station.slug}>
       <h2 id="complaint-question">{station.question}</h2>
-      <details data-complaint-result>
-        <summary>{station.action}</summary>
-        <div class="complaint-result">
-          <h3>النتيجة في هذا المثال</h3>
-          <p>{station.result}</p>
-          {'example' in station && <blockquote>{station.example}</blockquote>}
-          {next ? <a href={complaintPath(next.slug)}>تابع إلى <bdi dir="ltr">{nextProduct?.name}</bdi> <span aria-hidden="true">←</span></a> : <a href="/products/">العودة للمنتجات <span aria-hidden="true">←</span></a>}
+      <noscript><p>تحتاج هذه الرحلة JavaScript لتسجيل الأفعال وحفظها بين المحطات.</p></noscript>
+      <p role="status" data-journey-status></p>
+      <a data-journey-resume hidden>تابع من المحطة المتاحة ←</a>
+
+      {station.slug === 'firewall' && <>
+        <div data-stages="start" hidden><button type="button" data-journey-action="redact">طبّق قاعدة التنقيح</button></div>
+        <div data-field-panel="redaction" hidden>
+          <h3>خرج Firewall</h3><p data-rule></p><blockquote data-redacted></blockquote>
+          <p>قاعدة المختبر تطابق المعرّف الاصطناعي المحدد في المثال.</p>
         </div>
-      </details>
+      </>}
+
+      {station.slug === 'secure-chat' && <>
+        <div data-stages="redact" hidden><p data-chat-input></p><button type="button" data-journey-action="draft">أنشئ مسودة الرد</button></div>
+        <div class="draft-card" data-field-panel="draft" hidden><h3>مسودة المساعد · تحتاج مراجعة</h3><blockquote data-draft></blockquote></div>
+        <p>صياغة محددة مسبقًا تمر عبر قواعد المحادثة المحلية دون مزوّد خارجي.</p>
+      </>}
+
+      {station.slug === 'risk-engine' && <>
+        <div data-stages="draft" hidden><p>نفترض احتمال ٣ وأثر ٢ لخطر إعطاء العميل وعدًا غير مؤكد.</p><button type="button" data-journey-action="assess">احسب الخطر قبل المراجعة</button></div>
+        <div data-field-panel="risk" hidden><h3>تقدير اصطناعي</h3><p data-risk></p><p data-treatment></p></div>
+      </>}
+
+      {station.slug === 'human-gate' && <>
+        <div class="draft-card" data-field-panel="risk" hidden><h3>مسودة المساعد</h3><blockquote data-draft></blockquote></div>
+        <div data-stages="assess" hidden><button type="button" data-journey-action="submit">أحل المسودة إلى المشرف</button></div>
+        <div class="review-card" data-stages="submit edit return approve" hidden>
+          <h3>قرار المشرف · دور تمثيلي</h3>
+          <div data-stages="submit" hidden>
+            <p>هل تُعاد المسودة بسبب الوعد، أم تُعدّل قبل اعتمادها؟</p>
+            <div class="journey-actions">
+              <button type="button" data-journey-action="return">أعد المسودة بسبب وعد الاسترجاع</button>
+              <button type="button" data-journey-action="edit">استبدل الوعد بطلب تحقق</button>
+            </div>
+          </div>
+          <div data-field-panel="revision" hidden><h4>الرد الذي عدّله المشرف</h4><blockquote data-revision></blockquote></div>
+          <div data-stages="edit" hidden><button type="button" data-journey-action="approve">اعتمد الرد المعدّل</button></div>
+          <div data-stages="return approve" hidden><p data-decision></p></div>
+          <p>الأدوار محاكاة داخل المتصفح. لا إرسال للعميل ولا تنفيذ لاسترجاع.</p>
+        </div>
+      </>}
+
+      {station.slug === 'ledger' && <>
+        <h3>أحداث هذه الجلسة · دليل اصطناعي</h3>
+        <p data-ledger-summary></p>
+        <ol data-ledger-events></ol>
+        <p>يُحفظ السجل في هذا التبويب. التحقق من البصمات محلي ويغطي السلسلة المعروضة فقط.</p>
+      </>}
+
+      {next && <a class="journey-next" data-journey-next href={complaintPath(next.slug)} hidden>تابع إلى <bdi dir="ltr">{nextProduct?.name}</bdi> <span aria-hidden="true">←</span></a>}
     </section>
   </LabShell>
 </PageShell>
-<script>
-  const result = document.querySelector<HTMLDetailsElement>('[data-complaint-result]');
-  document.querySelector('[data-complaint-restart]')?.addEventListener('click', event => {
-    if (!result || location.pathname !== '/products/firewall/complaint/') return;
-    if (!(event instanceof MouseEvent) || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    event.preventDefault();
-    result.open = false;
-    result.querySelector('summary')?.focus();
-  });
-</script>
+<script src="../../../scripts/complaint-journey.ts"></script>
 <style>
-  .complaint-station { padding: clamp(18px, 4vw, 32px); }
+  .complaint-station { padding: clamp(18px, 4vw, 32px); overflow-wrap: anywhere; }
   .complaint-station h2 { margin-block: 0 16px; font-size: clamp(20px, 3vw, 28px); line-height: 1.5; }
-  details { padding: 0; border: 0; }
-  summary, .complaint-result a { min-block-size: 48px; padding: 10px 16px; border-radius: var(--radius-control); }
-  summary { inline-size: fit-content; background: var(--color-action); color: var(--color-action-contrast); cursor: pointer; }
-  summary:hover { background: var(--color-action-hover-strong); }
-  .complaint-result { margin-block-start: 16px; padding: 16px; border-inline-start: 3px solid var(--icon-accent); background: var(--surface-raised); }
-  .complaint-result h3, .complaint-result p { margin-block: 0 8px; }
-  blockquote { margin: 0 0 8px; overflow-wrap: anywhere; }
-  .complaint-result a { display: inline-block; padding-inline: 0; align-content: center; color: var(--color-focus); }
+  .complaint-station h3, .complaint-station h4 { margin-block: 0 8px; }
+  .complaint-station p { margin-block: 8px; }
+  blockquote { margin: 0 0 8px; }
+  button, .journey-next, [data-journey-resume] { min-block-size: 48px; padding: 10px 16px; border-radius: var(--radius-control); }
+  button { background: var(--color-action); color: var(--color-action-contrast); border: 0; cursor: pointer; font: inherit; }
+  button:hover { background: var(--color-action-hover-strong); }
+  a { display: inline-flex; align-items: center; gap: 8px; color: var(--color-focus); }
+  a[hidden] { display: none; }
+  .journey-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .draft-card, .review-card { margin-block: 12px; padding: 16px; background: var(--surface-raised); }
+  .draft-card { border: 1px dashed var(--border-strong); }
+  .review-card { border: 1px solid var(--border-strong); border-inline-start: 4px solid var(--icon-accent); }
+  ol { padding-inline-start: 26px; }
 </style>

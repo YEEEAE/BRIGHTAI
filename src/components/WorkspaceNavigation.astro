@@ -1,9 +1,10 @@
 ---
 import { productNavigation } from '../shared/product-navigation.mjs';
 import ProductIcon from './ProductIcon.astro';
-import { complaintPath } from '../shared/complaint-journey';
+import { complaintPath, complaintStations } from '../shared/complaint-journey';
 const { complaint = false, mode = 'lab', current = '' } = Astro.props;
-const links = productNavigation.map(p => ({ ...p, href: complaint ? complaintPath(p.slug) : mode === 'lab' ? `${p.publicPath}#lab` : p.workspacePath }));
+const products = complaint ? complaintStations.map(station => productNavigation.find(p => p.slug === station.slug)!) : productNavigation;
+const links = products.map(p => ({ ...p, href: complaint ? complaintPath(p.slug) : mode === 'lab' ? `${p.publicPath}#lab` : p.workspacePath }));
 ---
 <details class="workspace-menu" data-workspace-menu>
   <summary>التنقل بين {mode === 'lab' ? 'المختبرات' : 'المنتجات'} <span aria-hidden="true">⌄</span></summary>
