@@ -9,7 +9,7 @@ const order = ['firewall', 'risk-engine', 'human-gate', 'ledger', 'secure-chat']
 const products = order.map(slug => productNavigation.find(p => p.slug === slug)!);
 ---
 <section id="lab" class="experience-hub" tabindex="-1" aria-labelledby="catalog-title">
-  <header class="hub-heading"><div><p class="hub-kicker"><bdi dir="ltr">AIGAS / EXPERIENCE HUB</bdi></p><h1 id="catalog-title">من الفكرة إلى التجربة.</h1><p>اختر مهمة. جرّب المثال مباشرة، وشاهد سبب النتيجة.</p></div><div class="hub-start"><a class="hub-quickstart" href="/products/firewall/#lab">جرّب Firewall الآن <span aria-hidden="true">←</span></a><a class="hub-resume" data-lab-resume hidden href="/products/firewall/#lab">أكمل آخر مختبر ←</a></div></header>
+  <header class="hub-heading"><div><p class="hub-kicker"><bdi dir="ltr">AIGAS / EXPERIENCE HUB</bdi></p><h1 id="catalog-title">من الفكرة إلى التجربة.</h1><p>اختر مهمة. جرّب المثال مباشرة، وشاهد سبب النتيجة.</p></div><div class="hub-start"><a class="hub-quickstart" href="/products/firewall/#lab">جرّب Firewall الآن <span aria-hidden="true">←</span></a><a class="hub-resume" data-lab-resume hidden href="/products/firewall/#lab">أكمل آخر مختبر ←</a><small class="hub-resume-status" data-lab-resume-status role="status" aria-live="polite" hidden>تعذر الوصول إلى تخزين الجلسة؛ اختر مختبرًا من القائمة.</small></div></header>
   <div class="hub-intro"><span>٥ مختبرات عامة · بلا حساب</span><span>أمثلة تعليمية محلية، دون اتصال بنموذج</span></div>
   <div class="hub-grid">
     {products.map((product, i) => <article class:list={['hub-card', { 'hub-featured': i === 0 }]}>
@@ -26,10 +26,15 @@ const products = order.map(slug => productNavigation.find(p => p.slug === slug)!
   <p class="hub-footnote">المختبرات محاكاة اصطناعية منفصلة عن المنتج المؤسسي. طلب الاستكشاف لا يعني التفعيل؛ التسجيل الحي غير مثبت، واستكشاف 48 ساعة للقراءة المحدودة فقط.</p>
 </section>
 <script>
-  import { productForSlug } from '../shared/product-navigation.mjs';
-  try {
-    const last = productForSlug(sessionStorage.getItem('aigas:lab:last'));
-    const link = document.querySelector<HTMLAnchorElement>('[data-lab-resume]');
-    if (last && link) { link.href = `${last.publicPath}#lab`; link.textContent = `أكمل مختبر ${last.name} ←`; link.hidden = false; }
-  } catch { /* Browsing stays available when storage is blocked. */ }
+  import { readLastLab } from '../shared/lab-session.mjs';
+  const { available, product } = readLastLab();
+  const link = document.querySelector<HTMLAnchorElement>('[data-lab-resume]');
+  const status = document.querySelector<HTMLElement>('[data-lab-resume-status]');
+  if (product && link) {
+    link.href = `${product.publicPath}#lab`;
+    link.textContent = `أكمل مختبر ${product.name} ←`;
+    link.hidden = false;
+  } else if (!available && status) {
+    status.hidden = false;
+  }
 </script>

@@ -7,6 +7,7 @@
 .page .hub-heading h1{font-size:clamp(32px,4.5vw,60px);margin:0 0 12px;font-weight:400;line-height:1.4}
 .hub-heading p:not(.hub-kicker){font-size:18px;color:var(--color-text-copy);margin:0;max-inline-size:48ch}
 .hub-resume{font-size:14px;color:var(--color-focus);min-block-size:44px;align-content:center}
+.hub-heading .hub-resume-status:not([hidden]){display:block;font-size:12px;color:var(--color-text-muted);max-inline-size:30ch}
 .hub-intro{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px 24px;padding-block:12px 20px;color:var(--color-text-muted);font-size:14px}
 .hub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
 .hub-card{display:flex;position:relative;min-inline-size:0;background:var(--surface-raised);border:1px solid var(--border-subtle);border-radius:var(--radius-content);overflow:hidden}

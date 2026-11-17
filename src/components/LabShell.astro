@@ -11,7 +11,7 @@ const product = productForSlug(kind)!;
 const labConnectionLabel = kind === 'secure-chat' ? 'محاكاة محلية افتراضيًا · إرسال خارجي اختياري' : 'مثال تعليمي · دون اتصال بخدمة';
 ---
 <section class="lab-shell" id="lab" tabindex="-1" aria-label={`مختبر ${product.name}`} data-lab-shell data-product={kind}>
-  <div class="lab-sidebar"><p class="hub-kicker"><bdi dir="ltr">AIGAS / LABS</bdi></p><WorkspaceNavigation current={kind}/><p class="lab-sidebar-note">انتقل بحرية.<br/>تُحفظ خطوتك في هذه الجلسة فقط.</p></div>
+  <div class="lab-sidebar"><p class="hub-kicker"><bdi dir="ltr">AIGAS / LABS</bdi></p><WorkspaceNavigation current={kind}/><p class="lab-sidebar-note">انتقل بحرية.<br/>يُحفظ اسم هذا المختبر في هذه الجلسة فقط؛ لا يُحفظ نص المثال.</p></div>
   <div class="lab-body"><header class="lab-header"><div><ProductIcon kind={kind} size={24}/><div><h1><bdi dir="ltr">{product.name}</bdi></h1><p>{labBriefs[kind].task} / مختبر عام</p></div></div><a class="lab-auth" href={productContactPath(kind)}>اطلب استكشافًا محدودًا ↗</a></header>
   <div class="lab-context"><span>{labConnectionLabel}</span><span data-lab-progress>اختر مثالًا للبدء</span></div>
   {kind !== "ledger" && <ScenarioContext next={({firewall:"human-gate", "human-gate":"ledger", ledger:"risk-engine", "risk-engine":"secure-chat", "secure-chat":"firewall"})[kind]} />}
@@ -20,3 +20,8 @@ const labConnectionLabel = kind === 'secure-chat' ? 'محاكاة محلية ا�
   <p class="lab-terms">بدء 48 ساعة يتطلب حسابًا وعضوية وصلاحيات وتهيئة وموافقة تشغيل من الخادم؛ يبدأ العداد عند التفعيل فقط، ولا تحويل تلقائي لمدفوع. Kernel بنية مشتركة لا تُفوتر منفصلًا.</p>
   <footer class="lab-footer"><a href="/products/">← كل التجارب</a><a href="#product-details">عن المنتج وحدود الاستخدام ↓</a><button type="button" data-lab-reset hidden>إعادة ضبط المثال</button></footer></div>
 </section>
+<script>
+  import { rememberLastLab } from '../shared/lab-session.mjs';
+  const shell = document.querySelector<HTMLElement>('[data-lab-shell]');
+  if (shell?.dataset.product) rememberLastLab(shell.dataset.product);
+</script>
