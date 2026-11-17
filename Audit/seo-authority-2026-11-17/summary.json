@@ -2,7 +2,7 @@
   "built_html": 64,
   "indexable": 57,
   "sitemap": 57,
-  "source_files_scanned": 524,
+  "source_files_scanned": 526,
   "route_patterns": 85,
   "titles_duplicate": {},
   "descriptions_duplicate": {},
@@ -21,7 +21,7 @@
   "images_missing_dimensions": 0,
   "articles": 32,
   "articles_intro_40_70": 20,
-  "articles_toc": 0,
+  "articles_toc": 32,
   "articles_limit_section": 0,
   "sitemap_lastmod_count": 0,
   "schema_types": {

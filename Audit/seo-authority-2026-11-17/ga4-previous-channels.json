@@ -1,0 +1,3 @@
+{
+  "error": "Error calling tool 'get_data': No data returned: your trial includes the last 30 days of data history, and this request asks for older data. To read older data, upgrade at https://onboard.windsor.ai/app/pricing, or ask for a date range within the last 30 days"
+}

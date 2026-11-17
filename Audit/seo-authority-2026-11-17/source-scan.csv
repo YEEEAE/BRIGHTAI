@@ -1,6 +1,6 @@
 file,bytes,sha256,lines,seo_markers,review
 .agents/AGENTS.md,32941,506e5fd205bb3435a735130d3c35df48a5a196a5b259ae0360038633e961fe07,333,0,automated full-file scan; manual owner review separately
-.agents/mind/01-mind-latest.md,28933,7861178436d96111cb4ac29f7e13be4a13064e903ab4c4d4589cc952dc20e2c8,114,1,automated full-file scan; manual owner review separately
+.agents/mind/01-mind-latest.md,29528,51efb3c1288ac797734479c21518bc76572c8f866c60b89b7f5f55016f197020,116,2,automated full-file scan; manual owner review separately
 .agents/mind/02-mind-mid.md,512247,dc415de922d0f1bc163e2587f8dd7fc30052d24b22256a91b4500eca633a2c01,5226,43,automated full-file scan; manual owner review separately
 .agents/mind/03-mind-earliest.md,0,e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855,0,0,automated full-file scan; manual owner review separately
 .agents/pending-links.md,9968,5734097e595d33730ef8a21d766e93f3dc94967588b34d21512ef74eee9a8947,66,0,automated full-file scan; manual owner review separately
@@ -15,7 +15,7 @@ file,bytes,sha256,lines,seo_markers,review
 .claude/AGENTS.md,59372,9ab56d9e76c5b83806248a5821de0490458cf19253144e51bb2cd42fe7903f6c,760,8,automated full-file scan; manual owner review separately
 .freebuff/AGENTS.md,32941,506e5fd205bb3435a735130d3c35df48a5a196a5b259ae0360038633e961fe07,333,0,automated full-file scan; manual owner review separately
 .github/agents/m.agent.md,172640,a019a7134ea0fae9cbe0aaf2a916f90e173436cb86f6ac07b3b32d47fa9e6685,3537,80,automated full-file scan; manual owner review separately
-.github/security-allowlist.yml,9633,b665f5f46ae6a65b8e0059500b1e5b66dabe10c7d0d4623a9c17a5e743fecc28,163,0,automated full-file scan; manual owner review separately
+.github/security-allowlist.yml,2840,c1296cfe9712f1e5045d6af970c1e683b5814a82cc8af03833bdfe6b80a002db,55,0,automated full-file scan; manual owner review separately
 .impeccable/config.json,526,5c4e09f6d6bf80c24b54aac12ab8a1d11deae23594f3e3da1b77327e3f747013,17,0,automated full-file scan; manual owner review separately
 .opencode/skills/banner-design/SKILL.md,8326,913d9c4b2a3b405d638d50131e0dd3fe2787c839423d79287b7858ac29255acc,196,0,automated full-file scan; manual owner review separately
 .opencode/skills/banner-design/references/banner-sizes-and-styles.md,4993,c8906fb1073a576ee8c680d9bc8586249cbc4ed36690da960d65a1c9c37143b7,118,0,automated full-file scan; manual owner review separately
@@ -104,7 +104,7 @@ docs/CURRENT-IMPLEMENTATION-REGISTER.md,28463,a69045ec7cbfef8ff2e916f7d22f4e421f
 docs/DATA-ACCESS-AND-RLS.md,19034,701f6642b3830ab5641c4f2de7056a84a1898950913f5c75b1f78f9fd78a6b41,135,0,automated full-file scan; manual owner review separately
 docs/DATA-API-EXPOSURE-DECISION.md,6885,5224e80d2d1e1d5364186fe33149200d1bf7088131138ee7f87cada2be13c285,77,0,automated full-file scan; manual owner review separately
 docs/DATA-PRIVACY-AND-SECURITY.md,21515,0e313c03192a0cf3f5d1da34214b4b05202d2994ca1e67c2d41765bad3d181f6,240,1,automated full-file scan; manual owner review separately
-docs/DEMO-LABS.md,878,c0858141400f56624e74ea1743ba6c7cee151bfc552068071c946f7733490c4b,7,1,automated full-file scan; manual owner review separately
+docs/DEMO-LABS.md,943,49aba8e30511290d13c6a8784503dadde0f436139b9e362ed148dbab3c1458f0,7,1,automated full-file scan; manual owner review separately
 docs/DEPENDENCY-SECURITY-2026-11-10.md,9709,1eacb1894cef345b150311f2f2bc79901703763f9e0980c138417755a921d225,89,1,automated full-file scan; manual owner review separately
 docs/ENTERPRISE-TRIAL-POLICY.md,84465,75d4e9e2ba8e93590627a58304b117f4fbff1146b137dceba90d0531cc8d64c5,761,0,automated full-file scan; manual owner review separately
 docs/FINAL-RELEASE-HANDOFF.md,34652,b89ec349ff8cac00a06c9c96e6f335075579c187b93abe0f5f7da74f95c5c6d2,376,0,automated full-file scan; manual owner review separately
@@ -216,11 +216,11 @@ migrations/0036_aigas_runtime_workspace_bootstrap.sql,5097,d2831ddff7c4704bee792
 migrations/0037_aigas_hg_firewall_escalation_op.sql,9517,ae5a7d44ccb8894f3bbe93c78ccdbf493a7af7d9ba12afc81d2e476c7efc7113,132,0,automated full-file scan; manual owner review separately
 neon.ts,549,f5f4104d38fad01d69444b11f09d69dff2fd7087b9eb7ee6772e09ce8c09465d,20,0,automated full-file scan; manual owner review separately
 opencode.json,1939,99c1d36306def7a6c2ff36fe319052e013d9957dcc5e60099aaf85d7bc743f3a,71,2,automated full-file scan; manual owner review separately
-package-lock.json,219153,362c1a0c27d9275362c984382192314082a233ccab79d5faf9daeaec65a1cf3a,6122,9,automated full-file scan; manual owner review separately
-package.json,696,dc6914698f341211de6e51d8e1285bd0d927e0e7147520df83ec86211d4d8572,28,1,automated full-file scan; manual owner review separately
+package-lock.json,167194,1092c8f06f3b10521c2ecbf1ecf973c8665711e5ff511815119f27f4e48a1f6a,4756,9,automated full-file scan; manual owner review separately
+package.json,606,c5bec9f5d6e123c0dd05133d393c51c0615fe281a543b13808414a8d88e54e28,25,1,automated full-file scan; manual owner review separately
 public/downloads/aigas-ledger-verifier.mjs,6016,07aee7abe0a58257da55803985ef30cb9d4f692f609457a9ce83c9df2735a855,64,8,automated full-file scan; manual owner review separately
 redirects.json,15806,dea340c1694f06973e0a5ad76c5e080ffe341667e7d0cbb29e309a65cde4e76d,556,2,automated full-file scan; manual owner review separately
-render.yaml,3410,9ede8c3edffe853ed21e872c65fe255c5db5787d4c5d6398739518593dbfaeaa,70,0,automated full-file scan; manual owner review separately
+render.yaml,3410,ea7ffd04c5aa71f598392b868f83c241ca6fb66cadbc32569ba116d153e2efaf,70,0,automated full-file scan; manual owner review separately
 scripts/apply-migrations.mjs,8568,6fc35981dbde70e606b7eab493ce114e0db257259ef1277118282b759460ce49,187,0,automated full-file scan; manual owner review separately
 scripts/audit-runtime-posture.mjs,9947,07110c05509bf6e6d6d3c37e67c01e22bbcfd30b04efe8377a0b2e0f6adeadf8,192,0,automated full-file scan; manual owner review separately
 scripts/build-version.mjs,2430,2236b1618827e79cb48e2f519025f14126a877f2a35e728715bf80fc62536f49,65,0,automated full-file scan; manual owner review separately
@@ -240,7 +240,8 @@ scripts/verify-advanced-motion.mjs,8390,a8b7edc13ef6adc40ee020129f64d90ad5e1aa70
 scripts/verify-chat-policy-local.mjs,4567,749435b201cc1d9193289e70c0b042ec728c3447726dad257be60825ebb0953e,93,0,automated full-file scan; manual owner review separately
 scripts/verify-contracts-local.mjs,2278,2dab81379ecf77b67e9969884a3b5506731955919b82cbdfedcf2d3c59351f7b,38,0,automated full-file scan; manual owner review separately
 scripts/verify-creative-ui.mjs,5037,f7b1810652b35245808c5b8916794ad3d55f38ca4a6cb516e427a7b1ad22da57,43,1,automated full-file scan; manual owner review separately
-scripts/verify-dependency-posture.mjs,7334,278ceeac81750d09ffcaff87b4d581bc7a4294b593c2c24a1c57f9396dcdc6ec,134,0,automated full-file scan; manual owner review separately
+scripts/verify-cwv-a11y.mjs,11783,68b5c630096d631d66a55ff8f3b2b8bd35dda45a7badb8ea7967c8383e3c870a,116,3,automated full-file scan; manual owner review separately
+scripts/verify-dependency-posture.mjs,8371,3e413ce2fe5c0e737563057330a932bd5da52768845f4f577e9ba540dbf83c2b,153,0,automated full-file scan; manual owner review separately
 scripts/verify-exploration-local.mjs,4505,00e2a00db84584eeac0be6c2f45b8f1af123b5d3a1baae3b4ae57413592eae72,93,0,automated full-file scan; manual owner review separately
 scripts/verify-interior-ui.mjs,7356,ed9555f7c3eec3acf8ec15ce34c4d501431da7cc774c2af44184379f961f214a,101,1,automated full-file scan; manual owner review separately
 scripts/verify-node-runtime.mjs,16235,dd950e740934e20abfd4052dc2a1896c99be8bda3ef236ccdf6805fa4451aa3e,312,4,automated full-file scan; manual owner review separately
@@ -259,6 +260,7 @@ src/components/ContentExtension.astro,2400,d72bdb88a9f5513e5857da12a41ce9ca81728
 src/components/DecisionCircuit.astro,4242,3cebca094feff472cd5a77e98be057028390aceb7aed35d8204917c8b9f62146,43,0,automated full-file scan; manual owner review separately
 src/components/FirewallWorkspace.astro,7366,8c14e00b081a59cbf85a95fd03e430e82c61b603e2c0070416a13834b7d134d8,91,0,automated full-file scan; manual owner review separately
 src/components/Footer.astro,1961,886237a7fced3a88b8585453799e2f87a96c1ed3e657afc47defaf70452fbb9d,26,0,automated full-file scan; manual owner review separately
+src/components/GoogleAnalytics.astro,3343,77c8a7cc24d0ee23c07ca2bc10426af69dc9b22f65a430159c68806b72fc3ce8,54,0,automated full-file scan; manual owner review separately
 src/components/Header.astro,2837,eeec65c579df87fe312ee5be2f84deb68f3330c8df4272ef0ec42d4beecbde7c,52,0,automated full-file scan; manual owner review separately
 src/components/HumanGateDemo.astro,9622,784112ab6b547df167a8cb3b67f63c8c803742812aa63d84fc87592a5bffc57f,49,0,automated full-file scan; manual owner review separately
 src/components/InteriorController.astro,7585,d704f3868f6b2c098b5cc2c0c27de9751f015b28a9ce8898d008af3134691fb7,141,0,automated full-file scan; manual owner review separately
@@ -296,8 +298,8 @@ src/data/neural-preview.json,55521,61b11ab250b8a86a83e42a675f59773686a90a06bd373
 src/data/structured-data.ts,1349,244af33da0289174dd97f6b6284ecb9111b9e5e57b4190adcb1dce19c7e9873a,39,2,automated full-file scan; manual owner review separately
 src/demo/engine.mjs,2914,4a3d11662cf8b2606e5a76d56b8b264bfc4bad4fe853f1488c80e1cf590cf941,10,0,automated full-file scan; manual owner review separately
 src/env.d.ts,39,9c9283a414423d9223e5ea86941b142443b8af7a007f77612dc2c098de2d2500,1,0,automated full-file scan; manual owner review separately
-src/layouts/AppLayout.astro,5408,73e23fbc93b0167af25de820213d5a8939a7532d3ae531837e211f28f31493f2,67,2,automated full-file scan; manual owner review separately
-src/layouts/BaseLayout.astro,6858,48c7b9b67f8fb2733413e3b6ae47c619a78bcc25c9f37fca902fd11afebdc86b,137,19,automated full-file scan; manual owner review separately
+src/layouts/AppLayout.astro,5494,ba4d036f3b3bcf7fa3e7458770a44f3f650ad5d3634dbc942cbc7e7dae8f3ff3,68,2,automated full-file scan; manual owner review separately
+src/layouts/BaseLayout.astro,3779,102b010e8f76bb1623c11143e049ac13a4eba01181cf6d830ddd473f2040887a,86,19,automated full-file scan; manual owner review separately
 src/middleware.ts,5964,dcb9fb2fa363826c9ac2a5f4224deb27ea86bd59a7635bc8f79384729edbff4d,109,2,automated full-file scan; manual owner review separately
 src/pages/404.astro,835,52ee002bdce7a6bcd3384ec4229be9e31b363e4f15843d3fb837160b1db7f684,9,2,automated full-file scan; manual owner review separately
 src/pages/README.md,0,e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855,0,0,automated full-file scan; manual owner review separately
@@ -357,7 +359,7 @@ src/pages/auth/accept-invitation.astro,13692,c53dbef91c688fd60a43702c3b4d009caf1
 src/pages/auth/sign-up.astro,22646,3db84d6ff9906bd9b0f63c0ca3097f578b87982a3b9056de24e8760c77cf2f4c,357,2,automated full-file scan; manual owner review separately
 src/pages/compliance.astro,4395,7011eafd7cf6894c7843c6ff7942447a26e2ee54337e0c283042c635aba53cad,19,1,automated full-file scan; manual owner review separately
 src/pages/contact.astro,6714,2a6edd571e101affda9aecf8935ea469ac84afa83c3fac2a54ce7ea67e29f848,52,1,automated full-file scan; manual owner review separately
-src/pages/demo/[product].astro,4618,9f666e4674d250c3ee753e603e2b99fbed4dc4b4701873294b2eeb1470f4ef78,23,2,automated full-file scan; manual owner review separately
+src/pages/demo/[product].astro,4802,1fe74a21a0905e10b162702da959962e6e5a1f36968e59fcbdc3864a2294e7ba,24,2,automated full-file scan; manual owner review separately
 src/pages/docs.astro,10424,5e4273d9d6a48b0d02829b7b47b43b7319f0d8b06ac18ad670529527e0404413,90,2,automated full-file scan; manual owner review separately
 src/pages/healthz.ts,1510,e49cdb21575777897516af5218c51135d53782cb8e86f72ae07e1cdff716daf7,42,2,automated full-file scan; manual owner review separately
 src/pages/index.astro,32458,52cf0935bdcf3ed9cfb84b727b5e98803edcf2972618a76f22727e3fdc2ff280,480,1,automated full-file scan; manual owner review separately
@@ -367,7 +369,7 @@ src/pages/knowledge/ai-governance-saudi.astro,11860,8ef2ffcf9f8928d9917f24911a54
 src/pages/knowledge/ai-risk-assessment.astro,8444,630fe35bd6f2670ddf7a2eb7aba5d9aeef2d6c3786ddd8369faff1fe2d4aa375,28,1,automated full-file scan; manual owner review separately
 src/pages/knowledge/ai-use-policy-employees.astro,7337,e19b2f8b4a7da41867d3b389ba1f5079aaffacbc9417519f6c010a95f1deb5c8,25,1,automated full-file scan; manual owner review separately
 src/pages/knowledge/iso-42001-saudi.astro,54601,5772bc63e690299d3301e81ea516439e09a91408104b545555bea98748c7c1b2,181,3,automated full-file scan; manual owner review separately
-src/pages/knowledge/pdpl-and-ai.astro,79126,08f6d6e68a39471b77859ab176c5e9dace83a32c531284a516e3997f84f90e17,846,4,automated full-file scan; manual owner review separately
+src/pages/knowledge/pdpl-and-ai.astro,79112,064e54abba8b6945d849d086b42dcd8abb7d8843521e6498b3eb158d0eda7ae1,846,4,automated full-file scan; manual owner review separately
 src/pages/knowledge/prompt-injection.astro,6490,d185481adac0e6f29b26503b6d2e93388c69f91c7969ce3f31190f8cb2dbb75b,28,1,automated full-file scan; manual owner review separately
 src/pages/knowledge/protect-company-data-chatgpt.astro,7453,399b2438116d0f24f353797cf8427fd2e96c480268ca5d65474f7c02e8ba3330,26,1,automated full-file scan; manual owner review separately
 src/pages/knowledge/saudi-ai-ethics-principles.astro,86557,cb19e17ab80fc83c3ddbf586c6cc8ee26f2153acad53e5da1901e58fe64e3b39,1392,4,automated full-file scan; manual owner review separately
@@ -377,7 +379,7 @@ src/pages/knowledge/sdaia-ai-ethics-self-assessment.astro,95887,ca480ed79a796c92
 src/pages/knowledge/sdaia-generative-ai-guidelines.astro,88065,dff7c0656e3ab4755677934648bf6e5c16289f400a12b8cd8c18d0a79c47cc4e,1596,4,automated full-file scan; manual owner review separately
 src/pages/pillars/[pillar].astro,3285,68edfe86ccca28c0b3a60c3838c3b5ba3039d834fe3f996f879f40405c2bb350,19,1,automated full-file scan; manual owner review separately
 src/pages/pricing.astro,6152,7bb55661d99d2cbedf042fb89c3394bb5b96022ed3026ff5002f34d539d8a6ba,20,1,automated full-file scan; manual owner review separately
-src/pages/privacy.astro,4958,e1d85e7bbb1df41c67b903cecde172ce222b5f6ad0959bb077ac04c7c2c4cd04,19,1,automated full-file scan; manual owner review separately
+src/pages/privacy.astro,5409,220f7ca84de3100dd4b4afeb508b1b35c63e3de70b027e31331af8bb6c92247d,19,1,automated full-file scan; manual owner review separately
 src/pages/products/[product].astro,5834,8f877f881c47df4691e24dc1fbd87ca6f1ca071ed04dcfa5a83419bafb66ae95,48,2,automated full-file scan; manual owner review separately
 src/pages/products/index.astro,5122,103b0f9205203ec6edf3617f007054dff30cf398fc4983167fdf669ad00f7448,21,1,automated full-file scan; manual owner review separately
 src/pages/services.astro,3183,9dc901eaa7e478dc54e1d7fb256d1139a7df6a4afb7c245c6f4d5e92abd011f7,16,1,automated full-file scan; manual owner review separately
@@ -445,9 +447,9 @@ src/server/observability/config.mjs,5763,452a8323fbbb61fd53566058bf872d87070ce2c
 src/server/observability/index.mjs,503,2fc62d912721e766929350e3082b5348f4e36e5c9d1b1ec96d5059047c1b4090,6,0,automated full-file scan; manual owner review separately
 src/server/observability/posthog.mjs,3310,674de9f10b6ad428a0918270c2682b76a264d816c6a804cc52c3785b936da5c1,87,0,automated full-file scan; manual owner review separately
 src/server/observability/redact.mjs,5010,884352f0aaf456b0374ee3e1ec349dec92ffd04d5e1bf23418b54493fe61f5dc,119,0,automated full-file scan; manual owner review separately
-src/server/observability/security-policy.mjs,4550,b6ae9d1b845f3893501b35f6a3d9ce154aa690ed5268d97232851c566bf82a8c,107,0,automated full-file scan; manual owner review separately
+src/server/observability/security-policy.mjs,4579,647756e403bb72287af720cebfa36558555b53b3ae967ddefd58d67e5d09419e,107,0,automated full-file scan; manual owner review separately
 src/server/observability/sentry.mjs,5789,da5b05072754d99acd70e9b2609dc68f353e1853b8bc5bab79375ab3eb1533cd,140,0,automated full-file scan; manual owner review separately
-src/server/observability/url-policy.mjs,4691,8c8be5e058204cfcfc2ddd8218eb309ce36e578e1c7d915aa30eaf887f838092,106,0,automated full-file scan; manual owner review separately
+src/server/observability/url-policy.mjs,4689,dd43c7a9afe4a7a805b05f2b6525192da858089b89291dfdc44264de69de1424,106,0,automated full-file scan; manual owner review separately
 src/server/risk-engine/assist.mjs,4687,fdab790055c40311324737c612182756d876c0d431cc95a20d3a7d755890d891,68,1,automated full-file scan; manual owner review separately
 src/server/risk-engine/core.mjs,12782,011c1d4c79c5be2998db3f4461de6b06d5b02f9fdc1969b1956a4e0bedf14c5b,151,0,automated full-file scan; manual owner review separately
 src/server/risk-engine/http.mjs,4120,84a581103138d4dd1bea7087d9d75c12c7ed23f8c68536b8265b96bf08aa324c,41,1,automated full-file scan; manual owner review separately
@@ -508,7 +510,7 @@ tests/ledger.test.mjs,4574,7de11c73716e9335d7d5c43535f546e9eb3c33c122c2f8bc390b6
 tests/local-harness.test.mjs,1462,cd33ef085d06890b6efe7078238595a88fe5d0d3ad29174e5e61143d351d75af,22,0,automated full-file scan; manual owner review separately
 tests/migration-order.test.mjs,2842,6e3f7403a990aaa16965d141b71272855b75d21ae827bc17d62d5bf8165c4745,42,0,automated full-file scan; manual owner review separately
 tests/node-readiness.test.mjs,2308,330c6a87030dbb3012307125e23041ce952a33fcc25983c7494f9405031d1999,49,0,automated full-file scan; manual owner review separately
-tests/observability.test.mjs,23745,89d9e9c305571e22efb4122dad1c6544abbdc52012bc12b163f5d1330d677ef5,438,0,automated full-file scan; manual owner review separately
+tests/observability.test.mjs,24387,809a9dc61c39570639d783330548a8ef6a8505b24b4e02b61bcf91e594b6e6f8,444,0,automated full-file scan; manual owner review separately
 tests/product-navigation.test.mjs,2465,83f953956be32f15d5cbead2c093343feda180a5fb55af32e036136e4637b64d,34,2,automated full-file scan; manual owner review separately
 tests/public-sandbox.test.mjs,2528,c1cfa891c3ed3ec1edd0e5151ebd972cd1fae56c60569f1acf495eb33c05c5fc,14,0,automated full-file scan; manual owner review separately
 tests/risk-assist.test.mjs,4916,43af8aad5eee9e3b2b2f8c5d845a37c8456d3dae472eccdfbd18696af0f0dc67,49,0,automated full-file scan; manual owner review separately

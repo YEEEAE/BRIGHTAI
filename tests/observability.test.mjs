@@ -342,7 +342,7 @@ test('a private surface never forwards a path segment, only its section root', (
 });
 
 test('the shipped GA4 snippet obeys the same allowlist as the policy module', () => {
-  const layout = readFileSync(new URL('../src/layouts/BaseLayout.astro', import.meta.url), 'utf8');
+  const layout = readFileSync(new URL('../src/components/GoogleAnalytics.astro', import.meta.url), 'utf8');
   const inline = layout.match(/<script is:inline>([\s\S]*?)<\/script>/)?.[1];
   assert.ok(inline, 'GA4 inline snippet must exist');
 
@@ -352,7 +352,7 @@ test('the shipped GA4 snippet obeys the same allowlist as the policy module', ()
       dataLayer: [],
       location: { href, origin: url.origin, pathname: url.pathname },
     };
-    vm.runInNewContext(inline, { window, document: { referrer }, URL, Date, console });
+    vm.runInNewContext(inline, { window, document: { referrer, title: undefined }, URL, Date, console });
     const call = window.dataLayer.find((entry) => entry[0] === 'config');
     assert.ok(call, 'snippet must configure GA4');
     return JSON.parse(JSON.stringify(call[2]));
@@ -366,12 +366,14 @@ test('the shipped GA4 snippet obeys the same allowlist as the policy module', ()
 
   assert.deepEqual(analyticsPage('https://brightai.live/pricing/?utm_medium=email&email=a@b.test', ''), { page_location: 'https://brightai.live/pricing/?utm_medium=email', page_referrer: '' });
   assert.deepEqual(analyticsPage('https://brightai.live/auth/?token=SYNTHETIC#x', 'https://brightai.live/docs/?q=SYNTHETIC'), {
+    page_title: 'BRIGHTAI',
     page_location: 'https://brightai.live/auth/',
     page_referrer: 'https://brightai.live/docs/',
   });
   assert.deepEqual(analyticsPage('https://brightai.live/', 'https://evil-brightai.live/?token=SYNTHETIC'), { page_location: 'https://brightai.live/', page_referrer: '' });
   // A private page or referrer path collapses before it reaches GA4.
   assert.deepEqual(analyticsPage('https://brightai.live/app/kernel/SYNTHETIC_ID', 'https://brightai.live/auth/callback/SYNTHETIC_CODE'), {
+    page_title: 'BRIGHTAI',
     page_location: 'https://brightai.live/app/',
     page_referrer: 'https://brightai.live/auth/',
   });
@@ -380,7 +382,7 @@ test('the shipped GA4 snippet obeys the same allowlist as the policy module', ()
 test('the CSP hash of the shipped GA4 snippet matches the middleware allowlist', () => {
   // A stale hash silently disables analytics (or reports a violation) the day
   // CSP enforcement is turned on, so the pair must move together.
-  const layout = readFileSync(new URL('../src/layouts/BaseLayout.astro', import.meta.url), 'utf8');
+  const layout = readFileSync(new URL('../src/components/GoogleAnalytics.astro', import.meta.url), 'utf8');
   const inline = layout.match(/<script is:inline>([\s\S]*?)<\/script>/)?.[1];
   assert.ok(inline, 'GA4 inline snippet must exist');
   const digest = `sha256-${createHash('sha256').update(inline).digest('base64')}`;
@@ -389,10 +391,13 @@ test('the CSP hash of the shipped GA4 snippet matches the middleware allowlist',
 });
 
 
-test('public layout has no external analytics loader before consent approval', () => {
-  const layout = readFileSync(new URL('../src/layouts/BaseLayout.astro', import.meta.url), 'utf8');
-  assert.doesNotMatch(layout, /<script[^>]+src=["'][^"']*(?:googletagmanager|google-analytics)/i);
-  assert.doesNotMatch(layout, /createElement\(['"]script['"]\)/);
+test('GA4 loader is shared by every HTML template', () => {
+  const snippet = readFileSync(new URL('../src/components/GoogleAnalytics.astro', import.meta.url), 'utf8');
+  assert.match(snippet, /async src="https:\/\/www.googletagmanager.com\/gtag\/js\?id=G-9LMB4PGTWJ"/);
+  for (const path of ['layouts/BaseLayout.astro', 'layouts/AppLayout.astro', 'pages/demo/[product].astro']) {
+    const source = readFileSync(new URL('../src/' + path, import.meta.url), 'utf8');
+    assert.equal((source.match(/<GoogleAnalytics \/>/g) ?? []).length, 1, path);
+  }
 });
 
 test('CSP promotion and rollback use the same resource policy', async () => {

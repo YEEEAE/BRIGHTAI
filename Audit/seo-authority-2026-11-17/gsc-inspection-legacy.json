@@ -1,0 +1,39 @@
+{
+  "inspection_result": {
+    "inspectionResultLink": "https://search.google.com/search-console/inspect?resource_id=sc-domain:brightai.live&id=fAl9DO_mSXAL_OTIPObXdw&utm_medium=link&utm_source=api",
+    "indexStatusResult": {
+      "verdict": "PASS",
+      "coverageState": "Submitted and indexed",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-10-26T09:04:08Z",
+      "pageFetchState": "SUCCESSFUL",
+      "googleCanonical": "https://brightai.live/solutions/ai-risk-classification/",
+      "userCanonical": "https://brightai.live/solutions/ai-risk-classification/",
+      "sitemap": [
+        "https://brightai.live/sitemap.xml"
+      ],
+      "referringUrls": [
+        "https://brightai.live/blog/saudi-ai-landscape-sdaia-humain-allam-scai/",
+        "https://brightai.live/demo/"
+      ],
+      "crawledAs": "MOBILE"
+    },
+    "mobileUsabilityResult": {
+      "verdict": "VERDICT_UNSPECIFIED"
+    },
+    "richResultsResult": {
+      "verdict": "PASS",
+      "detectedItems": [
+        {
+          "richResultType": "Breadcrumbs",
+          "items": [
+            {
+              "name": "Unnamed item"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

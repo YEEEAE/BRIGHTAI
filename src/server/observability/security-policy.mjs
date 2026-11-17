@@ -17,8 +17,8 @@ const GA_COLLECT_ORIGINS = [
   'https://www.googletagmanager.com',
 ];
 const INLINE_SCRIPT_HASHES = [
-  // <script is:inline> GA4 init block, BaseLayout.astro
-  'sha256-ZLgnDWpa8Ttk/2xqB5rLoL1DBUmdV0MBJR1rPJExu0o=',
+  // <script is:inline> GA4 init block, GoogleAnalytics.astro
+  'sha256-D9sAye719CCsAmWYVn46UfdpgG5zoAtsp5BIpURFvEo=',
   // <script is:inline>document.documentElement.classList.add('js');</script>
   'sha256-/x7W7R75k8Roq0WaVRQX9blP4OufE5xbAdzklGxsgpw=',
 ];
@@ -41,13 +41,11 @@ function authOrigin() {
 // flow in a browser; until then it ships as Content-Security-Policy-Report-Only
 // so a missed source reports a violation instead of breaking analytics or auth.
 function resourcePolicy(portal) {
-  const script = ["'self'", ...INLINE_SCRIPT_HASHES.map(hash => `'${hash}'`)];
+  const script = ["'self'", 'https://www.googletagmanager.com', ...INLINE_SCRIPT_HASHES.map(hash => `'${hash}'`)];
   const connect = ["'self'"];
   const image = ["'self'", 'data:'];
-  if (!portal) {
-    connect.push(...GA_COLLECT_ORIGINS);
-    image.push('https://*.google-analytics.com', 'https://www.googletagmanager.com');
-  }
+  connect.push(...GA_COLLECT_ORIGINS);
+  image.push('https://*.google-analytics.com', 'https://www.googletagmanager.com');
   const auth = authOrigin();
   // The portal and the auth pages call the Neon Auth service from the browser.
   if (auth) connect.push(auth);

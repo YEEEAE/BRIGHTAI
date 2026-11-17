@@ -10,6 +10,59 @@ const RETRY_AFTER_SECONDS = 3600;
 const PAGE = `<!doctype html>
 <html lang="ar-SA" dir="rtl">
 <head>
+<script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){window.dataLayer.push(arguments);}
+      gtag('js', new Date());
+      // Mirrors src/server/observability/url-policy.mjs: allowlist, not a filter
+      // that forwards whatever is left. Unknown query keys and the whole
+      // fragment are dropped; an unknown referrer host becomes an explicit
+      // empty page_referrer instead of falling back to document.referrer.
+      const analyticsQueryAllowlist = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+      const analyticsReferrerHosts = ['brightai.live', 'www.brightai.live'];
+      // Private surfaces collapse to a section root: an auth callback code,
+      // invitation token or record id can sit in a path segment, not only in
+      // the query string. Public paths are forwarded only while short and plain.
+      function analyticsPath(pathname) {
+        if (typeof pathname !== 'string' || pathname.charAt(0) !== '/') return '/';
+        if (pathname === '/auth' || pathname.indexOf('/auth/') === 0) return '/auth/';
+        if (pathname === '/app' || pathname.indexOf('/app/') === 0) return '/app/';
+        if (pathname === '/api' || pathname.indexOf('/api/') === 0) return '/api/';
+        return pathname.length <= 200 && /^\\/[A-Za-z0-9\\-._~\\/]*$/.test(pathname) ? pathname : '/';
+      }
+      function analyticsUrl(value, base) {
+        try {
+          const url = new URL(value, base);
+          if (!/^https?:$/.test(url.protocol) || url.username || url.password) return null;
+          const out = new URL(url.protocol + '//' + url.host + analyticsPath(url.pathname));
+          for (const key of analyticsQueryAllowlist) {
+            const candidate = url.searchParams.get(key);
+            if (candidate !== null && /^[A-Za-z0-9._~-]{1,64}$/.test(candidate)) out.searchParams.set(key, candidate);
+          }
+          return out.href;
+        } catch {
+          return null;
+        }
+      }
+      function analyticsReferrer(value) {
+        try {
+          const url = new URL(value);
+          if (!/^https?:$/.test(url.protocol) || url.username || url.password) return null;
+          if (url.origin !== window.location.origin && !analyticsReferrerHosts.includes(url.hostname.toLowerCase())) return null;
+          return url.protocol + '//' + url.host + analyticsPath(url.pathname);
+        } catch {
+          return null;
+        }
+      }
+      const analyticsPage = { page_location: analyticsUrl(window.location.href, window.location.href) || (window.location.origin + analyticsPath(window.location.pathname)) };
+      // Always set the field. Omitting it lets gtag fall back to
+      // document.referrer, which is exactly the unscrubbed value this policy
+      // exists to drop. An empty string records "no referrer".
+      analyticsPage.page_referrer = (document.referrer ? analyticsReferrer(document.referrer) : null) || '';
+      analyticsPage.page_title = /^\\/(app|auth)(\\/|$)/.test(window.location.pathname) ? 'BRIGHTAI' : document.title;
+      gtag('config', 'G-9LMB4PGTWJ', analyticsPage);
+    </script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9LMB4PGTWJ"></script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex, nofollow" />

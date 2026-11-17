@@ -1,0 +1,142 @@
+- generic [active] [ref=f2e1]:
+  - link "تخطّ إلى المحتوى" [ref=f2e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=f2e3]:
+    - link "BRIGHTAI — الرئيسية" [ref=f2e4] [cursor=pointer]:
+      - /url: /
+      - img "BRIGHTAI — AI Governance and Safety (AIGAS)" [ref=f2e5]
+    - group [ref=f2e6]:
+      - generic "القائمة" [ref=f2e7] [cursor=pointer]
+    - link "اطلب معلومات" [ref=f2e8] [cursor=pointer]:
+      - /url: /contact/
+      - text: اطلب معلومات
+      - generic [aria-hidden] [ref=f2e9]: ↗
+  - main [ref=f2e10]:
+    - navigation "مسار التنقل" [ref=f2e11]:
+      - link "الرئيسية" [ref=f2e12] [cursor=pointer]:
+        - /url: /
+      - generic [aria-hidden] [ref=f2e13]: /
+      - generic [ref=f2e14]: تواصل معنا
+    - group [ref=f2e15]:
+      - generic "داخل الصفحة 01 / 04" [ref=f2e16] [cursor=pointer]:
+        - generic [aria-hidden] [ref=f2e17]: ☷
+        - text: داخل الصفحة
+        - generic [ref=f2e18]: 01 / 04
+    - paragraph [ref=f2e19]: تواصل معنا
+    - heading "خلّنا نفهم احتياجك قبل أن نعرض عليك شيئاً." [level=1] [ref=f2e20]: خلّنا نفهم احتياجكقبل أن نعرض عليك شيئاً.
+    - paragraph [ref=f2e21]: استخدم النموذج لفتح رسالة بريد تتضمن استفسارك. الإتاحة التشغيلية للمنتجات غير متحققة، ولا يؤكد الموقع استلام الرسالة أو حجز عرض أو تفعيل تجربة.
+    - region "خيارات التواصل" [ref=f2e22]:
+      - heading "تواصل مباشرة" [level=2] [ref=f2e23]
+      - paragraph [ref=f2e24]:
+        - link "راسلنا على واتساب" [ref=f2e25] [cursor=pointer]:
+          - /url: https://wa.me/966538229013
+      - paragraph [ref=f2e26]:
+        - text: "أو عبر البريد:"
+        - link "yzeed1job@gmail.com" [ref=f2e27] [cursor=pointer]:
+          - /url: mailto:yzeed1job@gmail.com
+    - generic [ref=f2e28]:
+      - generic [ref=f2e29]:
+        - text: الاسم
+        - textbox "الاسم" [ref=f2e30]
+      - generic [ref=f2e31]:
+        - text: الجهة
+        - textbox "الجهة" [ref=f2e32]
+      - generic [ref=f2e33]:
+        - text: الموضوع
+        - combobox "الموضوع" [ref=f2e34]:
+          - option "استفسار عن المنتجات" [selected]
+          - option "طلب عرض سعر"
+          - option "استفسار عن تجربة 48 ساعة"
+          - option "استفسار عام"
+          - option "شراكة"
+      - generic [ref=f2e35]:
+        - text: كيف نساعدك؟
+        - textbox "كيف نساعدك؟" [ref=f2e36]
+      - button "افتح رسالة البريد" [ref=f2e37] [cursor=pointer]:
+        - text: افتح رسالة البريد
+        - generic [aria-hidden] [ref=f2e38]: ←
+      - paragraph [ref=f2e39]: سيفتح تطبيق البريد لديك برسالة جاهزة إلى yzeed1job@gmail.com. راجعها وأرسلها بنفسك؛ لا يحفظ الموقع طلباً ولا يرسله أو يؤكد استلامه.
+    - paragraph [ref=f2e40]: لا تكتب بيانات شخصية حساسة؛ اكتفِ بوصف عام. بيانات التجربة اصطناعية، والواقعية ممنوعة بلا موافقة مكتوبة وبيئة معتمدة. منع التدريب ببيانات العملاء (No-Training) لا يُستثنى بموافقة تشغيلية.
+    - generic [ref=f2e41]:
+      - generic [ref=f2e42]:
+        - heading "وش تكتب في استفسارك؟" [level=2] [ref=f2e43]
+        - list [ref=f2e44]:
+          - listitem [ref=f2e45]: القطاع والمهمة التي تريد حوكمتها، دون أسماء عملاء أو تفاصيل حساسة.
+          - listitem [ref=f2e46]: "الدور المطلوب: حماية طلب، تقييم مخاطر، موافقة، دليل تدقيق أو محادثة."
+          - listitem [ref=f2e47]: بيئة النشر المستهدفة، والجهة التي ستراجع النطاق من طرفكم.
+        - paragraph [ref=f2e48]: للتجربة اذكر المنتج والهدف من التقييم؛ لعرض السعر اذكر النطاق التقريبي دون أرقام استهلاك سرية. لا تكتب مفاتيح API أو كلمات مرور أو بيانات صحية أو مالية أو سجلات خام.
+      - generic [ref=f2e49]:
+        - heading "ماذا يحصل بعد تجهيز الرسالة؟" [level=2] [ref=f2e50]
+        - paragraph [ref=f2e51]: يفتح النموذج تطبيق البريد لديك. راجع النص والوجهة ثم أرسل الرسالة من تطبيقك؛ الموقع لا يثبت الإرسال أو الاستلام ولا يمنح ترخيصاً أو يؤكد موعداً. التجربة المؤسسية التشغيلية تتطلب موافقة مشغّل. أي تجربة مستقبلية تحتاج موافقة وتهيئة صالحة؛ الطلب يبدأ كطلب أهلية REQUESTED ولا ينشئ استحقاقاً، والموافقة APPROVED لا تبدأ العداد، والتفعيل ACTIVATED وحده يبدأ 48 ساعة من activated_at وينتهي عند activated_at + 48h بالضبط، دون خصم أو تحويل أو تجديد تلقائي. المنح الحالية إدارية غير مفوترة (ADMIN_NON_BILLED) فقط، وليست تجربة أو ترخيصاً؛ لا تهيئة تجارب أو تقارير PoV تلقائية، وسجل Kernel الإداري ليس نجاحاً تشغيلياً.
+        - link "اقرأ الفرق بين التجربة والعقد المؤسسي" [ref=f2e52] [cursor=pointer]:
+          - /url: /pricing/
+    - region "مسارات التجربة" [ref=f2e53]:
+      - heading "اختر المسار المناسب" [level=2] [ref=f2e54]
+      - list [ref=f2e55]:
+        - listitem [ref=f2e56]: مختبر عام فوري بلا حساب.
+        - listitem [ref=f2e57]: استكشاف 48 ساعة محدود بالقراءة لصاحب بريد موثق عند فتح البوابة.
+        - listitem [ref=f2e58]: تجربة مؤسسية تشغيلية بموافقة مشغّل.
+  - contentinfo [ref=f2e59]:
+    - generic [ref=f2e60]:
+      - link "BRIGHTAI — الرئيسية" [ref=f2e61] [cursor=pointer]:
+        - /url: /
+        - img "BRIGHTAI — AI Governance and Safety (AIGAS)" [ref=f2e62]
+      - paragraph [ref=f2e63]: ذكاء اصطناعي تثق به... وتحاسبه.
+    - generic [ref=f2e64]:
+      - generic [ref=f2e65]:
+        - heading "المنصة" [level=2] [ref=f2e66]
+        - list [ref=f2e67]:
+          - listitem [ref=f2e68]:
+            - link "Kernel والمنتجات" [ref=f2e69] [cursor=pointer]:
+              - /url: /products/
+              - generic [ref=f2e70]: Kernel
+              - text: والمنتجات
+          - listitem [ref=f2e71]:
+            - link "محاكاة توضيحية" [ref=f2e72] [cursor=pointer]:
+              - /url: /kernel/
+          - listitem [ref=f2e73]:
+            - link "طلب عرض سعر" [ref=f2e74] [cursor=pointer]:
+              - /url: /pricing/
+          - listitem [ref=f2e75]:
+            - link "مركز المعرفة" [ref=f2e76] [cursor=pointer]:
+              - /url: /docs/
+      - generic [ref=f2e77]:
+        - heading "الحوكمة" [level=2] [ref=f2e78]
+        - list [ref=f2e79]:
+          - listitem [ref=f2e80]:
+            - link "السلامة" [ref=f2e81] [cursor=pointer]:
+              - /url: /pillars/safety/
+          - listitem [ref=f2e82]:
+            - link "الشفافية" [ref=f2e83] [cursor=pointer]:
+              - /url: /pillars/transparency/
+          - listitem [ref=f2e84]:
+            - link "الخصوصية" [ref=f2e85] [cursor=pointer]:
+              - /url: /pillars/privacy/
+          - listitem [ref=f2e86]:
+            - link "الامتثال" [ref=f2e87] [cursor=pointer]:
+              - /url: /compliance/
+      - generic [ref=f2e88]:
+        - heading "الشركة" [level=2] [ref=f2e89]
+        - list [ref=f2e90]:
+          - listitem [ref=f2e91]:
+            - link "الخدمات" [ref=f2e92] [cursor=pointer]:
+              - /url: /services/
+          - listitem [ref=f2e93]:
+            - link "من نحن" [ref=f2e94] [cursor=pointer]:
+              - /url: /about/
+          - listitem [ref=f2e95]:
+            - link "مركز الثقة" [ref=f2e96] [cursor=pointer]:
+              - /url: /trust/
+          - listitem [ref=f2e97]:
+            - link "تواصل معنا" [ref=f2e98] [cursor=pointer]:
+              - /url: /contact/
+      - generic [ref=f2e99]:
+        - heading "قانوني" [level=2] [ref=f2e100]
+        - list [ref=f2e101]:
+          - listitem [ref=f2e102]:
+            - link "سياسة الخصوصية" [ref=f2e103] [cursor=pointer]:
+              - /url: /privacy/
+          - listitem [ref=f2e104]:
+            - link "الشروط والأحكام" [ref=f2e105] [cursor=pointer]:
+              - /url: /terms/
+    - generic [ref=f2e106]: © 2026 BRIGHTAI

@@ -1,0 +1,33 @@
+from,to,anchor_intent,state,conversion
+/knowledge/sdaia-ai-adoption-framework/,/knowledge/ai-governance-committee-raci/,حوكمة الذكاء الاصطناعي في السعودية — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/sdaia-ai-adoption-framework/,/knowledge/ai-inventory-register/,حوكمة الذكاء الاصطناعي في السعودية — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/ai-use-policy-employees/,/knowledge/ai-employee-training/,سياسة الموظفين — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/ai-use-policy-employees/,/knowledge/shadow-ai-detection/,سياسة الموظفين — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/ai-risk-assessment/,/knowledge/ai-impact-assessment/,تقييم المخاطر — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/ai-risk-assessment/,/knowledge/ai-bias-fairness/,تقييم المخاطر — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/protect-company-data-chatgpt/,/knowledge/data-classification-for-ai/,حماية بيانات المنشأة — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/protect-company-data-chatgpt/,/knowledge/ai-data-residency-saudi/,حماية بيانات المنشأة — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/pdpl-and-ai/,/knowledge/data-breach-72-hours-ai/,PDPL والذكاء الاصطناعي — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/pdpl-and-ai/,/knowledge/ai-contract-clauses/,PDPL والذكاء الاصطناعي — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/iso-42001-saudi/,/knowledge/ai-governance-committee-raci/,ISO/IEC 42001 — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/iso-42001-saudi/,/knowledge/ai-audit-trail/,ISO/IEC 42001 — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/saudi-ai-ethics-principles/,/knowledge/sdaia-ai-ethics-self-assessment/,أخلاقيات سدايا — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/saudi-ai-ethics-principles/,/knowledge/ai-bias-fairness/,أخلاقيات سدايا — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/shadow-ai-detection/,/knowledge/ai-inventory-register/,Shadow AI — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/shadow-ai-detection/,/knowledge/ai-use-policy-employees/,Shadow AI — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/prompt-injection/,/knowledge/protect-company-data-chatgpt/,Prompt Injection — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/prompt-injection/,/knowledge/ai-vendor-assessment/,Prompt Injection — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/ai-vendor-assessment/,/knowledge/ai-contract-clauses/,تقييم الموردين — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/ai-vendor-assessment/,/knowledge/ai-data-residency-saudi/,تقييم الموردين — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/ai-audit-trail/,/knowledge/data-classification-for-ai/,سجل التدقيق — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/ai-audit-trail/,/knowledge/ai-inventory-register/,سجل التدقيق — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/ai-impact-assessment/,/knowledge/ai-governance-committee-raci/,الإشراف البشري — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/ai-impact-assessment/,/knowledge/ai-risk-assessment/,الإشراف البشري — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/sdaia-generative-ai-guidelines/,/knowledge/sdaia-ai-adoption-framework/,الجهات الحكومية — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/sdaia-generative-ai-guidelines/,/knowledge/saudi-ai-law-binding-vs-guidance/,الجهات الحكومية — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/ai-governance-financial-sector/,/knowledge/ai-vendor-assessment/,القطاع المالي — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/ai-governance-financial-sector/,/knowledge/ai-contract-clauses/,القطاع المالي — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/ai-governance-healthcare/,/knowledge/pdpl-and-ai/,الرعاية الصحية — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/ai-governance-healthcare/,/knowledge/ai-impact-assessment/,الرعاية الصحية — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/choose-ai-governance-platform/,/knowledge/ai-use-policy-employees/,الشركات — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/
+/knowledge/choose-ai-governance-platform/,/knowledge/ai-vendor-assessment/,الشركات — خطوةمحددة,PROPOSED; deduplicate against internal-links.csv,/contact/ only when relevant; secondary /docs/

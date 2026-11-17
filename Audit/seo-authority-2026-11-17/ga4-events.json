@@ -1,0 +1,46 @@
+{
+  "status": "done",
+  "data": [
+    {
+      "event_name": "first_visit",
+      "event_count": 123,
+      "conversions": 0
+    },
+    {
+      "event_name": "page_view",
+      "event_count": 1502,
+      "conversions": 0
+    },
+    {
+      "event_name": "session_start",
+      "event_count": 178,
+      "conversions": 0
+    },
+    {
+      "event_name": "user_engagement",
+      "event_count": 862,
+      "conversions": 0
+    },
+    {
+      "event_name": "scroll",
+      "event_count": 123,
+      "conversions": 0
+    },
+    {
+      "event_name": "form_start",
+      "event_count": 4,
+      "conversions": 0
+    },
+    {
+      "event_name": "view_search_results",
+      "event_count": 3,
+      "conversions": 0
+    },
+    {
+      "event_name": "secondary_cta_click",
+      "event_count": 1,
+      "conversions": 0
+    }
+  ],
+  "total_rows": 8
+}

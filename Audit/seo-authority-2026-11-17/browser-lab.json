@@ -1,0 +1,895 @@
+{
+  "mode": "LAB; cold load; single run; not field p75",
+  "generatedAt": "2026-11-17T00:55:24.046Z",
+  "pages": [
+    {
+      "path": "/",
+      "width": 390,
+      "http": 200,
+      "lang": "ar-SA",
+      "dir": "rtl",
+      "overflow": false,
+      "h1": 1,
+      "toc": false,
+      "vitals": {
+        "LCP": 2576,
+        "CLS": 0.2229135802469136
+      },
+      "resources": 926257,
+      "a11y": [],
+      "keyboard": [
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "SUMMARY",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        }
+      ],
+      "errors": [],
+      "INP": "NOT VERIFIED; navigation and Tab do not measure representative interactions",
+      "screenReader": "NOT RUN"
+    },
+    {
+      "path": "/docs/",
+      "width": 390,
+      "http": 200,
+      "lang": "ar-SA",
+      "dir": "rtl",
+      "overflow": false,
+      "h1": 1,
+      "toc": false,
+      "vitals": {
+        "LCP": 5076,
+        "CLS": 0.4518158098884141
+      },
+      "resources": 1185618,
+      "a11y": [],
+      "keyboard": [
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "SUMMARY",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "SUMMARY",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "visible": true
+        }
+      ],
+      "errors": [],
+      "INP": "NOT VERIFIED; navigation and Tab do not measure representative interactions",
+      "screenReader": "NOT RUN"
+    },
+    {
+      "path": "/knowledge/ai-governance-saudi/",
+      "width": 390,
+      "http": 200,
+      "lang": "ar-SA",
+      "dir": "rtl",
+      "overflow": false,
+      "h1": 1,
+      "toc": true,
+      "vitals": {
+        "LCP": 2484,
+        "CLS": 0.08108790598290598
+      },
+      "resources": 887145,
+      "a11y": [],
+      "keyboard": [
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "SUMMARY",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "SUMMARY",
+          "visible": true
+        }
+      ],
+      "errors": [],
+      "INP": "NOT VERIFIED; navigation and Tab do not measure representative interactions",
+      "screenReader": "NOT RUN"
+    },
+    {
+      "path": "/knowledge/pdpl-and-ai/",
+      "width": 390,
+      "http": 200,
+      "lang": "ar-SA",
+      "dir": "rtl",
+      "overflow": false,
+      "h1": 1,
+      "toc": true,
+      "vitals": {
+        "LCP": 4452,
+        "CLS": 0.77788134279044
+      },
+      "resources": 911015,
+      "a11y": [
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "count": 1
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "impact": "serious",
+          "count": 1
+        }
+      ],
+      "keyboard": [
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "SUMMARY",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "SUMMARY",
+          "visible": true
+        }
+      ],
+      "errors": [],
+      "INP": "NOT VERIFIED; navigation and Tab do not measure representative interactions",
+      "screenReader": "NOT RUN"
+    },
+    {
+      "path": "/knowledge/iso-42001-saudi/",
+      "width": 390,
+      "http": 200,
+      "lang": "ar-SA",
+      "dir": "rtl",
+      "overflow": false,
+      "h1": 1,
+      "toc": true,
+      "vitals": {
+        "LCP": 2900,
+        "CLS": 0.7333027777777777
+      },
+      "resources": 898450,
+      "a11y": [
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "count": 21
+        }
+      ],
+      "keyboard": [
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "SUMMARY",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "SUMMARY",
+          "visible": true
+        }
+      ],
+      "errors": [],
+      "INP": "NOT VERIFIED; navigation and Tab do not measure representative interactions",
+      "screenReader": "NOT RUN"
+    },
+    {
+      "path": "/products/firewall/",
+      "width": 390,
+      "http": 200,
+      "lang": "ar-SA",
+      "dir": "rtl",
+      "overflow": false,
+      "h1": 1,
+      "toc": false,
+      "vitals": {
+        "LCP": 3012,
+        "CLS": 0.3066837606837607
+      },
+      "resources": 965328,
+      "a11y": [
+        {
+          "id": "landmark-complementary-is-top-level",
+          "impact": "moderate",
+          "count": 1
+        }
+      ],
+      "keyboard": [
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "SUMMARY",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "SUMMARY",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        }
+      ],
+      "errors": [],
+      "INP": "NOT VERIFIED; navigation and Tab do not measure representative interactions",
+      "screenReader": "NOT RUN"
+    },
+    {
+      "path": "/contact/",
+      "width": 390,
+      "http": 200,
+      "lang": "ar-SA",
+      "dir": "rtl",
+      "overflow": false,
+      "h1": 1,
+      "toc": false,
+      "vitals": {
+        "LCP": 2560,
+        "CLS": 0.048112398504273506
+      },
+      "resources": 900898,
+      "a11y": [],
+      "keyboard": [
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "SUMMARY",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "SUMMARY",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        }
+      ],
+      "errors": [],
+      "INP": "NOT VERIFIED; navigation and Tab do not measure representative interactions",
+      "screenReader": "NOT RUN"
+    },
+    {
+      "path": "/solutions/government/",
+      "width": 390,
+      "http": 200,
+      "lang": "ar-SA",
+      "dir": "rtl",
+      "overflow": false,
+      "h1": 1,
+      "toc": false,
+      "vitals": {
+        "LCP": 3392,
+        "CLS": 0.20755061728395063
+      },
+      "resources": 906692,
+      "a11y": [],
+      "keyboard": [
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "SUMMARY",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "SUMMARY",
+          "visible": true
+        },
+        {
+          "tag": "SUMMARY",
+          "visible": true
+        }
+      ],
+      "errors": [],
+      "INP": "NOT VERIFIED; navigation and Tab do not measure representative interactions",
+      "screenReader": "NOT RUN"
+    },
+    {
+      "path": "/",
+      "width": 1440,
+      "http": 200,
+      "lang": "ar-SA",
+      "dir": "rtl",
+      "overflow": false,
+      "h1": 1,
+      "toc": false,
+      "vitals": {
+        "LCP": 156,
+        "CLS": 0.001313143841360168
+      },
+      "resources": 926257,
+      "a11y": [],
+      "keyboard": [
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        }
+      ],
+      "errors": [],
+      "INP": "NOT VERIFIED; navigation and Tab do not measure representative interactions",
+      "screenReader": "NOT RUN"
+    },
+    {
+      "path": "/docs/",
+      "width": 1440,
+      "http": 200,
+      "lang": "ar-SA",
+      "dir": "rtl",
+      "overflow": false,
+      "h1": 1,
+      "toc": false,
+      "vitals": {
+        "LCP": 104,
+        "CLS": 0
+      },
+      "resources": 1185618,
+      "a11y": [],
+      "keyboard": [
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        }
+      ],
+      "errors": [],
+      "INP": "NOT VERIFIED; navigation and Tab do not measure representative interactions",
+      "screenReader": "NOT RUN"
+    },
+    {
+      "path": "/knowledge/ai-governance-saudi/",
+      "width": 1440,
+      "http": 200,
+      "lang": "ar-SA",
+      "dir": "rtl",
+      "overflow": false,
+      "h1": 1,
+      "toc": true,
+      "vitals": {
+        "LCP": 92,
+        "CLS": 0
+      },
+      "resources": 887145,
+      "a11y": [],
+      "keyboard": [
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        }
+      ],
+      "errors": [],
+      "INP": "NOT VERIFIED; navigation and Tab do not measure representative interactions",
+      "screenReader": "NOT RUN"
+    },
+    {
+      "path": "/knowledge/pdpl-and-ai/",
+      "width": 1440,
+      "http": 200,
+      "lang": "ar-SA",
+      "dir": "rtl",
+      "overflow": false,
+      "h1": 1,
+      "toc": true,
+      "vitals": {
+        "LCP": 196,
+        "CLS": 0
+      },
+      "resources": 911015,
+      "a11y": [
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "count": 1
+        }
+      ],
+      "keyboard": [
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        }
+      ],
+      "errors": [],
+      "INP": "NOT VERIFIED; navigation and Tab do not measure representative interactions",
+      "screenReader": "NOT RUN"
+    },
+    {
+      "path": "/knowledge/iso-42001-saudi/",
+      "width": 1440,
+      "http": 200,
+      "lang": "ar-SA",
+      "dir": "rtl",
+      "overflow": false,
+      "h1": 1,
+      "toc": true,
+      "vitals": {
+        "LCP": 120,
+        "CLS": 0
+      },
+      "resources": 898450,
+      "a11y": [
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "count": 21
+        }
+      ],
+      "keyboard": [
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        }
+      ],
+      "errors": [],
+      "INP": "NOT VERIFIED; navigation and Tab do not measure representative interactions",
+      "screenReader": "NOT RUN"
+    },
+    {
+      "path": "/products/firewall/",
+      "width": 1440,
+      "http": 200,
+      "lang": "ar-SA",
+      "dir": "rtl",
+      "overflow": false,
+      "h1": 1,
+      "toc": false,
+      "vitals": {
+        "LCP": 112,
+        "CLS": 0
+      },
+      "resources": 965328,
+      "a11y": [
+        {
+          "id": "landmark-complementary-is-top-level",
+          "impact": "moderate",
+          "count": 1
+        }
+      ],
+      "keyboard": [
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        }
+      ],
+      "errors": [],
+      "INP": "NOT VERIFIED; navigation and Tab do not measure representative interactions",
+      "screenReader": "NOT RUN"
+    },
+    {
+      "path": "/contact/",
+      "width": 1440,
+      "http": 200,
+      "lang": "ar-SA",
+      "dir": "rtl",
+      "overflow": false,
+      "h1": 1,
+      "toc": false,
+      "vitals": {
+        "LCP": 196,
+        "CLS": 0.037365620478877315
+      },
+      "resources": 900898,
+      "a11y": [],
+      "keyboard": [
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        }
+      ],
+      "errors": [],
+      "INP": "NOT VERIFIED; navigation and Tab do not measure representative interactions",
+      "screenReader": "NOT RUN"
+    },
+    {
+      "path": "/solutions/government/",
+      "width": 1440,
+      "http": 200,
+      "lang": "ar-SA",
+      "dir": "rtl",
+      "overflow": false,
+      "h1": 1,
+      "toc": false,
+      "vitals": {
+        "LCP": 76,
+        "CLS": 0
+      },
+      "resources": 906692,
+      "a11y": [],
+      "keyboard": [
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "visible": true
+        }
+      ],
+      "errors": [],
+      "INP": "NOT VERIFIED; navigation and Tab do not measure representative interactions",
+      "screenReader": "NOT RUN"
+    }
+  ]
+}

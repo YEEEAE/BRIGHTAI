@@ -1,0 +1,15 @@
+{
+  "crawl_count": 449,
+  "status": {
+    "200": 383,
+    "404": 66
+  },
+  "current_public_non200": [],
+  "redirect_expected": 138,
+  "redirect_status": {
+    "404": 61,
+    "200": 77
+  },
+  "legacy_sitemap_urls": 264,
+  "current_sitemap_urls": 57
+}

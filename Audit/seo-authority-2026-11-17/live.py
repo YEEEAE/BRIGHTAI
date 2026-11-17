@@ -1,6 +1,6 @@
 """Public GET-only crawl; five workers, one-second pauses, no cookies."""
 import pathlib,json,time,urllib.request,urllib.error,concurrent.futures,sys
-from urllib.parse import urlparse,urljoin
+from urllib.parse import urlparse,urljoin,quote
 from collect import Page,csvout,save,OUT
 class NoRedirect(urllib.request.HTTPRedirectHandler):
  def redirect_request(self,*a,**k):return None
@@ -9,13 +9,17 @@ rows=json.loads((OUT/'route-inventory.json').read_text())
 gsc=json.loads((OUT/'gsc-pages.json').read_text())
 redirects=json.loads((OUT.parents[1]/'redirects.json').read_text())['redirects']
 paths=set(r['path'] for r in rows)
+import re
+old=json.loads((OUT/'live-discovery.json').read_text()) if (OUT/'live-discovery.json').exists() else {}
+for body in old.values():
+ paths.update(urlparse(x).path for x in re.findall(r'<loc>(.*?)</loc>',body))
 paths.update(urlparse(r['keys'][0]).path for r in gsc['rows'])
 paths.update(r['source'] for r in redirects)
 paths.update(['/robots.txt','/llms.txt','/sitemap.xml','/sitemap-index.xml','/sitemap-0.xml','/auth/sign-up/','/app/kernel/','/healthz/','/missing-seo-audit/','/api/ai/chat/','/knowledge/ai-governance-saudi/?utm_source=audit','/docs?topic=audit'])
 docs={}
 def get(path):
  time.sleep(1)
- url='https://brightai.live'+path
+ url='https://brightai.live'+quote(path,safe='/%?=&')
  try:
   try:r=opener.open(urllib.request.Request(url,headers={'User-Agent':'BRIGHTAI-SEO-Audit/1.0'}),timeout=20)
   except urllib.error.HTTPError as e:r=e

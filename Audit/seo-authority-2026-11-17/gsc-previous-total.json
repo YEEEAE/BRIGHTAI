@@ -1,0 +1,22 @@
+{
+  "rows": [
+    {
+      "clicks": 7,
+      "impressions": 688,
+      "ctr": 0.010174418604651164,
+      "position": 15.380813953488373
+    }
+  ],
+  "row_count": 1,
+  "truncated": false,
+  "query": {
+    "start_date": "2026-09-20",
+    "end_date": "2026-10-17",
+    "search_type": "web",
+    "data_state": "final",
+    "dimensions": [],
+    "row_limit": 100,
+    "start_row": 0,
+    "estimated_data_finalized_through": "2026-11-14"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "baseline": "2459b39cf7eb",
+  "final_observed_head": "292e3b2130740d8e9802be85aa1b08945338bb02",
+  "local_build_baseline": "PASS",
+  "final_source_build": "FAIL; PDPL article closing tag; no source repair until plan approval",
+  "isolated_snapshot": "git archive baseline SHA, existing node_modules symlink; no dependency install; no .env",
+  "live_crawl": "2026-11-17 Saudi time; deployment SHA unknown",
+  "baseline_artifact_version": "isolated build has commit unknown because archive has no .git; provenance is archive command and source hashes",
+  "changes_by_this_task": "audit artifacts only; no commit/push/deploy; concurrent commits observed",
+  "delivery_working_tree": "Concurrent uncommitted source changes observed; this task did not edit those files"
+}
