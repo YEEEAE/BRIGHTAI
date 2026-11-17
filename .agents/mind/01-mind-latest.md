@@ -1,6 +1,8 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-17 VERIFIED Windsor MCP: مضاف في `opencode.json` (مشروع، متتبَّع git) بمرجع سر خارجي `{file:~/.config/opencode/secrets/windsor-api-key}` chmod600؛ initialize200/v4.1.4؛ connectors: `googleanalytics4`(551941072 BRIGHT AI) و`searchconsole`(brightai.live) فقط بلامهام كتابة؛ يحتاج إعادة تشغيل العميل بعد أي تعديل.
+- 2026-11-17 VERIFIED LOCAL Delta: `0034`–`0037` موجودة (self-service trial/closure v2/bootstrap/HG escalation)؛ `DELTA_ORDER` 23 خطوة تنتهي `0037`؛ مصفوفة RLS 84/84 على fresh (43 جدولًا/93 سياسة/0 منح عميل)؛ لا تطبيق على Staging أو Production؛ `Audit/tenant-isolation-2026-11-16/local-rls-matrix-0037.json`. 0035 رُوجعت كاملة؛ 0034/0036/0037 رؤوسها فقط.
 - 2026-11-17 VERIFIED LOCAL contact/pricing/services: مسودةواحدةاختياريةونسخمحليوروابطقنواتثابتةبلاquery؛فتح≠إرسال≠استلام؛لاlead_received؛unit22/build64/Browser12+noJS+clipboardfailure PASS؛لاخادمأونشر؛ `audit/contact-journey-2026-11-17/REPORT.md`.
 - 2026-11-17 VERIFIED LOCAL internal links: graphHTML71/2886anchors؛32دليلًا بعلاقاتتحريرية+أصل/منتج/قطاععندالحاجة؛حفظبحث/فهرس/عودةعبرlab/contact؛GET135كلها200بلاredirect/أقساممكسورة؛unit5/build64/Browser64+8sector+رحلتينPASS؛لانشر؛ `audit/internal-link-graph-2026-11-17/REPORT.md`.
 - 2026-11-17 VERIFIED RESEARCH links: 4 فرص بصفحة وقناة مهنية + AMSA معلقة بالقناة؛5 مسودات بلا إرسال؛Ahrefs baseline BLOCKED بـInsufficient plan؛لا broken/unlinked مؤكدة؛إتاحة resources الحية NOT VERIFIED؛ `audit/link-opportunities-2026-11-17/REPORT.md`.
@@ -70,6 +72,13 @@
 - 2026-11-16 حزمة الإغلاق النشطة `Audit/prompts.md` v2.1 مشتقة من `Audit/BRIGHT-AI-2026-FINAL-360-AUDIT.html`: 16 برومبتًا/G-01…G-16/W1–W9؛ سجل 50 متطلبًا معلن غير مسرود؛ رأس التقرير `7385200` والرأس الحالي `cb9863f`؛ `Audit/final-360-2026-11-10/*` غير موجود على القرص.
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-17] — تسجيل 0037 في Delta وإعادة المصفوفة
+- **تم:** `'0037'` أُضيف إلى `DELTA_ORDER` بعد `0036`؛ توقعات `tests/migration-order.test.mjs` صارت pending `0030`–`0037` وsuffix أخير أربعة ملفات.
+- **تم:** تصحيح خطة Delta: الرأس 23 خطوة تنتهي `0037`، وG4/G5 يطابقان 43 جدولًا/93 سياسة.
+- **التحقق:** PASS — migration-order 6/6؛ `verify-runtime-rls` 84/84 على قاعدة fresh؛ dry-run delta 23 خطوة بلا baseline.
+- **الحالة:** DONE محليًا؛ أي تطبيق على بيئة NOT RUN.
+- **ملفات:** `scripts/migration-order.mjs`, `tests/migration-order.test.mjs`, `docs/AIGAS-DELTA-MIGRATION-PLAN-2026-11-16.md`.
 
 ## [2026-11-17] — بيانات التحرير والهوية
 - **تم:** مصدرمشتركللتواريخوالناشر؛إزالةmodifiedالثابتوادعاءالمراجعة؛مراجعمرتبطباعتمادونسخةونطاق؛بدائلauthorsتحفظالمساراتوتوضحعدمالإثبات.

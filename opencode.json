@@ -39,6 +39,14 @@
       "linear": {
         "type": "remote",
         "url": "https://mcp.linear.app/mcp"
+      },
+      "windsor": {
+        "type": "remote",
+        "url": "https://mcp.windsor.ai/",
+        "oauth": false,
+        "headers": {
+          "Authorization": "Bearer {file:~/.config/opencode/secrets/windsor-api-key}"
+        }
       }
     }
   },

@@ -5,6 +5,8 @@
 > **النطاق:** الانتقال من Production الحالي (31 جدولًا، سياستان، بلا runtime/ledger) إلى رأس Staging (42 جدولًا، 90 سياسة، 29/29 ledger) مع إغلاق فجوة `0033`، ثم cutover إلى دور تشغيل أقل صلاحية.
 > **الأساس:** `Audit/tenant-isolation-2026-11-16/REPORT.md`، `production-baseline.json`، `staging-posture.json`، `local-rls-matrix.json`.
 > **قاعدة:** لا يُنفّذ أي أمر هنا على Neon Production أو Staging. كل تنفيذ يحتاج اعتماد المالك والمشغّل في نافذة معلنة.
+>
+> **تصحيح واقعي 2026-11-17:** المستودع تجاوز هذه الخطة. `migrations/` يحتوي الآن `0034_aigas_self_service_trial.sql`، `0035_aigas_tenant_isolation_closure_v2.sql` (يغطّي إغلاق `aigas_client_deny` وفحص `banned` المقترحين سابقًا بدل `proposed-0034.sql`)، `0036_aigas_runtime_workspace_bootstrap.sql`، `0037_aigas_hg_firewall_escalation_op.sql`. `DELTA_ORDER` صار **23 خطوة تنتهي `0037`**. المصفوفة المحلية أعادت **84/84 PASS** على قاعدة fresh كاملة: 43 جدولًا، 93 سياسة (50 permissive + 43 restrictive)، صفر منح عميل — `Audit/tenant-isolation-2026-11-16/local-rls-matrix-0037.json`. الأرقام أدناه (20 خطوة، 74 فحصًا، تطبيق `proposed-0034.sql`) تاريخية ولا تُستخدم كتقدير نافذة ولا كقائمة تطبيق.
 
 ---
 
@@ -28,8 +30,8 @@
 | G1 | إثبات استعادة على فرع معزول (`verify-restore-rehearsal.mjs`) | Operator | NOT RUN |
 | G2 | حماية `production` والفرع المؤقت، وتقصير صلاحية الوصول | Owner | NOT RUN |
 | G3 | Preflight Production PASS (baseline 31 + drift المتوقع) | Operator | READY TO RUN |
-| G4 | تطبيق Delta + 0034 على Production، وledger متسق | Operator | NOT RUN |
-| G5 | Post-apply posture PASS (42 جدولًا، ≥91 سياسة، runtime، صفر منح عميل) | Reviewer | NOT RUN |
+| G4 | تطبيق Delta حتى `0037` على Production (23 خطوة)، وledger متسق | Operator | NOT RUN |
+| G5 | Post-apply posture PASS (43 جدولًا، 93 سياسة، runtime، صفر منح عميل كما في المصفوفة المحلية) | Reviewer | NOT RUN |
 | G6 | Staging behavioral verification PASS (كتابة اصطناعية) | Operator + Reviewer | PARTIAL (قراءة فقط PASS) |
 | G7 | Runtime cutover + smoke PASS مع `AIGAS_REQUIRE_RLS=true` | Operator | NOT RUN |
 | G8 | فتح Live 48h بقرار مكتوب بعد G7 + readiness/quota/operator | Owner | CLOSED |
