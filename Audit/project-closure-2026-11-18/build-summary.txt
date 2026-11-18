@@ -1,0 +1,8 @@
+
+02:58:43 [build] Rearranging server assets...
+02:58:43 [build] ✓ Completed in 3.00s.
+02:58:43 [@astrojs/sitemap] `sitemap-index.xml` created at `dist/client`
+02:58:43 [brightai-seo-coverage] PASS: 64 public pages in sitemap and llms.txt; HTML aliases covered
+02:58:43 [brightai-build-version] version.json: commit unknown
+02:58:43 [build] Server built in 3.20s
+02:58:43 [build] Complete!

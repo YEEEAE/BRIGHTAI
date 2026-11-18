@@ -1,0 +1,4 @@
+## main...origin/main
+?? Audit/project-closure-2026-11-18/
+?? outputs/BRIGHTAI-30D-PROMPTS.ar.md
+b65bba1dc81561b6fbd6255de5915566c6a34de46528f5c229cbb3b278c933c7  outputs/BRIGHTAI-30D-PROMPTS.ar.md

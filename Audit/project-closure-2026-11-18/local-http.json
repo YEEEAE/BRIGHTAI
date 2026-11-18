@@ -1,0 +1,107 @@
+[
+  [
+    "/",
+    200,
+    "http://127.0.0.1:46319/",
+    "text/html; charset=utf-8",
+    113791
+  ],
+  [
+    "/services/",
+    200,
+    "http://127.0.0.1:46319/services/",
+    "text/html; charset=utf-8",
+    20084
+  ],
+  [
+    "/contact/",
+    200,
+    "http://127.0.0.1:46319/contact/",
+    "text/html; charset=utf-8",
+    17736
+  ],
+  [
+    "/sitemap-index.xml",
+    200,
+    "http://127.0.0.1:46319/sitemap-index.xml",
+    "application/xml",
+    184
+  ],
+  [
+    "/closure-missing-20261118/",
+    404,
+    "http://127.0.0.1:46319/closure-missing-20261118/",
+    "text/html; charset=utf-8",
+    13162
+  ],
+  [
+    "/kernel/",
+    200,
+    "http://127.0.0.1:46319/kernel/",
+    "text/html; charset=utf-8",
+    23463
+  ],
+  [
+    "/app/",
+    503,
+    "http://127.0.0.1:46319/app/",
+    "text/html; charset=utf-8",
+    6253
+  ],
+  [
+    "/app/trial/",
+    503,
+    "http://127.0.0.1:46319/app/trial/",
+    "text/html; charset=utf-8",
+    6253
+  ],
+  [
+    "/healthz/",
+    503,
+    "http://127.0.0.1:46319/healthz/",
+    "application/json",
+    623
+  ],
+  [
+    "/auth/sign-up/",
+    200,
+    "http://127.0.0.1:46319/auth/sign-up/",
+    "text/html",
+    13691
+  ],
+  [
+    "/products/firewall/",
+    200,
+    "http://127.0.0.1:46319/products/firewall/",
+    "text/html; charset=utf-8",
+    36460
+  ],
+  [
+    "/products/secure-chat/",
+    200,
+    "http://127.0.0.1:46319/products/secure-chat/",
+    "text/html; charset=utf-8",
+    32147
+  ],
+  [
+    "/products/risk-engine/",
+    200,
+    "http://127.0.0.1:46319/products/risk-engine/",
+    "text/html; charset=utf-8",
+    38239
+  ],
+  [
+    "/products/human-gate/",
+    200,
+    "http://127.0.0.1:46319/products/human-gate/",
+    "text/html; charset=utf-8",
+    32223
+  ],
+  [
+    "/products/ledger/",
+    200,
+    "http://127.0.0.1:46319/products/ledger/",
+    "text/html; charset=utf-8",
+    28508
+  ]
+]

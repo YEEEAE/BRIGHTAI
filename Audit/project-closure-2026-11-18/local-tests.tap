@@ -1,0 +1,394 @@
+TAP version 13
+# Subtest: ALLOW
+ok 1 - ALLOW
+  ---
+  duration_ms: 1.269958
+  type: 'test'
+  ...
+# Subtest: WARN
+ok 2 - WARN
+  ---
+  duration_ms: 0.107792
+  type: 'test'
+  ...
+# Subtest: REDACT
+ok 3 - REDACT
+  ---
+  duration_ms: 0.048333
+  type: 'test'
+  ...
+# Subtest: ESCALATE
+ok 4 - ESCALATE
+  ---
+  duration_ms: 0.037959
+  type: 'test'
+  ...
+# Subtest: BLOCK
+ok 5 - BLOCK
+  ---
+  duration_ms: 0.886958
+  type: 'test'
+  ...
+# Subtest: priority, empty, length, repeated redaction and determinism
+ok 6 - priority, empty, length, repeated redaction and determinism
+  ---
+  duration_ms: 0.837792
+  type: 'test'
+  ...
+# Subtest: 200 governed body and actual cost persisted across gateway instances
+ok 7 - 200 governed body and actual cost persisted across gateway instances
+  ---
+  duration_ms: 679.329792
+  type: 'test'
+  ...
+# Subtest: 429 retry-after respected with at most two total attempts
+ok 8 - 429 retry-after respected with at most two total attempts
+  ---
+  duration_ms: 288.546625
+  type: 'test'
+  ...
+# Subtest: timeout and upstream secrets never escape
+ok 9 - timeout and upstream secrets never escape
+  ---
+  duration_ms: 348.58475
+  type: 'test'
+  ...
+# Subtest: five 5xx open circuit for 60 seconds; then recovers
+ok 10 - five 5xx open circuit for 60 seconds; then recovers
+  ---
+  duration_ms: 68.375083
+  type: 'test'
+  ...
+# Subtest: budget caps block before egress, including concurrent reservations
+ok 11 - budget caps block before egress, including concurrent reservations
+  ---
+  duration_ms: 15.502875
+  type: 'test'
+  ...
+# Subtest: concurrency slot includes GET models; no secret in returned metadata
+ok 12 - concurrency slot includes GET models; no secret in returned metadata
+  ---
+  duration_ms: 12.847584
+  type: 'test'
+  ...
+# Subtest: invalid names, public variables and newline values rejected
+ok 13 - invalid names, public variables and newline values rejected
+  ---
+  duration_ms: 1.887875
+  type: 'test'
+  ...
+# Subtest: unapproved object, model mismatch, missing ledger and raw network error fail closed
+ok 14 - unapproved object, model mismatch, missing ledger and raw network error fail closed
+  ---
+  duration_ms: 22.43525
+  type: 'test'
+  ...
+# Subtest: input exceeding reserved bound never dispatches
+ok 15 - input exceeding reserved bound never dispatches
+  ---
+  duration_ms: 0.851875
+  type: 'test'
+  ...
+# Subtest: ten synthetic complaints exercise the Chat egress policy at the isolated fetch boundary
+not ok 16 - ten synthetic complaints exercise the Chat egress policy at the isolated fetch boundary
+  ---
+  duration_ms: 87.887666
+  type: 'test'
+  location: '/Users/yzydalshmry/Desktop/BRIGHTAI/tests/groq-gateway.test.mjs:74:1'
+  failureType: 'testCodeFailure'
+  error: "ENOENT: no such file or directory, open '/Users/yzydalshmry/Desktop/BRIGHTAI/audit/groq-complaints-2026-11-18/cases.json'"
+  code: 'ENOENT'
+  stack: |-
+    Object.openSync (node:fs:560:18)
+    readFileSync (node:fs:444:35)
+    TestContext.<anonymous> (file:///Users/yzydalshmry/Desktop/BRIGHTAI/tests/groq-gateway.test.mjs:76:28)
+    runNextTicks (node:internal/process/task_queues:64:5)
+    process.processTimers (node:internal/timers:518:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: demo lifecycle mirrors current server
+ok 17 - demo lifecycle mirrors current server
+  ---
+  duration_ms: 2.080375
+  type: 'test'
+  ...
+# Subtest: self review denied for approval, rejection and clarification
+ok 18 - self review denied for approval, rejection and clarification
+  ---
+  duration_ms: 0.795083
+  type: 'test'
+  ...
+# Subtest: clarification remains pending without decision or permit
+ok 19 - clarification remains pending without decision or permit
+  ---
+  duration_ms: 0.143292
+  type: 'test'
+  ...
+# Subtest: independent approval then requester consumes once
+ok 20 - independent approval then requester consumes once
+  ---
+  duration_ms: 0.127959
+  type: 'test'
+  ...
+# Subtest: rejection, cancellation, timeout and lost authority block execution
+ok 21 - rejection, cancellation, timeout and lost authority block execution
+  ---
+  duration_ms: 0.245125
+  type: 'test'
+  ...
+# Subtest: reason required and fixtures isolated
+ok 22 - reason required and fixtures isolated
+  ---
+  duration_ms: 0.072833
+  type: 'test'
+  ...
+# Subtest: only six public fixtures travel between labs; arbitrary identity inputs are ignored
+ok 23 - only six public fixtures travel between labs; arbitrary identity inputs are ignored
+  ---
+  duration_ms: 2.958
+  type: 'test'
+  ...
+# Subtest: mandatory denial survives every simulated reviewer decision
+ok 24 - mandatory denial survives every simulated reviewer decision
+  ---
+  duration_ms: 0.202959
+  type: 'test'
+  ...
+# Subtest: review remains explicit and never grants execution
+ok 25 - review remains explicit and never grants execution
+  ---
+  duration_ms: 0.32925
+  type: 'test'
+  ...
+# Subtest: entering a public lab records only its allowlisted slug and resumes to that lab
+ok 26 - entering a public lab records only its allowlisted slug and resumes to that lab
+  ---
+  duration_ms: 1.7275
+  type: 'test'
+  ...
+# Subtest: the most recently visited lab replaces the previous resume destination
+ok 27 - the most recently visited lab replaces the previous resume destination
+  ---
+  duration_ms: 0.099875
+  type: 'test'
+  ...
+# Subtest: invalid values and user-entered content are never stored as a lab destination
+ok 28 - invalid values and user-entered content are never stored as a lab destination
+  ---
+  duration_ms: 0.550375
+  type: 'test'
+  ...
+# Subtest: blocked session storage fails closed and reports that the resume shortcut is unavailable
+ok 29 - blocked session storage fails closed and reports that the resume shortcut is unavailable
+  ---
+  duration_ms: 2.332916
+  type: 'test'
+  ...
+# Subtest: canonical digest survives DB time/JSON ordering; detects changes to each covered field
+ok 30 - canonical digest survives DB time/JSON ordering; detects changes to each covered field
+  ---
+  duration_ms: 4.632292
+  type: 'test'
+  ...
+# Subtest: bounded filters reject huge pages and invalid types/periods
+ok 31 - bounded filters reject huge pages and invalid types/periods
+  ---
+  duration_ms: 0.822459
+  type: 'test'
+  ...
+# Subtest: HTTP rejects missing identity, cross-origin writes, invalid/oversized JSON, and hides internal failures
+ok 32 - HTTP rejects missing identity, cross-origin writes, invalid/oversized JSON, and hides internal failures
+  ---
+  duration_ms: 16.150583
+  type: 'test'
+  ...
+# Subtest: delta includes treatment lock after all its dependencies
+ok 33 - delta includes treatment lock after all its dependencies
+  ---
+  duration_ms: 0.630167
+  type: 'test'
+  ...
+# Subtest: 25 matching receipts resume with 0030–0037 only; complete ledger is a no-op
+ok 34 - 25 matching receipts resume with 0030–0037 only; complete ledger is a no-op
+  ---
+  duration_ms: 0.289667
+  type: 'test'
+  ...
+# Subtest: resume refuses changed hashes, failed rows, holes, unknown and empty ledgers
+ok 35 - resume refuses changed hashes, failed rows, holes, unknown and empty ledgers
+  ---
+  duration_ms: 0.748042
+  type: 'test'
+  ...
+# Subtest: all planned SQL files support an atomic schema and receipt transaction
+ok 36 - all planned SQL files support an atomic schema and receipt transaction
+  ---
+  duration_ms: 1.575708
+  type: 'test'
+  ...
+# Subtest: target delta runner never replays baseline CREATE migrations
+ok 37 - target delta runner never replays baseline CREATE migrations
+  ---
+  duration_ms: 134.403375
+  type: 'test'
+  ...
+# Subtest: fresh and delta include the identical complete closure suffix
+ok 38 - fresh and delta include the identical complete closure suffix
+  ---
+  duration_ms: 0.100708
+  type: 'test'
+  ...
+# Subtest: readiness rejects invalid JWKS and every conflicting SHA claim
+ok 39 - readiness rejects invalid JWKS and every conflicting SHA claim
+  ---
+  duration_ms: 148.151
+  type: 'test'
+  ...
+# Subtest: privacy disclosure names exactly the page-location campaign keys accepted by code
+ok 40 - privacy disclosure names exactly the page-location campaign keys accepted by code
+  ---
+  duration_ms: 1.509209
+  type: 'test'
+  ...
+# Subtest: privacy disclosure matches loader fallback and both runtime GA4 kill switches
+ok 41 - privacy disclosure matches loader fallback and both runtime GA4 kill switches
+  ---
+  duration_ms: 0.083209
+  type: 'test'
+  ...
+# Subtest: privacy copy remains a draft and does not claim legal approval or full compliance
+ok 42 - privacy copy remains a draft and does not claim legal approval or full compliance
+  ---
+  duration_ms: 0.636625
+  type: 'test'
+  ...
+# Subtest: all five product entry paths preserve only canonical allowlisted destinations
+ok 43 - all five product entry paths preserve only canonical allowlisted destinations
+  ---
+  duration_ms: 0.557083
+  type: 'test'
+  ...
+# Subtest: external, encoded, recursive and non-product return paths cannot redirect
+ok 44 - external, encoded, recursive and non-product return paths cannot redirect
+  ---
+  duration_ms: 0.102792
+  type: 'test'
+  ...
+# Subtest: only a server-authorized product and canonical tenant selector produce a destination
+ok 45 - only a server-authorized product and canonical tenant selector produce a destination
+  ---
+  duration_ms: 0.253
+  type: 'test'
+  ...
+# Subtest: disabled: zero provider calls
+ok 46 - disabled: zero provider calls
+  ---
+  duration_ms: 50.228833
+  type: 'test'
+  ...
+# Subtest: origin, consent and secrets denied before provider
+ok 47 - origin, consent and secrets denied before provider
+  ---
+  duration_ms: 5.369
+  type: 'test'
+  ...
+# Subtest: three successes, fourth 429, no key disclosure
+ok 48 - three successes, fourth 429, no key disclosure
+  ---
+  duration_ms: 5.336791
+  type: 'test'
+  ...
+# Subtest: failure circuit and runtime kill switch
+ok 49 - failure circuit and runtime kill switch
+  ---
+  duration_ms: 0.830875
+  type: 'test'
+  ...
+# Subtest: transitive sandbox import graph has no database driver or query
+ok 50 - transitive sandbox import graph has no database driver or query
+  ---
+  duration_ms: 8.988
+  type: 'test'
+  ...
+# Subtest: provider destination is reached only after server-side consent and failure is generic
+ok 51 - provider destination is reached only after server-side consent and failure is generic
+  ---
+  duration_ms: 0.591417
+  type: 'test'
+  ...
+# Subtest: distinct synthetic assets explain distinct initial scores
+ok 52 - distinct synthetic assets explain distinct initial scores
+  ---
+  duration_ms: 0.481833
+  type: 'test'
+  ...
+# Subtest: controls affect only their stated dimension and applicability
+ok 53 - controls affect only their stated dimension and applicability
+  ---
+  duration_ms: 0.329542
+  type: 'test'
+  ...
+# Subtest: public context floor and minimum axes
+ok 54 - public context floor and minimum axes
+  ---
+  duration_ms: 0.125166
+  type: 'test'
+  ...
+# Subtest: review and avoidance never imply zero risk or control reduction
+ok 55 - review and avoidance never imply zero risk or control reduction
+  ---
+  duration_ms: 0.114417
+  type: 'test'
+  ...
+# Subtest: all valid combinations remain bounded and malformed inputs fail
+ok 56 - all valid combinations remain bounded and malformed inputs fail
+  ---
+  duration_ms: 1.018667
+  type: 'test'
+  ...
+# Subtest: three scenarios produce distinct deterministic decisions and replies
+ok 57 - three scenarios produce distinct deterministic decisions and replies
+  ---
+  duration_ms: 2.738375
+  type: 'test'
+  ...
+# Subtest: empty and oversized input rejected; untrusted HTML remains plain text
+ok 58 - empty and oversized input rejected; untrusted HTML remains plain text
+  ---
+  duration_ms: 0.533042
+  type: 'test'
+  ...
+# Subtest: local mode is the default and optional network request is gated by explicit consent
+ok 59 - local mode is the default and optional network request is gated by explicit consent
+  ---
+  duration_ms: 1.640541
+  type: 'test'
+  ...
+# Subtest: signup availability distinguishes missing Auth setup from a deliberately closed portal
+ok 60 - signup availability distinguishes missing Auth setup from a deliberately closed portal
+  ---
+  duration_ms: 0.743459
+  type: 'test'
+  ...
+# Subtest: whitespace-only Auth setup is treated as missing and messages never expose a URL or env key
+ok 61 - whitespace-only Auth setup is treated as missing and messages never expose a URL or env key
+  ---
+  duration_ms: 0.136666
+  type: 'test'
+  ...
+# Subtest: signup page renders the resolved state with a contact alternative and no stale setup-only message
+ok 62 - signup page renders the resolved state with a contact alternative and no stale setup-only message
+  ---
+  duration_ms: 2.066042
+  type: 'test'
+  ...
+1..62
+# tests 62
+# suites 0
+# pass 61
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1687.754583
