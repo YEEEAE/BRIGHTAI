@@ -1,17 +1,20 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
+import { fork } from 'node:child_process';
+import { once } from 'node:events';
+import { mkdtempSync, writeFileSync, readFileSync, renameSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createGroqGateway } from '../src/server/ai/groq-gateway.mjs';
 import { resolveProviderSecret } from '../src/server/kernel/env.mjs';
 const model = Object.freeze({ approval:{reference:'synthetic-only',noTraining:true,expiresAt:'2099-01-01'}, providerModel:'qwen/qwen3.8-27b', apiKeyEnv:'AIGAS_SC_GROQ_API_KEY', endpoint:'https://api.groq.com/openai/v1/chat/completions', inputOverheadTokens:0, maxRequestTokens:100, maxOutputTokens:20, inputUsdPerMillion:0.80, outputUsdPerMillion:4 });
 const ok = () => Response.json({ choices:[{finish_reason:'stop',message:{role:'assistant',content:'ok'}}], usage:{prompt_tokens:10,completion_tokens:2,total_tokens:12} });
+const emptyLedger = () => ({ days: {}, months: {}, active: 0, failures: 0, openUntil: 0 });
 function fixture(t, fetchImpl, extra={}) {
   const prior={...process.env}, dir=mkdtempSync(join(tmpdir(),'groq-test-'));
   Object.assign(process.env,{ GROQ_API_KEY:'synthetic-secret', GROQ_MODEL:model.providerModel,AIGAS_GROQ_DAILY_BUDGET_USD:'1',AIGAS_GROQ_MONTHLY_BUDGET_USD:'10',AIGAS_GROQ_BUDGET_FILE:join(dir,'ledger'),AIGAS_GROQ_TIMEOUT_MS:'1000',AIGAS_GROQ_MAX_CONCURRENCY:'5' });
   delete process.env.AIGAS_SC_GROQ_API_KEY;
-  writeFileSync(process.env.AIGAS_GROQ_BUDGET_FILE,JSON.stringify({days:{},months:{},active:0,failures:0,openUntil:0}));
+  writeFileSync(process.env.AIGAS_GROQ_BUDGET_FILE, JSON.stringify(emptyLedger()));
   t.after(()=>{ for(const k of Object.keys(process.env)) if(!(k in prior)) delete process.env[k]; Object.assign(process.env,prior); rmSync(dir,{recursive:true,force:true}); });
   return createGroqGateway({registry:[model],fetchImpl,...extra});
 }
@@ -79,7 +82,7 @@ test('missing, malformed and locked ledger reject before dispatch', async t => {
   await assert.rejects(gateway({ model, messages: [] }), { code: 'BUDGET_STORE_UNAVAILABLE' });
   writeFileSync(path, '{');
   await assert.rejects(gateway({ model, messages: [] }), { code: 'BUDGET_STORE_UNAVAILABLE' });
-  writeFileSync(path, JSON.stringify({ days: {}, months: {}, active: 0, failures: 0, openUntil: 0 }));
+  writeFileSync(path, JSON.stringify(emptyLedger()));
   writeFileSync(`${path}.lock`, '');
   await assert.rejects(gateway({ model, messages: [] }), { code: 'BUDGET_STORE_UNAVAILABLE' });
   assert.equal(calls, 0);
@@ -100,6 +103,103 @@ test('ledger outage during settlement withholds the provider reply and leaves th
   assert.equal(Object.values(state.days)[0], 0.000144);
   assert.equal(Object.values(state.months)[0], 0.000144);
   assert.equal(calls, 1);
+});
+
+test('valid JSON with invalid budget ledger shape never dispatches or rewrites the ledger', async t => {
+  let calls = 0;
+  const gateway = fixture(t, async () => { calls++; return ok(); });
+  const path = process.env.AIGAS_GROQ_BUDGET_FILE;
+  const valid = emptyLedger();
+  for (const invalid of [
+    null, [],
+    { ...valid, days: [] }, { ...valid, months: [] }, { ...valid, days: 'broken' },
+    { ...valid, days: { '2026-02-30': 0.01 } }, { ...valid, days: { '2026-01-2': 0.01 } },
+    { ...valid, months: { '2026-13': 0.01 } }, { ...valid, months: { '2026-01': '0.01' } },
+    { ...valid, days: { '2026-01-02': -0.01 } }, { ...valid, days: { constructor: 0 } },
+    { ...valid, active: -1 }, { ...valid, failures: 0.5 }, { ...valid, openUntil: null },
+    { ...valid, extra: {} },
+  ]) {
+    const raw = JSON.stringify(invalid);
+    writeFileSync(path, raw);
+    await assert.rejects(gateway({ model, messages: [] }), { code: 'BUDGET_STORE_UNAVAILABLE' }, raw);
+    assert.equal(readFileSync(path, 'utf8'), raw);
+  }
+  assert.equal(calls, 0);
+});
+
+function sharedBudget(t, { daily = '0.0002', monthly = '0.0002', concurrency = '2' } = {}) {
+  const dir = mkdtempSync(join(tmpdir(), 'groq-shared-test-'));
+  const path = join(dir, 'ledger');
+  writeFileSync(path, JSON.stringify(emptyLedger()));
+  const children = new Set();
+  t.after(async () => {
+    await Promise.all([...children].map(async child => {
+      const closed = once(child, 'close');
+      child.kill();
+      await closed;
+    }));
+    rmSync(dir, { recursive: true, force: true });
+  });
+  function start(instant, mode = 'finish') {
+    const child = fork(new URL('./helpers/groq-budget-worker.mjs', import.meta.url), [instant, mode], {
+      env: {
+        GROQ_MODEL: 'synthetic-model', AIGAS_SC_GROQ_API_KEY: 'synthetic-test-only',
+        AIGAS_GROQ_BUDGET_FILE: path, AIGAS_GROQ_DAILY_BUDGET_USD: daily,
+        AIGAS_GROQ_MONTHLY_BUDGET_USD: monthly, AIGAS_GROQ_MAX_CONCURRENCY: concurrency,
+      },
+    });
+    children.add(child);
+    child.once('close', () => children.delete(child));
+    return child;
+  }
+  const receive = child => new Promise((resolve, reject) => {
+    function closed(code) { reject(new Error(`Budget worker closed without a response (${code})`)); }
+    child.once('close', closed);
+    child.once('message', message => {
+      child.off('close', closed);
+      resolve(message);
+    });
+  });
+  return { path, start, receive, request: instant => receive(start(instant)) };
+}
+
+test('independent processes enforce the same daily and monthly spend windows', { timeout: 10000 }, async t => {
+  const { start, receive, request, path } = sharedBudget(t);
+  const day = '2026-11-18T12:00:00Z';
+  const first = start(day, 'hold');
+  assert.deepEqual(await receive(first), { stage: 'reserved' });
+  const capped = { code: 'BUDGET_CAP_REACHED', calls: 0 };
+  assert.deepEqual(await request(day), capped);
+  assert.deepEqual(await request('2026-11-19T00:00:00Z'), capped);
+  const settled = receive(first);
+  first.send('release');
+  assert.deepEqual(await settled, { code: 'OK', calls: 1 });
+  assert.deepEqual(await request(day), capped);
+  assert.deepEqual(await request('2026-12-01T00:00:00Z'), { code: 'OK', calls: 1 });
+  const state = JSON.parse(readFileSync(path, 'utf8'));
+  assert.deepEqual(state.days, { '2026-11-18': 0.000144, '2026-12-01': 0.000144 });
+  assert.deepEqual(state.months, { '2026-11': 0.000144, '2026-12': 0.000144 });
+  assert.equal(state.active, 0);
+});
+
+test('shared ledger outage stops new workers and withholds an unsettled reply', { timeout: 10000 }, async t => {
+  const { start, receive, request, path } = sharedBudget(t, { daily: '1', monthly: '1', concurrency: '1' });
+  const day = '2026-11-18T12:00:00Z';
+  const first = start(day, 'hold');
+  assert.deepEqual(await receive(first), { stage: 'reserved' });
+  const busy = { code: 'GROQ_CONCURRENCY_LIMIT', calls: 0 };
+  assert.deepEqual(await request(day), busy);
+  renameSync(path, `${path}.offline`);
+  assert.deepEqual(await request(day), { code: 'BUDGET_STORE_UNAVAILABLE', calls: 0 });
+  const settled = receive(first);
+  first.send('release');
+  assert.deepEqual(await settled, { code: 'BUDGET_STORE_UNAVAILABLE', calls: 1 });
+  renameSync(`${path}.offline`, path);
+  assert.deepEqual(await request(day), busy);
+  const state = JSON.parse(readFileSync(path, 'utf8'));
+  assert.deepEqual(state.days, { '2026-11-18': 0.000144 });
+  assert.deepEqual(state.months, { '2026-11': 0.000144 });
+  assert.equal(state.active, 1);
 });
 
 test('ten synthetic complaints exercise the Chat egress policy at the isolated fetch boundary', async t => {

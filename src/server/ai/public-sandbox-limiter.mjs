@@ -1,9 +1,9 @@
 import { protectText } from '../secure-chat/policy.mjs';
 import { evaluateDemo } from '../../shared/firewall-demo.mjs';
-// Single-process, ephemeral public budget; never uses enterprise storage.
-export function createSandbox({env = process.env, fetcher = fetch, now = Date.now} = {}) {
+const response = (status, code, reply) => Response.json({code, reply, fallback:status!==200}, {status, headers:{'Cache-Control':'no-store'}});
+// Isolated evaluation of the former transport and its per-process budget.
+export function createSandbox({env, fetcher, now = Date.now}) {
  const visitors = new Map(); let day = '', used = 0, closedUntil = 0;
- const response = (status, code, reply) => Response.json({code, reply, fallback:status!==200}, {status, headers:{'Cache-Control':'no-store'}});
  return async (request, ip) => {
   if(env.AIGAS_PUBLIC_DEMO_GROQ_ENABLED !== 'true') return response(503,'DISABLED');
   const origin=request.headers.get('origin');
@@ -31,4 +31,6 @@ export function createSandbox({env = process.env, fetcher = fetch, now = Date.no
   }catch{closedUntil=now()+60000;return response(503,'PROVIDER_UNAVAILABLE');}
  };
 }
-export const publicSandbox = createSandbox();
+// The experimental transport bypasses the account budget and model approvals.
+// Keep the served route closed even when legacy environment flags are set.
+export const publicSandbox = () => response(503, 'DISABLED');

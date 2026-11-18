@@ -38,6 +38,10 @@
 5. بعد اكتمال القرار أضف إدخالًا ثابتًا في `APPROVED_MODELS` بهذه الحقول: `id`, `label`, `tenantIds` (قائمة صريحة غير فارغة)، `region`, `providerModel`, `protocol:'CHAT_COMPLETIONS_V1'`, `endpoint:'https://api.groq.com/openai/v1/chat/completions'`, `apiKeyEnv:'AIGAS_SC_GROQ_API_KEY'`, `maxOutputTokens:1024`, `maxRequestTokens:4096`, `maxInputBytes:8000`, `inputOverheadTokens:512`, `timeoutMs:20000`، وحقول الموافقة أعلاه. لا يُضاف سجل مفعل ببيانات افتراضية.
 6. بوابة Groq المشتركة تتطلب أيضًا سعرَي `inputUsdPerMillion` و`outputUsdPerMillion` المراجعين، ومطابقة `GROQ_MODEL`، وميزانيتي `AIGAS_GROQ_DAILY_BUDGET_USD`/`AIGAS_GROQ_MONTHLY_BUDGET_USD` ومخزن `AIGAS_GROQ_BUDGET_FILE` دائمًا مشتركًا ومهيأً. مهلة البوابة قد تكون أقل من مهلة النموذج؛ انتهاء أي منهما يوقف الانتظار. لا إعداد تلقائي أو عملية مدفوعة ضمن هذا التغيير.
 
+دفتر الميزانية يقبل الحقول `days`, `months`, `active`, `failures`, `openUntil` فقط. `days` و`months` خريطتان لمبالغ رقمية غير سالبة بمفاتيح UTC على هيئة `YYYY-MM-DD` و`YYYY-MM`. العدادات والمهلة أعداد صحيحة غير سالبة ضمن المجال الآمن لـJavaScript. فقد الدفتر أو فساد بنيته يوقف الإرسال. إذا فشلت التسوية بعد الخروج، يفشل الطلب ويبقى الحجز في آخر نسخة سليمة. استعد النسخة الصحيحة وطابق الحجوزات مع الاستهلاك بمعرفة مشغّل ومراجع مستقل قبل تحريرها. جميع عمليات الحساب تحتاج نفس الملف الفعلي وإعدادات السقف المعتمدة.
+
+واجهة sandbox العامة على الخادم تُرجع `503 DISABLED` مع إتاحة المحاكاة في المتصفح. علم التفعيل القديم لا يفتح المسار لأن اتصاله السابق كان خارج دفتر الميزانية وسجل الموافقات.
+
 ### إعداد الحصص
 
 | المتغير | الوظيفة |

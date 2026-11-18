@@ -24,6 +24,28 @@ const positive = (value, fallback) => {
   return n;
 };
 
+const isRecord = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+const counters = ['active', 'failures', 'openUntil'];
+
+function validBuckets(buckets, monthly) {
+  if (!isRecord(buckets)) return false;
+  const format = monthly ? /^\d{4}-\d{2}$/ : /^\d{4}-\d{2}-\d{2}$/;
+  return Object.entries(buckets).every(([key, amount]) => {
+    if (!format.test(key) || !Number.isFinite(amount) || amount < 0) return false;
+    const day = monthly ? `${key}-01` : key;
+    const utc = Date.parse(`${day}T00:00:00.000Z`);
+    return Number.isFinite(utc) && new Date(utc).toISOString().startsWith(`${day}T`);
+  });
+}
+
+function validateBudgetState(state) {
+  if (!isRecord(state) || Object.keys(state).length !== 2 + counters.length ||
+      !validBuckets(state.days, false) || !validBuckets(state.months, true) ||
+      !counters.every(key => Number.isSafeInteger(state[key]) && state[key] >= 0)) {
+    throw failure('BUDGET_STORE_UNAVAILABLE');
+  }
+}
+
 // One shared, persistent ledger per Groq account. Provision an existing file with
 // {"days":{},"months":{},"active":0,"failures":0,"openUntil":0} on a durable
 // shared filesystem. Never auto-create/reset: loss/corruption must close egress.
@@ -34,9 +56,9 @@ function transact(path, update) {
   try {
     lock = openSync(`${path}.lock`, 'wx', 0o600);
     const state = JSON.parse(readFileSync(path, 'utf8'));
-    if (!state.days || !state.months || !['active','failures','openUntil'].every(k => Number.isSafeInteger(state[k]) && state[k] >= 0) ||
-        !Object.values(state.days).concat(Object.values(state.months)).every(v => Number.isFinite(v) && v >= 0)) throw failure('BUDGET_STORE_UNAVAILABLE');
+    validateBudgetState(state);
     const result = update(state);
+    validateBudgetState(state);
     const fd = openSync(`${path}.next`, 'w', 0o600);
     try { writeFileSync(fd, JSON.stringify(state)); fsyncSync(fd); } finally { closeSync(fd); }
     renameSync(`${path}.next`, path);
@@ -45,7 +67,14 @@ function transact(path, update) {
     if (error instanceof KernelError) throw error;
     throw failure('BUDGET_STORE_UNAVAILABLE');
   } finally {
-    if (lock !== undefined) { closeSync(lock); unlinkSync(`${path}.lock`); }
+    if (lock !== undefined) {
+      try {
+        closeSync(lock);
+        unlinkSync(`${path}.lock`);
+      } catch {
+        throw failure('BUDGET_STORE_UNAVAILABLE');
+      }
+    }
   }
 }
 

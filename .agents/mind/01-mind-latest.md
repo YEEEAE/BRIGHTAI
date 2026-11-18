@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-18 VERIFIED LOCAL Groq: دفتر الميزانية يرفض البنية الفاسدة؛ سقفا UTC وانقطاع الملف PASS عبر عمليات مستقلة بمزوّد وهمي؛ sandbox POST مغلق حتى مع العلم القديم؛ سجلات الموافقة فارغة؛ account/region/shared host NOT VERIFIED؛ `Audit/groq-governance-2026-11-18/REPORT.md`.
 - 2026-11-17 VERIFIED Windsor MCP: مضاف في `opencode.json` (مشروع، متتبَّع git) بمرجع سر خارجي `{file:~/.config/opencode/secrets/windsor-api-key}` chmod600؛ initialize200/v4.1.4؛ connectors: `googleanalytics4`(551941072 BRIGHT AI) و`searchconsole`(brightai.live) فقط بلامهام كتابة؛ يحتاج إعادة تشغيل العميل بعد أي تعديل.
 - 2026-11-17 VERIFIED LOCAL Delta: `0034`–`0037` موجودة (self-service trial/closure v2/bootstrap/HG escalation)؛ `DELTA_ORDER` 23 خطوة تنتهي `0037`؛ مصفوفة RLS 84/84 على fresh (43 جدولًا/93 سياسة/0 منح عميل)؛ لا تطبيق على Staging أو Production؛ `Audit/tenant-isolation-2026-11-16/local-rls-matrix-0037.json`. 0035 رُوجعت كاملة؛ 0034/0036/0037 رؤوسها فقط.
 - 2026-11-17 VERIFIED LOCAL contact/pricing/services: مسودةواحدةاختياريةونسخمحليوروابطقنواتثابتةبلاquery؛فتح≠إرسال≠استلام؛لاlead_received؛unit22/build64/Browser12+noJS+clipboardfailure PASS؛لاخادمأونشر؛ `audit/contact-journey-2026-11-17/REPORT.md`.
