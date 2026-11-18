@@ -1,10 +1,51 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { protectContext } from '../src/server/secure-chat/integration.mjs';
+import { createHash, randomUUID } from 'node:crypto';
+import { authorizeChatContext, protectContext } from '../src/server/secure-chat/integration.mjs';
 import { providerState, providerConfiguration } from '../src/server/secure-chat/adapter.mjs';
 
 const rule = (action, pattern, id = action) => ({ id, name: 'Synthetic rule', match_type: 'CONTAINS', pattern, action, priority: 10, enabled: true, version: 1 });
 const rules = [rule('ALLOW', 'SYNTHETIC'), rule('REDACT', 'DEMO-ID'), rule('DENY', 'DEMO-BLOCK'), rule('ESCALATE', 'DEMO-REVIEW'), rule('WARN', 'DEMO-WARN')];
+
+test('provider boundary requires readable policy audit evidence', async () => {
+  const tenantId = randomUUID(), identity = { userId: randomUUID() }, requestId = randomUUID();
+  const model = { endpoint: 'https://api.groq.com/openai/v1/chat/completions', providerModel: 'synthetic-model', region: 'synthetic-region' };
+  const messages = [{ role: 'user', content: 'SYNTHETIC DEMO-ID' }];
+  const fields = { conditions: {}, effect: 'ALLOW', mandatory: false, obligations: [] };
+  const policy = { ...fields, is_mandatory: false, id: randomUUID(), scope: 'ENTERPRISE', version: 1,
+    checksum: createHash('sha256').update(JSON.stringify(fields)).digest('hex') };
+  let outage = true, calls = 0;
+  const db = { async query(sql, args) {
+    if (sql.startsWith('SELECT department_id') || sql.startsWith('SELECT 1 FROM public.aigas_policies')) return { rows: [], rowCount: 0 };
+    if (sql.startsWith('SELECT p.id')) return { rows: [policy] };
+    if (sql.includes('FROM public.aigas_fw_rules')) return { rows: rules };
+    if (sql.startsWith('INSERT INTO public.aigas_kernel_policy_decisions')) return { rowCount: 1 };
+    if (sql.startsWith('INSERT INTO public.aigas_audit_events')) {
+      assert.equal(args[3], 'secure_chat.policy.allowed');
+      assert.doesNotMatch(JSON.stringify(args), /DEMO-ID/);
+      return { rowCount: 1 };
+    }
+    if (sql.startsWith('SELECT action,actor_user_id')) {
+      if (outage) throw new Error('synthetic audit read failure');
+      return { rowCount: 1, rows: [{ action: 'secure_chat.policy.allowed', actor_user_id: identity.userId }] };
+    }
+    assert.fail(`Unexpected fixture query: ${sql}`);
+  } };
+  const fakeProvider = async outbound => {
+    calls++;
+    assert.doesNotMatch(JSON.stringify(outbound), /DEMO-ID/);
+  };
+  const run = async () => {
+    const { error, outbound } = await authorizeChatContext(db, identity, tenantId, requestId, model, messages);
+    if (error) throw error;
+    await fakeProvider(outbound);
+  };
+  await assert.rejects(run, { code: 'EVIDENCE_UNAVAILABLE' });
+  assert.equal(calls, 0);
+  outage = false;
+  await run();
+  assert.equal(calls, 1);
+});
 
 test('policy inspects and redacts every role while preserving immutable context', () => {
   const messages = [{ role: 'user', content: 'SYNTHETIC contact synthetic@example.invalid' }, { role: 'assistant', content: 'SYNTHETIC DEMO-ID' }, { role: 'user', content: 'SYNTHETIC summary' }];

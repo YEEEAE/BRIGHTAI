@@ -22,3 +22,23 @@ test('provider destination is reached only after server-side consent and failure
  assert.equal(failed.status,503);assert.equal(seenUrl,'https://api.groq.com/openai/v1/chat/completions');
  assert.equal(calls,1);assert.doesNotMatch(await failed.text(),/private provider diagnostic|private-test-key/);
 });
+
+test('public daily request ceiling rejects across visitors but is scoped to one instance', async () => {
+  const config = { ...env, AIGAS_PUBLIC_DEMO_DAILY_REQUESTS: '1' };
+  const now = () => Date.UTC(2026, 10, 18);
+  let calls = 0;
+  const fetcher = async () => {
+    calls++;
+    return Response.json({ choices: [{ message: { content: 'رد اصطناعي' } }] });
+  };
+  const run = createSandbox({ env: config, fetcher, now });
+  assert.equal((await run(req(), 'visitor-a')).status, 200);
+  const rejected = await run(req({ sessionId: 'another' }), 'visitor-b');
+  assert.equal(rejected.status, 429);
+  assert.equal((await rejected.json()).code, 'PUBLIC_BUDGET');
+  assert.equal(calls, 1);
+
+  const restarted = createSandbox({ env: config, fetcher, now });
+  assert.equal((await restarted(req(), 'visitor-a')).status, 200);
+  assert.equal(calls, 2);
+});

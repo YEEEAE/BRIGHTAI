@@ -71,9 +71,40 @@ test('input exceeding reserved bound never dispatches',async t=>{
   await assert.rejects(gateway({model,messages:[{role:'user',content:'x'.repeat(81)}]}),{code:'REQUEST_LIMIT_REACHED'});assert.equal(calls,0);
 });
 
+test('missing, malformed and locked ledger reject before dispatch', async t => {
+  let calls = 0;
+  const gateway = fixture(t, async () => { calls++; return ok(); });
+  const path = process.env.AIGAS_GROQ_BUDGET_FILE;
+  rmSync(path);
+  await assert.rejects(gateway({ model, messages: [] }), { code: 'BUDGET_STORE_UNAVAILABLE' });
+  writeFileSync(path, '{');
+  await assert.rejects(gateway({ model, messages: [] }), { code: 'BUDGET_STORE_UNAVAILABLE' });
+  writeFileSync(path, JSON.stringify({ days: {}, months: {}, active: 0, failures: 0, openUntil: 0 }));
+  writeFileSync(`${path}.lock`, '');
+  await assert.rejects(gateway({ model, messages: [] }), { code: 'BUDGET_STORE_UNAVAILABLE' });
+  assert.equal(calls, 0);
+});
+
+test('ledger outage during settlement withholds the provider reply and leaves the reservation', async t => {
+  let calls = 0;
+  const gateway = fixture(t, async () => {
+    calls++;
+    writeFileSync(`${process.env.AIGAS_GROQ_BUDGET_FILE}.lock`, '');
+    return ok();
+  });
+  const path = process.env.AIGAS_GROQ_BUDGET_FILE;
+  await assert.rejects(gateway({ model, messages: [] }), { code: 'BUDGET_STORE_UNAVAILABLE' });
+  await assert.rejects(gateway({ model, messages: [] }), { code: 'BUDGET_STORE_UNAVAILABLE' });
+  const state = JSON.parse(readFileSync(path, 'utf8'));
+  assert.equal(state.active, 1);
+  assert.equal(Object.values(state.days)[0], 0.000144);
+  assert.equal(Object.values(state.months)[0], 0.000144);
+  assert.equal(calls, 1);
+});
+
 test('ten synthetic complaints exercise the Chat egress policy at the isolated fetch boundary', async t => {
   const { protectContext } = await import('../src/server/secure-chat/integration.mjs');
-  const cases = JSON.parse(readFileSync(new URL('../audit/groq-complaints-2026-11-18/cases.json', import.meta.url)));
+  const cases = JSON.parse(readFileSync(new URL('../Audit/outhers/groq-complaints-2026-11-18/cases.json', import.meta.url)));
   const wireModel = { ...model, maxRequestTokens: 2048, maxOutputTokens: 256 };
   const rules = [{ id:'allow-test-marker', name:'Test only', match_type:'CONTAINS', pattern:'SYNTHETIC', action:'ALLOW', priority:10, enabled:true, version:1 }];
   let dispatched = 0;
