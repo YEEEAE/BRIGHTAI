@@ -19,5 +19,6 @@
 - 2026-11-18 PARTIAL LOCAL UX-07: فصل Auth غير المهيأ عن بوابة التسجيل المغلقة مع رابط `/contact/`؛ الاختبارات 3/3 PASS؛ build/browser/المنشور NOT VERIFIED لاختلاف Node24.20.0/Astro7.4.12 عن Astro6.4.8 في lock؛ `outputs/AUDIT-UX-2026.md`.
 - 2026-11-18 VERIFIED LOCAL رحلة الشكوى: خمس محطات تحت `/products/[product]/complaint/` بسياق تأخر شحنة افتراضي؛ المختبرات المستقلة متاحة؛ build Astro6.4.8/Playwright لمس390 PASS؛ لا نشر.
 - 2026-11-18 VERIFIED LOCAL ورشة الشكاوى: عرض ٩٠ دقيقة وعينة في الخدمات؛ السعر الخاص بانتظار الاعتماد؛ نتيجة Ledger تفتح مسودة ورشة ثابتة بلا نص شكوى وتتيح العودة؛ build64/Playwright لمس390 والنسخ وفتح واتساب بمحاكاة PASS؛ لا نشر أو إرسال.
+- 2026-11-18 VERIFIED LOCAL اقتصاديات الورشة: حاسبة خاصة تفصل النقد عن وقت المالك وتقيّد السعة بتحصيل وتسليم قبل 17 ديسمبر؛ Artifact Tool وChrome offline PASS؛ السعر والضريبة والمواعيد والبروفة البشرية بانتظار اعتماد المالك؛ `outputs/01a1ec79-ff36-70e0-abbd-0337c0692782/OWNER-DECISIONS.ar.md`.
 
 - 2026-11-18 PARTIAL: Render BRIGHTAI نشر fb42be57؛ /services/ على المنشأ 200، وعلى brightai.live رُصد Cloudflare 1000 وHTTP 403، وكذلك sitemap-index ومحطة Firewall أعادتا 403. يلزم تحقق DNS من إعدادات المالك. محليًا Astro 6.4.8 يغطي 64 صفحة و38 اختبارًا ناجحًا؛ رابط العينة بلا JavaScript اجتاز 390/1440.
