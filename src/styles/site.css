@@ -1,6 +1,6 @@
-@font-face { font-family: 'Plex Arabic'; src: url('/fonts/plex-arabic-200.ttf') format('truetype'); font-weight: 200; font-display: swap; }
-@font-face { font-family: 'Plex Arabic'; src: url('/fonts/plex-arabic-400.ttf') format('truetype'); font-weight: 400; font-display: swap; }
-@font-face { font-family: 'Plex Arabic'; src: url('/fonts/plex-arabic-600.ttf') format('truetype'); font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Plex Arabic'; src: url('/fonts/plex-arabic-200.woff2') format('woff2'); font-weight: 200; font-display: swap; }
+@font-face { font-family: 'Plex Arabic'; src: url('/fonts/plex-arabic-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Plex Arabic'; src: url('/fonts/plex-arabic-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; color-scheme: dark; scroll-padding-top: 36px; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

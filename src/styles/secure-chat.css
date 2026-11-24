@@ -1,4 +1,4 @@
-@font-face{font-family:Plex;src:url('/fonts/plex-arabic-400.ttf') format('truetype');font-weight:400;font-display:swap}
+@font-face{font-family:Plex;src:url('/fonts/plex-arabic-400.woff2') format('woff2');font-weight:400;font-display:swap}
 .secure-chat{--sc-ink:#f4f1fa;--sc-muted:#aaa5b5;--sc-line:#2c2934;--sc-panel:#100f15;min-height:calc(100vh - 120px);display:grid;grid-template-columns:252px minmax(0,1fr);font-family:Plex,'Arial',sans-serif;color:var(--sc-ink)}
 .chat-sidebar{border-inline-end:1px solid var(--sc-line);padding:24px 18px;display:flex;flex-direction:column;min-height:calc(100vh - 120px);gap:22px;background:#09080d}
 .sidebar-brand{display:flex;align-items:center;gap:11px}.sidebar-mark{display:grid;place-items:center;width:38px;height:38px;border:1px solid #6645a5;border-radius:11px;color:#c8b4ff;background:#1b1327}.sidebar-brand bdi{font-size:14px}.sidebar-brand small{display:block;color:var(--sc-muted);font-size:11px;margin-top:3px}

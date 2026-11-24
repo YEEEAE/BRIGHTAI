@@ -4,7 +4,6 @@ import '../styles/interior.css';
 import InteriorController from './InteriorController.astro';
 import InteriorMotion from './InteriorMotion.astro';
 import PageMotionStudy from './PageMotionStudy.astro';
-import '../styles/interior-motion.css';
 import ArticleContext from './ArticleContext.astro';
 import type { EditorialRecord } from '../data/editorial';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -16,6 +15,8 @@ interface Props { title: string; description: string; crumbs: Crumb[]; robots?: 
 const { title, description, crumbs, robots = 'index, follow', ogType = 'website', structuredData, editorial } = Astro.props;
 const family = Astro.url.pathname.split('/').filter(Boolean)[0] ?? 'home';
 const segment = Astro.url.pathname.split('/').filter(Boolean)[1] ?? 'index';
+const includesMotionStudy = !['docs', 'knowledge', 'products'].includes(family);
+if (includesMotionStudy) await import('../styles/interior-motion.css');
 // Opt in only the public editorial families; leave product and home styling alone.
 const publicContent = ['solutions', 'pillars', 'services', 'pricing', 'about', 'contact', 'trust', 'compliance', 'docs', 'knowledge', 'privacy', 'terms'].includes(family);
 const all = [{ name: 'الرئيسية', href: '/' }, ...crumbs];
