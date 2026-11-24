@@ -1,0 +1,10 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'div'> {}
+const { class: className, ...attrs } = Astro.props;
+---
+<div role="status" {...attrs} class:list={['ds-state', 'ds-loading', className]}>
+  <span aria-hidden="true" class="ds-loading-mark"></span>
+  <div><slot>جارٍ التحميل…</slot></div>
+</div>

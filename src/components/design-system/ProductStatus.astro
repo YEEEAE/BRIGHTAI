@@ -1,0 +1,9 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'span'> {
+  state: string;
+}
+const { state, class: className, ...attrs } = Astro.props;
+---
+<span {...attrs} class:list={['ds-badge', 'ds-product-status', className]} data-state={state}><slot /></span>

@@ -1,0 +1,24 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'nav'> {
+  items: readonly { label: string; href?: string; dir?: 'ltr' | 'rtl' | 'auto' }[];
+}
+const { items, class: className, 'aria-label': label = 'مسار التنقل', ...attrs } = Astro.props;
+---
+<nav {...attrs} aria-label={label} class:list={['ds-breadcrumb', className]}>
+  <ol role="list">
+    {items.map(({ label, href, dir = 'auto' }, index) => (
+      <li>
+        {index > 0 && <span aria-hidden="true">/</span>}
+        {index === items.length - 1
+          ? href
+            ? <a href={href} aria-current="page"><bdi dir={dir}>{label}</bdi></a>
+            : <span aria-current="page"><bdi dir={dir}>{label}</bdi></span>
+          : href
+            ? <a href={href}><bdi dir={dir}>{label}</bdi></a>
+            : <bdi dir={dir}>{label}</bdi>}
+      </li>
+    ))}
+  </ol>
+</nav>

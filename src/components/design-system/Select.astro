@@ -1,0 +1,20 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import FieldLabel from './FieldLabel.astro';
+import FieldMessages from './FieldMessages.astro';
+
+interface Props extends HTMLAttributes<'select'> {
+  id: string;
+  label: string;
+  hint?: string;
+  error?: string;
+}
+const { id, label, hint, error, required: requiredAttr, class: className,
+  'aria-describedby': description, 'aria-invalid': invalid, ...attrs } = Astro.props;
+const required = requiredAttr ?? undefined;
+const ariaInvalid = error ? true : invalid ?? undefined;
+const describedBy = [description, hint && id + '-hint', error && id + '-error'].filter(Boolean).join(' ') || undefined;
+---
+<FieldLabel {id} {label} {required} />
+<select {...attrs} id={id} required={required} class:list={['ds-control', className]} aria-describedby={describedBy} aria-invalid={ariaInvalid}><slot /></select>
+<FieldMessages {id} {hint} {error} />

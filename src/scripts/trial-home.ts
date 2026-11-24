@@ -43,6 +43,7 @@ let sessionVersion = 0;
 const report = (message: string, unavailable = false) => {
   status.textContent = message;
   badge.dataset.accessStatus = unavailable ? 'unavailable' : 'account';
+  badge.dataset.tone = unavailable ? 'warning' : 'info';
   badge.textContent = unavailable ? 'غير متاح حاليًا' : 'يتطلب حسابًا';
 };
 
@@ -130,14 +131,19 @@ async function load(version: number) {
   const products = selected ? [selected, ...data.products.filter(product => product !== selected)] : data.products;
   for (const product of data.status === 'ACTIVE' ? products : []) {
     const card = element('article', '');
+    card.className = 'ds-card';
     const name = element('h2', product.name);
     name.dir = 'auto';
-    card.append(name, element('p', productStatus[product.status]));
+    const badge = element('span', productStatus[product.status]);
+    badge.className = 'ds-badge ds-product-status';
+    badge.dataset.state = product.status;
+    card.append(name, badge);
     if (product.slug === 'secure-chat') card.append(element('p', 'إرسال المحادثات ومزود الذكاء الاصطناعي غير مهيأين في التجربة.'));
     if (product.status === 'READ_ONLY') {
       card.append(element('p', `المتاح: ${product.operations.map(operation => operations[operation]).join('، ')} · المتبقي: ${product.remaining} عملية قراءة`));
       const open = element('button', 'فتح المنتج');
       open.type = 'button';
+      open.className = 'ds-button';
       open.addEventListener('click', () => void run(async version => {
         const result = await api<{ href: string }>({ operation: 'open', product: product.slug });
         if (version === sessionVersion) location.assign(result.href);
@@ -146,6 +152,8 @@ async function load(version: number) {
     }
     const demo = element('a', 'فتح المختبر العام');
     demo.href = product.demo;
+    demo.className = 'ds-button';
+    demo.dataset.variant = 'quiet';
     card.append(demo);
     grid.append(card);
   }

@@ -1,0 +1,18 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import FieldLabel from './FieldLabel.astro';
+import FieldMessages from './FieldMessages.astro';
+
+interface Props extends HTMLAttributes<'textarea'> {
+  id: string;
+  label: string;
+  hint?: string;
+  error?: string;
+}
+const { id, label, hint, error, required, value, class: className,
+  'aria-describedby': description, 'aria-invalid': invalid, ...attrs } = Astro.props;
+const describedBy = [description, hint && id + '-hint', error && id + '-error'].filter(Boolean).join(' ') || undefined;
+---
+<FieldLabel {id} {label} {required} />
+<textarea {...attrs} id={id} required={required} class:list={['ds-control', className]} aria-describedby={describedBy} aria-invalid={error ? true : invalid}>{value}</textarea>
+<FieldMessages {id} {hint} {error} />

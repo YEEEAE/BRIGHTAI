@@ -1,0 +1,9 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'dialog'> {
+  'aria-labelledby': string;
+}
+const { class: className, ...attrs } = Astro.props;
+---
+<dialog {...attrs} class:list={['ds-modal', className]}><slot /></dialog>

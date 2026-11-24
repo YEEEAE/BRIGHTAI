@@ -1,6 +1,8 @@
 ---
 import { productNavigation, productEntryPath, productContactPath } from '../shared/product-navigation.mjs';
-import AccessBadge from '../components/AccessBadge.astro';
+import Badge from '../components/design-system/Badge.astro';
+import Breadcrumb from '../components/design-system/Breadcrumb.astro';
+import LinkButton from '../components/design-system/LinkButton.astro';
 import AccessSteps from '../components/AccessSteps.astro';
 import { trialPath } from '../shared/access-journey.mjs';
 import { authConfig } from '../server/kernel/auth.mjs';
@@ -12,6 +14,7 @@ import { captureProductEvent } from '../server/observability/index.mjs';
 import { productSlug, sectionFor } from '../server/observability/redact.mjs';
 import '../styles/variables.css';
 import '../styles/kernel.css';
+import '../styles/design-system.css';
 const { title = 'مساحة العمل' } = Astro.props;
 const currentProduct = productNavigation.find(product => Astro.url.pathname.startsWith(product.workspacePath));
 const intendedProduct = productNavigation.find(product => Astro.url.searchParams.get('returnTo') === product.workspacePath);
@@ -19,6 +22,13 @@ const selectedProduct = currentProduct ?? intendedProduct;
 const trialPage = Astro.url.pathname.replace(/\/$/, '') === '/app/trial';
 const trialProduct = trialPage ? productNavigation.find(product => product.slug === Astro.url.searchParams.get('product')) : null;
 const accountsConfigured = Boolean(authConfig());
+const portalHome = Astro.url.pathname.replace(/\/$/, '') === '/app/kernel';
+const productTrail = [
+  { label: 'المنتجات', href: '/products/' },
+  ...(selectedProduct ? [{ label: `عن ${selectedProduct.name}`, href: selectedProduct.publicPath }] : []),
+  { label: 'لوحة البوابة', href: '/app/kernel/' },
+  ...(!portalHome ? [{ label: currentProduct?.name ?? title }] : []),
+];
 // Server-side, explicit, and disabled unless the analytics approval gates are
 // satisfied. Only a fixed section slug and product slug are sent: no user,
 // tenant, workspace, email, query string, or page content.
@@ -36,35 +46,33 @@ Astro.response.headers.set('Referrer-Policy', 'no-referrer');
 <!doctype html>
 <html lang="ar-SA" dir="rtl">
   <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="robots" content="noindex,nofollow" /><title>{title} | BRIGHTAI</title><GoogleAnalytics /><link rel="icon" href="/favicon.png" /></head>
-  <body><MonitoringGate /><a class="skip" href="#main">انتقل للمحتوى</a>
+  <body class="ds-theme"><MonitoringGate /><a class="skip ds-skip" href="#main">انتقل للمحتوى</a>
     <div class="app-frame">
       <aside class="app-nav"><BrandLogo /><span class="overline">AIGAS / WORKSPACE</span>{trialPage
         ? <nav aria-label="مساحة التجربة"><a href={trialPath(trialProduct?.slug)} aria-current="page">التجربة المحدودة</a></nav>
         : <WorkspaceNavigation mode="app" current={currentProduct?.slug ?? 'kernel'}/>}<a class="site-link" href="/products/">المختبرات العامة <span aria-hidden="true">↗</span></a></aside>
-      <div class="app-body"><header class="app-top"><span><span>مساحة العمل</span><span class="app-breadcrumb-separator" aria-hidden="true">/</span><bdi class="app-page-title" dir="auto">{title}</bdi><AccessBadge id={trialPage ? "trial-access-status" : undefined} status={accountsConfigured ? "account" : "unavailable"} /></span><bdi dir="ltr">BRIGHTAI / AIGAS</bdi></header><main id="main" tabindex="-1">
+      <div class="app-body"><header class="app-top"><span><span>مساحة العمل</span><span class="app-breadcrumb-separator" aria-hidden="true">/</span><bdi class="app-page-title" dir="auto">{title}</bdi><Badge id={trialPage ? "trial-access-status" : undefined} tone={accountsConfigured ? "info" : "warning"} data-access-status={accountsConfigured ? "account" : "unavailable"}>{accountsConfigured ? "يتطلب حسابًا" : "غير متاح حاليًا"}</Badge></span><bdi dir="ltr">BRIGHTAI / AIGAS</bdi></header><main id="main" tabindex="-1">
         <AccessSteps current={currentProduct ? "product" : "workspace"} slug={(selectedProduct ?? trialProduct)?.slug} track={trialPage ? "trial" : "beta"} />
-        {!trialPage && <nav class="journey-nav" aria-label="مسار المنتج">
-          <a href="/products/">المنتجات</a><span aria-hidden="true">/</span>
-          {selectedProduct && <><a href={selectedProduct.publicPath}>عن <bdi dir="ltr">{selectedProduct.name}</bdi></a><span aria-hidden="true">/</span></>}
-          <a href="/app/kernel/" aria-current={!currentProduct ? 'page' : undefined}>لوحة البوابة</a>
-          {currentProduct && <><span aria-hidden="true">/</span><span aria-current="page"><bdi dir="ltr">{currentProduct.name}</bdi></span><a href={productEntryPath(currentProduct.slug)}>الدخول بحسابك</a></>}
-        </nav>}
+        {!trialPage && <div class="journey-nav">
+          <Breadcrumb aria-label="مسار المنتج" items={productTrail} />
+          {currentProduct && <LinkButton href={productEntryPath(currentProduct.slug)} variant="quiet">الدخول بحسابك</LinkButton>}
+        </div>}
         <slot />
         {selectedProduct && <section class="journey-nav" aria-label="الخطوة التالية"><a href={selectedProduct.publicPath}>تفاصيل <bdi dir="ltr">{selectedProduct.name}</bdi></a><a href={productContactPath(selectedProduct.slug, true)}>طلب اشتراك مستقل</a><a href={productContactPath(selectedProduct.slug)}>تواصل بشأن التقييم</a></section>}
-      </main><footer class="app-footer"><a href="/status/">حالة النظام</a></footer></div>
+      </main><footer class="app-footer"><a href="/status/">حالة النظام</a><a href="/docs/design-system/">نظام التصميم</a></footer></div>
     </div>
   </body>
 </html>
 
 <style>
-  .journey-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; padding-block: 16px; margin-block-end: 18px; border-block-end: 1px solid #302a39; line-height: 1.8; }
+  .journey-nav { display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-6) var(--spacing-18); padding-block: var(--spacing-12); margin-block-end: var(--spacing-18); border-block-end: 1px solid var(--border-subtle); line-height: 1.8; }
   .journey-nav a { display: inline-flex; align-items: center; min-block-size: 44px; overflow-wrap: anywhere; }
-  .journey-nav [aria-current="page"] { font-weight: 700; text-decoration: underline; text-underline-offset: 5px; }
-  .journey-nav a:focus-visible { outline: 3px solid #f5b544; outline-offset: 4px; }
+  .app-footer { display:flex; flex-wrap:wrap; gap:var(--spacing-6) var(--spacing-18); }
+  .app-footer a { display:inline-flex; align-items:center; min-block-size:var(--ds-control-size); text-decoration:underline; }
 </style>
 
 <style>
-  .app-frame .app-nav { position:sticky; inset-block-start:0; block-size:100dvh; overflow-y:auto; align-self:start; }
+  .app-frame .app-nav { position:sticky; z-index:var(--ds-z-raised); inset-block-start:0; block-size:100dvh; overflow-y:auto; align-self:start; }
   .app-frame .app-nav :global(.workspace-menu) { inline-size:100%; }
   .app-frame .app-nav :global(nav a) { font-size:14px; min-block-size:48px; }
   @media(max-width:999px) {

@@ -190,8 +190,10 @@ function clearPrivate() {
     card.querySelector('[data-product-setup]')!.textContent = 'حالة الإعداد غير محمّلة.';
     card.querySelector('[data-product-terms]')!.textContent = 'الإتاحة غير محمّلة.';
     card.querySelector('[data-product-commercial]')!.textContent = 'الاشتراك والترخيص وتجربة 48 ساعة غير مهيّأة.';
-    card.querySelector('[data-product-status]')!.textContent = 'الإتاحة غير محمّلة';
-    const button = document.createElement('button'); button.disabled = true; button.textContent = 'لم يجهز بعد';
+    const status = card.querySelector<HTMLElement>('[data-product-status]')!;
+    status.dataset.state = 'UNKNOWN';
+    status.textContent = 'الإتاحة غير محمّلة';
+    const button = document.createElement('button'); button.className = 'ds-button'; button.disabled = true; button.textContent = 'لم يجهز بعد';
     card.querySelector('[data-product-action]')!.replaceChildren(button);
   });
 }
@@ -424,7 +426,9 @@ function render(data: any) {
   for (const p of data.products) {
     const card = root.querySelector<HTMLElement>(`[data-product="${p.slug}"]`);
     if (!card) continue;
-    card.querySelector('[data-product-status]')!.textContent = p.label;
+    const status = card.querySelector<HTMLElement>('[data-product-status]')!;
+    status.dataset.state = p.state;
+    status.textContent = p.label;
     card.querySelector('[data-product-setup]')!.textContent = ['OWNER','ADMIN'].includes(data.tenant?.role)
       ? p.setupMessage ?? 'اختر مؤسسة لعرض حالة الإعداد.'
       : p.href ? (p.accessSource === 'INTERNAL_EXPLORATION_48H' ? 'التصفح متاح ضمن منحة الاستكشاف؛ العمليات الأخرى تحتاج صلاحية مستقلة.' : 'افتح المنتج للاطلاع على العمليات المتاحة لك.')
@@ -444,9 +448,9 @@ function render(data: any) {
     const action = card.querySelector('[data-product-action]')!;
     // Product paths are an explicit allowlist, never arbitrary URLs from data.
     if (data.tenant && p.href === `/app/${p.slug}/` && productSlugs.includes(p.slug)) {
-      const link = document.createElement('a'); link.href = `${p.href}?workspace=${encodeURIComponent(data.tenant.tenant_id)}`; link.textContent = 'فتح صفحة المنتج'; action.replaceChildren(link);
+      const link = document.createElement('a'); link.className = 'ds-button'; link.href = `${p.href}?workspace=${encodeURIComponent(data.tenant.tenant_id)}`; link.textContent = 'فتح صفحة المنتج'; action.replaceChildren(link);
     } else {
-      const blocked = document.createElement('button'); blocked.type = 'button'; blocked.disabled = true; blocked.textContent = p.state === 'DISABLED' ? 'معطّل' : p.state === 'EXPIRED' ? 'انتهت الإتاحة' : p.state === 'REVOKED' ? 'أُلغي القرار' : p.state === 'NOT_CONFIGURED' ? 'غير مهيأ — لا قرار إتاحة' : !p.enabled ? 'يلزم تمكين معتمد' : 'الإعداد غير مكتمل';
+      const blocked = document.createElement('button'); blocked.className = 'ds-button'; blocked.type = 'button'; blocked.disabled = true; blocked.textContent = p.state === 'DISABLED' ? 'معطّل' : p.state === 'EXPIRED' ? 'انتهت الإتاحة' : p.state === 'REVOKED' ? 'أُلغي القرار' : p.state === 'NOT_CONFIGURED' ? 'غير مهيأ — لا قرار إتاحة' : !p.enabled ? 'يلزم تمكين معتمد' : 'الإعداد غير مكتمل';
       action.replaceChildren(blocked);
     }
   }

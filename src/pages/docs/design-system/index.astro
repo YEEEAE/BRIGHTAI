@@ -1,0 +1,197 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Alert from '../../../components/design-system/Alert.astro';
+import Badge from '../../../components/design-system/Badge.astro';
+import Breadcrumb from '../../../components/design-system/Breadcrumb.astro';
+import Button from '../../../components/design-system/Button.astro';
+import Card from '../../../components/design-system/Card.astro';
+import EmptyState from '../../../components/design-system/EmptyState.astro';
+import ErrorState from '../../../components/design-system/ErrorState.astro';
+import Input from '../../../components/design-system/Input.astro';
+import LinkButton from '../../../components/design-system/LinkButton.astro';
+import LoadingState from '../../../components/design-system/LoadingState.astro';
+import Modal from '../../../components/design-system/Modal.astro';
+import ProductStatus from '../../../components/design-system/ProductStatus.astro';
+import Select from '../../../components/design-system/Select.astro';
+import Table from '../../../components/design-system/Table.astro';
+import Textarea from '../../../components/design-system/Textarea.astro';
+import Toast from '../../../components/design-system/Toast.astro';
+import '../../../styles/design-system.css';
+
+export const prerender = true;
+
+const palette = [
+  ['أسود', '--color-void'],
+  ['أبيض', '--color-bone-white'],
+  ['رمادي', '--color-ash-gray'],
+  ['فضي', '--color-silver-mist'],
+  ['بنفسجي', '--color-electric-iris'],
+  ['زعفراني', '--color-saffron-spark'],
+  ['أخضر', '--color-deep-verdant'],
+];
+const tokens = [
+  ['الألوان', '--surface-raised · --color-text · --ds-action', 'سطح البطاقة والنص وإجراء أساسي بتباين مناسب.'],
+  ['الخط', '--font-arabic · --type-body-sm · --leading-ar-body', 'IBM Plex Sans Arabic مع مقاسات وارتفاعات أسطر مشتركة.'],
+  ['المسافات', '--spacing-6 · --spacing-12 · --spacing-24', 'مقياس أساسه 6 بكسل.'],
+  ['الحواف', '--radius-field · --radius-control · --radius-card', 'للحقول والأزرار والبطاقات.'],
+  ['الظلال', '--ds-shadow-raised · --ds-shadow-modal', 'للبطاقات والحوار.'],
+  ['التركيز', '--ds-focus-color · --ds-focus-width · --ds-focus-offset', 'حلقة ظاهرة عند التنقل بلوحة المفاتيح.'],
+  ['الطبقات', '--ds-z-raised · --ds-z-skip', 'للتنقل الثابت ورابط التخطي. الحوار يستخدم الطبقة العليا للمتصفح.'],
+  ['الحركة', '--ds-motion-control · --ds-motion-state', 'مدد الانتقال تصبح صفرًا عند تفعيل تقليل الحركة.'],
+];
+---
+<BaseLayout title="نظام التصميم | BRIGHTAI"
+  description="مرجع مكونات BRIGHTAI ومتغيرات التصميم العربية، مع أمثلة تفاعلية تدعم الاتجاه من اليمين إلى اليسار."
+  robots="noindex, follow">
+  <div class="ds-theme docs-shell">
+    <a class="docs-skip ds-skip" href="#design-main">انتقل للمحتوى</a>
+    <header>
+      <Breadcrumb items={[{ label: 'BRIGHTAI', href: '/' }, { label: 'نظام التصميم' }]} />
+      <LinkButton href="/app/kernel/" variant="quiet">بوابة التطبيق</LinkButton>
+    </header>
+    <main id="design-main" tabindex="-1">
+      <h1>نظام تصميم BRIGHTAI</h1>
+      <p class="docs-intro">مرجع متغيرات التصميم والمكونات المستخدمة في بوابة التطبيق. الأمثلة أدناه تعمل باتجاه عربي وتستخدم عناصر HTML الأصلية للتفاعل.</p>
+      <nav aria-label="أقسام نظام التصميم" class="docs-jump">
+        <LinkButton href="#tokens" variant="quiet">المتغيرات</LinkButton>
+        <LinkButton href="#components" variant="quiet">المكونات</LinkButton>
+        <LinkButton href="#usage" variant="quiet">الاستخدام والتحقق</LinkButton>
+      </nav>
+
+      <section aria-labelledby="tokens">
+        <h2 id="tokens">متغيرات التصميم</h2>
+        <ul class="docs-palette" role="list">
+          {palette.map(([label, token]) => (
+            <li><span aria-hidden="true" style={`--swatch: var(${token})`}></span><strong>{label}</strong><code dir="ltr">{token}</code></li>
+          ))}
+        </ul>
+        <Table caption="أدوار المتغيرات">
+          <thead><tr><th scope="col">الفئة</th><th scope="col">أمثلة</th><th scope="col">الاستخدام</th></tr></thead>
+          <tbody>{tokens.map(([group, names, use]) => (
+            <tr><th scope="row">{group}</th><td><code dir="ltr">{names}</code></td><td>{use}</td></tr>
+          ))}</tbody>
+        </Table>
+      </section>
+
+      <section aria-labelledby="components">
+        <h2 id="components">المكونات</h2>
+        <div class="docs-grid">
+          <Card aria-labelledby="actions-heading">
+            <h3 id="actions-heading">الأزرار والروابط</h3>
+            <p><bdi>Button</bdi> ينفذ إجراءً و<bdi>LinkButton</bdi> ينقل المستخدم إلى وجهة.</p>
+            <div class="docs-actions">
+              <Button id="ds-toast-trigger">اعرض إشعارًا</Button>
+              <Button variant="secondary" id="ds-modal-trigger" aria-haspopup="dialog">افتح الحوار</Button>
+              <Button disabled>إجراء غير متاح</Button>
+              <LinkButton href="#usage" variant="quiet">اقرأ طريقة الاستخدام</LinkButton>
+            </div>
+            <Toast id="ds-example-toast" />
+          </Card>
+
+          <Card aria-labelledby="fields-heading">
+            <h3 id="fields-heading">حقول الإدخال</h3>
+            <p><bdi>Input / Select / Textarea</bdi> تربط كل حقل بتسميته وتتيح إرفاق التلميح والخطأ.</p>
+            <Input id="ds-email" label="البريد الإلكتروني" type="email" dir="ltr" required autocomplete="email"
+              value="example" hint="استخدم عنوان بريد إلكتروني." error="أدخل عنوانًا بصيغة name@example.com." />
+            <Select id="ds-product" label="المنتج">
+              <option>Kernel</option><option>Ledger</option>
+            </Select>
+            <Textarea id="ds-notes" label="ملاحظات المراجعة" rows="3" dir="auto" />
+          </Card>
+
+          <Card aria-labelledby="status-heading">
+            <h3 id="status-heading">حالات الإتاحة</h3>
+            <p><bdi>Alert / Badge / ProductStatus</bdi> تعرض الحالة بنص واضح.</p>
+            <Alert tone="warning"><strong>يتطلب مراجعة</strong><p>اعتماد الطلب مطلوب قبل تنفيذ الإجراء.</p></Alert>
+            <div class="docs-actions">
+              <Badge tone="info">يتطلب حسابًا</Badge>
+              <ProductStatus state="ENABLED">مفعّل للمؤسسة</ProductStatus>
+              <ProductStatus state="EXPIRED">انتهى قرار الإتاحة</ProductStatus>
+              <ProductStatus state="DISABLED">معطّل</ProductStatus>
+            </div>
+          </Card>
+
+          <Card aria-labelledby="feedback-heading">
+            <h3 id="feedback-heading">الفراغ والتحميل والخطأ</h3>
+            <div class="docs-stack">
+              <EmptyState><strong>لا توجد نتائج</strong><p>غيّر الفلتر واعرض القائمة مرة أخرى.</p></EmptyState>
+              <LoadingState role="presentation">جارٍ تحميل السجل…</LoadingState>
+              <ErrorState><strong>تعذر تحميل السجل</strong><p>تحقق من الاتصال ثم أعد المحاولة.</p></ErrorState>
+            </div>
+          </Card>
+        </div>
+        <Modal id="ds-example-modal" aria-labelledby="ds-modal-title" aria-describedby="ds-modal-description">
+          <h2 id="ds-modal-title">مثال حوار</h2>
+          <p id="ds-modal-description">استخدم Tab للتنقل وEscape للإغلاق. يعود التركيز إلى زر الفتح.</p>
+          <form method="dialog" class="docs-actions">
+            <Button type="submit" autofocus>إغلاق الحوار</Button>
+            <Button type="submit" variant="secondary" value="done">إنهاء المعاينة</Button>
+          </form>
+        </Modal>
+      </section>
+
+      <section aria-labelledby="usage">
+        <h2 id="usage">الاستخدام والتحقق</h2>
+        <Card>
+          <p>استورد المكونات من <code dir="ltr">src/components/design-system/</code> وملفَي <code dir="ltr">variables.css</code> و<code dir="ltr">design-system.css</code>. أضف <code dir="ltr">ds-theme</code> إلى حاوية الواجهة واستخدم <code dir="ltr">dir="rtl"</code> على المستند العربي.</p>
+          <ul>
+            <li>ابدأ بالمتغير الدلالي المناسب. راجع <code dir="ltr">src/styles/tokens.json</code> لأسماء المتغيرات ووظائفها.</li>
+            <li>استخدم الخصائص المنطقية للمحاذاة والمسافات و<bdi>dir="auto"</bdi> أو <bdi>&lt;bdi&gt;</bdi> للنص المختلط. عرّف جداول البيانات بتسمية وعناوين أعمدة أو صفوف.</li>
+            <li>اربط الخطأ بالحقل واذكر طريقة التصحيح. استخدم <bdi>role="status"</bdi> للتحديثات العادية و<bdi>role="alert"</bdi> للرسائل العاجلة التي تظهر بعد التفاعل.</li>
+            <li>افتح <bdi>Modal</bdi> عبر <code dir="ltr">showModal()</code> وحدد أول عنصر مناسب للتركيز. استخدم <code dir="ltr">toast.show(message, trigger)</code> لإعلان تحديث موجز قابل للإغلاق.</li>
+            <li>تحقق من التركيز والتباين وإعادة تدفق المحتوى وترتيب القراءة في كل موضع تستخدم فيه المكونات.</li>
+          </ul>
+          <p><a href="https://www.w3.org/TR/WCAG22/" lang="en" dir="ltr">Web Content Accessibility Guidelines 2.2</a></p>
+        </Card>
+      </section>
+    </main>
+  </div>
+</BaseLayout>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('#ds-example-modal');
+  document.getElementById('ds-modal-trigger')?.addEventListener('click', () => dialog?.showModal());
+
+  const trigger = document.getElementById('ds-toast-trigger');
+  trigger?.addEventListener('click', async () => {
+    await customElements.whenDefined('brightai-toast');
+    const toast = document.querySelector<HTMLElement & { show(message: string, trigger: HTMLElement): void }>('#ds-example-toast');
+    toast?.show('ظهر الإشعار وبقي التركيز على زر العرض.', trigger);
+  });
+</script>
+
+<style>
+  .docs-shell {
+    max-inline-size: 72rem;
+    margin-inline: auto;
+    padding: var(--spacing-24) var(--spacing-18) var(--spacing-60);
+    color: var(--ds-ink);
+    font: var(--type-body-sm) / var(--leading-ar-body) var(--font-arabic);
+  }
+  .docs-shell header, .docs-actions, .docs-jump {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-12);
+  }
+  .docs-shell header { justify-content: space-between; border-block-end: 1px solid var(--border-subtle); }
+  .docs-shell h1 { font-size: clamp(2rem, 5vw, 4rem); line-height: var(--leading-ar-h1); margin-block: var(--spacing-36) var(--spacing-6); }
+  .docs-shell h2 { font-size: 1.625rem; line-height: var(--leading-ar-h2); margin-block: var(--spacing-36) var(--spacing-12); }
+  .docs-shell h3 { font-size: 1.25rem; margin-block-start: 0; }
+  .docs-intro { color: var(--ds-copy); max-inline-size: var(--measure-reading); }
+  .docs-skip {
+    position: fixed;
+    inset-block-start: var(--spacing-6);
+    inset-inline-start: var(--spacing-12);
+    padding: var(--spacing-6) var(--spacing-12);
+    translate: 0 -200%;
+  }
+  .docs-skip:focus { translate: 0 0; }
+  .docs-grid, .docs-stack, .docs-palette { display: grid; gap: var(--spacing-12); }
+  .docs-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr)); }
+  .docs-palette { grid-template-columns: repeat(auto-fit, minmax(min(100%, 8.5rem), 1fr)); padding: 0; list-style: none; }
+  .docs-palette li { display: grid; gap: var(--spacing-6); align-content: start; }
+  .docs-palette li span { block-size: var(--spacing-36); border: 1px solid var(--ds-control-border); border-radius: var(--radius-field); background: var(--swatch); }
+  .docs-shell code { font-family: var(--font-monospace); font-size: .85em; overflow-wrap: anywhere; unicode-bidi: isolate; }
+  .docs-actions { margin-block: var(--spacing-12); }
+</style>

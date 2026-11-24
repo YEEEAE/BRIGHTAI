@@ -1,4 +1,10 @@
 ---
+import Button from '../../../components/design-system/Button.astro';
+import EmptyState from '../../../components/design-system/EmptyState.astro';
+import ErrorState from '../../../components/design-system/ErrorState.astro';
+import Input from '../../../components/design-system/Input.astro';
+import Select from '../../../components/design-system/Select.astro';
+import Textarea from '../../../components/design-system/Textarea.astro';
 import AppLayout from '../../../layouts/AppLayout.astro';
 import '../../../styles/secure-chat.css';
 import { authConfig } from '../../../server/kernel/auth.mjs';
@@ -9,7 +15,7 @@ const config = authConfig();
   <section class="secure-chat" data-secure-chat data-auth-configured={!!config}>
     <aside class="chat-sidebar" aria-label="جلسات المحادثة">
       <div class="sidebar-brand"><span class="sidebar-mark" aria-hidden="true">◈</span><div><bdi>Secure Chat</bdi><small>مساحة مؤسسية</small></div></div>
-      <button type="button" class="new-chat" data-new-chat>＋ <span>محادثة جديدة</span></button>
+      <Button variant="secondary" type="button" class="new-chat" data-new-chat>＋ <span>محادثة جديدة</span></Button>
       <p class="sidebar-label">الجلسات</p>
       <div class="session-list" data-session-list><p>لا توجد جلسات محفوظة.</p></div>
       <div class="sidebar-foot">الجلسة الحالية مؤقتة في هذه الصفحة.</div>
@@ -18,36 +24,35 @@ const config = authConfig();
       <header class="chat-header"><div><p class="overline">AIGAS / PRIVATE WORKSPACE</p><h1>محادثة مؤسسية</h1></div><span class="chat-state" data-connection>يلزم التحقق من الدخول</span></header>
       <section class="access-panel" aria-labelledby="access-title">
         <div><p class="overline">حالة الوصول</p><h2 id="access-title" data-state-title>التحقق من الهوية والإعداد</h2><p role="status" aria-live="polite" data-status>لا تُعرض بيانات المؤسسة قبل التحقق من عضوية Kernel.</p></div>
-        <div class="access-actions"><button type="button" data-retry>إعادة المحاولة</button><button type="button" data-sign-out hidden>تسجيل الخروج</button></div>
+        <div class="access-actions"><Button variant="secondary" type="button" data-retry>إعادة المحاولة</Button><Button variant="secondary" type="button" data-sign-out hidden>تسجيل الخروج</Button></div>
       </section>
       <form class="login-form" data-login method="post" hidden>
         <h2>دخول مساحة العمل</h2><p>استخدم حساب Neon Auth الخاص بك.</p>
-        <label for="secure-email">البريد الإلكتروني</label><input id="secure-email" name="email" type="email" autocomplete="username" required maxlength="254" />
-        <label for="secure-password">كلمة المرور</label><input id="secure-password" name="password" type="password" autocomplete="current-password" required maxlength="128" />
-        <button type="submit">تسجيل الدخول</button>
+        <Input label="البريد الإلكتروني" id="secure-email" name="email" type="email" autocomplete="username" required maxlength="254" />
+        <Input label="كلمة المرور" id="secure-password" name="password" type="password" autocomplete="current-password" required maxlength="128" />
+        <Button type="submit">تسجيل الدخول</Button>
       </form>
-      <div class="workspace-switch" data-workspace-wrap hidden><label for="secure-workspace">المؤسسة</label><select id="secure-workspace" data-workspace></select><span data-role></span></div>
+      <div class="workspace-switch" data-workspace-wrap hidden><Select label="المؤسسة" id="secure-workspace" data-workspace></Select><span data-role></span></div>
       <div class="chat-grid" data-chat-area hidden>
         <section class="conversation" aria-label="محتوى المحادثة">
-          <div class="empty-chat" data-empty>
+          <EmptyState class="empty-chat" data-empty>
             <span class="empty-glyph" aria-hidden="true">◈</span>
             <h2>ابدأ جلسة مؤقتة</h2>
             <p>اختر نموذجًا معتمدًا ومهيأً عند توفره. متن المحادثة مؤقت في هذه الصفحة، ولا يقرأه مسؤول المؤسسة عبر المنتج.</p>
-          </div>
+          </EmptyState>
           <ol class="messages" data-messages aria-live="polite" aria-relevant="additions text"></ol>
-          <div class="send-error" data-send-error role="alert" hidden><p data-send-error-text></p><button type="button" data-retry-send hidden>إعادة التحقق من النماذج</button></div>
+          <ErrorState class="send-error" data-send-error role="alert" hidden><p data-send-error-text></p><Button variant="secondary" type="button" data-retry-send hidden>إعادة التحقق من النماذج</Button></ErrorState>
           <form class="composer" data-composer>
-            <label for="chat-message">رسالتك</label>
-            <textarea id="chat-message" name="message" maxlength="4000" rows="4" placeholder="اكتب رسالتك هنا…" aria-describedby="message-limit privacy-note" required></textarea>
+            <Textarea label="رسالتك" id="chat-message" name="message" maxlength="4000" rows="4" placeholder="اكتب رسالتك هنا…" aria-describedby="message-limit privacy-note" required />
             <div class="composer-meta"><span id="message-limit" data-count>0 / 4000</span><span id="privacy-note">لا ترسل بيانات حساسة في هذه المرحلة.</span></div>
             <label class="synthetic-consent"><input type="checkbox" data-synthetic required /> أؤكد أن النصوص اصطناعية ولا تتضمن بيانات عميل حقيقية.</label>
             <p class="policy-note" data-policy-note></p>
             <p class="composer-state" data-composer-state role="status" aria-live="polite" hidden></p>
-            <div class="composer-actions"><button type="button" class="cancel-send" data-cancel hidden>طلب إيقاف</button><button type="submit" data-send disabled>إرسال</button></div>
+            <div class="composer-actions"><Button variant="secondary" type="button" class="cancel-send" data-cancel hidden>طلب إيقاف</Button><Button type="submit" data-send disabled>إرسال</Button></div>
           </form>
         </section>
         <aside class="chat-details" aria-label="إعدادات الجلسة">
-          <div class="detail-block"><p class="overline">النموذج</p><label for="chat-model">نموذج معتمد</label><select id="chat-model" data-model disabled><option>لا يوجد نموذج متاح</option></select><p data-model-status>لا يوجد نموذج معتمد ومهيأ لهذه المؤسسة.</p></div>
+          <div class="detail-block"><p class="overline">النموذج</p><Select label="نموذج معتمد" id="chat-model" data-model disabled><option>لا يوجد نموذج متاح</option></Select><p data-model-status>لا يوجد نموذج معتمد ومهيأ لهذه المؤسسة.</p></div>
           <div class="detail-block"><p class="overline">الخصوصية</p><ul><li>الجلسة لا تُحفظ؛ مسودتك في هذه الصفحة فقط.</li><li>لا نرسل محتوى إلى مزود غير معتمد.</li><li>متن المحادثة لا يظهر لمسؤول المؤسسة عبر المنتج، ولا يُرسل إلى Audit أو Analytics.</li><li>تُحفظ معرّفات الطلب والنتيجة والاستخدام؛ لا يُحفظ المتن في سجل الأمن.</li></ul></div>
           <div class="detail-block usage"><p class="overline">حدود الاستخدام</p><p><span data-usage>الرموز الفعلية: غير متاح. التكلفة: غير متاح.</span></p><p data-limits>الحصص غير مفعّلة حتى اعتمادها.</p><p>المشاركة والتصدير والملفات وRAG غير متاحة. الحفظ الدائم غير مفعّل حتى اعتماد سياسة الاحتفاظ وحماية البيانات.</p></div>
         </aside>

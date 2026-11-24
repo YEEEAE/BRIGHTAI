@@ -1,0 +1,8 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import Alert from './Alert.astro';
+
+interface Props extends HTMLAttributes<'div'> {}
+const { class: className, ...attrs } = Astro.props;
+---
+<Alert {...attrs} tone="error" class:list={['ds-state', className]}><slot /></Alert>

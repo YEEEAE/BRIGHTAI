@@ -25,6 +25,6 @@ test('missing metadata fails even on noindex pages', () => {
 
 test('shared public path policy excludes private, demo and error surfaces', async () => {
   const { isPublicIndexPath } = await import('../src/server/seo/indexability.mjs');
-  for (const path of ['/app/', '/auth/login/', '/private/a/', '/demo/', '/demo/risk/', '/404/', '/healthz/', '/api/x/', '/README/']) assert.equal(isPublicIndexPath(path), false, path);
+  for (const path of ['/app/', '/auth/login/', '/private/a/', '/demo/', '/demo/risk/', '/404/', '/healthz/', '/api/x/', '/README/', '/docs/design-system/', '/docs/design-system']) assert.equal(isPublicIndexPath(path), false, path);
   for (const path of ['/', '/docs/', '/knowledge/ai-risk-assessment/']) assert.equal(isPublicIndexPath(path), true, path);
 });

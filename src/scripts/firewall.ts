@@ -2,6 +2,10 @@ import { createWorkspaceAuth as createAuthClient, getWorkspaceSession, appFetch,
 
 const root = document.querySelector<HTMLElement>('[data-firewall]')!;
 const status = root.querySelector<HTMLElement>('[data-status]')!;
+const confirmation = root.querySelector<HTMLElement & {
+  show?(message: string, trigger?: HTMLElement): void;
+  dismiss?(): void;
+}>('#fw-confirmation');
 const privateArea = root.querySelector<HTMLElement>('[data-private]')!;
 const workspace = root.querySelector<HTMLSelectElement>('[data-workspace]')!;
 const actionFilter = root.querySelector<HTMLSelectElement>('[data-filter]')!;
@@ -60,11 +64,13 @@ function lockControls(locked: boolean) {
 }
 async function withBusy(task: () => Promise<void>) {
   if (busy) throw new ApiError('هناك طلب جارٍ؛ انتظر نتيجته قبل تنفيذ عملية أخرى.', 'BUSY');
+  confirmation?.dismiss?.();
   busy = true; root.setAttribute('aria-busy', 'true'); lockControls(true); note('جارٍ معالجة الطلب من الخادم…');
   try { await task(); }
   finally { busy = false; root.removeAttribute('aria-busy'); lockControls(false); }
 }
 function clearPrivate() {
+  confirmation?.dismiss?.();
   viewEpoch++;
   privateArea.hidden = true; setupPanel.hidden = true; setupMessage.textContent = ''; text.value = ''; ack.checked = false; evalError.textContent = ''; result.textContent = ''; delete result.dataset.state;
   root.querySelector('[data-rules]')!.replaceChildren();
@@ -380,7 +386,13 @@ createForm.addEventListener('submit', event => {
       await withBusy(async () => { await api('rules', 'POST', payload); render(await api('rules')); });
       createForm.reset();
       (root.querySelector('#fw-priority') as HTMLInputElement).value = '100';
-      note('حُفظت القاعدة في الخادم وظهرت في القائمة.');
+      const message = 'حُفظت القاعدة في الخادم وظهرت في القائمة.';
+      if (confirmation?.show) {
+        status.textContent = '';
+        confirmation.show(message, root.querySelector<HTMLButtonElement>('[data-create-rule] button[type=submit]') ?? undefined);
+      } else {
+        note(message);
+      }
     } catch (error) { createError.textContent = messageOf(error); }
   })();
 });

@@ -29,6 +29,9 @@
      paragraphs keep a measured, non-grey reading colour. */
   --color-text-copy: #c6c1cf;
   --text-secondary: var(--color-text-muted);
+  --color-workspace-text: #f4f1f8;
+  --surface-workspace-panel: #0e0b14;
+  --border-workspace: #302a39;
 
   --border-subtle: #292630;
   --border-strong: #3a3442;
@@ -160,10 +163,10 @@
 /* Interior-only aliases: scoped so the homepage, hero and header are untouched. */
 .interior-page,
 .kernel {
-  --interior-surface: #0e0b14;
+  --interior-surface: var(--surface-workspace-panel);
   --interior-surface-hover: #17121f;
-  --interior-border: #302a39;
-  --interior-text: #f4f1f8;
+  --interior-border: var(--border-workspace);
+  --interior-text: var(--color-workspace-text);
   --interior-copy: var(--color-text-copy);
   --interior-accent: var(--color-action);
   --interior-focus: var(--color-focus);

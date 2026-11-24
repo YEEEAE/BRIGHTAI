@@ -1,0 +1,9 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'section'> {
+  as?: 'div' | 'article' | 'section';
+}
+const { as: Tag = 'section', class: className, ...attrs } = Astro.props;
+---
+<Tag {...attrs} class:list={['ds-card', className]}><slot /></Tag>

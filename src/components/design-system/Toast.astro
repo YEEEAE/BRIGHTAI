@@ -1,0 +1,51 @@
+---
+import Button from './Button.astro';
+interface Props { id: string; dismissLabel?: string }
+const { id, dismissLabel = 'إغلاق الإشعار' } = Astro.props;
+---
+<brightai-toast id={id} class="ds-toast">
+  <span class="ds-visually-hidden" role="status" aria-atomic="true" data-toast-live></span>
+  <div class="ds-toast-content" data-toast-content hidden>
+    <p data-toast-text></p>
+    <Button variant="quiet" data-toast-dismiss>{dismissLabel}</Button>
+  </div>
+</brightai-toast>
+<script>
+  class BrightaiToast extends HTMLElement {
+    #returnFocus: HTMLElement | null = null;
+    #announce: number | undefined;
+
+    connectedCallback() {
+      this.querySelector('[data-toast-dismiss]')?.addEventListener('click', this.dismiss);
+    }
+
+    disconnectedCallback() {
+      this.querySelector('[data-toast-dismiss]')?.removeEventListener('click', this.dismiss);
+      window.clearTimeout(this.#announce);
+    }
+
+    show(message: string, returnFocus?: HTMLElement) {
+      if (!message.trim()) return;
+      const content = this.querySelector<HTMLElement>('[data-toast-content]')!;
+      const active = document.activeElement;
+      if (returnFocus) this.#returnFocus = returnFocus;
+      else if (!content.contains(active) && active instanceof HTMLElement) this.#returnFocus = active;
+      this.querySelector('[data-toast-text]')!.textContent = message;
+      content.hidden = false;
+      const live = this.querySelector('[data-toast-live]')!;
+      live.textContent = '';
+      window.clearTimeout(this.#announce);
+      this.#announce = window.setTimeout(() => { live.textContent = message; }, 75);
+    }
+
+    dismiss = () => {
+      const content = this.querySelector<HTMLElement>('[data-toast-content]')!;
+      if (content.contains(document.activeElement)) this.#returnFocus?.focus();
+      content.hidden = true;
+      window.clearTimeout(this.#announce);
+      this.querySelector('[data-toast-live]')!.textContent = '';
+      this.#returnFocus = null;
+    };
+  }
+  if (!customElements.get('brightai-toast')) customElements.define('brightai-toast', BrightaiToast);
+</script>

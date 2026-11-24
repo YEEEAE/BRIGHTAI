@@ -1,0 +1,6 @@
+---
+interface Props { id: string; hint?: string; error?: string }
+const { id, hint, error } = Astro.props;
+---
+{hint && <p id={id + '-hint'} class="ds-field-hint">{hint}</p>}
+{error && <p id={id + '-error'} class="ds-field-error">{error}</p>}

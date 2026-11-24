@@ -1,0 +1,248 @@
+/* Opt-in component theme. Existing brand primitives live in variables.css. */
+.ds-theme {
+  color-scheme: dark;
+  --ds-surface: var(--surface-raised);
+  --ds-ink: var(--color-text);
+  --ds-copy: var(--color-text-copy);
+  --ds-control-border: var(--color-ash-gray);
+  --ds-action: var(--color-action-hover-strong);
+  --ds-action-hover: var(--color-selection);
+  --ds-focus-color: var(--color-focus);
+  --ds-focus-width: 3px;
+  --ds-focus-offset: 3px;
+  --ds-focus-clearance: calc(var(--ds-focus-width) + var(--ds-focus-offset));
+  --ds-control-size: 2.75rem;
+  --ds-shadow-raised: inset 0 1px 0 rgb(255 255 255 / .03), 0 18px 40px -36px var(--color-void);
+  --ds-shadow-modal: 0 40px 90px -40px var(--color-void);
+  --ds-backdrop: rgb(0 0 0 / .72);
+  --ds-z-raised: 1;
+  --ds-z-skip: 2;
+  --ds-motion-control: var(--motion-hover);
+  --ds-motion-state: var(--motion-state);
+  --ds-button-padding: var(--spacing-6) var(--spacing-18);
+  --ds-card-padding: var(--spacing-24);
+  --ds-field-padding: var(--spacing-6) var(--spacing-12);
+  --ds-tone: var(--ds-copy);
+}
+
+.ds-theme :is(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: var(--ds-focus-width) solid var(--ds-focus-color);
+  outline-offset: var(--ds-focus-offset);
+  scroll-margin-block: var(--spacing-12);
+}
+.ds-theme [hidden] { display: none !important; }
+.ds-theme .ds-skip:focus {
+  z-index: var(--ds-z-skip);
+  background: var(--ds-action);
+  color: var(--ds-ink);
+}
+
+.ds-theme .ds-button {
+  --ds-button-bg: var(--ds-action);
+  --ds-button-hover: var(--ds-action-hover);
+  --ds-button-border: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-6);
+  min-block-size: var(--ds-control-size);
+  min-inline-size: var(--ds-control-size);
+  max-inline-size: 100%;
+  padding: var(--ds-button-padding);
+  border: 1px solid var(--ds-button-border);
+  border-radius: var(--radius-control);
+  background: var(--ds-button-bg);
+  color: var(--ds-ink);
+  font: var(--font-weight-semibold) var(--type-body-sm) / var(--leading-ar-label) var(--font-arabic);
+  text-align: center;
+  text-decoration: none;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+  transition: background-color var(--ds-motion-control) var(--ease-out), border-color var(--ds-motion-control) var(--ease-out);
+}
+.ds-theme .ds-button[data-variant="secondary"],
+.ds-theme .ds-button[data-variant="quiet"] {
+  --ds-button-bg: var(--ds-surface);
+  --ds-button-hover: var(--surface-raised-hover);
+}
+.ds-theme .ds-button[data-variant="secondary"] { --ds-button-border: var(--ds-control-border); }
+.ds-theme .ds-button[data-variant="quiet"] {
+  --ds-button-bg: transparent;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+.ds-theme .ds-button:is(:hover, :active):not(:disabled) { background: var(--ds-button-hover); }
+.ds-theme .ds-button:disabled {
+  color: var(--state-disabled-text);
+  border-color: var(--state-disabled);
+  background: var(--surface-sunken);
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.ds-theme .ds-label {
+  display: block;
+  margin-block: var(--spacing-12) var(--spacing-6);
+  color: var(--ds-ink);
+  font-size: var(--type-label);
+  line-height: var(--leading-ar-label);
+}
+.ds-theme .ds-control {
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-inline-size: 0;
+  min-block-size: var(--ds-control-size);
+  padding: var(--ds-field-padding);
+  border: 1px solid var(--ds-control-border);
+  border-radius: var(--radius-field);
+  background: var(--surface-sunken);
+  color: var(--ds-ink);
+  font: var(--font-weight-regular) var(--type-body-sm) / var(--leading-ar-label) var(--font-arabic);
+  text-align: start;
+}
+.ds-theme textarea.ds-control { resize: vertical; resize: block; }
+.ds-theme .ds-control::placeholder { color: var(--color-text-subtle); }
+.ds-theme .ds-control[aria-invalid="true"] { border-color: var(--state-error); }
+.ds-theme .ds-control:disabled { color: var(--state-disabled-text); cursor: not-allowed; }
+.ds-theme :is(.ds-field-hint, .ds-field-error) {
+  margin-block: var(--spacing-6) 0;
+  font-size: var(--type-label);
+  line-height: var(--leading-ar-body);
+  color: var(--ds-copy);
+}
+.ds-theme .ds-field-error { color: var(--state-error-text); }
+
+.ds-theme .ds-badge[data-tone="neutral"],
+.ds-theme .ds-product-status { --ds-tone: var(--ds-copy); }
+.ds-theme [data-tone="info"] { --ds-tone: var(--state-info-text); }
+.ds-theme [data-tone="success"],
+.ds-theme .ds-product-status:is([data-state="ENABLED"], [data-state="READ_ONLY"]) { --ds-tone: var(--state-success-text); }
+.ds-theme [data-tone="warning"],
+.ds-theme .ds-product-status:is([data-state="EXPIRED"], [data-state="FOUNDATION"], [data-state="NOT_CONFIGURED"], [data-state="UNAVAILABLE"]) { --ds-tone: var(--state-warning-text); }
+.ds-theme [data-tone="error"],
+.ds-theme .ds-product-status:is([data-state="DISABLED"], [data-state="REVOKED"]) { --ds-tone: var(--state-error-text); }
+
+.ds-theme .ds-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-6);
+  max-inline-size: 100%;
+  padding: var(--spacing-6) var(--spacing-12);
+  border: 1px solid currentColor;
+  border-radius: var(--radius-full);
+  background: var(--surface-sunken);
+  color: var(--ds-tone);
+  font-size: var(--type-label);
+  line-height: var(--leading-ar-label);
+  overflow-wrap: anywhere;
+}
+.ds-theme .ds-product-status[data-state] { color: var(--ds-tone); }
+
+.ds-theme :is(.ds-card, .ds-alert, .ds-state, .ds-toast-content) {
+  min-inline-size: 0;
+  padding: var(--ds-card-padding);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  background: var(--ds-surface);
+  color: var(--ds-ink);
+  overflow-wrap: anywhere;
+}
+.ds-theme .ds-card { box-shadow: var(--ds-shadow-raised); }
+.ds-theme .ds-card:has(.ds-button) { transition: border-color var(--ds-motion-state) var(--ease-out); }
+.ds-theme :is(.ds-alert, .ds-toast-content) { border-inline-start: var(--ds-focus-width) solid var(--ds-tone); }
+.ds-theme .ds-state { border-color: var(--border-strong); }
+.ds-theme :is(.ds-alert, .ds-state, .ds-toast-content) > :first-child { margin-block-start: 0; }
+.ds-theme :is(.ds-alert, .ds-state, .ds-toast-content) > :last-child { margin-block-end: 0; }
+.ds-theme :is(.ds-card, .ds-alert, .ds-state) a:not(.ds-button) { text-decoration: underline; text-underline-offset: .2em; }
+
+.ds-theme .ds-loading { display: flex; align-items: start; gap: var(--spacing-12); }
+.ds-theme .ds-loading-mark {
+  flex: none;
+  inline-size: var(--spacing-12);
+  block-size: var(--spacing-12);
+  margin-block-start: var(--spacing-6);
+  border: 2px solid var(--state-info);
+  border-inline-end-color: transparent;
+  border-radius: var(--radius-full);
+}
+.ds-theme .ds-toast-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-12);
+  border-inline-start-color: var(--state-info);
+}
+
+.ds-theme .ds-breadcrumb ol,
+.ds-theme .ds-breadcrumb li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-6) var(--spacing-12);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ds-theme .ds-breadcrumb li { min-inline-size: 0; max-inline-size: 100%; overflow-wrap: anywhere; }
+.ds-theme .ds-breadcrumb a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--ds-control-size);
+  max-inline-size: 100%;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+.ds-theme .ds-breadcrumb [aria-current] { font-weight: var(--font-weight-bold); }
+
+.ds-theme .ds-table-scroll {
+  max-inline-size: 100%;
+  overflow-x: auto;
+  scroll-padding-inline: var(--ds-focus-clearance);
+  margin-block: var(--spacing-12);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-control);
+}
+.ds-theme .ds-table { inline-size: 100%; border-collapse: collapse; }
+.ds-theme .ds-table :is(caption, td, th) {
+  padding: var(--spacing-12);
+  text-align: start;
+  vertical-align: top;
+}
+.ds-theme .ds-table :is(td, th) { border-block-end: 1px solid var(--table-border); }
+.ds-theme .ds-table thead { background: var(--table-header-bg); }
+.ds-theme .ds-table a { text-decoration: underline; text-underline-offset: .2em; }
+.ds-theme .ds-table :is(a, button):focus-visible { outline-offset: calc(-1 * var(--ds-focus-width)); }
+
+.ds-theme .ds-modal {
+  box-sizing: border-box;
+  inline-size: min(48rem, calc(100% - var(--spacing-36)));
+  max-block-size: calc(100dvb - var(--spacing-36));
+  padding: var(--ds-card-padding);
+  color: var(--ds-ink);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-control-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--ds-shadow-modal);
+  overflow-wrap: anywhere;
+}
+.ds-theme .ds-modal::backdrop { background: var(--ds-backdrop); }
+.ds-theme .ds-modal :first-child { scroll-margin-block-start: var(--spacing-12); }
+.ds-theme .ds-visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-theme { --ds-motion-control: 0ms; --ds-motion-state: 0ms; }
+}
+@media (forced-colors: active) {
+  .ds-theme :is(.ds-button, .ds-control, .ds-modal) { border-color: ButtonText; }
+  .ds-theme .ds-control[aria-invalid="true"] { border-style: dashed; }
+  .ds-theme :is(a, button, input, select, textarea, summary, [tabindex]):focus-visible { outline-color: Highlight; }
+}

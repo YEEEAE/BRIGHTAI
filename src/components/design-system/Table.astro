@@ -1,0 +1,18 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'table'> {
+  caption: string;
+  captionVisible?: boolean;
+  scrollLabel?: string;
+  scrollClass?: string;
+}
+const { caption, captionVisible = true, scrollLabel, scrollClass, class: className, ...attrs } = Astro.props;
+---
+<div class:list={['ds-table-scroll', scrollClass]} tabindex="0" role="region"
+  aria-label={scrollLabel ?? caption}>
+  <table {...attrs} class:list={['ds-table', className]}>
+    <caption class:list={{ 'ds-visually-hidden': !captionVisible }}>{caption}</caption>
+    <slot />
+  </table>
+</div>

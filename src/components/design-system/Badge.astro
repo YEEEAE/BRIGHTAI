@@ -1,0 +1,9 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'span'> {
+  tone?: 'neutral' | 'info' | 'success' | 'warning' | 'error';
+}
+const { tone = 'neutral', class: className, ...attrs } = Astro.props;
+---
+<span {...attrs} class:list={['ds-badge', className]} data-tone={tone}><slot /></span>
