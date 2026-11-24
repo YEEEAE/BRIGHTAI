@@ -14,7 +14,6 @@ const PAGE = `<!doctype html>
       (function () {
       if (window.__brightaiGa4Initialized) return;
       window.__brightaiGa4Initialized = true;
-      window['ga-disable-G-9LMB4PGTWJ'] = true;
       window.dataLayer = window.dataLayer || [];
       function gtag(){window.dataLayer.push(arguments);}
       window.gtag = gtag;
@@ -75,6 +74,7 @@ const PAGE = `<!doctype html>
       gtag('config', 'G-9LMB4PGTWJ', analyticsPage);
       })();
     </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9LMB4PGTWJ"></script>
     <script is:inline type="module" src="/measurement.mjs"></script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />

@@ -5,17 +5,20 @@ import { publicSite as site, isPublicIndexPath } from '../src/server/seo/indexab
 const locations = xml => [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map(([, url]) => url);
 const plain = text => text.replace(/<[^>]*>/g, '').replaceAll('&amp;', '&')
   .replaceAll('&quot;', '"').replaceAll('&#39;', "'").replace(/\s+/g, ' ').trim();
+const metadataKey = value => value.normalize('NFKC').toLowerCase();
 
 // Check every HTML artifact, including pages omitted from the sitemap. An
 // accidental Markdown route must not silently pass just because it has no head.
 export function verifyBuiltHtmlMetadata(html, label) {
+  const head = html.match(/<head\b[^>]*>(.*?)<\/head>/is)?.[1] ?? '';
   const attribute = (tag, name) => tag.match(new RegExp(`\\b${name}=["']([^"']*)["']`, 'i'))?.[1];
-  const metas = [...html.matchAll(/<meta\b[^>]*>/gi)].map(([tag]) => tag);
+  const metas = [...head.matchAll(/<meta\b[^>]*>/gi)].map(([tag]) => tag);
   const robots = metas.filter(tag => attribute(tag, 'name')?.toLowerCase() === 'robots');
   assert.equal(robots.length, 1, `Exactly one robots directive required: ${label}`);
   const tokens = (attribute(robots[0], 'content') ?? '').toLowerCase().split(/[\s,]+/);
   assert(tokens.includes('index') !== tokens.includes('noindex'), `Explicit index or noindex required: ${label}`);
-  assert(plain(html.match(/<title\b[^>]*>(.*?)<\/title>/is)?.[1] ?? ''), `Missing title: ${label}`);
+  const titles = [...head.matchAll(/<title\b[^>]*>(.*?)<\/title>/gis)];
+  assert(titles.length === 1 && plain(titles[0][1]), `Missing title or multiple title tags: ${label}`);
   const descriptions = metas.filter(tag => attribute(tag, 'name')?.toLowerCase() === 'description');
   assert.equal(descriptions.length, 1, `Exactly one description required: ${label}`);
   assert(plain(attribute(descriptions[0], 'content') ?? ''), `Missing description: ${label}`);
@@ -69,8 +72,15 @@ export default function seoBuild() {
           'Sitemap must contain every indexable built page exactly once');
         const { redirects } = JSON.parse(await readFile(new URL('../redirects.json', import.meta.url), 'utf8'));
         assert.equal(new Set(redirects.map(item => item.source)).size, redirects.length, 'Duplicate redirect sources');
+        const titles = new Map();
+        const descriptions = new Map();
         for (const { url, title, description } of pages) {
           assert(title && description, `Missing search metadata: ${url}`);
+          for (const [label, value, seen] of [['title', title, titles], ['description', description, descriptions]]) {
+            const key = metadataKey(value);
+            assert(!seen.has(key), `Duplicate ${label}: ${seen.get(key)} and ${url}`);
+            seen.set(key, url);
+          }
           const path = new URL(url).pathname;
           assert(!redirects.some(item => item.source === path), `Redirect in sitemap: ${url}`);
           const aliases = path === '/' ? ['/index.html'] : [path.slice(0, -1) + '.html', path + 'index.html'];

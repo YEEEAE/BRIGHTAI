@@ -18,7 +18,7 @@ const GA_COLLECT_ORIGINS = [
 ];
 const INLINE_SCRIPT_HASHES = [
   // <script is:inline> GA4 init block, GoogleAnalytics.astro
-  'sha256-feF+N619/71qK6awK2CUlKAuBePA4O7YBp+YLCTzERM=',
+  'sha256-kbWqACrSLys44xLn8eH8N6slPUGW61wmDsUE4JbnwE0=',
   // <script is:inline>document.documentElement.classList.add('js');</script>
   'sha256-/x7W7R75k8Roq0WaVRQX9blP4OufE5xbAdzklGxsgpw=',
 ];

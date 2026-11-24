@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-24 PARTIAL SEO/GA4: 315 عنوانًا حيًا عبر خريطتين؛ الحالي 64 والإرثي 264؛ ‎/404/ الحي 200 و152 تحويلًا بلا 301 عند الفحص؛ محليًا 64 صفحة JSON-LD وتحميل GA4 المباشر و152 تحويلًا وحالات 404 و16 SEO +52 قياس PASS؛ `docs/SEO-AUDIT.md`.
 - 2026-11-24 VERIFIED LOCAL Secure Chat: سجل النماذج فارغ؛ الإرسال يتطلب اعتمادًا ساريًا ومفتاحًا مخصصًا وسياسات وحصة وتدقيقًا وميزانية ودور aigas_runtime؛ Chrome وPG18 و60 اختبارًا PASS؛ أدلة المزوّد وسجلات الحافة NOT VERIFIED؛ `SECURITY-SECURE-CHAT.md`.
 - 2026-11-24 VERIFIED LOCAL Design System: 16 مكونًا وtokens مشتركة ضمن `.ds-theme` في App Portal و`/docs/design-system/` المرجعية خارج الفهرسة؛ Chrome RTL/keyboard/focus وbuild 64 صفحة PASS؛ قارئات الشاشة والمطابقة الشاملة والنشر غير متحققة.
 - 2026-11-24 VERIFIED LOCAL وصول المنتج: `/request-access/` يوحّد المختبر والتجربة المحدودة والدعوة والتشغيل؛ `/status/` يقرأ عقد الجاهزية؛ Chrome 390/1024/1440 وAuth اصطناعي وPG18 PASS؛ VoiceOver والنشر NOT VERIFIED.

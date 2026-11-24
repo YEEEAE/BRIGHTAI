@@ -2,14 +2,9 @@ import {createPublicMeasurement} from './measurement-core.mjs';
 const id = 'G-9LMB4PGTWJ';
 if (!window.__brightaiMeasurementInstalled) {
   window.__brightaiMeasurementInstalled = true;
-  let ready = false, stopped = false, loaded = false, checking = false;
-  window['ga-disable-' + id] = true;
-  const stop = () => {
-    stopped = true; ready = false; window['ga-disable-' + id] = true;
-    // Do not replay pending interactions after an emergency stop.
-    if (!loaded) window.dataLayer?.splice(0);
-  };
-  const enabled = () => ready && !stopped && window['ga-disable-' + id] !== true;
+  let ready = false, stopped = false, checking = false;
+  const stop = () => { stopped = true; ready = false; };
+  const enabled = () => ready && !stopped;
   const track = createPublicMeasurement({
     enabled,
     send: (name, properties) => window.gtag?.('event', name, properties),
@@ -31,17 +26,10 @@ if (!window.__brightaiMeasurementInstalled) {
       const state = await response.json();
       if (state?.enabled === false) { stop(); return; }
       if (state?.enabled !== true) throw Error('STATUS_INVALID');
-      ready = true; window['ga-disable-' + id] = false;
-      if (!loaded) {
-        loaded = true;
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = 'https://www.googletagmanager.com/gtag/js?id=' + id;
-        document.head.append(script);
-      }
+      ready = true;
     } catch {
-      // Pause transport on a failed check; normal traffic resumes after recovery.
-      ready = false; window['ga-disable-' + id] = true;
+      // Pause interaction events until their control recovers.
+      ready = false;
     } finally { checking = false; }
   }
   if (!/^\/(?:app|auth|api)(?:\/|$)/i.test(window.location.pathname)) {

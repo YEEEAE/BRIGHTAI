@@ -14,6 +14,7 @@
     "start:local": "node --env-file=.env ./scripts/server.mjs",
     "start:trial": "node --env-file=.env ./scripts/local-trial.mjs",
     "test:auth:e2e": "node tests/auth-browser.e2e.mjs",
+    "test:seo": "npm run build && node --test tests/sitemap-regression.test.mjs tests/seo-build.test.mjs tests/seo-redirects.test.mjs tests/editorial-schema.test.mjs",
     "test:healthz": "node --test tests/healthz.test.mjs tests/healthz-integration.test.mjs",
     "smoke:healthz": "node ./scripts/smoke-healthz.mjs"
   },

@@ -1,9 +1,18 @@
 ---
 import ContentExtension from '../components/ContentExtension.astro';
 import PageShell from '../components/PageShell.astro';
+import { organization } from '../data/organization';
 export const prerender = true;
+const workshop = {
+  '@type': 'Service',
+  '@id': 'https://brightai.live/services/#workshop',
+  url: 'https://brightai.live/services/#workshop',
+  name: 'ورشة الرد على شكاوى العملاء بالذكاء الاصطناعي',
+  description: 'ورشة عربية عن بُعد لفريق خدمة العملاء، تتناول تنقيح الشكوى وصياغة الرد ومراجعته وفق سياسة المنشأة.',
+  provider: { '@id': organization['@id'] },
+};
 ---
-<PageShell title="ورشة شكاوى العملاء وخدمات حوكمة الذكاء الاصطناعي | BRIGHTAI" description="اطّلع على عينة من ورشة عربية عن بُعد لفريق خدمة العملاء: تنقيح الشكوى وصياغة الرد ومراجعته. استفسر أيضًا عن سياسة استخدام الذكاء الاصطناعي وتقييم المخاطر." crumbs={[{ name: 'الخدمات' }]}>
+<PageShell title="ورشة شكاوى العملاء وخدمات حوكمة الذكاء الاصطناعي | BRIGHTAI" description="اطّلع على عينة من ورشة عربية عن بُعد لفريق خدمة العملاء: تنقيح الشكوى وصياغة الرد ومراجعته. استفسر أيضًا عن سياسة استخدام الذكاء الاصطناعي وتقييم المخاطر." crumbs={[{ name: 'الخدمات' }]} structuredData={workshop}>
   <p class="eyebrow">الدعم والنطاق</p><h1>ورش وخدمات حوكمة الذكاء الاصطناعي</h1>
   <p class="lead">اختر ورشة لفريق خدمة العملاء، أو ناقش احتياج منشأتك إلى سياسة استخدام أو تقييم مخاطر. نحدد معك المخرجات والسعر والموعد قبل الاتفاق.</p>
   <section id="workshop" class="card workshop" aria-labelledby="workshop-title">

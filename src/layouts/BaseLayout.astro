@@ -6,30 +6,73 @@ import GoogleAnalytics from '../components/GoogleAnalytics.astro';
 import MotionController from '../components/MotionController.astro';
 import { organization } from '../data/organization';
 import { brand } from '../data/brand';
+import { isPublicIndexPath, publicSite } from '../server/seo/indexability.mjs';
+
+interface Crumb { name: string; href?: string }
 interface Props {
   title: string;
   description: string;
   robots?: string;
   ogType?: 'website' | 'article';
+  breadcrumbs?: Crumb[];
+  structuredData?: Record<string, unknown>;
 }
 
-const { title, description, robots: requestedRobots = 'index, follow', ogType = 'website' } = Astro.props;
+const { title, description, robots: requestedRobots = 'index, follow', ogType = 'website', breadcrumbs, structuredData } = Astro.props;
 // Public content is always indexable, including parameterized URLs; the clean
 // canonical below consolidates them. Only the account surface stays private.
 const isPrivateRoute = Astro.url.pathname.startsWith('/auth/');
 const robots = isPrivateRoute ? 'noindex, nofollow' : requestedRobots;
-const canonical = new URL(Astro.url.pathname, 'https://brightai.live').href;
+const path = Astro.url.pathname;
+const canonical = new URL(path, publicSite).href;
+const isErrorPage = ['/404', '/404/', '/404.html'].includes(path);
 if (robots.includes('noindex')) Astro.response.headers.set('X-Robots-Tag', robots);
-const organizationSchema = { '@context': 'https://schema.org', ...organization };
+const websiteId = `${publicSite}/#website`;
 const websiteSchema = {
-  '@context': 'https://schema.org',
   '@type': 'WebSite',
-  '@id': 'https://brightai.live/#website',
-  publisher: { '@id': 'https://brightai.live/#organization' },
+  '@id': websiteId,
+  publisher: { '@id': organization['@id'] },
   name: 'BRIGHTAI',
-  url: 'https://brightai.live',
+  url: `${publicSite}/`,
   inLanguage: 'ar-SA',
 };
+const pageTypes: Record<string, string> = {
+  '/about/': 'AboutPage',
+  '/contact/': 'ContactPage',
+  '/authors/': 'CollectionPage',
+  '/products/': 'CollectionPage',
+  '/resources/': 'CollectionPage',
+  '/solutions/': 'CollectionPage',
+};
+const { '@context': _context, ...entity } = structuredData ?? {};
+const isCollection = entity['@type'] === 'CollectionPage';
+const mainEntity = structuredData && !isCollection ? { ...entity, '@id': entity['@id'] ?? `${canonical}#main` } : undefined;
+const breadcrumb = breadcrumbs && breadcrumbs.length > 1 ? {
+  '@type': 'BreadcrumbList',
+  '@id': `${canonical}#breadcrumb`,
+  itemListElement: breadcrumbs.map((crumb, index) => ({
+    '@type': 'ListItem', position: index + 1, name: crumb.name,
+    item: new URL(crumb.href ?? canonical, publicSite).href,
+  })),
+} : undefined;
+const webPage = {
+  ...(isCollection ? entity : {}),
+  '@type': isCollection ? 'CollectionPage' : pageTypes[path] ?? 'WebPage',
+  '@id': canonical,
+  url: canonical,
+  name: title,
+  description,
+  inLanguage: 'ar-SA',
+  isPartOf: { '@id': websiteId },
+  publisher: { '@id': organization['@id'] },
+  ...(breadcrumb ? { breadcrumb: { '@id': breadcrumb['@id'] } } : {}),
+  ...(mainEntity ? { mainEntity: { '@id': mainEntity['@id'] } } : {}),
+};
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [organization, websiteSchema, webPage, breadcrumb, mainEntity].filter(Boolean),
+};
+const hasPublicSchema = isPublicIndexPath(path) && !/\bnoindex\b/i.test(robots);
 ---
 
 <!doctype html>
@@ -41,7 +84,7 @@ const websiteSchema = {
     <link rel="preload" href="/fonts/plex-arabic-400.ttf" as="font" type="font/ttf" crossorigin />
     <meta name="robots" content={robots} />
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {!isErrorPage && <link rel="canonical" href={canonical} />}
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="icon" type="image/png" sizes="192x192" href={brand.favicon} />
     <link rel="apple-touch-icon" sizes="180x180" href={brand.touchIcon} />
@@ -50,7 +93,7 @@ const websiteSchema = {
     <meta property="og:site_name" content="BRIGHTAI" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
+    {!isErrorPage && <meta property="og:url" content={canonical} />}
     <meta property="og:image" content={new URL(brand.logo, 'https://brightai.live').href} />
     <meta property="og:image:secure_url" content={new URL(brand.logo, 'https://brightai.live').href} />
     <meta property="og:image:type" content="image/png" />
@@ -64,8 +107,7 @@ const websiteSchema = {
     <meta name="twitter:image:alt" content={brand.alt} />
     <title>{title}</title>
     <GoogleAnalytics />
-    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
-    <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+    {hasPublicSchema && <script type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g, '\\u003c')} />}
   </head>
   <body>
     <slot />

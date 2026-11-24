@@ -18,12 +18,7 @@ const family = Astro.url.pathname.split('/').filter(Boolean)[0] ?? 'home';
 const segment = Astro.url.pathname.split('/').filter(Boolean)[1] ?? 'index';
 // Opt in only the public editorial families; leave product and home styling alone.
 const publicContent = ['solutions', 'pillars', 'services', 'pricing', 'about', 'contact', 'trust', 'compliance', 'docs', 'knowledge', 'privacy', 'terms'].includes(family);
-const site = 'https://brightai.live';
 const all = [{ name: 'الرئيسية', href: '/' }, ...crumbs];
-const schema = {
-  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
-  itemListElement: all.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: new URL(c.href ?? Astro.url.pathname, site).href })),
-};
 const reading = ['knowledge', 'privacy', 'terms'].includes(family);
 const showCompass = !reading && !['auth', 'docs', 'knowledge', 'products', 'request-access', 'status'].includes(family);
 let content = await Astro.slots.render('default');
@@ -37,9 +32,7 @@ if (reading) content = content.replace(/<h2\b([^>]*)>([\s\S]*?)<\/h2>/g, (full, 
 const words = content.replace(/<(script|style|svg|noscript)\b[^>]*>[\s\S]*?<\/\1>/gi, '').replace(/<[^>]+>/g, ' ').replace(/&[^;]+;/g, ' ').trim().split(/\s+/).length;
 const minutes = Math.max(1, Math.ceil(words / 180));
 ---
-<BaseLayout title={title} description={description} robots={robots} ogType={ogType}>
-  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
-  {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')} />}
+<BaseLayout title={title} description={description} robots={robots} ogType={ogType} breadcrumbs={all} structuredData={structuredData}>
   <Header />
   <main id="main" tabindex="-1" class={`wrap section page page-family-${family} interior-page interior-${family}-${segment}${publicContent ? ' public-content' : ''}`}>
     <nav class="breadcrumb" aria-label="مسار التنقل">

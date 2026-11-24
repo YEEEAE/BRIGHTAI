@@ -5,6 +5,7 @@ import PageShell from '../../components/PageShell.astro';
 import ProductExperience from '../../components/ProductExperience.astro';
 import ProductIcon from '../../components/ProductIcon.astro';
 import LabShell from '../../components/LabShell.astro';
+import { organization } from '../../data/organization';
 export const prerender = true;
 export const products = [
   { slug: 'firewall', name: 'AIGAS Firewall', purpose: 'تصور منتج لفحص مدخلات ومخرجات الذكاء الاصطناعي بحثاً عن معلومات أو تعليمات قد تتطلب معالجة وفق سياسة المنشأة.', questions: ['ما فئات المعلومات التي تحتاج إلى ضوابط؟', 'كيف تُراجع نتيجة الفحص وحدودها؟', 'ما الإجراء عند اكتشاف مادة حساسة؟'] },
@@ -30,7 +31,7 @@ const productSchema = {
   name,
   description,
   category: 'حوكمة وأمان الذكاء الاصطناعي',
-  brand: { '@type': 'Organization', name: 'BRIGHTAI', url: 'https://brightai.live/' },
+  brand: { '@id': organization['@id'] },
   url: new URL(`/products/${slug}/`, 'https://brightai.live').href,
 };
 ---

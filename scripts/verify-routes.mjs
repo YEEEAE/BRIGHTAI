@@ -65,7 +65,11 @@ for (const path of routes) {
   assert(html.includes(`rel="canonical" href="https://brightai.live${path}"`), `Canonical: ${path}`);
   assert(html.includes('name="robots" content="index, follow"'), `Indexability: ${path}`);
   assert.equal([...html.matchAll(/gtag\('config', 'G-9LMB4PGTWJ', analyticsPage\)/g)].length, 1, `Analytics: ${path}`);
-  const schemas = [...html.matchAll(/<script type="application\/ld\+json"[^>]*>(.*?)<\/script>/gs)].map(([, s]) => JSON.parse(s));
+  const schemas = [...html.matchAll(/<script type="application\/ld\+json"[^>]*>(.*?)<\/script>/gs)]
+    .flatMap(([, source]) => {
+      const schema = JSON.parse(source);
+      return schema['@graph'] ?? [schema];
+    });
   if (path !== '/') assert(schemas.some(s => s['@type'] === 'BreadcrumbList'), `Breadcrumbs: ${path}`);
   if (path.startsWith('/knowledge/')) {
     const articles = schemas.filter(s => s['@type'] === 'Article');

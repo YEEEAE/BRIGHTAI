@@ -33,34 +33,32 @@ function harness(initial={enabled:true},status=200,pathname='/') {
  const settle=async()=>{await new Promise(resolve=>setImmediate(resolve));};
  return {window,listeners,docListeners,scripts,calls,timers,urls,settle,run:()=>vm.runInContext('(function(){'+runtime+'})()',context),state:(v,c=200)=>{state=v;code=c;}};
 }
-test('normal traffic loads the vendor once; duplicate installation does not duplicate events or polling',async()=>{
+test('interaction controls cannot disable or reload the GA4 page-view transport',async()=>{
  const h=harness();await h.settle();h.run();await h.settle();
- assert.equal(h.scripts.length,1);assert.equal(h.timers.length,1);assert.equal(h.window['ga-disable-G-9LMB4PGTWJ'],false);
- const event={detail:{name:'lab_started',properties:valid,eventId:randomUUID()}};
- h.listeners.get('brightai:measurement')(event);h.listeners.get('brightai:measurement')(event);
- assert.equal(h.calls.length,1);
-});
-test('kill before load prevents SDK, later polling kill stops an open page and latches without replay',async()=>{
- const off=harness({enabled:false});await off.settle();assert.equal(off.scripts.length,0);assert.equal(off.window['ga-disable-G-9LMB4PGTWJ'],true);
- const h=harness();await h.settle();h.state({enabled:false});await h.timers[0]();await h.settle();
- h.listeners.get('brightai:measurement')({detail:{name:'lab_started',properties:valid,eventId:randomUUID()}});
- assert.equal(h.window['ga-disable-G-9LMB4PGTWJ'],true);assert.equal(h.calls.length,0);
- h.state({enabled:true});await h.timers[0]();await h.settle();assert.equal(h.window['ga-disable-G-9LMB4PGTWJ'],true);
-});
-test('static fallback preserves traffic; malformed status and errors pause it; recovery never replays interactions',async()=>{
- const h=harness({enabled:true},404);await h.settle();assert.ok(h.urls.includes('/measurement-control.json'));assert.equal(h.scripts.length,0);
- h.state({enabled:true});await h.timers[0]();await h.settle();assert.equal(h.scripts.length,1);
- h.state({},503);await h.timers[0]();await h.settle();assert.equal(h.window['ga-disable-G-9LMB4PGTWJ'],true);
- h.listeners.get('brightai:measurement')({detail:{name:'lab_started',properties:valid,eventId:randomUUID()}});
- h.state({enabled:true});await h.timers[0]();await h.settle();assert.equal(h.calls.length,0);assert.equal(h.scripts.length,1);
- assert.equal(h.window['ga-disable-G-9LMB4PGTWJ'],false);
- for (const malformed of [null, {}, {enabled:'false'}]) {
+ assert.equal(h.timers.length,1);
+ assert.equal(h.scripts.length,0);
+ const send=()=> {
+   const event={detail:{name:'lab_started',properties:valid,eventId:randomUUID()}};
+   h.listeners.get('brightai:measurement')(event);
+   return event.detail.accepted;
+ };
+ assert.equal(send(),true);
+ for(const malformed of [null, {}, {enabled:'false'}]) {
    h.state(malformed);h.timers[0]();await h.settle();
-   assert.equal(h.window['ga-disable-G-9LMB4PGTWJ'],true);
-   h.state({enabled:true});h.timers[0]();await h.settle();
-   assert.equal(h.window['ga-disable-G-9LMB4PGTWJ'],false);
+   assert.equal(send(),false);
  }
- assert.equal(h.calls.length,0);assert.equal(h.scripts.length,1);
+ h.state({},404);h.timers[0]();await h.settle();
+ assert.ok(h.urls.includes('/measurement-control.json'));
+ assert.equal(send(),false);
+ h.state({enabled:true});h.timers[0]();await h.settle();
+ assert.equal(send(),true);
+ h.state({enabled:false});h.timers[0]();await h.settle();
+ assert.equal(send(),false);
+ h.state({enabled:true});h.timers[0]();await h.settle();
+ assert.equal(send(),false);
+ assert.equal(h.window['ga-disable-G-9LMB4PGTWJ'],undefined);
+ assert.equal(h.window.dataLayer.length,1);
+ assert.equal(h.calls.length,2);
 });
 test('link measurement ignores the second double-click and only reads fixed attributes',async()=>{
  const h=harness();await h.settle();const click=h.docListeners.get('click');

@@ -16,10 +16,11 @@ test('ambiguous indexing directives fail', () => {
   for (const directive of ['follow', 'index, noindex']) {
     assert.throws(() => verifyBuiltHtmlMetadata(page(directive), 'page'), /Explicit index or noindex/);
   }
-  assert.throws(() => verifyBuiltHtmlMetadata(page() + '<meta name="robots" content="noindex">', 'page'), /Exactly one robots/);
+  assert.throws(() => verifyBuiltHtmlMetadata(page().replace('</head>', '<meta name="robots" content="noindex"></head>'), 'page'), /Exactly one robots/);
 });
 test('missing metadata fails even on noindex pages', () => {
   assert.throws(() => verifyBuiltHtmlMetadata(page('noindex', ''), 'demo'), /Missing title/);
+  assert.throws(() => verifyBuiltHtmlMetadata(page().replace('</head>', '<title>Duplicate</title></head>'), 'page'), /multiple title tags/);
   assert.throws(() => verifyBuiltHtmlMetadata(page('noindex', 'Demo', ''), 'demo'), /Missing description/);
 });
 

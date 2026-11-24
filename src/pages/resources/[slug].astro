@@ -1,15 +1,21 @@
 ---
 import PageShell from '../../components/PageShell.astro';
 import assets from '../../data/resources.json';
+import { organization } from '../../data/organization';
 import '../../styles/resources.css';
 export const prerender = true;
 export function getStaticPaths(){return assets.map(asset=>({params:{slug:asset.slug},props:{asset}}));}
 const {asset:a}=Astro.props;
 const base=`/resources/v${a.version}-${a.date}/`;
 const url=`https://brightai.live/resources/${a.slug}/`;
+const resource = {
+  '@type': 'CreativeWork', name: a.title, description: a.summary, url, inLanguage: 'ar-SA',
+  version: a.version, datePublished: a.date, license: 'https://creativecommons.org/licenses/by/4.0/',
+  creator: { '@id': organization['@id'] },
+};
 const sectors=[['enterprise','الشركات: الأدوات والبيانات والتدريب'],['government','الحكومة: صلاحية القرار وأثره على المستفيد'],['healthcare','الصحة: البيانات الصحية والمراجعة المهنية'],['finance','المالية: بيانات العملاء والقرارات المؤثرة']];
 ---
-<PageShell title={`${a.title} — نسخة قابلة للتحرير | BRIGHTAI`} description={a.summary} crumbs={[{name:'الأصول العملية',href:'/resources/'},{name:a.title}]} structuredData={{'@context':'https://schema.org','@type':'CreativeWork',name:a.title,url,inLanguage:'ar-SA',version:a.version,datePublished:a.date,license:'https://creativecommons.org/licenses/by/4.0/',creator:{'@type':'Organization',name:'BRIGHTAI'}}}>
+<PageShell title={`${a.title} — نسخة قابلة للتحرير | BRIGHTAI`} description={a.summary} crumbs={[{name:'الأصول العملية',href:'/resources/'},{name:a.title}]} structuredData={resource}>
 <article class="resource-library" dir="rtl">
 <p class="resource-kicker">أصل عربي من BRIGHTAI / v{a.version} / <time datetime={a.date}>{a.date}</time></p>
 <h1>{a.title}</h1><p class="resource-lead">{a.summary}</p>
