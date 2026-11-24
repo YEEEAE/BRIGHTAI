@@ -1,0 +1,16 @@
+{
+  "baseline": 382,
+  "new": 427,
+  "total": 809,
+  "classification": {
+    "غير متحقق": 526,
+    "نموذج": 48,
+    "مثبت": 235
+  },
+  "no_remaining_step": 22,
+  "catalog_ids": 72,
+  "public_routes": 64,
+  "endpoint_files": 43,
+  "proposed_api_operations": 67,
+  "detailed_acceptance_rows": 229
+}

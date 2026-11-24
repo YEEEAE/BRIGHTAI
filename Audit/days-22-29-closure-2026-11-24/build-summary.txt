@@ -1,0 +1,15 @@
+Environment: Node 22.22.2 / Astro 6.4.8 from matching package-lock / no dotenv / no egress.
+Source: dfc8b096c2c3a6e3785321164354103c5bb3345d plus local closure diff.
+Command: npm run build. Result PASS. Pre-existing Astro warnings for headers during prerender.
+Compared 196 client files by SHA-256. Only changed file: dist/client/about/index.html.
+Homepage (both builds): 6118acfc0ebe08d9420c86597aba162e0303baa887985c7de7f3a59d0f72e407.
+About before: 1dae6719fc64d5aceccf1f2d568dcd302029d04f5af658cf4f46f27deb395c5c
+About after: 255b9df895bd58dfdf44d4e404c4d89a34518a9210e18e99dc6b50d76997af8d
+
+18:40:35 [build] Rearranging server assets...
+18:40:35 [build] ✓ Completed in 3.20s.
+18:40:35 [@astrojs/sitemap] `sitemap-index.xml` created at `dist/client`
+18:40:35 [brightai-seo-coverage] PASS: 64 public pages in sitemap and llms.txt; HTML aliases covered
+18:40:35 [brightai-build-version] version.json: dfc8b096c2c3
+18:40:35 [build] Server built in 3.31s
+18:40:35 [build] Complete!

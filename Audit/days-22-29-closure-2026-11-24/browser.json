@@ -1,0 +1,77 @@
+{
+  "browser": "Chrome headless",
+  "viewport": [
+    390,
+    844
+  ],
+  "results": [
+    {
+      "id": "UX-02/js",
+      "path": "/contact/",
+      "pass": true
+    },
+    {
+      "id": "UX-02/js",
+      "path": "/pricing/",
+      "pass": true
+    },
+    {
+      "id": "UX-02/no-js",
+      "path": "/contact/",
+      "pass": true
+    },
+    {
+      "id": "UX-02/no-js",
+      "path": "/pricing/",
+      "pass": true
+    },
+    {
+      "id": "DEM-01",
+      "path": "/kernel/#lab",
+      "pass": true
+    },
+    {
+      "id": "DEM-02+UX-06",
+      "path": "/products/firewall/#lab",
+      "pass": true
+    },
+    {
+      "id": "DEM-03+UX-04",
+      "path": "/products/secure-chat/#lab",
+      "pass": true
+    },
+    {
+      "id": "DEM-04",
+      "path": "/products/risk-engine/#lab",
+      "pass": true
+    },
+    {
+      "id": "DEM-05",
+      "path": "/products/human-gate/#lab",
+      "pass": true
+    },
+    {
+      "id": "DEM-06",
+      "path": "/products/ledger/#lab",
+      "pass": true
+    },
+    {
+      "id": "DEM-07+GAP-11",
+      "path": "/services/#workshop",
+      "pass": true
+    },
+    {
+      "id": "COMPLAINT-FLOW",
+      "path": "/products/#lab",
+      "pass": true
+    },
+    {
+      "id": "DEM-08+UX-07",
+      "path": "/auth/sign-up/",
+      "pass": true
+    }
+  ],
+  "transitionWarnings": 5,
+  "unexpectedErrors": [],
+  "sandboxRequests": []
+}

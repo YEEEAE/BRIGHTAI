@@ -4,17 +4,16 @@
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import pg from 'pg';
-import { localDatabaseUrl } from '../tests/helpers/database.mjs';
+import { contractDatabaseFixtures, localDatabaseUrl } from '../tests/helpers/database.mjs';
 
-const names=['KERNEL','FIREWALL','HUMAN_GATE','LEDGER','RISK_ENGINE', 'RISK_ENGINE_RESIDUAL','KERNEL_IDENTITY','KERNEL_INVITATION','KERNEL_TRIAL'];
 const env={PATH:process.env.PATH,TMPDIR:process.env.TMPDIR,LANG:'en_US.UTF-8',TZ:'Asia/Riyadh',AIGAS_REQUIRE_DB_TESTS:'true',AIGAS_REQUIRE_RLS:'true',NODE_OPTIONS:`--import=${new URL('../tests/helpers/no-egress.mjs',import.meta.url).href}`};
-const urls=names.map(name=>{
+const urls=contractDatabaseFixtures.map(name=>{
   const key=`${name}_TEST_DATABASE_URL`;
   env[key]=localDatabaseUrl(key);
   assert(env[key],`Missing ${key}`);
   return new URL(env[key]);
 });
-assert.equal(new Set(urls.map(u=>`${u.host}${u.pathname}`)).size,names.length,'Separate database targets required');
+assert.equal(new Set(urls.map(u=>`${u.host}${u.pathname}`)).size,contractDatabaseFixtures.length,'Separate database targets required');
 const created=[];
 try {
   for (const url of urls) {

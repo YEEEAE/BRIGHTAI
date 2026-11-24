@@ -1,0 +1,1295 @@
+TAP version 13
+# (node:59507) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: No fixed modified date or access-to-modified fallback
+ok 1 - No fixed modified date or access-to-modified fallback
+  ---
+  duration_ms: 0.386833
+  type: 'test'
+  ...
+# Subtest: Only documented substantive edits emit dateModified; original publication stays
+ok 2 - Only documented substantive edits emit dateModified; original publication stays
+  ---
+  duration_ms: 0.068375
+  type: 'test'
+  ...
+# Subtest: Pending, missing scope/evidence and stale version cannot appear as approved
+ok 3 - Pending, missing scope/evidence and stale version cannot appear as approved
+  ---
+  duration_ms: 0.242
+  type: 'test'
+  ...
+# Subtest: First publication can be reviewed without inventing a modification; WebPage owns reviewedBy
+ok 4 - First publication can be reviewed without inventing a modification; WebPage owns reviewedBy
+  ---
+  duration_ms: 0.106167
+  type: 'test'
+  ...
+# Subtest: One publisher identity without invented legal or social claims
+ok 5 - One publisher identity without invented legal or social claims
+  ---
+  duration_ms: 0.185875
+  type: 'test'
+  ...
+# {"event":"exploration.denied","product":"secure-chat","code":"EXPLORATION_CAPABILITY_DENIED","at":"2026-11-24T15:39:29.194Z"}
+# {"event":"exploration.denied","product":"ledger","code":"EXPLORATION_CAPABILITY_DENIED","at":"2026-11-24T15:39:29.200Z"}
+# {"event":"exploration.denied","product":"secure-chat","code":"EXPLORATION_QUOTA_EXCEEDED","at":"2026-11-24T15:39:29.207Z"}
+# {"event":"exploration.denied","product":"ledger","code":"EXPLORATION_EXPIRED","at":"2026-11-24T15:39:29.209Z"}
+# {"event":"exploration.denied","product":"firewall","code":"EXPLORATION_EXPIRED","at":"2026-11-24T15:39:29.213Z"}
+# {"event":"exploration.denied","product":"secure-chat","code":"EXPLORATION_CAPABILITY_DENIED","at":"2026-11-24T15:39:29.223Z"}
+# {"event":"exploration.denied","product":"firewall","code":"EXPLORATION_EXPIRED","at":"2026-11-24T15:39:29.228Z"}
+# Subtest: operator bootstrap and bounded exploration across five products
+ok 6 - operator bootstrap and bounded exploration across five products
+  ---
+  duration_ms: 244.333125
+  type: 'test'
+  ...
+# Subtest: Postgres: policy CRUD, priority, tenant isolation, permissions, metadata privacy and fail-closed log
+ok 7 - Postgres: policy CRUD, priority, tenant isolation, permissions, metadata privacy and fail-closed log
+  ---
+  duration_ms: 477.182708
+  type: 'test'
+  ...
+# Subtest: ALLOW
+ok 8 - ALLOW
+  ---
+  duration_ms: 0.900208
+  type: 'test'
+  ...
+# Subtest: WARN
+ok 9 - WARN
+  ---
+  duration_ms: 0.390792
+  type: 'test'
+  ...
+# Subtest: REDACT
+ok 10 - REDACT
+  ---
+  duration_ms: 0.574834
+  type: 'test'
+  ...
+# Subtest: ESCALATE
+ok 11 - ESCALATE
+  ---
+  duration_ms: 0.133125
+  type: 'test'
+  ...
+# Subtest: BLOCK
+ok 12 - BLOCK
+  ---
+  duration_ms: 0.094375
+  type: 'test'
+  ...
+# Subtest: priority, empty, length, repeated redaction and determinism
+ok 13 - priority, empty, length, repeated redaction and determinism
+  ---
+  duration_ms: 0.75175
+  type: 'test'
+  ...
+# Subtest: pending Firewall review requires the exact tenant/request/policy/fingerprint and operation
+ok 14 - pending Firewall review requires the exact tenant/request/policy/fingerprint and operation
+  ---
+  duration_ms: 0.888792
+  type: 'test'
+  ...
+# Subtest: output rules and baseline never expose denied or sensitive provider text
+ok 15 - output rules and baseline never expose denied or sensitive provider text
+  ---
+  duration_ms: 1.373917
+  type: 'test'
+  ...
+# Subtest: Firewall review binds only exact metadata and always requires independent review
+ok 16 - Firewall review binds only exact metadata and always requires independent review
+  ---
+  duration_ms: 0.428375
+  type: 'test'
+  ...
+# Subtest: advisory cannot change verdict and sends metadata only
+ok 17 - advisory cannot change verdict and sends metadata only
+  ---
+  duration_ms: 0.13725
+  type: 'test'
+  ...
+# Subtest: atomic metadata review is visible, independent, revocable and rolls back with decision
+ok 18 - atomic metadata review is visible, independent, revocable and rolls back with decision
+  ---
+  duration_ms: 351.165917
+  type: 'test'
+  ...
+# Subtest: human approval cannot be reused for another decision
+ok 19 - human approval cannot be reused for another decision
+  ---
+  duration_ms: 0.494541
+  type: 'test'
+  ...
+# Subtest: synthetic outcomes, denial precedence and priority within the winning action
+ok 20 - synthetic outcomes, denial precedence and priority within the winning action
+  ---
+  duration_ms: 0.656833
+  type: 'test'
+  ...
+# Subtest: literal patterns are never compiled; corrupt policy and empty policy fail closed
+ok 21 - literal patterns are never compiled; corrupt policy and empty policy fail closed
+  ---
+  duration_ms: 0.261292
+  type: 'test'
+  ...
+# Subtest: server-side rule validation stays literal and bounded
+ok 22 - server-side rule validation stays literal and bounded
+  ---
+  duration_ms: 0.332375
+  type: 'test'
+  ...
+# Subtest: HTTP rejects missing identity, cross origin, tenant injection, unknown fields and oversized bodies
+ok 23 - HTTP rejects missing identity, cross origin, tenant injection, unknown fields and oversized bodies
+  ---
+  duration_ms: 10.758583
+  type: 'test'
+  ...
+# Subtest: missing Firewall tables and unknown failures never return ALLOW
+ok 24 - missing Firewall tables and unknown failures never return ALLOW
+  ---
+  duration_ms: 0.891958
+  type: 'test'
+  ...
+# Subtest: GA4 payload: google
+ok 25 - GA4 payload: google
+  ---
+  duration_ms: 2.326375
+  type: 'test'
+  ...
+# Subtest: GA4 payload: google-bare
+ok 26 - GA4 payload: google-bare
+  ---
+  duration_ms: 0.529917
+  type: 'test'
+  ...
+# Subtest: GA4 payload: bing
+ok 27 - GA4 payload: bing
+  ---
+  duration_ms: 0.393583
+  type: 'test'
+  ...
+# Subtest: GA4 payload: bing-bare
+ok 28 - GA4 payload: bing-bare
+  ---
+  duration_ms: 0.378958
+  type: 'test'
+  ...
+# Subtest: GA4 payload: editorial-unapproved
+ok 29 - GA4 payload: editorial-unapproved
+  ---
+  duration_ms: 0.513625
+  type: 'test'
+  ...
+# Subtest: GA4 payload: direct
+ok 30 - GA4 payload: direct
+  ---
+  duration_ms: 0.312875
+  type: 'test'
+  ...
+# Subtest: GA4 payload: credentials
+ok 31 - GA4 payload: credentials
+  ---
+  duration_ms: 0.353417
+  type: 'test'
+  ...
+# Subtest: GA4 payload: suffix-attack
+ok 32 - GA4 payload: suffix-attack
+  ---
+  duration_ms: 0.275791
+  type: 'test'
+  ...
+# Subtest: GA4 payload: subdomain-sensitive
+ok 33 - GA4 payload: subdomain-sensitive
+  ---
+  duration_ms: 0.714917
+  type: 'test'
+  ...
+# Subtest: GA4 payload: lookalike
+ok 34 - GA4 payload: lookalike
+  ---
+  duration_ms: 0.493167
+  type: 'test'
+  ...
+# Subtest: GA4 payload: script
+ok 35 - GA4 payload: script
+  ---
+  duration_ms: 0.632042
+  type: 'test'
+  ...
+# Subtest: GA4 payload: local-ip
+ok 36 - GA4 payload: local-ip
+  ---
+  duration_ms: 0.217458
+  type: 'test'
+  ...
+# Subtest: GA4 payload: private-ip
+ok 37 - GA4 payload: private-ip
+  ---
+  duration_ms: 0.211625
+  type: 'test'
+  ...
+# Subtest: GA4 payload: nondefault-port
+ok 38 - GA4 payload: nondefault-port
+  ---
+  duration_ms: 0.199042
+  type: 'test'
+  ...
+# Subtest: GA4 payload: relative
+ok 39 - GA4 payload: relative
+  ---
+  duration_ms: 0.219583
+  type: 'test'
+  ...
+# Subtest: GA4 payload: backslash
+ok 40 - GA4 payload: backslash
+  ---
+  duration_ms: 0.191292
+  type: 'test'
+  ...
+# Subtest: GA4 payload: whitespace
+ok 41 - GA4 payload: whitespace
+  ---
+  duration_ms: 0.19775
+  type: 'test'
+  ...
+# Subtest: GA4 payload: oversized
+ok 42 - GA4 payload: oversized
+  ---
+  duration_ms: 0.200833
+  type: 'test'
+  ...
+# Subtest: GA4 payload: internal
+ok 43 - GA4 payload: internal
+  ---
+  duration_ms: 0.239458
+  type: 'test'
+  ...
+# Subtest: GA4 payload: internal-private
+ok 44 - GA4 payload: internal-private
+  ---
+  duration_ms: 0.205792
+  type: 'test'
+  ...
+# Subtest: UTM survives independently of missing referrer; unsafe campaign values are dropped
+ok 45 - UTM survives independently of missing referrer; unsafe campaign values are dropped
+  ---
+  duration_ms: 0.314292
+  type: 'test'
+  ...
+# Subtest: portal gate ships the identical init; each active template has one loader
+ok 46 - portal gate ships the identical init; each active template has one loader
+  ---
+  duration_ms: 9.495417
+  type: 'test'
+  ...
+# Subtest: direct visit without campaign invents neither campaign nor referrer
+ok 47 - direct visit without campaign invents neither campaign nor referrer
+  ---
+  duration_ms: 0.284042
+  type: 'test'
+  ...
+# Subtest: 200 governed body and actual cost persisted across gateway instances
+ok 48 - 200 governed body and actual cost persisted across gateway instances
+  ---
+  duration_ms: 37.702666
+  type: 'test'
+  ...
+# Subtest: 429 retry-after respected with at most two total attempts
+ok 49 - 429 retry-after respected with at most two total attempts
+  ---
+  duration_ms: 9.511542
+  type: 'test'
+  ...
+# Subtest: timeout and upstream secrets never escape
+ok 50 - timeout and upstream secrets never escape
+  ---
+  duration_ms: 14.827125
+  type: 'test'
+  ...
+# Subtest: five 5xx open circuit for 60 seconds; then recovers
+ok 51 - five 5xx open circuit for 60 seconds; then recovers
+  ---
+  duration_ms: 48.66825
+  type: 'test'
+  ...
+# Subtest: budget caps block before egress, including concurrent reservations
+ok 52 - budget caps block before egress, including concurrent reservations
+  ---
+  duration_ms: 8.996958
+  type: 'test'
+  ...
+# Subtest: concurrency slot includes GET models; no secret in returned metadata
+ok 53 - concurrency slot includes GET models; no secret in returned metadata
+  ---
+  duration_ms: 8.009583
+  type: 'test'
+  ...
+# Subtest: invalid names, public variables and newline values rejected
+ok 54 - invalid names, public variables and newline values rejected
+  ---
+  duration_ms: 0.844875
+  type: 'test'
+  ...
+# Subtest: unapproved object, model mismatch, missing ledger and raw network error fail closed
+ok 55 - unapproved object, model mismatch, missing ledger and raw network error fail closed
+  ---
+  duration_ms: 7.479291
+  type: 'test'
+  ...
+# Subtest: input exceeding reserved bound never dispatches
+ok 56 - input exceeding reserved bound never dispatches
+  ---
+  duration_ms: 0.6265
+  type: 'test'
+  ...
+# Subtest: missing, malformed and locked ledger reject before dispatch
+ok 57 - missing, malformed and locked ledger reject before dispatch
+  ---
+  duration_ms: 1.002708
+  type: 'test'
+  ...
+# Subtest: ledger outage during settlement withholds the provider reply and leaves the reservation
+ok 58 - ledger outage during settlement withholds the provider reply and leaves the reservation
+  ---
+  duration_ms: 5.500708
+  type: 'test'
+  ...
+# Subtest: valid JSON with invalid budget ledger shape never dispatches or rewrites the ledger
+ok 59 - valid JSON with invalid budget ledger shape never dispatches or rewrites the ledger
+  ---
+  duration_ms: 3.736292
+  type: 'test'
+  ...
+# Subtest: independent processes enforce the same daily and monthly spend windows
+ok 60 - independent processes enforce the same daily and monthly spend windows
+  ---
+  duration_ms: 249.981
+  type: 'test'
+  ...
+# Subtest: shared ledger outage stops new workers and withholds an unsettled reply
+ok 61 - shared ledger outage stops new workers and withholds an unsettled reply
+  ---
+  duration_ms: 189.731459
+  type: 'test'
+  ...
+# Subtest: ten synthetic complaints exercise the Chat egress policy at the isolated fetch boundary
+ok 62 - ten synthetic complaints exercise the Chat egress policy at the isolated fetch boundary
+  ---
+  duration_ms: 141.98575
+  type: 'test'
+  ...
+# Subtest: Human Gate: durable decisions, independent reviewer, isolation, concurrency, enforced effect, audit rollback
+ok 63 - Human Gate: durable decisions, independent reviewer, isolation, concurrency, enforced effect, audit rollback
+  ---
+  duration_ms: 61629.574917
+  type: 'test'
+  ...
+# Subtest: demo lifecycle mirrors current server
+ok 64 - demo lifecycle mirrors current server
+  ---
+  duration_ms: 1.237
+  type: 'test'
+  ...
+# Subtest: self review denied for approval, rejection and clarification
+ok 65 - self review denied for approval, rejection and clarification
+  ---
+  duration_ms: 0.553292
+  type: 'test'
+  ...
+# Subtest: clarification remains pending without decision or permit
+ok 66 - clarification remains pending without decision or permit
+  ---
+  duration_ms: 0.377292
+  type: 'test'
+  ...
+# Subtest: independent approval then requester consumes once
+ok 67 - independent approval then requester consumes once
+  ---
+  duration_ms: 0.158
+  type: 'test'
+  ...
+# Subtest: rejection, cancellation, timeout and lost authority block execution
+ok 68 - rejection, cancellation, timeout and lost authority block execution
+  ---
+  duration_ms: 0.544875
+  type: 'test'
+  ...
+# Subtest: reason required and fixtures isolated
+ok 69 - reason required and fixtures isolated
+  ---
+  duration_ms: 0.129083
+  type: 'test'
+  ...
+# Subtest: Human Gate input and separation of duties
+ok 70 - Human Gate input and separation of duties
+  ---
+  duration_ms: 1.005417
+  type: 'test'
+  ...
+# Subtest: Human Gate HTTP: auth first, origin, size, JSON and private errors
+ok 71 - Human Gate HTTP: auth first, origin, size, JSON and private errors
+  ---
+  duration_ms: 11.260542
+  type: 'test'
+  ...
+# Subtest: Human Gate reports missing schema and database privilege without leaking driver details
+ok 72 - Human Gate reports missing schema and database privilege without leaking driver details
+  ---
+  duration_ms: 0.732833
+  type: 'test'
+  ...
+# Subtest: Human Gate list is routed to the transaction and rejects injected fields
+ok 73 - Human Gate list is routed to the transaction and rejects injected fields
+  ---
+  duration_ms: 0.676292
+  type: 'test'
+  ...
+# Subtest: rename approval binding changes with its principal, policy, target and effect
+ok 74 - rename approval binding changes with its principal, policy, target and effect
+  ---
+  duration_ms: 0.437375
+  type: 'test'
+  ...
+# Subtest: AU04 invitation: identity binding, provider acceptance, replay, expiry, cancellation and revoked inviter
+ok 75 - AU04 invitation: identity binding, provider acceptance, replay, expiry, cancellation and revoked inviter
+  ---
+  duration_ms: 247.395791
+  type: 'test'
+  ...
+# Subtest: AU02/AU05/AU06/AU07 runtime: identity-scoped memberships, member races and policy lifecycle
+ok 76 - AU02/AU05/AU06/AU07 runtime: identity-scoped memberships, member races and policy lifecycle
+  ---
+  duration_ms: 296.823
+  type: 'test'
+  ...
+# Subtest: AU01 identity: EdDSA only, required claims, bounded age, issuer and UUID subject
+ok 77 - AU01 identity: EdDSA only, required claims, bounded age, issuer and UUID subject
+  ---
+  duration_ms: 10.909125
+  type: 'test'
+  ...
+# Subtest: AU01/AU02 auth setup: same-origin HTTPS JWKS only, no false readiness, bounded header
+ok 78 - AU01/AU02 auth setup: same-origin HTTPS JWKS only, no false readiness, bounded header
+  ---
+  duration_ms: 7.668959
+  type: 'test'
+  ...
+# Subtest: AU07 entitlement: purchase, trial, administrative grant and licence stay separate
+ok 79 - AU07 entitlement: purchase, trial, administrative grant and licence stay separate
+  ---
+  duration_ms: 1.176166
+  type: 'test'
+  ...
+# Subtest: AU06 policy: top-level mandatory deny cannot be softened by a lower scope
+ok 80 - AU06 policy: top-level mandatory deny cannot be softened by a lower scope
+  ---
+  duration_ms: 0.287625
+  type: 'test'
+  ...
+# Subtest: Kernel DB: real product state, tenant-scoped totals, activity and member roles
+ok 81 - Kernel DB: real product state, tenant-scoped totals, activity and member roles
+  ---
+  duration_ms: 543.641667
+  type: 'test'
+  ...
+# Subtest: only six public fixtures travel between labs; arbitrary identity inputs are ignored
+ok 82 - only six public fixtures travel between labs; arbitrary identity inputs are ignored
+  ---
+  duration_ms: 1.093709
+  type: 'test'
+  ...
+# Subtest: mandatory denial survives every simulated reviewer decision
+ok 83 - mandatory denial survives every simulated reviewer decision
+  ---
+  duration_ms: 0.131583
+  type: 'test'
+  ...
+# Subtest: review remains explicit and never grants execution
+ok 84 - review remains explicit and never grants execution
+  ---
+  duration_ms: 0.071875
+  type: 'test'
+  ...
+# Subtest: identity without membership receives no product destination
+ok 85 - identity without membership receives no product destination
+  ---
+  duration_ms: 0.491458
+  type: 'test'
+  ...
+# Subtest: exploration guidance does not promise execution or elevate an institution admin
+ok 86 - exploration guidance does not promise execution or elevate an institution admin
+  ---
+  duration_ms: 0.855833
+  type: 'test'
+  ...
+# Subtest: unavailable schema or revoked access never becomes a next destination
+ok 87 - unavailable schema or revoked access never becomes a next destination
+  ---
+  duration_ms: 0.152167
+  type: 'test'
+  ...
+# Subtest: tenant selection cannot manufacture membership
+ok 88 - tenant selection cannot manufacture membership
+  ---
+  duration_ms: 0.85075
+  type: 'test'
+  ...
+# Subtest: role guard rejects member escalation
+ok 89 - role guard rejects member escalation
+  ---
+  duration_ms: 0.071333
+  type: 'test'
+  ...
+# Subtest: workspace names validate type and limits
+ok 90 - workspace names validate type and limits
+  ---
+  duration_ms: 0.124375
+  type: 'test'
+  ...
+# Subtest: product state comes from the access row, not the interface
+ok 91 - product state comes from the access row, not the interface
+  ---
+  duration_ms: 0.128833
+  type: 'test'
+  ...
+# Subtest: labels never expose a raw role or audit code to the interface
+ok 92 - labels never expose a raw role or audit code to the interface
+  ---
+  duration_ms: 0.140084
+  type: 'test'
+  ...
+# Subtest: missing and forged authentication are rejected before DB access
+ok 93 - missing and forged authentication are rejected before DB access
+  ---
+  duration_ms: 7.860875
+  type: 'test'
+  ...
+# Subtest: signed identity verifies signature, issuer, expiry and anonymous denial
+ok 94 - signed identity verifies signature, issuer, expiry and anonymous denial
+  ---
+  duration_ms: 6.816167
+  type: 'test'
+  ...
+# Subtest: Arabic diacritics, hamza, tatweel and word order
+ok 95 - Arabic diacritics, hamza, tatweel and word order
+  ---
+  duration_ms: 0.937166
+  type: 'test'
+  ...
+# Subtest: OR within products and AND across groups
+ok 96 - OR within products and AND across groups
+  ---
+  duration_ms: 0.180416
+  type: 'test'
+  ...
+# Subtest: Extract actual headings and reading words, excluding scripts
+ok 97 - Extract actual headings and reading words, excluding scripts
+  ---
+  duration_ms: 0.71625
+  type: 'test'
+  ...
+# Subtest: entering a public lab records only its allowlisted slug and resumes to that lab
+ok 98 - entering a public lab records only its allowlisted slug and resumes to that lab
+  ---
+  duration_ms: 2.019542
+  type: 'test'
+  ...
+# Subtest: the most recently visited lab replaces the previous resume destination
+ok 99 - the most recently visited lab replaces the previous resume destination
+  ---
+  duration_ms: 0.089208
+  type: 'test'
+  ...
+# Subtest: invalid values and user-entered content are never stored as a lab destination
+ok 100 - invalid values and user-entered content are never stored as a lab destination
+  ---
+  duration_ms: 0.068959
+  type: 'test'
+  ...
+# Subtest: blocked session storage fails closed and reports that the resume shortcut is unavailable
+ok 101 - blocked session storage fails closed and reports that the resume shortcut is unavailable
+  ---
+  duration_ms: 0.071541
+  type: 'test'
+  ...
+# Subtest: Postgres + HTTP: durable event, readback, integrity/tamper, tenant isolation, roles, privacy, paging and rollback
+ok 102 - Postgres + HTTP: durable event, readback, integrity/tamper, tenant isolation, roles, privacy, paging and rollback
+  ---
+  duration_ms: 1005.811708
+  type: 'test'
+  ...
+# Subtest: canonical digest survives DB time/JSON ordering; detects changes to each covered field
+ok 103 - canonical digest survives DB time/JSON ordering; detects changes to each covered field
+  ---
+  duration_ms: 2.198667
+  type: 'test'
+  ...
+# Subtest: bounded filters reject huge pages and invalid types/periods
+ok 104 - bounded filters reject huge pages and invalid types/periods
+  ---
+  duration_ms: 0.464375
+  type: 'test'
+  ...
+# Subtest: HTTP rejects missing identity, cross-origin writes, invalid/oversized JSON, and hides internal failures
+ok 105 - HTTP rejects missing identity, cross-origin writes, invalid/oversized JSON, and hides internal failures
+  ---
+  duration_ms: 10.480791
+  type: 'test'
+  ...
+# Subtest: local harness rejects remote/override DSNs and missing required fixtures
+ok 106 - local harness rejects remote/override DSNs and missing required fixtures
+  ---
+  duration_ms: 4.053167
+  type: 'test'
+  ...
+# Subtest: no-egress preload rejects outbound sockets before DNS
+ok 107 - no-egress preload rejects outbound sockets before DNS
+  ---
+  duration_ms: 29.695166
+  type: 'test'
+  ...
+# Subtest: public contract rejects free text, unknown values, and every server success claim
+ok 108 - public contract rejects free text, unknown values, and every server success claim
+  ---
+  duration_ms: 0.508208
+  type: 'test'
+  ...
+# Subtest: a repeated logical event is sent once, separate actions remain countable, kill drops without replay
+ok 109 - a repeated logical event is sent once, separate actions remain countable, kill drops without replay
+  ---
+  duration_ms: 0.298833
+  type: 'test'
+  ...
+# Subtest: normal traffic loads the vendor once; duplicate installation does not duplicate events or polling
+ok 110 - normal traffic loads the vendor once; duplicate installation does not duplicate events or polling
+  ---
+  duration_ms: 2.706791
+  type: 'test'
+  ...
+# Subtest: kill before load prevents SDK, later polling kill stops an open page and latches without replay
+ok 111 - kill before load prevents SDK, later polling kill stops an open page and latches without replay
+  ---
+  duration_ms: 1.308667
+  type: 'test'
+  ...
+# Subtest: static fallback preserves traffic; malformed status and errors pause it; recovery never replays interactions
+ok 112 - static fallback preserves traffic; malformed status and errors pause it; recovery never replays interactions
+  ---
+  duration_ms: 0.900084
+  type: 'test'
+  ...
+# Subtest: link measurement ignores the second double-click and only reads fixed attributes
+ok 113 - link measurement ignores the second double-click and only reads fixed attributes
+  ---
+  duration_ms: 0.449
+  type: 'test'
+  ...
+# (node:60280) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: public clicks count nested, keyboard and middle-button activation without sending link content
+ok 114 - public clicks count nested, keyboard and middle-button activation without sending link content
+  ---
+  duration_ms: 2.053209
+  type: 'test'
+  ...
+# Subtest: lab attempts complete once, reset creates a new attempt, and an unmeasured start cannot become an orphan completion
+ok 115 - lab attempts complete once, reset creates a new attempt, and an unmeasured start cannot become an orphan completion
+  ---
+  duration_ms: 24.447875
+  type: 'test'
+  ...
+# Subtest: delta includes treatment lock after all its dependencies
+ok 116 - delta includes treatment lock after all its dependencies
+  ---
+  duration_ms: 0.55925
+  type: 'test'
+  ...
+# Subtest: 25 matching receipts resume with 0030–0039 only; complete ledger is a no-op
+ok 117 - 25 matching receipts resume with 0030–0039 only; complete ledger is a no-op
+  ---
+  duration_ms: 0.270959
+  type: 'test'
+  ...
+# Subtest: resume refuses changed hashes, failed rows, holes, unknown and empty ledgers
+ok 118 - resume refuses changed hashes, failed rows, holes, unknown and empty ledgers
+  ---
+  duration_ms: 0.32975
+  type: 'test'
+  ...
+# Subtest: all planned SQL files support an atomic schema and receipt transaction
+ok 119 - all planned SQL files support an atomic schema and receipt transaction
+  ---
+  duration_ms: 0.848084
+  type: 'test'
+  ...
+# Subtest: target delta runner never replays baseline CREATE migrations
+ok 120 - target delta runner never replays baseline CREATE migrations
+  ---
+  duration_ms: 46.867542
+  type: 'test'
+  ...
+# Subtest: fresh and delta include the identical complete closure suffix
+ok 121 - fresh and delta include the identical complete closure suffix
+  ---
+  duration_ms: 0.100708
+  type: 'test'
+  ...
+# Subtest: readiness rejects invalid JWKS and every conflicting SHA claim
+ok 122 - readiness rejects invalid JWKS and every conflicting SHA claim
+  ---
+  duration_ms: 10.767667
+  type: 'test'
+  ...
+# Subtest: default is inert: no approval means no layer and no transport
+ok 123 - default is inert: no approval means no layer and no transport
+  ---
+  duration_ms: 0.948875
+  type: 'test'
+  ...
+# Subtest: common gates require an approval reference, an approved environment and a full release SHA
+ok 124 - common gates require an approval reference, an approved environment and a full release SHA
+  ---
+  duration_ms: 0.216
+  type: 'test'
+  ...
+# Subtest: each layer keeps its own approval and a different environment scope
+ok 125 - each layer keeps its own approval and a different environment scope
+  ---
+  duration_ms: 0.25325
+  type: 'test'
+  ...
+# Subtest: Sentry DSN parsing rejects every transport shape it must not use
+ok 126 - Sentry DSN parsing rejects every transport shape it must not use
+  ---
+  duration_ms: 0.169834
+  type: 'test'
+  ...
+# Subtest: a DSN that does not match the approved origin never sends
+ok 127 - a DSN that does not match the approved origin never sends
+  ---
+  duration_ms: 0.32275
+  type: 'test'
+  ...
+# Subtest: PostHog host and key are exact, and the endpoint is fixed
+ok 128 - PostHog host and key are exact, and the endpoint is fixed
+  ---
+  duration_ms: 7.30075
+  type: 'test'
+  ...
+# Subtest: Sentry event carries only allowlisted constants, never the error, URL, SQL or token
+ok 129 - Sentry event carries only allowlisted constants, never the error, URL, SQL or token
+  ---
+  duration_ms: 1.129375
+  type: 'test'
+  ...
+# Subtest: capture policy: 5xx always, 4xx only for the named categories
+ok 130 - capture policy: 5xx always, 4xx only for the named categories
+  ---
+  duration_ms: 0.089333
+  type: 'test'
+  ...
+# Subtest: ledger integrity is an incident even when the HTTP result is not an exception
+ok 131 - ledger integrity is an incident even when the HTTP result is not an exception
+  ---
+  duration_ms: 0.293
+  type: 'test'
+  ...
+# Subtest: product events are an explicit allowlist and cannot be extended by a caller
+ok 132 - product events are an explicit allowlist and cannot be extended by a caller
+  ---
+  duration_ms: 0.315875
+  type: 'test'
+  ...
+# Subtest: product event payload is anonymous, environment-tagged and URL-free
+ok 133 - product event payload is anonymous, environment-tagged and URL-free
+  ---
+  duration_ms: 0.247125
+  type: 'test'
+  ...
+# Subtest: kill switches are independent, checked at send time, and never depend on the portal flag
+ok 134 - kill switches are independent, checked at send time, and never depend on the portal flag
+  ---
+  duration_ms: 0.183375
+  type: 'test'
+  ...
+# Subtest: collector failure never throws, retries or changes the caller result
+ok 135 - collector failure never throws, retries or changes the caller result
+  ---
+  duration_ms: 0.478083
+  type: 'test'
+  ...
+# Subtest: route and section labels are fixed and cannot carry a query, fragment or identifier
+ok 136 - route and section labels are fixed and cannot carry a query, fragment or identifier
+  ---
+  duration_ms: 0.202125
+  type: 'test'
+  ...
+# Subtest: URL/referrer policy drops a free query and an unknown referrer instead of forwarding it
+ok 137 - URL/referrer policy drops a free query and an unknown referrer instead of forwarding it
+  ---
+  duration_ms: 0.413375
+  type: 'test'
+  ...
+# Subtest: a private surface never forwards a path segment, only its section root
+ok 138 - a private surface never forwards a path segment, only its section root
+  ---
+  duration_ms: 0.0795
+  type: 'test'
+  ...
+# Subtest: the shipped GA4 snippet obeys the same allowlist as the policy module
+ok 139 - the shipped GA4 snippet obeys the same allowlist as the policy module
+  ---
+  duration_ms: 3.221167
+  type: 'test'
+  ...
+# Subtest: the CSP hash of the shipped GA4 snippet matches the middleware allowlist
+ok 140 - the CSP hash of the shipped GA4 snippet matches the middleware allowlist
+  ---
+  duration_ms: 0.428917
+  type: 'test'
+  ...
+# Subtest: GA4 loader is shared by every HTML template
+ok 141 - GA4 loader is shared by every HTML template
+  ---
+  duration_ms: 0.755084
+  type: 'test'
+  ...
+# Subtest: CSP promotion and rollback use the same resource policy
+ok 142 - CSP promotion and rollback use the same resource policy
+  ---
+  duration_ms: 1.35225
+  type: 'test'
+  ...
+# Subtest: one global kill switch stops both transports at send time
+ok 143 - one global kill switch stops both transports at send time
+  ---
+  duration_ms: 0.11975
+  type: 'test'
+  ...
+# Subtest: sensitive free-form fields never become product payloads
+ok 144 - sensitive free-form fields never become product payloads
+  ---
+  duration_ms: 0.095625
+  type: 'test'
+  ...
+# Subtest: global kill switch takes effect after successful sends in the same process and resumes without replay
+ok 145 - global kill switch takes effect after successful sends in the same process and resumes without replay
+  ---
+  duration_ms: 0.499708
+  type: 'test'
+  ...
+# Subtest: privacy disclosure names exactly the page-location campaign keys accepted by code
+ok 146 - privacy disclosure names exactly the page-location campaign keys accepted by code
+  ---
+  duration_ms: 1.315292
+  type: 'test'
+  ...
+# Subtest: privacy disclosure matches loader fallback and both runtime GA4 kill switches
+ok 147 - privacy disclosure matches loader fallback and both runtime GA4 kill switches
+  ---
+  duration_ms: 0.120125
+  type: 'test'
+  ...
+# Subtest: privacy copy remains a draft and does not claim legal approval or full compliance
+ok 148 - privacy copy remains a draft and does not claim legal approval or full compliance
+  ---
+  duration_ms: 0.083833
+  type: 'test'
+  ...
+# Subtest: all five product entry paths preserve only canonical allowlisted destinations
+ok 149 - all five product entry paths preserve only canonical allowlisted destinations
+  ---
+  duration_ms: 0.871583
+  type: 'test'
+  ...
+# Subtest: external, encoded, recursive and non-product return paths cannot redirect
+ok 150 - external, encoded, recursive and non-product return paths cannot redirect
+  ---
+  duration_ms: 0.153792
+  type: 'test'
+  ...
+# Subtest: only a server-authorized product and canonical tenant selector produce a destination
+ok 151 - only a server-authorized product and canonical tenant selector produce a destination
+  ---
+  duration_ms: 0.270667
+  type: 'test'
+  ...
+# Subtest: served sandbox returns a no-store fallback even with legacy enablement
+ok 152 - served sandbox returns a no-store fallback even with legacy enablement
+  ---
+  duration_ms: 10.152917
+  type: 'test'
+  ...
+# Subtest: disabled: zero provider calls
+ok 153 - disabled: zero provider calls
+  ---
+  duration_ms: 0.340416
+  type: 'test'
+  ...
+# Subtest: origin, consent and secrets denied before provider
+ok 154 - origin, consent and secrets denied before provider
+  ---
+  duration_ms: 1.039541
+  type: 'test'
+  ...
+# Subtest: three successes, fourth 429, no key disclosure
+ok 155 - three successes, fourth 429, no key disclosure
+  ---
+  duration_ms: 4.991333
+  type: 'test'
+  ...
+# Subtest: failure circuit and runtime kill switch
+ok 156 - failure circuit and runtime kill switch
+  ---
+  duration_ms: 0.519292
+  type: 'test'
+  ...
+# Subtest: transitive sandbox import graph has no database driver or query
+ok 157 - transitive sandbox import graph has no database driver or query
+  ---
+  duration_ms: 5.485542
+  type: 'test'
+  ...
+# Subtest: provider destination is reached only after server-side consent and failure is generic
+ok 158 - provider destination is reached only after server-side consent and failure is generic
+  ---
+  duration_ms: 0.531667
+  type: 'test'
+  ...
+# Subtest: public daily request ceiling rejects across visitors but is scoped to one instance
+ok 159 - public daily request ceiling rejects across visitors but is scoped to one instance
+  ---
+  duration_ms: 0.576
+  type: 'test'
+  ...
+# Subtest: strict complete output, no extra/nested/numeric/empty fields or malformed JSON
+ok 160 - strict complete output, no extra/nested/numeric/empty fields or malformed JSON
+  ---
+  duration_ms: 1.667916
+  type: 'test'
+  ...
+# Subtest: authorized advisory uses protected purpose only and has no persistence
+ok 161 - authorized advisory uses protected purpose only and has no persistence
+  ---
+  duration_ms: 0.76775
+  type: 'test'
+  ...
+# Subtest: admin can request an advisory draft
+ok 162 - admin can request an advisory draft
+  ---
+  duration_ms: 0.141792
+  type: 'test'
+  ...
+# Subtest: member, tenant denial, missing approval, secrets and invalid inputs never call provider
+ok 163 - member, tenant denial, missing approval, secrets and invalid inputs never call provider
+  ---
+  duration_ms: 0.338209
+  type: 'test'
+  ...
+# Subtest: model score injection rejected, deterministic score and high acceptance unchanged
+ok 164 - model score injection rejected, deterministic score and high acceptance unchanged
+  ---
+  duration_ms: 0.331459
+  type: 'test'
+  ...
+# Subtest: output protection and provider failures fail closed
+ok 165 - output protection and provider failures fail closed
+  ---
+  duration_ms: 0.198583
+  type: 'test'
+  ...
+# Subtest: HTTP authenticates, checks origin/size/content type and hides unknown failures
+ok 166 - HTTP authenticates, checks origin/size/content type and hides unknown failures
+  ---
+  duration_ms: 10.910292
+  type: 'test'
+  ...
+# Subtest: distinct synthetic assets explain distinct initial scores
+ok 167 - distinct synthetic assets explain distinct initial scores
+  ---
+  duration_ms: 0.762583
+  type: 'test'
+  ...
+# Subtest: controls affect only their stated dimension and applicability
+ok 168 - controls affect only their stated dimension and applicability
+  ---
+  duration_ms: 0.109
+  type: 'test'
+  ...
+# Subtest: public context floor and minimum axes
+ok 169 - public context floor and minimum axes
+  ---
+  duration_ms: 0.097208
+  type: 'test'
+  ...
+# Subtest: review and avoidance never imply zero risk or control reduction
+ok 170 - review and avoidance never imply zero risk or control reduction
+  ---
+  duration_ms: 0.120125
+  type: 'test'
+  ...
+# Subtest: all valid combinations remain bounded and malformed inputs fail
+ok 171 - all valid combinations remain bounded and malformed inputs fail
+  ---
+  duration_ms: 0.420417
+  type: 'test'
+  ...
+# Subtest: Risk Engine DB: persistence, version history, tenant/role rejection, races and atomic audit
+ok 172 - Risk Engine DB: persistence, version history, tenant/role rejection, races and atomic audit
+  ---
+  duration_ms: 475.128
+  type: 'test'
+  ...
+# Subtest: Risk Engine: residual decisions and export persist with tenant and version guards
+ok 173 - Risk Engine: residual decisions and export persist with tenant and version guards
+  ---
+  duration_ms: 222.044291
+  type: 'test'
+  ...
+# Subtest: Risk Engine: every draft matrix cell and untrusted fields
+ok 174 - Risk Engine: every draft matrix cell and untrusted fields
+  ---
+  duration_ms: 1.3245
+  type: 'test'
+  ...
+# Subtest: Risk Engine service: validate search and filter input before database access
+ok 175 - Risk Engine service: validate search and filter input before database access
+  ---
+  duration_ms: 0.455041
+  type: 'test'
+  ...
+# Subtest: Risk Engine HTTP: auth before data, origin, JSON limit, private failure
+ok 176 - Risk Engine HTTP: auth before data, origin, JSON limit, private failure
+  ---
+  duration_ms: 10.562834
+  type: 'test'
+  ...
+# Subtest: audit constraint failures are dependency failures, never bad user input
+ok 177 - audit constraint failures are dependency failures, never bad user input
+  ---
+  duration_ms: 0.377291
+  type: 'test'
+  ...
+# {"at":"2026-11-24T15:41:07.707Z","requestId":"88992e9f-a8a0-4c76-867d-7c10eab929ec","deniedId":"b13c6316-b0c4-473e-bf27-fecfde6c7902","cancellationId":"ee2a076e-b449-4252-aa97-fdaa19321add","providerStatus":"NOT_CALLED","usage":null,"conservativeQuotaCharge":4096,"result":"LOCAL_POLICY_ONLY_PASS"}
+# Subtest: Chat policy, durable metadata, refusal and conservative cancellation on restricted runtime
+ok 178 - Chat policy, durable metadata, refusal and conservative cancellation on restricted runtime
+  ---
+  duration_ms: 208.008584
+  type: 'test'
+  ...
+# Subtest: three scenarios produce distinct deterministic decisions and replies
+ok 179 - three scenarios produce distinct deterministic decisions and replies
+  ---
+  duration_ms: 1.259041
+  type: 'test'
+  ...
+# Subtest: empty and oversized input rejected; untrusted HTML remains plain text
+ok 180 - empty and oversized input rejected; untrusted HTML remains plain text
+  ---
+  duration_ms: 0.244209
+  type: 'test'
+  ...
+# Subtest: local mode is the default and optional network request is gated by explicit consent
+ok 181 - local mode is the default and optional network request is gated by explicit consent
+  ---
+  duration_ms: 0.435209
+  type: 'test'
+  ...
+# Subtest: provider boundary requires readable policy audit evidence
+ok 182 - provider boundary requires readable policy audit evidence
+  ---
+  duration_ms: 2.856667
+  type: 'test'
+  ...
+# Subtest: policy inspects and redacts every role while preserving immutable context
+ok 183 - policy inspects and redacts every role while preserving immutable context
+  ---
+  duration_ms: 0.334542
+  type: 'test'
+  ...
+# Subtest: history deny, escalation, warning, secret and missing allow all stop egress
+ok 184 - history deny, escalation, warning, secret and missing allow all stop egress
+  ---
+  duration_ms: 10.385625
+  type: 'test'
+  ...
+# Subtest: redaction cannot become an implicit allow or expose a hidden deny
+ok 185 - redaction cannot become an implicit allow or expose a hidden deny
+  ---
+  duration_ms: 0.23975
+  type: 'test'
+  ...
+# Subtest: expired and unavailable model approval fail before any fetch
+ok 186 - expired and unavailable model approval fail before any fetch
+  ---
+  duration_ms: 0.140959
+  type: 'test'
+  ...
+# Subtest: model reply uses baseline and enforced Firewall before disclosure
+ok 187 - model reply uses baseline and enforced Firewall before disclosure
+  ---
+  duration_ms: 0.545291
+  type: 'test'
+  ...
+# Subtest: reviewed 8000-byte cap is independent of the conservative request token bound
+ok 188 - reviewed 8000-byte cap is independent of the conservative request token bound
+  ---
+  duration_ms: 0.442083
+  type: 'test'
+  ...
+# Subtest: Secure Chat remains fail-closed while no provider approval exists
+ok 189 - Secure Chat remains fail-closed while no provider approval exists
+  ---
+  duration_ms: 0.611459
+  type: 'test'
+  ...
+# Subtest: missing Kernel and Firewall integration refuses dispatch with a server error
+ok 190 - missing Kernel and Firewall integration refuses dispatch with a server error
+  ---
+  duration_ms: 0.175833
+  type: 'test'
+  ...
+# Subtest: baseline blocks synthetic secrets and redacts every outgoing history item
+ok 191 - baseline blocks synthetic secrets and redacts every outgoing history item
+  ---
+  duration_ms: 0.716375
+  type: 'test'
+  ...
+# Subtest: unapproved quota fails closed
+ok 192 - unapproved quota fails closed
+  ---
+  duration_ms: 0.073375
+  type: 'test'
+  ...
+# Subtest: configured message size accepts only bounded integer limits
+ok 193 - configured message size accepts only bounded integer limits
+  ---
+  duration_ms: 0.122792
+  type: 'test'
+  ...
+# Subtest: database setup errors are mapped without exposing SQL details
+ok 194 - database setup errors are mapped without exposing SQL details
+  ---
+  duration_ms: 8.361833
+  type: 'test'
+  ...
+# Subtest: registry excludes unscoped, expired and incomplete owner approvals
+ok 195 - registry excludes unscoped, expired and incomplete owner approvals
+  ---
+  duration_ms: 0.880292
+  type: 'test'
+  ...
+# Subtest: approved quota configuration has no defaults and emergency switch closes it
+ok 196 - approved quota configuration has no defaults and emergency switch closes it
+  ---
+  duration_ms: 0.310083
+  type: 'test'
+  ...
+# Subtest: valid indexable and excluded HTML are both checked
+ok 197 - valid indexable and excluded HTML are both checked
+  ---
+  duration_ms: 1.025667
+  type: 'test'
+  ...
+# Subtest: an accidental empty Markdown artifact fails
+ok 198 - an accidental empty Markdown artifact fails
+  ---
+  duration_ms: 0.439667
+  type: 'test'
+  ...
+# Subtest: ambiguous indexing directives fail
+ok 199 - ambiguous indexing directives fail
+  ---
+  duration_ms: 0.176542
+  type: 'test'
+  ...
+# Subtest: missing metadata fails even on noindex pages
+ok 200 - missing metadata fails even on noindex pages
+  ---
+  duration_ms: 0.095125
+  type: 'test'
+  ...
+# Subtest: shared public path policy excludes private, demo and error surfaces
+ok 201 - shared public path policy excludes private, demo and error surfaces
+  ---
+  duration_ms: 0.309834
+  type: 'test'
+  ...
+# Subtest: every public alias returns the same 301 destination and preserves the query for GET and HEAD
+ok 202 - every public alias returns the same 301 destination and preserves the query for GET and HEAD
+  ---
+  duration_ms: 0.975042
+  type: 'test'
+  ...
+# Subtest: the reported aliases match in raw and encoded URL path forms
+ok 203 - the reported aliases match in raw and encoded URL path forms
+  ---
+  duration_ms: 0.103958
+  type: 'test'
+  ...
+# Subtest: unsupported methods and unknown paths do not receive public redirects
+ok 204 - unsupported methods and unknown paths do not receive public redirects
+  ---
+  duration_ms: 0.074708
+  type: 'test'
+  ...
+# Subtest: signup availability distinguishes missing Auth setup from a deliberately closed portal
+ok 205 - signup availability distinguishes missing Auth setup from a deliberately closed portal
+  ---
+  duration_ms: 0.978584
+  type: 'test'
+  ...
+# Subtest: whitespace-only Auth setup is treated as missing and messages never expose a URL or env key
+ok 206 - whitespace-only Auth setup is treated as missing and messages never expose a URL or env key
+  ---
+  duration_ms: 0.194
+  type: 'test'
+  ...
+# Subtest: signup page renders the resolved state with a contact alternative and no stale setup-only message
+ok 207 - signup page renders the resolved state with a contact alternative and no stale setup-only message
+  ---
+  duration_ms: 0.500416
+  type: 'test'
+  ...
+# Subtest: P06-A runtime: request, review, operator channel, closed activation, quotas and expiry
+ok 208 - P06-A runtime: request, review, operator channel, closed activation, quotas and expiry
+  ---
+  duration_ms: 246.038417
+  type: 'test'
+  ...
+# Subtest: P06-A trial: 48h window, state machine and commercial separation
+ok 209 - P06-A trial: 48h window, state machine and commercial separation
+  ---
+  duration_ms: 0.8965
+  type: 'test'
+  ...
+# Subtest: P06-A trial: the window starts at activated_at and expiry is derived, not trusted
+ok 210 - P06-A trial: the window starts at activated_at and expiry is derived, not trusted
+  ---
+  duration_ms: 4.961084
+  type: 'test'
+  ...
+# Subtest: P06-A trial: access projection never turns a request or approval into access
+ok 211 - P06-A trial: access projection never turns a request or approval into access
+  ---
+  duration_ms: 0.178417
+  type: 'test'
+  ...
+1..211
+# tests 211
+# suites 0
+# pass 211
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 109615.296792
+{
+  "result": "PASS",
+  "exitCode": 0,
+  "databases": 12,
+  "port": 45132,
+  "keptCluster": false
+}

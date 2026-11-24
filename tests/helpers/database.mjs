@@ -1,6 +1,12 @@
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
 
+export const contractDatabaseFixtures = [
+  'KERNEL', 'FIREWALL', 'HUMAN_GATE', 'LEDGER', 'RISK_ENGINE',
+  'RISK_ENGINE_RESIDUAL', 'KERNEL_IDENTITY', 'KERNEL_INVITATION',
+  'KERNEL_TRIAL', 'CHAT', 'EXPLORATION', 'FIREWALL_REVIEW',
+];
+
 // Only fresh, dedicated localhost databases. Never load dotenv or infer a DSN.
 export function localDatabaseUrl(name) {
   const value = process.env[name];

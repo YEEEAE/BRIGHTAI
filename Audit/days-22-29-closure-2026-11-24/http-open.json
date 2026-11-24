@@ -1,0 +1,490 @@
+{
+  "portalEnabled": true,
+  "endpointFiles": 43,
+  "checks": 61,
+  "rows": [
+    {
+      "route": "/api/measurement-status/",
+      "method": "GET",
+      "status": 200,
+      "expected": 200,
+      "error": false
+    },
+    {
+      "route": "/api/observability/",
+      "method": "POST",
+      "status": 204,
+      "expected": 204,
+      "error": false
+    },
+    {
+      "route": "/api/public-demo/groq-sandbox/",
+      "method": "POST",
+      "status": 503,
+      "expected": 503,
+      "code": "DISABLED",
+      "error": false
+    },
+    {
+      "route": "/app/api/firewall/evaluate/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/firewall/guarded-executions/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/firewall/rules/",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/firewall/rules/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/firewall/rules/",
+      "method": "PATCH",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/firewall/rules/",
+      "method": "DELETE",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/human-gate/delegations/[delegationId]/revoke/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/human-gate/delegations/",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/human-gate/delegations/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/human-gate/policy/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/human-gate/requests/[requestId]/cancel/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/human-gate/requests/[requestId]/decide/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/human-gate/requests/[requestId]/execute/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/human-gate/requests/",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/human-gate/requests/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/kernel/",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/kernel/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/kernel/health/",
+      "method": "GET",
+      "status": 200,
+      "expected": 200,
+      "error": false
+    },
+    {
+      "route": "/app/api/kernel/invitations/",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/kernel/members/",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/kernel/members/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/kernel/policies/",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/kernel/policies/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/kernel/products/",
+      "method": "PATCH",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/kernel/trials/[trialId]/cancel/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/kernel/trials/[trialId]/submit/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/kernel/trials/",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/kernel/trials/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/ledger/events/[eventId]/export/",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/ledger/events/[eventId]/",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/ledger/events/[eventId]/verify/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/ledger/events/",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/ledger/events/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/operator/trials/[trialId]/activate/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/operator/trials/[trialId]/close/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/operator/trials/[trialId]/decide/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/operator/trials/[trialId]/expire/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/operator/trials/",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/risk-engine/actions/",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/risk-engine/assets/[assetId]/assessments/",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/risk-engine/assets/[assetId]/assessments/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/risk-engine/assets/[assetId]/",
+      "method": "PATCH",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/risk-engine/assets/[assetId]/",
+      "method": "DELETE",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/risk-engine/assets/[assetId]/revisions/",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/risk-engine/assets/[assetId]/treatments/",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/risk-engine/assets/[assetId]/treatments/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/risk-engine/assets/[assetId]/treatments/",
+      "method": "PATCH",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/risk-engine/assets/",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/risk-engine/assets/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/risk-engine/assist/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/risk-engine/export/",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/secure-chat/messages/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/secure-chat/messages/",
+      "method": "DELETE",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/secure-chat/models/",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/trial/",
+      "method": "GET",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/app/api/trial/",
+      "method": "POST",
+      "status": 401,
+      "expected": 401,
+      "code": "UNAUTHORIZED",
+      "error": false
+    },
+    {
+      "route": "/healthz/",
+      "method": "GET",
+      "status": 503,
+      "expected": 503,
+      "error": false
+    },
+    {
+      "route": "/healthz/",
+      "method": "HEAD",
+      "status": 503,
+      "expected": 503,
+      "error": false
+    }
+  ]
+}

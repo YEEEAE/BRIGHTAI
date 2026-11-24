@@ -9,7 +9,7 @@
 |---|---|---|---|---|
 | `/products/` | `[product].astro`، `products/index.astro` | «منتج مستقل ضمن المنظومة» | `APPROVED_REQUIREMENT` | تصور · غير متحقق تشغيليًا |
 | `/products/firewall/` … `/products/secure-chat/` | `products/index.astro` | خمسة منتجات مستقلة، Kernel غير مفوتر | `APPROVED_REQUIREMENT` | مخطط · غير متحقق |
-| `/contact/` | جميع صفحات المنتجات | «اطلب معلومات أو عرض سعر» | `NO_SERVICE_CLAIM` | يفتح بريدًا فقط؛ لا إرسال مؤكد |
+| `/contact/` | جميع صفحات المنتجات | «اطلب معلومات أو عرض سعر» | `NO_SERVICE_CLAIM` | مسودة محلية اختيارية وروابط ثابتة للبريد وواتساب. فتح القناة لا يثبت إرسال الطلب أو استلامه. |
 | `/pricing/` | `products/index.astro` | فروق التجربة/العقد، لا أسعار | `LOCAL_IMPLEMENTATION` | لا سعر معتمد؛ التجربة غير مفعّلة |
 | `/docs/` | `products/index.astro` | مركز معرفة منشور | `LOCAL_IMPLEMENTATION` | محتوى توعوي، ليس دليل تشغيل |
 | `/trust/` | `ProductContentExtension.astro` (Ledger) | حدود الأدلة المعلنة | `LOCAL_IMPLEMENTATION` | لا شهادات أو أدلة تشغيل |
@@ -26,7 +26,7 @@
 | الرابط | الادعاء | النوع | ملاحظة |
 |---|---|---|---|
 | `/compliance/` | ربط المتطلب بالضابط والدليل | `APPROVED_REQUIREMENT` | طريقة تنظيم، ليست حكمًا قانونيًا |
-| `/contact/` | استفسار عام | `NO_SERVICE_CLAIM` | بريد فقط |
+| `/contact/` | استفسار عام | `NO_SERVICE_CLAIM` | قناتا البريد وواتساب. الاستلام غير متحقق. |
 | `/privacy/` (عبر الفوتر) | سياسة خصوصية تمهيدية | `LOCAL_IMPLEMENTATION` | تحتاج اعتمادًا قانونيًا |
 
 ## 3. Compliance
@@ -39,7 +39,7 @@
 | `/docs/` | أدلة المعرفة | `LOCAL_IMPLEMENTATION` | تعليمي |
 | `/knowledge/protect-company-data-chatgpt/` | قائمة قرار حماية بيانات | `LOCAL_IMPLEMENTATION` | تعليمي |
 | `/knowledge/ai-governance-saudi/` | دورة الحوكمة | `LOCAL_IMPLEMENTATION` | تعليمي |
-| `/contact/` (عبر الفوتر) | استفسار | `NO_SERVICE_CLAIM` | بريد فقط |
+| `/contact/` (عبر الفوتر) | استفسار | `NO_SERVICE_CLAIM` | قناتا البريد وواتساب. الاستلام غير متحقق. |
 
 ## 4. قواعد المراجعة
 

@@ -108,8 +108,8 @@ Email verification is required for invitation acceptance, not for creating one's
 5. Repeat the create request concurrently (double click). Expect either one tenant plus an idempotent read, or a
    safe conflict — never two memberships or two owners in one tenant.
 6. As `member.b` (before invitation), request tenant A in the URL. Expect `403` and no private data.
-7. On a `NOBYPASSRLS` runtime role, expect `WORKSPACE_PROVISIONING_REQUIRED` and **no** tenant created. First-owner
-   provisioning must use the approved privileged path, not a self-grant policy.
+7. On a `NOBYPASSRLS` runtime role with migration `0036`, verify that the scoped bootstrap creates the new tenant
+   and its initial OWNER atomically. A banned actor is rejected, and the new OWNER cannot acquire access to an existing tenant.
 
 Record the exact status codes and the membership read-back.
 
@@ -164,7 +164,7 @@ Record each code and the resulting membership/audit state.
 | Session expiry (POST) | 401, no replay | | | NOT RUN |
 | Wrong password vs unknown email | Identical message | | | NOT RUN |
 | First owner bootstrap | 1 OWNER, no grant | | | NOT RUN |
-| Bootstrap under runtime role | `WORKSPACE_PROVISIONING_REQUIRED` | | | NOT RUN |
+| Bootstrap under runtime role | Scoped first owner via `0036`, existing tenant and products remain inaccessible | | | NOT RUN |
 | Invite accept | MEMBER only | | | NOT RUN |
 | Duplicate accept | Idempotent | | | NOT RUN |
 | Foreign account accept | Generic rejection | | | NOT RUN |

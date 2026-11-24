@@ -9,9 +9,10 @@
 
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
-import { mkdir, mkdtemp, rm } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import pg from 'pg';
+import { contractDatabaseFixtures } from '../tests/helpers/database.mjs';
 
 const PGBIN = process.env.P06_PG_BIN || '/opt/homebrew/opt/postgresql@18/bin';
 const WORK = await mkdtemp(join(process.env.TMPDIR || '/tmp', 'p06-trial-verify-'));
@@ -43,8 +44,12 @@ async function bootstrap() {
     const init = await run(join(PGBIN, 'initdb'), ['-D', DATA, '-U', 'postgres', '-A', 'trust', '--locale=C', '--encoding=UTF8']);
     if (init.code !== 0) throw new Error(`initdb failed: ${init.err}`);
   }
-  const start = await run(join(PGBIN, 'pg_ctl'), ['-D', DATA, '-o', `-k ${SOCK} -c listen_addresses=127.0.0.1 -p ${PORT} -c fsync=off`, '-w', 'start']);
-  if (start.code !== 0 && !/already running/.test(start.err)) throw new Error(`pg_ctl start failed: ${start.err}`);
+  const log = join(WORK, 'postgres-start.log');
+  const start = await run(join(PGBIN, 'pg_ctl'), ['-D', DATA, '-l', log, '-o', `-k ${SOCK} -c listen_addresses=127.0.0.1 -p ${PORT} -c fsync=off`, '-w', 'start']);
+  if (start.code !== 0 && !/already running/.test(start.err)) {
+    const details = await readFile(log, 'utf8').catch(() => '');
+    throw new Error(`pg_ctl start failed: ${start.err}${details}`);
+  }
 
   await withClient('postgres', 'postgres', async client => {
     const roles = [
@@ -70,7 +75,6 @@ async function bootstrap() {
 
 async function main() {
   await bootstrap();
-  const names = ['KERNEL', 'FIREWALL', 'HUMAN_GATE', 'LEDGER', 'RISK_ENGINE', 'RISK_ENGINE_RESIDUAL', 'KERNEL_IDENTITY', 'KERNEL_INVITATION', 'KERNEL_TRIAL'];
   const env = {
     PATH: process.env.PATH,
     TMPDIR: process.env.TMPDIR,
@@ -81,7 +85,7 @@ async function main() {
     AIGAS_ENVIRONMENT: 'local',
     AIGAS_RELEASE_SHA: process.env.AIGAS_RELEASE_SHA || 'a'.repeat(40),
   };
-  for (const name of names) {
+  for (const name of contractDatabaseFixtures) {
     env[`${name}_TEST_DATABASE_URL`] = `postgres://postgres@127.0.0.1:${PORT}/ar_contract_${name.toLowerCase()}`;
   }
   const child = spawn(process.execPath, ['scripts/verify-contracts-local.mjs'], { env, stdio: 'inherit' });
@@ -89,7 +93,7 @@ async function main() {
     child.on('error', reject);
     child.on('exit', value => resolve(value ?? 1));
   });
-  console.log(JSON.stringify({ result: code === 0 ? 'PASS' : 'FAIL', exitCode: code, databases: names.length, port: Number(PORT), keptCluster: keep }, null, 2));
+  console.log(JSON.stringify({ result: code === 0 ? 'PASS' : 'FAIL', exitCode: code, databases: contractDatabaseFixtures.length, port: Number(PORT), keptCluster: keep }, null, 2));
   process.exitCode = code;
 }
 

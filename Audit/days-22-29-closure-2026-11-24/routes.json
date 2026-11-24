@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "pages": 64,
+  "references": 3843,
+  "articles": 32,
+  "uniquePaths": 138,
+  "cssAssets": 5,
+  "redirects": 152,
+  "redirectMethodChecks": 304,
+  "orphanPages": 0,
+  "brokenReferences": 0
+}

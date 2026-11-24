@@ -70,8 +70,13 @@ for (const path of routes) {
   if (path.startsWith('/knowledge/')) {
     const articles = schemas.filter(s => s['@type'] === 'Article');
     assert.equal(articles.length, 1, `Exactly one Article entity: ${path}`);
-    assert(articles[0].author && articles[0].publisher && articles[0].dateModified, `Article ownership and date: ${path}`);
-    assert(articles[0].datePublished && articles[0].image, `Article needs a real datePublished and image: ${path}`);
+    const [article] = articles;
+    assert(article.author && article.publisher, `Article ownership: ${path}`);
+    assert(article.image, `Article image: ${path}`);
+    for (const [field, label] of [['datePublished', 'النشر'], ['dateModified', 'التحديث التحريري']]) {
+      const visibleDate = html.match(new RegExp(`<li>${label}: <time datetime="([^"]+)"`))?.[1];
+      assert.equal(article[field], visibleDate, `Article ${field} must match the editorial record shown on ${path}`);
+    }
   }
   for (const faq of schemas.filter(s => s['@type'] === 'FAQPage')) {
     for (const question of faq.mainEntity) {
@@ -90,6 +95,7 @@ for (const path of routes) {
 // out of the sitemap and noindex; front-end links to them are checked there.
 const privatePrefix = path => /^\/(app|auth|healthz)(\/|$)/.test(path);
 const checked = new Set();
+const anchorDocuments = new Map(pages);
 for (const { from, url } of references) {
   if (privatePrefix(url.pathname)) continue;
   if (!checked.has(url.pathname)) {
@@ -107,7 +113,12 @@ for (const { from, url } of references) {
     checked.add(url.pathname);
   }
   if (url.hash) {
-    const html = pages.get(url.pathname);
+    if (!anchorDocuments.has(url.pathname)) {
+      const response = await fetch(url, { redirect: 'manual' });
+      assert.equal(response.status, 200, `Broken anchor target: ${from} -> ${url.pathname}`);
+      anchorDocuments.set(url.pathname, await response.text());
+    }
+    const html = anchorDocuments.get(url.pathname);
     const id = decodeURIComponent(url.hash.slice(1));
     assert(html?.includes(`id="${id}"`), `Broken anchor: ${from} -> ${url.pathname}${url.hash}`);
   }

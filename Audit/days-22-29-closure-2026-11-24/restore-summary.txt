@@ -1,0 +1,9 @@
+PASS: PostgreSQL 18.6 logical restore in a separate synthetic localhost cluster.
+Schema and ACL dump comparison: match after normalizing equivalent conjunction grouping in the two Firewall CHECK constraints.
+No-context runtime role read zero rows in both tenants and ledger before and after.
+Row counts matched:
+decisions|2
+ledger|8
+memberships|3
+requests|2
+tenants|2

@@ -153,12 +153,14 @@ test('AU02/AU05/AU06/AU07 runtime: identity-scoped memberships, member races and
     await activateTrial(b, ids.outsider, ids.owner1, expiredStart, expiredEnd);
     await assert.rejects(productAccess({ userId: ids.outsider }, b, 'human-gate'), { status: 403, code: 'PRODUCT_NOT_ENABLED', dependencyStatus: 'expired' });
 
-    // AU03/AU04 negative: a browser identity cannot self-grant a tenant or accept an invitation
-    // before the reviewed P19 provisioning channel exists.
-    const tenantsBefore = (await pool.query('SELECT count(*)::int AS count FROM aigas_tenants')).rows[0].count;
-    await assert.rejects(createWorkspace({ userId: ids.noMembership }, 'مؤسسة اختبار'), { status: 503, code: 'WORKSPACE_PROVISIONING_REQUIRED' });
-    assert.equal((await pool.query('SELECT count(*)::int AS count FROM aigas_tenants')).rows[0].count, tenantsBefore);
-    assert.equal((await pool.query('SELECT count(*)::int AS count FROM aigas_memberships WHERE user_id=$1', [ids.noMembership])).rows[0].count, 0);
+    // AU03: the scoped bootstrap can create a fresh workspace, never join an existing one.
+    await assert.rejects(createWorkspace({ userId: ids.banned }, 'مؤسسة اختبار'), { status: 403, code: 'WORKSPACE_FORBIDDEN' });
+    const workspace = await createWorkspace({ userId: ids.noMembership }, 'مؤسسة اختبار');
+    assert.ok(workspace !== a && workspace !== b);
+    assert.deepEqual((await pool.query('SELECT tenant_id, role FROM aigas_memberships WHERE user_id=$1', [ids.noMembership])).rows,
+      [{ tenant_id: workspace, role: 'OWNER' }]);
+    await assert.rejects(dashboard({ userId: ids.noMembership }, a), { status: 403, code: 'FORBIDDEN' });
+    await assert.rejects(productAccess({ userId: ids.noMembership }, workspace, 'firewall'), { status: 403, code: 'PRODUCT_NOT_ENABLED' });
 
     const orgId = randomUUID(), invitationId = randomUUID();
     await pool.query('INSERT INTO neon_auth.organization(id,name) VALUES($1,$2)', [orgId, 'Synthetic Org A']);
@@ -166,11 +168,12 @@ test('AU02/AU05/AU06/AU07 runtime: identity-scoped memberships, member races and
     await pool.query('INSERT INTO aigas_auth_organizations(tenant_id,organization_id,linked_by) VALUES($1,$2,$3)', [a, orgId, ids.owner1]);
     await pool.query("INSERT INTO neon_auth.invitation(id,email,status,\"expiresAt\",\"organizationId\",\"inviterId\",role) VALUES($1,$2,'pending',now()+interval '1 day',$3,$4,'member')", [invitationId, `${'invited'}@example.test`, orgId, ids.owner1]);
     assert.equal((await manageInvitation({ userId: ids.owner1 }, a, { operation: 'register', invitationId })).persisted, true);
-    // Under runtime RLS the invited identity has no tenant scope yet, so the registered
-    // invitation is not discoverable and acceptance stays closed until P19 supplies the
-    // reviewed bootstrap channel. This is a negative proof, not a granted membership.
+    // AU04: identity-scoped listing does not grant tenant scope. Provider acceptance is still required.
     assert.equal((await incomingInvitations({ userId: ids.invited })).invitations.length, 0);
-    await assert.rejects(manageInvitation({ userId: ids.invited }, null, { operation: 'accept', invitationId }), { status: 503, code: 'INVITATION_BOOTSTRAP_REQUIRED' });
+    await assert.rejects(manageInvitation({ userId: ids.invited }, null, { operation: 'accept', invitationId }), { status: 403, code: 'IDENTITY_NOT_VERIFIED' });
+    await pool.query('UPDATE neon_auth."user" SET "emailVerified"=true WHERE id=$1', [ids.invited]);
+    assert.deepEqual((await incomingInvitations({ userId: ids.invited })).invitations.map(item => item.id), [invitationId]);
+    await assert.rejects(manageInvitation({ userId: ids.invited }, null, { operation: 'accept', invitationId }), { status: 409, code: 'INVITATION_NOT_ACCEPTED' });
     assert.equal((await pool.query('SELECT count(*)::int AS count FROM aigas_memberships WHERE tenant_id=$1 AND user_id=$2', [a, ids.invited])).rows[0].count, 0);
   } finally {
     await pool.end();
