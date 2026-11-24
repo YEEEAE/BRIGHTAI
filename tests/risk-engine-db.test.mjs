@@ -6,6 +6,7 @@ import pg from 'pg';
 import { randomUUID } from 'node:crypto';
 import { createRiskEngineService } from '../src/server/risk-engine/service.mjs';
 import { createHandler } from '../src/server/risk-engine/http.mjs';
+import { createHumanGateService } from '../src/server/human-gate/service.mjs';
 const url=localDatabaseUrl('RISK_ENGINE_TEST_DATABASE_URL');
 test('Risk Engine DB: persistence, version history, tenant/role rejection, races and atomic audit',{skip:!url},async()=>{
  const pool=new pg.Pool({connectionString:url,max:5});
@@ -49,6 +50,7 @@ test('Risk Engine DB: persistence, version history, tenant/role rejection, races
   assert.equal((await send(owner,'assess',assessment,id)).status,409);
   assert.equal((await send(owner,'update',changed,id)).status,409);
   const second=await send(owner,'assess',{...assessment,asset_version:2,likelihood:3,impact:3},id);assert.equal(second.data.assessment.risk_level,'HIGH');
+  assert.equal(second.data.assessment.human_review,null);
   const history=(await send(owner,'history',{},id)).data.assessments;assert.equal(history.length,2);assert.equal(history[0].asset_snapshot.purpose,changed.purpose);assert.equal(history[1].asset_snapshot.purpose,a.purpose);assert.equal(history[1].id,first.data.assessment.id);
   assert.equal((await send(owner)).data.assets[0].assessment_status,'ASSESSED');
   await assert.rejects(pool.query('UPDATE aigas_re_assessments SET likelihood=3 WHERE id=$1',[first.data.assessment.id]),/append-only/);
@@ -60,6 +62,36 @@ test('Risk Engine DB: persistence, version history, tenant/role rejection, races
   // More than one page preserves all history.
   for(let i=0;i<26;i++)assert.equal((await send(owner,'assess',{...assessment,asset_version:4},id)).status,201);
   assert.equal((await send(owner,'history',{},id)).data.assessments.length,25);assert.equal((await send(owner,'history',{},id)).data.hasMore,true);assert.ok((await send(owner,'history',{},id,tenant,2)).data.assessments.length>=3);
+  await grantProduct(pool,tenant,'human-gate');
+  await grantProduct(pool,tenant,'ledger');
+  await pool.query("INSERT INTO aigas_hg_policies(tenant_id,version,pending_minutes,approval_minutes,enabled,updated_by,separation_of_duties,risk_assessment_review_enabled) VALUES($1,$2,60,30,true,$3,false,true)",[tenant,randomUUID(),owner.userId]);
+  const hg=createHumanGateService(transact);
+  const high=()=>send(owner,'assess',{...assessment,asset_version:4,likelihood:3,impact:3},id);
+  const pending=await high();
+  assert.equal(pending.status,201,JSON.stringify(pending.data));
+  const reviewId=pending.data.assessment.human_review.id;
+  const decide=(user,decision,requestId=reviewId)=>hg(user,tenant,'decide',{decision,reason:'Synthetic independent review'},new URLSearchParams(),requestId);
+  assert.equal((await send(owner,'history',{},id)).data.assessments[0].human_review.status,'PENDING');
+  assert.equal((await send(member,'history',{},id)).data.assessments[0].human_review,null);
+  await assert.rejects(decide(owner,'APPROVE'),{code:'SELF_REVIEW_DENIED'});
+  const reviewRace=await Promise.allSettled([decide(admin,'APPROVE'),decide(admin,'APPROVE')]);
+  assert.equal(reviewRace.filter(item=>item.status==='fulfilled').length,1);
+  assert.equal(reviewRace.find(item=>item.status==='rejected').reason.code,'REQUEST_CLOSED');
+  const approved=(await send(owner,'history',{},id)).data.assessments[0];
+  assert.deepEqual(approved.human_review,{id:reviewId,status:'APPROVED',current:true});
+  assert.equal(approved.risk_level,'HIGH');
+  await assert.rejects(hg(owner,tenant,'execute',{},new URLSearchParams(),reviewId),{code:'REVIEW_ONLY'});
+  assert.equal((await pool.query('SELECT 1 FROM aigas_hg_grants WHERE request_id=$1',[reviewId])).rowCount,0);
+  const evidence=(await pool.query(`SELECT l.metadata_json->>'action' AS action
+   FROM aigas_ld_events l JOIN aigas_audit_events a ON a.id::text=l.metadata_json->>'audit_ref'
+   WHERE a.correlation_id=$1 ORDER BY l.sequence_no`,[reviewId])).rows;
+  assert.deepEqual(evidence.map(row=>row.action),['kernel.human_gate.request.created','kernel.human_gate.decision.approve']);
+  const rejected=(await high()).data.assessment.human_review.id;
+  await decide(admin,'REJECT',rejected);
+  assert.equal((await send(owner,'history',{},id)).data.assessments[0].human_review.status,'REJECTED');
+  const stale=(await high()).data.assessment.human_review.id;
+  await high();
+  await assert.rejects(decide(admin,'APPROVE',stale),{code:'BINDING_INVALID'});
   await pool.query("UPDATE aigas_memberships SET role='MEMBER' WHERE tenant_id=$1 AND user_id=$2",[tenant,admin.userId]);assert.equal((await send(admin,'assess',{...assessment,asset_version:4},id)).status,403);
   await pool.query('ALTER TABLE aigas_audit_events ADD CONSTRAINT synthetic_failure CHECK(false) NOT VALID');
   const before=(await pool.query('SELECT count(*)::int AS n FROM aigas_re_assessments')).rows[0].n;

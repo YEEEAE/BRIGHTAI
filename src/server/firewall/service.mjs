@@ -10,9 +10,9 @@ import {
   MAX_RULES, MAX_TEXT_LENGTH, MAX_EVALUATIONS_PER_WINDOW, EVALUATION_WINDOW_SECONDS,
 } from './core.mjs';
 import { providerState } from './provider.mjs';
-import { reviewIntegrationState } from './escalation.mjs';
+import { requestHumanReview, reviewIntegrationState } from './escalation.mjs';
+import { lockHumanGate } from '../human-gate/integration.mjs';
 import { enforceDecision } from './guard.mjs';
-import { requestHumanReview } from './escalation.mjs';
 import { policyReference, decisionFingerprint } from './binding.mjs';
 import { evaluateKernelPolicy } from '../kernel/policies.mjs';
 
@@ -70,6 +70,11 @@ export function createFirewallService(transact = transaction) {
       const scope = await tenantGuard(identity, requested, db);
       if (!scope.tenant) throw new KernelError(403, 'NO_WORKSPACE', 'أنشئ مساحة عمل من Kernel أولًا.');
       const tenantId = scope.tenant.tenant_id;
+      // Human Gate can subsequently lock the tenant row (workspace rename) or
+      // append Ledger evidence. Acquire its lock before either on this route.
+      if (operation === 'enforce') {
+        await lockHumanGate(db, tenantId);
+      }
       // Serialize policy changes and evaluation within each tenant.
       await db.query('SELECT id FROM public.aigas_tenants WHERE id=$1 FOR UPDATE', [tenantId]);
       await requireProductAccess(db, identity, tenantId, 'firewall', operation);
@@ -248,6 +253,14 @@ export function createFirewallService(transact = transaction) {
             policyVersion,
             idempotencyKey: enforced ? `firewall:guard:${body.request_id}` : `firewall:lab:${id}`,
           });
+          let escalation = null;
+          if (enforced && result.action === 'ESCALATE') {
+            try { escalation = await requestHumanReview(db, identity, tenantId, { decisionId: id, requestId: body.request_id, policyVersion, requestFingerprint }); }
+            catch (error) {
+              if (error instanceof KernelError && error.code === 'MANDATORY_EVIDENCE_UNAVAILABLE') throw error;
+              throw new KernelError(503, 'HUMAN_GATE_UNAVAILABLE', 'تعذر إنشاء طلب المراجعة البشرية داخل المعاملة؛ لم تُحفظ العملية ولم يُرسل الطلب.');
+            }
+          }
           // Mandatory Ledger evidence (when policy requires it) is written inside the
           // same transaction; a failure rolls the decision back. Ledger is never required
           // unless an approved evidence requirement matches this tenant and event type.
@@ -259,20 +272,13 @@ export function createFirewallService(transact = transaction) {
             metadata_json: { synthetic: true, decision_ref: id, action: result.action, mode: enforced ? 'GUARD' : 'LAB', rule_ref: result.rule_id, rule_version: result.rule_version, ...(enforced ? { request_fingerprint: requestFingerprint } : {}) },
             idempotency_key: `decision:${id}`,
           });
-          let escalation = null;
-          // A human review decision creates its pending request in this transaction,
-          // before any provider call, only through an approved server integration.
-          if (enforced && result.action === 'ESCALATE') {
-            try { escalation = await requestHumanReview(db, identity, tenantId, { decisionId: id, requestId: body.request_id, policyVersion, requestFingerprint }); }
-            catch { throw new KernelError(503, 'HUMAN_GATE_UNAVAILABLE', 'تعذر إنشاء طلب المراجعة البشرية داخل المعاملة؛ لم تُحفظ العملية ولم يُرسل الطلب.'); }
-          }
           const decision = {
             id, action: result.action, reason: result.reason, reason_text: reasons[result.reason],
             rule_id: result.rule_id, rule_version: result.rule_version,
             created_at: inserted.rows[0].created_at, mode: enforced ? 'GUARD' : 'LAB',
             policy_version: policyVersion, request_fingerprint: requestFingerprint,
           };
-          const dependencies = dependencySummary(ledgerEvidence, reviewIntegrationState(tenantId));
+          const dependencies = dependencySummary(ledgerEvidence, escalation ?? reviewIntegrationState(tenantId));
           if (enforced) return { decision, tenantId, actorUserId: identity.userId, requestId: body.request_id, policyVersion, requestFingerprint,
             outputRules: rules, forwardText: ['ALLOW', 'REDACT'].includes(result.action) ? result.output : null, kernelPolicy, escalation, dependencies, contract_version: HTTP_CONTRACT_VERSION };
           return {

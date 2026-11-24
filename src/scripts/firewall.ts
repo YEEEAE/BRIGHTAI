@@ -274,10 +274,18 @@ function renderGuard(data: any, submitted: string) {
   if (data.policy) result.append(metaLine('قرار Kernel', `${data.policy.decision} · ${data.policy.reason ?? '—'}${data.policy.mandatory === true ? ' · إلزامي لا ترفعه موافقة' : ''}${(data.policy.policies ?? []).length ? ` · ${data.policy.policies.length} سياسة في السلسلة` : ''}`));
   result.append(metaLine('الحالة', `${data.execution_status ?? 'NOT_EXECUTED'} — ${executionLabel(data)}`));
   if (data.review_required === true) {
-    const integration = data.integration?.configured === true
+    const review = data.code === 'REVIEW_PENDING' ? data.review : null;
+    const integration = review
       ? `طلب مراجعة معلق · ${data.integration.operation_type}`
-      : `HUMAN_GATE_NOT_CONFIGURED — ${data.integration?.reason ?? 'NO_APPROVED_REVIEW_INTEGRATION'}؛ لم يُنشأ طلب موافقة.`;
+      : `${data.code} — ${data.integration?.reason ?? data.blocked_reason ?? 'تعذر تأكيد طلب مراجعة مربوط'}`;
     result.append(metaLine('تكامل المراجعة', integration));
+    if (review?.id && review.tenant_id === workspace.value) {
+      const link = field('a');
+      const query = new URLSearchParams({workspace:workspace.value,request:review.id});
+      link.href = `/app/human-gate/?${query}`;
+      link.textContent = 'فتح طلب المراجعة في Human Gate';
+      result.append(metaLine('مرجع المراجعة', review.id), link);
+    }
   }
   const state = field('p'); state.textContent = data.message ?? executionLabel(data);
   result.append(state);

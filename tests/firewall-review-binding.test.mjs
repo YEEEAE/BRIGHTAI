@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { enforceDecision } from '../src/server/firewall/guard.mjs';
 import { reviewBindingVersion } from '../src/server/firewall/escalation.mjs';
 
@@ -63,6 +63,9 @@ import { localDatabaseUrl, installSchema, grantProduct, runtime } from './helper
 import { tenantGuard } from '../src/server/kernel/service.mjs';
 import { requestHumanReview } from '../src/server/firewall/escalation.mjs';
 import { createHumanGateService } from '../src/server/human-gate/service.mjs';
+import { createHandler as humanGateHandler } from '../src/server/human-gate/http.mjs';
+import { createFirewallService } from '../src/server/firewall/service.mjs';
+import { createHandler as firewallHandler } from '../src/server/firewall/http.mjs';
 const reviewDb=localDatabaseUrl('FIREWALL_REVIEW_TEST_DATABASE_URL');
 test('atomic metadata review is visible, independent, revocable and rolls back with decision',{skip:!reviewDb},async()=>{
  const pool=new pg.Pool({connectionString:reviewDb});
@@ -77,6 +80,45 @@ test('atomic metadata review is visible, independent, revocable and rolls back w
   await pool.query("INSERT INTO aigas_fw_rules(id,tenant_id,name,pattern,action) VALUES($1,$2,'Synthetic rule','Synthetic','ESCALATE')",[ruleId,tenant]);
   const transact=async work=>{const c=await pool.connect();try{await c.query('BEGIN');await runtime(c);const r=await work(c);await c.query('COMMIT');return r;}catch(e){await c.query('ROLLBACK');throw e;}finally{c.release();}};
   const service=createHumanGateService(transact);
+  const firewall=firewallHandler(async()=>owner,createFirewallService(transact));
+  const humanGate=identity=>humanGateHandler(async()=>identity,service);
+  const origin='http://localhost';
+  const post=(path,query,body)=>new Request(`${origin}${path}?${query}`,{method:'POST',headers:{origin,'content-type':'application/json'},body:JSON.stringify(body)});
+  const policyId=randomUUID();
+  const checksum=createHash('sha256').update(JSON.stringify({conditions:{},effect:'ALLOW',mandatory:false,obligations:[]})).digest('hex');
+  await pool.query("INSERT INTO aigas_policies(id,tenant_id,scope,policy_family,rule_key,owner_user_id,current_version) VALUES($1,$2,'ENTERPRISE','synthetic','firewall-local-allow',$3,1)",[policyId,tenant,owner.userId]);
+  await pool.query("INSERT INTO aigas_policy_versions(tenant_id,policy_id,version,status,effect,checksum,change_reason,created_by,approved_by,published_at) VALUES($1,$2,1,'PUBLISHED','ALLOW',$3,'Synthetic local fixture',$4,$5,now())",[tenant,policyId,checksum,owner.userId,reviewer.userId]);
+  await grantProduct(pool,tenant,'ledger');
+  const guarded=requestId=>firewall(post('/app/api/firewall/guarded-executions/',`workspace=${tenant}`,{text:'Synthetic escalation fixture',synthetic:true,request_id:requestId}),'enforce');
+  const submittedId=randomUUID();
+  const submissions=await Promise.all([guarded(submittedId),guarded(submittedId)]);
+  assert.deepEqual(submissions.map(response=>response.status).sort(),[202,409]);
+  const submitted=await submissions.find(response=>response.status===202).json();
+  assert.equal(submitted.code,'REVIEW_PENDING');
+  assert.equal(submitted.external_action_executed,false);
+  assert.equal((await submissions.find(response=>response.status===409).json()).code,'REQUEST_ALREADY_EVALUATED');
+  const reviewId=submitted.review.id;
+  const selector=new URLSearchParams({workspace:tenant,request:reviewId});
+  const listRequest=()=>new Request(`${origin}/app/api/human-gate/requests/?${selector}`);
+  const mine=await (await humanGate(owner)(listRequest(),'list')).json();
+  assert.deepEqual(mine.requests.map(item=>item.id),[reviewId]);
+  assert.equal(mine.requests[0].policy_version,submitted.review.review_policy_version);
+  assert.deepEqual((await (await humanGate(reviewer)(listRequest(),'list')).json()).requests,[]);
+  const decide=()=>humanGate(reviewer)(post('/app/api/human-gate/requests/decide/',selector,{decision:'APPROVE',reason:'Independent approval fixture'}),'decide',reviewId);
+  const decisions=await Promise.all([decide(),decide()]);
+  assert.deepEqual(decisions.map(response=>response.status).sort(),[200,409]);
+  const approvedList=await (await humanGate(owner)(listRequest(),'list')).json();
+  assert.equal(approvedList.requests[0].executeBlock,'EXECUTION_INTEGRATION_NOT_CONFIGURED');
+  const resume=await humanGate(owner)(post('/app/api/human-gate/requests/execute/',selector,{}),'execute',reviewId);
+  assert.equal(resume.status,409);
+  assert.equal((await resume.json()).code,'EXECUTION_INTEGRATION_NOT_CONFIGURED');
+  assert.equal((await pool.query("SELECT status FROM aigas_hg_grants WHERE request_id=$1",[reviewId])).rows[0].status,'ACTIVE');
+  const evidence=(await pool.query(`SELECT l.metadata_json->>'action' AS action
+   FROM aigas_ld_events l JOIN aigas_audit_events a ON a.id::text=l.metadata_json->>'audit_ref'
+   WHERE a.correlation_id=$1 ORDER BY l.sequence_no`,[reviewId])).rows;
+  assert.deepEqual(evidence.map(row=>row.action),['kernel.human_gate.request.created','kernel.human_gate.decision.approve']);
+  assert.equal((await pool.query("SELECT count(*)::int AS n FROM aigas_ld_events WHERE source='firewall' AND metadata_json->>'decision_ref'=$1",[submitted.decision.id])).rows[0].n,1);
+
   const create=async(fail=false)=>transact(async db=>{
    await tenantGuard(owner,tenant,db);
    const context={decisionId:randomUUID(),requestId:randomUUID(),policyVersion:'kernel:synthetic',requestFingerprint:'a'.repeat(64)};
@@ -103,5 +145,18 @@ test('atomic metadata review is visible, independent, revocable and rolls back w
   assert.deepEqual(Object.keys(payload).sort(),['decision_id','rule_id','rule_version','request_fingerprint'].sort());
   await pool.query('UPDATE aigas_hg_policies SET firewall_escalation_enabled=false WHERE tenant_id=$1',[tenant]);
   assert.equal((await create()).escalation.code,'HUMAN_GATE_NOT_CONFIGURED');
+  // Kernel's unresolved approval obligation stops at the control point even
+  // when Firewall review is enabled and a product rule would otherwise escalate.
+  await pool.query('UPDATE aigas_hg_policies SET firewall_escalation_enabled=true WHERE tenant_id=$1',[tenant]);
+  const obligationId=randomUUID();
+  const obligationChecksum=createHash('sha256').update(JSON.stringify({conditions:{},effect:'REQUEST_APPROVAL',mandatory:false,obligations:[]})).digest('hex');
+  await pool.query("INSERT INTO aigas_policies(id,tenant_id,scope,policy_family,rule_key,owner_user_id,current_version) VALUES($1,$2,'ENTERPRISE','synthetic','kernel-approval-test',$3,1)",[obligationId,tenant,owner.userId]);
+  await pool.query("INSERT INTO aigas_policy_versions(tenant_id,policy_id,version,status,effect,checksum,change_reason,created_by,approved_by,published_at) VALUES($1,$2,1,'PUBLISHED','REQUEST_APPROVAL',$3,'Synthetic review obligation',$4,$5,now())",[tenant,obligationId,obligationChecksum,owner.userId,reviewer.userId]);
+  const blocked=await guarded(randomUUID());
+  assert.equal(blocked.status,403);
+  const blockedData=await blocked.json();
+  assert.deepEqual(blockedData.policy.obligations,['REQUEST_APPROVAL']);
+  assert.equal(blockedData.external_action_executed,false);
+  assert.equal((await pool.query('SELECT 1 FROM aigas_hg_requests WHERE subject_ref=$1',[blockedData.decision.id])).rowCount,0);
  } finally {await pool.end();}
 });

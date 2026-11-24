@@ -2,6 +2,13 @@
 
 Date: 2026-11-01. Scope: a small persisted, rules-only slice authorized by the owner; not the complete RE-01–RE-05 product or a commercial release.
 
+## Human Gate review (2026-11-24, local)
+
+- Migration `0039` adds a default-off tenant policy flag, `risk_assessment_review_enabled`. A current HIGH assessment creates one Human Gate request in the assessment transaction when that policy and the product entitlement are active.
+- The review binds the assessment ID, asset ID and version, methodology version, requester, tenant, and Human Gate policy version. A newer assessment, asset change, retired asset, policy change, or expired request prevents a new decision on the old target.
+- The requester sees the stored review status and a link to the request in assessment history. Approval records an independent review and creates no execution grant. Risk rating, treatment acceptance, and deployment authorization retain their existing rules.
+- Local verification and remaining integration gaps are recorded in [the product contract audit](../Audit/days-12-21-product-contracts-2026-11-24/REPORT.md).
+
 ## Pre-beta register closure (2026-11-08, local source only)
 
 - The inherent assessment remains the declared `draft-likelihood-impact-v1` matrix (likelihood 1–3 × impact 1–3, bands 1–2 / 3–4 / 6–9). No AI model scores risk and no numeric 0–100 scale was introduced.

@@ -1,14 +1,15 @@
-import { createWorkspaceAuth as createAuthClient, getWorkspaceSession, appFetch, setWorkspace } from './workspace-context';
+import { createWorkspaceAuth as createAuthClient, getWorkspaceSession, appFetch, selectedWorkspace, setWorkspace } from './workspace-context';
 const root=document.querySelector<HTMLElement>('[data-human-gate]')!;
 const get=<T extends Element=HTMLElement>(selector:string)=>root.querySelector<T>(selector)!;
 const status=get('[data-status]'),area=get('[data-private]'),workspace=get<HTMLSelectElement>('[data-workspace]');
 const auth=root.dataset.authUrl?createAuthClient(root.dataset.authUrl):null;
 let busy=false,page=1,view='mine',filter='',hasMore=false,canManage=false,canReview=false,canDelegate=false,policy:any=null,reviewers:any[]=[],delegations:any[]=[],epoch=0,active:AbortController|null=null;
+let requestRef=new URL(location.href).searchParams.get('request');
 const labels:Record<string,string>={PENDING:'بانتظار المراجعة',APPROVED:'معتمد — لم يُنفذ',REJECTED:'مرفوض',EXPIRED:'منتهي الصلاحية',CANCELLED:'ملغى',EXECUTED:'نُفّذ'};
 const eventLabels:Record<string,string>={CREATED:'أُنشئ الطلب',APPROVED:'اعتُمد الطلب',REJECTED:'رُفض الطلب',EXPIRED:'أُوقفت صلاحية الطلب',CANCELLED:'أُلغي الطلب',EXECUTED:'نُفّذت العملية'};
 const reasons:Record<string,string>={TIMEOUT:'انتهت المهلة',POLICY_CHANGED:'تغيرت السياسة أو أُوقفت',TARGET_CHANGED:'تغير الهدف أو نسخته',AUTHORITY_CHANGED:'تغير النطاق أو الصلاحية أو التفويض',LEGACY_UNBOUND:'طلب قديم غير مربوط ببصمة؛ يلزم طلب جديد',BINDING_UPGRADED:'طلب سابق لبصمة المورد v3؛ يلزم طلب جديد',CANCELLED_BY_REQUESTER:'ألغاه مقدم الطلب',CANCELLED_BY_REVIEWER:'ألغاه مراجع مخول'};
 const levelLabels:Record<string,string>={ADMIN:'مدير',OWNER:'مالك'};
-const operationLabels:Record<string,string>={KERNEL_WORKSPACE_RENAME:'تغيير اسم مساحة العمل',INTERNAL_DEMO_NOTE:'ملاحظة داخلية تجريبية'};
+const operationLabels:Record<string,string>={KERNEL_WORKSPACE_RENAME:'تغيير اسم مساحة العمل',INTERNAL_DEMO_NOTE:'ملاحظة داخلية تجريبية',FIREWALL_ESCALATION_REVIEW:'مراجعة تصعيد Firewall',RISK_ASSESSMENT_REVIEW:'مراجعة تقييم مخاطر مرتفع'};
 // Server-provided codes only; no local inference of authority or status.
 const reviewBlocks:Record<string,string>={
  BINDING_INVALID:'تغيّرت السياسة أو الهدف أو صلاحية أحد الطرفين بعد إنشاء الطلب؛ لا يمكن حسمه. أنشئ طلبًا جديدًا.',
@@ -18,6 +19,8 @@ const reviewBlocks:Record<string,string>={
 const executeBlocks:Record<string,string>={
  REVIEWER_LOST:'فقد المراجع صلاحيته أو انتهى تفويضه بعد الموافقة؛ لا يمكن التنفيذ. أعد الاعتماد ضمن سياسة سارية.',
  PERMIT_INACTIVE:'إذن التنفيذ غير نشط أو منتهٍ أو مستهلك؛ لا يتكرر التنفيذ إلا بإذن جديد من مراجعة مستقلة.',
+ EXECUTION_INTEGRATION_NOT_CONFIGURED:'سُجّلت الموافقة. مسار استئناف طلب Firewall غير مهيأ هنا، والطلب ما زال متوقفًا.',
+ REVIEW_ONLY:'سُجّلت الموافقة على التقييم. هذه المراجعة لا تمنح إذن نشر أو تشغيل.',
 };
 const time=(value:string|null)=>value?new Date(value).toLocaleString('ar-SA',{timeZone:'Asia/Riyadh',dateStyle:'medium',timeStyle:'medium'}):'—';
 function node(tag:string,value:string){const el=document.createElement(tag);el.textContent=value;return el;}
@@ -31,7 +34,8 @@ async function api(path='',body?:object,area:'requests'|'policy'|'delegations'='
  const generation=epoch,session=await getWorkspaceSession(auth),token=await auth.getJWTToken();
  if(generation!==epoch)throw new Error('تغيرت الجلسة؛ حدّث البيانات.');
  if(session.error||!session.data?.user||!token)throw new Error('يلزم تسجيل الدخول عبر Kernel. تحقق من إعداد الأصل الموثوق.');
- const query=new URLSearchParams({view,status:filter,page:String(page)});if(workspace.value)query.set('workspace',workspace.value);
+ const query=new URLSearchParams({view,status:filter,page:String(page)});const selected=workspace.value||selectedWorkspace();if(selected)query.set('workspace',selected);
+ if(requestRef&&area==='requests'&&!path&&!body)query.set('request',requestRef);
  const route=area==='policy'?'policy/':area==='delegations'?`delegations/${path}`:`requests/${path}`;
  const response=await appFetch(auth,`/app/api/human-gate/${route}?${query}`,{method:body?'POST':'GET',cache:'no-store',signal:active?.signal,headers:{Authorization:`Bearer ${token}`,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})});
  const data=await response.json();
@@ -83,6 +87,7 @@ async function load(){
  workspace.replaceChildren(...data.memberships.map((m:any)=>{const o=document.createElement('option');o.value=m.tenant_id;o.textContent=m.name;o.selected=m.tenant_id===data.tenant.tenant_id;return o;}));
  get('[data-role]').textContent=`الدور الحالي: ${data.tenant.role} · اسم المساحة: ${data.tenant.name}`;
  get('[data-page]').textContent=`الصفحة ${page}`;get('[data-empty]').hidden=data.requests.length>0;
+ get('[data-empty]').textContent=requestRef?'طلب المراجعة غير متاح في هذه المساحة لحسابك.':'لا توجد طلبات في هذا العرض.';
  get('[data-review-notice]').hidden=view!=='review'||canReview;
  get('[data-refreshed]').textContent=`آخر حالة محفوظة من الخادم: ${time(data.serverTime)} بتوقيت الرياض. تُحدّث صلاحية الأزرار تلقائيًا عند أقرب مهلة؛ الخادم يعيد التحقق عند كل إجراء.`;
  get('[data-policy-summary]').textContent=policy?`${policy.enabled?'مفعّلة':'متوقفة'} · مهلة الطلب ${policy.pending_minutes} دقيقة · صلاحية الموافقة ${policy.approval_minutes} دقيقة دون تمديد مهلة الطلب · مستوى المراجعة ${levelLabels[policy.review_level]||policy.review_level||'مدير'} · ${policy.separation_of_duties===false?'فصل المهام غير مفعّل (يظل إلزاميًا لتغيير الاسم)':'فصل المهام مفعّل'} · التفويض ${policy.delegation_enabled?'مفعّل':'غير مفعّل'} · النسخة ${policy.version}`:'لا سياسة محفوظة؛ يلزم أن يحدد المالك أو المسؤول المهل ويفعّلها أولًا.';
@@ -99,13 +104,13 @@ async function load(){
  for(const request of data.requests){
   const card=document.createElement('article');card.className='hg-request';card.append(node('h3',request.title));const state=node('p',labels[request.status]||request.status);state.className='hg-state';state.dataset.state=request.status;card.append(state);
   const rename=request.operation_type==='KERNEL_WORKSPACE_RENAME';
-  const fields:Record<string,string>={'مرجع الطلب':request.id,'العملية':rename?'تغيير اسم مساحة العمل في Kernel':'ملاحظة داخلية تجريبية','المورد':request.provider_ref||'غير محدد','مرجع الهدف':request.subject_ref,'الوصف':request.description,'سبب الإحالة':request.reason,'مرجع مقدم الطلب':request.requester_id,'وقت الإنشاء':time(request.created_at),'موعد انتهاء الصلاحية':time(request.expires_at),'نسخة السياسة':request.policy_version,'إصدار الربط':request.binding_version||'غير محدد','بصمة العملية':request.payload_digest||'طلب قديم دون بصمة'};
+  const fields:Record<string,string>={'مرجع الطلب':request.id,'العملية':operationLabels[request.operation_type]||request.operation_type,'المورد':request.provider_ref||'غير محدد','مرجع الهدف':request.subject_ref,'الوصف':request.description,'سبب الإحالة':request.reason,'مرجع مقدم الطلب':request.requester_id,'وقت الإنشاء':time(request.created_at),'موعد انتهاء الصلاحية':time(request.expires_at),'نسخة السياسة':request.policy_version,'إصدار الربط':request.binding_version||'غير محدد','بصمة العملية':request.payload_digest||'طلب قديم دون بصمة'};
   if(request.status==='APPROVED'&&request.approval_expires_at)fields['صلاحية الموافقة حتى']=time(request.approval_expires_at);
   if(rename){fields['الاسم عند إنشاء الطلب']=request.payload.expected_name;fields['نسخة المساحة المطلوبة']=request.payload.expected_version;fields['الاسم المطلوب تنفيذه']=request.payload.new_name;}
   if(request.terminal_reason)fields['سبب الإيقاف']=reasons[request.terminal_reason]||request.terminal_reason;
   if(request.decision){fields['القرار']=request.decision==='APPROVE'?'موافقة':'رفض';fields['مستوى سلطة القرار']=request.decision_level?levelLabels[request.decision_level]||request.decision_level:'غير محدد';fields['مرجع القرار']=request.decision_id;fields['مرجع المراجع']=request.reviewer_id;fields['سبب القرار']=request.decision_reason;fields['وقت القرار']=time(request.decided_at);}
   if(request.status==='CANCELLED'){fields['سبب الإلغاء']=request.cancel_reason;fields['ملغى بواسطة']=request.cancelled_by;fields['وقت الإلغاء']=time(request.cancelled_at);}
-  if(request.grant){fields['إذن التنفيذ']=`${request.grant.status==='ACTIVE'?'نشط':request.grant.status==='CONSUMED'?'مستهلك':request.grant.status} · ينتهي ${time(request.grant.expires_at)}`;if(request.grant.consumed_at)fields['وقت استهلاك الإذن']=time(request.grant.consumed_at);}else if(request.status==='PENDING'){fields['إذن التنفيذ']='لم يصدر بعد؛ يلزم قرار موافقة.';}
+  if(request.grant){fields['إذن التنفيذ']=`${request.grant.status==='ACTIVE'?'نشط':request.grant.status==='CONSUMED'?'مستهلك':request.grant.status} · ينتهي ${time(request.grant.expires_at)}`;if(request.grant.consumed_at)fields['وقت استهلاك الإذن']=time(request.grant.consumed_at);}else if(request.status==='PENDING'&&request.operation_type!=='RISK_ASSESSMENT_REVIEW'){fields['إذن التنفيذ']='لم يصدر بعد؛ يلزم قرار موافقة.';}
   if(request.status==='EXECUTED'){fields['الأثر الفعلي']=rename?`تغيّر اسم المساحة من «${request.payload.expected_name}» إلى «${request.payload.new_name}» داخل Kernel.`:'اكتمل تسجيل الملاحظة التجريبية فقط؛ لا أثر على أنظمة خارجية.';fields['وقت التنفيذ']=time(request.completed_at);fields['المنفذ']=request.executed_by;fields['نتيجة الخادم']=JSON.stringify(request.execution_result);}
   const dl=document.createElement('dl');for(const [label,value]of Object.entries(fields)){const dd=node('dd',value);if(['مرجع الطلب','مرجع الهدف','مرجع مقدم الطلب','نسخة السياسة','إصدار الربط','بصمة العملية','مرجع القرار','مرجع المراجع','المنفذ'].includes(label))dd.dir='ltr';dl.append(node('dt',label),dd);}card.append(dl);
   if(['PENDING','APPROVED'].includes(request.status)&&!request.bindingValid)card.append(node('p','تغيرت صلاحية العملية أو الهدف أو السياسة. الإجراء غير متاح؛ أنشئ طلبًا جديدًا.'));
@@ -135,12 +140,17 @@ function scheduleRefresh(requests:any[],serverTime:string){
  },Math.max(1000,Math.min(...waits)+250));
 }
 get('[data-reload]').addEventListener('click',()=>void run(load));
-workspace.addEventListener('change',()=>{page=1;get('[data-requests]').replaceChildren();void run(load);});
-root.querySelectorAll<HTMLButtonElement>('[data-view]').forEach(button=>button.addEventListener('click',()=>{view=button.dataset.view!;filter='';get<HTMLSelectElement>('[data-filter]').value='';page=1;void run(load);}));
+function clearRequestRef(){
+ if(!requestRef)return;
+ requestRef=null;
+ const url=new URL(location.href);url.searchParams.delete('request');history.replaceState(history.state,'',url);
+}
+workspace.addEventListener('change',()=>{clearRequestRef();page=1;get('[data-requests]').replaceChildren();void run(load);});
+root.querySelectorAll<HTMLButtonElement>('[data-view]').forEach(button=>button.addEventListener('click',()=>{clearRequestRef();view=button.dataset.view!;filter='';get<HTMLSelectElement>('[data-filter]').value='';page=1;void run(load);}));
 get<HTMLSelectElement>('[data-filter]').addEventListener('change',event=>{filter=(event.target as HTMLSelectElement).value;page=1;void run(load);});
 get<HTMLSelectElement>('[name=operation_type]').addEventListener('change',scopeFields);
 get('[data-prev]').addEventListener('click',()=>{page--;void run(load);});get('[data-next]').addEventListener('click',()=>{page++;void run(load);});
-get('form[data-create]').addEventListener('submit',event=>{event.preventDefault();const form=event.currentTarget as HTMLFormElement,fields=new FormData(form);const body={...Object.fromEntries(fields.entries()),synthetic_confirmed:fields.has('synthetic_confirmed')};if(fields.get('operation_type')==='INTERNAL_DEMO_NOTE')delete (body as any).new_name;void run(async()=>{await api('',body);form.reset();view='mine';filter='';page=1;get<HTMLSelectElement>('[data-filter]').value='';await load();},'حُفظ الطلب للمراجعة. لم تُنفذ العملية.');});
+get('form[data-create]').addEventListener('submit',event=>{event.preventDefault();const form=event.currentTarget as HTMLFormElement,fields=new FormData(form);const body={...Object.fromEntries(fields.entries()),synthetic_confirmed:fields.has('synthetic_confirmed')};if(fields.get('operation_type')==='INTERNAL_DEMO_NOTE')delete (body as any).new_name;void run(async()=>{await api('',body);form.reset();clearRequestRef();view='mine';filter='';page=1;get<HTMLSelectElement>('[data-filter]').value='';await load();},'حُفظ الطلب للمراجعة. لم تُنفذ العملية.');});
 get('form[data-policy]').addEventListener('submit',event=>{event.preventDefault();const fields=new FormData(event.currentTarget as HTMLFormElement),body={version:policy?.version??null,pending_minutes:Number(fields.get('pending_minutes')),approval_minutes:Number(fields.get('approval_minutes')),enabled:fields.has('enabled'),review_level:fields.get('review_level'),separation_of_duties:fields.has('separation_of_duties'),delegation_enabled:fields.has('delegation_enabled')};void run(async()=>{await api('',body,'policy');await load();},'حُفظت السياسة وأُبطلت الطلبات والموافقات وأذونات التنفيذ السابقة من الخادم.');});
 get('form[data-delegate]').addEventListener('submit',event=>{event.preventDefault();const form=event.currentTarget as HTMLFormElement,fields=new FormData(form),body={delegatee_id:String(fields.get('delegatee_id')||''),operation_type:String(fields.get('operation_type')||''),level:String(fields.get('level')||''),minutes:Number(fields.get('minutes')),reason:String(fields.get('reason')||'')};void run(async()=>{await api('',body,'delegations');form.reset();await load();},'حُفظ التفويض المؤقت من الخادم ضمن العملية والمستوى والمدة المحددة.');});
 function end(){epoch++;active?.abort();if(refreshTimer)clearTimeout(refreshTimer);refreshTimer=null;clear();}

@@ -27,3 +27,9 @@
 4. بعد التطبيق المصرّح به، من شبكتين مستقلتين مثل اتصال ثابت وبيانات جوال، استخدم GET وسجّل أول استجابة وكل Location ووجهة HTTPS النهائية مع التحقق من الشهادة. اختبر الجدول أعلاه على الاسمين، وافحص أن الوجهة النهائية هي النطاق الأساسي وفق إعداد Render المؤكد وأن المسار محفوظ. تحقّق من نص الهيرو وعينة الورشة وعلامات المحطات الخمس، وفسّر robots كنص وملفي الخريطة كـXML مع روابط النطاق الأساسي، وارفض صفحات Cloudflare أو صفحات الخطأ ولو أعادت 200. لم يُطبّق تغيير DNS، لذلك لم يُجرَ تحقق ما بعد الإصلاح من الشبكتين.
 
 [وثائق Render لإعداد Cloudflare](https://render.com/docs/configure-cloudflare-dns) · [تشخيص Cloudflare Error 1000](https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1000/)
+
+## نتيجة الإصلاح في 24 نوفمبر 2026
+
+- Hostinger أكد أن الدومين نشط ومفوّض إلى Cloudflare. قراءة حساب Cloudflare أثبتت أن السجلات الثمانية `A` و`AAAA` للاسمين كانت تستخدم عناوين حافة Cloudflare نفسها مع `Proxied`.
+- بعد التفويض، استُبدلت السجلات الثمانية دفعة واحدة بسجلَي `CNAME` للاسمين `brightai.live` و`www.brightai.live` إلى `brightai-4x39.onrender.com` بوضع `DNS only` وTTL ‏300 ثانية. تطابقت الإجابات من Google Public DNS وCloudflare DNS مع عناوين Render.
+- لوحة Render عرضت الاسمين `Verified` وتحويل `www` للنطاق الأساسي، وحالة الشهادة فيها `Unknown` وقت القراءة. تحقق TLS العام نجح للاسمين على عنوانَي Render. أعادت `/` و`/services/` و`/sitemap-index.xml` الرمز `200` على النطاق الأساسي، وحوّل `www` إلى المسارات نفسها على النطاق الأساسي. اختبار الاستجابة أُجري من شبكة واحدة.

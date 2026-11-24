@@ -40,6 +40,8 @@ test('Chat policy, durable metadata, refusal and conservative cancellation on re
     assert.equal(allowed.error, undefined);
     assert.doesNotMatch(allowed.outbound[0].content, /DEMO-ID/);
     assert.equal((await db.query('SELECT decision FROM aigas_kernel_policy_decisions WHERE request_id=$1', [requestId])).rows[0].decision, 'ALLOW');
+    assert.equal((await db.query('SELECT count(*)::int AS n FROM aigas_ld_events WHERE tenant_id=$1',[tenant])).rows[0].n,0);
+    await grantProduct(db,tenant,'ledger');
     await db.query('UPDATE aigas_policies SET current_version=0 WHERE id=$1', [policyId]);
     const kernelDenied = await authorize(user, randomUUID(), [{ role: 'user', content: 'SYNTHETIC safe' }]);
     assert.equal(kernelDenied.error.code, 'CHAT_POLICY_DENIED');
@@ -49,6 +51,12 @@ test('Chat policy, durable metadata, refusal and conservative cancellation on re
     assert.equal(denied.error.code, 'CHAT_POLICY_DENIED');
     assert.equal(denied.outbound, undefined);
     assert.equal((await db.query("SELECT 1 FROM aigas_audit_events WHERE correlation_id=$1 AND action='secure_chat.policy.denied'", [deniedId])).rowCount, 1);
+    const ledger = (await db.query(`SELECT l.metadata_json
+      FROM aigas_ld_events l JOIN aigas_audit_events a ON a.id::text=l.metadata_json->>'audit_ref'
+      WHERE a.correlation_id=$1`,[deniedId])).rows;
+    assert.equal(ledger.length,1);
+    assert.deepEqual(Object.keys(ledger[0].metadata_json).sort(),['action','audit_ref','synthetic']);
+    assert.equal(ledger[0].metadata_json.action,'kernel.secure_chat.policy.denied');
     const sensitive = await authorize(user, randomUUID(), [{ role: 'user', content: 'password: synthetic-secret-value' }]);
     assert.equal(sensitive.error.code, 'SENSITIVE_CONTENT_BLOCKED');
     await assert.rejects(authorize(outsider, randomUUID(), [{ role: 'user', content: 'SYNTHETIC safe' }]), { status: 403 });
@@ -56,8 +64,8 @@ test('Chat policy, durable metadata, refusal and conservative cancellation on re
     process.env.AIGAS_SC_LIMITS_APPROVAL_REF = 'OWNER_2026_11_11_5_REQUESTS_30000_TOKENS_DAY_48H';
     process.env.AIGAS_SC_TENANT_REQUESTS_PER_DAY = '5';
     process.env.AIGAS_SC_TENANT_TOKENS_PER_DAY = '30000';
-    const url = new URL(connectionString); url.username = 'aigas_runtime';
-    process.env.DATABASE_URL = url.href;
+    process.env.DATABASE_URL = connectionString;
+    process.env.AIGAS_DB_RUNTIME_ROLE = 'aigas_runtime';
     const cancellationId = randomUUID();
     await reserve(user, tenant, cancellationId, model);
     await cancel(user, tenant, cancellationId);

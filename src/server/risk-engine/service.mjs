@@ -1,4 +1,7 @@
 import { recordProductEvent } from '../ledger/writer.mjs';
+import { lockHumanGate } from '../human-gate/integration.mjs';
+import { riskReviewOperation } from '../human-gate/core.mjs';
+import { requestAssessmentReview } from './review.mjs';
 import { requireProductAccess } from '../kernel/access.mjs';
 import { randomUUID } from 'node:crypto';
 import { transaction } from '../kernel/db.mjs';
@@ -49,6 +52,8 @@ export function createRiskEngineService(transact=transaction) {
    const scope=await tenantGuard(identity,requested,db);
    if(!scope.tenant)throw new KernelError(403,'NO_WORKSPACE','أنشئ مساحة عمل من Kernel أولًا.');
    const tenantId=scope.tenant.tenant_id;
+   // These mutations can retire or supersede the review target.
+   if(['update','assess','archive'].includes(operation))await lockHumanGate(db,tenantId);
    await requireProductAccess(db,identity,tenantId,'risk-engine',operation);
    const member=(await db.query('SELECT role FROM public.aigas_lock_member($1,$2)',[tenantId,identity.userId])).rows[0];
    requireRole(member,['OWNER','ADMIN','MEMBER']);
@@ -148,7 +153,16 @@ export function createRiskEngineService(transact=transaction) {
     return {asset,treatments:rows.slice(0,25),latestTreatment,latestAssessment,page,hasMore:rows.length>25,canWrite,assessment_status:currentAssessmentStatus,reviewRequired:currentTreatmentReview,record_state:currentRecordState,acceptance_review_due:acceptanceReviewDue,canAcceptHigh:member.role==='OWNER'&&currentAssessmentStatus==='ASSESSED'&&latestAssessment.evaluator_id!==identity.userId,acceptance_policy:acceptancePolicy,acceptance_requirements:acceptancePreview.reasons,acceptance_scope:acceptanceScope,method:METHOD};
    }
    if(operation==='history'){
-    const rows=(await db.query('SELECT * FROM public.aigas_re_assessments WHERE tenant_id=$1 AND asset_id=$2 ORDER BY created_at DESC,id DESC LIMIT 26 OFFSET $3',[tenantId,id,(page-1)*25])).rows;
+    const rows=(await db.query(`SELECT s.*,CASE WHEN r.id IS NOT NULL THEN jsonb_build_object(
+      'id',r.id,'status',r.status,'current',s.id=$4 AND s.asset_version=$5 AND $6='ACTIVE'
+      AND (r.status NOT IN ('PENDING','APPROVED') OR (p.enabled AND to_jsonb(p)->>'risk_assessment_review_enabled'='true'
+       AND p.version::text=r.policy_version AND r.expires_at>clock_timestamp()))) END AS human_review
+      FROM public.aigas_re_assessments s
+      LEFT JOIN public.aigas_hg_requests r ON r.tenant_id=s.tenant_id AND r.subject_ref=s.id
+       AND r.operation_type=$7 AND r.requester_id=$8
+      LEFT JOIN public.aigas_hg_policies p ON p.tenant_id=r.tenant_id
+      WHERE s.tenant_id=$1 AND s.asset_id=$2 ORDER BY s.created_at DESC,s.id DESC LIMIT 26 OFFSET $3`,
+    [tenantId,id,(page-1)*25,latestAssessment?.id??null,asset.version,asset.lifecycle_status,riskReviewOperation,identity.userId])).rows;
     return {asset,assessments:rows.slice(0,25),latestAssessment,page,hasMore:rows.length>25,canWrite,assessment_status:currentAssessmentStatus,treatment_review_required:currentTreatmentReview,record_state:currentRecordState,acceptance_review_due:acceptanceReviewDue,acceptance_policy:acceptancePolicy,method:METHOD};
    }
    if(operation==='revisions'){
@@ -194,11 +208,12 @@ export function createRiskEngineService(transact=transaction) {
     const a=assessmentInput(body);
     if(a.asset_version!==asset.version)throw new KernelError(409,'STALE_ASSET','تغيرت الحالة؛ حدّث بياناتها قبل التقييم.');
     const assetSnapshot=snapshot(asset);
-    const assessment=(await db.query(`INSERT INTO public.aigas_re_assessments(id,tenant_id,asset_id,asset_version,asset_snapshot,likelihood,impact,likelihood_reason,impact_reason,controls_reason,risk_level,method_version,explanation,suggested_control,evaluator_id,method_name,evidence_references,previous_assessment_id)
-      VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18) RETURNING *`,[randomUUID(),tenantId,id,asset.version,assetSnapshot,a.likelihood,a.impact,a.likelihood_reason,a.impact_reason,a.controls_reason,a.risk_level,a.method_version,a.explanation,a.suggested_control,identity.userId,a.method_name,a.evidence_references,latestAssessment?.id||null])).rows[0];
+    const assessment=(await db.query(`INSERT INTO public.aigas_re_assessments(id,tenant_id,asset_id,asset_version,asset_snapshot,likelihood,impact,likelihood_reason,impact_reason,controls_reason,risk_level,method_version,explanation,suggested_control,evaluator_id,method_name,evidence_references,previous_assessment_id,created_at)
+      VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,clock_timestamp()) RETURNING *`,[randomUUID(),tenantId,id,asset.version,assetSnapshot,a.likelihood,a.impact,a.likelihood_reason,a.impact_reason,a.controls_reason,a.risk_level,a.method_version,a.explanation,a.suggested_control,identity.userId,a.method_name,a.evidence_references,latestAssessment?.id||null])).rows[0];
     await audit(`risk_engine.assessment.created:${assessment.id}`,{correlationId:assessment.id,policyVersion:assessment.method_version,idempotencyKey:`risk-engine:assessment:${assessment.id}`});
+    const human_review=await requestAssessmentReview(db,identity,tenantId,assessment);
     await recordProductEvent(db,identity,tenantId,{source:'risk-engine',event_type:'risk_engine.assessment.created',correlation_id:assessment.id,decision_id:assessment.id,policy_version:assessment.method_version,metadata_json:{synthetic:false,asset_ref:id,asset_version:asset.version,assessment_ref:assessment.id,risk_level:assessment.risk_level},idempotency_key:`assessment:${assessment.id}`});
-    return {assessment:{...assessment,requires_human_review:assessment.risk_level==='HIGH',deployment_authorized:false},persisted:true,assessment_status:'ASSESSED',treatment_review_required:!!latestTreatment,method:METHOD};
+    return {assessment:{...assessment,requires_human_review:assessment.risk_level==='HIGH',deployment_authorized:false,human_review},persisted:true,assessment_status:'ASSESSED',treatment_review_required:!!latestTreatment,method:METHOD};
    }
    throw new KernelError(404,'NOT_FOUND','المسار غير موجود.');
   });

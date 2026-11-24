@@ -1,11 +1,12 @@
-import { recordProductEvent } from '../ledger/writer.mjs';
+import { recordKernelAuditEvidence, recordProductEvent } from '../ledger/writer.mjs';
 import { requireProductAccess } from '../kernel/access.mjs';
 import { randomUUID } from 'node:crypto';
 import { transaction } from '../kernel/db.mjs';
 import { audit, tenantGuard } from '../kernel/service.mjs';
 import { KernelError, requireRole, workspaceName } from '../kernel/core.mjs';
 import { HTTP_CONTRACT_VERSION } from '../kernel/contracts.mjs';
-import { statuses, operations, reviewLevels, uuid, exact, text, minutes, binding, bindingVersion, admin, decisionAllowed, cancelAllowed, meetsLevel, roleRank, providerFor, canTransition } from './core.mjs';
+import { statuses, operations, reviewLevels, uuid, exact, text, minutes, binding, bindingVersion, admin, decisionAllowed, cancelAllowed, meetsLevel, roleRank, providerFor, canTransition, requiresIndependence, riskReviewOperation } from './core.mjs';
+import { lockHumanGate } from './integration.mjs';
 
 const failure=(status,code,message)=>({failure:{status,code,message}});
 // Source-level mirror of core.transitions; the database guard remains the
@@ -31,17 +32,18 @@ export function createHumanGateService(transact=transaction) {
   exact(body,bodyKeys[operation]);
   if((requestsWithId.has(operation)||operation==='revoke-delegation')&&!uuid(id)) throw new KernelError(400,'INVALID_ID','معرّف العملية غير صالح.');
   const status=params.get('status')||'',view=params.get('view')||'mine',page=Number(params.get('page')||1);
-  if((status&&!statuses.includes(status))||!['mine','review','completed'].includes(view)||!Number.isInteger(page)||page<1||page>100) throw new KernelError(400,'INVALID_FILTER','التصفية أو رقم الصفحة غير صالح.');
+  const requestRef=operation==='list'?params.get('request'):null;
+  if((requestRef!==null&&!uuid(requestRef))||(status&&!statuses.includes(status))||!['mine','review','completed'].includes(view)||!Number.isInteger(page)||page<1||page>100) throw new KernelError(400,'INVALID_FILTER','التصفية أو رقم الصفحة غير صالح.');
   // Return terminal errors after COMMIT so expiry is persisted with its audit.
   const result=await transact(async db=>{
    const scope=await tenantGuard(identity,requested,db);
    if(!scope.tenant) throw new KernelError(403,'NO_WORKSPACE','أنشئ مساحة عمل من Kernel أولًا.');
    const tenantId=scope.tenant.tenant_id;
+   // One order for policy, delegation, request transitions and lazy expiry within this tenant.
+   await lockHumanGate(db, tenantId);
    const member=await requireProductAccess(db,identity,tenantId,'human-gate',operation);
    const caller=(await db.query('SELECT id FROM neon_auth."user" WHERE id=$1 AND banned IS NOT TRUE',[identity.userId])).rows[0];
    if(!caller) throw new KernelError(401,'UNAUTHORIZED','انتهت صلاحية الحساب.');
-   // One order for policy, delegation, request transitions and lazy expiry within this tenant.
-   await db.query("SELECT pg_advisory_xact_lock(hashtextextended('human-gate:' || $1,0))",[tenantId]);
    const policy=(await db.query('SELECT * FROM public.aigas_hg_policies WHERE tenant_id=$1 FOR SHARE',[tenantId])).rows[0]||null;
    const record=async(action,request,event,reason=null,auditAction=null)=>{
     const eventAction=auditAction??(request?`human_gate.${action}:${request.id}`:'kernel.human_gate.policy.updated');
@@ -81,13 +83,8 @@ export function createHumanGateService(transact=transaction) {
      // in the allowlisted metadata, so a delegation event cannot be rejected by
      // the evidence constraint after the real change was already made.
      const kernelEventAction=/^(workspace\.created|kernel\.[a-z_.-]+)$/.test(auditAction??'')?auditAction:`kernel.human_gate.${action}`;
-     await recordProductEvent(db,identity,tenantId,{
-      source:'kernel',event_type:'kernel.audit.recorded',
-      correlation_id:correlationId,
-      decision_id:auditId,
-      policy_version:request?.policy_version||policy?.version||'human-gate-policy-v3',
-      metadata_json:{synthetic:false,audit_ref:auditId,action:kernelEventAction},
-      idempotency_key:`audit:${auditId}`,
+     await recordKernelAuditEvidence(db,identity,tenantId,{
+      auditId,correlationId,policyVersion:request?.policy_version||policy?.version||'human-gate-policy-v3',action:kernelEventAction,
      });
     }
     await assertAccessFresh(db,tenantId);
@@ -143,7 +140,7 @@ export function createHumanGateService(transact=transaction) {
    if(operation==='create'){
     if(!policy?.enabled) throw new KernelError(409,'POLICY_REQUIRED','يلزم أن يحدد المالك أو المسؤول مهلة سياسة مفعّلة أولًا.');
     if(body.synthetic_confirmed!==true) throw new KernelError(400,'SYNTHETIC_REQUIRED','أكد استخدام مساحة تجريبية ونصوص غير حساسة، دون بيانات عميل حقيقية.');
-    if(body.operation_type==='FIREWALL_ESCALATION_REVIEW'||!operations.includes(body.operation_type)) throw new KernelError(400,'INVALID_SCOPE','اختر عملية متاحة.');
+    if(!['KERNEL_WORKSPACE_RENAME','INTERNAL_DEMO_NOTE'].includes(body.operation_type)) throw new KernelError(400,'INVALID_SCOPE','اختر عملية متاحة.');
     const requestId=randomUUID(),title=text(body.title,120),description=text(body.description),reason=text(body.reason);
     let subjectRef=requestId,payload={note:description};
     if(body.operation_type==='KERNEL_WORKSPACE_RENAME'){
@@ -163,7 +160,7 @@ export function createHumanGateService(transact=transaction) {
     requireRole(member,['OWNER','ADMIN']);
     if(!policy?.enabled) throw new KernelError(409,'POLICY_REQUIRED','يلزم تفعيل سياسة المراجعة قبل التفويض.');
     if(!policy.delegation_enabled) throw new KernelError(409,'DELEGATION_DISABLED','التفويض غير مفعّل في سياسة المؤسسة الحالية.');
-    if(!uuid(body.delegatee_id)||!operations.includes(body.operation_type)||!reviewLevels.includes(body.level)) throw new KernelError(400,'INVALID_DELEGATION','حدد عضوًا وعملية ومستوى تفويض صالحًا.');
+    if(!uuid(body.delegatee_id)||!operations.includes(body.operation_type)||body.operation_type===riskReviewOperation||!reviewLevels.includes(body.level)) throw new KernelError(400,'INVALID_DELEGATION','حدد عضوًا وعملية ومستوى تفويض صالحًا.');
     if(body.delegatee_id===identity.userId) throw new KernelError(400,'INVALID_DELEGATION','لا يمكن تفويض نفسك.');
     if(roleRank[body.level]>roleRank[member.role]) throw new KernelError(403,'DELEGATION_EXCEEDS_AUTHORITY','لا يمكن منح مستوى أعلى من صلاحيتك الحالية.');
     const delegatee=(await db.query('SELECT role,name FROM public.aigas_lock_member($1,$2)',[tenantId,body.delegatee_id])).rows[0];
@@ -211,6 +208,16 @@ export function createHumanGateService(transact=transaction) {
       AND d.request_fingerprint=$3 AND d.rule_id=$4 AND d.rule_version=$5`,[tenantId,request.subject_ref,request.payload.request_fingerprint,request.payload.rule_id,request.payload.rule_version])).rows[0];
      if(!current) return false;
     }
+    if(request.operation_type===riskReviewOperation){
+     if(!policy.risk_assessment_review_enabled) return false;
+     try { await requireProductAccess(db,identity,tenantId,'risk-engine','history'); }
+     catch (error) {
+      if(error instanceof KernelError&&error.code==='PRODUCT_NOT_ENABLED') return false;
+      throw error;
+     }
+     const {current}=(await db.query('SELECT public.aigas_re_review_current($1,$2,$3,$4) AS current',[tenantId,request.subject_ref,request.requester_id,request.payload])).rows[0];
+     if(!current) return false;
+    }
     if(request.operation_type==='KERNEL_WORKSPACE_RENAME'){
      // A delegated MEMBER can read the target but cannot acquire an UPDATE-policy
      // row lock. Execution rechecks and locks the target before changing it.
@@ -227,12 +234,12 @@ export function createHumanGateService(transact=transaction) {
       FROM public.aigas_hg_requests r
       LEFT JOIN public.aigas_hg_decisions d ON d.tenant_id=r.tenant_id AND d.request_id=r.id
       LEFT JOIN public.aigas_hg_grants g ON g.tenant_id=r.tenant_id AND g.request_id=r.id
-      WHERE r.tenant_id=$1 AND ($2='' OR r.status=$2)
+      WHERE r.tenant_id=$1 AND ($2='' OR r.status=$2) AND ($8::uuid IS NULL OR r.id=$8)
        AND (($3='mine' AND r.requester_id=$4)
         OR ($3='review' AND $5::boolean AND r.status='PENDING')
         OR ($3='review' AND $6::text[] <> '{}'::text[] AND r.operation_type=ANY($6::text[]))
         OR ($3='completed' AND r.status IN ('REJECTED','EXPIRED','CANCELLED','EXECUTED') AND (r.requester_id=$4 OR $5::boolean OR d.reviewer_id=$4)))
-      ORDER BY r.created_at DESC,r.id DESC LIMIT 26 OFFSET $7`,[tenantId,status,view,identity.userId,admin(member),reviewScopes,(page-1)*25])).rows;
+      ORDER BY r.created_at DESC,r.id DESC LIMIT 26 OFFSET $7`,[tenantId,status,view,identity.userId,admin(member),reviewScopes,(page-1)*25,requestRef])).rows;
     const serverTime=(await db.query('SELECT clock_timestamp() AS time')).rows[0].time;
     const requests=[];
     for(const request of rows.slice(0,25)){
@@ -243,16 +250,16 @@ export function createHumanGateService(transact=transaction) {
      const grantActive=request.grant_status==='ACTIVE'&&request.grant_expires_at&&new Date(request.grant_expires_at).getTime()>new Date(serverTime).getTime();
      const history=(await db.query('SELECT event_type,reason_code,actor_user_id,created_at,audit_id FROM public.aigas_hg_events WHERE tenant_id=$1 AND request_id=$2 ORDER BY created_at,id',[tenantId,request.id])).rows;
      const canDecide=!!valid&&decisionAllowed(request,identity.userId,policy,authority);
-     const canExecute=request.operation_type!=='FIREWALL_ESCALATION_REVIEW'&&!!valid&&reviewerValid&&request.requester_id===identity.userId&&request.status==='APPROVED'&&grantActive;
+     const canExecute=!['FIREWALL_ESCALATION_REVIEW',riskReviewOperation].includes(request.operation_type)&&!!valid&&reviewerValid&&request.requester_id===identity.userId&&request.status==='APPROVED'&&grantActive;
      // Codes only; the UI owns the Arabic wording. They explain a disabled control
      // instead of implying that the viewer has authority the server did not grant.
      const reviewBlock=request.status!=='PENDING'?null
       :!valid?'BINDING_INVALID'
-      :request.requester_id===identity.userId&&((policy?.separation_of_duties!==false)||['KERNEL_WORKSPACE_RENAME','FIREWALL_ESCALATION_REVIEW'].includes(request.operation_type))?'SELF_REVIEW'
+      :request.requester_id===identity.userId&&requiresIndependence(request.operation_type,policy)?'SELF_REVIEW'
       :!authority.allowed?'NO_AUTHORITY'
       :null;
      const executeBlock=request.status==='APPROVED'&&request.requester_id===identity.userId&&valid&&!canExecute
-      ?(!reviewerValid?'REVIEWER_LOST':!grantActive?'PERMIT_INACTIVE':null)
+      ?(request.operation_type===riskReviewOperation?'REVIEW_ONLY':!reviewerValid?'REVIEWER_LOST':!grantActive?'PERMIT_INACTIVE':request.operation_type==='FIREWALL_ESCALATION_REVIEW'?'EXECUTION_INTEGRATION_NOT_CONFIGURED':null)
       :null;
      requests.push({...request,history,
       bindingValid:!!valid,
@@ -317,14 +324,14 @@ export function createHumanGateService(transact=transaction) {
     const newStatus=body.decision==='APPROVE'?'APPROVED':'REJECTED';
     assertTransition(request.status,newStatus);
     const authority=await reviewAuthority(request);
-    if(request.requester_id===identity.userId&&((policy?.separation_of_duties!==false)||['KERNEL_WORKSPACE_RENAME','FIREWALL_ESCALATION_REVIEW'].includes(request.operation_type))) throw new KernelError(403,'SELF_REVIEW_DENIED','فصل المهام يمنع صاحب الطلب من اعتماده أو رفضه.');
+    if(request.requester_id===identity.userId&&requiresIndependence(request.operation_type,policy)) throw new KernelError(403,'SELF_REVIEW_DENIED','فصل المهام يمنع صاحب الطلب من اعتماده أو رفضه.');
     if(!decisionAllowed(request,identity.userId,policy,authority)) throw new KernelError(403,'REVIEW_NOT_AUTHORIZED','لا تملك صلاحية مراجعة هذه العملية ضمن المستوى والتفويض الحاليين.');
     const reason=text(body.reason);
     const decision=(await db.query('INSERT INTO public.aigas_hg_decisions(id,tenant_id,request_id,requester_id,reviewer_id,decision,reason,payload_digest,policy_version,delegation_id,authority_level) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *',[randomUUID(),tenantId,id,request.requester_id,identity.userId,body.decision,reason,request.payload_digest,request.policy_version,authority.delegation_id,authority.level])).rows[0];
     const updated=(await db.query("UPDATE public.aigas_hg_requests SET status=$3,expires_at=CASE WHEN $3='APPROVED' THEN LEAST(expires_at,clock_timestamp()+make_interval(mins=>$4)) ELSE expires_at END WHERE tenant_id=$1 AND id=$2 AND status='PENDING' AND expires_at>clock_timestamp() RETURNING *",[tenantId,id,newStatus,policy.approval_minutes])).rows[0];
     if(!updated) throw new KernelError(410,'REQUEST_EXPIRED','انتهت المهلة قبل حفظ القرار؛ لم يُسجل القرار.');
     let grant=null;
-    if(newStatus==='APPROVED'){
+    if(newStatus==='APPROVED'&&request.operation_type!==riskReviewOperation){
      // The execution permit is bound to the exact task and expires with the approval.
      grant=(await db.query('INSERT INTO public.aigas_hg_grants(id,tenant_id,request_id,requester_id,reviewer_id,operation_type,subject_ref,payload_digest,policy_version,expires_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *',[randomUUID(),tenantId,id,request.requester_id,identity.userId,request.operation_type,request.subject_ref,request.payload_digest,request.policy_version,updated.expires_at])).rows[0];
     }
@@ -333,6 +340,7 @@ export function createHumanGateService(transact=transaction) {
     return {request:updated,decision,grant,binding_version:bindingVersion,approval_expires_at:newStatus==='APPROVED'?updated.expires_at:null,persisted:true};
    }
    if(request.requester_id!==identity.userId) throw new KernelError(403,'FORBIDDEN','التنفيذ متاح لمقدم الطلب فقط.');
+   if(request.operation_type===riskReviewOperation) throw new KernelError(409,'REVIEW_ONLY','مراجعة تقييم المخاطر لا تصدر إذن تنفيذ.');
    if(request.status!=='APPROVED') throw new KernelError(409,'APPROVAL_REQUIRED','يلزم قرار موافقة مستقل وصالح قبل التنفيذ.');
    assertTransition(request.status,'EXECUTED');
    // Lock the permit before any side effect. A consumed or revoked permit cannot authorize a second run.
@@ -345,7 +353,7 @@ export function createHumanGateService(transact=transaction) {
    if(new Date(permit.expires_at).getTime()>new Date(request.expires_at).getTime()) throw new KernelError(409,'BINDING_INVALID','صلاحية إذن التنفيذ تتجاوز المهمة المعتمدة؛ يلزم اعتماد جديد.');
    const approval=(await db.query("SELECT * FROM public.aigas_hg_decisions WHERE tenant_id=$1 AND request_id=$2 AND decision='APPROVE'",[tenantId,id])).rows[0];
    const selfApproval=approval?.reviewer_id===identity.userId;
-   if(!approval||(selfApproval&&((policy?.separation_of_duties!==false)||['KERNEL_WORKSPACE_RENAME','FIREWALL_ESCALATION_REVIEW'].includes(request.operation_type)))||approval.payload_digest!==request.payload_digest||approval.policy_version!==request.policy_version||permit.payload_digest!==request.payload_digest||permit.policy_version!==request.policy_version||permit.subject_ref!==request.subject_ref||permit.operation_type!==request.operation_type||permit.requester_id!==request.requester_id||permit.reviewer_id!==approval.reviewer_id) throw new KernelError(409,'APPROVAL_REQUIRED','الموافقة أو إذن التنفيذ لا يطابق المهمة الحالية.');
+   if(!approval||(selfApproval&&requiresIndependence(request.operation_type,policy))||approval.payload_digest!==request.payload_digest||approval.policy_version!==request.policy_version||permit.payload_digest!==request.payload_digest||permit.policy_version!==request.policy_version||permit.subject_ref!==request.subject_ref||permit.operation_type!==request.operation_type||permit.requester_id!==request.requester_id||permit.reviewer_id!==approval.reviewer_id) throw new KernelError(409,'APPROVAL_REQUIRED','الموافقة أو إذن التنفيذ لا يطابق المهمة الحالية.');
    // Lock both identities and memberships until COMMIT; re-check the reviewer now.
    const principals=[];
    for(const userId of [...new Set([request.requester_id,approval.reviewer_id])].sort()){

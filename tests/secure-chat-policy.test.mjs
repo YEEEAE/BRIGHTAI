@@ -29,6 +29,11 @@ test('provider boundary requires readable policy audit evidence', async () => {
       if (outage) throw new Error('synthetic audit read failure');
       return { rowCount: 1, rows: [{ action: 'secure_chat.policy.allowed', actor_user_id: identity.userId }] };
     }
+    if (sql.startsWith('SELECT role FROM public.aigas_lock_member')) return {rows:[{role:'MEMBER'}]};
+    if (sql.startsWith("SELECT to_regclass('public.aigas_ld_evidence_requirements')")) {
+      return {rows:[{requirements:false,events:false,access:false,grants:false}]};
+    }
+    if (sql === 'SAVEPOINT aig_optional_ledger_event' || sql === 'RELEASE SAVEPOINT aig_optional_ledger_event') return {};
     assert.fail(`Unexpected fixture query: ${sql}`);
   } };
   const fakeProvider = async outbound => {

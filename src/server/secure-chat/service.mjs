@@ -1,6 +1,7 @@
 import { requireProductAccess } from '../kernel/access.mjs';
 import { authenticate } from '../kernel/auth.mjs';
 import { audit, tenantGuard } from '../kernel/service.mjs';
+import { recordKernelAuditEvidence } from '../ledger/writer.mjs';
 import { transaction } from '../kernel/db.mjs';
 import { KernelError, dependencyStatusForError } from '../kernel/core.mjs';
 import { contractHeaders, errorBody, HTTP_CONTRACT_VERSION } from '../kernel/contracts.mjs';
@@ -63,10 +64,13 @@ async function accessContext(request, operation = null) {
 async function auditBlocked(identity, tenantId, action, requestId) {
   await transaction(async db => {
     await requireProductAccess(db, identity, tenantId, 'secure-chat');
-    await audit(db, identity, tenantId, action, {
+    const auditId = await audit(db, identity, tenantId, action, {
       correlationId: requestId,
       policyVersion: INPUT_POLICY.version,
       idempotencyKey: `secure-chat:${requestId}:${action.split('.').pop()}`,
+    });
+    await recordKernelAuditEvidence(db, identity, tenantId, {
+      auditId, correlationId: requestId, policyVersion: INPUT_POLICY.version, action: `kernel.${action}`,
     });
   });
 }

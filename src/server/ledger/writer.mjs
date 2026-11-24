@@ -7,6 +7,18 @@ import { profile, metadata, hashEvent, verifyEvent, sourceTypes, uuid } from './
 
 export const columns = 'event_id,tenant_id,source,event_type,policy_version,metadata_json,created_at,created_by,hash_profile,sequence_no,previous_hash,idempotency_key,integrity_hash';
 
+export function recordKernelAuditEvidence(db, identity, tenantId, { auditId, correlationId, policyVersion, action }) {
+  return recordProductEvent(db, identity, tenantId, {
+    source: 'kernel',
+    event_type: 'kernel.audit.recorded',
+    correlation_id: correlationId,
+    decision_id: auditId,
+    policy_version: policyVersion,
+    metadata_json: { synthetic: false, audit_ref: auditId, action },
+    idempotency_key: `audit:${auditId}`,
+  });
+}
+
 // Internal only. Call within the originating product's transaction after its guard.
 // There is deliberately no HTTP ingestion endpoint accepting source/actor/tenant.
 export async function appendEvent(db, identity, tenantId, input) {

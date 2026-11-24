@@ -1,7 +1,8 @@
 import { randomUUID } from 'node:crypto';
 import { binding } from '../human-gate/core.mjs';
 import { requireProductAccess } from '../kernel/access.mjs';
-import { audit } from '../kernel/service.mjs';
+import { KernelError } from '../kernel/core.mjs';
+import { lockHumanGate, recordIntegratedReviewCreation } from '../human-gate/integration.mjs';
 
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 export const reviewBindingVersion = 'aigas-review-binding-v2';
@@ -31,14 +32,19 @@ export function reviewBound(review, tenantId, context, integration) {
     && review.policy_version === context.policyVersion;
 }
 
-// Called inside the Firewall transaction, after the ESCALATE decision, Kernel audit
-// and any mandatory Ledger evidence. A configured adapter must insert the review
+// Called inside the Firewall transaction after the ESCALATE decision and Kernel
+// audit. A configured adapter inserts the review and its evidence
 // request in the same transaction; a throw rolls the whole decision back (fail-closed).
 export async function requestHumanReview(db, identity, tenantId, context) {
-  await db.query("SELECT pg_advisory_xact_lock(hashtextextended('human-gate:' || $1,0))", [tenantId]);
+  await lockHumanGate(db, tenantId);
   const policy = (await db.query('SELECT * FROM public.aigas_hg_policies WHERE tenant_id=$1 FOR SHARE',[tenantId])).rows[0];
   if (!policy?.enabled || policy.firewall_escalation_enabled !== true) return {requested:false,...reviewIntegrationState(),review:null,binding:null};
-  await requireProductAccess(db, identity, tenantId, 'human-gate', 'create');
+  try {
+    await requireProductAccess(db, identity, tenantId, 'human-gate', 'create');
+  } catch (error) {
+    if (!(error instanceof KernelError) || error.code !== 'PRODUCT_NOT_ENABLED') throw error;
+    return {requested:false,...reviewIntegrationState(),reason:error.code,dependencyStatus:error.dependencyStatus,review:null,binding:null};
+  }
   const integration = {operationType:'FIREWALL_ESCALATION_REVIEW', create: createReview};
   const review = await integration.create(db, identity, tenantId, { ...context, operationType: integration.operationType });
   if (!reviewBound(review, tenantId, context, integration)) throw new Error('REVIEW_BINDING_MISMATCH');
@@ -46,6 +52,7 @@ export async function requestHumanReview(db, identity, tenantId, context) {
     requested: true,
     code: 'HUMAN_GATE_CONFIGURED',
     configured: true,
+    dependencyStatus: 'available',
     operation_type: integration.operationType,
     binding: {
       version: reviewBindingVersion,
@@ -90,7 +97,6 @@ async function createReview(db, identity, tenantId, context) {
   const review=(await db.query(`INSERT INTO public.aigas_hg_requests(id,tenant_id,requester_id,title,description,reason,operation_scope,operation_type,subject_ref,payload,payload_digest,policy_version,provider_ref,expires_at)
     VALUES($1,$2,$3,'Firewall escalation review','Metadata-only policy review','Independent review required',$4,$4,$5,$6,$7,$8,'aigas-kernel',clock_timestamp()+make_interval(mins=>$9)) RETURNING *`,
     [id,tenantId,identity.userId,context.operationType,decision.id,payload,binding(data),policy.version,policy.pending_minutes])).rows[0];
-  const auditId=await audit(db,identity,tenantId,`human_gate.request.created:${id}`);
-  await db.query("INSERT INTO public.aigas_hg_events(id,tenant_id,request_id,requester_id,actor_user_id,event_type,audit_id) VALUES($1,$2,$3,$4,$4,'CREATED',$5)",[randomUUID(),tenantId,id,identity.userId,auditId]);
-  return {...review,policy_version:context.policyVersion,request_ref:context.requestId,request_fingerprint:context.requestFingerprint};
+  await recordIntegratedReviewCreation(db,identity,tenantId,id,policy.version);
+  return {...review,review_policy_version:policy.version,policy_version:context.policyVersion,request_ref:context.requestId,request_fingerprint:context.requestFingerprint};
 }

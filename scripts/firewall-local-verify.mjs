@@ -16,7 +16,7 @@ import assert from 'node:assert/strict';
 import { evaluate } from '../src/server/firewall/core.mjs';
 import { enforceDecision } from '../src/server/firewall/guard.mjs';
 import { decisionFingerprint, policyReference } from '../src/server/firewall/binding.mjs';
-import { createLocalSandboxAdapter } from '../src/server/firewall/local-adapter.mjs';
+import { createLocalSandboxAdapter, LOCAL_SANDBOX_ID } from '../src/server/firewall/local-adapter.mjs';
 
 const tenantId = '11111111-1111-4111-8111-111111111111';
 const actorUserId = '22222222-2222-4222-8222-222222222222';
@@ -38,6 +38,7 @@ const rules = [
   rule('55555555-5555-4555-8555-555555555553', 'REDACT', 'DEMO-ID-1234', 30),
   rule('55555555-5555-4555-8555-555555555554', 'WARN', 'DEMO-WARN', 40),
   rule('55555555-5555-4555-8555-555555555555', 'ALLOW', 'DEMO-PUBLIC', 50),
+  rule('55555555-5555-4555-8555-555555555556', 'ALLOW', `[${LOCAL_SANDBOX_ID}]`, 60),
 ];
 
 function decisionFor(text) {
@@ -49,7 +50,7 @@ function decisionFor(text) {
       decision: { id: decisionId, action: result.action, reason: result.reason, rule_id: result.rule_id, rule_version: result.rule_version },
       tenantId, actorUserId, requestId, policyVersion, requestFingerprint,
       forwardText: ['ALLOW', 'REDACT'].includes(result.action) ? result.output : null,
-      kernelPolicy, escalation: null,
+      kernelPolicy, escalation: null, outputRules: rules,
     },
   };
 }

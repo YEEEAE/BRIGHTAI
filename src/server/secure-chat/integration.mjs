@@ -4,6 +4,7 @@ import { evaluateKernelPolicy } from '../kernel/policies.mjs';
 import { evaluate, MAX_TEXT_LENGTH } from '../firewall/core.mjs';
 import { policyReference } from '../firewall/binding.mjs';
 import { audit } from '../kernel/service.mjs';
+import { recordKernelAuditEvidence } from '../ledger/writer.mjs';
 import { approvedEgress } from './policy.mjs';
 
 // All history (including assistant turns) is untrusted. Preserve roles and apply
@@ -48,7 +49,9 @@ export async function authorizeChatContext(db, identity, tenantId, requestId, mo
   const policyVersion = `sc:${createHash('sha256').update(JSON.stringify([policyReference(kernel), rules.map(rule => [rule.id, rule.version, rule.enabled])])).digest('hex')}`;
   await db.query('INSERT INTO public.aigas_kernel_policy_decisions(id,tenant_id,actor_user_id,product_slug,operation,decision,reason,policy_chain,request_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8::jsonb,$9)',
     [randomUUID(), tenantId, identity.userId, 'secure-chat', 'secure-chat.send', kernel.decision, kernel.reason, JSON.stringify(kernel.policies ?? []), requestId]);
-  await audit(db, identity, tenantId, error ? 'secure_chat.policy.denied' : 'secure_chat.policy.allowed', { correlationId: requestId, policyVersion, idempotencyKey: `secure-chat:${requestId}:policy` });
+  const action = error ? 'secure_chat.policy.denied' : 'secure_chat.policy.allowed';
+  const auditId = await audit(db, identity, tenantId, action, { correlationId: requestId, policyVersion, idempotencyKey: `secure-chat:${requestId}:policy` });
+  await recordKernelAuditEvidence(db, identity, tenantId, { auditId, correlationId: requestId, policyVersion, action: `kernel.${action}` });
   // Return denial so its evidence can commit before the caller throws.
   return { outbound, error, policyVersion };
 }
