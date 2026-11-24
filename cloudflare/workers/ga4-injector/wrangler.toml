@@ -1,0 +1,14 @@
+name = "brightai-ga4-edge"
+main = "index.mjs"
+compatibility_date = "2026-11-24"
+workers_dev = false
+
+# These routes require the matching DNS records to be proxied through Cloudflare.
+# DNS and Worker routing are not changed by this local file.
+[[routes]]
+pattern = "brightai.live/*"
+zone_name = "brightai.live"
+
+[[routes]]
+pattern = "www.brightai.live/*"
+zone_name = "brightai.live"
