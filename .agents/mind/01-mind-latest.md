@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-24 PARTIAL GA4: `G-9LMB4PGTWJ` حي في 64/64 من الخريطة الحالية و`page_view` للرئيسية 204؛ 251 صفحة إضافية بالخريطة القديمة تعيد 200 بلا وسم. `site_click` للروابط والأزرار العامة محليًا فقط؛ build64/unit57/Chromium بمحاكاة Google PASS.
 - 2026-11-24 PARTIAL LOCAL تكامل المنتجات: إحالات Firewall وRisk إلى Human Gate وأدلة Chat في Ledger؛ `0039` مراجعة HIGH مغلقة افتراضيًا؛ fresh 35 / delta 36 وChrome محلي PASS؛ Kernel REQUEST_APPROVAL العام واستئناف المزود غير متحققين؛ `Audit/days-12-21-product-contracts-2026-11-24/REPORT.md`.
 - 2026-11-18 VERIFIED LOCAL Groq: دفتر الميزانية يرفض البنية الفاسدة؛ سقفا UTC وانقطاع الملف PASS عبر عمليات مستقلة بمزوّد وهمي؛ sandbox POST مغلق حتى مع العلم القديم؛ سجلات الموافقة فارغة؛ account/region/shared host NOT VERIFIED؛ `Audit/groq-governance-2026-11-18/REPORT.md`.
 - 2026-11-17 VERIFIED Windsor MCP: مضاف في `opencode.json` (مشروع، متتبَّع git) بمرجع سر خارجي `{file:~/.config/opencode/secrets/windsor-api-key}` chmod600؛ initialize200/v4.1.4؛ connectors: `googleanalytics4`(551941072 BRIGHT AI) و`searchconsole`(brightai.live) فقط بلامهام كتابة؛ يحتاج إعادة تشغيل العميل بعد أي تعديل.

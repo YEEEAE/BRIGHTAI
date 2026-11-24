@@ -9,8 +9,9 @@ if (!window.__brightaiMeasurementInstalled) {
     // Do not replay pending interactions after an emergency stop.
     if (!loaded) window.dataLayer?.splice(0);
   };
+  const enabled = () => ready && !stopped && window['ga-disable-' + id] !== true;
   const track = createPublicMeasurement({
-    enabled: () => ready && !stopped && window['ga-disable-' + id] !== true,
+    enabled,
     send: (name, properties) => window.gtag?.('event', name, properties),
   });
   window.addEventListener('brightai:measurement-stop', stop);
@@ -41,6 +42,43 @@ if (!window.__brightaiMeasurementInstalled) {
       // Pause transport on a failed check; normal traffic resumes after recovery.
       ready = false; window['ga-disable-' + id] = true;
     } finally { checking = false; }
+  }
+  if (!/^\/(?:app|auth|api)(?:\/|$)/i.test(window.location.pathname)) {
+    const controlSelector = 'a[href],area[href],button,summary,input[type="button"],input[type="submit"],input[type="reset"],input[type="image"],[role="button"],[role="link"]';
+    const trackClick = event => {
+      if (!event.isTrusted || !enabled()) return;
+      const path = event.composedPath();
+      const control = path.find(element => element.matches?.(controlSelector));
+      if (!control) return;
+      const link = control.matches('a[href],area[href]');
+      if (event.type === 'auxclick' && (event.button !== 1 || !link)) return;
+
+      const region = path.find(element => element.matches?.('header,nav,main,aside,footer'));
+      const parameters = {
+        send_to: id,
+        element_type: link || control.matches('[role="link"]') ? 'link' : control.matches('summary') ? 'disclosure' : 'button',
+        page_section: region?.localName ?? 'other',
+      };
+      if (link) {
+        if (control.hasAttribute('download')) parameters.link_type = 'download';
+        else {
+          parameters.link_type = 'other';
+          try {
+            const destination = new URL(control.getAttribute('href'), document.baseURI);
+            if (destination.protocol === 'mailto:') parameters.link_type = 'email';
+            else if (destination.protocol === 'tel:') parameters.link_type = 'phone';
+            else if (destination.protocol === 'http:' || destination.protocol === 'https:') {
+              parameters.link_type = destination.origin === window.location.origin ? 'internal' : 'external';
+            }
+          } catch {
+            // Keep the click count even when a link has an invalid destination.
+          }
+        }
+      }
+      window.gtag?.('event', 'site_click', parameters);
+    };
+    document.addEventListener('click', trackClick, {capture: true, passive: true});
+    document.addEventListener('auxclick', trackClick, {capture: true, passive: true});
   }
   document.addEventListener('click', e => {
     const link = e.target?.closest?.('a');
