@@ -24,7 +24,7 @@ test('Chat policy, durable metadata, refusal and conservative cancellation on re
     const checksum = createHash('sha256').update(JSON.stringify({ conditions: {}, effect: 'ALLOW', mandatory: false, obligations: [] })).digest('hex');
     await db.query("INSERT INTO aigas_policy_versions(tenant_id,policy_id,version,status,effect,checksum,change_reason,created_by,approved_by,published_at) VALUES($1,$2,1,'PUBLISHED','ALLOW',$3,'Synthetic local fixture',$4,$5,now())", [tenant, policyId, checksum, user.userId, reviewer]);
     for (const [pattern, action] of [['SYNTHETIC', 'ALLOW'], ['DEMO-ID', 'REDACT'], ['DEMO-BLOCK', 'DENY']]) await db.query("INSERT INTO aigas_fw_rules(id,tenant_id,name,match_type,pattern,action,priority,enabled) VALUES($1,$2,$3,'CONTAINS',$4,$5,10,true)", [randomUUID(), tenant, `Synthetic ${action}`, pattern, action]);
-    const model = { id: 'LOCAL_POLICY_FIXTURE_ONLY', providerModel: 'qwen/qwen3.8-27b', endpoint: 'https://api.groq.com/openai/v1/chat/completions', region: 'UNVERIFIED', maxRequestTokens: 4096 };
+    const model = { provider: 'groq', id: 'LOCAL_POLICY_FIXTURE_ONLY', providerModel: 'qwen/qwen3.8-27b', endpoint: 'https://api.groq.com/openai/v1/chat/completions', region: 'UNVERIFIED', maxRequestTokens: 4096 };
     const authorize = async (identity, requestId, messages) => {
       await db.query('BEGIN');
       try {

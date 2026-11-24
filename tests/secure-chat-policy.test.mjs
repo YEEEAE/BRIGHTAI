@@ -4,12 +4,14 @@ import { createHash, randomUUID } from 'node:crypto';
 import { authorizeChatContext, protectContext } from '../src/server/secure-chat/integration.mjs';
 import { providerState, providerConfiguration } from '../src/server/secure-chat/adapter.mjs';
 
+import { syntheticChatModel } from './helpers/secure-chat-model.mjs';
+
 const rule = (action, pattern, id = action) => ({ id, name: 'Synthetic rule', match_type: 'CONTAINS', pattern, action, priority: 10, enabled: true, version: 1 });
 const rules = [rule('ALLOW', 'SYNTHETIC'), rule('REDACT', 'DEMO-ID'), rule('DENY', 'DEMO-BLOCK'), rule('ESCALATE', 'DEMO-REVIEW'), rule('WARN', 'DEMO-WARN')];
 
 test('provider boundary requires readable policy audit evidence', async () => {
   const tenantId = randomUUID(), identity = { userId: randomUUID() }, requestId = randomUUID();
-  const model = { endpoint: 'https://api.groq.com/openai/v1/chat/completions', providerModel: 'synthetic-model', region: 'synthetic-region' };
+  const model = { provider: 'groq', endpoint: 'https://api.groq.com/openai/v1/chat/completions', providerModel: 'synthetic-model', region: 'synthetic-region' };
   const messages = [{ role: 'user', content: 'SYNTHETIC DEMO-ID' }];
   const fields = { conditions: {}, effect: 'ALLOW', mandatory: false, obligations: [] };
   const policy = { ...fields, is_mandatory: false, id: randomUUID(), scope: 'ENTERPRISE', version: 1,
@@ -72,6 +74,8 @@ test('history deny, escalation, warning, secret and missing allow all stop egres
 });
 
 test('redaction cannot become an implicit allow or expose a hidden deny', () => {
+  assert.throws(() => protectContext([{ role: 'user', content: 'SYNTHETIC synthetic@example.invalid' }],
+    [...rules, rule('DENY', 'synthetic@example.invalid')]), { code: 'CHAT_POLICY_DENIED' });
   assert.throws(() => protectContext([{ role: 'user', content: 'DEMO-ID' }], rules), { code: 'CHAT_POLICY_DENIED' });
   assert.throws(() => protectContext([{ role: 'user', content: 'SYNTHETIC AsecretB' }], [rule('ALLOW', 'SYNTHETIC'), rule('REDACT', 'secret'), rule('DENY', 'A[نص منقّح]B')]), { code: 'CHAT_POLICY_DENIED' });
 });
@@ -97,19 +101,24 @@ test('model reply uses baseline and enforced Firewall before disclosure', () => 
 });
 
 
-test('reviewed 8000-byte cap is independent of the conservative request token bound', (t) => {
+test('valid registry shape still requires matching runtime model and server secret', (t) => {
   const prior = process.env.GROQ_MODEL;
+  const priorKey = process.env.AIGAS_SC_GROQ_API_KEY;
+  const priorLegacy = process.env.GROQ_API_KEY;
   t.after(() => {
     if (prior === undefined) delete process.env.GROQ_MODEL;
     else process.env.GROQ_MODEL = prior;
+    if (priorKey === undefined) delete process.env.AIGAS_SC_GROQ_API_KEY;
+    else process.env.AIGAS_SC_GROQ_API_KEY = priorKey;
+    if (priorLegacy === undefined) delete process.env.GROQ_API_KEY;
+    else process.env.GROQ_API_KEY = priorLegacy;
   });
   delete process.env.GROQ_MODEL;
-  const model = { protocol: 'CHAT_COMPLETIONS_V1', region: 'SYNTHETIC', providerModel: 'SYNTHETIC',
-    endpoint: 'https://api.groq.com/openai/v1/chat/completions', apiKeyEnv: 'AIGAS_SC_FIXTURE_API_KEY',
-    maxOutputTokens: 1024, maxRequestTokens: 4096, maxInputBytes: 8000, inputOverheadTokens: 512, timeoutMs: 20000,
-    approval: { reference: 'SYNTHETIC', expiresAt: '2099-01-01T00:00:00Z', noTraining: true, retentionReference: 'SYNTHETIC', regionReference: 'SYNTHETIC' } };
+  const model = syntheticChatModel();
   assert.throws(() => providerConfiguration(model), { code: 'NO_APPROVED_MODEL' });
   process.env.GROQ_MODEL = model.providerModel;
-  // Passing the reviewed shape does not invent a provider secret or send data.
+  delete process.env.AIGAS_SC_GROQ_API_KEY;
+  process.env.GROQ_API_KEY = 'legacy-fixture';
+  // The legacy key cannot make a Secure Chat adapter ready.
   assert.throws(() => providerConfiguration(model), { code: 'PROVIDER_NOT_CONFIGURED' });
 });

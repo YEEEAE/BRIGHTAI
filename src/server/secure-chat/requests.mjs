@@ -4,6 +4,24 @@ import { audit } from '../kernel/service.mjs';
 import { KernelError } from '../kernel/core.mjs';
 import { INPUT_POLICY, usagePolicy } from './policy.mjs';
 
+// Check the effective role in this transaction, including deployments that
+// connect directly as the runtime role. A missing table or privilege closes egress.
+export async function requireChatStorage(db) {
+  const row = (await db.query(`SELECT current_user = 'aigas_runtime' AND NOT r.rolsuper AND NOT r.rolbypassrls
+    AND row_security_active('public.aigas_sc_requests')
+    AND row_security_active('public.aigas_sc_cancellations')
+    AND has_table_privilege(current_user, 'public.aigas_sc_requests', 'SELECT')
+    AND has_table_privilege(current_user, 'public.aigas_sc_requests', 'INSERT')
+    AND has_table_privilege(current_user, 'public.aigas_sc_requests', 'UPDATE')
+    AND has_table_privilege(current_user, 'public.aigas_sc_cancellations', 'SELECT')
+    AND has_table_privilege(current_user, 'public.aigas_sc_cancellations', 'INSERT')
+    AND NOT has_table_privilege(current_user, 'public.aigas_sc_conversations', 'SELECT,INSERT,UPDATE,DELETE')
+    AND NOT has_table_privilege(current_user, 'public.aigas_sc_messages', 'SELECT,INSERT,UPDATE,DELETE')
+    AND has_function_privilege(current_user, 'public.aigas_sc_usage_window_v2(uuid,uuid)', 'EXECUTE') AS ready
+    FROM pg_roles r WHERE r.rolname = current_user`)).rows[0];
+  if (row?.ready !== true) throw new KernelError(503, 'USAGE_POLICY_NOT_READY', 'تعذر تأكيد عزل مخزن المحادثة وصلاحيات الحصة؛ الإرسال موقوف.');
+}
+
 async function scope(db, identity, tenantId) {
   // requireProductAccess verifies membership and sets the unified transaction scope
   // (aigas.tenant_id / aigas.user_id). The sc_* GUCs below feed only the read-only
@@ -19,6 +37,7 @@ function isUniqueViolation(error) {
 export async function reserve(identity, tenantId, id, model) {
   return transaction(async db => {
     await scope(db, identity, tenantId);
+    await requireChatStorage(db);
     // A request UUID used by another tenant is a conflict, never a replay of
     // that tenant's request. This runs before the per-tenant row lookup.
     await assertReferenceTenant(db, tenantId, 'secure_chat_request', id);
@@ -33,6 +52,10 @@ export async function reserve(identity, tenantId, id, model) {
     // Deliberate tenant-wide aggregate; no content or per-employee usage is returned.
     // Runtime role needs this reviewed aggregate access; RLS must not hide peers.
     const row = (await db.query(`SELECT * FROM public.aigas_sc_usage_window_v2($1,$2)`, [tenantId,identity.userId])).rows[0];
+    const counters = ['user_minute', 'tenant_minute', 'user_day', 'tenant_day', 'user_token_charge', 'tenant_token_charge'];
+    if (!row || counters.some(key => !/^\d+$/.test(String(row[key])) || !Number.isSafeInteger(Number(row[key])))) {
+      throw new KernelError(503, 'USAGE_POLICY_NOT_READY', 'تعذر تأكيد عدادات الحصة؛ الإرسال موقوف.');
+    }
     const comparisons = [[policy.userMinute,row.user_minute],[policy.tenantMinute,row.tenant_minute],[policy.userDay,row.user_day],[policy.tenantDay,row.tenant_day]];
     if (comparisons.some(([limit,count]) => limit && Number(count) >= limit) ||
         (policy.userTokensDay && Number(row.user_token_charge) + model.maxRequestTokens > policy.userTokensDay) ||

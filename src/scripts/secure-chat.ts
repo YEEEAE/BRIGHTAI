@@ -1,5 +1,4 @@
 import { createWorkspaceAuth as createAuthClient, getWorkspaceSession, appFetch, setWorkspace } from './workspace-context';
-import { observeLogin } from './monitoring';
 
 const root = document.querySelector<HTMLElement>('[data-secure-chat]')!;
 const status = root.querySelector<HTMLElement>('[data-status]')!;
@@ -120,6 +119,7 @@ async function api(path: string, method = 'GET', body?: object, signal?: AbortSi
   const response = await appFetch(auth!, `/app/api/secure-chat/${path}/${query}`, {
     method,
     cache: 'no-store',
+    redirect: 'error',
     signal,
     headers: { Authorization: `Bearer ${bearer}`, ...(body ? { 'Content-Type': 'application/json' } : {}) },
     ...(body ? { body: JSON.stringify(body) } : {}),
@@ -301,7 +301,7 @@ login.addEventListener('submit', event => {
   event.preventDefault();
   const values = new FormData(login);
   void run(async () => {
-    const result = await observeLogin(() => auth!.signIn.email({ email: String(values.get('email')), password: String(values.get('password')) }));
+    const result = await auth!.signIn.email({ email: String(values.get('email')), password: String(values.get('password')) });
     login.reset();
     if (result.error) {
       const error = new Error('تعذر تسجيل الدخول. تحقق من بيانات الحساب وإعداد Neon Auth.');
@@ -346,7 +346,7 @@ composer.addEventListener('submit', event => {
     .then(data => {
       if (submittedEpoch !== epoch) return;
       if (typeof data.reply !== 'string' || typeof data.submittedText !== 'string') throw new Error('تعذر تأكيد رد مكتمل من المزود.');
-      if (data.saved === true || data.contentStored === true) throw new Error('تعذر تأكيد عدم حفظ متن المحادثة؛ لم يُعرض الرد.');
+      if (data.saved === true || data.contentStored === true) throw new Error('تعذر تأكيد عدم حفظ متن المحادثة في التطبيق؛ لم يُعرض الرد.');
       const userMessage = document.createElement('li');
       userMessage.dataset.role = 'user';
       userMessage.textContent = data.submittedText;
@@ -361,7 +361,7 @@ composer.addEventListener('submit', event => {
       root.querySelector<HTMLElement>('[data-empty]')!.hidden = true;
       message.value = '';
       updateCount();
-      status.textContent = data.redacted ? 'وصل رد من النموذج بعد تنقيح المدخلات أو المخرجات وفق سياسة الحماية. السياق المؤقت يقتصر على أحدث الأدوار ضمن الحد التقني.' : 'وصل رد من النموذج. يُرسل أحدث سياق مؤقت ضمن الحد التقني؛ لا يُحفظ المتن.';
+      status.textContent = data.redacted ? 'وصل رد من النموذج بعد تنقيح المدخلات أو المخرجات وفق سياسة الحماية. السياق المؤقت يقتصر على أحدث الأدوار ضمن الحد التقني.' : 'وصل رد من النموذج. يُرسل أحدث سياق مؤقت ضمن الحد التقني؛ لا يُحفظ المتن في التطبيق.';
       setComposerState('READY');
     })
     .catch(error => {
@@ -372,7 +372,7 @@ composer.addEventListener('submit', event => {
         retrySend.hidden = false;
         sendError.hidden = false;
         status.textContent = 'توقف انتظار الواجهة؛ بقيت المسودة في الحقل.';
-        setComposerState('CANCELLED', 'طُلب إيقاف الانتظار. لا يؤكد ذلك انعدام استهلاك المزود؛ بقيت المسودة ولم يُحفظ المتن.');
+        setComposerState('CANCELLED', 'طُلب إيقاف الانتظار. لا يؤكد ذلك انعدام استهلاك المزود؛ بقيت المسودة ولم يُحفظ المتن في التطبيق.');
         return;
       }
       if (value.unauthorized || value.status === 403) { showError(friendlyError(value), !!value.unauthorized); return; }
@@ -392,7 +392,7 @@ composer.addEventListener('submit', event => {
                   : value.code === 'SENSITIVE_CONTENT_BLOCKED'
                     ? 'حجب فحص الحماية محتوى يشبه سرًا أو مفتاح وصول في المدخلات أو رد النموذج؛ لم يُعرض الرد. قد يكون المزود استهلك الطلب.'
                     : friendlyError(value);
-      sendErrorText.textContent = `${failure} بقيت المسودة في الحقل، ولا يُحفظ المتن. أي إرسال جديد طلب مستقل وقد يستهلك من المزود.`;
+      sendErrorText.textContent = `${failure} بقيت المسودة في الحقل، ولا يُحفظ المتن في التطبيق. أي إرسال جديد طلب مستقل وقد يستهلك من المزود.`;
       retrySend.hidden = false;
       sendError.hidden = false;
       status.textContent = 'لم يصل رد من نموذج.';
@@ -403,7 +403,7 @@ composer.addEventListener('submit', event => {
       else if (value.code === 'USAGE_POLICY_NOT_CONFIGURED' || value.code === 'USAGE_POLICY_INVALID' || value.code === 'USAGE_POLICY_NOT_READY') setComposerState('NO_QUOTA', 'الإرسال متوقف: لا توجد حصة استخدام معتمدة وقابلة للقياس.');
       else if (value.code === 'PROVIDER_UNAVAILABLE' || value.code === 'PROVIDER_REJECTED') setComposerState('PROVIDER_OFFLINE', 'المزود غير متاح أو رفض الطلب؛ لا تأكيد لنجاح ولا إعادة إرسال تلقائية.');
       else if (value.code === 'NO_APPROVED_MODEL' || value.code === 'PROVIDER_NOT_CONFIGURED' || value.code === 'MODEL_APPROVAL_EXPIRED') setComposerState('DISABLED', 'الإرسال متوقف: لا يوجد نموذج معتمد ومهيأ.');
-      else setComposerState('ERROR', 'تعذر إكمال الطلب. لم يُعلن نجاح ولم يُحفظ المتن.');
+      else setComposerState('ERROR', 'تعذر إكمال الطلب. لم يُعلن نجاح ولم يُحفظ المتن في التطبيق.');
     })
     .finally(() => {
       controller = undefined;

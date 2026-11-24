@@ -15,7 +15,7 @@ import { productSlug, sectionFor } from '../server/observability/redact.mjs';
 import '../styles/variables.css';
 import '../styles/kernel.css';
 import '../styles/design-system.css';
-const { title = 'مساحة العمل' } = Astro.props;
+const { title = 'مساحة العمل', confidential = false } = Astro.props;
 const currentProduct = productNavigation.find(product => Astro.url.pathname.startsWith(product.workspacePath));
 const intendedProduct = productNavigation.find(product => Astro.url.searchParams.get('returnTo') === product.workspacePath);
 const selectedProduct = currentProduct ?? intendedProduct;
@@ -32,7 +32,7 @@ const productTrail = [
 // Server-side, explicit, and disabled unless the analytics approval gates are
 // satisfied. Only a fixed section slug and product slug are sent: no user,
 // tenant, workspace, email, query string, or page content.
-if (Astro.request.method === 'GET') {
+if (!confidential && Astro.request.method === 'GET') {
   const section = sectionFor(Astro.url.pathname);
   if (section) void captureProductEvent('portal_viewed', { section });
   const product = productSlug(Astro.url.pathname);
@@ -45,8 +45,8 @@ Astro.response.headers.set('Referrer-Policy', 'no-referrer');
 ---
 <!doctype html>
 <html lang="ar-SA" dir="rtl">
-  <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="robots" content="noindex,nofollow" /><title>{title} | BRIGHTAI</title><GoogleAnalytics /><link rel="icon" href="/favicon.png" /></head>
-  <body class="ds-theme"><MonitoringGate /><a class="skip ds-skip" href="#main">انتقل للمحتوى</a>
+  <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="robots" content="noindex,nofollow" /><title>{title} | BRIGHTAI</title>{!confidential && <GoogleAnalytics />}<link rel="icon" href="/favicon.png" /></head>
+  <body class="ds-theme">{!confidential && <MonitoringGate />}<a class="skip ds-skip" href="#main">انتقل للمحتوى</a>
     <div class="app-frame">
       <aside class="app-nav"><BrandLogo /><span class="overline">AIGAS / WORKSPACE</span>{trialPage
         ? <nav aria-label="مساحة التجربة"><a href={trialPath(trialProduct?.slug)} aria-current="page">التجربة المحدودة</a></nav>

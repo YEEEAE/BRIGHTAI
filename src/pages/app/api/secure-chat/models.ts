@@ -7,6 +7,6 @@ export const GET: APIRoute = async ({ request }) => {
   try {
     return Response.json(await listModels(request), { headers: privateHeaders });
   } catch (error) {
-    return errorResponse(error);
+    return errorResponse(error, 'GET');
   }
 };

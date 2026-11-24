@@ -7,10 +7,10 @@ import { KernelError, dependencyStatusForError } from '../kernel/core.mjs';
 import { contractHeaders, errorBody, HTTP_CONTRACT_VERSION } from '../kernel/contracts.mjs';
 import { env } from '../kernel/env.mjs';
 import { captureProductEvent, captureServerFailure } from '../observability/index.mjs';
-import { findApprovedModel, listApprovedModels } from './models.mjs';
+import { modelApprovalState, tenantModels, listApprovedModels } from './models.mjs';
 import { complete, providerConfiguration, providerState } from './adapter.mjs';
 import { INPUT_POLICY, protectText, usagePolicy, usagePolicyStatus } from './policy.mjs';
-import { reserve, settleUnknown, cancel, cancellationRequested } from './requests.mjs';
+import { reserve, settleUnknown, cancel, cancellationRequested, requireChatStorage } from './requests.mjs';
 import { uuid } from '../kernel/http.mjs';
 import { authorizeChatContext, chatPolicyContext, protectContext } from './integration.mjs';
 
@@ -27,9 +27,8 @@ export function requireChatPolicyIntegration(context) {
 // Apply the exact input baseline and Firewall semantics to an untrusted reply.
 export function protectReply(reply, rules) {
   try {
-    const baseline = protectText(reply);
-    const text = protectContext([{ role: 'assistant', content: baseline.text }], rules)[0].content;
-    return { text, redacted: baseline.redacted || text !== baseline.text };
+    const text = protectContext([{ role: 'assistant', content: reply }], rules)[0].content;
+    return { text, redacted: text !== reply };
   } catch (error) {
     if (error instanceof KernelError) throw new KernelError(error.status, error.code, 'حُجب رد النموذج بفحص الحماية؛ لم يُعرض المحتوى. قد يكون المزود استهلك الطلب.');
     throw error;
@@ -78,7 +77,10 @@ async function auditBlocked(identity, tenantId, action, requestId) {
 export async function listModels(request) {
   const { identity, tenant } = await accessContext(request, 'browse');
   const approvedModels = listApprovedModels(tenant.tenant_id);
-  const states = approvedModels.map(model => ({ model, state: providerState(model) }));
+  const states = tenantModels(tenant.tenant_id).map(model => {
+    const approval = modelApprovalState(model);
+    return { model, state: approvedModels.includes(model) ? providerState(model) : approval === 'EXPIRED' ? approval : 'NOT_APPROVED' };
+  });
   const ready = states.filter(item => item.state === 'READY');
   const quota = usagePolicyStatus();
   // A configured quota policy is only usable after the reviewed 0016 function
@@ -86,8 +88,8 @@ export async function listModels(request) {
   let usageQuotaReady = false;
   if (ready.length > 0 && quota.approved) {
     try {
-      // Existence alone is not enough: the connected role must also hold EXECUTE.
-      usageQuotaReady = (await transaction(db => db.query("WITH fn AS (SELECT to_regprocedure('public.aigas_sc_usage_window_v2(uuid,uuid)') AS oid) SELECT CASE WHEN oid IS NULL THEN false ELSE has_function_privilege(current_user, oid, 'EXECUTE') END AS ready FROM fn"))).rows[0].ready;
+      await transaction(requireChatStorage);
+      usageQuotaReady = true;
     } catch { usageQuotaReady = false; }
   }
   // An approved model without an approved quota is not sendable: it would meter
@@ -110,19 +112,24 @@ export async function listModels(request) {
   const models = policyReady.map(model => ({ id: model.id, label: model.label, region: model.region, ready: true, state: 'ELIGIBLE' }));
   const available = sendable;
   const allExpired = states.length > 0 && states.every(item => item.state === 'EXPIRED');
+  const providerUnavailable = ready.length === 0 && states.some(item => item.state === 'PROVIDER_UNAVAILABLE');
   const dependencyStatus = available ? 'available'
+    : providerUnavailable ? 'temporarily unavailable'
     : states.length === 0 ? 'not configured'
       : ready.length === 0 ? (allExpired ? 'expired' : 'not configured')
         : 'not configured';
   const availabilityCode = available ? null
     : states.length === 0 ? 'NO_APPROVED_MODEL'
-      : ready.length === 0 ? (allExpired ? 'MODEL_APPROVAL_EXPIRED'
+      : providerUnavailable ? 'PROVIDER_UNAVAILABLE'
+    : ready.length === 0 ? (allExpired ? 'MODEL_APPROVAL_EXPIRED'
         : states.some(item => item.state === 'PROVIDER_NOT_CONFIGURED') ? 'PROVIDER_NOT_CONFIGURED'
           : 'NO_APPROVED_MODEL')
         : !quota.approved ? quota.code
           : !usageQuotaReady ? 'USAGE_POLICY_NOT_READY' : 'CHAT_POLICY_INTEGRATION_REQUIRED';
   const unavailableMessage = availabilityCode === 'PROVIDER_NOT_CONFIGURED'
     ? 'الموصل إلى المزود المعتمد غير مهيأ على الخادم؛ لم يُرسل أي محتوى.'
+    : availabilityCode === 'PROVIDER_UNAVAILABLE'
+      ? 'الموصل غير جاهز حاليًا؛ لم يُرسل أي محتوى.'
     : availabilityCode === 'MODEL_APPROVAL_EXPIRED'
       ? 'انتهت صلاحية اعتماد النموذج المسجل؛ يلزم اعتماد جديد قبل الإرسال.'
       : availabilityCode === 'USAGE_POLICY_NOT_CONFIGURED'
@@ -138,7 +145,7 @@ export async function listModels(request) {
     liveSend: { status: 'NOT_VERIFIED', completionVerified: false },
     models, available, dependencyStatus, availabilityCode, tenant: { id: tenant.tenant_id, name: tenant.name },
     conversationMode: 'EPHEMERAL_TAB_ONLY',
-    retention: { enabled: false, contentStored: false, message: 'لا تُحفظ نصوص المحادثة أو مسوداتها؛ تُحفظ بيانات طلب وصفية لمنع التكرار وضبط الاستخدام. لم تعتمد سياسة حفظ المتن.' },
+    retention: { enabled: false, contentStored: false, message: 'تحتفظ هذه الصفحة بالمسودة مؤقتًا. يحفظ تطبيق BRIGHTAI بيانات الطلب الوصفية ويُخضع معالجة المزود لشروط الاعتماد الخاصة به.' },
     // Explicit capability surface for the client and reviewers. All false values
     // are enforced by the absence of routes and by the request-body whitelist.
     capabilities: { sharing: false, export: false, fileUpload: false, rag: false, savedTranscripts: false, adminContentAccess: false },
@@ -150,28 +157,27 @@ export async function listModels(request) {
   };
 }
 
-function validateMessages(message, history, model) {
+export function validateMessages(message, history, model) {
   const maxLength = configuredMessageLimit();
   if (typeof message !== 'string' || !message.trim() || Array.from(message).length > maxLength) throw new KernelError(400,'INVALID_MESSAGE',`اكتب رسالة من حرف واحد إلى ${maxLength} حرفًا.`);
   if (!Array.isArray(history) || history.length > 12 || history.length % 2) throw new KernelError(400,'INVALID_HISTORY','سياق المحادثة أكبر من الحد التقني أو غير صالح؛ ابدأ محادثة جديدة.');
   let total = Array.from(message).length;
-  let redacted = false;
   const messages = history.map((item,index) => {
     if (!item || typeof item !== 'object' || Array.isArray(item) || Object.keys(item).some(key => !['role','content'].includes(key)) || item.role !== (index % 2 ? 'assistant' : 'user') || typeof item.content !== 'string' || !item.content.trim() || Array.from(item.content).length > 16000) throw new KernelError(400,'INVALID_HISTORY','سياق المحادثة غير صالح.');
     total += Array.from(item.content).length;
-    const safe = protectText(item.content); redacted ||= safe.redacted;
-    return Object.freeze({ role: item.role, content: safe.text });
+    return Object.freeze({ role: item.role, content: item.content });
   });
   if (total > 24000) throw new KernelError(400,'CONTEXT_LIMIT','بلغت المحادثة حد السياق التقني؛ ابدأ محادثة جديدة.');
-  const safe = protectText(message);
-  redacted ||= safe.redacted;
-  messages.push(Object.freeze({ role:'user', content:safe.text }));
+  messages.push(Object.freeze({ role:'user', content:message }));
+  // Block secrets early, while retaining the original in memory for tenant
+  // restrictions that must be checked before baseline normalization.
+  const safe = messages.map(item => protectText(item.content).text);
   const encoder = new TextEncoder();
-  const inputBytes = messages.reduce((sum,item) => sum + encoder.encode(item.content).byteLength,0);
+  const inputBytes = safe.reduce((sum, content) => sum + encoder.encode(content).byteLength, 0);
   if (inputBytes > model.maxInputBytes || inputBytes + model.inputOverheadTokens > model.maxRequestTokens - model.maxOutputTokens) {
     throw new KernelError(413,'CONTEXT_LIMIT','تجاوز سياق الرسالة حد الإدخال المعتمد لهذا النموذج؛ لم يُرسل الطلب.');
   }
-  return { messages:Object.freeze(messages), redacted, submittedText:safe.text };
+  return Object.freeze(messages);
 }
 
 export async function cancelMessage(request, requestId) {
@@ -184,22 +190,27 @@ export async function sendMessage(request, body) {
   const requestId = uuid(body.requestId);
   if (body.syntheticAcknowledged !== true) throw new KernelError(400,'SYNTHETIC_DATA_REQUIRED','أكد أن النص اصطناعي ولا يتضمن بيانات عميل حقيقية.');
   if (typeof body.modelId !== 'string' || body.modelId.length > 120) throw new KernelError(400,'INVALID_MODEL','اختيار النموذج غير صالح.');
-  const model = findApprovedModel(body.modelId,tenant.tenant_id);
+  const model = listApprovedModels(tenant.tenant_id).find(entry => entry.id === body.modelId);
   if (!model) {
     await auditBlocked(identity,tenant.tenant_id,'secure_chat.blocked_no_approved_model',requestId);
-    throw new KernelError(503,'NO_APPROVED_MODEL','لا يوجد نموذج معتمد؛ لم يُرسل النص إلى أي مزود ولم يُحفظ متن المحادثة.','not configured');
+    const expired = tenantModels(tenant.tenant_id).some(entry => entry.id === body.modelId && modelApprovalState(entry) === 'EXPIRED');
+    if (expired) throw new KernelError(503, 'MODEL_APPROVAL_EXPIRED', 'انتهت صلاحية اعتماد النموذج؛ لم يُرسل المحتوى.', 'expired');
+    throw new KernelError(503,'NO_APPROVED_MODEL','لا يوجد نموذج معتمد؛ لم يُرسل النص إلى أي مزود.','not configured');
   }
   try {
     providerConfiguration(model);
   } catch (error) {
     // The reviewed entry may exist while the server-side connector is absent.
     // Either way nothing leaves the process.
-    await auditBlocked(identity,tenant.tenant_id,error?.code === 'PROVIDER_NOT_CONFIGURED' ? 'secure_chat.blocked_provider_not_configured' : 'secure_chat.blocked_no_approved_model',requestId);
+    const action = error?.code === 'NO_APPROVED_MODEL' ? 'secure_chat.blocked_no_approved_model'
+      : error?.code === 'PROVIDER_NOT_CONFIGURED' ? 'secure_chat.blocked_provider_not_configured'
+        : 'secure_chat.blocked_provider_unavailable';
+    await auditBlocked(identity, tenant.tenant_id, action, requestId);
     throw error;
   }
-  let protectedInput;
+  let validatedInput;
   try {
-    protectedInput = validateMessages(body.message,body.history ?? [],model);
+    validatedInput = validateMessages(body.message,body.history ?? [],model);
   } catch (error) {
     if (error instanceof KernelError && error.code === 'SENSITIVE_CONTENT_BLOCKED') {
       await auditBlocked(identity,tenant.tenant_id,'secure_chat.blocked_sensitive_content',requestId);
@@ -228,7 +239,7 @@ export async function sendMessage(request, body) {
     controller.signal.throwIfAborted();
     // Final egress check: the exact bytes that leave the process are re-protected
     // and frozen. No Firewall licence is consulted, so baseline protection always runs.
-    const { outbound } = await requireChatPolicyIntegration({ identity, tenantId: tenant.tenant_id, requestId, model, messages: protectedInput.messages });
+    const { outbound } = await requireChatPolicyIntegration({ identity, tenantId: tenant.tenant_id, requestId, model, messages: validatedInput });
     // Replacement markers can grow the byte count. Recheck the exact final
     // context against the model's reviewed framing and reservation ceiling.
     validateMessages(outbound.at(-1).content, outbound.slice(0,-1), model);
@@ -246,12 +257,16 @@ export async function sendMessage(request, body) {
       await auditBlocked(identity, tenant.tenant_id, 'secure_chat.output.blocked', requestId);
       throw error;
     }
-    await accessContext(request);
+    const current = await accessContext(request);
+    if (current.identity.userId !== identity.userId || current.tenant.tenant_id !== tenant.tenant_id ||
+        modelApprovalState(model) !== 'APPROVED') {
+      throw new KernelError(403, 'CHAT_POLICY_DENIED', 'تعذر تأكيد صلاحية إتاحة رد النموذج.');
+    }
     // No streaming: the entire reply is checked before any content is disclosed.
     const state = await settleUnknown(identity,tenant.tenant_id,requestId,'SUCCEEDED',usage);
     settled=true;
     if (state === 'CANCELLED' || controller.signal.aborted) throw new KernelError(409,'REQUEST_CANCELLED','أُوقفت إتاحة الرد؛ قد يكون المزود استهلك الطلب بالفعل.');
-    return { requestId, reply:output.text, submittedText:outbound.at(-1).content, modelId:model.id, usage, redacted:protectedInput.redacted || output.redacted || outbound.some((item,index) => item.content !== protectedInput.messages[index].content), saved:false, contentStored:false, message:'وصل رد مفحوص أوليًا؛ لم يُحفظ متن المحادثة.' };
+    return { requestId, reply:output.text, submittedText:outbound.at(-1).content, modelId:model.id, usage, redacted:output.redacted || outbound.some((item,index) => item.content !== validatedInput[index].content), saved:false, contentStored:false, message:'وصل رد مفحوص أوليًا. يحتفظ التطبيق ببيانات الطلب الوصفية.' };
   } catch (error) {
     if (!settled) {
       // Unknown usage remains conservatively reserved. Never claim zero cost
@@ -272,16 +287,16 @@ export async function rejectMessage(request, modelId, message) {
   return sendMessage(request,{modelId,message,syntheticAcknowledged:false});
 }
 export const privateHeaders = contractHeaders({ 'Cache-Control':'private, no-store', 'X-Robots-Tag':'noindex, nofollow', 'X-Content-Type-Options':'nosniff', 'Referrer-Policy':'no-referrer', Vary:'Authorization' });
-export function errorResponse(error) {
+export function errorResponse(error, operation = 'POST') {
   const known=error instanceof KernelError;
   const code=known ? error.code : ['42P01','42703','42883'].includes(error?.code) ? 'SECURE_CHAT_SCHEMA_MISSING' : error?.code==='42501' ? 'SECURE_CHAT_DB_PRIVILEGE' : 'SECURE_CHAT_UNAVAILABLE';
   const status=known ? error.status : 503;
   // Quota exhaustion is a product signal, not an error: code only, no user,
   // tenant, message text, model ID, or token counts.
   if(code==='USAGE_LIMIT_REACHED') void captureProductEvent('quota_exhausted',{product:'secure-chat'});
-  void captureServerFailure(error,{surface:'secure-chat',code,status,pathname:'/app/api/secure-chat',dependency:known?dependencyStatusForError(error):code==='SECURE_CHAT_SCHEMA_MISSING'?'not configured':code==='SECURE_CHAT_DB_PRIVILEGE'?'access denied':'temporarily unavailable',operation:'POST'});
   const message=known ? error.message : code==='SECURE_CHAT_SCHEMA_MISSING' ? 'يلزم تجهيز مخطط Secure Chat على بيئة تطوير معتمدة. لم يُؤكد اكتمال الطلب.' : code==='SECURE_CHAT_DB_PRIVILEGE' ? 'صلاحيات قاعدة البيانات غير مهيأة. لم يُؤكد اكتمال الطلب.' : 'تعذر إكمال الطلب؛ لا تُعد إرساله تلقائيًا. لم يُؤكد استهلاك المزود أو اكتمال الرد.';
   const dependencyStatus=known?dependencyStatusForError(error):code==='SECURE_CHAT_SCHEMA_MISSING'?'not configured':code==='SECURE_CHAT_DB_PRIVILEGE'?'access denied':'temporarily unavailable';
+  void captureServerFailure(null, { surface: 'secure-chat', code, status, pathname: '/app/api/secure-chat', dependency: dependencyStatus, operation });
   const responseHeaders=known&&error.status===429?{...privateHeaders,'Retry-After':'60'}:privateHeaders;
   return Response.json(errorBody({code,message,dependencyStatus}),{status,headers:responseHeaders});
 }

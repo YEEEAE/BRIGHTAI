@@ -35,5 +35,5 @@ export const DELETE: APIRoute = async ({request}) => {
   try {
     const body=await bodyFor(request,['requestId']);
     return Response.json(await cancelMessage(request,body.requestId),{headers:privateHeaders});
-  } catch(error) { return errorResponse(error); }
+  } catch(error) { return errorResponse(error, 'DELETE'); }
 };

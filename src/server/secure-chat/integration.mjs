@@ -12,8 +12,14 @@ import { approvedEgress } from './policy.mjs';
 export function protectContext(messages, rules) {
   if (!Array.isArray(messages) || !messages.length) throw new KernelError(400, 'INVALID_HISTORY', 'يلزم سياق محادثة صالح.');
   const baseline = approvedEgress(messages);
-  return Object.freeze(baseline.map(item => {
-    if (item.content.length > MAX_TEXT_LENGTH) throw new KernelError(413, 'CONTEXT_LIMIT', 'أحد عناصر السياق يتجاوز حد فحص Firewall؛ ابدأ محادثة جديدة.');
+  const restrictions = rules.filter(rule => ['DENY', 'WARN', 'ESCALATE'].includes(rule.action));
+  return Object.freeze(baseline.map((item, index) => {
+    const original = messages[index].content;
+    if (Math.max(original.length, item.content.length) > MAX_TEXT_LENGTH) throw new KernelError(413, 'CONTEXT_LIMIT', 'أحد عناصر السياق يتجاوز حد فحص Firewall؛ ابدأ محادثة جديدة.');
+    const before = evaluate(original, restrictions);
+    if (['RULE_DENY', 'RULE_WARN', 'RULE_ESCALATE'].includes(before.reason)) {
+      throw new KernelError(403, 'CHAT_POLICY_DENIED', 'حجبت سياسة المؤسسة السياق؛ لم يُرسل إلى المزود.');
+    }
     const result = evaluate(item.content, rules, { enforce: true });
     if (!['ALLOW', 'REDACT'].includes(result.action)) throw new KernelError(403, 'CHAT_POLICY_DENIED', 'حجبت سياسة المؤسسة السياق؛ لم يُرسل إلى المزود.');
     const content = result.action === 'REDACT' ? result.output : item.content;
@@ -29,11 +35,11 @@ export function protectContext(messages, rules) {
 export async function chatPolicyContext(db, identity, tenantId, model) {
   const kernel = await evaluateKernelPolicy(db, identity, tenantId, {
     productSlug: 'secure-chat', operation: 'secure-chat.send', resource_type: 'text',
-    data_classification: 'SYNTHETIC', provider: new URL(model.endpoint).hostname === 'api.groq.com' ? 'groq' : new URL(model.endpoint).hostname, model: model.providerModel, region: model.region,
+    data_classification: 'SYNTHETIC', provider: model.provider, model: model.providerModel, region: model.region,
   });
   const rules = (await db.query('SELECT id,name,template,match_type,pattern,action,priority,enabled,version FROM public.aigas_fw_rules WHERE tenant_id=$1 ORDER BY priority,id', [tenantId])).rows;
   const probe = evaluate('readiness', rules, { enforce: false });
-  const ready = kernel?.decision === 'ALLOW' && rules.some(rule => rule.enabled && rule.action === 'ALLOW') && !['NO_ACTIVE_POLICY', 'INVALID_POLICY'].includes(probe.reason);
+  const ready = kernel?.decision === 'ALLOW' && !kernel.obligations?.length && rules.some(rule => rule.enabled && rule.action === 'ALLOW') && !['NO_ACTIVE_POLICY', 'INVALID_POLICY'].includes(probe.reason);
   return { kernel, rules, ready };
 }
 

@@ -10,8 +10,13 @@ import '../../../styles/secure-chat.css';
 import { authConfig } from '../../../server/kernel/auth.mjs';
 export const prerender = false;
 const config = authConfig();
+Astro.response.headers.set('Content-Security-Policy', [
+  "default-src 'self'", "script-src 'self'", "connect-src 'self'",
+  "style-src 'self' 'unsafe-inline'", "img-src 'self' data:",
+  "frame-ancestors 'none'", "form-action 'self'", "base-uri 'self'", "object-src 'none'",
+].join('; '));
 ---
-<AppLayout title="Secure Chat">
+<AppLayout title="Secure Chat" confidential>
   <section class="secure-chat" data-secure-chat data-auth-configured={!!config}>
     <aside class="chat-sidebar" aria-label="جلسات المحادثة">
       <div class="sidebar-brand"><span class="sidebar-mark" aria-hidden="true">◈</span><div><bdi>Secure Chat</bdi><small>مساحة مؤسسية</small></div></div>
@@ -42,8 +47,8 @@ const config = authConfig();
           </EmptyState>
           <ol class="messages" data-messages aria-live="polite" aria-relevant="additions text"></ol>
           <ErrorState class="send-error" data-send-error role="alert" hidden><p data-send-error-text></p><Button variant="secondary" type="button" data-retry-send hidden>إعادة التحقق من النماذج</Button></ErrorState>
-          <form class="composer" data-composer>
-            <Textarea label="رسالتك" id="chat-message" name="message" maxlength="4000" rows="4" placeholder="اكتب رسالتك هنا…" aria-describedby="message-limit privacy-note" required />
+          <form class="composer" data-composer method="post" autocomplete="off">
+            <Textarea label="رسالتك" id="chat-message" autocomplete="off" spellcheck="false" maxlength="4000" rows="4" placeholder="اكتب رسالتك هنا…" aria-describedby="message-limit privacy-note" required />
             <div class="composer-meta"><span id="message-limit" data-count>0 / 4000</span><span id="privacy-note">لا ترسل بيانات حساسة في هذه المرحلة.</span></div>
             <label class="synthetic-consent"><input type="checkbox" data-synthetic required /> أؤكد أن النصوص اصطناعية ولا تتضمن بيانات عميل حقيقية.</label>
             <p class="policy-note" data-policy-note></p>
@@ -53,7 +58,7 @@ const config = authConfig();
         </section>
         <aside class="chat-details" aria-label="إعدادات الجلسة">
           <div class="detail-block"><p class="overline">النموذج</p><Select label="نموذج معتمد" id="chat-model" data-model disabled><option>لا يوجد نموذج متاح</option></Select><p data-model-status>لا يوجد نموذج معتمد ومهيأ لهذه المؤسسة.</p></div>
-          <div class="detail-block"><p class="overline">الخصوصية</p><ul><li>الجلسة لا تُحفظ؛ مسودتك في هذه الصفحة فقط.</li><li>لا نرسل محتوى إلى مزود غير معتمد.</li><li>متن المحادثة لا يظهر لمسؤول المؤسسة عبر المنتج، ولا يُرسل إلى Audit أو Analytics.</li><li>تُحفظ معرّفات الطلب والنتيجة والاستخدام؛ لا يُحفظ المتن في سجل الأمن.</li></ul></div>
+          <div class="detail-block"><p class="overline">الخصوصية</p><ul><li>المسودة في هذه الصفحة فقط. معالجة النموذج تخضع لشروط المزود المعتمدة.</li><li>لا نرسل محتوى إلى مزود غير معتمد.</li><li>متن المحادثة لا يظهر لمسؤول المؤسسة عبر المنتج، ولا يُرسل إلى Audit أو Analytics.</li><li>تُحفظ معرّفات الطلب والنتيجة والاستخدام؛ لا يُحفظ المتن في سجل الأمن.</li></ul></div>
           <div class="detail-block usage"><p class="overline">حدود الاستخدام</p><p><span data-usage>الرموز الفعلية: غير متاح. التكلفة: غير متاح.</span></p><p data-limits>الحصص غير مفعّلة حتى اعتمادها.</p><p>المشاركة والتصدير والملفات وRAG غير متاحة. الحفظ الدائم غير مفعّل حتى اعتماد سياسة الاحتفاظ وحماية البيانات.</p></div>
         </aside>
       </div>

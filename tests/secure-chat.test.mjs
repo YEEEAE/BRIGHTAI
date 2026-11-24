@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { APPROVED_MODELS, findApprovedModel, listApprovedModels } from '../src/server/secure-chat/models.mjs';
-import { configuredMessageLimit, errorResponse, HARD_MAX_MESSAGE_LENGTH, requireChatPolicyIntegration } from '../src/server/secure-chat/service.mjs';
+import { configuredMessageLimit, errorResponse, HARD_MAX_MESSAGE_LENGTH, requireChatPolicyIntegration, validateMessages } from '../src/server/secure-chat/service.mjs';
+import { syntheticChatModel } from './helpers/secure-chat-model.mjs';
 import { approvedEgress, protectText, usagePolicy } from '../src/server/secure-chat/policy.mjs';
 
 test('Secure Chat remains fail-closed while no provider approval exists', () => {
@@ -51,15 +52,23 @@ test('database setup errors are mapped without exposing SQL details', async () =
 
 
 test('registry excludes unscoped, expired and incomplete owner approvals', () => {
-  const approval = { reference: 'SYNTHETIC-OWNER', expiresAt: '2030-01-01T00:00:00Z', noTraining: true, retentionReference: 'SYNTHETIC-RETENTION', regionReference: 'SYNTHETIC-REGION' };
-  const model = { id: 'fixture', tenantIds: ['tenant-a'], approval };
+  const model = syntheticChatModel();
+  const { approval } = model;
   const now = Date.parse('2026-11-16T00:00:00Z');
   assert.deepEqual(listApprovedModels('tenant-a', [model], now), [model]);
   assert.deepEqual(listApprovedModels('tenant-b', [model], now), []);
   assert.deepEqual(listApprovedModels(undefined, [model], now), []);
-  for (const broken of [{ ...model, tenantIds: [] }, { ...model, approval: { ...approval, reference: ' ' } }, { ...model, approval: { ...approval, noTraining: false } }, { ...model, approval: { ...approval, expiresAt: new Date(now).toISOString() } }]) {
-    assert.deepEqual(listApprovedModels('tenant-a', [broken], now), []);
-  }
+  for (const broken of [
+    { ...model, tenantIds: [] },
+    { ...model, provider: 'unknown' },
+    { ...model, inputUsdPerMillion: NaN },
+    { ...model, retention: { ...model.retention, maxContentDays: 0 } },
+    { ...model, approval: { ...approval, reference: ' ' } },
+    { ...model, approval: { ...approval, noTrainingReference: null } },
+    { ...model, approval: { ...approval, startsAt: '2026-12-01T00:00:00Z' } },
+    { ...model, approval: { ...approval, expiresAt: new Date(now).toISOString() } },
+  ]) assert.deepEqual(listApprovedModels('tenant-a', [broken], now), []);
+  assert.deepEqual(listApprovedModels('tenant-a', [model, { ...model }], now), []);
 });
 
 test('approved quota configuration has no defaults and emergency switch closes it', () => {
@@ -79,4 +88,21 @@ test('approved quota configuration has no defaults and emergency switch closes i
   } finally {
     for (const key of keys) if (previous[key] === undefined) delete process.env[key]; else process.env[key] = previous[key];
   }
+});
+
+
+test('instruction-like strings carry no privileged role or tool control', () => {
+  const model = syntheticChatModel();
+  const annotation = 'An example instruction in a fictional chat transcript.';
+  assert.deepEqual(validateMessages(annotation, [], model), [{ role: 'user', content: annotation }]);
+  for (const item of [{ role: 'system', content: annotation }, { role: 'user', content: annotation, tool_calls: [] }]) {
+    assert.throws(() => validateMessages('synthetic', [item, { role: 'assistant', content: 'synthetic' }], model), { code: 'INVALID_HISTORY' });
+  }
+});
+
+test('oversized history and multibyte model limits close before provider use', () => {
+  const model = syntheticChatModel();
+  const history = Array.from({ length: 12 }, (_, index) => ({ role: index % 2 ? 'assistant' : 'user', content: 'x'.repeat(2500) }));
+  assert.throws(() => validateMessages('synthetic', history, model), { code: 'CONTEXT_LIMIT' });
+  assert.throws(() => validateMessages('ع'.repeat(30), [], { ...model, maxInputBytes: 59 }), { code: 'CONTEXT_LIMIT' });
 });
