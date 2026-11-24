@@ -92,7 +92,7 @@ Optional operator identity: `AIGAS_RELEASE_SHA`, `AIGAS_DEPLOY_ID`, `AIGAS_IMAGE
 | `/app/risk-engine/[assetId]/` | `src/pages/app/risk-engine/[assetId].astro` | GET / HEAD (SSR page) |
 | `/app/risk-engine/` | `src/pages/app/risk-engine/index.astro` | GET / HEAD (SSR page) |
 | `/app/secure-chat/` | `src/pages/app/secure-chat/index.astro` | GET / HEAD (SSR page) |
-| `/healthz/` | `src/pages/healthz.ts` → `src/server/kernel/readiness.mjs` | GET / HEAD |
+| `/healthz/` و`/healthz` | `src/pages/healthz.ts` + alias في `scripts/server.mjs` → `src/server/kernel/health-endpoint.mjs` | GET / HEAD (JSON مباشر بلا redirect) |
 | `/auth/sign-up/` | `src/pages/auth/sign-up.astro` | GET / HEAD |
 | `/auth/accept-invitation/` | `src/pages/auth/accept-invitation.astro` | GET / HEAD |
 

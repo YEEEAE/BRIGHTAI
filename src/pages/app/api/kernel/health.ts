@@ -1,7 +1,8 @@
 import type { APIRoute } from 'astro';
 import { operationalHealth } from '../../../../server/kernel/service.mjs';
 export const prerender = false;
-// Anonymous liveness: returns setup-state codes only, never configuration values or connection details.
+// Anonymous product health: returns setup-state codes only, never configuration values or connection details.
+// This is not platform liveness; /healthz is the dependency-aware readiness route.
 const headers = { 'Cache-Control': 'private, no-store', 'X-Robots-Tag': 'noindex, nofollow', 'X-Content-Type-Options': 'nosniff' };
 export const GET: APIRoute = async () => {
   try {

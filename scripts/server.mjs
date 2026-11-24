@@ -3,6 +3,7 @@ import { createServer as httpsServer } from 'node:https';
 import { readFileSync } from 'node:fs';
 import { applySecurityPolicy } from '../src/server/observability/security-policy.mjs';
 import { publicRedirectForRequest } from '../src/server/seo/redirects.mjs';
+import { healthResponse } from '../src/server/kernel/health-endpoint.mjs';
 
 // The standalone adapter serves /page/index.html from disk before Astro
 // middleware. Apply only the explicit public redirect table before that handler.
@@ -36,6 +37,20 @@ const badRequest = response => {
 // `Location: /\evil.example/x/`, which a browser resolves protocol-relative to
 // `//evil.example/x/`. No valid path contains a raw backslash; reject it.
 const hasUnsafeRequestPath = target => (target.split('?')[0] ?? '').includes('\\');
+
+// Last-resort body if the health contract itself fails to build. It deliberately
+// repeats the fixed schema with UNKNOWN values: an empty body would look like a
+// connection error, and an exception message could contain a DSN or a role.
+const fallbackHealth = () => JSON.stringify({
+  schema: 1,
+  status: 'not_ready',
+  state: 'unavailable',
+  checkedAt: new Date().toISOString(),
+  dependencies: { database: 'UNKNOWN', auth: 'UNKNOWN', authProbe: 'UNKNOWN', portal: 'UNKNOWN' },
+  release: null,
+  service: null,
+  error: 'HEALTH_RESPONSE_FAILED',
+});
 
 const listener = (request, response) => {
   if (!hostHeaderIsWellFormed(request.headers.host) || hasUnsafeRequestPath(request.url ?? '/')) {
@@ -73,6 +88,33 @@ const listener = (request, response) => {
   if (redirect) {
     response.writeHead(redirect.status, { Location: redirect.location, 'X-Content-Type-Options': 'nosniff' });
     response.end();
+    return;
+  }
+  // Astro's `trailingSlash: 'always'` answers `/healthz` with a 301 before the
+  // route or middleware runs. Render treats any 2xx/3xx as healthy, so a
+  // redirect would let the platform report success without ever evaluating a
+  // dependency. Answer the exact no-slash path here with the same contract as
+  // the `/healthz/` Astro route; every other path and method still goes to Astro.
+  if (url.pathname === '/healthz' && (request.method === 'GET' || request.method === 'HEAD')) {
+    const head = request.method === 'HEAD';
+    healthResponse(request.method)
+      .then(async health => {
+        response.writeHead(health.status, Object.fromEntries(health.headers));
+        response.end(head ? undefined : await health.text());
+      })
+      .catch(() => {
+        if (!response.headersSent) {
+          response.writeHead(503, {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Cache-Control': 'no-store, max-age=0',
+            'CDN-Cache-Control': 'no-store',
+            'Cloudflare-CDN-Cache-Control': 'no-store',
+            'X-Robots-Tag': 'noindex, nofollow',
+            'X-Content-Type-Options': 'nosniff',
+          });
+        }
+        response.end(head ? undefined : fallbackHealth());
+      });
     return;
   }
   // A rejected render must not become an unhandled rejection: that terminates

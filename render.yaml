@@ -15,6 +15,8 @@ services:
     # Readiness, not liveness: a failed database or auth dependency keeps the
     # deploy unhealthy instead of routing traffic to an unready process.
     # /healthz/ answers JSON with dependency states and the build identity.
+    # Both /healthz/ and /healthz answer directly (no redirect): Render treats
+    # any 2xx/3xx as healthy, so a redirect would bypass the dependency check.
     healthCheckPath: /healthz/
     envVars:
       - key: NODE_VERSION

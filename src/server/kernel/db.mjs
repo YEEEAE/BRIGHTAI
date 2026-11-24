@@ -37,14 +37,18 @@ async function activateRuntimeRole(client) {
 // Returns a state only; never a role name, host or driver message.
 export async function probeDatabase(timeoutMs = 2000) {
   if (!env('DATABASE_URL')) return { state: 'UNCONFIGURED' };
-  const client = new pg.Client({
-    connectionString: env('DATABASE_URL'),
-    application_name: 'brightai-readiness',
-    connectionTimeoutMillis: timeoutMs,
-    statement_timeout: timeoutMs,
-    query_timeout: timeoutMs,
-  });
+  let client;
   try {
+    // Construction can throw synchronously for a malformed DSN. It stays inside
+    // the try so readiness answers UNKNOWN/UNAVAILABLE instead of rejecting and
+    // losing the fixed response schema.
+    client = new pg.Client({
+      connectionString: env('DATABASE_URL'),
+      application_name: 'brightai-readiness',
+      connectionTimeoutMillis: timeoutMs,
+      statement_timeout: timeoutMs,
+      query_timeout: timeoutMs,
+    });
     await client.connect();
     await client.query('BEGIN');
     await activateRuntimeRole(client);
@@ -54,7 +58,9 @@ export async function probeDatabase(timeoutMs = 2000) {
   } catch (error) {
     return { state: error?.code === '42501' ? 'PRIVILEGE_DENIED' : 'UNAVAILABLE' };
   } finally {
-    try { await client.end(); } catch {}
+    if (client) {
+      try { await client.end(); } catch {}
+    }
   }
 }
 
