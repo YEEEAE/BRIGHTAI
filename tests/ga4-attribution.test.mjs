@@ -36,6 +36,8 @@ test('portal gate ships the identical init; each active template has one loader'
     assert.equal((src.match(/<GoogleAnalytics \/>/g) || []).length, 1);
     assert.doesNotMatch(src, /GoogleAnalytics 2/);
   }
+  const appLayout = readFileSync(new URL('../src/layouts/AppLayout.astro', import.meta.url), 'utf8');
+  assert.doesNotMatch(appLayout, /\{!confidential\s*&&\s*<GoogleAnalytics \/>/);
 });
 test('direct visit without campaign invents neither campaign nor referrer', () => {
   const calls = executeSnippet(inline, 'https://brightai.live/docs/#SYNTHETIC_SECRET', '', 2);
