@@ -51,6 +51,8 @@ test('Risk Engine DB: persistence, version history, tenant/role rejection, races
   assert.equal((await send(owner,'update',changed,id)).status,409);
   const second=await send(owner,'assess',{...assessment,asset_version:2,likelihood:3,impact:3},id);assert.equal(second.data.assessment.risk_level,'HIGH');
   assert.equal(second.data.assessment.human_review,null);
+  assert.equal(second.data.dependencies.humanGate.status,'not configured');
+  assert.equal(second.data.dependencies.ledger.status,'not configured');
   const history=(await send(owner,'history',{},id)).data.assessments;assert.equal(history.length,2);assert.equal(history[0].asset_snapshot.purpose,changed.purpose);assert.equal(history[1].asset_snapshot.purpose,a.purpose);assert.equal(history[1].id,first.data.assessment.id);
   assert.equal((await send(owner)).data.assets[0].assessment_status,'ASSESSED');
   await assert.rejects(pool.query('UPDATE aigas_re_assessments SET likelihood=3 WHERE id=$1',[first.data.assessment.id]),/append-only/);
@@ -69,6 +71,7 @@ test('Risk Engine DB: persistence, version history, tenant/role rejection, races
   const high=()=>send(owner,'assess',{...assessment,asset_version:4,likelihood:3,impact:3},id);
   const pending=await high();
   assert.equal(pending.status,201,JSON.stringify(pending.data));
+  assert.equal(pending.data.dependencies.humanGate.status,'available');
   const reviewId=pending.data.assessment.human_review.id;
   const decide=(user,decision,requestId=reviewId)=>hg(user,tenant,'decide',{decision,reason:'Synthetic independent review'},new URLSearchParams(),requestId);
   assert.equal((await send(owner,'history',{},id)).data.assessments[0].human_review.status,'PENDING');
@@ -86,6 +89,26 @@ test('Risk Engine DB: persistence, version history, tenant/role rejection, races
    FROM aigas_ld_events l JOIN aigas_audit_events a ON a.id::text=l.metadata_json->>'audit_ref'
    WHERE a.correlation_id=$1 ORDER BY l.sequence_no`,[reviewId])).rows;
   assert.deepEqual(evidence.map(row=>row.action),['kernel.human_gate.request.created','kernel.human_gate.decision.approve']);
+  await pool.query(`INSERT INTO aigas_ld_evidence_requirements(tenant_id,source,event_type,policy_version,approval_reference,approved_by) VALUES
+   ($1,'kernel','kernel.audit.recorded','fixture-v1','SYNTHETIC-ONLY',$2),
+   ($1,'risk-engine','risk_engine.assessment.created','fixture-v1','SYNTHETIC-ONLY',$2)`,[tenant,owner.userId]);
+  const reviewForRollback=(await high()).data.assessment.human_review.id;
+  const counts=async()=>(await pool.query(`SELECT
+   (SELECT count(*) FROM aigas_re_assessments) AS assessments,
+   (SELECT count(*) FROM aigas_hg_requests) AS requests,
+   (SELECT count(*) FROM aigas_hg_decisions) AS decisions,
+   (SELECT count(*) FROM aigas_hg_events) AS review_events,
+   (SELECT count(*) FROM aigas_audit_events) AS audit,
+   (SELECT count(*) FROM aigas_ld_events) AS ledger`)).rows[0];
+  const before=await counts();
+  await pool.query("ALTER TABLE aigas_ld_events ADD CONSTRAINT synthetic_evidence_failure CHECK (source <> 'risk-engine' AND metadata_json->>'action' IS DISTINCT FROM 'kernel.human_gate.decision.approve') NOT VALID");
+  const failedAssessment=await high();
+  assert.equal(failedAssessment.status,503);
+  assert.equal(failedAssessment.data.code,'MANDATORY_EVIDENCE_UNAVAILABLE');
+  await assert.rejects(decide(admin,'APPROVE',reviewForRollback),{code:'MANDATORY_EVIDENCE_UNAVAILABLE'});
+  assert.deepEqual(await counts(),before);
+  assert.equal((await pool.query('SELECT status FROM aigas_hg_requests WHERE id=$1',[reviewForRollback])).rows[0].status,'PENDING');
+  await pool.query('ALTER TABLE aigas_ld_events DROP CONSTRAINT synthetic_evidence_failure');
   const rejected=(await high()).data.assessment.human_review.id;
   await decide(admin,'REJECT',rejected);
   assert.equal((await send(owner,'history',{},id)).data.assessments[0].human_review.status,'REJECTED');
@@ -94,8 +117,8 @@ test('Risk Engine DB: persistence, version history, tenant/role rejection, races
   await assert.rejects(decide(admin,'APPROVE',stale),{code:'BINDING_INVALID'});
   await pool.query("UPDATE aigas_memberships SET role='MEMBER' WHERE tenant_id=$1 AND user_id=$2",[tenant,admin.userId]);assert.equal((await send(admin,'assess',{...assessment,asset_version:4},id)).status,403);
   await pool.query('ALTER TABLE aigas_audit_events ADD CONSTRAINT synthetic_failure CHECK(false) NOT VALID');
-  const before=(await pool.query('SELECT count(*)::int AS n FROM aigas_re_assessments')).rows[0].n;
-  assert.equal((await send(owner,'assess',{...assessment,asset_version:4},id)).status,503);assert.equal((await pool.query('SELECT count(*)::int AS n FROM aigas_re_assessments')).rows[0].n,before);
+  const beforeAuditFailure=(await pool.query('SELECT count(*)::int AS n FROM aigas_re_assessments')).rows[0].n;
+  assert.equal((await send(owner,'assess',{...assessment,asset_version:4},id)).status,503);assert.equal((await pool.query('SELECT count(*)::int AS n FROM aigas_re_assessments')).rows[0].n,beforeAuditFailure);
   assert.equal((await send(owner,'update',{...a,asset_version:4},id)).status,503);assert.equal((await send(owner,'history',{},id)).data.asset.version,4);
   assert.equal((await send(owner,'create',a)).status,503);assert.equal((await send(owner)).data.assets.length,1);
   await pool.query('UPDATE neon_auth."user" SET banned=true WHERE id=$1',[owner.userId]);assert.equal((await send(owner)).status,401);

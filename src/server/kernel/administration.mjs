@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { transaction } from './db.mjs';
+import { lockGovernance, transaction } from './db.mjs';
 import { productGrants, resolveProductAccess } from './access.mjs';
 import { trialProductAccess } from './trial.mjs';
 import { tenantGuard, memberships, audit } from './service.mjs';
@@ -51,6 +51,7 @@ export async function manageMember(identity, requested, body) {
     const scope = await tenantGuard(identity, uuid(requested), db);
     const tenant = scope.tenant;
     if (!tenant) throw new KernelError(403, 'FORBIDDEN', 'ليس لديك عضوية في المؤسسة المحددة.');
+    await lockGovernance(db, tenant.tenant_id);
     // Lock tenant before member rows so concurrent changes serialize without stale authority.
     await db.query('SELECT id FROM public.aigas_tenants WHERE id=$1 FOR UPDATE', [tenant.tenant_id]);
     // The actor row is locked through the reviewed SECURITY DEFINER helper: the runtime

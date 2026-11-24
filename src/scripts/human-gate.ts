@@ -1,4 +1,5 @@
 import { createWorkspaceAuth as createAuthClient, getWorkspaceSession, appFetch, selectedWorkspace, setWorkspace } from './workspace-context';
+import { dependencyErrorMessage, dependencyMessages } from './dependency-status';
 const root=document.querySelector<HTMLElement>('[data-human-gate]')!;
 const get=<T extends Element=HTMLElement>(selector:string)=>root.querySelector<T>(selector)!;
 const status=get('[data-status]'),area=get('[data-private]'),workspace=get<HTMLSelectElement>('[data-workspace]');
@@ -40,7 +41,7 @@ async function api(path='',body?:object,area:'requests'|'policy'|'delegations'='
  const response=await appFetch(auth,`/app/api/human-gate/${route}?${query}`,{method:body?'POST':'GET',cache:'no-store',signal:active?.signal,headers:{Authorization:`Bearer ${token}`,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})});
  const data=await response.json();
  if(generation!==epoch)throw new Error('تغيرت الجلسة؛ حدّث البيانات.');
- if(!response.ok)throw new Error(data.message||'تعذر إكمال العملية؛ لم يُؤكد الحفظ.');
+ if(!response.ok)throw new Error(dependencyErrorMessage(data.message||'تعذر إكمال العملية؛ لم يُؤكد الحفظ.',data.dependencyStatus));
  return data;
 }
 function sync(){
@@ -50,11 +51,11 @@ function sync(){
  get<HTMLButtonElement>('[data-create-submit]').disabled=busy||!policy?.enabled;
  const renameOption=get<HTMLOptionElement>('[name=operation_type] option[value=KERNEL_WORKSPACE_RENAME]');renameOption.disabled=!canManage;
 }
-async function run(task:()=>Promise<void>,success='تم تحديث البيانات من الخادم.'){
+async function run(task:()=>Promise<void|string>,success='تم تحديث البيانات من الخادم.'){
  if(busy)return;
  busy=true;active=new AbortController();const generation=epoch;
  root.setAttribute('aria-busy','true');root.querySelectorAll<HTMLButtonElement|HTMLSelectElement>('button,select').forEach(el=>el.disabled=true);status.textContent='جارٍ التحقق والحفظ من الخادم…';
- try{await task();if(generation===epoch)status.textContent=success;}
+ try{const message=await task();if(generation===epoch)status.textContent=message??success;}
  catch(error:any){
   if(generation===epoch){clear();status.textContent=`${error.message||'تعذر إكمال الطلب.'} حدّث البيانات لاستعادة الحالة من الخادم. إذا انقطع الاتصال بعد الإرسال، لا تعِد الإرسال قبل مراجعة نتيجة الطلب.`;}
  }
@@ -118,7 +119,19 @@ async function load(){
   if(request.canDecide){
    const form=document.createElement('form'),label=node('label','سبب القرار (إلزامي، دون بيانات حساسة)'),input=document.createElement('textarea');input.id=`reason-${request.id}`;label.setAttribute('for',input.id);input.required=true;input.minLength=2;input.maxLength=500;input.rows=2;const actions=document.createElement('div');actions.className='hg-actions';
    for(const [decision,title]of [['APPROVE','اعتماد الطلب المحدد'],['REJECT','رفض الطلب']]){const button=document.createElement('button');button.type='submit';button.value=decision;button.textContent=title;actions.append(button);}
-   form.append(label,input,actions);form.addEventListener('submit',event=>{event.preventDefault();const decision=(event.submitter as HTMLButtonElement|null)?.value;if(!decision)return;const reason=input.value;void run(async()=>{await api(`${request.id}/decide/`,{decision,reason});view=decision==='REJECT'?'completed':'mine';filter='';page=1;get<HTMLSelectElement>('[data-filter]').value='';await load();},'حُفظ القرار من الخادم. الموافقة لا تعني أن العملية نُفّذت.');});card.append(form);
+   form.append(label,input,actions);
+   form.addEventListener('submit',event=>{
+    event.preventDefault();
+    const decision=(event.submitter as HTMLButtonElement|null)?.value;
+    if(!decision)return;
+    const reason=input.value;
+    void run(async()=>{
+     const saved=await api(`${request.id}/decide/`,{decision,reason});
+     view=decision==='REJECT'?'completed':'mine';filter='';page=1;get<HTMLSelectElement>('[data-filter]').value='';
+     await load();
+     return ['حُفظ القرار. حالة التنفيذ: لم يُنفذ.',...dependencyMessages(saved.dependencies)].join(' · ');
+    });
+   });card.append(form);
   }else if(request.status==='PENDING')card.append(node('p',reviewBlocks[request.reviewBlock]||'بانتظار مراجع مخوّل مستقل. مقدم الطلب لا يراجع طلبه.'));
   if(request.canCancel){const form=document.createElement('form'),label=node('label','سبب الإلغاء (إلزامي، دون بيانات حساسة)'),input=document.createElement('textarea');input.id=`cancel-${request.id}`;label.setAttribute('for',input.id);input.required=true;input.minLength=2;input.maxLength=500;input.rows=2;const button=document.createElement('button');button.type='submit';button.textContent=request.status==='APPROVED'?'إلغاء الطلب وإبطال إذن التنفيذ':'إلغاء الطلب';form.append(label,input,button);form.addEventListener('submit',event=>{event.preventDefault();void run(async()=>{await api(`${request.id}/cancel/`,{reason:input.value});view='completed';filter='';page=1;get<HTMLSelectElement>('[data-filter]').value='';await load();},'حُفظ إلغاء الطلب من الخادم وأُبطل أي إذن تنفيذ نشط.');});card.append(form);}
   if(request.canExecute){const button=document.createElement('button');button.type='button';button.textContent=rename?'تنفيذ تغيير اسم المساحة الموافق عليه':'إكمال الملاحظة التجريبية';button.addEventListener('click',()=>void run(async()=>{await api(`${request.id}/execute/`,{});view='completed';filter='';page=1;get<HTMLSelectElement>('[data-filter]').value='';await load();},'حفظ الخادم نتيجة التنفيذ وسجل العملية.'));card.append(button);}

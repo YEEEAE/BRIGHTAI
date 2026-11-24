@@ -18,6 +18,7 @@ test('provider boundary requires readable policy audit evidence', async () => {
     checksum: createHash('sha256').update(JSON.stringify(fields)).digest('hex') };
   let outage = true, calls = 0;
   const db = { async query(sql, args) {
+    if (sql.startsWith('SELECT clock_timestamp()::text AS evaluated_at')) return { rows: [{ evaluated_at: '2026-11-24T00:00:00Z' }] };
     if (sql.startsWith('SELECT department_id') || sql.startsWith('SELECT 1 FROM public.aigas_policies')) return { rows: [], rowCount: 0 };
     if (sql.startsWith('SELECT p.id')) return { rows: [policy] };
     if (sql.includes('FROM public.aigas_fw_rules')) return { rows: rules };

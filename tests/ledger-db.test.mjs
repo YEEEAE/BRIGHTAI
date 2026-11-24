@@ -83,6 +83,11 @@ test('Postgres + HTTP: durable event, readback, integrity/tamper, tenant isolati
  const full=await concurrent(owner,tenant,'export',{},new URLSearchParams(),newest.event.event_id);
  assert.equal(full.verification.result,'MATCH');assert.equal(full.entries.length,36);
  for(let i=0;i<full.entries.length;i++){assert.equal(String(full.entries[i].event.sequence_no),String(i+1));assert.equal(full.entries[i].event.previous_hash,i?full.entries[i-1].event.integrity_hash:null);}
+ const sameKey={...input,idempotency_key:randomUUID()};
+ const replays=await Promise.all(Array.from({length:4},()=>concurrent(owner,tenant,'create',sameKey)));
+ assert.equal(new Set(replays.map(x=>x.event.event_id)).size,1);
+ assert.equal(replays.filter(x=>x.replayed===true).length,3);
+ assert.equal((await db.query('SELECT count(*)::int AS n FROM aigas_ld_events WHERE tenant_id=$1 AND idempotency_key=$2',[tenant,`synthetic:${sameKey.idempotency_key}`])).rows[0].n,1);
  const portable2=await mkdtemp(join(tmpdir(),'aigas-ledger-prefix-'));
  try {
   const file=join(portable2,'bundle.json');

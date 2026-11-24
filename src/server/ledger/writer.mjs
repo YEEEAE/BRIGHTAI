@@ -2,10 +2,14 @@ import { randomUUID } from 'node:crypto';
 import { assertTenantMembership, productGrants } from '../kernel/access.mjs';
 import { KernelError, requireRole } from '../kernel/core.mjs';
 import { buildProductEvent, eventDefinition, eventLedgerFields, publicEventEnvelope } from '../kernel/events.mjs';
-import { dependencyClasses } from '../kernel/contracts.mjs';
+import { dependencyClasses, dependencyEntry } from '../kernel/contracts.mjs';
 import { profile, metadata, hashEvent, verifyEvent, sourceTypes, uuid } from './core.mjs';
 
 export const columns = 'event_id,tenant_id,source,event_type,policy_version,metadata_json,created_at,created_by,hash_profile,sequence_no,previous_hash,idempotency_key,integrity_hash';
+
+export function ledgerDependency(evidence) {
+  return dependencyEntry('ledger', evidence.dependencyStatus, { required: evidence.required, reason: evidence.dependencyCode });
+}
 
 export function recordKernelAuditEvidence(db, identity, tenantId, { auditId, correlationId, policyVersion, action }) {
   return recordProductEvent(db, identity, tenantId, {

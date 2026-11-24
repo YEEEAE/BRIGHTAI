@@ -17,13 +17,14 @@ const policyVersionFormat = /^[a-zA-Z0-9_.:-]{1,120}$/;
 // harness and never by the HTTP route; an injected adapter is accepted only when it
 // declares `localSandbox:true` and `external:false`, so injection cannot enable a
 // real provider that the approved registry did not authorise.
-export async function enforceDecision({ decision, tenantId, actorUserId, requestId, policyVersion, requestFingerprint, forwardText, kernelPolicy, escalation, outputRules }, { resolveProvider = null } = {}) {
+export async function enforceDecision({ decision, tenantId, actorUserId, requestId, policyVersion, requestFingerprint, forwardText, kernelPolicy, escalation, outputRules, dependencies, contract_version }, { resolveProvider = null } = {}) {
   const base = {
     decision,
     policy: kernelPolicy ? { decision: kernelPolicy.decision, action: kernelPolicy.action ?? null, reason: kernelPolicy.reason, obligations: kernelPolicy.obligations ?? [], mandatory: kernelPolicy.mandatory === true, policies: kernelPolicy.policies ?? [], warnings: kernelPolicy.warnings ?? [] } : null,
     request_id: requestId ?? null,
     policy_version: policyVersion ?? null,
     request_fingerprint: requestFingerprint ?? null,
+    dependencies, contract_version,
     persisted: true, external_action_executed: false, execution_status: 'NOT_EXECUTED',
   };
   // DENY is the final state; nothing downstream may soften it.

@@ -1,4 +1,5 @@
 import { createWorkspaceAuth as createAuthClient, getWorkspaceSession, appFetch, setWorkspace } from './workspace-context';
+import { dependencyErrorMessage, dependencyMessages } from './dependency-status';
 const root=document.querySelector<HTMLElement>('[data-risk-engine]')!;
 const get=<T extends Element=HTMLElement>(selector:string)=>root.querySelector<T>(selector)!;
 const status=get('[data-status]'),area=get('[data-private]'),workspace=get<HTMLSelectElement>('[data-workspace]');
@@ -21,12 +22,12 @@ async function api(path='',body?:object,method=body?'POST':'GET',history=false,r
  if(!path&&resource==='assets'){for(const key of ['q','classification','risk_level','assessment_status']){const value=(filterForm.elements.namedItem(key) as HTMLInputElement).value;if(value)query.set(key,value);}}
  if(resource==='actions')for(const key of ['treatment_status','due']){const value=(actionsFilter.elements.namedItem(key) as HTMLSelectElement).value;if(value)query.set(key,value);}
  const response=await appFetch(auth!, `/app/api/risk-engine/${resource==='assets'?'assets/'+path:resource+'/'}?${query}`,{method,cache:'no-store',headers:{Authorization:`Bearer ${token}`,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})});
- const data=await response.json();if(!response.ok)throw Object.assign(new Error(data.message||'تعذر إكمال العملية؛ لم يُؤكد الحفظ.'),{status:response.status,code:data.code});return data;
+ const data=await response.json();if(!response.ok)throw Object.assign(new Error(dependencyErrorMessage(data.message||'تعذر إكمال العملية؛ لم يُؤكد الحفظ.',data.dependencyStatus)),{status:response.status,code:data.code});return data;
 }
 function sync(){get<HTMLButtonElement>('[data-treatment-prev]').disabled=busy||treatmentPage===1;get<HTMLButtonElement>('[data-treatment-next]').disabled=busy||!treatmentMore;get<HTMLButtonElement>('[data-actions-prev]').disabled=busy||actionsPage===1;get<HTMLButtonElement>('[data-actions-next]').disabled=busy||!actionsMore;syncTreatment();root.querySelectorAll<HTMLElement>('[data-write]').forEach(el=>el.hidden=!canWrite);get<HTMLButtonElement>('[data-archive-open]').hidden=!canWrite||selected?.lifecycle_status!=='ACTIVE';get<HTMLButtonElement>('[data-prev]').disabled=busy||page===1;get<HTMLButtonElement>('[data-next]').disabled=busy||!hasMore;get<HTMLButtonElement>('[data-history-prev]').disabled=busy||historyPage===1;get<HTMLButtonElement>('[data-history-next]').disabled=busy||!historyMore;get<HTMLButtonElement>('[data-revisions-prev]').disabled=busy||revisionsPage===1;get<HTMLButtonElement>('[data-revisions-next]').disabled=busy||!revisionsMore;}
-async function run(task:()=>Promise<void>,success='تمت قراءة البيانات من الخادم.',errorNode?:HTMLElement){
+async function run(task:()=>Promise<void|string>,success='تمت قراءة البيانات من الخادم.',errorNode?:HTMLElement){
  if(busy)return;committedMessage='';busy=true;root.setAttribute('aria-busy','true');root.querySelectorAll<HTMLInputElement|HTMLButtonElement|HTMLSelectElement>('button,input,select,textarea').forEach(el=>el.disabled=true);status.textContent='جارٍ التحقق من الخادم…';
- try{await task();status.textContent=success;}
+ try{const message=await task();status.textContent=message??success;}
  catch(error:any){if(committedMessage){clear();status.textContent=`${committedMessage} تعذر تحديث العرض؛ حدّث السجل قبل أي إرسال جديد.`;}else{if(error.status===401||error.status===403||error.unauthorized)clear();if(error.status===409){get('[data-detail]').hidden=true;get('[data-editor]').hidden=true;}status.textContent=`${error.message||'تعذر إكمال الطلب.'} عند انقطاع الاتصال بعد الإرسال، حدّث السجل قبل إعادة الإرسال.`;}if(errorNode)errorNode.textContent=status.textContent;}
  finally{busy=false;root.removeAttribute('aria-busy');root.querySelectorAll<HTMLInputElement|HTMLButtonElement|HTMLSelectElement>('button,input,select,textarea').forEach(el=>el.disabled=false);sync();}
 }
@@ -83,7 +84,16 @@ get('[data-add]').addEventListener('click',()=>edit());get('[data-edit]').addEve
  get('[data-archive-open]').addEventListener('click',()=>{archiveForm.hidden=false;get<HTMLTextAreaElement>('#re-archive-reason').focus();});get('[data-archive-cancel]').addEventListener('click',()=>{archiveForm.reset();archiveForm.hidden=true;});
  archiveForm.addEventListener('submit',event=>{event.preventDefault();const fields=Object.fromEntries(new FormData(archiveForm)),asset=selected;void run(async()=>{const result=await api(`${asset.id}/`,{reason:fields.reason,asset_version:asset.version,synthetic_data_confirmed:fields.synthetic_data_confirmed==='on'},'DELETE');committedMessage='تمت أرشفة الحالة مع حفظ سجلها.';archiveForm.reset();archiveForm.hidden=true;await load();await showHistory(result.asset.id,true);},'تمت أرشفة الحالة؛ التاريخ محفوظ ويمكن إعادة تفعيلها بتعديلها.');});
 assetForm.addEventListener('submit',event=>{event.preventDefault();const fields=Object.fromEntries(new FormData(assetForm)),asset=editing;void run(async()=>{const result=await api(asset?`${asset.id}/`:'',{...fields,synthetic_data_confirmed:fields.synthetic_data_confirmed==='on',...(asset?{asset_version:asset.version}:{})},asset?'PATCH':'POST');committedMessage=asset?`تم حفظ تعديل الأصل${result.changed_fields?.length?` (${result.changed_fields.length} حقول)`:''}.${result.reassessment_required?' التقييم السابق يحتاج مراجعة للنسخة الجديدة.':''}`:'تم حفظ الأصل؛ حالته «يحتاج تقييمًا» حتى تُحفظ نسخة تقييم.';get('[data-editor]').hidden=true;assetForm.reset();editing=null;page=1;historyPage=1;revisionsPage=1;treatmentPage=1;await load();await showHistory(result.asset.id,true);preview();},asset?'تم تحديث الحالة المحفوظة.':'تم إنشاء الحالة وحفظها في الخادم.');});
-assessmentForm.addEventListener('change',preview);
+assessmentForm.addEventListener('submit',event=>{
+ event.preventDefault();
+ const fields=Object.fromEntries(new FormData(assessmentForm)),asset=selected;
+ void run(async()=>{
+  const result=await api(`${asset.id}/assessments/`,{...fields,synthetic_data_confirmed:fields.synthetic_data_confirmed==='on',likelihood:Number(fields.likelihood),impact:Number(fields.impact),asset_version:asset.version});
+  committedMessage=['تم حفظ التقييم.',...(result.treatment_review_required?['خطة المعالجة السابقة تحتاج مراجعة.']:[]),...dependencyMessages(result.dependencies)].join(' · ');
+  assessmentForm.reset();historyPage=1;await load();await showHistory(asset.id);preview();
+  return committedMessage;
+ });
+});
 for(const selector of ['#re-treatment-residual-likelihood','#re-treatment-residual-impact','#re-treatment-status','#re-treatment-review'])get<HTMLInputElement>(selector).addEventListener('change',previewResidual);
 assessmentForm.addEventListener('submit',event=>{event.preventDefault();const fields=Object.fromEntries(new FormData(assessmentForm)),asset=selected;void run(async()=>{const result=await api(`${asset.id}/assessments/`,{...fields,synthetic_data_confirmed:fields.synthetic_data_confirmed==='on',likelihood:Number(fields.likelihood),impact:Number(fields.impact),asset_version:asset.version});committedMessage=`تم حفظ التقييم.${result.treatment_review_required?' خطة المعالجة السابقة تحتاج مراجعة.':''}`;assessmentForm.reset();historyPage=1;await load();await showHistory(asset.id);preview();},'تم حفظ التقييم الجديد كسجل مستقل؛ لا يصرّح بالتشغيل.');});
 filterForm.addEventListener('submit',event=>{event.preventDefault();page=1;get('[data-detail]').hidden=true;void run(load);});

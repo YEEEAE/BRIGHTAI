@@ -4,6 +4,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import pg from 'pg';
 import { randomUUID } from 'node:crypto';
+import { setTimeout as delay } from 'node:timers/promises';
 import { createFirewallService } from '../src/server/firewall/service.mjs';
 import { createHandler } from '../src/server/firewall/http.mjs';
 import { MAX_EVALUATIONS_PER_WINDOW } from '../src/server/firewall/core.mjs';
@@ -134,7 +135,54 @@ test('Postgres: policy CRUD, priority, tenant isolation, permissions, metadata p
     assert.equal((await db.query('SELECT count(*)::int AS count FROM aigas_fw_decisions')).rows[0].count, beforeFailure);
     await db.query('ALTER TABLE aigas_fw_decisions DROP CONSTRAINT synthetic_failure');
     const recent = (await db.query("SELECT count(*)::int AS count FROM aigas_fw_decisions WHERE tenant_id=$1 AND created_at > now() - interval '60 seconds'", [tenant])).rows[0].count;
-    for (let i = recent; i < MAX_EVALUATIONS_PER_WINDOW; i++) assert.equal((await post(tenant, { text: 'معلومة عامة', synthetic: true })).status, 200);
+    for (let i = recent; i < MAX_EVALUATIONS_PER_WINDOW - 1; i++) assert.equal((await post(tenant, { text: 'معلومة عامة', synthetic: true })).status, 200);
+    // Both operations are MEMBERs under RLS. Keep the last accepted LAB write
+    // uncommitted, then observe the other backend waiting on the advisory lock.
+    const pool = new pg.Pool({ connectionString: url, statement_timeout: 5000 });
+    const committed = Promise.withResolvers();
+    const firstSaved = Promise.withResolvers();
+    const secondBackend = Promise.withResolvers();
+    const concurrent = (before, after) => createFirewallService(async work => {
+      const client = await pool.connect();
+      try {
+        await client.query('BEGIN'); await runtime(client);
+        before(client.processID);
+        const result = await work(client);
+        await after();
+        await client.query('COMMIT');
+        return result;
+      } catch (error) { await client.query('ROLLBACK'); throw error; }
+      finally { client.release(); }
+    });
+    const input = { text: 'معلومة عامة', synthetic: true };
+    let firstPid;
+    const lastSlot = concurrent(pid => { firstPid = pid; }, () => {
+      firstSaved.resolve(); return committed.promise;
+    })(member, tenant, 'evaluate', input);
+    let contender;
+    try {
+      await Promise.race([firstSaved.promise, lastSlot]);
+      contender = concurrent(secondBackend.resolve, () => {})(member, tenant, 'evaluate', input);
+      const denied = assert.rejects(contender, { code: 'RATE_LIMITED' });
+      // Register a rejection sink while inspecting pg_stat_activity below.
+      void denied.catch(() => {});
+      const pid = await Promise.race([secondBackend.promise, contender]);
+      assert.notEqual(pid, firstPid);
+      let waiting = false;
+      for (let attempt = 0; attempt < 100 && !waiting; attempt++) {
+        waiting = (await db.query("SELECT $2::int=ANY(pg_blocking_pids(pid)) AND wait_event='advisory' AS waiting FROM pg_stat_activity WHERE pid=$1", [pid, firstPid])).rows[0]?.waiting === true;
+        if (!waiting) await delay(10);
+      }
+      assert.equal(waiting, true, 'MEMBER LAB must wait before reading the evaluation quota');
+      committed.resolve();
+      assert.equal((await lastSlot).persisted, true);
+      await denied;
+    } finally {
+      committed.resolve();
+      await Promise.allSettled([lastSlot, contender]);
+      await pool.end();
+    }
+    assert.equal((await db.query("SELECT count(*)::int AS n FROM aigas_fw_decisions WHERE tenant_id=$1 AND created_at>clock_timestamp()-interval '60 seconds'", [tenant])).rows[0].n, MAX_EVALUATIONS_PER_WINDOW);
     const limited = await post(tenant, { text: 'معلومة عامة', synthetic: true });
     assert.equal(limited.status, 429);
     assert.equal(limited.data.code, 'RATE_LIMITED');

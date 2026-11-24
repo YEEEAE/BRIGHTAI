@@ -1,8 +1,8 @@
-import { recordProductEvent } from '../ledger/writer.mjs';
+import { ledgerDependency, recordProductEvent } from '../ledger/writer.mjs';
 import { assertReferenceTenant, requireProductAccess } from '../kernel/access.mjs';
 import { dependencyEntry, HTTP_CONTRACT_VERSION } from '../kernel/contracts.mjs';
 import { randomUUID } from 'node:crypto';
-import { transaction } from '../kernel/db.mjs';
+import { lockGovernance, transaction } from '../kernel/db.mjs';
 import { tenantGuard, audit } from '../kernel/service.mjs';
 import { KernelError, requireRole } from '../kernel/core.mjs';
 import {
@@ -11,7 +11,6 @@ import {
 } from './core.mjs';
 import { providerState } from './provider.mjs';
 import { requestHumanReview, reviewIntegrationState } from './escalation.mjs';
-import { lockHumanGate } from '../human-gate/integration.mjs';
 import { enforceDecision } from './guard.mjs';
 import { policyReference, decisionFingerprint } from './binding.mjs';
 import { evaluateKernelPolicy } from '../kernel/policies.mjs';
@@ -25,10 +24,11 @@ const uniqueName = error => error?.code === '23505';
 // an approved requirement made it mandatory; Risk Engine is not consulted by the
 // baseline enforcement path at all.
 function dependencySummary(ledgerEvidence, review) {
-  const ledger = ledgerEvidence ?? { dependencyStatus: 'not configured', dependencyCode: 'LEDGER_NOT_EVALUATED', required: false };
   return {
-    ledger: dependencyEntry('ledger', ledger.dependencyStatus, { required: ledger.required === true, reason: ledger.dependencyCode ?? null }),
-    humanGate: dependencyEntry('human-gate', review?.dependencyStatus ?? 'not configured', { required: false, reason: review?.code ?? null }),
+    ledger: ledgerDependency(ledgerEvidence),
+    humanGate: review
+      ? dependencyEntry('human-gate', review.dependencyStatus, { required: true, reason: review.reason ?? review.code })
+      : { product: 'human-gate', required: false, evaluated: false, blocking: false },
     riskEngine: Object.freeze({ product: 'risk-engine', required: false, evaluated: false, blocking: false, reason: 'BASELINE_CONTROL_DOES_NOT_REQUIRE_RISK_ENGINE' }),
   };
 }
@@ -65,18 +65,18 @@ export function createFirewallService(transact = transaction) {
     if (action && !actions.includes(action)) throw new KernelError(400, 'INVALID_FILTER', 'تصفية الإجراء غير صالحة.');
     if (reason && !Object.hasOwn(reasons, reason)) throw new KernelError(400, 'INVALID_FILTER', 'تصفية السبب غير صالحة.');
     if (operation === 'enforce' && (typeof body.request_id !== 'string' || !uuid.test(body.request_id))) throw new KernelError(400, 'INVALID_REQUEST_ID', 'يلزم معرّف UUID جديد للعملية لمنع إعادة تنفيذ الطلب نفسه.');
+    const requestId = operation === 'enforce' ? body.request_id.toLowerCase() : null;
     if (['evaluate', 'enforce'].includes(operation) && body.synthetic !== true) throw new KernelError(400, 'SYNTHETIC_REQUIRED', 'هذه النسخة تقبل نصًا اصطناعيًا فقط؛ يلزم الإقرار بذلك.');
     const outcome = await transact(async db => {
       const scope = await tenantGuard(identity, requested, db);
       if (!scope.tenant) throw new KernelError(403, 'NO_WORKSPACE', 'أنشئ مساحة عمل من Kernel أولًا.');
       const tenantId = scope.tenant.tenant_id;
-      // Human Gate can subsequently lock the tenant row (workspace rename) or
-      // append Ledger evidence. Acquire its lock before either on this route.
-      if (operation === 'enforce') {
-        await lockHumanGate(db, tenantId);
+      if (operation !== 'dashboard') {
+        // MEMBER cannot lock the tenant row under RLS. The advisory lock also
+        // serializes LAB quotas and rule edits with GUARD and Human Gate.
+        await lockGovernance(db, tenantId);
+        await db.query('SELECT id FROM public.aigas_tenants WHERE id=$1 FOR UPDATE', [tenantId]);
       }
-      // Serialize policy changes and evaluation within each tenant.
-      await db.query('SELECT id FROM public.aigas_tenants WHERE id=$1 FOR UPDATE', [tenantId]);
       await requireProductAccess(db, identity, tenantId, 'firewall', operation);
       const member = (await db.query('SELECT role FROM public.aigas_lock_member($1,$2)', [tenantId, identity.userId])).rows[0];
       if (!member) throw new KernelError(403, 'FORBIDDEN', 'عضويتك لم تعد متاحة.');
@@ -189,45 +189,37 @@ export function createFirewallService(transact = transaction) {
 
       if (operation === 'evaluate' || operation === 'enforce') {
         const enforced = operation === 'enforce';
-        // Abuse control: cap stored evaluations per tenant window. The tenant row lock
-        // above serializes this check with concurrent requests in the same transaction.
-        const recent = (await db.query(
-          `SELECT count(*)::int AS count FROM public.aigas_fw_decisions WHERE tenant_id=$1 AND created_at > now() - ($2::text || ' seconds')::interval`,
-          [tenantId, EVALUATION_WINDOW_SECONDS],
-        )).rows[0].count;
-        if (recent >= MAX_EVALUATIONS_PER_WINDOW) {
-          throw new KernelError(429, 'RATE_LIMITED', `تجاوزت المؤسسة ${MAX_EVALUATIONS_PER_WINDOW} تقييمًا في ${EVALUATION_WINDOW_SECONDS} ثانية؛ انتظر قليلًا ثم أعد المحاولة.`);
-        }
         const requestText = inputText(body.text);
         let kernelPolicy = null;
         if (enforced) {
           try {
             kernelPolicy = await evaluateKernelPolicy(db, identity, tenantId, { productSlug: 'firewall', operation: 'firewall.execute', resource_type: 'text', departmentId: body.department_id ?? null });
           } catch (error) {
-            if (['42P01', '42703', '42501'].includes(error?.code)) throw new KernelError(503, 'KERNEL_POLICY_SETUP_REQUIRED', 'محرك سياسات Kernel غير مهيأ أو غير متاح؛ لم يُرسل الطلب إلى مزود AI.');
-            throw error;
+            const setup = ['42P01', '42703', '42883', '42501'].includes(error?.code);
+            throw new KernelError(503, setup ? 'KERNEL_POLICY_SETUP_REQUIRED' : 'KERNEL_POLICY_UNAVAILABLE',
+              'تعذر التحقق من سياسة Kernel؛ لم يُرسل الطلب إلى مزود AI.',
+              error?.code === '42501' ? 'access denied' : setup ? 'not configured' : 'temporarily unavailable');
           }
           // Missing policy output is an unavailable authorizer, never an allow.
-          if (!kernelPolicy || typeof kernelPolicy.decision !== 'string') throw new KernelError(503, 'KERNEL_POLICY_UNAVAILABLE', 'تعذر الحصول على قرار سياسة Kernel؛ لم يُرسل الطلب إلى مزود AI.');
+          if (!['ALLOW', 'BLOCK'].includes(kernelPolicy?.decision)) throw new KernelError(503, 'KERNEL_POLICY_UNAVAILABLE', 'تعذر الحصول على قرار سياسة Kernel؛ لم يُرسل الطلب إلى مزود AI.');
         }
-        const productResult = evaluate(requestText, rules, { enforce: enforced });
         // A Kernel policy that is not ALLOW hard-denies and is never softened by product rules.
         const result = enforced && kernelPolicy.decision !== 'ALLOW'
           ? { action: 'DENY', reason: 'KERNEL_POLICY_DENIED', rule_id: null, rule_version: null, rule_name: null, output: null }
-          : productResult;
+          : evaluate(requestText, rules, { enforce: enforced });
         const id = randomUUID();
         const policyVersion = enforced ? policyReference(kernelPolicy) : 'firewall-evaluator-v2';
         const requestFingerprint = enforced
-          ? decisionFingerprint({ tenantId, actorUserId: identity.userId, requestId: body.request_id, policyVersion, result, enforced })
+          ? decisionFingerprint({ tenantId, actorUserId: identity.userId, requestId, policyVersion, result, enforced })
           : null;
-        // Single-use request UUID. The pre-check runs under the tenant row lock taken
+        // Single-use request UUID. The pre-check runs under the governance lock taken
         // above, so retries are classified before any write; a UUID reused for a
         // different decision is a conflict and is never executed again.
         if (enforced) {
           // A client-supplied request UUID is only usable inside the tenant that
           // first used it. Another workspace cannot replay this reference.
-          await assertReferenceTenant(db, tenantId, 'firewall_request', body.request_id);
-          const existing = (await db.query('SELECT id,request_fingerprint FROM public.aigas_fw_decisions WHERE tenant_id=$1 AND request_id=$2', [tenantId, body.request_id])).rows[0];
+          await assertReferenceTenant(db, tenantId, 'firewall_request', requestId);
+          const existing = (await db.query('SELECT id,request_fingerprint FROM public.aigas_fw_decisions WHERE tenant_id=$1 AND request_id=$2', [tenantId, requestId])).rows[0];
           if (existing) {
             if (!existing.request_fingerprint || existing.request_fingerprint !== requestFingerprint) {
               throw new KernelError(409, 'REQUEST_ID_CONFLICT', 'هذا المعرّف مستخدم لطلب مختلف؛ استخدم UUID جديدًا. لم يُعد تنفيذ أي عملية.');
@@ -235,27 +227,35 @@ export function createFirewallService(transact = transaction) {
             throw new KernelError(409, 'REQUEST_ALREADY_EVALUATED', 'هذا الطلب مسجّل مسبقًا؛ لم يُعد تنفيذه. راجع سجل القرارات قبل أي عملية جديدة.');
           }
         }
+        // Count committed evaluations after acquiring the tenant's governance lock.
+        const recent = (await db.query(
+          `SELECT count(*)::int AS count FROM public.aigas_fw_decisions WHERE tenant_id=$1 AND created_at > statement_timestamp() - ($2::text || ' seconds')::interval`,
+          [tenantId, EVALUATION_WINDOW_SECONDS],
+        )).rows[0].count;
+        if (recent >= MAX_EVALUATIONS_PER_WINDOW) {
+          throw new KernelError(429, 'RATE_LIMITED', `تجاوزت المؤسسة ${MAX_EVALUATIONS_PER_WINDOW} تقييمًا في ${EVALUATION_WINDOW_SECONDS} ثانية؛ انتظر قليلًا ثم أعد المحاولة.`);
+        }
         // Explicit metadata fields only: the submitted text and any output never reach the database.
         let ledgerEvidence = null;
         try {
           if (enforced) {
             await db.query('INSERT INTO public.aigas_kernel_policy_decisions(id,tenant_id,actor_user_id,product_slug,operation,decision,reason,policy_chain,request_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8::jsonb,$9)',
-              [randomUUID(), tenantId, identity.userId, 'firewall', 'firewall.execute', kernelPolicy.decision, kernelPolicy.reason, JSON.stringify(kernelPolicy.policies ?? []), body.request_id]);
+              [randomUUID(), tenantId, identity.userId, 'firewall', 'firewall.execute', kernelPolicy.decision, kernelPolicy.reason, JSON.stringify(kernelPolicy.policies ?? []), requestId]);
           }
           const inserted = await db.query(
-            'INSERT INTO public.aigas_fw_decisions (id,tenant_id,action,reason,rule_id,rule_version,mode,request_id,policy_version,request_fingerprint) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING created_at',
-            [id, tenantId, result.action, result.reason, result.rule_id, result.rule_version, enforced ? 'GUARD' : 'LAB', enforced ? body.request_id : null, policyVersion, requestFingerprint],
+            'INSERT INTO public.aigas_fw_decisions (id,tenant_id,action,reason,rule_id,rule_version,mode,request_id,policy_version,request_fingerprint,created_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,clock_timestamp()) RETURNING created_at',
+            [id, tenantId, result.action, result.reason, result.rule_id, result.rule_version, enforced ? 'GUARD' : 'LAB', requestId, policyVersion, requestFingerprint],
           );
           if (inserted.rowCount !== 1) throw new Error('DECISION_NOT_SAVED');
           // Kernel audit is required and atomic with the metadata-only decision.
           await audit(db, identity, tenantId, enforced ? 'firewall.guard.evaluated' : 'firewall.lab.evaluated', {
-            correlationId: enforced ? body.request_id : id,
+            correlationId: requestId ?? id,
             policyVersion,
-            idempotencyKey: enforced ? `firewall:guard:${body.request_id}` : `firewall:lab:${id}`,
+            idempotencyKey: enforced ? `firewall:guard:${requestId}` : `firewall:lab:${id}`,
           });
           let escalation = null;
           if (enforced && result.action === 'ESCALATE') {
-            try { escalation = await requestHumanReview(db, identity, tenantId, { decisionId: id, requestId: body.request_id, policyVersion, requestFingerprint }); }
+            try { escalation = await requestHumanReview(db, identity, tenantId, { decisionId: id, requestId, policyVersion, requestFingerprint }); }
             catch (error) {
               if (error instanceof KernelError && error.code === 'MANDATORY_EVIDENCE_UNAVAILABLE') throw error;
               throw new KernelError(503, 'HUMAN_GATE_UNAVAILABLE', 'تعذر إنشاء طلب المراجعة البشرية داخل المعاملة؛ لم تُحفظ العملية ولم يُرسل الطلب.');
@@ -266,7 +266,7 @@ export function createFirewallService(transact = transaction) {
           // unless an approved evidence requirement matches this tenant and event type.
           ledgerEvidence = await recordProductEvent(db, identity, tenantId, {
             source: 'firewall', event_type: 'firewall.decision.recorded',
-            correlation_id: enforced ? body.request_id : id,
+            correlation_id: requestId ?? id,
             decision_id: id,
             policy_version: enforced ? policyVersion : (result.rule_id ? `rule:${result.rule_id}:v${result.rule_version}` : 'firewall-evaluator-v2'),
             metadata_json: { synthetic: true, decision_ref: id, action: result.action, mode: enforced ? 'GUARD' : 'LAB', rule_ref: result.rule_id, rule_version: result.rule_version, ...(enforced ? { request_fingerprint: requestFingerprint } : {}) },
@@ -278,8 +278,11 @@ export function createFirewallService(transact = transaction) {
             created_at: inserted.rows[0].created_at, mode: enforced ? 'GUARD' : 'LAB',
             policy_version: policyVersion, request_fingerprint: requestFingerprint,
           };
-          const dependencies = dependencySummary(ledgerEvidence, escalation ?? reviewIntegrationState(tenantId));
-          if (enforced) return { decision, tenantId, actorUserId: identity.userId, requestId: body.request_id, policyVersion, requestFingerprint,
+          const dependencies = dependencySummary(ledgerEvidence, escalation);
+          dependencies.kernelPolicy = enforced
+            ? dependencyEntry('kernel-policy', kernelPolicy.decision === 'ALLOW' ? 'available' : kernelPolicy.reason === 'POLICY_UNAVAILABLE' ? 'not configured' : 'blocked', { required: true, reason: kernelPolicy.reason })
+            : { product: 'kernel-policy', required: false, evaluated: false, blocking: false };
+          if (enforced) return { decision, tenantId, actorUserId: identity.userId, requestId, policyVersion, requestFingerprint,
             outputRules: rules, forwardText: ['ALLOW', 'REDACT'].includes(result.action) ? result.output : null, kernelPolicy, escalation, dependencies, contract_version: HTTP_CONTRACT_VERSION };
           return {
             ...decision, rule_name: result.rule_name, output: result.output,

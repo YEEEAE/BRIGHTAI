@@ -11,7 +11,7 @@ import { join } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import { exportJWK, generateKeyPair, SignJWT } from 'jose';
 import pg from 'pg';
-import { installSchema, localDatabaseUrl } from './helpers/database.mjs';
+import { grantProduct, installSchema, localDatabaseUrl } from './helpers/database.mjs';
 
 const { chromium } = await import(process.env.BRIGHTAI_PLAYWRIGHT_MODULE ?? 'playwright');
 const dbUrl = localDatabaseUrl('KERNEL_AUTH_E2E_DATABASE_URL');
@@ -301,6 +301,23 @@ try {
   assert.ok((await page.locator('[data-open-workspace]').getAttribute('href')).endsWith(workspace));
   await page.locator('[data-reload]').click();
   await page.locator('[data-accept-status]').filter({ hasText: /لا توجد دعوة مؤهلة/ }).waitFor();
+
+  await grantProduct(db, workspace, 'firewall');
+  await page.goto(`${base}/app/firewall/?workspace=${workspace}`);
+  await page.locator('[data-private]').waitFor();
+  await page.locator('#fw-text').fill('Synthetic dependency fixture');
+  await page.locator('[data-synthetic]').check();
+  await page.locator('[data-eval-submit]').click();
+  const firewallResult = page.locator('[data-result]');
+  await firewallResult.getByRole('list', { name: 'حالات الاعتماد' }).waitFor();
+  assert.match(await firewallResult.innerText(), /Ledger — غير مهيأ/);
+  assert.match(await firewallResult.innerText(), /سياسة Kernel — خارج مسار العملية/);
+  await page.locator('[data-eval-mode]').selectOption('GUARD');
+  await page.locator('[data-eval-submit]').click();
+  await firewallResult.getByText('سياسة Kernel — غير مهيأ · يحجب المسار', { exact: true }).waitFor();
+  assert.match(await firewallResult.innerText(), /NOT_EXECUTED/);
+  assert.match(await firewallResult.innerText(), /DENY/);
+  await checkWidths(widths);
 
   await page.goto(`${base}/auth/sign-up/?returnTo=%2Fapp%2Ffirewall%2F`);
   await page.waitForURL(`${base}/app/kernel/?returnTo=%2Fapp%2Ffirewall%2F`);

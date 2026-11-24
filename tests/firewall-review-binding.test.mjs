@@ -89,14 +89,22 @@ test('atomic metadata review is visible, independent, revocable and rolls back w
   await pool.query("INSERT INTO aigas_policies(id,tenant_id,scope,policy_family,rule_key,owner_user_id,current_version) VALUES($1,$2,'ENTERPRISE','synthetic','firewall-local-allow',$3,1)",[policyId,tenant,owner.userId]);
   await pool.query("INSERT INTO aigas_policy_versions(tenant_id,policy_id,version,status,effect,checksum,change_reason,created_by,approved_by,published_at) VALUES($1,$2,1,'PUBLISHED','ALLOW',$3,'Synthetic local fixture',$4,$5,now())",[tenant,policyId,checksum,owner.userId,reviewer.userId]);
   await grantProduct(pool,tenant,'ledger');
-  const guarded=requestId=>firewall(post('/app/api/firewall/guarded-executions/',`workspace=${tenant}`,{text:'Synthetic escalation fixture',synthetic:true,request_id:requestId}),'enforce');
+  const guarded=(requestId,text='Synthetic escalation fixture')=>firewall(post('/app/api/firewall/guarded-executions/',`workspace=${tenant}`,{text,synthetic:true,request_id:requestId}),'enforce');
   const submittedId=randomUUID();
-  const submissions=await Promise.all([guarded(submittedId),guarded(submittedId)]);
+  const submissions=await Promise.all([guarded(submittedId),guarded(submittedId.toUpperCase())]);
   assert.deepEqual(submissions.map(response=>response.status).sort(),[202,409]);
   const submitted=await submissions.find(response=>response.status===202).json();
   assert.equal(submitted.code,'REVIEW_PENDING');
   assert.equal(submitted.external_action_executed,false);
+  assert.equal(submitted.dependencies.kernelPolicy.status,'available');
+  assert.equal(submitted.dependencies.humanGate.status,'available');
+  assert.equal(submitted.dependencies.ledger.status,'available');
+  assert.equal(submitted.dependencies.riskEngine.evaluated,false);
+  assert.equal(submitted.request_id,submittedId);
+  assert.equal(submitted.review.request_fingerprint,submitted.request_fingerprint);
   assert.equal((await submissions.find(response=>response.status===409).json()).code,'REQUEST_ALREADY_EVALUATED');
+  assert.equal((await (await guarded(submittedId,'Synthetic different text with same outcome')).json()).code,'REQUEST_ALREADY_EVALUATED');
+  assert.equal((await (await guarded(submittedId,'Different outcome')).json()).code,'REQUEST_ID_CONFLICT');
   const reviewId=submitted.review.id;
   const selector=new URLSearchParams({workspace:tenant,request:reviewId});
   const listRequest=()=>new Request(`${origin}/app/api/human-gate/requests/?${selector}`);
@@ -107,6 +115,10 @@ test('atomic metadata review is visible, independent, revocable and rolls back w
   const decide=()=>humanGate(reviewer)(post('/app/api/human-gate/requests/decide/',selector,{decision:'APPROVE',reason:'Independent approval fixture'}),'decide',reviewId);
   const decisions=await Promise.all([decide(),decide()]);
   assert.deepEqual(decisions.map(response=>response.status).sort(),[200,409]);
+  const saved=await decisions.find(response=>response.status===200).json();
+  assert.equal(saved.external_action_executed,false);
+  assert.equal(saved.execution_status,'NOT_EXECUTED');
+  assert.equal(saved.dependencies.ledger.status,'available');
   const approvedList=await (await humanGate(owner)(listRequest(),'list')).json();
   assert.equal(approvedList.requests[0].executeBlock,'EXECUTION_INTEGRATION_NOT_CONFIGURED');
   const resume=await humanGate(owner)(post('/app/api/human-gate/requests/execute/',selector,{}),'execute',reviewId);
@@ -118,6 +130,40 @@ test('atomic metadata review is visible, independent, revocable and rolls back w
    WHERE a.correlation_id=$1 ORDER BY l.sequence_no`,[reviewId])).rows;
   assert.deepEqual(evidence.map(row=>row.action),['kernel.human_gate.request.created','kernel.human_gate.decision.approve']);
   assert.equal((await pool.query("SELECT count(*)::int AS n FROM aigas_ld_events WHERE source='firewall' AND metadata_json->>'decision_ref'=$1",[submitted.decision.id])).rows[0].n,1);
+
+  // Fail late, on the Firewall append after the review and its Ledger event.
+  // The enclosing transaction must clear every previously written row.
+  await pool.query(`INSERT INTO aigas_ld_evidence_requirements(tenant_id,source,event_type,policy_version,approval_reference,approved_by)
+   VALUES($1,'firewall','firewall.decision.recorded','fixture-v1','SYNTHETIC-ONLY',$2)`,[tenant,owner.userId]);
+  const counts=async()=>(await pool.query(`SELECT
+   (SELECT count(*) FROM aigas_fw_decisions) AS firewall,
+   (SELECT count(*) FROM aigas_kernel_policy_decisions) AS policy,
+   (SELECT count(*) FROM aigas_audit_events) AS audit,
+   (SELECT count(*) FROM aigas_hg_requests) AS reviews,
+   (SELECT count(*) FROM aigas_hg_events) AS review_events,
+   (SELECT count(*) FROM aigas_ld_events) AS ledger`)).rows[0];
+  const beforeMandatory=await counts();
+  await pool.query("ALTER TABLE aigas_ld_events ADD CONSTRAINT synthetic_firewall_failure CHECK (source <> 'firewall') NOT VALID");
+  const retryableId=randomUUID();
+  const failed=await guarded(retryableId);
+  assert.equal(failed.status,503);
+  assert.equal((await failed.json()).code,'MANDATORY_EVIDENCE_UNAVAILABLE');
+  assert.deepEqual(await counts(),beforeMandatory);
+  await pool.query('ALTER TABLE aigas_ld_events DROP CONSTRAINT synthetic_firewall_failure');
+  const retried=await guarded(retryableId);
+  assert.equal(retried.status,202);
+  assert.equal((await retried.json()).dependencies.ledger.required,true);
+
+  // A real policy query failure must roll back even when a rule could escalate.
+  const beforePolicyFailure=await counts();
+  await pool.query('ALTER TABLE aigas_policy_versions RENAME TO fixture_hidden_policy_versions');
+  const unavailable=await guarded(randomUUID());
+  assert.equal(unavailable.status,503);
+  const policyError=await unavailable.json();
+  assert.equal(policyError.code,'KERNEL_POLICY_SETUP_REQUIRED');
+  assert.equal(policyError.dependencyStatus,'not configured');
+  assert.deepEqual(await counts(),beforePolicyFailure);
+  await pool.query('ALTER TABLE fixture_hidden_policy_versions RENAME TO aigas_policy_versions');
 
   const create=async(fail=false)=>transact(async db=>{
    await tenantGuard(owner,tenant,db);

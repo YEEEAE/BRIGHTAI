@@ -80,6 +80,12 @@ export async function transaction(work) {
     client.release();
   }
 }
+// Share the existing Human Gate lock with governance transitions that need to
+// serialize even when RLS hides the tenant row from SELECT FOR UPDATE.
+export function lockGovernance(db, tenantId) {
+  return db.query("SELECT pg_advisory_xact_lock(hashtextextended('human-gate:' || $1,0))", [tenantId]);
+}
+
 // `set_config(..., true)` is transaction-local. Outside an explicit transaction it is
 // discarded with the implicit transaction, so the next query would run unscoped while the
 // caller believes it is scoped. SAVEPOINT is only valid inside a transaction block, which

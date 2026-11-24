@@ -1,4 +1,4 @@
-import { recordKernelAuditEvidence, recordProductEvent } from '../ledger/writer.mjs';
+import { ledgerDependency, recordKernelAuditEvidence, recordProductEvent } from '../ledger/writer.mjs';
 import { requireProductAccess } from '../kernel/access.mjs';
 import { randomUUID } from 'node:crypto';
 import { transaction } from '../kernel/db.mjs';
@@ -55,6 +55,7 @@ export function createHumanGateService(transact=transaction) {
     }
     // Kernel's existing metadata-only evidence adapter keeps Ledger optional.
     // Synthetic note events retain their existing explicitly synthetic classification.
+    let evidence;
     if(request?.operation_type==='INTERNAL_DEMO_NOTE'){
      const eventType={CREATED:'human_gate.request.created',APPROVED:'human_gate.decision.recorded',REJECTED:'human_gate.decision.recorded',EXECUTED:'human_gate.demo_note.completed'}[event];
      if(eventType){
@@ -65,7 +66,7 @@ export function createHumanGateService(transact=transaction) {
        if(!decisionRef?.id) throw new KernelError(503,'AUDIT_UNAVAILABLE','تعذر ربط القرار بسجل الطلب؛ لم تكتمل العملية.');
        Object.assign(metadata,{decision_ref:decisionRef.id,decision:decisionRef.decision});
       }
-      await recordProductEvent(db,identity,tenantId,{
+      evidence=await recordProductEvent(db,identity,tenantId,{
        source:'human-gate',event_type:eventType,
        correlation_id:correlationId,
        decision_id:decisionRef?.id??request.id,
@@ -83,11 +84,12 @@ export function createHumanGateService(transact=transaction) {
      // in the allowlisted metadata, so a delegation event cannot be rejected by
      // the evidence constraint after the real change was already made.
      const kernelEventAction=/^(workspace\.created|kernel\.[a-z_.-]+)$/.test(auditAction??'')?auditAction:`kernel.human_gate.${action}`;
-     await recordKernelAuditEvidence(db,identity,tenantId,{
+     evidence=await recordKernelAuditEvidence(db,identity,tenantId,{
       auditId,correlationId,policyVersion:request?.policy_version||policy?.version||'human-gate-policy-v3',action:kernelEventAction,
      });
     }
     await assertAccessFresh(db,tenantId);
+    return evidence;
    };
    const revokeGrant=async(requestId)=>{
     await db.query("UPDATE public.aigas_hg_grants SET status='REVOKED' WHERE tenant_id=$1 AND request_id=$2 AND status='ACTIVE'",[tenantId,requestId]);
@@ -335,9 +337,9 @@ export function createHumanGateService(transact=transaction) {
      // The execution permit is bound to the exact task and expires with the approval.
      grant=(await db.query('INSERT INTO public.aigas_hg_grants(id,tenant_id,request_id,requester_id,reviewer_id,operation_type,subject_ref,payload_digest,policy_version,expires_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *',[randomUUID(),tenantId,id,request.requester_id,identity.userId,request.operation_type,request.subject_ref,request.payload_digest,request.policy_version,updated.expires_at])).rows[0];
     }
-    await record('decision.'+body.decision.toLowerCase(),updated,newStatus);
+    const evidence=await record('decision.'+body.decision.toLowerCase(),updated,newStatus);
     await assertFresh(db,tenantId,id);
-    return {request:updated,decision,grant,binding_version:bindingVersion,approval_expires_at:newStatus==='APPROVED'?updated.expires_at:null,persisted:true};
+    return {request:updated,decision,grant,binding_version:bindingVersion,approval_expires_at:newStatus==='APPROVED'?updated.expires_at:null,persisted:true,external_action_executed:false,execution_status:'NOT_EXECUTED',dependencies:{ledger:ledgerDependency(evidence)}};
    }
    if(request.requester_id!==identity.userId) throw new KernelError(403,'FORBIDDEN','التنفيذ متاح لمقدم الطلب فقط.');
    if(request.operation_type===riskReviewOperation) throw new KernelError(409,'REVIEW_ONLY','مراجعة تقييم المخاطر لا تصدر إذن تنفيذ.');

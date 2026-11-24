@@ -1,7 +1,7 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { KernelError, requireRole } from './core.mjs';
 import { tenantGuard, audit } from './service.mjs';
-import { transaction } from './db.mjs';
+import { lockGovernance, transaction } from './db.mjs';
 
 const scopes = ['ENTERPRISE','DEPARTMENT','PRODUCT','USER'];
 const effects = ['ALLOW','BLOCK','HARD_DENY','REDACT','REQUEST_APPROVAL','WARN'];
@@ -52,6 +52,8 @@ const signedFields = (conditions,effect,obligations,mandatory) => ({conditions,e
 async function scoped(db, identity, workspace, roles = ['OWNER']) {
   const result = await tenantGuard(identity, workspace, db);
   if (!result.tenant) throw new KernelError(403,'NO_WORKSPACE','أنشئ مساحة عمل من Kernel أولًا.');
+  await lockGovernance(db, result.tenant.tenant_id);
+  await db.query('SELECT id FROM public.aigas_tenants WHERE id=$1 FOR UPDATE',[result.tenant.tenant_id]);
   // Lock the actor membership through the reviewed helper. A direct FOR UPDATE on the
   // caller's own row is filtered out by the runtime UPDATE policy (user_id <> actor),
   // which would make every policy operation fail closed with a false 403.
@@ -80,7 +82,6 @@ export async function policyOperation(identity, workspace, body) {
     const tenant = await scoped(db, identity, workspace, op==='approve'||reviewRead?['OWNER','ADMIN']:['OWNER']), tenantId = tenant.tenant_id;
     const delegated = tenant.role==='ADMIN' ? (await db.query("SELECT 1 FROM public.aigas_policy_delegations WHERE tenant_id=$1 AND delegate_user_id=$2 AND action='APPROVE' AND revoked_at IS NULL AND expires_at>now()",[tenantId,identity.userId])).rowCount > 0 : false;
     if (tenant.role==='ADMIN' && reviewRead && !delegated) throw new KernelError(403,'POLICY_APPROVAL_NOT_DELEGATED','لم يفوضك مالك المؤسسة لمراجعة السياسات.');
-    await db.query('SELECT id FROM public.aigas_tenants WHERE id=$1 FOR UPDATE',[tenantId]);
     const schema = await reviewSchema(db);
     const correlationId = randomUUID();
     const reason = body.reason === undefined ? '' : text(body.reason,3,500,'INVALID_REASON');
@@ -349,19 +350,22 @@ export async function evaluateKernelPolicy(db, identity, tenantId, context) {
   }
   const membership=(await db.query("SELECT department_id FROM public.aigas_department_memberships WHERE tenant_id=$1 AND user_id=$2 AND status='ACTIVE'",[tenantId,identity.userId])).rows;
   const contextJson=JSON.stringify({operation:context.operation,product_slug:context.productSlug,resource_type:context.resource_type});
+  // The transaction may have started before a lock wait. Use one current database
+  // timestamp for both policy reads so a policy cannot outlive its evaluation window.
+  const { evaluated_at } = (await db.query('SELECT clock_timestamp()::text AS evaluated_at')).rows[0];
   const hasDepartmentPolicies=(await db.query(`SELECT 1 FROM public.aigas_policies p JOIN public.aigas_policy_versions v ON v.tenant_id=p.tenant_id AND v.policy_id=p.id AND v.version=p.current_version
     WHERE p.tenant_id=$1 AND p.scope='DEPARTMENT' AND p.department_id IN (SELECT department_id FROM public.aigas_department_memberships WHERE tenant_id=$1 AND user_id=$2 AND status='ACTIVE')
       AND (p.product_slug IS NULL OR p.product_slug=$4)
       AND v.status='PUBLISHED' AND (v.conditions->>'operation' IS NULL OR v.conditions->>'operation'=($3::jsonb)->>'operation')
       AND (v.conditions->>'resource_type' IS NULL OR v.conditions->>'resource_type'=($3::jsonb)->>'resource_type')
-      AND (v.effective_from IS NULL OR v.effective_from<=now()) AND (v.expires_at IS NULL OR v.expires_at>now()) LIMIT 1`,[tenantId,identity.userId,contextJson,context.productSlug])).rowCount>0;
+      AND (v.effective_from IS NULL OR v.effective_from<=$5::timestamptz) AND (v.expires_at IS NULL OR v.expires_at>$5::timestamptz) LIMIT 1`,[tenantId,identity.userId,contextJson,context.productSlug,evaluated_at])).rowCount>0;
   if (!departmentId && membership.length && hasDepartmentPolicies) return {decision:'BLOCK',action:'DENY',reason:'CONTEXT_REQUIRED',obligations:[],policies:[]};
   const rows=(await db.query(`SELECT p.id,p.scope,p.department_id,p.product_slug,p.user_id,v.version,v.conditions,v.effect,v.obligations,v.is_mandatory,v.checksum
     FROM public.aigas_policies p JOIN public.aigas_policy_versions v ON v.tenant_id=p.tenant_id AND v.policy_id=p.id AND v.version=p.current_version
-    WHERE p.tenant_id=$1 AND v.status='PUBLISHED' AND (v.effective_from IS NULL OR v.effective_from<=now()) AND (v.expires_at IS NULL OR v.expires_at>now())
+    WHERE p.tenant_id=$1 AND v.status='PUBLISHED' AND (v.effective_from IS NULL OR v.effective_from<=$5::timestamptz) AND (v.expires_at IS NULL OR v.expires_at>$5::timestamptz)
       AND (p.scope='ENTERPRISE' OR (p.scope='DEPARTMENT' AND p.department_id=$2) OR (p.scope='PRODUCT' AND p.product_slug=$3) OR (p.scope='USER' AND p.user_id=$4))
       AND (p.product_slug IS NULL OR p.product_slug=$3)
-    ORDER BY CASE p.scope WHEN 'ENTERPRISE' THEN 0 WHEN 'DEPARTMENT' THEN 1 WHEN 'PRODUCT' THEN 2 ELSE 3 END,p.id`,[tenantId,departmentId,context.productSlug,identity.userId])).rows;
+    ORDER BY CASE p.scope WHEN 'ENTERPRISE' THEN 0 WHEN 'DEPARTMENT' THEN 1 WHEN 'PRODUCT' THEN 2 ELSE 3 END,p.id`,[tenantId,departmentId,context.productSlug,identity.userId,evaluated_at])).rows;
   const active=[];
   for (const row of rows) {
     const conditions=Object.entries(row.conditions ?? {});

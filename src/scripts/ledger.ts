@@ -1,4 +1,5 @@
 import { createWorkspaceAuth as createAuthClient, getWorkspaceSession, appFetch, setWorkspace } from './workspace-context';
+import { dependencyErrorMessage } from './dependency-status';
 const root=document.querySelector<HTMLElement>('[data-ledger]')!;
 const get=<T extends Element=HTMLElement>(selector:string)=>root.querySelector<T>(selector)!;
 const status=get('[data-status]'), area=get('[data-private]');
@@ -26,7 +27,7 @@ async function api(path='',method='GET',body?:object){
  const response=await appFetch(auth,`/app/api/ledger/events/${path}?${params}`,{method,cache:'no-store',headers:{Authorization:`Bearer ${token}`,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})});
  const data=await response.json();
  if(generation!==epoch)throw new Error('تغيرت الجلسة؛ حدّث السجل.');
- if(!response.ok)throw new Error(data.message||'تعذر إكمال الطلب.');return data;
+ if(!response.ok)throw new Error(dependencyErrorMessage(data.message||'تعذر إكمال الطلب.',data.dependencyStatus));return data;
 }
 const time=(value:string)=>new Date(value).toLocaleString('ar-SA',{timeZone:'Asia/Riyadh'});
 const labels:Record<string,string>={'synthetic.test.created':'اختبار اصطناعي','synthetic.review.recorded':'مراجعة اصطناعية','firewall.decision.recorded':'قرار Firewall','human_gate.request.created':'طلب Human Gate','human_gate.decision.recorded':'قرار Human Gate','human_gate.demo_note.completed':'تنفيذ ملاحظة تجريبية','risk_engine.asset.created':'إنشاء أصل','risk_engine.asset.updated':'تحديث أصل','risk_engine.assessment.created':'تقييم مخاطر','kernel.audit.recorded':'إجراء Kernel'};

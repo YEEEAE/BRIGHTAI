@@ -1,4 +1,5 @@
 import { createWorkspaceAuth as createAuthClient, getWorkspaceSession, appFetch, setWorkspace } from './workspace-context';
+import { dependencyErrorMessage, dependencyMessages } from './dependency-status';
 
 const root = document.querySelector<HTMLElement>('[data-firewall]')!;
 const status = root.querySelector<HTMLElement>('[data-status]')!;
@@ -27,7 +28,7 @@ const reasonLabels: Record<string, string> = {
   NO_ACTIVE_POLICY: 'لا توجد قاعدة مفعّلة؛ حجب آمن.',
   INVALID_POLICY: 'قاعدة محفوظة غير صالحة؛ حجب آمن.',
   RULE_DENY: 'طابق النص قاعدة حجب.',
-  RULE_ESCALATE: 'تصعيد للموافقة البشرية؛ لا مسار موافقة مفعّل.',
+  RULE_ESCALATE: 'يتطلب النص مراجعة بشرية قبل أي تنفيذ.',
   RULE_REDACT: 'نُقّح النص وفق قاعدة تنقيح.',
   RULE_WARN: 'تحذير سياسة؛ لا يمرر تلقائيًا.',
   RULE_ALLOW: 'طابق النص قاعدة سماح.',
@@ -112,7 +113,7 @@ async function api(path: string, method = 'GET', body?: object) {
   if (epoch !== viewEpoch) throw new ApiError('تغيرت الجلسة؛ أعد تحميل المؤسسة.', 'SESSION_CHANGED');
   if (path === 'guarded-executions' && data?.persisted === true && data?.decision?.id) return data;
   if (!response.ok && ['FORBIDDEN', 'NO_WORKSPACE', 'PRODUCT_NOT_ENABLED'].includes(data?.code)) clearPrivate();
-  if (!response.ok) throw new ApiError(data?.message || 'تعذر إكمال الطلب.', data?.code ?? '');
+  if (!response.ok) throw new ApiError(dependencyErrorMessage(data?.message || 'تعذر إكمال الطلب.', data?.dependencyStatus), data?.code ?? '');
   return data;
 }
 function actionBadge(action: string) {
@@ -258,6 +259,19 @@ function renderResult(data: any, submitted: string) {
       : `النص المفحوص: ${data.output ?? 'لم يُعد النص.'}`;
   const saved = field('p', 'fw-result-meta'); saved.textContent = 'حُفظ التقييم وتدقيق Kernel على الخادم دون متن النص.';
   result.append(summary, inputLine(submitted), rule, time, reference, status, output, saved);
+  renderDependencies(data.dependencies);
+}
+function renderDependencies(dependencies: Parameters<typeof dependencyMessages>[0]) {
+  const messages = dependencyMessages(dependencies);
+  if (!messages.length) return;
+  const list = field('ul', 'fw-result-meta');
+  list.setAttribute('aria-label', 'حالات الاعتماد');
+  for (const message of messages) {
+    const item = field('li');
+    item.textContent = message;
+    list.append(item);
+  }
+  result.append(list);
 }
 function updateSubmitLabel() {
   evalSubmit.textContent = evalMode.value === 'LAB'
@@ -297,6 +311,7 @@ function renderGuard(data: any, submitted: string) {
   result.append(state);
   const saved = field('p', 'fw-result-meta'); saved.textContent = 'حُفظ قرار السياسة وتدقيق Kernel وبصمة الربط دون النص؛ هذا المرجع ليس إثبات وصول للمزود.';
   result.append(saved);
+  renderDependencies(data.dependencies);
   if (data.external_action_executed === true && typeof data.response_text === 'string') {
     const output = field('p', 'fw-result-output'); output.textContent = `استجابة المزود: ${data.response_text}`; result.append(output);
   }

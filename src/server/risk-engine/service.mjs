@@ -1,4 +1,4 @@
-import { recordProductEvent } from '../ledger/writer.mjs';
+import { ledgerDependency, recordProductEvent } from '../ledger/writer.mjs';
 import { lockHumanGate } from '../human-gate/integration.mjs';
 import { riskReviewOperation } from '../human-gate/core.mjs';
 import { requestAssessmentReview } from './review.mjs';
@@ -211,9 +211,9 @@ export function createRiskEngineService(transact=transaction) {
     const assessment=(await db.query(`INSERT INTO public.aigas_re_assessments(id,tenant_id,asset_id,asset_version,asset_snapshot,likelihood,impact,likelihood_reason,impact_reason,controls_reason,risk_level,method_version,explanation,suggested_control,evaluator_id,method_name,evidence_references,previous_assessment_id,created_at)
       VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,clock_timestamp()) RETURNING *`,[randomUUID(),tenantId,id,asset.version,assetSnapshot,a.likelihood,a.impact,a.likelihood_reason,a.impact_reason,a.controls_reason,a.risk_level,a.method_version,a.explanation,a.suggested_control,identity.userId,a.method_name,a.evidence_references,latestAssessment?.id||null])).rows[0];
     await audit(`risk_engine.assessment.created:${assessment.id}`,{correlationId:assessment.id,policyVersion:assessment.method_version,idempotencyKey:`risk-engine:assessment:${assessment.id}`});
-    const human_review=await requestAssessmentReview(db,identity,tenantId,assessment);
-    await recordProductEvent(db,identity,tenantId,{source:'risk-engine',event_type:'risk_engine.assessment.created',correlation_id:assessment.id,decision_id:assessment.id,policy_version:assessment.method_version,metadata_json:{synthetic:false,asset_ref:id,asset_version:asset.version,assessment_ref:assessment.id,risk_level:assessment.risk_level},idempotency_key:`assessment:${assessment.id}`});
-    return {assessment:{...assessment,requires_human_review:assessment.risk_level==='HIGH',deployment_authorized:false,human_review},persisted:true,assessment_status:'ASSESSED',treatment_review_required:!!latestTreatment,method:METHOD};
+    const {request:human_review,dependency:humanGate}=await requestAssessmentReview(db,identity,tenantId,assessment);
+    const evidence=await recordProductEvent(db,identity,tenantId,{source:'risk-engine',event_type:'risk_engine.assessment.created',correlation_id:assessment.id,decision_id:assessment.id,policy_version:assessment.method_version,metadata_json:{synthetic:false,asset_ref:id,asset_version:asset.version,assessment_ref:assessment.id,risk_level:assessment.risk_level},idempotency_key:`assessment:${assessment.id}`});
+    return {assessment:{...assessment,requires_human_review:assessment.risk_level==='HIGH',deployment_authorized:false,human_review},persisted:true,assessment_status:'ASSESSED',treatment_review_required:!!latestTreatment,method:METHOD,dependencies:{humanGate,ledger:ledgerDependency(evidence)}};
    }
    throw new KernelError(404,'NOT_FOUND','المسار غير موجود.');
   });

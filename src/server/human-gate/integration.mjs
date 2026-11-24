@@ -2,9 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { audit } from '../kernel/service.mjs';
 import { recordKernelAuditEvidence } from '../ledger/writer.mjs';
 
-export function lockHumanGate(db, tenantId) {
-  return db.query("SELECT pg_advisory_xact_lock(hashtextextended('human-gate:' || $1,0))", [tenantId]);
-}
+export { lockGovernance as lockHumanGate } from '../kernel/db.mjs';
 
 export async function recordIntegratedReviewCreation(db, identity, tenantId, requestId, policyVersion) {
   const auditId = await audit(db,identity,tenantId,`human_gate.request.created:${requestId}`,{

@@ -2,17 +2,24 @@ import { randomUUID } from 'node:crypto';
 import { binding, providerFor, riskReviewOperation } from '../human-gate/core.mjs';
 import { requireProductAccess } from '../kernel/access.mjs';
 import { KernelError } from '../kernel/core.mjs';
+import { dependencyEntry } from '../kernel/contracts.mjs';
 import { recordIntegratedReviewCreation } from '../human-gate/integration.mjs';
 
 // The assessment service holds Human Gate's tenant lock before the asset lock.
 export async function requestAssessmentReview(db, identity, tenantId, assessment) {
-  if (assessment.risk_level !== 'HIGH') return null;
+  if (assessment.risk_level !== 'HIGH') return {
+    request: null, dependency: { product: 'human-gate', required: false, evaluated: false, blocking: false },
+  };
   const policy = (await db.query('SELECT * FROM public.aigas_hg_policies WHERE tenant_id=$1 FOR SHARE', [tenantId])).rows[0];
-  if (!policy?.enabled || policy.risk_assessment_review_enabled !== true) return null;
+  if (!policy?.enabled || policy.risk_assessment_review_enabled !== true) return {
+    request: null, dependency: dependencyEntry('human-gate', 'not configured', { reason: 'RISK_REVIEW_POLICY_REQUIRED' }),
+  };
   try {
     await requireProductAccess(db, identity, tenantId, 'human-gate', 'create');
   } catch (error) {
-    if (error instanceof KernelError && error.code === 'PRODUCT_NOT_ENABLED') return null;
+    if (error instanceof KernelError && error.code === 'PRODUCT_NOT_ENABLED') return {
+      request: null, dependency: dependencyEntry('human-gate', error.dependencyStatus ?? 'access denied', { reason: error.code }),
+    };
     throw error;
   }
   const payload = { asset_id:assessment.asset_id, asset_version:assessment.asset_version, method_version:assessment.method_version };
@@ -28,5 +35,5 @@ export async function requestAssessmentReview(db, identity, tenantId, assessment
     RETURNING id,status`,
   [id,tenantId,identity.userId,riskReviewOperation,assessment.id,payload,payloadDigest,policy.version,providerRef,policy.pending_minutes])).rows[0];
   await recordIntegratedReviewCreation(db,identity,tenantId,id,policy.version);
-  return request;
+  return { request, dependency: dependencyEntry('human-gate', 'available', { reason: 'REVIEW_PENDING' }) };
 }
