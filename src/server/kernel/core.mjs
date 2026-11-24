@@ -49,6 +49,8 @@ const auditLabels = {
   'trial.request.submitted': 'إحالة طلب التجربة للمراجعة',
   'trial.request.cancelled': 'إلغاء طلب تجربة',
   'trial.quota.consumed': 'استهلاك حصة تجربة',
+  'trial.synthetic.started': 'بدء تجربة الاستكشاف',
+  'trial.synthetic.expired': 'انتهاء تجربة الاستكشاف',
   'secure-chat.message.rejected': 'رفض إرسال محادثة',
 };
 export const auditActionLabel = action => {

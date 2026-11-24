@@ -314,6 +314,36 @@ try {
   await page.locator('[data-verify-form] [type=submit]').click();
   await page.waitForURL(`${base}/app/trial/`);
 
+  const trialApi = (body, selected = '') => fetch(`${base}/app/api/trial/${selected ? `?workspace=${selected}` : ''}`, {
+    headers: { Authorization: `Bearer ${jwt}`, ...(body ? { Origin: base, 'Content-Type': 'application/json' } : {}) },
+    ...(body ? { method: 'POST', body: JSON.stringify(body) } : {}),
+  });
+  const trialStatus = page.locator('[data-trial-status]');
+  await trialStatus.filter({ hasText: /بريدك موثّق/ }).waitFor();
+  assert.equal((await trialApi({ operation: 'start', expires_at: '2099-01-01' })).status, 400);
+  assert.equal((await trialApi({ operation: 'start' }, workspace)).status, 403);
+  await page.locator('[data-trial-start]').click();
+  await trialStatus.filter({ hasText: /التجربة نشطة/ }).waitFor();
+  assert.equal(await page.getByText('متاح للقراءة فقط', { exact: true }).count(), 5);
+  assert.match(await page.locator('[data-trial-clock]').textContent(), /المتبقي:/);
+  const activeTrial = await (await trialApi()).json();
+  assert.equal(new Date(activeTrial.expiresAt) - new Date(activeTrial.startedAt), 172800000);
+  await page.locator('[data-trial-products] article').filter({ hasText: 'Firewall' }).getByRole('button', { name: 'فتح المنتج' }).click();
+  await page.waitForURL(`${base}/app/firewall/?workspace=${activeTrial.tenantId}`);
+  await page.goto(`${base}/app/trial/`);
+  await trialStatus.filter({ hasText: /التجربة نشطة/ }).waitFor();
+  assert.equal(await page.locator('[data-trial-start]').isVisible(), false);
+  assert.equal(new URL(page.url()).searchParams.get('workspace'), activeTrial.tenantId);
+  await db.query(`WITH boundary AS (SELECT clock_timestamp() AS expires)
+    UPDATE aigas_self_service_trials SET started_at=expires-interval '48 hours',expires_at=expires
+    FROM boundary WHERE tenant_id=$1`, [activeTrial.tenantId]);
+  await page.locator('[data-trial-refresh]').click();
+  await trialStatus.filter({ hasText: /انتهت مدة التجربة/ }).waitFor();
+  assert.equal(await page.getByRole('button', { name: 'فتح المنتج' }).count(), 0);
+  assert.equal((await trialApi({ operation: 'open', product: 'firewall' }, activeTrial.tenantId)).status, 403);
+  assert.equal((await (await trialApi({ operation: 'start' })).json()).tenantId, activeTrial.tenantId);
+  assert.equal((await (await trialApi()).json()).status, 'EXPIRED');
+
   const closed = await startApp({ enabled: false, configured: true, cert });
   await page.goto(`${closed}/auth/sign-up/?trial=48h`);
   assert.match(await page.locator('.auth-unavailable').textContent(), /التسجيل مغلق/);
@@ -326,7 +356,7 @@ try {
   await page.goto(`${missing}/auth/accept-invitation/`);
   assert.match(await page.locator('.accept-unavailable').textContent(), /خدمة الحسابات غير مهيأة/);
   assert.equal((await (await fetch(`${missing}/auth/api/get-session/`)).json()).code, 'AUTH_SETUP_REQUIRED');
-  process.stdout.write('PASS: password, signup privacy, verification, OTP, MFA, cookie flags, CSRF, refresh, expiry, cross-tab logout, invitation, safe return, trial/product intent and disabled/missing configuration\n');
+  process.stdout.write('PASS: password, signup privacy, verification, OTP, MFA, cookie flags, CSRF, refresh, expiry, cross-tab logout, invitation, safe return, 48h trial activation, reopen and expiry, and disabled/missing configuration\n');
 } finally {
   firstSignup.resolve();
   await browser?.close();

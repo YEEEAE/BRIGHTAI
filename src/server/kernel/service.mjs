@@ -1,5 +1,5 @@
 import { workspaceGuidance } from './guidance.mjs';
-import { explorationGrants, EXPLORATION_CAPABILITIES } from './exploration.mjs';
+import { explorationGrants, EXPLORATION_CAPABILITIES, selfServiceAccessState } from './exploration.mjs';
 import { listApprovedModels } from '../secure-chat/models.mjs';
 import { providerReady } from '../secure-chat/adapter.mjs';
 import { randomUUID } from 'node:crypto';
@@ -60,7 +60,9 @@ export async function dashboard(identity, requested) {
     const trial = await trialLifecycle(db, tenantId);
     const pov = await buildPovReport(db, tenantId, trial);
     const relations = { firewall: ['aigas_fw_rules','aigas_fw_decisions'], ledger: ['aigas_ld_events'], 'human-gate': ['aigas_hg_requests','aigas_hg_decisions','aigas_hg_policies','aigas_hg_events'], 'risk-engine': ['aigas_re_assets','aigas_re_assessments','aigas_re_asset_revisions'], 'secure-chat': ['aigas_sc_requests','aigas_sc_cancellations'] };
-    const exploration = await explorationGrants(db, tenantId);
+    const selfServiceState = await selfServiceAccessState(db, tenantId);
+    const exploration = selfServiceState === null || selfServiceState === 'TRIAL_ACTIVE'
+      ? await explorationGrants(db, tenantId) : [];
     const states = [];
     for (const p of productStates(access)) {
       const grant = grants.find(g => g.product_slug === p.slug);
@@ -69,7 +71,9 @@ export async function dashboard(identity, requested) {
       const trialAccess = trialAccessFor(trial, p.slug);
       // The dashboard and the product guard share one access decision, so the
       // state shown here is the state the server would enforce.
-      const decision = resolveProductAccess({ storedStatus: p.storedState, grant, trial: trialAccess });
+      const decision = selfServiceState === null
+        ? resolveProductAccess({ storedStatus: p.storedState, grant, trial: trialAccess })
+        : resolveProductAccess({ storedStatus: selfServiceState === 'EXPLORATION_EXPIRED' ? 'EXPIRED' : 'DISABLED' });
       const explorationGrant = exploration.find(g => g.product_slug === p.slug);
       const explorationActive = explorationGrant?.active === true && explorationGrant.used < explorationGrant.limit_units;
       const enabled = decision.state === 'ENABLED' || explorationActive;

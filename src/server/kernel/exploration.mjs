@@ -15,6 +15,10 @@ export async function explorationGrants(db, tenantId) {
  revoked_at IS NULL AND starts_at<=clock_timestamp() AND ends_at>clock_timestamp() AS active
  FROM public.aigas_exploration_grants WHERE tenant_id=$1`,[tenantId])).rows;
 }
+export async function selfServiceAccessState(db, tenantId) {
+ const { state } = (await db.query('SELECT public.aigas_self_service_access_state($1) AS state', [tenantId])).rows[0];
+ return state;
+}
 function denied(status,code,slug,message) {
  // Internal structured refusal record. No token, identity, tenant or content.
  process.stderr.write(`${JSON.stringify({event:'exploration.denied',product:slug,code,at:new Date().toISOString()})}\n`);
@@ -26,6 +30,7 @@ export async function requireExploration(db, tenantId, slug, operation) {
  if(!grant)return false;
  if(!EXPLORATION_CAPABILITIES[slug]?.includes(operation))denied(403,'EXPLORATION_CAPABILITY_DENIED',slug,'منحة الاستكشاف تسمح بالتصفح فقط؛ هذه العملية تحتاج قرار إتاحة مستقل.');
  const result=(await db.query('SELECT allowed,reason FROM public.aigas_exploration_consume($1,$2)',[tenantId,slug])).rows[0];
+ if(result?.reason==='TRIAL_DEPENDENCIES_UNAVAILABLE')denied(503,result.reason,slug,'خدمة التجربة غير مهيأة لهذا المنتج.');
  if(!result?.allowed)denied(result?.reason==='EXPLORATION_QUOTA_EXCEEDED'?429:403,result?.reason??'EXPLORATION_UNAVAILABLE',slug,'انتهت نافذة الاستكشاف أو حصتها؛ راجع مسؤول المؤسسة.');
  return true;
 }

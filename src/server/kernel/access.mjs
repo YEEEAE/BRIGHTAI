@@ -1,4 +1,4 @@
-import { requireExploration } from './exploration.mjs';
+import { requireExploration, selfServiceAccessState } from './exploration.mjs';
 import { KernelError, requireRole, products, isUuid } from './core.mjs';
 import { setActorScope, setTenantScope, requireRlsPosture } from './db.mjs';
 import { trialProductAccess } from './trial.mjs';
@@ -168,6 +168,14 @@ export async function requireProductAccess(db, identity, tenantId, slug, operati
   const member = await assertTenantMembership(db, identity, tenantId);
   await setTenantScope(db, tenantId, identity.userId);
   await requireRlsPosture(db);
+  const selfServiceState = await selfServiceAccessState(db, tenantId);
+  if (selfServiceState !== null) {
+    if (selfServiceState !== 'TRIAL_ACTIVE') {
+      throw new KernelError(403, selfServiceState, 'صلاحية الاستكشاف غير متاحة لهذا الحساب.');
+    }
+    if (await requireExploration(db, tenantId, slug, operation)) return member;
+    throw new KernelError(403, 'EXPLORATION_NOT_GRANTED', 'هذا المنتج غير متاح في التجربة.');
+  }
   let access;
   let trial;
   let grant = null;

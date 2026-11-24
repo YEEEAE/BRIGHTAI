@@ -6,16 +6,16 @@ const config=authConfig();
 ---
 <AppLayout title="استكشافك المحدود">
  <section data-trial-home data-auth-configured={!!config}>
-  <p>TRIAL HOME · SYNTHETIC ONLY</p><h1>استكشافك المحدود — 48 ساعة</h1>
-  <p>خمسة منتجات وKernel. بلا بطاقة، بلا خصم أو تحويل مالي تلقائي. تبدأ المدة عند إنشاء المساحة من الخادم، ولا تتجدد بإعادة تسجيل الدخول.</p>
-  <p>المرحلة الحالية: تصفح محدود فقط. عمليات الكتابة والتنفيذ تتطلب جاهزية واعتمادًا مستقلًا؛ مزود AI محجوب حتى اعتماد السياسة والمنطقة والتكلفة والمزود.</p>
-  <p data-trial-status role="status" aria-live="polite">جارٍ التحقق من الجلسة…</p>
-  <a data-trial-signin href="/auth/sign-up/?trial=48h">إنشاء حساب أو تسجيل الدخول</a>
-  <button type="button" data-trial-start>ابدأ استكشافًا محدودًا 48 ساعة</button>
-  <button type="button" data-trial-refresh>تحديث حالة الخادم</button>
-  <section data-trial-summary hidden><h2>Kernel — الهوية والعزل والمنح</h2><p data-trial-clock></p><p>العضوية: مشارك MEMBER، دون صلاحيات إدارة أو منح أو تشغيل مزود.</p><p data-trial-dataset></p><a data-trial-kernel href="/app/kernel/">فتح Kernel</a></section>
+  <h1>تجربة BRIGHTAI لمدة 48 ساعة</h1>
+  <p>تبدأ التجربة عند الضغط على زر البدء بعد توثيق البريد. لكل حساب تجربة واحدة في مساحة مخصصة ببيانات اصطناعية.</p>
+  <p>تشمل التجربة تصفّح المنتجات بحسب جاهزيتها. الكتابة والتنفيذ وإرسال المحادثات تتطلب إتاحة مستقلة.</p>
+  <p data-trial-status role="status" aria-live="polite">{config ? 'جارٍ التحقق من الجلسة…' : 'خدمة الدخول غير مهيأة حاليًا.'}</p>
+  <a data-trial-signin href="/auth/sign-up/?trial=48h" hidden>إنشاء حساب أو تسجيل الدخول</a>
+  <button type="button" data-trial-start hidden>ابدأ تجربة 48 ساعة</button>
+  <button type="button" data-trial-refresh>تحديث الحالة</button>
+  <section data-trial-summary hidden><h2>مدة التجربة</h2><p data-trial-clock></p></section>
   <div class="trial-grid" data-trial-products></div>
-  <p><a href="/products/">المختبرات العامة — 5/5</a> · <a href="/contact/?topic=ترخيص%20تجربة%20تشغيلية">تواصل اختياري بشأن الترخيص</a></p>
+  <p><a href="/products/">المختبرات العامة</a> · <a href="/contact/?topic=ترخيص%20تجربة%20تشغيلية">تواصل اختياري بشأن الترخيص</a></p>
  </section>
 </AppLayout>
 <script>import '../../../scripts/trial-home';</script>

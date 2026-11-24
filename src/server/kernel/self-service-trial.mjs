@@ -1,51 +1,94 @@
-import { transaction, setActorScope, setTenantScope, requireRlsPosture } from './db.mjs';
-import { assertTenantMembership } from './access.mjs';
+import { transaction, setActorScope, setTenantScope } from './db.mjs';
 import { explorationGrants, EXPLORATION_CAPABILITIES } from './exploration.mjs';
 import { productNavigation } from '../../shared/product-navigation.mjs';
-import { KernelError } from './core.mjs';
+import { isUuid, KernelError } from './core.mjs';
 
-export async function startTrial(identity) {
- return transaction(async db => {
-  await requireRlsPosture(db);
-  await setActorScope(db,identity.userId);
-  try { return {tenantId:(await db.query('SELECT public.aigas_start_self_service_trial() AS id')).rows[0].id}; }
-  catch(error) {
-   if(error.code==='42501')throw new KernelError(403,'IDENTITY_NOT_VERIFIED','وثّق بريدك أولًا؛ الحساب الموقوف أو العضوية المسحوبة لا يتيحان التجربة.');
-   throw error;
+const dependenciesUnavailable = () => new KernelError(503, 'TRIAL_DEPENDENCIES_UNAVAILABLE',
+  'خدمة التجربة غير مهيأة حاليًا. يمكنك زيارة المختبرات العامة.', 'not configured');
+
+async function withTrialActor(identity, tenantId, work) {
+  if (tenantId !== null && !isUuid(tenantId)) {
+    throw new KernelError(400, 'INVALID_WORKSPACE', 'حدد مساحة عمل صالحة.');
   }
- });
+  return transaction(async db => {
+    const ready = (await db.query(`SELECT current_user='aigas_runtime'
+      AND NOT rolsuper AND NOT rolbypassrls AS ready FROM pg_roles WHERE rolname=current_user`)).rows[0]?.ready;
+    if (!ready) throw dependenciesUnavailable();
+    await setActorScope(db, identity.userId);
+    try {
+      return await work(db);
+    } catch (error) {
+      if (error.code === '42501') {
+        if (error.message === 'IDENTITY_NOT_VERIFIED') {
+          throw new KernelError(403, 'IDENTITY_NOT_VERIFIED', 'وثّق بريدك بحساب نشط أولًا.');
+        }
+        if (['TRIAL_WORKSPACE_MISMATCH', 'TRIAL_MEMBERSHIP_REVOKED'].includes(error.message)) {
+          throw new KernelError(403, 'TRIAL_WORKSPACE_UNAVAILABLE', 'مساحة التجربة غير متاحة لهذا الحساب.');
+        }
+        throw dependenciesUnavailable();
+      }
+      if (['55000', '42883', '42P01', '42703'].includes(error.code)) throw dependenciesUnavailable();
+      throw error;
+    }
+  });
 }
-export async function trialHome(identity, tenantId) {
- return transaction(async db=>{
-  await setActorScope(db,identity.userId);
-  await assertTenantMembership(db,identity,tenantId);
-  await setTenantScope(db,tenantId,identity.userId);
-  await requireRlsPosture(db);
-  const trial=(await db.query('SELECT dataset FROM public.aigas_self_service_trials WHERE tenant_id=$1 AND user_id=$2',[tenantId,identity.userId])).rows[0];
-  if(!trial)throw new KernelError(403,'TRIAL_NOT_FOUND','لا توجد تجربة لهذا الحساب في هذه المؤسسة.');
-  const grants=await explorationGrants(db,tenantId);
-  const now=(await db.query('SELECT clock_timestamp() AS now')).rows[0].now;
-  return {tenantId,serverTime:now,dataset:trial.dataset,kernel:'IDENTITY_TENANT_GRANTS',billing:'NO_CARD_NO_AUTO_CONVERSION',
-   products:productNavigation.map(p=>{
-    const g=grants.find(g=>g.product_slug===p.slug);
-    const allowed=!!g?.active && g.used<g.limit_units;
-    return {slug:p.slug,name:p.name,demo:p.publicPath+'#lab',demoStatus:'DEMO AVAILABLE',
-     status:allowed?'TRIAL LIMITED':'DEMO AVAILABLE',providerStatus:'PROVIDER APPROVAL REQUIRED',
-     operations:allowed?EXPLORATION_CAPABILITIES[p.slug]:[],remaining:g?Math.max(0,g.limit_units-g.used):0,
-     startsAt:g?.starts_at??null,endsAt:g?.ends_at??null,remainingSeconds:g?Math.max(0,Math.floor((new Date(g.ends_at)-new Date(now))/1000)):0};
-   })};
- });
+
+export function startTrial(identity, tenantId = null) {
+  return withTrialActor(identity, tenantId, async db => {
+    const { id } = (await db.query('SELECT public.aigas_start_self_service_trial($1) AS id', [tenantId])).rows[0];
+    return { tenantId: id };
+  });
 }
-export async function openTrialProduct(identity,tenantId,slug) {
- const p=productNavigation.find(p=>p.slug===slug);
- if(!p)throw new KernelError(400,'INVALID_PRODUCT','اختر منتجًا صالحًا.');
- // Check the trial before returning a route; the destination independently
- // checks and consumes its own operation. Route checks do not spend quota.
- const home=await trialHome(identity,tenantId);
- if(!home.products.find(p=>p.slug===slug)?.operations.length)throw new KernelError(403,'TRIAL_UNAVAILABLE','انتهت التجربة أو الحصة؛ المختبر العام متاح.');
- await transaction(async db=>{
-  await setActorScope(db,identity.userId);
-  await assertTenantMembership(db,identity,tenantId);
- });
- return {href:`${p.workspacePath}?workspace=${encodeURIComponent(tenantId)}`};
+
+export function trialHome(identity, tenantId = null) {
+  return withTrialActor(identity, tenantId, async db => {
+    const trial = (await db.query('SELECT * FROM public.aigas_read_self_service_trial($1)', [tenantId])).rows[0];
+    const dependencies = (await db.query('SELECT * FROM public.aigas_self_service_dependencies()')).rows;
+    const readyProducts = new Set(dependencies.filter(row => row.ready).map(row => row.product_slug));
+    const kernelReady = readyProducts.has('kernel');
+    const configured = kernelReady && productNavigation.every(product => readyProducts.has(product.slug));
+    let grants = [];
+    if (trial) {
+      await setTenantScope(db, trial.tenant_id, identity.userId);
+      grants = await explorationGrants(db, trial.tenant_id);
+    }
+    const remainingSeconds = trial?.status === 'ACTIVE'
+      ? Math.max(0, Math.ceil((trial.expires_at - trial.server_time) / 1000))
+      : 0;
+
+    return {
+      tenantId: trial?.tenant_id ?? null,
+      status: trial?.status ?? (configured ? 'NOT_STARTED' : 'NOT_CONFIGURED'),
+      startedAt: trial?.started_at ?? null,
+      expiresAt: trial?.expires_at ?? null,
+      serverTime: trial?.server_time ?? null,
+      activationSource: trial?.activation_source ?? null,
+      remainingSeconds,
+      dataset: trial?.dataset ?? null,
+      products: productNavigation.map(product => {
+        const grant = grants.find(row => row.product_slug === product.slug);
+        const ready = kernelReady && readyProducts.has(product.slug);
+        const remaining = grant ? Math.max(0, grant.limit_units - grant.used) : 0;
+        const readable = ready && trial?.status === 'ACTIVE' && grant?.active && remaining > 0;
+        return {
+          slug: product.slug, name: product.name, demo: product.publicPath + '#lab',
+          status: !ready ? 'NOT_CONFIGURED' : readable ? 'READ_ONLY' : 'UNAVAILABLE',
+          providerStatus: 'NOT_CONFIGURED',
+          operations: readable ? EXPLORATION_CAPABILITIES[product.slug] : [],
+          remaining,
+        };
+      }),
+    };
+  });
+}
+
+export async function openTrialProduct(identity, tenantId, slug) {
+  const product = productNavigation.find(item => item.slug === slug);
+  if (!product) throw new KernelError(400, 'INVALID_PRODUCT', 'اختر منتجًا صالحًا.');
+  if (tenantId == null) throw new KernelError(400, 'INVALID_WORKSPACE', 'حدد مساحة التجربة أولًا.');
+  const home = await trialHome(identity, tenantId);
+  if (!home.products.some(item => item.slug === slug && item.status === 'READ_ONLY')) {
+    throw new KernelError(403, 'TRIAL_UNAVAILABLE', 'هذا المنتج غير متاح في التجربة. يمكنك زيارة المختبر العام.');
+  }
+  return { href: `${product.workspacePath}?workspace=${encodeURIComponent(home.tenantId)}` };
 }

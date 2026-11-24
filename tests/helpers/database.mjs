@@ -20,7 +20,7 @@ export function localDatabaseUrl(name) {
   assert(!url.search, 'Connection overrides are forbidden in test DSNs');
   return value;
 }
-export async function installSchema(db) {
+export async function installSchema(db, { through = '9999' } = {}) {
   assert.equal((await db.query('SHOW server_version_num')).rows[0].server_version_num.slice(0,2), '18');
   assert.equal((await db.query("SELECT count(*)::int AS n FROM pg_tables WHERE schemaname IN ('public','neon_auth')")).rows[0].n, 0, 'Fresh database required');
   // Local stand-in for the managed Auth catalog, not an Auth runtime simulation.
@@ -31,7 +31,7 @@ export async function installSchema(db) {
     CREATE TABLE neon_auth.member (id uuid PRIMARY KEY, "organizationId" uuid, "userId" uuid, role text);`);
   const directory = new URL('../../migrations/', import.meta.url);
   // Current 0002/0003 replace legacy upgrades 0011–0013; 0025 supersedes 0019; order 0018 before 0025 is mandatory.
-  for (const file of (await readdir(directory)).filter(f => f.endsWith('.sql') && !['0011','0012','0013','0019'].includes(f.slice(0,4))).sort()) {
+  for (const file of (await readdir(directory)).filter(f => f.endsWith('.sql') && f.slice(0,4) <= through && !['0011','0012','0013','0019'].includes(f.slice(0,4))).sort()) {
     await db.query(await readFile(new URL(file, directory), 'utf8'));
   }
 }
