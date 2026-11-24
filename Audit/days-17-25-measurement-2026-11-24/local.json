@@ -1,0 +1,283 @@
+{
+  "relay": {
+    "invalid": [
+      403,
+      415,
+      413,
+      400,
+      400
+    ],
+    "valid_with_collector_500": 204,
+    "rate_limited": 429,
+    "mock_sends": 2
+  },
+  "status": {
+    "on": true,
+    "ga4Switch": false,
+    "globalSwitch": false
+  },
+  "browser": {
+    "viewport": 390,
+    "init_allowlist": true,
+    "local_copy": true,
+    "channels": [
+      {
+        "channel": "email",
+        "query": false
+      },
+      {
+        "channel": "whatsapp",
+        "query": false
+      }
+    ],
+    "tracked": [
+      "site_click",
+      "site_click",
+      "contact_channel_opened"
+    ],
+    "malformed_pause_recovery": true,
+    "explicit_stop_latches": true,
+    "static_fallback": true,
+    "mock_sdk_loads": 2,
+    "blocked_external_origins": []
+  },
+  "http": [
+    {
+      "path": "/",
+      "method": "GET",
+      "statuses": [
+        200
+      ],
+      "canonical": "https://brightai.live/",
+      "robots": "index, follow"
+    },
+    {
+      "path": "/contact/",
+      "method": "GET",
+      "statuses": [
+        200
+      ],
+      "canonical": "https://brightai.live/contact/",
+      "robots": "index, follow"
+    },
+    {
+      "path": "/services/",
+      "method": "GET",
+      "statuses": [
+        200
+      ],
+      "canonical": "https://brightai.live/services/",
+      "robots": "index, follow"
+    },
+    {
+      "path": "/pricing/",
+      "method": "GET",
+      "statuses": [
+        200
+      ],
+      "canonical": "https://brightai.live/pricing/",
+      "robots": "index, follow"
+    },
+    {
+      "path": "/privacy/",
+      "method": "GET",
+      "statuses": [
+        200
+      ],
+      "canonical": "https://brightai.live/privacy/",
+      "robots": "index, follow"
+    },
+    {
+      "path": "/resources/",
+      "method": "GET",
+      "statuses": [
+        200
+      ],
+      "canonical": "https://brightai.live/resources/",
+      "robots": "index, follow"
+    },
+    {
+      "path": "/resources/ai-risk-register/",
+      "method": "GET",
+      "statuses": [
+        200
+      ],
+      "canonical": "https://brightai.live/resources/ai-risk-register/",
+      "robots": "index, follow"
+    },
+    {
+      "path": "/products/",
+      "method": "GET",
+      "statuses": [
+        200
+      ],
+      "canonical": "https://brightai.live/products/",
+      "robots": "index, follow"
+    },
+    {
+      "path": "/products/firewall/complaint/",
+      "method": "GET",
+      "statuses": [
+        200
+      ],
+      "canonical": "https://brightai.live/products/firewall/complaint/",
+      "robots": "noindex, follow"
+    },
+    {
+      "path": "/docs/",
+      "method": "GET",
+      "statuses": [
+        200
+      ],
+      "canonical": "https://brightai.live/docs/",
+      "robots": "index, follow"
+    },
+    {
+      "path": "/robots.txt",
+      "method": "GET",
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "path": "/sitemap.xml",
+      "method": "GET",
+      "statuses": [
+        301,
+        200
+      ],
+      "xml": {
+        "root": "sitemapindex",
+        "count": 1,
+        "hosts": [
+          "brightai.live"
+        ],
+        "suspicious_paths": []
+      }
+    },
+    {
+      "path": "/sitemap-index.xml",
+      "method": "GET",
+      "statuses": [
+        200
+      ],
+      "xml": {
+        "root": "sitemapindex",
+        "count": 1,
+        "hosts": [
+          "brightai.live"
+        ],
+        "suspicious_paths": []
+      }
+    },
+    {
+      "path": "/sitemap-0.xml",
+      "method": "GET",
+      "statuses": [
+        200
+      ],
+      "xml": {
+        "root": "urlset",
+        "count": 64,
+        "hosts": [
+          "brightai.live"
+        ],
+        "suspicious_paths": []
+      }
+    },
+    {
+      "path": "/404/",
+      "method": "GET",
+      "statuses": [
+        404
+      ],
+      "canonical": "https://brightai.live/404/",
+      "robots": "noindex, follow"
+    },
+    {
+      "path": "/404.html",
+      "method": "GET",
+      "statuses": [
+        404
+      ],
+      "canonical": "https://brightai.live/404/",
+      "robots": "noindex, follow"
+    },
+    {
+      "path": "/synthetic-days17-25-missing/",
+      "method": "GET",
+      "statuses": [
+        404
+      ],
+      "canonical": "https://brightai.live/404/",
+      "robots": "noindex, follow"
+    },
+    {
+      "path": "/api/measurement-status/",
+      "method": "GET",
+      "statuses": [
+        200
+      ],
+      "control": true
+    },
+    {
+      "path": "/measurement-control.json",
+      "method": "GET",
+      "statuses": [
+        200
+      ],
+      "control": true
+    },
+    {
+      "path": "/measurement.mjs",
+      "method": "GET",
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "path": "/contact",
+      "method": "GET",
+      "statuses": [
+        301,
+        200
+      ],
+      "canonical": "https://brightai.live/contact/",
+      "robots": "index, follow"
+    },
+    {
+      "path": "/index.html",
+      "method": "GET",
+      "statuses": [
+        301,
+        200
+      ],
+      "canonical": "https://brightai.live/",
+      "robots": "index, follow"
+    },
+    {
+      "path": "/",
+      "method": "HEAD",
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "path": "/404/",
+      "method": "HEAD",
+      "statuses": [
+        404
+      ]
+    },
+    {
+      "path": "/synthetic-days17-25-missing/",
+      "method": "HEAD",
+      "statuses": [
+        404
+      ]
+    }
+  ],
+  "assets": {
+    "200": 17
+  }
+}

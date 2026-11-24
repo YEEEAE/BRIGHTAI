@@ -1,0 +1,251 @@
+{
+  "ga4": {
+    "admin": {
+      "property": "properties/551941072",
+      "streams": [
+        {
+          "streamId": "15514832690",
+          "measurementId": "G-9LMB4PGTWJ",
+          "enhancedMeasurement": {
+            "streamEnabled": true,
+            "scrollsEnabled": true,
+            "outboundClicksEnabled": true,
+            "siteSearchEnabled": true,
+            "videoEngagementEnabled": true,
+            "fileDownloadsEnabled": true,
+            "pageChangesEnabled": true,
+            "formInteractionsEnabled": true,
+            "searchQueryParameter": "q,s,search,query,keyword",
+            "uriQueryParameter": ""
+          }
+        }
+      ],
+      "customDefinitionCounts": [
+        0,
+        0
+      ]
+    },
+    "receipt": {
+      "requested": [
+        "2026-11-17",
+        "2026-11-23"
+      ],
+      "rows": [
+        {
+          "date": "2026-11-17",
+          "event_name": "page_view",
+          "event_count": 154
+        },
+        {
+          "date": "2026-11-17",
+          "event_name": "lab_started",
+          "event_count": 6
+        },
+        {
+          "date": "2026-11-17",
+          "event_name": "form_start",
+          "event_count": 4
+        },
+        {
+          "date": "2026-11-17",
+          "event_name": "scenario_completed",
+          "event_count": 4
+        },
+        {
+          "date": "2026-11-17",
+          "event_name": "view_search_results",
+          "event_count": 2
+        },
+        {
+          "date": "2026-11-18",
+          "event_name": "page_view",
+          "event_count": 7
+        }
+      ]
+    }
+  },
+  "posthog": {
+    "project": 720936,
+    "query": {
+      "dateRange": {
+        "date_from": "2026-11-17",
+        "date_to": "2026-11-23"
+      },
+      "filterTestAccounts": false,
+      "interval": "day",
+      "kind": "TrendsQuery",
+      "properties": [],
+      "series": [
+        {
+          "custom_name": "all events",
+          "event": null,
+          "kind": "EventsNode"
+        },
+        {
+          "event": "portal_viewed",
+          "kind": "EventsNode"
+        },
+        {
+          "event": "login_flow_result",
+          "kind": "EventsNode"
+        },
+        {
+          "event": "product_opened",
+          "kind": "EventsNode"
+        },
+        {
+          "event": "policy_action_result",
+          "kind": "EventsNode"
+        },
+        {
+          "event": "quota_exhausted",
+          "kind": "EventsNode"
+        }
+      ]
+    },
+    "receipt": [
+      {
+        "name": "All events",
+        "days": [
+          "2026-11-17",
+          "2026-11-18",
+          "2026-11-19",
+          "2026-11-20",
+          "2026-11-21",
+          "2026-11-22",
+          "2026-11-23"
+        ],
+        "counts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0
+      },
+      {
+        "name": "portal_viewed",
+        "days": [
+          "2026-11-17",
+          "2026-11-18",
+          "2026-11-19",
+          "2026-11-20",
+          "2026-11-21",
+          "2026-11-22",
+          "2026-11-23"
+        ],
+        "counts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0
+      },
+      {
+        "name": "login_flow_result",
+        "days": [
+          "2026-11-17",
+          "2026-11-18",
+          "2026-11-19",
+          "2026-11-20",
+          "2026-11-21",
+          "2026-11-22",
+          "2026-11-23"
+        ],
+        "counts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0
+      },
+      {
+        "name": "product_opened",
+        "days": [
+          "2026-11-17",
+          "2026-11-18",
+          "2026-11-19",
+          "2026-11-20",
+          "2026-11-21",
+          "2026-11-22",
+          "2026-11-23"
+        ],
+        "counts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0
+      },
+      {
+        "name": "policy_action_result",
+        "days": [
+          "2026-11-17",
+          "2026-11-18",
+          "2026-11-19",
+          "2026-11-20",
+          "2026-11-21",
+          "2026-11-22",
+          "2026-11-23"
+        ],
+        "counts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0
+      },
+      {
+        "name": "quota_exhausted",
+        "days": [
+          "2026-11-17",
+          "2026-11-18",
+          "2026-11-19",
+          "2026-11-20",
+          "2026-11-21",
+          "2026-11-22",
+          "2026-11-23"
+        ],
+        "counts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0
+      }
+    ],
+    "settings": {
+      "timezone": "UTC",
+      "anonymize_ips": false,
+      "capture_console_log_opt_in": true,
+      "capture_performance_opt_in": true,
+      "session_recording_opt_in": false
+    }
+  },
+  "sentry": {
+    "visibleProjects": []
+  }
+}

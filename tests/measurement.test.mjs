@@ -53,6 +53,14 @@ test('static fallback preserves traffic; malformed status and errors pause it; r
  h.state({},503);await h.timers[0]();await h.settle();assert.equal(h.window['ga-disable-G-9LMB4PGTWJ'],true);
  h.listeners.get('brightai:measurement')({detail:{name:'lab_started',properties:valid,eventId:randomUUID()}});
  h.state({enabled:true});await h.timers[0]();await h.settle();assert.equal(h.calls.length,0);assert.equal(h.scripts.length,1);
+ assert.equal(h.window['ga-disable-G-9LMB4PGTWJ'],false);
+ for (const malformed of [null, {}, {enabled:'false'}]) {
+   h.state(malformed);h.timers[0]();await h.settle();
+   assert.equal(h.window['ga-disable-G-9LMB4PGTWJ'],true);
+   h.state({enabled:true});h.timers[0]();await h.settle();
+   assert.equal(h.window['ga-disable-G-9LMB4PGTWJ'],false);
+ }
+ assert.equal(h.calls.length,0);assert.equal(h.scripts.length,1);
 });
 test('link measurement ignores the second double-click and only reads fixed attributes',async()=>{
  const h=harness();await h.settle();const click=h.docListeners.get('click');

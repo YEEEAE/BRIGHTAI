@@ -1,0 +1,584 @@
+{
+  "current": 64,
+  "legacy": 264,
+  "overlap": 13,
+  "legacy_only": 251,
+  "rows": [
+    {
+      "path": "/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/about/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/authors/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/authors/brightai-team/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/authors/yazeed-alshareef/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/compliance/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/contact/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/docs/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/kernel/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/ai-audit-trail/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/ai-bias-fairness/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/ai-contract-clauses/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/ai-cybersecurity-nca/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/ai-data-residency-saudi/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/ai-employee-training/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/ai-governance-committee-raci/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/ai-governance-financial-sector/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/ai-governance-healthcare/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/ai-governance-saudi/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/ai-hallucinations-controls/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/ai-impact-assessment/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/ai-inventory-register/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/ai-risk-assessment/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/ai-use-policy-employees/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/ai-vendor-assessment/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/choose-ai-governance-platform/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/data-breach-72-hours-ai/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/data-classification-for-ai/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/data-governance-vs-ai-governance/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/deepfake-policy-organizations/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/iso-42001-saudi/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/pdpl-and-ai/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/prompt-injection/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/protect-company-data-chatgpt/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/saudi-ai-ethics-principles/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/saudi-ai-law-binding-vs-guidance/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/saudi-ai-regulators-map/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/sdaia-ai-adoption-framework/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/sdaia-ai-ethics-self-assessment/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/sdaia-generative-ai-guidelines/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/knowledge/shadow-ai-detection/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/pillars/privacy/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/pillars/safety/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/pillars/transparency/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/pricing/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/privacy/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/products/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/products/firewall/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/products/human-gate/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/products/ledger/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/products/risk-engine/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/products/secure-chat/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/resources/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/resources/ai-risk-register/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/resources/ai-use-policy/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/resources/responsibility-evidence-matrix/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/services/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/solutions/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/solutions/enterprise/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/solutions/finance/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/solutions/government/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/solutions/healthcare/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/terms/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    },
+    {
+      "path": "/trust/",
+      "status": 200,
+      "self_canonical": true,
+      "indexable_directive": true,
+      "title": true,
+      "description": true,
+      "ga4_loader": true
+    }
+  ]
+}

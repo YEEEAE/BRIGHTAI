@@ -1,0 +1,354 @@
+TAP version 13
+# Subtest: GA4 payload: google
+ok 1 - GA4 payload: google
+  ---
+  duration_ms: 13.847292
+  type: 'test'
+  ...
+# Subtest: GA4 payload: google-bare
+ok 2 - GA4 payload: google-bare
+  ---
+  duration_ms: 0.485959
+  type: 'test'
+  ...
+# Subtest: GA4 payload: bing
+ok 3 - GA4 payload: bing
+  ---
+  duration_ms: 0.360334
+  type: 'test'
+  ...
+# Subtest: GA4 payload: bing-bare
+ok 4 - GA4 payload: bing-bare
+  ---
+  duration_ms: 0.394375
+  type: 'test'
+  ...
+# Subtest: GA4 payload: editorial-unapproved
+ok 5 - GA4 payload: editorial-unapproved
+  ---
+  duration_ms: 0.443416
+  type: 'test'
+  ...
+# Subtest: GA4 payload: direct
+ok 6 - GA4 payload: direct
+  ---
+  duration_ms: 0.29175
+  type: 'test'
+  ...
+# Subtest: GA4 payload: credentials
+ok 7 - GA4 payload: credentials
+  ---
+  duration_ms: 0.331375
+  type: 'test'
+  ...
+# Subtest: GA4 payload: suffix-attack
+ok 8 - GA4 payload: suffix-attack
+  ---
+  duration_ms: 0.249334
+  type: 'test'
+  ...
+# Subtest: GA4 payload: subdomain-sensitive
+ok 9 - GA4 payload: subdomain-sensitive
+  ---
+  duration_ms: 1.581166
+  type: 'test'
+  ...
+# Subtest: GA4 payload: lookalike
+ok 10 - GA4 payload: lookalike
+  ---
+  duration_ms: 0.788459
+  type: 'test'
+  ...
+# Subtest: GA4 payload: script
+ok 11 - GA4 payload: script
+  ---
+  duration_ms: 0.267834
+  type: 'test'
+  ...
+# Subtest: GA4 payload: local-ip
+ok 12 - GA4 payload: local-ip
+  ---
+  duration_ms: 0.225875
+  type: 'test'
+  ...
+# Subtest: GA4 payload: private-ip
+ok 13 - GA4 payload: private-ip
+  ---
+  duration_ms: 0.207625
+  type: 'test'
+  ...
+# Subtest: GA4 payload: nondefault-port
+ok 14 - GA4 payload: nondefault-port
+  ---
+  duration_ms: 0.197542
+  type: 'test'
+  ...
+# Subtest: GA4 payload: relative
+ok 15 - GA4 payload: relative
+  ---
+  duration_ms: 0.21825
+  type: 'test'
+  ...
+# Subtest: GA4 payload: backslash
+ok 16 - GA4 payload: backslash
+  ---
+  duration_ms: 0.364875
+  type: 'test'
+  ...
+# Subtest: GA4 payload: whitespace
+ok 17 - GA4 payload: whitespace
+  ---
+  duration_ms: 0.227208
+  type: 'test'
+  ...
+# Subtest: GA4 payload: oversized
+ok 18 - GA4 payload: oversized
+  ---
+  duration_ms: 0.268709
+  type: 'test'
+  ...
+# Subtest: GA4 payload: internal
+ok 19 - GA4 payload: internal
+  ---
+  duration_ms: 0.329875
+  type: 'test'
+  ...
+# Subtest: GA4 payload: internal-private
+ok 20 - GA4 payload: internal-private
+  ---
+  duration_ms: 0.310167
+  type: 'test'
+  ...
+# Subtest: UTM survives independently of missing referrer; unsafe campaign values are dropped
+ok 21 - UTM survives independently of missing referrer; unsafe campaign values are dropped
+  ---
+  duration_ms: 0.399
+  type: 'test'
+  ...
+# Subtest: portal gate ships the identical init; each active template has one loader
+ok 22 - portal gate ships the identical init; each active template has one loader
+  ---
+  duration_ms: 14.56175
+  type: 'test'
+  ...
+# Subtest: direct visit without campaign invents neither campaign nor referrer
+ok 23 - direct visit without campaign invents neither campaign nor referrer
+  ---
+  duration_ms: 0.538042
+  type: 'test'
+  ...
+# Subtest: public contract rejects free text, unknown values, and every server success claim
+ok 24 - public contract rejects free text, unknown values, and every server success claim
+  ---
+  duration_ms: 0.5875
+  type: 'test'
+  ...
+# Subtest: a repeated logical event is sent once, separate actions remain countable, kill drops without replay
+ok 25 - a repeated logical event is sent once, separate actions remain countable, kill drops without replay
+  ---
+  duration_ms: 0.356625
+  type: 'test'
+  ...
+# Subtest: normal traffic loads the vendor once; duplicate installation does not duplicate events or polling
+ok 26 - normal traffic loads the vendor once; duplicate installation does not duplicate events or polling
+  ---
+  duration_ms: 4.763833
+  type: 'test'
+  ...
+# Subtest: kill before load prevents SDK, later polling kill stops an open page and latches without replay
+ok 27 - kill before load prevents SDK, later polling kill stops an open page and latches without replay
+  ---
+  duration_ms: 2.18275
+  type: 'test'
+  ...
+# Subtest: static fallback preserves traffic; malformed status and errors pause it; recovery never replays interactions
+ok 28 - static fallback preserves traffic; malformed status and errors pause it; recovery never replays interactions
+  ---
+  duration_ms: 0.922791
+  type: 'test'
+  ...
+# Subtest: link measurement ignores the second double-click and only reads fixed attributes
+ok 29 - link measurement ignores the second double-click and only reads fixed attributes
+  ---
+  duration_ms: 0.455
+  type: 'test'
+  ...
+# Subtest: public clicks count nested, keyboard and middle-button activation without sending link content
+ok 30 - public clicks count nested, keyboard and middle-button activation without sending link content
+  ---
+  duration_ms: 7.426084
+  type: 'test'
+  ...
+# Subtest: lab attempts complete once, reset creates a new attempt, and an unmeasured start cannot become an orphan completion
+ok 31 - lab attempts complete once, reset creates a new attempt, and an unmeasured start cannot become an orphan completion
+  ---
+  duration_ms: 40.916334
+  type: 'test'
+  ...
+# (node:43794) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: default is inert: no approval means no layer and no transport
+ok 32 - default is inert: no approval means no layer and no transport
+  ---
+  duration_ms: 1.193917
+  type: 'test'
+  ...
+# Subtest: common gates require an approval reference, an approved environment and a full release SHA
+ok 33 - common gates require an approval reference, an approved environment and a full release SHA
+  ---
+  duration_ms: 0.554542
+  type: 'test'
+  ...
+# Subtest: each layer keeps its own approval and a different environment scope
+ok 34 - each layer keeps its own approval and a different environment scope
+  ---
+  duration_ms: 0.314708
+  type: 'test'
+  ...
+# Subtest: Sentry DSN parsing rejects every transport shape it must not use
+ok 35 - Sentry DSN parsing rejects every transport shape it must not use
+  ---
+  duration_ms: 0.2995
+  type: 'test'
+  ...
+# Subtest: a DSN that does not match the approved origin never sends
+ok 36 - a DSN that does not match the approved origin never sends
+  ---
+  duration_ms: 0.629625
+  type: 'test'
+  ...
+# Subtest: PostHog host and key are exact, and the endpoint is fixed
+ok 37 - PostHog host and key are exact, and the endpoint is fixed
+  ---
+  duration_ms: 25.23225
+  type: 'test'
+  ...
+# Subtest: Sentry event carries only allowlisted constants, never the error, URL, SQL or token
+ok 38 - Sentry event carries only allowlisted constants, never the error, URL, SQL or token
+  ---
+  duration_ms: 4.092542
+  type: 'test'
+  ...
+# Subtest: capture policy: 5xx always, 4xx only for the named categories
+ok 39 - capture policy: 5xx always, 4xx only for the named categories
+  ---
+  duration_ms: 0.0895
+  type: 'test'
+  ...
+# Subtest: ledger integrity is an incident even when the HTTP result is not an exception
+ok 40 - ledger integrity is an incident even when the HTTP result is not an exception
+  ---
+  duration_ms: 0.306458
+  type: 'test'
+  ...
+# Subtest: product events are an explicit allowlist and cannot be extended by a caller
+ok 41 - product events are an explicit allowlist and cannot be extended by a caller
+  ---
+  duration_ms: 0.450458
+  type: 'test'
+  ...
+# Subtest: product event payload is anonymous, environment-tagged and URL-free
+ok 42 - product event payload is anonymous, environment-tagged and URL-free
+  ---
+  duration_ms: 0.301666
+  type: 'test'
+  ...
+# Subtest: kill switches are independent, checked at send time, and never depend on the portal flag
+ok 43 - kill switches are independent, checked at send time, and never depend on the portal flag
+  ---
+  duration_ms: 0.205708
+  type: 'test'
+  ...
+# Subtest: collector failure never throws, retries or changes the caller result
+ok 44 - collector failure never throws, retries or changes the caller result
+  ---
+  duration_ms: 0.511292
+  type: 'test'
+  ...
+# Subtest: route and section labels are fixed and cannot carry a query, fragment or identifier
+ok 45 - route and section labels are fixed and cannot carry a query, fragment or identifier
+  ---
+  duration_ms: 0.215333
+  type: 'test'
+  ...
+# Subtest: URL/referrer policy drops a free query and an unknown referrer instead of forwarding it
+ok 46 - URL/referrer policy drops a free query and an unknown referrer instead of forwarding it
+  ---
+  duration_ms: 0.428166
+  type: 'test'
+  ...
+# Subtest: a private surface never forwards a path segment, only its section root
+ok 47 - a private surface never forwards a path segment, only its section root
+  ---
+  duration_ms: 0.1015
+  type: 'test'
+  ...
+# Subtest: the shipped GA4 snippet obeys the same allowlist as the policy module
+ok 48 - the shipped GA4 snippet obeys the same allowlist as the policy module
+  ---
+  duration_ms: 3.271666
+  type: 'test'
+  ...
+# Subtest: the CSP hash of the shipped GA4 snippet matches the middleware allowlist
+ok 49 - the CSP hash of the shipped GA4 snippet matches the middleware allowlist
+  ---
+  duration_ms: 1.104792
+  type: 'test'
+  ...
+# Subtest: GA4 loader is shared by every HTML template
+ok 50 - GA4 loader is shared by every HTML template
+  ---
+  duration_ms: 0.502416
+  type: 'test'
+  ...
+# Subtest: CSP promotion and rollback use the same resource policy
+ok 51 - CSP promotion and rollback use the same resource policy
+  ---
+  duration_ms: 1.48275
+  type: 'test'
+  ...
+# Subtest: one global kill switch stops both transports at send time
+ok 52 - one global kill switch stops both transports at send time
+  ---
+  duration_ms: 0.10225
+  type: 'test'
+  ...
+# Subtest: sensitive free-form fields never become product payloads
+ok 53 - sensitive free-form fields never become product payloads
+  ---
+  duration_ms: 0.126416
+  type: 'test'
+  ...
+# Subtest: global kill switch takes effect after successful sends in the same process and resumes without replay
+ok 54 - global kill switch takes effect after successful sends in the same process and resumes without replay
+  ---
+  duration_ms: 0.525417
+  type: 'test'
+  ...
+# Subtest: privacy disclosure names exactly the page-location campaign keys accepted by code
+ok 55 - privacy disclosure names exactly the page-location campaign keys accepted by code
+  ---
+  duration_ms: 1.443708
+  type: 'test'
+  ...
+# Subtest: privacy disclosure matches loader fallback and both runtime GA4 kill switches
+ok 56 - privacy disclosure matches loader fallback and both runtime GA4 kill switches
+  ---
+  duration_ms: 0.080542
+  type: 'test'
+  ...
+# Subtest: privacy copy remains a draft and does not claim legal approval or full compliance
+ok 57 - privacy copy remains a draft and does not claim legal approval or full compliance
+  ---
+  duration_ms: 0.048958
+  type: 'test'
+  ...
+1..57
+# tests 57
+# suites 0
+# pass 57
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 121.303042

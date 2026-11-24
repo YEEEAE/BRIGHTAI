@@ -29,7 +29,8 @@ if (!window.__brightaiMeasurementInstalled) {
       if (response.status === 404) response = await fetch('/measurement-control.json', {cache:'no-store', credentials:'omit', referrerPolicy:'no-referrer', signal:AbortSignal.timeout(4000)});
       if (!response.ok) throw Error('STATUS_UNAVAILABLE');
       const state = await response.json();
-      if (state.enabled !== true) { stop(); return; }
+      if (state?.enabled === false) { stop(); return; }
+      if (state?.enabled !== true) throw Error('STATUS_INVALID');
       ready = true; window['ga-disable-' + id] = false;
       if (!loaded) {
         loaded = true;
