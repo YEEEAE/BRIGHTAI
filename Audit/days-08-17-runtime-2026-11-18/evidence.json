@@ -1,0 +1,123 @@
+{
+  "baseCommit": "ee7f9d29a45fabf341b1f576d336ffbd702f0ea3",
+  "scope": "Local working tree, loopback only. All actors, provider responses and rows are synthetic.",
+  "postgresVersion": "18.6 (Homebrew)",
+  "nodeVersion": "22.22.3",
+  "astroVersion": "6.4.8",
+  "migration": {
+    "phaseResults": {
+      "fresh": {
+        "applied": 34,
+        "head": "0038_aigas_runtime_invitation_flow.sql",
+        "sha256": "aa8c7aff8065ea61ea0ceb97e40ecbad0d548199f2578db8027a3e6528083438"
+      },
+      "delta": {
+        "applied": 35,
+        "head": "0038_aigas_runtime_invitation_flow.sql",
+        "sha256": "aa8c7aff8065ea61ea0ceb97e40ecbad0d548199f2578db8027a3e6528083438"
+      },
+      "client_roles_absent": {
+        "applied": 34,
+        "head": "0038_aigas_runtime_invitation_flow.sql",
+        "sha256": "aa8c7aff8065ea61ea0ceb97e40ecbad0d548199f2578db8027a3e6528083438"
+      }
+    },
+    "negativePassed": 13,
+    "capturedAt": "2026-11-18T15:03:47.084Z"
+  },
+  "runtimeRls": {
+    "passed": 90,
+    "checks": 90,
+    "failed": 0,
+    "capturedAt": "2026-11-18T15:03:49.810Z"
+  },
+  "targetedUnitTests": {
+    "passed": 17,
+    "failed": 0,
+    "skipped": 0
+  },
+  "baseline": {
+    "name": "baseline gap reproduced",
+    "detail": "list empty; accept 503"
+  },
+  "builtAppChecks": [
+    {
+      "name": "fresh migration ledger hashes",
+      "detail": {
+        "count": 34,
+        "head": "0038"
+      }
+    },
+    {
+      "name": "PostgreSQL connection and effective role",
+      "detail": "non-owner login + SET LOCAL aigas_runtime, NOSUPERUSER NOBYPASSRLS"
+    },
+    {
+      "name": "built server health and readiness",
+      "detail": {
+        "live": 200,
+        "ready": 200,
+        "dependencies": {
+          "database": "READY",
+          "auth": "READY",
+          "authProbe": "ACTIVE",
+          "portal": "ENABLED"
+        }
+      }
+    },
+    {
+      "name": "two-way tenant isolation",
+      "detail": "own workspace 200; foreign dashboard/members 403; foreign DB rows 0/0 under effective role"
+    },
+    {
+      "name": "browser two-way workspace selection",
+      "detail": "A to B and B to A rejected with 403; foreign selector cleared"
+    },
+    {
+      "name": "browser sign-in",
+      "detail": "real sign-in page + synthetic HTTPS Auth session"
+    },
+    {
+      "name": "browser invite acceptance",
+      "detail": "expired row shown without action; explicit acceptance 200; MEMBER only; replay idempotent; one audit event"
+    },
+    {
+      "name": "browser sign-out",
+      "detail": "sign-in form restored and invitation page signed-out"
+    },
+    {
+      "name": "browser OTP and trial start",
+      "detail": "five scopes, 48-hour grants, retry same workspace, foreign request 403"
+    },
+    {
+      "name": "browser trial expiry",
+      "detail": "DB fixture clock boundary; five disabled actions; server open 403; Ledger read 200 before and 403 after; retry does not renew"
+    },
+    {
+      "name": "browser JWT expiry",
+      "detail": "real verifier rejects fixture expired token; private trial DOM cleared; mutation rejected"
+    },
+    {
+      "name": "logical restore into separate PG18 cluster",
+      "detail": {
+        "restoreMs": 203,
+        "ledger": 34,
+        "matchedTables": 6,
+        "foreignRows": 0
+      }
+    },
+    {
+      "name": "readiness closes on database outage",
+      "detail": {
+        "status": 503,
+        "database": "UNAVAILABLE"
+      }
+    }
+  ],
+  "browserObservedWarning": "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+  "publicBuild": {
+    "pages": 64,
+    "homepageHtmlExact": true,
+    "referencedLocalFilesExact": 13
+  }
+}

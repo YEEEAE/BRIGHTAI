@@ -4,6 +4,12 @@
 > Applies to: `src/server/kernel/auth.mjs`, `administration.mjs`, `service.mjs`, `src/scripts/workspace-context.ts`,
 > `src/pages/auth/*`, `src/pages/app/kernel/`, and `migrations/0006` / `0019` / `0025`.
 > This document does not claim a working deployment, a real user, a sent invitation, or verified tenant isolation.
+>
+> Local contract update (2026-11-18): `0036` provides first-owner bootstrap under the restricted runtime.
+> `0038` provides the recipient-scoped invitation list and acceptance used by the HTTP routes below.
+> Steps below that describe a missing runtime bootstrap apply to older schemas.
+> Local evidence and the remaining owner checks are recorded in
+> `Audit/days-08-17-runtime-2026-11-18/REPORT.md`.
 
 ## 1. Purpose and boundaries
 

@@ -766,9 +766,26 @@ async function bootstrapProbes() {
     await setup.query(`INSERT INTO neon_auth.invitation(id,email,status,"expiresAt","organizationId","inviterId",role)
       SELECT $1,email,'accepted',now()+interval '1 day',$2,$3,'member' FROM neon_auth."user" WHERE id=$4`,[invitation,org,OWNER_A,OUTSIDER]);
     await setup.query('INSERT INTO public.aigas_member_invitations(invitation_id,tenant_id,invited_by) VALUES($1,$2,$3)',[invitation,tenant,OWNER_A]);
+    const listSql = 'SELECT * FROM public.aigas_list_workspace_invitations()';
+    const invitedRows = await probe('invitation-list-recipient', OUTSIDER, listSql, []);
+    const foreignRows = await probe('invitation-list-foreign', MEMBER_A, listSql, []);
+    const anonymousRows = await probe('invitation-list-no-actor', null, listSql, []);
+    record('DB06','invitation-list-bound-to-verified-recipient','only the verified recipient can see the invitation',
+      { recipient: invitedRows?.length, foreign: foreignRows?.length, noActor: anonymousRows?.length },
+      invitedRows?.length === 1 && invitedRows[0].id === invitation && invitedRows[0].status === 'accepted'
+        && foreignRows?.length === 0 && anonymousRows?.length === 0);
     await probe('invitation-wrong-actor', MEMBER_A, 'SELECT public.aigas_accept_workspace_invitation($1)', [invitation], '42501');
-    await probe('invitation-runtime', OUTSIDER, 'SELECT public.aigas_accept_workspace_invitation($1)', [invitation]);
+    const acceptSql = 'SELECT * FROM public.aigas_accept_workspace_invitation_v2($1)';
+    const accepted = await probe('invitation-runtime', OUTSIDER, acceptSql, [invitation]);
+    const replay = await probe('invitation-replay-v2', OUTSIDER, acceptSql, [invitation]);
     await probe('invitation-replay', OUTSIDER, 'SELECT public.aigas_accept_workspace_invitation($1)', [invitation]);
+    const { rows: [{ count, correlated }] } = await setup.query(
+      "SELECT count(*)::int, bool_and(correlation_id IS NOT NULL) AS correlated FROM public.aigas_audit_events WHERE tenant_id=$1 AND action='kernel.invitation.accepted'", [tenant],
+    );
+    record('DB06','invitation-acceptance-idempotent','one MEMBER grant and one acceptance event',
+      { accepted, replay, count, correlated }, count === 1 && correlated && accepted?.[0]?.workspace_id === tenant
+        && accepted[0].membership_role === 'MEMBER' && accepted[0].idempotent === false
+        && replay?.[0]?.workspace_id === tenant && replay[0].membership_role === 'MEMBER' && replay[0].idempotent === true);
     await setup.query('DELETE FROM public.aigas_memberships WHERE tenant_id=$1 AND user_id=$2',[tenant,OUTSIDER]);
     await probe('invitation-revoked-no-regrant', OUTSIDER, 'SELECT public.aigas_accept_workspace_invitation($1)', [invitation], '42501');
   } finally { await c.end(); await setup.end(); }
