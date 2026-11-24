@@ -86,7 +86,8 @@ const PAGE = `<!doctype html>
 body{margin:0;min-block-size:100vh;display:grid;place-items:center;padding:24px;background:#05070c;color:#e8ecf5;font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;line-height:1.8}
 main{inline-size:min(560px,100%);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:32px;background:rgba(255,255,255,.03)}
 p{color:#a9b2c4;margin:0 0 14px}
-.overline{margin:0 0 8px;font-size:12px;letter-spacing:.14em;color:#8b93a6}
+.overline{display:inline-block;margin:0 0 12px;padding:2px 10px;border:1px solid currentColor;border-radius:6px;font-size:13px;color:#f6cc86}
+summary{cursor:pointer;line-height:44px}
 h1{margin:0 0 12px;font-size:clamp(22px,4vw,30px);line-height:1.35}
 code{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,monospace;font-size:13px;border:1px solid rgba(255,255,255,.16);border-radius:6px;padding:1px 6px}
 .actions{display:flex;flex-wrap:wrap;gap:10px;margin-block-start:22px}
@@ -99,12 +100,11 @@ a:focus-visible{outline:3px solid #f5b544;outline-offset:3px}
 </head>
 <body>
 <main>
-<p class="overline">AIGAS / WORKSPACE GATE</p>
+<p class="overline" data-access-status="unavailable">غير متاح حاليًا</p>
 <h1>بوابة مساحة العمل غير متاحة مؤقتًا</h1>
-<p>لم تُفعّل بوابة مساحة العمل على هذا التشغيل بعد، أو أُغلقت إداريًا. لا نعرض أي بيانات مؤسسة أو محتوى خاص في هذه الحالة.</p>
-<p>الرمز: <code>APP_UNAVAILABLE</code> · الحالة: <code>503</code></p>
-<p>إذا وصلك هذا الرابط من فريق BRIGHT AI، تواصل معهم للتأكد من موعد الإتاحة. لا تنشئ حسابًا جديدًا لهذا الغرض.</p>
-<div class="actions"><a class="primary" href="/">الموقع العام</a><a class="ghost" href="/contact/">تواصل معنا</a></div>
+<p>راجع خيارات الوصول أو تابع حالة النظام.</p>
+<div class="actions"><a class="primary" href="/request-access/">خيارات الوصول</a><a class="ghost" href="/status/">حالة النظام</a><a class="ghost" href="/products/#lab">المختبر العام</a></div>
+<details><summary>معلومات الخطأ</summary><p><code>APP_UNAVAILABLE</code> · <code>503</code></p></details>
 </main>
 </body>
 </html>

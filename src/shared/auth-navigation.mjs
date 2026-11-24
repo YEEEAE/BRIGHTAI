@@ -1,4 +1,5 @@
-import { productEntryPath, productForReturnTo } from './product-navigation.mjs';
+import { trialPath } from './access-journey.mjs';
+import { productEntryPath, productForReturnTo, productForSlug } from './product-navigation.mjs';
 
 const invitationPath = '/auth/accept-invitation/';
 const invitationQuery = `${invitationPath}?invitationId=`;
@@ -11,7 +12,10 @@ export function authDestination(params) {
   const returnTo = params.get('returnTo');
   const id = returnTo?.startsWith(invitationQuery) ? invitationId(returnTo.slice(invitationQuery.length)) : '';
   if (returnTo === invitationPath || id) return { path: invitationReturn(id), auto: true, product: null };
-  if (params.get('trial') === '48h' || returnTo === '/app/trial/') return { path: '/app/trial/', auto: true, product: null };
+  if (params.get('trial') === '48h' || returnTo === '/app/trial/') {
+    const product = productForSlug(params.get('product'));
+    return { path: trialPath(product?.slug), auto: true, product };
+  }
   if (returnTo === '/app/kernel/') return { path: returnTo, auto: true, product: null };
   const product = productForReturnTo(returnTo);
   return product

@@ -1,4 +1,7 @@
 ---
+import AccessBadge from '../../components/AccessBadge.astro';
+import AccessSteps from '../../components/AccessSteps.astro';
+import { accessPath } from '../../shared/access-journey.mjs';
 import { authDestination } from '../../shared/auth-navigation.mjs';
 import PageShell from '../../components/PageShell.astro';
 import MonitoringGate from '../../components/MonitoringGate.astro';
@@ -11,6 +14,9 @@ const authUrl = authConfig()?.base ?? '';
 const portalEnabled = isPortalEnabled();
 const signUpAvailability = getSignUpAvailability(authUrl, portalEnabled);
 const destination = authDestination(Astro.url.searchParams);
+const trial = destination.path.startsWith('/app/trial/');
+const track = trial ? 'trial' : Astro.url.searchParams.get('access') === 'production' ? 'production' : 'beta';
+const requestPath = accessPath(destination.product?.slug, track);
 const signingIn = Astro.url.searchParams.get('mode') === 'sign-in';
 Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
 ---
@@ -22,14 +28,14 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
   robots="noindex, nofollow"
 >
   <MonitoringGate />
-  <p class="eyebrow">حساب BRIGHTAI</p>
-  <h1>{signingIn ? "تسجيل الدخول" : "ابدأ بحسابك"}</h1>
-  <p class="lead">سجّل بالبريد الإلكتروني وكلمة المرور. تُدار بيانات الدخول عبر Neon Managed Auth.</p>
-
-  <p>التسجيل لا يفعّل المنتج المؤسسي. استكشاف 48 ساعة، عند إتاحته، بيانات اصطناعية وقراءة محدودة فقط.</p>
-  <p><a href={destination.product ? `${destination.product.publicPath}#lab` : "/products/"}>العودة إلى المختبر العام</a> · <a href="/contact/">طلب استكشاف أو الإبلاغ عن تعذر الدخول</a></p>
+  <AccessSteps current="account" slug={destination.product?.slug} track={track} />
+  <AccessBadge status={signUpAvailability.available ? "account" : "unavailable"} />
+  <h1>{signingIn ? "تسجيل الدخول" : "إنشاء حساب"}</h1>
   {signUpAvailability.available ? (
-    <section class="card auth-card" data-workspace-path={destination.path} data-auto-return={destination.auto} data-mode={signingIn ? "sign-in" : "sign-up"} aria-labelledby="auth-heading">
+    <>
+    <p class="lead">استخدم بريدك الإلكتروني وكلمة المرور.</p>
+    <p class="auth-status" id="auth-status" data-auth-status role="status">جارٍ التحقق من جلسة الدخول…</p>
+    <section aria-describedby="auth-status" class="card auth-card" data-workspace-path={destination.path} data-auto-return={destination.auto} data-mode={signingIn ? "sign-in" : "sign-up"} aria-labelledby="auth-heading">
       <div data-auth-form-view hidden>
         <h2 id="auth-heading">إنشاء حساب</h2>
         <form data-auth-form method="post" novalidate>
@@ -70,11 +76,12 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
         <label for="verify-otp">رمز الرسالة</label><input id="verify-otp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required dir="ltr" />
         <button type="submit">التحقق من الرمز</button>
       </form>
+      <button class="auth-link" type="button" data-auth-retry hidden>إعادة التحقق من الجلسة</button>
       <noscript>فعّل JavaScript لاستخدام خدمة الحسابات.</noscript>
-      <p class="auth-status" data-auth-status role="status" aria-live="polite">جارٍ التحقق من جلسة الدخول…</p>
     </section>
+    </>
   ) : (
-    <p class="card auth-unavailable" role="status">{signUpAvailability.message} <a href="/contact/">خيارات التواصل</a>.</p>
+    <div class="card auth-unavailable"><p>{signUpAvailability.message}</p><a href={requestPath}>خيارات طلب الوصول</a> · <a href="/contact/">تواصل معنا</a> · <a href="/status/">حالة النظام</a></div>
   )}
 </PageShell>
 

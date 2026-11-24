@@ -1,0 +1,30 @@
+---
+import { accessPath } from '../shared/access-journey.mjs';
+import { productForSlug } from '../shared/product-navigation.mjs';
+interface Props { current: 'demo' | 'request' | 'account' | 'workspace' | 'product'; slug?: string; track?: string }
+const { current, slug, track } = Astro.props;
+const product = productForSlug(slug);
+const steps = [
+  { key: 'demo', label: 'المختبر العام', href: product ? `${product.publicPath}#lab` : '/products/#lab' },
+  { key: 'request', label: 'طلب الوصول', href: accessPath(slug, track) },
+  { key: 'account', label: 'الحساب' },
+  { key: 'workspace', label: 'مساحة العمل' },
+  { key: 'product', label: 'المنتج' },
+];
+---
+<nav class="access-steps" aria-label="مسار الوصول">
+  <ol>
+    {steps.map(({ key, label, href }) => <li aria-current={key === current ? 'step' : undefined}>
+      {href && key !== current ? <a href={href}>{label}</a> : <span>{label}</span>}
+    </li>)}
+  </ol>
+</nav>
+<style>
+  .access-steps { margin-block: .5rem 1.5rem; }
+  ol { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem .75rem; margin: 0; padding: 0; list-style: none; }
+  li { display: inline-flex; align-items: center; gap: .75rem; color: var(--color-text-muted, #c6bdcf); font-size: .875rem; }
+  li + li::before { content: ''; inline-size: .5rem; block-size: 1px; background: currentColor; }
+  a { display: inline-flex; align-items: center; min-block-size: 44px; text-underline-offset: .2em; }
+  [aria-current] span { padding: .25rem .55rem; border-radius: .35rem; background: var(--color-action, #d0b6ff); color: var(--color-action-contrast, #120b19); font-weight: 700; }
+  a:focus-visible { outline: 2px solid var(--color-focus, #f5b544); outline-offset: 3px; }
+</style>

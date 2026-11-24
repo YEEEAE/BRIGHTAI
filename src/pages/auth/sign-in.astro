@@ -4,6 +4,12 @@ import { authDestination } from '../../shared/auth-navigation.mjs';
 export const prerender = false;
 const destination = authDestination(Astro.url.searchParams);
 const query = new URLSearchParams({ mode: 'sign-in' });
-if (destination.auto) query.set('returnTo', destination.product?.workspacePath ?? destination.path);
+if (destination.path.startsWith('/app/trial/')) {
+  query.set('trial', '48h');
+  if (destination.product) query.set('product', destination.product.slug);
+} else if (destination.auto) {
+  query.set('returnTo', destination.product?.workspacePath ?? destination.path);
+}
+if (Astro.url.searchParams.get('access') === 'production') query.set('access', 'production');
 return Astro.redirect(`/auth/sign-up/?${query}`, 302);
 ---

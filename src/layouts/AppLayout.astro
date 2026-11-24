@@ -1,5 +1,9 @@
 ---
 import { productNavigation, productEntryPath, productContactPath } from '../shared/product-navigation.mjs';
+import AccessBadge from '../components/AccessBadge.astro';
+import AccessSteps from '../components/AccessSteps.astro';
+import { trialPath } from '../shared/access-journey.mjs';
+import { authConfig } from '../server/kernel/auth.mjs';
 import GoogleAnalytics from '../components/GoogleAnalytics.astro';
 import BrandLogo from '../components/BrandLogo.astro';
 import WorkspaceNavigation from '../components/WorkspaceNavigation.astro';
@@ -12,6 +16,9 @@ const { title = 'مساحة العمل' } = Astro.props;
 const currentProduct = productNavigation.find(product => Astro.url.pathname.startsWith(product.workspacePath));
 const intendedProduct = productNavigation.find(product => Astro.url.searchParams.get('returnTo') === product.workspacePath);
 const selectedProduct = currentProduct ?? intendedProduct;
+const trialPage = Astro.url.pathname.replace(/\/$/, '') === '/app/trial';
+const trialProduct = trialPage ? productNavigation.find(product => product.slug === Astro.url.searchParams.get('product')) : null;
+const accountsConfigured = Boolean(authConfig());
 // Server-side, explicit, and disabled unless the analytics approval gates are
 // satisfied. Only a fixed section slug and product slug are sent: no user,
 // tenant, workspace, email, query string, or page content.
@@ -31,17 +38,20 @@ Astro.response.headers.set('Referrer-Policy', 'no-referrer');
   <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="robots" content="noindex,nofollow" /><title>{title} | BRIGHTAI</title><GoogleAnalytics /><link rel="icon" href="/favicon.png" /></head>
   <body><MonitoringGate /><a class="skip" href="#main">انتقل للمحتوى</a>
     <div class="app-frame">
-      <aside class="app-nav"><BrandLogo /><span class="overline">AIGAS / WORKSPACE</span><WorkspaceNavigation mode="app" current={currentProduct?.slug ?? 'kernel'}/><p>الهوية والمؤسسة والوصول.<br />أساس مشترك للمنتجات الخمسة.</p><a class="site-link" href="/products/">المختبرات العامة <span aria-hidden="true">↗</span></a></aside>
-      <div class="app-body"><header class="app-top"><span><span>مساحة العمل</span><span class="app-breadcrumb-separator" aria-hidden="true">/</span><bdi class="app-page-title" dir="auto">{title}</bdi><span class="tag">يتطلب تحقق الوصول</span></span><bdi dir="ltr">BRIGHTAI / AIGAS</bdi></header><main id="main" tabindex="-1">
-        <nav class="journey-nav" aria-label="مسار المنتج">
+      <aside class="app-nav"><BrandLogo /><span class="overline">AIGAS / WORKSPACE</span>{trialPage
+        ? <nav aria-label="مساحة التجربة"><a href={trialPath(trialProduct?.slug)} aria-current="page">التجربة المحدودة</a></nav>
+        : <WorkspaceNavigation mode="app" current={currentProduct?.slug ?? 'kernel'}/>}<a class="site-link" href="/products/">المختبرات العامة <span aria-hidden="true">↗</span></a></aside>
+      <div class="app-body"><header class="app-top"><span><span>مساحة العمل</span><span class="app-breadcrumb-separator" aria-hidden="true">/</span><bdi class="app-page-title" dir="auto">{title}</bdi><AccessBadge id={trialPage ? "trial-access-status" : undefined} status={accountsConfigured ? "account" : "unavailable"} /></span><bdi dir="ltr">BRIGHTAI / AIGAS</bdi></header><main id="main" tabindex="-1">
+        <AccessSteps current={currentProduct ? "product" : "workspace"} slug={(selectedProduct ?? trialProduct)?.slug} track={trialPage ? "trial" : "beta"} />
+        {!trialPage && <nav class="journey-nav" aria-label="مسار المنتج">
           <a href="/products/">المنتجات</a><span aria-hidden="true">/</span>
           {selectedProduct && <><a href={selectedProduct.publicPath}>عن <bdi dir="ltr">{selectedProduct.name}</bdi></a><span aria-hidden="true">/</span></>}
           <a href="/app/kernel/" aria-current={!currentProduct ? 'page' : undefined}>لوحة البوابة</a>
           {currentProduct && <><span aria-hidden="true">/</span><span aria-current="page"><bdi dir="ltr">{currentProduct.name}</bdi></span><a href={productEntryPath(currentProduct.slug)}>الدخول بحسابك</a></>}
-        </nav>
+        </nav>}
         <slot />
         {selectedProduct && <section class="journey-nav" aria-label="الخطوة التالية"><a href={selectedProduct.publicPath}>تفاصيل <bdi dir="ltr">{selectedProduct.name}</bdi></a><a href={productContactPath(selectedProduct.slug, true)}>طلب اشتراك مستقل</a><a href={productContactPath(selectedProduct.slug)}>تواصل بشأن التقييم</a></section>}
-      </main><footer class="app-footer">Kernel مكوّن مشترك ضمن المنظومة؛ ليس منتجًا سادسًا مدفوعًا.</footer></div>
+      </main><footer class="app-footer"><a href="/status/">حالة النظام</a></footer></div>
     </div>
   </body>
 </html>

@@ -21,7 +21,8 @@ function mount(card: HTMLElement) {
   const purpose = verify.querySelector<HTMLSelectElement>('#otp-purpose')!;
   const send = verify.querySelector<HTMLButtonElement>('[data-send-otp]')!;
   const proceed = card.querySelector<HTMLAnchorElement>('[data-continue]')!;
-  const status = card.querySelector<HTMLElement>('[data-auth-status]')!;
+  const status = document.getElementById('auth-status')!;
+  const retry = card.querySelector<HTMLButtonElement>('[data-auth-retry]')!;
   const controls = [...card.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLButtonElement>('input, select, button')];
   let signingUp = card.dataset.mode !== 'sign-in';
   let busy = false;
@@ -70,6 +71,7 @@ function mount(card: HTMLElement) {
   async function run(message: string, action: () => Promise<void>, denied?: string) {
     if (busy || navigating) return;
     busy = true;
+    retry.hidden = true;
     card.setAttribute('aria-busy', 'true');
     controls.forEach(control => { control.disabled = true; });
     setStatus(message);
@@ -84,6 +86,7 @@ function mount(card: HTMLElement) {
         setStatus(denied && httpStatus >= 400 && httpStatus < 500 ? denied : unavailable);
       }
       if (!activeSession) showForm(status.textContent ?? unavailable);
+      retry.hidden = false;
     } finally {
       busy = false;
       if (!navigating) {
@@ -216,6 +219,7 @@ function mount(card: HTMLElement) {
     void run('جارٍ تحديث الجلسة…', () => refresh(false, 'سجّل الدخول للمتابعة.'));
   }
   card.querySelector('[data-refresh]')!.addEventListener('click', checkSession);
+  retry.addEventListener('click', checkSession);
   card.querySelector('[data-sign-out]')!.addEventListener('click', () => {
     void run('جارٍ تسجيل الخروج…', async () => {
       const { error } = await auth.signOut();

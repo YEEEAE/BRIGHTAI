@@ -1,0 +1,35 @@
+---
+import PageShell from '../components/PageShell.astro';
+import AccessBadge from '../components/AccessBadge.astro';
+import { evaluateHealth } from '../server/kernel/health-endpoint.mjs';
+
+export const prerender = false;
+Astro.response.headers.set('Cache-Control', 'no-store');
+const { body } = await evaluateHealth();
+const portalOpen = body.dependencies.portal === 'ENABLED';
+const ready = body.status === 'ready';
+const checkedAt = new Intl.DateTimeFormat('ar-SA', {
+  dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Riyadh', calendar: 'gregory',
+}).format(new Date(body.checkedAt));
+---
+<PageShell title="حالة النظام | BRIGHTAI" description="تحقق من جاهزية بوابة BRIGHTAI." crumbs={[{ name: 'حالة النظام' }]} robots="noindex, follow">
+  <h1>حالة النظام</h1>
+  <p>آخر فحص <time datetime={body.checkedAt}>{checkedAt}</time> بتوقيت الرياض.</p>
+  <section class="card status-panel" aria-labelledby="lab-status">
+    <AccessBadge status="local" />
+    <h2 id="lab-status">المختبر العام</h2>
+    <a href="/products/#lab">فتح المختبرات</a>
+  </section>
+  <section class="card status-panel" aria-labelledby="portal-status">
+    <AccessBadge status={portalOpen && ready ? 'account' : 'unavailable'} />
+    <h2 id="portal-status">بوابة مساحة العمل</h2>
+    <p>{!portalOpen ? 'البوابة مغلقة.' : ready ? 'اجتازت البوابة فحص الجاهزية. إتاحة المنتج تعتمد على صلاحية حسابك.' : 'البوابة مفتوحة، لكن فحص الجاهزية لم يجتز.'}</p>
+    <a href="/status/">إعادة الفحص</a>
+    <a href="/request-access/">خيارات الوصول</a>
+  </section>
+</PageShell>
+<style>
+  .status-panel { max-inline-size: 44rem; margin-block: 1rem; }
+  .status-panel h2 { margin-block: .75rem; }
+  .status-panel a { display: inline-flex; align-items: center; min-block-size: 44px; margin-inline-end: 1.25rem; }
+</style>

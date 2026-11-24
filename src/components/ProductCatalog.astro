@@ -1,5 +1,7 @@
 ---
 import { productNavigation } from '../shared/product-navigation.mjs';
+import AccessBadge from './AccessBadge.astro';
+import AccessSteps from './AccessSteps.astro';
 import ProductJourney from './ProductJourney.astro';
 import ProductIcon from './ProductIcon.astro';
 import ProductSchematic from './ProductSchematic.astro';
@@ -10,8 +12,8 @@ const order = ['firewall', 'risk-engine', 'human-gate', 'ledger', 'secure-chat']
 const products = order.map(slug => productNavigation.find(p => p.slug === slug)!);
 ---
 <section id="lab" class="experience-hub" tabindex="-1" aria-labelledby="catalog-title">
-  <header class="hub-heading"><div><p class="hub-kicker"><bdi dir="ltr">AIGAS / EXPERIENCE HUB</bdi></p><h1 id="catalog-title">من الفكرة إلى التجربة.</h1><p>تابع شكوى تأخر شحنة عبر المنتجات، أو اختر مختبرًا لتجربته بشكل مستقل.</p></div><div class="hub-start"><a class="hub-quickstart" href={complaintPath()}>جرّب شكوى عميل <span aria-hidden="true">←</span></a><a class="hub-resume" data-lab-resume hidden href="/products/firewall/#lab">أكمل آخر مختبر ←</a><small class="hub-resume-status" data-lab-resume-status role="status" aria-live="polite" hidden>تعذر الوصول إلى تخزين الجلسة؛ اختر مختبرًا من القائمة.</small></div></header>
-  <div class="hub-intro"><span>٥ مختبرات عامة · بلا حساب</span><span>أمثلة تعليمية محلية، دون اتصال بنموذج</span></div>
+  <header class="hub-heading"><div><p class="hub-kicker"><bdi dir="ltr">AIGAS / EXPERIENCE HUB</bdi></p><AccessBadge status="local" /><h1 id="catalog-title">مختبرات AIGAS</h1><p>تابع شكوى تأخر شحنة عبر المنتجات، أو اختر مختبرًا لتجربته بشكل مستقل.</p></div><div class="hub-start"><a class="hub-quickstart" href={complaintPath()}>جرّب شكوى عميل <span aria-hidden="true">←</span></a><a class="hub-resume" data-lab-resume hidden href="/products/firewall/#lab">أكمل آخر مختبر ←</a><small class="hub-resume-status" data-lab-resume-status role="status" aria-live="polite" hidden>تعذر الوصول إلى تخزين الجلسة؛ اختر مختبرًا من القائمة.</small></div></header>
+  <AccessSteps current="demo" />
   <div class="hub-grid">
     {products.map((product, i) => <article class:list={['hub-card', { 'hub-featured': i === 0 }]}>
       <div class="hub-card-body"><div class="hub-card-id"><ProductIcon kind={product.slug} size={24}/><span>{labBriefs[product.slug].task}</span><bdi dir="ltr">0{i + 1}</bdi></div>
@@ -24,7 +26,6 @@ const products = order.map(slug => productNavigation.find(p => p.slug === slug)!
     </article>)}
     <article class="hub-kernel"><p class="hub-kicker">الأساس المشترك</p><h2><bdi dir="ltr">Kernel</bdi><span aria-hidden="true"> ◈</span></h2><p>تتبّع السياسة والفحص والمراجعة والدليل في سيناريو اصطناعي، دون تسجيل.</p><a href="/kernel/#lab">جرب مسار Kernel ←</a><small>مكوّن مشترك، وليس منتجًا سادسًا مدفوعًا.</small></article>
   </div>
-  <p class="hub-footnote">المختبرات محاكاة اصطناعية منفصلة عن المنتج المؤسسي. طلب الاستكشاف لا يعني التفعيل؛ التسجيل الحي غير مثبت، واستكشاف 48 ساعة للقراءة المحدودة فقط.</p>
 </section>
 <script>
   import { readLastLab } from '../shared/lab-session.mjs';

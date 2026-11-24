@@ -1,0 +1,34 @@
+---
+interface Props {
+  status: 'local' | 'offline' | 'account' | 'unavailable';
+  id?: string;
+}
+const { status, id } = Astro.props;
+const labels = {
+  local: 'يعمل محليًا',
+  offline: 'غير متصل بخدمة',
+  account: 'يتطلب حسابًا',
+  unavailable: 'غير متاح حاليًا',
+};
+---
+<span id={id} class="access-badge" data-access-status={status}>{labels[status]}</span>
+<style>
+  .access-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    max-inline-size: 100%;
+    padding: .2rem .65rem;
+    border: 1px solid currentColor;
+    border-radius: .4rem;
+    background: var(--surface-sunken, #121019);
+    color: #d6c7ff;
+    font-size: .8125rem;
+    font-weight: 650;
+    line-height: 1.7;
+  }
+  .access-badge::before { content: ''; inline-size: .4rem; block-size: .4rem; flex: none; background: currentColor; border-radius: 50%; }
+  [data-access-status="local"] { color: #9fe1c9; }
+  [data-access-status="offline"] { color: #d0cbd8; }
+  [data-access-status="unavailable"] { color: #f6cc86; }
+</style>

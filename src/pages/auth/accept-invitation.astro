@@ -1,6 +1,8 @@
 ---
 // The invitation is never accepted on navigation. This page only lists invitations that
 // belong to the signed-in, verified identity and requires an explicit accept action.
+import AccessBadge from '../../components/AccessBadge.astro';
+import AccessSteps from '../../components/AccessSteps.astro';
 import PageShell from '../../components/PageShell.astro';
 import { isPortalEnabled } from '../../server/kernel/env.mjs';
 import { authConfig } from '../../server/kernel/auth.mjs';
@@ -21,9 +23,10 @@ Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
   crumbs={[{ name: 'قبول دعوة' }]}
   robots="noindex, nofollow"
 >
-  <p class="eyebrow">دعوة انضمام</p>
+  <AccessSteps current="account" track="beta" />
+  <AccessBadge status={availability.available ? "account" : "unavailable"} />
   <h1>قبول دعوة مؤسسة</h1>
-  <p class="lead">قبول الدعوة خطوة صريحة تقوم بها أنت. فتح الرابط أو تسجيل الدخول وحده لا يمنح عضوية، والخادم يتحقق من بريدك الموثّق ومن صلاحية الداعي وقت الاعتماد.</p>
+  <p class="lead">راجع الدعوات المرتبطة ببريدك الموثّق واختر الدعوة التي تريد قبولها.</p>
 
   {availability.available ? (
     <section class="card accept-card" data-accept data-invitation-id={requestedId} aria-labelledby="accept-title">
@@ -34,11 +37,10 @@ Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
       <button type="button" data-reload>تحديث الدعوات</button>
       <a class="button" data-open-workspace hidden>فتح مساحة العمل</a>
       <noscript>فعّل JavaScript لعرض الدعوات وقبولها.</noscript>
-      <p class="accept-note">لا تُمنح العضوية بمجرد فتح الدعوة. يلزم قبول دعوة Auth صحيحة ثم اعتماد الخادم؛ وقد تفشل الدعوة إذا انتهت مدتها أو تغيّرت صلاحية الداعي.</p>
-      <p class="accept-note">بعد قبول العضوية تقدر تفتح مساحة عمل المؤسسة. الأدوار تبدأ بدور عضو، ولا يوجد ترقية ذاتية أو نقل ملكية من هذه الصفحة.</p>
+      <details><summary>شروط قبول الدعوة</summary><p>يتحقق الخادم من صلاحية الدعوة والداعي. بعد اعتماد العضوية تقدر تفتح مساحة العمل بدور عضو.</p></details>
     </section>
   ) : (
-    <p class="card accept-unavailable" role="status">{availability.message} <a href="/contact/">خيارات التواصل</a></p>
+    <p class="card accept-unavailable" role="status">{availability.message} <a href="/request-access/?track=beta">خيارات الوصول</a> · <a href="/status/">حالة النظام</a></p>
   )}
 </PageShell>
 

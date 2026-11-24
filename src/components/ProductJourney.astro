@@ -1,5 +1,6 @@
 ---
-import { productForSlug, productContactPath } from '../shared/product-navigation.mjs';
+import { accessPath } from '../shared/access-journey.mjs';
+import { productForSlug } from '../shared/product-navigation.mjs';
 const { slug, compact = false } = Astro.props;
 const product = productForSlug(slug);
 ---
@@ -7,10 +8,9 @@ const product = productForSlug(slug);
   {!compact && <h2>خطوتك التالية مع <bdi dir="ltr">{product.name}</bdi></h2>}
   {!compact && <p>{product.scope}</p>}
   <div class="actions">
-    <a class="journey-entry" href={`${product.publicPath}#lab`} aria-label={`جرّب المختبر الآن بلا حساب — ${product.name}`}><span>جرّب المختبر الآن بلا حساب</span><span class="journey-arrow" aria-hidden="true">←</span></a>
-    <a class="journey-contact" href={productContactPath(slug)} aria-label={`اطلب استكشافًا محدودًا — ${product.name}`}>اطلب استكشافًا محدودًا <span aria-hidden="true">↗</span></a>
+    <a class="journey-entry" href={`${product.publicPath}#lab`} aria-label={`افتح المختبر العام — ${product.name}`}><span>افتح المختبر العام</span><span class="journey-arrow" aria-hidden="true">←</span></a>
+    <a class="journey-contact" href={accessPath(slug)} aria-label={`اطلب الوصول — ${product.name}`}>اطلب الوصول <span aria-hidden="true">↗</span></a>
   </div>
-  {!compact && <p>المختبر اصطناعي عام وتعليمي. التسجيل الحي غير مثبت حاليًا؛ طلب الاستكشاف لا ينشئ حسابًا ولا يفعّل منتجًا. استكشاف 48 ساعة، عند إتاحته، للقراءة المحدودة فقط. <a href={productContactPath(slug, true)}>تواصل بشأن الاشتراك</a></p>}
 </section>}
 <style>
   .product-journey { margin-block:32px; padding:clamp(24px,4vw,40px); border-radius:20px; background:#ffffff04; box-shadow:inset 0 1px 0 #ffffff10; }

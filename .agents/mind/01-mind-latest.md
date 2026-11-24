@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-24 VERIFIED LOCAL وصول المنتج: `/request-access/` يوحّد المختبر والتجربة المحدودة والدعوة والتشغيل؛ `/status/` يقرأ عقد الجاهزية؛ Chrome 390/1024/1440 وAuth اصطناعي وPG18 PASS؛ VoiceOver والنشر NOT VERIFIED.
 - 2026-11-24 VERIFIED LOCAL Trial: `0040` يحفظ نافذة PostgreSQL واحدة غير متجددة لكل حساب موثّق في مساحة اصطناعية؛ يبدأ بدور `aigas_runtime` وبعد فحوص الاعتماديات؛ قراءة فقط وعزل مستقل عن المنح الإدارية؛ PG18/Chrome محليان، والنشر وNeon الحي غير متحققين.
 - 2026-11-24 VERIFIED LOCAL Auth: SDK عبر `/auth/api/` من نفس النطاق بكوكيز `__Host-` وحارس Origin؛ Chrome/PostgreSQL18/dور `aigas_runtime` يغطي التسجيل والرموز والجلسة والدعوة والوجهات؛ Neon حي قرأ جلسة فارغة 200، وتسليم البريد الفعلي والنشر غير متحققين.
 - 2026-11-24 VERIFIED LOCAL healthz: عقد ثابت في `health-endpoint.mjs`؛ `GET`/`HEAD` لكل من `/healthz` و`/healthz/` يعيدان 200/503 JSON بلا redirect؛ unit12+integration2 وverify-node-runtime 20 PASS؛ `healthCheckPath=/healthz/`؛ لا نشر؛ `audit/healthz-readiness-2026-11-24/REPORT.md`.

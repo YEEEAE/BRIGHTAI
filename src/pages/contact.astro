@@ -1,9 +1,10 @@
 ---
+import AccessBadge from '../components/AccessBadge.astro';
 import PageShell from '../components/PageShell.astro';
 export const prerender = true;
 ---
 <PageShell title="تواصل مع BRIGHTAI | ناقش احتياجك أو عرض السعر" description="جهّز استفسارك محليًا ثم أرسله بنفسك عبر البريد أو واتساب. لا يستقبل الموقع الطلبات ولا يؤكد وصولها." crumbs={[{ name: 'تواصل معنا' }]}>
-  <p class="eyebrow">تواصل معنا</p>
+  <AccessBadge status="local" />
   <h1>ما القرار الذي تحتاج مساعدة فيه؟</h1>
   <p class="lead">يمكنك الآن الاستفسار عن منتج، أو مناقشة نطاق دعم، أو طلب عرض سعر للمراجعة. أي سعر أو موعد أو تشغيل مؤسسي يحتاج اتفاقًا مكتوبًا؛ الاستفسار لا يحجز موعدًا ولا يفعّل تجربة.</p>
   <section id="contact" class="card contact-form ph-no-capture" aria-labelledby="draft-title" data-ph-no-capture data-ph-mask>
@@ -16,6 +17,7 @@ export const prerender = true;
     <p id="draft-limit" class="note">الحد الأقصى 2000 حرف. لا تكتب بيانات عملاء أو أسرارًا أو مفاتيح وصول.</p>
     <button id="copy-draft" class="button" type="button" hidden>انسخ المسودة</button>
     <p id="contact-status" role="status" aria-live="polite"></p>
+    <a id="return-to-access" href="/request-access/" hidden>العودة إلى خيارات الوصول</a>
     <noscript><p>يمكنك الكتابة هنا وتحديد النص ونسخه يدويًا، ثم لصقه في البريد أو واتساب. لا تحتاج JavaScript.</p></noscript>
   </section>
   <section class="card contact-options" aria-labelledby="channel-title">
@@ -36,14 +38,26 @@ export const prerender = true;
   .contact-form { position: relative; }
   .draft-anchor { position: absolute; inset-block-start: 0; scroll-margin-block-start: 6rem; }
   .contact-form .button, .contact-options .button, #return-to-result { min-block-size: 48px; }
-  #copy-draft[hidden], #return-to-result[hidden] { display: none !important; }
+  #copy-draft[hidden], #return-to-result[hidden], #return-to-access[hidden] { display: none !important; }
 </style>
 <script>
+  import { accessPath, accessTrack, accessTracks } from '../shared/access-journey.mjs';
+  import { productForSlug } from '../shared/product-navigation.mjs';
   const draft = document.querySelector<HTMLTextAreaElement>('#contact-draft');
   const copy = document.querySelector<HTMLButtonElement>('#copy-draft');
   const status = document.querySelector('#contact-status');
   if (draft && copy && status) {
     copy.hidden = false;
+    const query = new URLSearchParams(location.search);
+    if (query.has('access') && location.hash === '#contact') {
+      const track = accessTrack(query.get('access'));
+      const product = productForSlug(query.get('product'));
+      if (!draft.value) draft.value = `أرغب في ${accessTracks[track].request}${product ? ` لمنتج ${product.name}` : ''}.
+هدف الاستخدام: `;
+      const back = document.querySelector<HTMLAnchorElement>('#return-to-access')!;
+      back.href = accessPath(product?.slug, track);
+      back.hidden = false;
+    }
     const fromLab = location.hash === '#workshop-lab';
     if (fromLab || location.hash === '#workshop') {
       if (!draft.value) {

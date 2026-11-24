@@ -1,4 +1,7 @@
 ---
+import AccessBadge from '../components/AccessBadge.astro';
+import AccessSteps from '../components/AccessSteps.astro';
+import { accessPath } from '../shared/access-journey.mjs';
 import PageShell from '../components/PageShell.astro';
 import WorkspaceNavigation from '../components/WorkspaceNavigation.astro';
 import ScenarioContext from '../components/ScenarioContext.astro';
@@ -8,18 +11,18 @@ export const prerender = true;
 <PageShell crumbs={[{name:"Kernel"}]} title="Kernel | مسار السياسة إلى الدليل — BRIGHTAI" description="مختبر حوكمة عام: اختر أصلًا وسياسة افتراضية، وتتبع القرار والمراجعة والدليل دون بيانات مؤسسة.">
 <section id="lab" class="kernel-lab" data-kernel-demo>
   <aside class="kernel-nav"><p class="eyebrow">AIGAS / CONTROL CENTER</p><WorkspaceNavigation current="kernel"/><p>Kernel بنية مشتركة لا تُفوتر منفصلًا.</p><p>مختبر ضيف مجهول · بيانات اصطناعية فقط.</p></aside>
-  <div class="kernel-main"><header><p class="eyebrow">سياسة واحدة. أثر مفهوم.</p><h1>من السياسة<br/>إلى الدليل.</h1><p>اختر أصلًا خياليًا، واتبع أثر السياسة على الطلب. كل ما هنا محاكاة محلية؛ لا اتصال بمؤسسة أو نموذج.</p></header>
+  <div class="kernel-main"><header><AccessBadge status="offline" /><h1>من السياسة<br/>إلى الدليل.</h1><p>اختر أصلًا خياليًا، واتبع أثر السياسة على الطلب. كل ما هنا محاكاة محلية؛ لا اتصال بمؤسسة أو نموذج.</p></header>
+    <AccessSteps current="demo" />
     <ScenarioContext next="firewall"/>
     <div class="kernel-workspace"><div>
       <form data-kernel-form><h2>01 / حدّد سياق الطلب</h2><label for="kernel-asset">الأصل الاصطناعي</label><select id="kernel-asset" name="asset"><option value="summary">مساعد تلخيص افتراضي</option><option value="publication">مساعد نشر افتراضي</option></select><label for="kernel-policy">سياسة المثال</label><select id="kernel-policy" name="policy"><option value="redact">تنقيح المعرّف الخيالي</option><option value="review">مراجعة النشر</option><option value="deny">منع المشاركة الخارجية</option></select><p>طلب ثابت: لخّص مادة خيالية تحمل [معرّف خيالي] للنشر.</p><button type="submit">طبّق سياسة المثال ←</button></form>
       <section aria-labelledby="flow-title"><h2 id="flow-title">02 / مسار القرار</h2><ol class="kernel-flow" data-kernel-flow><li>السياسة ← فحص Firewall ← المراجعة عند الحاجة ← دليل محلي</li></ol></section>
       <section data-kernel-review hidden><h2>03 / مراجعة مستقلة افتراضية</h2><p>مقدم الطلب: دور خيالي أ · المراجع: دور خيالي ب. اختيارك يحاكي المراجع ولا يمنحك أي صلاحية.</p><button type="button" data-review="approved">محاكاة موافقة محددة</button><button type="button" data-review="rejected">محاكاة رفض مسبب</button></section>
-    </div><aside class="kernel-inspector"><p class="eyebrow">INSPECTOR / دليل المثال</p><h2>لماذا هذا القرار؟</h2><div role="status" aria-live="polite" aria-atomic="true"><strong data-kernel-decision>بانتظار تطبيق السياسة</strong><p data-kernel-reason>اختر سياسة ثم شغّل المثال.</p></div><dl><dt>نسخة السياسة</dt><dd>demo-v1</dd><dt>طبيعة الدليل</dt><dd>اصطناعي · ليس سجل Tenant أو توقيعًا مشفرًا</dd><dt>التنفيذ التشغيلي</dt><dd>لا يوجد</dd></dl><pre data-kernel-evidence hidden tabindex="0" aria-label="دليل السيناريو الاصطناعي"></pre><a href="/products/firewall/#lab">جرب المنتج التالي ←</a><a href="/auth/sign-up/?returnTo=%2Fapp%2Ffirewall%2F">ابدأ 48 ساعة ↗</a><p>التشغيل يتطلب حسابًا وعضوية وصلاحيات وتهيئة واعتمادًا من الخادم. يبدأ العداد عند التفعيل فقط؛ لا شراء أو تحويل تلقائي. أدوار OWNER / ADMIN / MEMBER لا تمنح Operator authority.</p></aside></div>
+    </div><aside class="kernel-inspector"><p class="eyebrow">INSPECTOR / دليل المثال</p><h2>لماذا هذا القرار؟</h2><div role="status" aria-live="polite" aria-atomic="true"><strong data-kernel-decision>بانتظار تطبيق السياسة</strong><p data-kernel-reason>اختر سياسة ثم شغّل المثال.</p></div><dl><dt>نسخة السياسة</dt><dd>demo-v1</dd><dt>طبيعة الدليل</dt><dd>اصطناعي · ليس سجل Tenant أو توقيعًا مشفرًا</dd><dt>التنفيذ التشغيلي</dt><dd>لا يوجد</dd></dl><pre data-kernel-evidence hidden tabindex="0" aria-label="دليل السيناريو الاصطناعي"></pre><a href="/products/firewall/#lab">جرب المنتج التالي ←</a><a href={accessPath("firewall")}>اطلب الوصول ←</a></aside></div>
     <button type="button" data-kernel-reset>إعادة ضبط الرحلة</button><p data-kernel-storage></p>
     <noscript>يلزم JavaScript لتشغيل المسار. مثال ثابت: سياسة التنقيح ← REDACT ← استبدال المعرّف ← دليل اصطناعي demo-v1. روابط المختبرات متاحة دون تسجيل.</noscript>
   </div>
 </section>
-<section aria-label="مسارات التجربة"><h2>اختر المسار المناسب</h2><ul><li>مختبر عام فوري بلا حساب.</li><li>استكشاف 48 ساعة محدود بالقراءة لصاحب بريد موثق عند فتح البوابة.</li><li>تجربة مؤسسية تشغيلية بموافقة مشغّل.</li></ul></section>
 </PageShell>
 <script src="../scripts/kernel-demo.ts"></script>
 <style>
