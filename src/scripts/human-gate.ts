@@ -2,7 +2,7 @@ import { createWorkspaceAuth as createAuthClient, getWorkspaceSession, appFetch,
 const root=document.querySelector<HTMLElement>('[data-human-gate]')!;
 const get=<T extends Element=HTMLElement>(selector:string)=>root.querySelector<T>(selector)!;
 const status=get('[data-status]'),area=get('[data-private]'),workspace=get<HTMLSelectElement>('[data-workspace]');
-const auth=root.dataset.authUrl?createAuthClient(root.dataset.authUrl):null;
+const auth=root.dataset.authConfigured === 'true' ? createAuthClient():null;
 let busy=false,page=1,view='mine',filter='',hasMore=false,canManage=false,canReview=false,canDelegate=false,policy:any=null,reviewers:any[]=[],delegations:any[]=[],epoch=0,active:AbortController|null=null;
 let requestRef=new URL(location.href).searchParams.get('request');
 const labels:Record<string,string>={PENDING:'بانتظار المراجعة',APPROVED:'معتمد — لم يُنفذ',REJECTED:'مرفوض',EXPIRED:'منتهي الصلاحية',CANCELLED:'ملغى',EXECUTED:'نُفّذ'};

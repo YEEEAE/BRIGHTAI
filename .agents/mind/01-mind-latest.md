@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-24 VERIFIED LOCAL Auth: SDK عبر `/auth/api/` من نفس النطاق بكوكيز `__Host-` وحارس Origin؛ Chrome/PostgreSQL18/dور `aigas_runtime` يغطي التسجيل والرموز والجلسة والدعوة والوجهات؛ Neon حي قرأ جلسة فارغة 200، وتسليم البريد الفعلي والنشر غير متحققين.
 - 2026-11-24 VERIFIED LOCAL healthz: عقد ثابت في `health-endpoint.mjs`؛ `GET`/`HEAD` لكل من `/healthz` و`/healthz/` يعيدان 200/503 JSON بلا redirect؛ unit12+integration2 وverify-node-runtime 20 PASS؛ `healthCheckPath=/healthz/`؛ لا نشر؛ `audit/healthz-readiness-2026-11-24/REPORT.md`.
 - 2026-11-24 PARTIAL Days17–25: العام/Render ‏200 وwww 301؛ 64/64 canonical/loader؛ sitemap.xml ‏264 و404/ ‏200؛ GA4 static API404→control true وEnhanced Measurement مخالف لقيد العقد؛ PostHog720936 صفر 17–23/Sentry لا مشاريع مرئية؛ Node/Chrome وهمي و57 tests PASS؛ M1–M3/W1–W3 مفتوحة؛ `Audit/days-17-25-measurement-2026-11-24/REPORT.md`.
 - 2026-11-24 PARTIAL GA4: `G-9LMB4PGTWJ` حي في 64/64 من الخريطة الحالية و`page_view` للرئيسية 204؛ 251 صفحة إضافية بالخريطة القديمة تعيد 200 بلا وسم. `site_click` للروابط والأزرار العامة محليًا فقط؛ build64/unit57/Chromium بمحاكاة Google PASS.

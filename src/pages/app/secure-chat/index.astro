@@ -6,7 +6,7 @@ export const prerender = false;
 const config = authConfig();
 ---
 <AppLayout title="Secure Chat">
-  <section class="secure-chat" data-secure-chat data-auth-url={config?.base ?? ''}>
+  <section class="secure-chat" data-secure-chat data-auth-configured={!!config}>
     <aside class="chat-sidebar" aria-label="جلسات المحادثة">
       <div class="sidebar-brand"><span class="sidebar-mark" aria-hidden="true">◈</span><div><bdi>Secure Chat</bdi><small>مساحة مؤسسية</small></div></div>
       <button type="button" class="new-chat" data-new-chat>＋ <span>محادثة جديدة</span></button>
@@ -20,7 +20,7 @@ const config = authConfig();
         <div><p class="overline">حالة الوصول</p><h2 id="access-title" data-state-title>التحقق من الهوية والإعداد</h2><p role="status" aria-live="polite" data-status>لا تُعرض بيانات المؤسسة قبل التحقق من عضوية Kernel.</p></div>
         <div class="access-actions"><button type="button" data-retry>إعادة المحاولة</button><button type="button" data-sign-out hidden>تسجيل الخروج</button></div>
       </section>
-      <form class="login-form" data-login hidden>
+      <form class="login-form" data-login method="post" hidden>
         <h2>دخول مساحة العمل</h2><p>استخدم حساب Neon Auth الخاص بك.</p>
         <label for="secure-email">البريد الإلكتروني</label><input id="secure-email" name="email" type="email" autocomplete="username" required maxlength="254" />
         <label for="secure-password">كلمة المرور</label><input id="secure-password" name="password" type="password" autocomplete="current-password" required maxlength="128" />

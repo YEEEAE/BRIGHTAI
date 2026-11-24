@@ -7,7 +7,7 @@ export const prerender = false;
 const config = authConfig();
 ---
 <AppLayout title="سجل أدلة Ledger">
- <section class="kernel ledger" data-ledger data-auth-url={config?.base ?? ''}>
+ <section class="kernel ledger" data-ledger data-auth-configured={!!config}>
   <div class="page-heading"><div><p class="overline">03 / AIGAS LEDGER</p><h1>أثر واضح.<span>وسلامة قابلة للفحص.</span></h1><p class="intro">أحداث مسارات AIGAS الخادمية المربوطة بالسجل عند تفعيله. أحداث Firewall وHuman Gate الحالية تجريبية موسومة؛ لا تعني إرسالًا لمزود أو عملية خارجية.</p></div><span class="connection">سجل أدلة المؤسسة</span></div>
   <section class="notice"><div><h2>حالة الوصول</h2><p data-status role="status" aria-live="polite">{config ? 'جارٍ التحقق من الدخول…' : 'يلزم إعداد الدخول عبر Neon Auth.'}</p><a href={productEntryPath('ledger')}>الدخول وإدارة المؤسسة عبر Kernel ←</a><a href="/products/ledger/">التعريف العام بـLedger وحدود الدليل ←</a></div><button type="button" data-reload>تحديث السجل</button></section>
   <noscript><p class="notice">يلزم JavaScript لاستعادة جلسة Kernel وعرض البيانات الخاصة.</p></noscript>

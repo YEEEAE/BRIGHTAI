@@ -10,7 +10,7 @@ const config=authConfig();
 const levels={LOW:'منخفض',MEDIUM:'متوسط',HIGH:'مرتفع'};
 ---
 {demo ? <RiskDemo /> : <AppLayout title="تقييم المخاطر Risk Engine">
- <section class="kernel risk-engine" data-risk-engine data-detail-asset={assetId} data-auth-url={config?.base??''}>
+ <section class="kernel risk-engine" data-risk-engine data-detail-asset={assetId} data-auth-configured={!!config}>
   <div class="page-heading"><div><p class="overline">05 / RISK ENGINE</p><h1>افهم الخطر.<span>ووثّق سببه.</span></h1><p class="intro">سجل حالات استخدام الذكاء الاصطناعي وتقييم أولي بقواعد معلنة. النتيجة مسودة تقدير بشرية المدخلات؛ ليست شهادة امتثال أو قرار حظر أو تصريح تشغيل.</p></div><span class="connection">تقييم حتمي · صياغة استشارية اختيارية</span></div>
   <section class="notice"><div><h2>حالة الوصول</h2><p data-status role="status" aria-live="polite">{config?'جارٍ التحقق من الدخول…':'يلزم إعداد الدخول عبر Neon Auth.'}</p><a href={productEntryPath('risk-engine')}>الدخول وإدارة المؤسسة عبر Kernel ←</a></div><button type="button" data-reload>تحديث الحالات</button></section>
   <noscript><p class="notice">يلزم JavaScript لاستعادة الجلسة وعرض بيانات المؤسسة. القواعد موضحة أدناه.</p></noscript>

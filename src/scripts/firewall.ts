@@ -38,7 +38,7 @@ const executionLabel = (data: any) => {
   if (data.external_action_executed === null) return 'حالة الإرسال غير مؤكدة؛ قد يكون الطلب وصل المزود. لا تعِد الإرسال تلقائيًا.';
   return 'لم يُنفذ أي إجراء خارجي.';
 };
-const auth = root.dataset.authUrl ? createAuthClient(root.dataset.authUrl) : null;
+const auth = root.dataset.authConfigured === 'true' ? createAuthClient() : null;
 let busy = false;
 let page = 1, hasNext = false, providerConfigured = false;
 let viewEpoch = 0;

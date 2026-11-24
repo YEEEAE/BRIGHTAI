@@ -6,7 +6,7 @@ const workspace=get<HTMLSelectElement>('[data-workspace]'), type=get<HTMLSelectE
 const source=get<HTMLSelectElement>('[data-source]'), classification=get<HTMLSelectElement>('[data-classification]');
 const search=get<HTMLInputElement>('[data-search-input]');
 const dialog=get<HTMLDialogElement>('[data-detail]'), integrity=get('[data-integrity]');
-const auth=root.dataset.authUrl?createAuthClient(root.dataset.authUrl):null;
+const auth=root.dataset.authConfigured === 'true' ? createAuthClient():null;
 let busy=false,page=1,selected:any=null,hasMore=false,epoch=0;
 let pendingSynthetic:{key:string;event_type:string;scenario:string;workspace:string}|null=null;
 const resultLabels:Record<string,string>={MATCH:'مطابق ضمن النطاق',MISMATCH:'غير مطابق — راجع الدليل',INDETERMINATE:'تعذر حسم السلامة',EMPTY:'السجل فارغ',VERIFIED_WITHIN_SCOPE:'متحقق ضمن النطاق المورد فقط',TAMPERED:'غير مطابق — احتمال تعديل أو مدخلات خاطئة',VERIFIED:'متحقق ضمن النطاق',BLOCKED:'محجوب — لم تُثبت السلامة',UNVERIFIED:'غير متحقق — دليل غير كافٍ'};

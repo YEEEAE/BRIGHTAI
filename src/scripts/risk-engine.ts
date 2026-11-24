@@ -4,7 +4,7 @@ const get=<T extends Element=HTMLElement>(selector:string)=>root.querySelector<T
 const status=get('[data-status]'),area=get('[data-private]'),workspace=get<HTMLSelectElement>('[data-workspace]');
 const assetForm=get<HTMLFormElement>('[data-asset-form]'),assessmentForm=get<HTMLFormElement>('[data-assessment-form]'),filterForm=get<HTMLFormElement>('[data-filter-form]'),treatmentForm=get<HTMLFormElement>('[data-treatment-form]'),archiveForm=get<HTMLFormElement>('[data-archive-form]'),actionsFilter=get<HTMLFormElement>('[data-actions-filter]');
 const recordState=get('[data-record-state]'),exportState=get('[data-export-state]'),residualPreview=get('[data-residual-preview]');
-const auth=root.dataset.authUrl?createAuthClient(root.dataset.authUrl):null;
+const auth=root.dataset.authConfigured === 'true' ? createAuthClient():null;
 let treatmentPage=1,treatmentMore=false,actionsPage=1,actionsMore=false,treatmentData:any=null,committedMessage='';
 const detailId=root.dataset.detailAsset||'';
 let busy=false,page=1,hasMore=false,historyPage=1,historyMore=false,revisionsPage=1,revisionsMore=false,canWrite=false,selected:any=null,editing:any=null;

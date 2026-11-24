@@ -8,8 +8,9 @@ export function authConfig() {
   if (!base || !jwks) return null;
   try {
     const url = new URL(base); const keyUrl = new URL(jwks);
-    if (url.protocol !== 'https:' || keyUrl.protocol !== 'https:' || url.origin !== keyUrl.origin) return null;
-    return { base, jwks, issuer: url.origin };
+    if (url.protocol !== 'https:' || keyUrl.protocol !== 'https:' || url.origin !== keyUrl.origin
+      || url.username || url.password || url.search || url.hash || keyUrl.username || keyUrl.password || keyUrl.hash) return null;
+    return { base: url.href, jwks: keyUrl.href, issuer: url.origin };
   } catch { return null; }
 }
 export async function authenticate(request) {

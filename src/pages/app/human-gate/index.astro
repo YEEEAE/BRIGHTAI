@@ -7,7 +7,7 @@ export const prerender=false;
 const config=authConfig();
 ---
 <AppLayout title="المراجعة البشرية Human Gate">
- <section class="kernel human-gate" data-human-gate data-auth-url={config?.base??''}>
+ <section class="kernel human-gate" data-human-gate data-auth-configured={!!config}>
   <div class="page-heading"><div><p class="overline">04 / HUMAN GATE</p><h1>موافقة محددة.<span>وتنفيذ مرة واحدة.</span></h1><p class="intro">راجع تغيير اسم مساحة العمل داخل AIGAS قبل تطبيقه. الموافقة مرتبطة بالاسم والنسخة والسياسة والمهلة والمورد؛ التنفيذ من الخادم بعد مراجعة مستقلة وبإذن يُستهلك مرة واحدة. يمكن إلغاء الطلب قبل التنفيذ، وتفويض مراجعة مؤقت محدد العملية والمستوى والتاريخ. الملاحظة الداخلية مسار تجريبي منفصل.</p></div><span class="connection">موافقة أحادية المرحلة</span></div>
   <section class="notice"><div><h2>حالة الوصول</h2><p data-status role="status" aria-live="polite">{config?'جارٍ التحقق من الدخول…':'يلزم إعداد الدخول عبر Neon Auth.'}</p><a href={productEntryPath('human-gate')}>الدخول وإدارة المؤسسة عبر Kernel ←</a></div><button type="button" data-reload>تحديث الطلبات</button></section>
   <noscript><p class="notice">يلزم JavaScript لاستعادة جلسة Kernel وعرض بيانات المؤسسة.</p></noscript>

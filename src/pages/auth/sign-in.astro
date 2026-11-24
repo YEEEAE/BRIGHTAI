@@ -1,0 +1,9 @@
+---
+import { authDestination } from '../../shared/auth-navigation.mjs';
+
+export const prerender = false;
+const destination = authDestination(Astro.url.searchParams);
+const query = new URLSearchParams({ mode: 'sign-in' });
+if (destination.auto) query.set('returnTo', destination.product?.workspacePath ?? destination.path);
+return Astro.redirect(`/auth/sign-up/?${query}`, 302);
+---

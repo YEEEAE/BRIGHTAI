@@ -5,7 +5,7 @@ export const prerender = false;
 const config = authConfig();
 ---
 <AppLayout title="قناة المشغل — التجارب">
-  <section class="kernel" data-operator-trials data-auth-url={config?.base ?? ''}>
+  <section class="kernel" data-operator-trials data-auth-configured={!!config}>
     <div class="page-heading"><div><p class="overline">OPERATOR / TRIAL CYCLE</p><h1>قناة المشغل<span>قرارات التجربة لا تمنحها الواجهة.</span></h1><p class="intro">هذه القناة لهويات المشغّل المسجّلة في قاعدة البيانات فقط. الطلب والموافقة والتفعيل خطوات منفصلة، والتفعيل يبقى مغلقًا حتى توجد نتيجة جاهزية حديثة للمنتج نفسه على الإصدار والبيئة نفسيهما، مع حصة معتمدة.</p></div><span class="connection">مشغّل معتمد</span></div>
 
     <section class="panel" aria-labelledby="op-title">

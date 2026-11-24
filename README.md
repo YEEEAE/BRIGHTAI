@@ -94,3 +94,14 @@ https://brightai.live
   ربطنا `brightai.live` على Cloudflare كـ DNS/CDN وحماية قدّام Render، بدل الاعتماد على Hostinger للـ DNS.
 فعّلنا Client-side Security، وضبطنا الكاش بحيث `/api/*` بدون كاش وملفات `/_astro/*` و`/assets/*` بكاش طويل.
 وضبطنا Rate Limiting على `/api/ai/chat` لحماية استهلاك الـ AI من السبام والطلبات الزايدة.
+
+## اختبار المصادقة محليًا
+
+يتطلب اختبار المتصفح Node 22 وChrome وPlaywright وOpenSSL وقاعدة PostgreSQL 18 محلية فارغة ومخصصة للاختبار. يثبت الاختبار الترحيلات في قاعدة الاختبار ويشغّل خادم BRIGHTAI مع مزود Neon Auth اصطناعي عبر HTTPS. يستخدم قبول الدعوة واجهة Kernel الفعلية ودور `aigas_runtime`.
+
+```sh
+npm run build
+KERNEL_AUTH_E2E_DATABASE_URL=postgresql://postgres@127.0.0.1:5432/brightai_auth_e2e npm run test:auth:e2e
+```
+
+إذا كان Playwright خارج المشروع، مرّر مسار وحدته عبر `BRIGHTAI_PLAYWRIGHT_MODULE`. يعمل الاختبار ببيانات اصطناعية وباتصال محلي فقط.

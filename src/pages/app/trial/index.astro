@@ -5,7 +5,7 @@ export const prerender=false;
 const config=authConfig();
 ---
 <AppLayout title="استكشافك المحدود">
- <section data-trial-home data-auth-url={config?.base??''}>
+ <section data-trial-home data-auth-configured={!!config}>
   <p>TRIAL HOME · SYNTHETIC ONLY</p><h1>استكشافك المحدود — 48 ساعة</h1>
   <p>خمسة منتجات وKernel. بلا بطاقة، بلا خصم أو تحويل مالي تلقائي. تبدأ المدة عند إنشاء المساحة من الخادم، ولا تتجدد بإعادة تسجيل الدخول.</p>
   <p>المرحلة الحالية: تصفح محدود فقط. عمليات الكتابة والتنفيذ تتطلب جاهزية واعتمادًا مستقلًا؛ مزود AI محجوب حتى اعتماد السياسة والمنطقة والتكلفة والمزود.</p>

@@ -18,8 +18,8 @@ const retrySend = root.querySelector<HTMLButtonElement>('[data-retry-send]')!;
 const sendButton = root.querySelector<HTMLButtonElement>('[data-send]')!;
 const cancelButton = root.querySelector<HTMLButtonElement>('[data-cancel]')!;
 const signOut = root.querySelector<HTMLButtonElement>('[data-sign-out]')!;
-const authUrl = root.dataset.authUrl;
-const auth = authUrl ? createAuthClient(authUrl) : null;
+const authConfigured = root.dataset.authConfigured === 'true';
+const auth = authConfigured ? createAuthClient() : null;
 let controller: AbortController | undefined;
 let selectedTenant = '';
 let busy = false;
@@ -307,6 +307,9 @@ login.addEventListener('submit', event => {
       const error = new Error('تعذر تسجيل الدخول. تحقق من بيانات الحساب وإعداد Neon Auth.');
       Object.assign(error, { unauthorized: true });
       throw error;
+    }
+    if ((result.data as { twoFactorRedirect?: unknown } | null)?.twoFactorRedirect) {
+      throw new Error('يتطلب الدخول خطوة تحقق إضافية لا تدعمها هذه البوابة حاليًا. تواصل مع الدعم.');
     }
     await load();
   });

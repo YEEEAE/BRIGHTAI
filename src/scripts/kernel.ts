@@ -28,8 +28,7 @@ const healthError = root.querySelector<HTMLElement>('[data-health-error]')!;
 const healthErrorType = root.querySelector<HTMLElement>('[data-health-error-type]')!;
 const dashboardError = root.querySelector<HTMLElement>('[data-dashboard-error]')!;
 const dashboardErrorType = root.querySelector<HTMLElement>('[data-dashboard-error-type]')!;
-const url = root.dataset.authUrl;
-const makeAuth = (base: string) => createAuthClient(base);
+const authConfigured = root.dataset.authConfigured === 'true';
 let auth: ReturnType<typeof makeAuth>;
 let busy = false;
 let currentTenant: any = null;
@@ -741,8 +740,8 @@ registerInvite.addEventListener('click', () => void adminRun(async () => {
 document.addEventListener('workspace-session-ended', () => showError('انتهت الجلسة؛ سجّل الدخول مجددًا.',true));
 void health();
 healthRefresh.addEventListener('click', () => { healthRefresh.disabled = true; void health().finally(() => { healthRefresh.disabled = false; }); });
-if (url) {
-  auth = makeAuth(url);
+if (authConfigured) {
+  auth = createAuthClient();
   void run(() => load());
   retry.addEventListener('click', () => void run(() => load()));
   // Tenant switching is handled once in workspace-context: the page reloads and the

@@ -1,52 +1,50 @@
 ---
-import { productForReturnTo, productEntryPath } from '../../shared/product-navigation.mjs';
+import { authDestination } from '../../shared/auth-navigation.mjs';
 import PageShell from '../../components/PageShell.astro';
 import MonitoringGate from '../../components/MonitoringGate.astro';
-import { env, isPortalEnabled } from '../../server/kernel/env.mjs';
+import { isPortalEnabled } from '../../server/kernel/env.mjs';
+import { authConfig } from '../../server/kernel/auth.mjs';
 import { getSignUpAvailability } from '../../shared/sign-up-availability.mjs';
 
 export const prerender = false;
-const authUrl = env('NEON_AUTH_BASE_URL') ?? '';
+const authUrl = authConfig()?.base ?? '';
 const portalEnabled = isPortalEnabled();
 const signUpAvailability = getSignUpAvailability(authUrl, portalEnabled);
-const intendedProduct = productForReturnTo(Astro.url.searchParams.get('returnTo'));
-const trialIntent = Astro.url.searchParams.get('trial') === '48h';
-const workspacePath = trialIntent ? '/app/trial/' : intendedProduct ? productEntryPath(intendedProduct.slug) : '/app/kernel/';
+const destination = authDestination(Astro.url.searchParams);
+const signingIn = Astro.url.searchParams.get('mode') === 'sign-in';
 Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
 ---
 
 <PageShell
-  title="إنشاء حساب | BRIGHTAI"
+  title={signingIn ? "تسجيل الدخول | BRIGHTAI" : "إنشاء حساب | BRIGHTAI"}
   description="أنشئ حساب BRIGHTAI باستخدام بريدك الإلكتروني وكلمة المرور."
-  crumbs={[{ name: 'إنشاء حساب' }]}
+  crumbs={[{ name: signingIn ? "تسجيل الدخول" : "إنشاء حساب" }]}
   robots="noindex, nofollow"
 >
   <MonitoringGate />
   <p class="eyebrow">حساب BRIGHTAI</p>
-  <h1>ابدأ بحسابك</h1>
+  <h1>{signingIn ? "تسجيل الدخول" : "ابدأ بحسابك"}</h1>
   <p class="lead">سجّل بالبريد الإلكتروني وكلمة المرور. تُدار بيانات الدخول عبر Neon Managed Auth.</p>
 
   <p>التسجيل لا يفعّل المنتج المؤسسي. استكشاف 48 ساعة، عند إتاحته، بيانات اصطناعية وقراءة محدودة فقط.</p>
-  <p><a href={intendedProduct ? `${intendedProduct.publicPath}#lab` : "/products/"}>العودة إلى المختبر العام</a> · <a href="/contact/">طلب استكشاف أو الإبلاغ عن تعذر الدخول</a></p>
+  <p><a href={destination.product ? `${destination.product.publicPath}#lab` : "/products/"}>العودة إلى المختبر العام</a> · <a href="/contact/">طلب استكشاف أو الإبلاغ عن تعذر الدخول</a></p>
   {signUpAvailability.available ? (
-    <section class="card auth-card" data-auth-url={authUrl} data-workspace-path={workspacePath} data-product-intent={!!intendedProduct || trialIntent} data-trial-intent={trialIntent} data-portal-enabled={portalEnabled} aria-labelledby="auth-heading">
-      <div data-auth-form-view>
+    <section class="card auth-card" data-workspace-path={destination.path} data-auto-return={destination.auto} data-mode={signingIn ? "sign-in" : "sign-up"} aria-labelledby="auth-heading">
+      <div data-auth-form-view hidden>
         <h2 id="auth-heading">إنشاء حساب</h2>
-        <form data-auth-form>
+        <form data-auth-form method="post" novalidate>
           <div class="auth-field" data-name-field>
             <label for="auth-name">الاسم</label>
             <input id="auth-name" name="name" type="text" autocomplete="name" dir="auto" required maxlength="80" />
-            <p class="field-error" id="auth-name-error" data-field-error="name" hidden></p>
           </div>
           <div class="auth-field">
             <label for="auth-email">البريد الإلكتروني</label>
-            <input id="auth-email" name="email" type="email" autocomplete="email" dir="ltr" required maxlength="254" aria-describedby="auth-email-error" />
-            <p class="field-error" id="auth-email-error" data-field-error="email" hidden></p>
+            <input id="auth-email" name="email" type="email" autocomplete="email" dir="ltr" required maxlength="254" />
           </div>
           <div class="auth-field">
             <label for="auth-password">كلمة المرور</label>
-            <div class="password-control"><input id="auth-password" name="password" type="password" autocomplete="new-password" dir="ltr" required minlength="8" maxlength="128" aria-describedby="auth-password-error" /><button type="button" data-password-toggle aria-pressed="false" aria-controls="auth-password">إظهار كلمة المرور</button></div>
-            <p class="field-error" id="auth-password-error" data-field-error="password" hidden></p>
+            <div class="password-control"><input id="auth-password" name="password" type="password" autocomplete="new-password" dir="ltr" required minlength="8" maxlength="128" /><button type="button" data-password-toggle aria-pressed="false" aria-controls="auth-password">إظهار كلمة المرور</button></div>
+
           </div>
           <button class="button" type="submit" data-submit disabled>إنشاء الحساب</button>
         </form>
@@ -59,276 +57,29 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
       <div data-auth-session hidden>
         <h2>أنت مسجل دخول</h2>
         <p>الحساب الحالي: <bdi data-current-user></bdi></p>
-        {portalEnabled ? (
-          <a class="button" href={workspacePath}>فتح مساحة العمل</a>
-        ) : (
-          <p role="status">بوابة مساحة العمل غير متاحة حاليًا. <a href="/contact/?topic=بوابة%20مساحة%20العمل">استفسر عن إتاحتها</a></p>
-        )}
+        <a class="button" href={destination.path} data-continue hidden>{destination.path.startsWith("/auth/") ? "العودة إلى الدعوات" : "فتح مساحة العمل"}</a>
+        <button class="button" type="button" data-refresh>تحديث الجلسة</button>
         <button class="button" type="button" data-sign-out>تسجيل الخروج</button>
       </div>
 
-      <form data-verify-form>
-        <h2>توثيق البريد أو الدخول برمز</h2><p>التجربة تتطلب توثيقًا فعليًا؛ إنشاء الحساب وحده لا يمنح وصولًا. تقدر ترجع لحسابك برمز بريد دون كلمة مرور.</p>
+      <form data-verify-form method="post" hidden>
+        <h2>توثيق البريد أو الدخول برمز</h2><p>أدخل بريدك لطلب رمز توثيق أو لتسجيل الدخول برمز من ستة أرقام.</p>
         <label for="otp-purpose">غرض الرمز</label><select id="otp-purpose"><option value="email-verification">توثيق البريد</option><option value="sign-in">تسجيل الدخول برمز</option></select>
         <label for="verify-email">البريد الإلكتروني</label><input id="verify-email" type="email" autocomplete="email" required dir="ltr" maxlength="254" />
         <button type="button" data-send-otp>إرسال الرمز</button>
         <label for="verify-otp">رمز الرسالة</label><input id="verify-otp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required dir="ltr" />
         <button type="submit">التحقق من الرمز</button>
       </form>
+      <noscript>فعّل JavaScript لاستخدام خدمة الحسابات.</noscript>
       <p class="auth-status" data-auth-status role="status" aria-live="polite">جارٍ التحقق من جلسة الدخول…</p>
     </section>
   ) : (
-    <p class="card auth-unavailable" role="status">{signUpAvailability.message} <a href="/contact/">تواصل معنا لمعرفة خيارات استكشاف المنتج</a>.</p>
+    <p class="card auth-unavailable" role="status">{signUpAvailability.message} <a href="/contact/">خيارات التواصل</a>.</p>
   )}
 </PageShell>
 
 <script>
-  import { createWorkspaceAuth as createAuthClient } from '../../scripts/workspace-context';
-  import { observeLogin } from '../../scripts/monitoring';
-
-  const card = document.querySelector<HTMLElement>('.auth-card');
-  const form = card?.querySelector<HTMLFormElement>('[data-auth-form]');
-  const formView = card?.querySelector<HTMLElement>('[data-auth-form-view]');
-  const sessionView = card?.querySelector<HTMLElement>('[data-auth-session]');
-  const nameField = card?.querySelector<HTMLElement>('[data-name-field]');
-  const nameInput = card?.querySelector<HTMLInputElement>('#auth-name');
-  const emailInput = card?.querySelector<HTMLInputElement>('#auth-email');
-  const passwordInput = card?.querySelector<HTMLInputElement>('#auth-password');
-  const submitButton = card?.querySelector<HTMLButtonElement>('[data-submit]');
-  const switchButton = card?.querySelector<HTMLButtonElement>('[data-switch]');
-  const switchLabel = card?.querySelector<HTMLElement>('[data-switch-label]');
-  const signOutButton = card?.querySelector<HTMLButtonElement>('[data-sign-out]');
-  const currentUser = card?.querySelector<HTMLElement>('[data-current-user]');
-  const status = card?.querySelector<HTMLElement>('[data-auth-status]');
-  const passwordToggle = card?.querySelector<HTMLButtonElement>('[data-password-toggle]');
-  const authUrl = card?.dataset.authUrl;
-
-  if (
-    card && form && formView && sessionView && nameField && nameInput && emailInput && passwordInput &&
-    submitButton && switchButton && switchLabel && signOutButton && currentUser && status && authUrl
-  ) {
-    const auth = createAuthClient(authUrl);
-    const verifyForm=card.querySelector<HTMLFormElement>('[data-verify-form]')!;
-    const verificationEmail=card.querySelector<HTMLInputElement>('#verify-email')!;
-    const verificationOtp=card.querySelector<HTMLInputElement>('#verify-otp')!;
-    const otpPurpose=card.querySelector<HTMLSelectElement>('#otp-purpose')!;
-    const sendOtp=card.querySelector<HTMLButtonElement>('[data-send-otp]')!;
-    let verifying=false;
-    async function verificationWork(work:()=>Promise<void>){
-      if(verifying)return;verifying=true;
-      verifyForm.querySelectorAll<HTMLButtonElement|HTMLSelectElement|HTMLInputElement>('button,select,input').forEach(b=>b.disabled=true);
-      try{await work();}catch{status!.textContent='تعذر إكمال توثيق البريد؛ تحقق من الرمز أو اطلب رمزًا جديدًا.';}
-      finally{verifying=false;verifyForm.querySelectorAll<HTMLButtonElement|HTMLSelectElement|HTMLInputElement>('button,select,input').forEach(b=>b.disabled=false);verificationOtp.value='';}
-    }
-    sendOtp.addEventListener('click',()=>{if(!verificationEmail.reportValidity())return;void verificationWork(async()=>{
-      const result=await auth.emailOtp.sendVerificationOtp({email:verificationEmail.value.trim(),type:otpPurpose.value==='sign-in'?'sign-in':'email-verification'});
-      if(result.error)throw new Error('OTP unavailable');
-      status!.textContent='أُرسل طلب رمز التوثيق. أدخل الرمز من بريدك؛ لم تُنشأ تجربة بعد.';
-    });});
-    verifyForm.addEventListener('submit',event=>{event.preventDefault();if(!verifyForm.reportValidity())return;void verificationWork(async()=>{
-      const details={email:verificationEmail.value.trim(),otp:verificationOtp.value};
-      const result=otpPurpose.value==='sign-in'?await auth.signIn.emailOtp(details):await auth.emailOtp.verifyEmail(details);
-      if(result.error)throw new Error('Verification rejected');
-      status!.textContent='نجح التحقق. إذا لم تبدأ جلسة، اختر تسجيل الدخول برمز؛ الخادم يتحقق قبل إنشاء التجربة.';
-      const session=await auth.getSession({fetchOptions:{headers:{'X-Force-Fetch':'true'}}});
-      if(session.error || !session.data?.session || !session.data?.user?.emailVerified){
-        status!.textContent='لم تُثبت جلسة موثقة بعد. اختر تسجيل الدخول برمز واطلب رمزًا جديدًا؛ لم تبدأ تجربة جديدة.';
-        return;
-      }
-      showUser(session.data.user.email,true);
-    });});
-    let mode: 'sign-up' | 'sign-in' = 'sign-up';
-
-    const setStatus = (message: string) => {
-      status.textContent = message;
-    };
-
-    const fieldErrors = new Map<string, HTMLElement>(
-      [...card.querySelectorAll<HTMLElement>('[data-field-error]')].map((error) => [error.dataset.fieldError ?? '', error]),
-    );
-    const setFieldError = (field: 'name' | 'email' | 'password', message = '') => {
-      const input = field === 'name' ? nameInput : field === 'email' ? emailInput : passwordInput;
-      const error = fieldErrors.get(field);
-      if (!error) return;
-      error.textContent = message;
-      error.hidden = !message;
-      input.setAttribute('aria-invalid', message ? 'true' : 'false');
-      input.setAttribute('aria-describedby', error.id);
-    };
-    const validate = (field: 'name' | 'email' | 'password') => {
-      const signingUp = mode === 'sign-up';
-      if (field === 'name' && !signingUp) return true;
-      const input = field === 'name' ? nameInput : field === 'email' ? emailInput : passwordInput;
-      let message = '';
-      if (field === 'name' && !input.value.trim()) message = 'اكتب اسمك.';
-      else if (field === 'email' && !input.value.trim()) message = 'اكتب بريدك الإلكتروني.';
-      else if (field === 'email' && input.validity.typeMismatch) message = 'تحقق من صيغة البريد الإلكتروني.';
-      else if (field === 'password' && !input.value) message = 'اكتب كلمة المرور.';
-      else if (field === 'password' && signingUp && input.value.length < 8) message = 'استخدم 8 أحرف على الأقل.';
-      setFieldError(field, message);
-      return !message;
-    };
-    const clearFieldErrors = () => {
-      (['name', 'email', 'password'] as const).forEach((field) => setFieldError(field));
-    };
-
-    const showUser = (email: string, verified = true) => {
-      verificationEmail.value=email;
-      currentUser.textContent = email;
-      formView.hidden = true;
-      sessionView.hidden = false;
-      setStatus('عُثر على جلسة لدى Neon Auth. يتحقق الخادم من الهوية والعضوية عند فتح مساحة العمل.');
-      if (card?.dataset.trialIntent === 'true' && !verified) {setStatus('وثّق بريدك بالرمز قبل بدء التجربة.');return;}
-      if (card?.dataset.productIntent === 'true' && card.dataset.portalEnabled === 'true' && card.dataset.workspacePath) location.replace(card.dataset.workspacePath);
-    };
-
-    const showForm = () => {
-      sessionView.hidden = true;
-      formView.hidden = false;
-    };
-
-    const setMode = (nextMode: 'sign-up' | 'sign-in') => {
-      mode = nextMode;
-      const signingUp = mode === 'sign-up';
-      nameField.hidden = !signingUp;
-      nameInput.required = signingUp;
-      nameInput.autocomplete = signingUp ? 'name' : 'off';
-      passwordInput.autocomplete = signingUp ? 'new-password' : 'current-password';
-      passwordInput.minLength = signingUp ? 8 : 0;
-      passwordInput.type = 'password'; passwordInput.value = '';
-      if (passwordToggle) { passwordToggle.textContent = 'إظهار كلمة المرور'; passwordToggle.setAttribute('aria-pressed', 'false'); }
-      submitButton.textContent = signingUp ? 'إنشاء الحساب' : 'تسجيل الدخول';
-      switchLabel.textContent = signingUp ? 'عندك حساب؟' : 'ما عندك حساب؟';
-      switchButton.textContent = signingUp ? 'تسجيل الدخول' : 'إنشاء حساب';
-      setStatus('');
-      clearFieldErrors();
-    };
-
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      clearFieldErrors();
-      const valid = [validate('name'), validate('email'), validate('password')].every(Boolean);
-      if (!valid) {
-        [nameInput, emailInput, passwordInput].find((input) => input.getAttribute('aria-invalid') === 'true')?.focus();
-        return;
-      }
-      if (!form.reportValidity()) return;
-
-      submitButton.disabled = true;
-      switchButton.disabled = true;
-      form.querySelectorAll<HTMLInputElement | HTMLButtonElement>('input,button').forEach((control) => { control.disabled = true; });
-      form.setAttribute('aria-busy', 'true');
-      setStatus(mode === 'sign-up' ? 'جارٍ إنشاء الحساب…' : 'جارٍ تسجيل الدخول…');
-      let authSucceeded = false;
-
-      try {
-        const email = emailInput.value.trim();
-        const password = passwordInput.value;
-        const result = await observeLogin(async () => mode === 'sign-up'
-          ? await auth.signUp.email({
-              name: nameInput.value.trim(),
-              email,
-              password,
-            })
-          : await auth.signIn.email({ email, password }));
-
-        if (result.error) {
-          const code = String((result.error as { code?: unknown }).code ?? '').toUpperCase();
-          if (['INVALID_EMAIL', 'INVALID_EMAIL_ADDRESS'].includes(code)) setFieldError('email', 'تحقق من صيغة البريد الإلكتروني.');
-          if (['PASSWORD_TOO_SHORT', 'PASSWORD_TOO_LONG', 'INVALID_PASSWORD'].includes(code)) setFieldError('password', mode === 'sign-up' ? 'راجع متطلبات كلمة المرور وحاول مرة ثانية.' : 'تعذر التحقق من كلمة المرور. حاول مرة ثانية.');
-          // Messages never distinguish "unknown email" from "wrong password".
-          if (code === 'EMAIL_NOT_VERIFIED') {
-            setStatus('أكمل توثيق بريدك الإلكتروني من الرسالة المرسلة إليك، ثم سجّل الدخول. لم تُنشأ جلسة.');
-          } else {
-            setStatus(mode === 'sign-up'
-              ? 'تعذر إنشاء الحساب. راجع الحقول وحاول مرة ثانية.'
-              : 'تعذر تسجيل الدخول. تحقق من البريد وكلمة المرور وحاول مرة ثانية.');
-          }
-          return;
-        }
-        // A second-factor challenge is real provider state, but no MFA/SSO step is
-        // approved for this portal yet. Stop before reading or displaying a session.
-        if ((result.data as unknown as { twoFactorRedirect?: unknown } | null)?.twoFactorRedirect) {
-          setStatus('يتطلب هذا الحساب خطوة تحقق ثانية (MFA/SSO) غير مهيأة في هذه البوابة. لم تُفتح جلسة؛ تواصل مع مشغّل المنصة.');
-          return;
-        }
-        authSucceeded = true;
-
-        const sessionResult = await auth.getSession();
-        if (sessionResult.error) {
-          setStatus('تم إرسال الطلب، لكن تعذر قراءة الجلسة الآن. حدّث الصفحة وحاول مرة ثانية.');
-          return;
-        }
-
-        if (sessionResult.data?.user?.email) {
-          showUser(sessionResult.data.user.email,sessionResult.data.user.emailVerified === true);
-        } else if (mode === 'sign-up') {
-          setMode('sign-in');
-          setStatus('تم إنشاء الحساب. أكمل تأكيد البريد الإلكتروني إذا وصلك طلب تحقق، ثم سجّل الدخول.');
-        } else {
-          setStatus('لم تُنشأ جلسة. تحقق من البريد وكلمة المرور وحاول مرة ثانية.');
-        }
-      } catch {
-        setStatus('تعذر إكمال الطلب. راجع إعداد خدمة الحسابات أو حاول مرة ثانية.');
-      } finally {
-        form.querySelectorAll<HTMLInputElement | HTMLButtonElement>('input,button').forEach((control) => { control.disabled = false; });
-        form.removeAttribute('aria-busy');
-        if (emailInput.getAttribute('aria-invalid') === 'true') emailInput.focus();
-        else if (passwordInput.getAttribute('aria-invalid') === 'true') passwordInput.focus();
-        if (authSucceeded) passwordInput.value = '';
-      }
-    });
-
-    switchButton.addEventListener('click', () => {
-      showForm();
-      setMode(mode === 'sign-up' ? 'sign-in' : 'sign-up');
-    });
-
-    for (const [field, input] of [['name', nameInput], ['email', emailInput], ['password', passwordInput]] as const) {
-      input.addEventListener('blur', () => { if (input.value) validate(field); });
-      input.addEventListener('input', () => { if (!fieldErrors.get(field)?.hidden) validate(field); });
-    }
-    passwordToggle?.addEventListener('click', () => {
-      const visible = passwordInput.type === 'password';
-      passwordInput.type = visible ? 'text' : 'password';
-      passwordToggle.textContent = visible ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور';
-      passwordToggle.setAttribute('aria-pressed', String(visible));
-    });
-
-    signOutButton.addEventListener('click', async () => {
-      signOutButton.disabled = true;
-      setStatus('جارٍ تسجيل الخروج…');
-      try {
-        const result = await auth.signOut();
-        if (result.error) {
-          setStatus('تعذر تسجيل الخروج. حاول مرة ثانية.');
-          return;
-        }
-        showForm();
-        form.reset();
-        setMode('sign-up');
-        setStatus('تم تسجيل الخروج.');
-      } catch {
-        setStatus('تعذر الاتصال بخدمة الحسابات. حاول مرة ثانية.');
-      } finally {
-        signOutButton.disabled = false;
-      }
-    });
-
-    auth.getSession().then(({ data, error }) => {
-      if (error) {
-        setStatus('تعذر التحقق من الجلسة. تقدر تتابع بتسجيل الدخول.');
-      } else if (data?.user?.email) {
-        showUser(data.user.email,data.user.emailVerified === true);
-      } else {
-        setStatus('أكمل الحقول لإنشاء حساب، أو سجّل الدخول إذا كان لديك حساب.');
-      }
-      submitButton.disabled = false;
-    }).catch(() => {
-      setStatus('تعذر الاتصال بخدمة الحسابات. تحقق من اتصالك وحاول مرة ثانية.');
-      submitButton.disabled = false;
-    });
-  }
+  import '../../scripts/auth-page';
 </script>
 
 <style>
@@ -340,12 +91,10 @@ Astro.response.headers.set('Cache-Control', 'private, no-store, max-age=0');
   .auth-field input { width: 100%; min-height: 48px; padding: 11px 14px; border: 1px solid #302a39; border-radius: 10px; background: #0b0910; color: #f4f1f8; font: inherit; font-size: 16px; line-height: 1.6; transition: border-color 140ms ease, background-color 140ms ease; }
   .password-control { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px; }
   .password-control button { min-height: 44px; padding-inline: 10px; border: 1px solid #302a39; border-radius: 8px; background: #111018; color: #e7dcc6; font: inherit; cursor: pointer; }
-  .field-error { margin: 0; color: #ffb4a9; font-size: 13px; line-height: 1.7; }
-  .auth-field input[aria-invalid="true"] { border-color: #d56c60; }
   .auth-field input:hover { border-color: #413a4d; }
   .auth-field input:focus { border-color: var(--color-saffron-spark); background: #0e0b14; }
   .auth-field input:focus-visible, .auth-link:focus-visible, .password-control button:focus-visible { outline: 2px solid var(--color-saffron-spark); outline-offset: 3px; }
-  .auth-field input:user-invalid { border-color: #c25a5a; }
+  .auth-field input[aria-invalid="true"], .auth-field input:user-invalid { border-color: #c25a5a; }
   .auth-card .button { transition: filter 140ms ease, transform 140ms ease, background-color 140ms ease; }
   .auth-card .button:not([disabled]):hover { filter: brightness(1.08); transform: translateY(-1px); }
   .auth-card .button:not([disabled]):active { transform: translateY(0); }

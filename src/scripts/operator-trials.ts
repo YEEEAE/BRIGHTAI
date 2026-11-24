@@ -8,7 +8,7 @@ const root = document.querySelector<HTMLElement>('[data-operator-trials]')!;
 const state = root.querySelector<HTMLElement>('[data-op-state]')!;
 const list = root.querySelector<HTMLElement>('[data-op-list]')!;
 const refresh = root.querySelector<HTMLButtonElement>('[data-op-refresh]')!;
-const authUrl = root.dataset.authUrl ?? '';
+const authConfigured = root.dataset.authConfigured === 'true';
 const labels: Record<string, string> = {
   REQUESTED: 'طلب مسجّل', ELIGIBILITY_REVIEW: 'قيد مراجعة الأهلية', APPROVED: 'معتمد — بانتظار التفعيل',
   ACTIVATED: 'مفعّل', EXPIRED: 'منتهٍ', CLOSED: 'مغلق', REJECTED: 'مرفوض', CANCELLED: 'ملغى',
@@ -25,7 +25,7 @@ const errorNames: Record<string, string> = {
   TRIAL_STATE_CHANGED: 'تغيرت الحالة؛ حدّث القائمة قبل إعادة المحاولة.',
   TRIAL_WINDOW_NOT_DUE: 'لم تنتهِ نافذة التجربة بعد.',
 };
-const auth = authUrl ? createWorkspaceAuth(authUrl) : null;
+const auth = authConfigured ? createWorkspaceAuth() : null;
 
 function message(text: string, tone: 'ok' | 'warn' | 'bad' = 'warn') {
   state.textContent = text;

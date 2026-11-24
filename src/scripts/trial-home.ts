@@ -4,7 +4,7 @@ const status=root.querySelector<HTMLElement>('[data-trial-status]')!;
 const grid=root.querySelector<HTMLElement>('[data-trial-products]')!;
 const start=root.querySelector<HTMLButtonElement>('[data-trial-start]')!;
 const refresh=root.querySelector<HTMLButtonElement>('[data-trial-refresh]')!;
-const auth=root.dataset.authUrl?createWorkspaceAuth(root.dataset.authUrl):null;
+const auth=root.dataset.authConfigured === 'true' ? createWorkspaceAuth():null;
 let tenant=new URL(location.href).searchParams.get('workspace')||'';
 let timer:ReturnType<typeof setTimeout>;
 let clock:ReturnType<typeof setInterval>;
