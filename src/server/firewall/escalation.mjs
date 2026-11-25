@@ -91,7 +91,7 @@ async function createReview(db, identity, tenantId, context) {
   const policy=(await db.query('SELECT * FROM public.aigas_hg_policies WHERE tenant_id=$1 FOR SHARE',[tenantId])).rows[0];
   const decision=(await db.query("SELECT * FROM public.aigas_fw_decisions WHERE tenant_id=$1 AND id=$2 AND action='ESCALATE'",[tenantId,context.decisionId])).rows[0];
   if(!decision || decision.request_id!==context.requestId || decision.request_fingerprint!==context.requestFingerprint || decision.policy_version!==context.policyVersion) throw Error('REVIEW_BINDING_MISMATCH');
-  const payload={decision_id:decision.id,rule_id:decision.rule_id,rule_version:decision.rule_version,request_fingerprint:decision.request_fingerprint};
+  const payload={decision_id:decision.id,rule_id:decision.rule_id ?? decision.matcher_id,rule_version:decision.rule_version ?? decision.matcher_version,request_fingerprint:decision.request_fingerprint};
   const data={tenant_id:tenantId,requester_id:identity.userId,operation_type:context.operationType,subject_ref:decision.id,payload,policy_version:policy.version};
   const id=randomUUID();
   const review=(await db.query(`INSERT INTO public.aigas_hg_requests(id,tenant_id,requester_id,title,description,reason,operation_scope,operation_type,subject_ref,payload,payload_digest,policy_version,provider_ref,expires_at)

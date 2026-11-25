@@ -13,8 +13,8 @@ const allowedFields = {
   create: ['template', 'duplicate_of', 'name', 'pattern', 'action', 'priority'],
   update: ['id', 'version', 'enabled', 'name', 'pattern', 'action', 'priority'],
   delete: ['id', 'version'],
-  evaluate: ['text', 'synthetic'],
-  enforce: ['text', 'synthetic', 'request_id', 'department_id'],
+  evaluate: ['text', 'synthetic', 'tool_call'],
+  enforce: ['text', 'synthetic', 'request_id', 'department_id', 'tool_call'],
 };
 async function readBody(request, operation) {
   const origin = request.headers.get('origin');
@@ -52,7 +52,12 @@ export function createHandler(auth = authenticate, service = operate) {
       }
       const status = httpStatus ?? (operation === 'create' ? 201 : 200);
       if (status >= 400) {
-        return Response.json(errorBody({ status, code: payload.code, message: payload.message, dependencyStatus: payload.dependencyStatus }), { headers, status });
+        return Response.json(errorBody({ status, code: payload.code, message: payload.message, dependencyStatus: payload.dependencyStatus,
+          extra: payload.decision ? { decision: payload.decision, execution_status: payload.execution_status,
+            external_action_executed: payload.external_action_executed, request_id: payload.request_id,
+            policy_version: payload.policy_version, policy: payload.policy,
+            review_required: payload.review_required, integration: payload.integration, blocked_reason: payload.blocked_reason } : {},
+        }), { headers, status });
       }
       return Response.json(payload, { headers, status });
     } catch (error) {

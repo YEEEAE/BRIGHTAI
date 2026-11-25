@@ -50,7 +50,7 @@ export function binding(request) {
  }
  else if(request.operation_type === 'FIREWALL_ESCALATION_REVIEW') {
   exact(payload,['decision_id','rule_id','rule_version','request_fingerprint']);
-  if(!uuid(payload.decision_id)||!uuid(payload.rule_id)||!Number.isInteger(payload.rule_version)||payload.rule_version<1||!/^[0-9a-f]{64}$/.test(payload.request_fingerprint)) throw new KernelError(409,'INVALID_BINDING','Invalid Firewall metadata');
+  if(!uuid(payload.decision_id)||(!uuid(payload.rule_id) && !(typeof payload.rule_id==='string' && /^[a-z][a-z0-9-]{1,63}$/.test(payload.rule_id)))||!Number.isInteger(payload.rule_version)||payload.rule_version<1||!/^[0-9a-f]{64}$/.test(payload.request_fingerprint)) throw new KernelError(409,'INVALID_BINDING','Invalid Firewall metadata');
   fields=[payload.decision_id,payload.rule_id,payload.rule_version,payload.request_fingerprint];
  }
  else if(request.operation_type === riskReviewOperation) {

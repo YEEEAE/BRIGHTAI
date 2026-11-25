@@ -1,3 +1,5 @@
+import { scanTyped } from '../../shared/firewall-policy.mjs';
+import { evaluateToolCall } from './agent-registry.mjs';
 import { evaluate } from './core.mjs';
 import { protectText } from '../secure-chat/policy.mjs';
 import { approvedProvider, PROVIDER_TIMEOUT_MS } from './provider.mjs';
@@ -17,7 +19,7 @@ const policyVersionFormat = /^[a-zA-Z0-9_.:-]{1,120}$/;
 // harness and never by the HTTP route; an injected adapter is accepted only when it
 // declares `localSandbox:true` and `external:false`, so injection cannot enable a
 // real provider that the approved registry did not authorise.
-export async function enforceDecision({ decision, tenantId, actorUserId, requestId, policyVersion, requestFingerprint, forwardText, kernelPolicy, escalation, outputRules, dependencies, contract_version }, { resolveProvider = null } = {}) {
+export async function enforceDecision({ decision, tenantId, actorUserId, requestId, policyVersion, requestFingerprint, forwardText, kernelPolicy, escalation, outputRules, toolSimulation = false, boundTool = null, departmentId = null, dependencies, contract_version }, { resolveProvider = null } = {}) {
   const base = {
     decision,
     policy: kernelPolicy ? { decision: kernelPolicy.decision, action: kernelPolicy.action ?? null, reason: kernelPolicy.reason, obligations: kernelPolicy.obligations ?? [], mandatory: kernelPolicy.mandatory === true, policies: kernelPolicy.policies ?? [], warnings: kernelPolicy.warnings ?? [] } : null,
@@ -25,7 +27,7 @@ export async function enforceDecision({ decision, tenantId, actorUserId, request
     policy_version: policyVersion ?? null,
     request_fingerprint: requestFingerprint ?? null,
     dependencies, contract_version,
-    persisted: true, external_action_executed: false, execution_status: 'NOT_EXECUTED',
+    persisted: true, tool_simulation: toolSimulation, external_action_executed: false, execution_status: 'NOT_EXECUTED',
   };
   // DENY is the final state; nothing downstream may soften it.
   if (decision.action === 'DENY') return { ...base, httpStatus: 403, code: 'POLICY_BLOCKED', message: 'حُجب الطلب قبل أي استدعاء لمزود AI.' };
@@ -85,11 +87,12 @@ export async function enforceDecision({ decision, tenantId, actorUserId, request
   }
   // WARN is a conditional state, never an unconditional allow. Without an
   // approved warning policy the guard refuses to forward it.
-  if (decision.action === 'WARN') {
+  if (decision.action === 'WARN' || decision.warning_held === true
+    || kernelPolicy.obligations?.includes('WARN') || kernelPolicy.warnings?.length) {
     return { ...base, httpStatus: 409, code: 'WARNING_NOT_FORWARDED',
       message: 'سجّل الفحص تحذيرًا سياسيًا؛ التحذير لا يسمح بالتمرير التلقائي، لذلك لم يُرسل الطلب.' };
   }
-  if (!['ALLOW', 'REDACT'].includes(decision.action) || typeof forwardText !== 'string' || !forwardText.length) {
+  if (!['ALLOW', 'REDACT'].includes(decision.action) || (!toolSimulation && (typeof forwardText !== 'string' || !forwardText.length))) {
     return { ...base, httpStatus: 503, code: 'INVALID_GUARD_DECISION', message: 'تعذر تطبيق القرار؛ لم يُرسل الطلب.' };
   }
   // The early Kernel check above already covers this path; the assertion stays as
@@ -104,13 +107,22 @@ export async function enforceDecision({ decision, tenantId, actorUserId, request
     || !policyVersionFormat.test(policyVersion ?? '') || !fingerprint.test(requestFingerprint ?? '')) {
     return { ...base, httpStatus: 503, code: 'EXECUTION_BINDING_REQUIRED', message: 'تعذر التحقق من ربط القرار بالطلب والنسخة السياسية؛ لم يُرسل الطلب.' };
   }
-  const expectedPolicy = policyReference(kernelPolicy);
+  const expectedPolicy = policyReference(kernelPolicy, outputRules ?? []);
   const expectedFingerprint = decisionFingerprint({
-    tenantId, actorUserId, requestId, policyVersion: expectedPolicy, enforced: true,
-    result: { action: decision.action, reason: decision.reason, rule_id: decision.rule_id ?? null, rule_version: decision.rule_version ?? null },
+    tenantId, actorUserId, requestId, policyVersion: expectedPolicy, enforced: true, toolCall: boundTool, departmentId,
+    result: { ...decision, rule_id: decision.rule_id ?? null, rule_version: decision.rule_version ?? null },
   });
   if (policyVersion !== expectedPolicy || requestFingerprint !== expectedFingerprint) {
     return { ...base, httpStatus: 503, code: 'EXECUTION_BINDING_MISMATCH', message: 'بصمة القرار أو نسخة السياسة لا تطابق الطلب المحفوظ؛ لم يُرسل الطلب.' };
+  }
+  if (toolSimulation || boundTool || decision.matcher_id?.startsWith('agent-')) {
+    const registered = evaluateToolCall(boundTool);
+    if (!toolSimulation || registered.action !== 'ALLOW' || decision.action !== 'ALLOW'
+      || registered.matcher_id !== decision.matcher_id || registered.matcher_version !== decision.matcher_version) {
+      return { ...base, httpStatus: 403, code: 'POLICY_BLOCKED', message: 'حُجبت محاكاة الأداة قبل أي تنفيذ.' };
+    }
+    return { ...base, httpStatus: 200, code: 'TOOL_SIMULATED', execution_status: 'SIMULATED',
+      response_text: 'محاكاة قراءة تقرير اصطناعي.' };
   }
   const injected = typeof resolveProvider === 'function';
   const provider = (injected ? resolveProvider : approvedProvider)(tenantId);
@@ -162,9 +174,10 @@ export function evaluateOutput(output, rules) {
   try {
     // Evaluate the complete output; never truncate around a possible match.
     if(typeof output!=='string'||output.length>4000||!Array.isArray(rules)) return {allowed:false};
+    if (scanTyped(output).some(rule => rule.id === 'credential')) return { allowed: false };
     const normalized=output.normalize('NFKC');
-    const result=evaluate(normalized,rules,{enforce:true});
-    if(!['ALLOW','REDACT'].includes(result.action)) return {allowed:false};
+    const result=evaluate(normalized,rules,{enforce:true,requireTenantMatch:true});
+    if(result.warning_held || !['ALLOW','REDACT'].includes(result.action)) return {allowed:false};
     return {allowed:true,...protectText(result.output)};
   } catch { return {allowed:false}; }
 }

@@ -1,3 +1,4 @@
+import { actionRank, decideMatches, scanTyped } from '../../shared/firewall-policy.mjs';
 import { KernelError } from '../kernel/core.mjs';
 
 // Starter templates are server-owned literals. A tenant may also add its own literal rules.
@@ -9,8 +10,7 @@ export const templates = Object.freeze({
 });
 // Five decision states. ESCALATE is the approved spec's REQUEST_APPROVAL; DENY is BLOCK.
 export const actions = Object.freeze(['ALLOW', 'WARN', 'REDACT', 'ESCALATE', 'DENY']);
-// Defense-first precedence. Priority only orders rules inside the winning action.
-export const actionRank = Object.freeze({ DENY: 0, ESCALATE: 1, REDACT: 2, WARN: 3, ALLOW: 4 });
+export { actionRank };
 export const MAX_RULES = 25;
 export const MAX_TEXT_LENGTH = 4000;
 export const MAX_EVALUATIONS_PER_WINDOW = 60;
@@ -54,58 +54,46 @@ function structurallyValid(rule) {
     && Number.isInteger(rule.priority) && rule.priority >= 1 && rule.priority <= 999;
 }
 const escapeLiteral = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-const matches = (text, pattern) => new RegExp(escapeLiteral(pattern), 'i').test(text);
-function firstByPriority(list) {
-  return [...list].sort((a, b) => (a.priority - b.priority)
+function orderedRules(rules) {
+  return [...rules].sort((a, b) => (a.priority - b.priority)
     || String(a.created_at ?? '').localeCompare(String(b.created_at ?? ''))
-    || String(a.id).localeCompare(String(b.id)))[0] ?? null;
+    || String(a.id).localeCompare(String(b.id)));
 }
-export function evaluate(text, rules, { enforce = false } = {}) {
+
+export function evaluate(text, rules, { enforce = false, requireTenantMatch = false } = {}) {
   inputText(text);
   const active = rules.filter(rule => rule.enabled);
-  const result = (action, reason, rule = null, output = null) => ({
+  const result = (action, reason, rule = null, output = null, warnings = []) => ({
     action, reason,
-    rule_id: rule?.id ?? null, rule_version: rule?.version ?? null, rule_name: rule?.name ?? null,
-    output,
+    rule_id: rule?.tenantRule ? rule.id : null, rule_version: rule?.tenantRule ? rule.version : null,
+    ...(rule && !rule.tenantRule ? { matcher_id: rule.id, matcher_version: rule.version } : {}),
+    rule_name: rule?.name ?? null, output,
+    ...(warnings.length ? { warning_held: true } : {}),
   });
   if (!active.length) return result('DENY', 'NO_ACTIVE_POLICY');
-  // Fail closed if persisted policy is malformed, even when another rule would allow.
   if (active.some(rule => !structurallyValid(rule))) return result('DENY', 'INVALID_POLICY');
-  const matching = action => active.filter(rule => rule.action === action && matches(text, rule.pattern));
-  // A deny rule can never be softened by a lower state or by numeric priority.
-  const deny = firstByPriority(matching('DENY'));
-  if (deny) return result('DENY', 'RULE_DENY', deny);
-  const escalate = firstByPriority(matching('ESCALATE'));
-  if (escalate) return result('ESCALATE', 'RULE_ESCALATE', escalate);
-  const redact = matching('REDACT');
-  if (redact.length) {
-    // Collect spans against the original input, then merge overlaps. Replacing one
-    // literal first must never hide an overlapping match belonging to another rule.
+
+  const literals = orderedRules(active).flatMap(rule => {
+    const matcher = new RegExp(escapeLiteral(rule.pattern), 'gi');
     const spans = [];
-    for (const rule of redact) {
-      const matcher = new RegExp(escapeLiteral(rule.pattern), 'gi');
-      let match;
-      while ((match = matcher.exec(text))) { spans.push([match.index, match.index + match[0].length]); matcher.lastIndex = match.index + 1; }
+    let match;
+    while ((match = matcher.exec(text))) {
+      spans.push([match.index, match.index + match[0].length]);
+      matcher.lastIndex = match.index + 1;
     }
-    spans.sort((a, b) => a[0] - b[0]);
-    const merged = [];
-    for (const span of spans) {
-      const last = merged[merged.length - 1];
-      if (last && span[0] <= last[1]) last[1] = Math.max(last[1], span[1]);
-      else merged.push([...span]);
-    }
-    let output = '', cursor = 0;
-    for (const [start, end] of merged) { output += text.slice(cursor, start) + '[نص منقّح]'; cursor = end; }
-    output += text.slice(cursor);
-    return result('REDACT', 'RULE_REDACT', firstByPriority(redact), output);
+    return spans.length ? [{ ...rule, tenantRule: true, spans }] : [];
+  });
+  if (requireTenantMatch && !literals.some(rule => ['ALLOW', 'REDACT'].includes(rule.action))) {
+    return result('DENY', 'NO_MATCH_ENFORCED');
   }
-  // WARN is not an unconditional allow: the guard path never forwards it automatically.
-  const warn = firstByPriority(matching('WARN'));
-  if (warn) return result('WARN', 'RULE_WARN', warn);
-  const allow = firstByPriority(matching('ALLOW'));
-  if (enforce && !allow) return result('DENY', 'NO_MATCH_ENFORCED');
-  return result('ALLOW', allow ? 'RULE_ALLOW' : 'NO_MATCH_LAB_ONLY', allow, text);
+  const decision = decideMatches(text, [...scanTyped(text), ...literals]);
+  if (decision) {
+    const { winner, output, warnings } = decision;
+    return result(winner.action, `RULE_${winner.action}`, winner, output, warnings);
+  }
+  return enforce ? result('DENY', 'NO_MATCH_ENFORCED') : result('ALLOW', 'NO_MATCH_LAB_ONLY', null, text);
 }
+
 export const reasons = Object.freeze({
   NO_ACTIVE_POLICY: 'حُجب الفحص لعدم وجود قاعدة مفعّلة.',
   INVALID_POLICY: 'حُجب الفحص لوجود قاعدة غير صالحة في السجل.',

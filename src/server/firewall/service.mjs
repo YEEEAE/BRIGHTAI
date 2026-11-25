@@ -12,7 +12,9 @@ import {
 import { providerState } from './provider.mjs';
 import { requestHumanReview, reviewIntegrationState } from './escalation.mjs';
 import { enforceDecision } from './guard.mjs';
-import { policyReference, decisionFingerprint } from './binding.mjs';
+import { policyReference, evaluatorReference, decisionFingerprint } from './binding.mjs';
+import { matcherNotes } from '../../shared/firewall-policy.mjs';
+import { evaluateToolCall, registryVersion } from './agent-registry.mjs';
 import { evaluateKernelPolicy } from '../kernel/policies.mjs';
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -189,11 +191,15 @@ export function createFirewallService(transact = transaction) {
 
       if (operation === 'evaluate' || operation === 'enforce') {
         const enforced = operation === 'enforce';
-        const requestText = inputText(body.text);
+        const toolSimulation = Object.hasOwn(body, 'tool_call');
+        if (toolSimulation && Object.hasOwn(body, 'text')) throw new KernelError(400, 'INVALID_BODY', 'اختر نصًا أو استدعاء أداة للمحاكاة.');
+        const requestText = toolSimulation ? null : inputText(body.text);
+        const toolResult = toolSimulation ? evaluateToolCall(body.tool_call) : null;
+        const boundTool = toolResult && toolResult.matcher_id !== 'agent-default-deny' ? body.tool_call : null;
         let kernelPolicy = null;
         if (enforced) {
           try {
-            kernelPolicy = await evaluateKernelPolicy(db, identity, tenantId, { productSlug: 'firewall', operation: 'firewall.execute', resource_type: 'text', departmentId: body.department_id ?? null });
+            kernelPolicy = await evaluateKernelPolicy(db, identity, tenantId, { productSlug: 'firewall', operation: 'firewall.execute', resource_type: toolSimulation ? 'agent_tool' : 'text', departmentId: body.department_id ?? null });
           } catch (error) {
             const setup = ['42P01', '42703', '42883', '42501'].includes(error?.code);
             throw new KernelError(503, setup ? 'KERNEL_POLICY_SETUP_REQUIRED' : 'KERNEL_POLICY_UNAVAILABLE',
@@ -206,11 +212,11 @@ export function createFirewallService(transact = transaction) {
         // A Kernel policy that is not ALLOW hard-denies and is never softened by product rules.
         const result = enforced && kernelPolicy.decision !== 'ALLOW'
           ? { action: 'DENY', reason: 'KERNEL_POLICY_DENIED', rule_id: null, rule_version: null, rule_name: null, output: null }
-          : evaluate(requestText, rules, { enforce: enforced });
+          : toolResult ?? evaluate(requestText, rules, { enforce: enforced });
         const id = randomUUID();
-        const policyVersion = enforced ? policyReference(kernelPolicy) : 'firewall-evaluator-v2';
+        const policyVersion = enforced ? policyReference(kernelPolicy, rules) : toolSimulation ? `agent-registry-v${registryVersion}` : evaluatorReference(rules);
         const requestFingerprint = enforced
-          ? decisionFingerprint({ tenantId, actorUserId: identity.userId, requestId, policyVersion, result, enforced })
+          ? decisionFingerprint({ tenantId, actorUserId: identity.userId, requestId, policyVersion, result, enforced, toolCall: boundTool, departmentId: body.department_id ?? null })
           : null;
         // Single-use request UUID. The pre-check runs under the governance lock taken
         // above, so retries are classified before any write; a UUID reused for a
@@ -243,8 +249,8 @@ export function createFirewallService(transact = transaction) {
               [randomUUID(), tenantId, identity.userId, 'firewall', 'firewall.execute', kernelPolicy.decision, kernelPolicy.reason, JSON.stringify(kernelPolicy.policies ?? []), requestId]);
           }
           const inserted = await db.query(
-            'INSERT INTO public.aigas_fw_decisions (id,tenant_id,action,reason,rule_id,rule_version,mode,request_id,policy_version,request_fingerprint,created_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,clock_timestamp()) RETURNING created_at',
-            [id, tenantId, result.action, result.reason, result.rule_id, result.rule_version, enforced ? 'GUARD' : 'LAB', requestId, policyVersion, requestFingerprint],
+            'INSERT INTO public.aigas_fw_decisions (id,tenant_id,action,reason,rule_id,rule_version,mode,request_id,policy_version,request_fingerprint,matcher_id,matcher_version,created_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,clock_timestamp()) RETURNING created_at',
+            [id, tenantId, result.action, result.reason, result.rule_id, result.rule_version, enforced ? 'GUARD' : 'LAB', requestId, policyVersion, requestFingerprint, result.matcher_id ?? null, result.matcher_version ?? null],
           );
           if (inserted.rowCount !== 1) throw new Error('DECISION_NOT_SAVED');
           // Kernel audit is required and atomic with the metadata-only decision.
@@ -268,13 +274,15 @@ export function createFirewallService(transact = transaction) {
             source: 'firewall', event_type: 'firewall.decision.recorded',
             correlation_id: requestId ?? id,
             decision_id: id,
-            policy_version: enforced ? policyVersion : (result.rule_id ? `rule:${result.rule_id}:v${result.rule_version}` : 'firewall-evaluator-v2'),
+            policy_version: policyVersion,
             metadata_json: { synthetic: true, decision_ref: id, action: result.action, mode: enforced ? 'GUARD' : 'LAB', rule_ref: result.rule_id, rule_version: result.rule_version, ...(enforced ? { request_fingerprint: requestFingerprint } : {}) },
             idempotency_key: `decision:${id}`,
           });
           const decision = {
             id, action: result.action, reason: result.reason, reason_text: reasons[result.reason],
             rule_id: result.rule_id, rule_version: result.rule_version,
+            matcher_id: result.matcher_id ?? null, matcher_version: result.matcher_version ?? null,
+            rule_name: result.rule_name, warning_held: result.warning_held === true,
             created_at: inserted.rows[0].created_at, mode: enforced ? 'GUARD' : 'LAB',
             policy_version: policyVersion, request_fingerprint: requestFingerprint,
           };
@@ -283,10 +291,10 @@ export function createFirewallService(transact = transaction) {
             ? dependencyEntry('kernel-policy', kernelPolicy.decision === 'ALLOW' ? 'available' : kernelPolicy.reason === 'POLICY_UNAVAILABLE' ? 'not configured' : 'blocked', { required: true, reason: kernelPolicy.reason })
             : { product: 'kernel-policy', required: false, evaluated: false, blocking: false };
           if (enforced) return { decision, tenantId, actorUserId: identity.userId, requestId, policyVersion, requestFingerprint,
-            outputRules: rules, forwardText: ['ALLOW', 'REDACT'].includes(result.action) ? result.output : null, kernelPolicy, escalation, dependencies, contract_version: HTTP_CONTRACT_VERSION };
+            outputRules: rules, toolSimulation, boundTool, departmentId: body.department_id ?? null, forwardText: ['ALLOW', 'REDACT'].includes(result.action) ? result.output : null, kernelPolicy, escalation, dependencies, contract_version: HTTP_CONTRACT_VERSION };
           return {
             ...decision, rule_name: result.rule_name, output: result.output,
-            input_length: requestText.length, persisted: true,
+            input_length: requestText?.length ?? 0, tool_simulation: toolSimulation, persisted: true,
             execution_status: 'NOT_EXECUTED', external_action_executed: false,
             dependencies, contract_version: HTTP_CONTRACT_VERSION,
           };
@@ -310,14 +318,14 @@ export function createFirewallService(transact = transaction) {
         mode: 'GUARD',
         evaluation_route: '/app/api/firewall/evaluate/',
         kernel_authorization: 'KERNEL_ALLOW_REQUIRED',
-        binding: 'OUTCOME:SHA256:TENANT+ACTOR+REQUEST_ID+POLICY_VERSION+DECISION',
+        binding: 'OUTCOME:SHA256:TENANT+ACTOR+REQUEST_ID+POLICY_VERSION+DECISION+TOOL',
         provider: provider.code,
         review: review.code,
         execution: provider.configured ? 'AVAILABLE' : 'BLOCKED',
         reason: provider.configured ? null : 'PROVIDER_NOT_CONFIGURED',
       };
       const decisions = (await db.query(
-        `SELECT d.id,d.created_at,d.action,d.reason,d.rule_id,d.rule_version,d.mode,d.policy_version
+        `SELECT d.id,d.created_at,d.action,d.reason,d.rule_id,d.rule_version,d.matcher_id,d.matcher_version,d.mode,d.policy_version
          FROM public.aigas_fw_decisions d
          WHERE d.tenant_id=$1 AND ($2='' OR d.action=$2) AND ($3='' OR d.reason=$3)
          AND ($4='' OR d.mode=$4)
@@ -327,7 +335,7 @@ export function createFirewallService(transact = transaction) {
         [tenantId, action, reason, mode, from ? `${from}T00:00:00Z` : null, to ? `${to}T00:00:00Z` : null, (page - 1) * 12],
       )).rows;
       return {
-        tenant: { ...scope.tenant, role: member.role }, memberships: scope.memberships, canManage, rules, counts,
+        tenant: { ...scope.tenant, role: member.role }, memberships: scope.memberships, canManage, rules, counts, matchers: matcherNotes,
         decisions: decisions.slice(0, 12), page, hasNext: decisions.length > 12 && page < 10000, provider, enforcement,
         enforcementPath: '/app/api/firewall/guarded-executions/', actionFilter: action, reasonFilter: reason,
         limits: { maxRules: MAX_RULES, maxTextLength: MAX_TEXT_LENGTH, maxEvaluationsPerWindow: MAX_EVALUATIONS_PER_WINDOW },

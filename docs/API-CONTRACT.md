@@ -25,6 +25,8 @@
 }
 ```
 
+أخطاء `POST /app/api/firewall/guarded-executions/` الناتجة عن قرار محفوظ تعرض أيضًا `decision` و`request_id` و`policy_version` و`execution_status` و`external_action_executed`. القرار يتضمن السبب ومعرّف القاعدة أو المطابق ونسخته وبصمة الربط. أخطاء المصادقة والتحقق من الإدخال تحتفظ بجسم الخطأ العام.
+
 `dependencyStatus` إما `null` أو `available` أو `not configured` أو `degraded` أو `blocked` أو `access denied` أو `expired` أو `temporarily unavailable`. اعتمد على `code` وHTTP في منطق العميل. النص موجّه للعرض وقد يتغير. تعيد الاستثناءات غير المعالجة رسالة عامة. طلبات `HEAD` واستجابات `204` خالية من الجسم.
 
 | HTTP | استخدامه |

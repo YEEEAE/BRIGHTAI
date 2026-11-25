@@ -26,7 +26,6 @@ const kernelPolicy = Object.freeze({
   decision: 'ALLOW', action: 'ALLOW', reason: 'HARNESS_ALLOW', mandatory: false,
   obligations: [], policies: [], warnings: [],
 });
-const policyVersion = policyReference(kernelPolicy);
 
 const rule = (id, action, pattern, priority) => ({
   id, tenant_id: tenantId, template: null, name: `harness-${id}`,
@@ -41,13 +40,15 @@ const rules = [
   rule('55555555-5555-4555-8555-555555555556', 'ALLOW', `[${LOCAL_SANDBOX_ID}]`, 60),
 ];
 
+const policyVersion = policyReference(kernelPolicy, rules);
+
 function decisionFor(text) {
   const result = evaluate(text, rules, { enforce: true });
   const requestFingerprint = decisionFingerprint({ tenantId, actorUserId, requestId, policyVersion, result, enforced: true });
   return {
     result,
     payload: {
-      decision: { id: decisionId, action: result.action, reason: result.reason, rule_id: result.rule_id, rule_version: result.rule_version },
+      decision: { id: decisionId, ...result, output: undefined },
       tenantId, actorUserId, requestId, policyVersion, requestFingerprint,
       forwardText: ['ALLOW', 'REDACT'].includes(result.action) ? result.output : null,
       kernelPolicy, escalation: null, outputRules: rules,

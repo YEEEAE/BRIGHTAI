@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { errorSchema, idempotencyKeySchema, queryMatches } from './schemas.mjs';
+import { errorSchema, firewallErrorEvidence, idempotencyKeySchema, queryMatches } from './schemas.mjs';
 import { queryShape, resolveRoute } from './routes.mjs';
 
 const keyedCreates = new Set(['/app/api/kernel', '/app/api/human-gate/requests', '/app/api/risk-engine/assets', '/app/api/risk-engine/assist']);
@@ -26,6 +26,7 @@ export function apiError(status, requestId, input = {}) {
     message: input.message ?? message,
     dependencyStatus: input.dependencyStatus ?? fallback.dependencyStatus,
     requestId,
+    ...input.firewallEvidence,
   });
   return result.success ? result.data : fallback;
 }
@@ -54,7 +55,9 @@ export async function apiBoundary(request, path, next) {
         const body = await response.json().catch(() => null);
         // Only application-owned error bodies may supply the public message.
         const own = body?.contract?.error === 'aigas-error-v1';
-        mapped = { code: body?.code ?? body?.errorType ?? (typeof body?.error === 'string' ? body.error : undefined), message: own ? body.message : undefined, dependencyStatus: body?.dependencyStatus };
+        const evidence = own && resolved.route.path === '/app/api/firewall/guarded-executions'
+          ? firewallErrorEvidence.safeParse(body) : null;
+        mapped = { firewallEvidence: evidence?.success ? evidence.data : undefined, code: body?.code ?? body?.errorType ?? (typeof body?.error === 'string' ? body.error : undefined), message: own ? body.message : undefined, dependencyStatus: body?.dependencyStatus };
       }
     }
   } catch {

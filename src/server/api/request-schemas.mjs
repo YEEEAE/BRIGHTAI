@@ -41,6 +41,8 @@ const duration = z.number().int().min(1).max(1440);
 const shortReason = text(2, 500);
 const reviewOperation = z.enum(['KERNEL_WORKSPACE_RENAME', 'INTERNAL_DEMO_NOTE']);
 const ruleFields = { name: text(2, 60), pattern: text(1, 80), action: z.enum(actions), priority: z.number().int().min(1).max(999).nullish() };
+const toolValue = z.string().regex(/^[a-z][a-z0-9:.-]{0,79}$/);
+const toolCall = z.strictObject({ tool: toolValue, action: toolValue, resource: toolValue, capability: toolValue, version });
 const ruleInput = z.strictObject({ text: z.string().min(1).max(MAX_TEXT_LENGTH).refine(value => Boolean(value.trim())), synthetic: z.boolean() });
 
 const assetInput = z.strictObject({
@@ -87,8 +89,9 @@ const policyOperation = z.discriminatedUnion('operation', [
 const methodSchemas = {
   'POST /api/enterprise-inquiry': enterpriseInquirySchema,
   'POST /app/api/kernel/policies': policyOperation,
-  'POST /app/api/firewall/evaluate': ruleInput,
-  'POST /app/api/firewall/guarded-executions': ruleInput.extend({ request_id: id, department_id: id.nullish() }),
+  'POST /app/api/firewall/evaluate': ruleInput.or(z.strictObject({ tool_call: toolCall, synthetic: z.boolean() })),
+  'POST /app/api/firewall/guarded-executions': ruleInput.extend({ request_id: id, department_id: id.nullish() }).or(
+    z.strictObject({ tool_call: toolCall, synthetic: z.boolean(), request_id: id, department_id: id.nullish() })),
   'POST /app/api/firewall/rules': z.union([
     z.strictObject({ template: z.enum(Object.keys(templates)) }),
     z.strictObject({ duplicate_of: id }),

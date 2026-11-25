@@ -313,10 +313,23 @@ try {
   await firewallResult.getByRole('list', { name: 'حالات الاعتماد' }).waitFor();
   assert.match(await firewallResult.innerText(), /Ledger — غير مهيأ/);
   assert.match(await firewallResult.innerText(), /سياسة Kernel — خارج مسار العملية/);
+  for (const [action, expected] of [['read','ALLOW'],['publish','ESCALATE'],['delete','BLOCK']]) {
+    await page.locator('[data-tool]').selectOption(action);
+    assert.equal(await page.locator('#fw-text').isVisible(),false);
+    await page.locator('[data-eval-submit]').click();
+    await firewallResult.getByText(expected,{exact:true}).waitFor();
+    assert.match(await firewallResult.innerText(), new RegExp(`agent-${action}.*النسخة 1`));
+  }
+  await page.locator('[data-tool]').selectOption('');
   await page.locator('[data-eval-mode]').selectOption('GUARD');
+  const guardedResponse = page.waitForResponse(response => new URL(response.url()).pathname === '/app/api/firewall/guarded-executions/' && response.request().method() === 'POST');
   await page.locator('[data-eval-submit]').click();
-  await firewallResult.filter({ hasText: /لا تعِد التنفيذ تلقائيًا/ }).waitFor();
-  assert.match(await page.locator('[data-eval-error]').innerText(), /KERNEL_POLICY_REQUIRED|POLICY_BLOCKED/);
+  const guardHttp = await guardedResponse;
+  const guardBody = await guardHttp.json();
+  assert.equal(guardBody.decision?.action, 'DENY', `unexpected guarded HTTP ${guardHttp.status()} ${guardBody.code}`);
+  await firewallResult.getByText('BLOCK',{exact:true}).waitFor();
+  assert.match(await firewallResult.innerText(), /منعت سياسة Kernel/);
+  console.log('Firewall browser: LAB tools and Kernel-blocked GUARD verified');
   await checkWidths(widths);
 
   await page.goto(`${base}/auth/sign-up/?returnTo=%2Fapp%2Ffirewall%2F`);

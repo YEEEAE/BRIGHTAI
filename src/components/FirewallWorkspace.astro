@@ -1,17 +1,17 @@
 ---
 import DecisionCircuit from './DecisionCircuit.astro';
 import RedactionDemo from './RedactionDemo.astro';
-import {examples, rules} from '../shared/firewall-demo.mjs';
+import {examples, rules, policyVersion} from '../shared/firewall-demo.mjs';
 ---
 <section class="decision-workspace ph-no-capture" data-demo-workspace data-ph-no-capture aria-label="Workspace قرار Firewall التعليمي">
   <div class="workspace-grid">
     <div>
       <p>01 / الإدخال</p><h2>افهم أثر الطلب على القرار</h2>
       <p>demo محلي حتمي، وليس فحصًا أمنيًا حقيقيًا. لا مزوّد AI ولا إرسال أو حفظ للنص. استخدم نصوصًا خيالية فقط.</p>
-      <div class="examples">{examples.map(([code,label,text]) => <button disabled type="button" data-demo-example={text}>{label} <bdi>{code}</bdi></button>)}</div>
+      <div class="examples">{examples.map(([code,label,text]) => <button disabled type="button" data-demo-example={text}>{label} <bdi>{code === 'DENY' ? 'BLOCK' : code}</bdi></button>)}</div>
       <label for="demo-request">نص الطلب — حتى 500 حرف</label>
       <textarea id="demo-request" rows="4" autocomplete="off" data-private aria-describedby="demo-help demo-status"></textarea>
-      <p id="demo-help">المطابقة حرفية وحساسة لحالة الأحرف. اختيار المثال يملأ النص؛ اضغط الفحص لحساب القرار.</p>
+      <p id="demo-help">اختيار المثال يملأ النص. اضغط «افحص الطلب» لتطبيق القواعد والتحقق من الصيغة.</p>
       <button disabled type="button" data-check>افحص الطلب</button>
       <button disabled type="button" data-clear>إعادة ضبط</button>
       <p id="demo-status" role="status" aria-live="polite">لم يُفحص أي طلب بعد.</p>
@@ -23,7 +23,7 @@ import {examples, rules} from '../shared/firewall-demo.mjs';
         <div data-comparison hidden><RedactionDemo comparison /></div>
         <a data-escalate hidden href="/products/human-gate/?scenario=escalate#lab">افتح Queue Human Gate الاصطناعية ←</a>
       </div>
-      <details open><summary>Inspector / سياسة demo-v1</summary><p>أول قاعدة مطابقة حسب الترتيب أدناه تفوز. لا فهم دلالي ولا كشف بيانات شخصية.</p><ol>{rules.map(rule => <li><bdi>{rule.code}</bdi> — {rule.match ? <>يحتوي النص حرفيًا على «{rule.match}»</> : 'أي نص آخر غير فارغ ضمن الحد'}: {rule.reason}</li>)}</ol><p data-rule>القاعدة المطابقة: لم يُفحص.</p></details>
+      <details open><summary>سياسة الفحص {policyVersion}</summary><p>الأولوية للحظر ثم التصعيد ثم التنقيح ثم التحذير. قد تطابق القواعد نصًا تعليميًا وقد تفوّت صياغات أخرى. تحقق الصيغة لا يثبت هوية أو ملكية بيانات.</p><ol>{rules.map(rule => <li><bdi>{rule.id} · v{rule.version}</bdi> — {rule.name}</li>)}</ol><p data-rule>القاعدة المطابقة: لم يُفحص.</p></details>
     </div>
     <div class="experience-firewall"><DecisionCircuit /></div>
   </div>
@@ -64,9 +64,9 @@ document.querySelectorAll<HTMLElement>('[data-demo-workspace]').forEach(root => 
    status.textContent='جارٍ تطبيق قواعد demo محليًا…';
    timer=setTimeout(() => {
      root.setAttribute('aria-busy','false'); check.disabled=false; result.hidden=false;
-     set('[data-input-snapshot]',input); set('[data-decision]',decision.label+' / '+decision.code);
-     set('[data-reason]',decision.reason); set('[data-output]',decision.output!);
-     set('[data-rule]',decision.ruleId+' — '+decision.reason);
+     set('[data-input-snapshot]',input); set('[data-decision]',decision.label+' / '+(decision.code === 'DENY' ? 'BLOCK' : decision.code));
+     set('[data-reason]',decision.reason); set('[data-output]',decision.output ?? 'الطلب متوقف.');
+     set('[data-rule]',decision.ruleId+' · v'+decision.ruleVersion+' · '+decision.policyVersion);
      root.querySelector<HTMLElement>('[data-comparison]')!.hidden=decision.code!=='REDACT';
      set('[data-before]',input); set('[data-after]',decision.output!);
      root.querySelector<HTMLElement>('[data-escalate]')!.hidden=decision.code!=='ESCALATE';
@@ -74,7 +74,7 @@ document.querySelectorAll<HTMLElement>('[data-demo-workspace]').forEach(root => 
      circuit.dataset.state=String(index); circuit.style.setProperty('--branch-color','var(--color-focus)');
      set('[data-path-label]',decision.label);
      const packet=root.querySelector('[data-decision-packet]')!; packet.setAttribute('cx',String(60+index*120));
-     status.textContent='اكتمل المثال: '+decision.label; completeLab(root,'firewall');
+     status.textContent=decision.held ? 'الطلب متوقف: '+decision.label : 'اكتمل المثال: '+decision.label; completeLab(root,'firewall');
    },250);
  });
 });

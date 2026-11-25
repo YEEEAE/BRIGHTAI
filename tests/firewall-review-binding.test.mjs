@@ -36,6 +36,7 @@ test('output rules and baseline never expose denied or sensitive provider text',
   const rules=[rule('ALLOW','reply'),rule('DENY','blocked'),rule('REDACT','internal')];
   assert.equal(evaluateOutput('reply blocked',rules).allowed,false);
   assert.equal(evaluateOutput('reply password=secret123',rules).allowed,false);
+  assert.equal(evaluateOutput('unmatched demo@example.test',rules).allowed,false);
   const safe=evaluateOutput('reply internal synthetic@example.test',rules);
   assert.equal(safe.allowed,true); assert.ok(!safe.text.includes('internal')); assert.ok(!safe.text.includes('@'));
   for(const text of ['unmatched','reply'+'x'.repeat(4000)]) assert.equal(evaluateOutput(text,rules).allowed,false);
@@ -191,6 +192,35 @@ test('atomic metadata review is visible, independent, revocable and rolls back w
   assert.deepEqual(Object.keys(payload).sort(),['decision_id','rule_id','rule_version','request_fingerprint'].sort());
   await pool.query('UPDATE aigas_hg_policies SET firewall_escalation_enabled=false WHERE tenant_id=$1',[tenant]);
   assert.equal((await create()).escalation.code,'HUMAN_GATE_NOT_CONFIGURED');
+  await pool.query('UPDATE aigas_hg_policies SET firewall_escalation_enabled=true WHERE tenant_id=$1',[tenant]);
+  const toolGuard = (action, requestId, overrides = {}) => firewall(post('/app/api/firewall/guarded-executions/',
+    `workspace=${tenant}`, { tool_call:{tool:'demo-documents', action, resource:'demo:report', capability:`documents.${action}`, version:1, ...overrides},
+      synthetic:true, request_id:requestId }), 'enforce');
+  const toolPublishId = randomUUID();
+  const publish = await toolGuard('publish', toolPublishId);
+  assert.equal(publish.status,202);
+  const publishReview = await publish.json();
+  assert.equal(publishReview.code,'REVIEW_PENDING');
+  assert.equal(publishReview.decision.matcher_id,'agent-publish');
+  assert.equal(publishReview.external_action_executed,false);
+  assert.equal(publishReview.review.payload.rule_id,'agent-publish');
+  assert.equal(publishReview.review.request_fingerprint,publishReview.request_fingerprint);
+  assert.equal((await (await toolGuard('publish',toolPublishId,{version:2})).json()).code,'REQUEST_ID_CONFLICT');
+  assert.equal((await toolGuard('read',randomUUID())).status,200);
+  assert.equal((await toolGuard('delete',randomUUID())).status,403);
+  const unknown = await (await toolGuard('read',randomUUID(),{resource:'demo:unknown'})).json();
+  assert.equal(unknown.decision.matcher_id,'agent-default-deny');
+  const approvedTool = await service(reviewer,tenant,'decide',{decision:'APPROVE',reason:'Independent synthetic approval'},new URLSearchParams(),publishReview.review.id);
+  assert.equal(approvedTool.request.status,'APPROVED');
+  await assert.rejects(service(owner,tenant,'execute',{},new URLSearchParams(),publishReview.review.id));
+
+  const typed = await guarded(randomUUID(),'انشر الملخص خارج المؤسسة.');
+  assert.equal(typed.status,202);
+  const typedReview = await typed.json();
+  assert.equal(typedReview.decision.matcher_id,'external-publication');
+  assert.equal(typedReview.review.request_fingerprint,typedReview.request_fingerprint);
+  assert.equal(typedReview.external_action_executed,false);
+
   // Kernel's unresolved approval obligation stops at the control point even
   // when Firewall review is enabled and a product rule would otherwise escalate.
   await pool.query('UPDATE aigas_hg_policies SET firewall_escalation_enabled=true WHERE tenant_id=$1',[tenant]);
