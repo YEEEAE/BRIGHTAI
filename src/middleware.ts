@@ -37,7 +37,9 @@ function harden(response: Response, options: { portal: boolean; secureTransport:
 export const onRequest = defineMiddleware(async (context, next) => {
   const path = context.url.pathname;
   const normalizedPath = normalizePath(path);
-  const forwardedProto = context.request.headers.get('x-forwarded-proto')?.split(',')[0]?.trim();
+  const forwardedProto = context.isPrerendered
+    ? undefined
+    : context.request.headers.get('x-forwarded-proto')?.split(',')[0]?.trim();
   const secureTransport = forwardedProto === 'https' || context.url.protocol === 'https:';
 
   if (isApiSurface(normalizedPath)) {
@@ -48,7 +50,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   const method = context.request.method;
-  const mediaType = context.request.headers.get('content-type')?.toLowerCase();
+  const mediaType = context.isPrerendered
+    ? undefined
+    : context.request.headers.get('content-type')?.toLowerCase();
   if (!context.isPrerendered && !['GET', 'HEAD', 'OPTIONS'].includes(method)
     && (!mediaType || ['application/x-www-form-urlencoded', 'multipart/form-data', 'text/plain'].some(type => mediaType.includes(type)))
     && !hasTrustedApiOrigin(context.request)) {
