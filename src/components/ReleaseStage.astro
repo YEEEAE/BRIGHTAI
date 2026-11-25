@@ -1,0 +1,22 @@
+---
+interface Props { stage: 'demo' | 'preview' | 'pilot' | 'production' }
+const { stage } = Astro.props;
+const labels = {
+  demo: 'مختبر عام',
+  preview: 'معاينة محدودة',
+  pilot: 'تجربة مؤسسية',
+  production: 'تشغيل مؤسسي',
+};
+---
+<span class="release-stage" data-release-stage={stage}>
+  <bdi lang="en" dir="ltr">{stage.toUpperCase()}</bdi>
+  <span>{labels[stage]}</span>
+</span>
+<style>
+  .release-stage { display:inline-flex; flex-wrap:wrap; align-items:center; gap:.2rem .5rem; inline-size:fit-content; max-inline-size:100%; padding:.18rem .62rem; border:1px solid currentColor; background:#191421; color:#dac6ff; font-size:.8125rem; line-height:1.65; }
+  bdi { font-family:var(--font-monospace); font-weight:700; }
+  [data-release-stage="demo"] { border-radius:2rem; }
+  [data-release-stage="preview"] { border-style:dashed; color:#b9daff; }
+  [data-release-stage="pilot"] { border-inline-start-width:4px; color:#f6d29a; }
+  [data-release-stage="production"] { border:3px double currentColor; color:#b6e5d3; }
+</style>

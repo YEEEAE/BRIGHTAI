@@ -40,4 +40,4 @@ p { text-wrap: pretty; }
 .breadcrumb { font-size: var(--type-label); color: var(--color-text-subtle); }
 /* Negative tracking is a Latin display technique; Arabic headings stay at 0. */
 @media (max-width: 767px) { .wrap { width: calc(100% - 40px); } .section { padding-block: 60px; } .actions { gap: 18px; } }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }

@@ -1,5 +1,5 @@
 ---
-import AccessBadge from '../components/AccessBadge.astro';
+import ReleaseStage from '../components/ReleaseStage.astro';
 import AccessSteps from '../components/AccessSteps.astro';
 import { accessPath } from '../shared/access-journey.mjs';
 import PageShell from '../components/PageShell.astro';
@@ -11,7 +11,7 @@ export const prerender = true;
 <PageShell crumbs={[{name:"Kernel"}]} title="Kernel | مسار السياسة إلى الدليل — BRIGHTAI" description="مختبر حوكمة عام: اختر أصلًا وسياسة افتراضية، وتتبع القرار والمراجعة والدليل دون بيانات مؤسسة.">
 <section id="lab" class="kernel-lab" data-kernel-demo>
   <aside class="kernel-nav"><p class="eyebrow">AIGAS / CONTROL CENTER</p><WorkspaceNavigation current="kernel"/><p>Kernel بنية مشتركة لا تُفوتر منفصلًا.</p><p>مختبر ضيف مجهول · بيانات اصطناعية فقط.</p></aside>
-  <div class="kernel-main"><header><AccessBadge status="offline" /><h1>من السياسة<br/>إلى الدليل.</h1><p>اختر أصلًا خياليًا، واتبع أثر السياسة على الطلب. كل ما هنا محاكاة محلية؛ لا اتصال بمؤسسة أو نموذج.</p></header>
+  <div class="kernel-main"><header><ReleaseStage stage="demo" /><h1>من السياسة<br/>إلى الدليل.</h1><p>اختر أصلًا خياليًا، واتبع أثر السياسة على الطلب. المثال محاكاة محلية ببيانات اصطناعية.</p><div class="actions"><a class="button" href="#kernel-asset">ابدأ محاكاة السياسة</a><a class="ghost" href={accessPath()}>خيارات الوصول المؤسسي</a></div></header>
     <AccessSteps current="demo" />
     <ScenarioContext next="firewall"/>
     <div class="kernel-workspace"><div>

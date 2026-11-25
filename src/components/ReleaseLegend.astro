@@ -1,0 +1,21 @@
+---
+import ReleaseStage from './ReleaseStage.astro';
+const stages = [
+  { stage: 'demo', text: 'متاح الآن بلا حساب، ببيانات اصطناعية.' },
+  { stage: 'preview', text: 'استكشاف للقراءة أو معاينة بدعوة، بحسب إتاحة البوابة.' },
+  { stage: 'pilot', text: 'تقييم محدود للجهة بعد الموافقة على النطاق والمدة.' },
+  { stage: 'production', text: 'مسار تشغيل يتطلب تحققًا من الجاهزية وعقدًا معتمدًا.' },
+] as const;
+---
+<section class="release-legend" data-release-legend aria-labelledby="release-title">
+  <h2 id="release-title">مراحل الوصول</h2>
+  <dl>{stages.map(({ stage, text }) => <div><dt><ReleaseStage stage={stage} /></dt><dd>{text}</dd></div>)}</dl>
+  <a class="ghost" href="/request-access/">اطّلع على خيارات الوصول</a>
+</section>
+<style>
+  .release-legend { margin-block:2.5rem; }
+  dl { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 2rem; margin-block:1rem; }
+  dl div { padding-block:1rem; border-block-start:1px solid var(--border-strong); }
+  dd { margin:.65rem 0 0; color:var(--color-text-copy); }
+  @media (max-width:600px) { dl { grid-template-columns:1fr; } }
+</style>

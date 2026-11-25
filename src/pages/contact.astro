@@ -7,6 +7,7 @@ export const prerender = true;
   <AccessBadge status="local" />
   <h1>ما القرار الذي تحتاج مساعدة فيه؟</h1>
   <p class="lead">يمكنك الآن الاستفسار عن منتج، أو مناقشة نطاق دعم، أو طلب عرض سعر للمراجعة. أي سعر أو موعد أو تشغيل مؤسسي يحتاج اتفاقًا مكتوبًا؛ الاستفسار لا يحجز موعدًا ولا يفعّل تجربة.</p>
+  <div class="actions"><a class="button" href="#contact-draft">جهّز مسودة</a><a class="ghost" href="#contact-channels">اختر قناة التواصل</a></div>
   <section id="contact" class="card contact-form ph-no-capture" aria-labelledby="draft-title" data-ph-no-capture data-ph-mask>
     <span class="draft-anchor" id="workshop"></span>
     <span class="draft-anchor" id="workshop-lab"></span>
@@ -16,26 +17,33 @@ export const prerender = true;
     <textarea id="contact-draft" rows="6" maxlength="2000" autocomplete="off" aria-describedby="draft-help draft-limit" placeholder="نريد مناقشة تقييم مخاطر استخدام الذكاء الاصطناعي، والمخرج المطلوب ورقة عمل يراجعها فريقنا."></textarea>
     <p id="draft-limit" class="note">الحد الأقصى 2000 حرف. لا تكتب بيانات عملاء أو أسرارًا أو مفاتيح وصول.</p>
     <button id="copy-draft" class="button" type="button" hidden>انسخ المسودة</button>
-    <p id="contact-status" role="status" aria-live="polite"></p>
+    <p id="contact-status" class="contact-feedback" role="status" aria-atomic="true"></p>
     <a id="return-to-access" href="/request-access/" hidden>العودة إلى خيارات الوصول</a>
     <noscript><p>يمكنك الكتابة هنا وتحديد النص ونسخه يدويًا، ثم لصقه في البريد أو واتساب. لا تحتاج JavaScript.</p></noscript>
   </section>
-  <section class="card contact-options" aria-labelledby="channel-title">
+  <section id="contact-channels" tabindex="-1" class="card contact-options" aria-labelledby="channel-title">
     <h2 id="channel-title">2. افتح القناة والصق الرسالة</h2>
+    <p id="contact-network" class="contact-feedback" role="status"></p>
     <p><a class="button" data-measure-channel="email" href="mailto:yzeed1job@gmail.com">افتح تطبيق البريد</a></p>
     <p>الوجهة: <bdi dir="ltr">yzeed1job@gmail.com</bdi>. إذا لم يفتح التطبيق، انسخ العنوان واستخدم بريدك المعتاد.</p>
     <p><a class="button" data-measure-channel="whatsapp" href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer">افتح واتساب (نافذة جديدة)</a></p>
     <p>الرقم: <bdi dir="ltr">+966 53 822 9013</bdi>. إذا تعذر فتحه، استخدم البريد. لا ينقل أي رابط مسودتك تلقائيًا؛ القناة الخارجية تعالج ما ترسله وفق سياستها.</p>
   </section>
   <section class="block"><h2>3. أرسل من تطبيقك وانتظر تأكيدًا</h2>
-    <p>فتح البريد أو واتساب لا يرسل طلبًا. راجع الوجهة والنص ثم اضغط إرسال داخل التطبيق. الموقع لا يستطيع التحقق من الإرسال أو التسليم، ولا يعرض تأكيد استلام؛ استلام الطلب يتأكد برد من الفريق. لا توجد مدة رد معلنة.</p>
-    <p>إذا لم يصلك رد، تابع عبر القناة الأخرى؛ لا تفترض أن الطلب وصل أو أن موعدًا حُجز.</p>
+    <p>راجع الوجهة والنص، ثم أرسل من التطبيق. رد الفريق يؤكد الاستلام.</p>
+    <p>إذا لم يصلك رد، تابع عبر القناة الأخرى.</p>
     <a id="return-to-result" class="button" href="/products/ledger/complaint/#lab" hidden>ارجع إلى نتيجة المختبر</a>
   </section>
   <section class="block"><h2>تريد الاطلاع أولًا؟</h2><p><a href="/products/#lab">افتح المختبر العام بلا حساب</a> ببيانات اصطناعية، أو راجع <a href="/services/">موضوعات الدعم</a> و<a href="/pricing/">ما يحدد عرض السعر</a>. التشغيل المؤسسي منفصل ويحتاج مراجعة وموافقة.</p></section>
 </PageShell>
 <style>
   .contact-form { position: relative; }
+  :is(#contact, #contact-draft, #contact-channels) { scroll-margin-block-start: 6rem; }
+  .contact-feedback[data-state] { border-inline-start: 3px solid currentColor; padding: .65rem .85rem; background: var(--surface-sunken); }
+  [data-state="success"] { color: #a8e5cf; }
+  [data-state="loading"] { color: #bddbff; }
+  :is([data-state="empty"], [data-state="denied"], [data-state="offline"]) { color: #f6d29a; }
+  [data-state="error"] { color: #ffbdbd; }
   .draft-anchor { position: absolute; inset-block-start: 0; scroll-margin-block-start: 6rem; }
   .contact-form .button, .contact-options .button, #return-to-result { min-block-size: 48px; }
   #copy-draft[hidden], #return-to-result[hidden], #return-to-access[hidden] { display: none !important; }
@@ -46,7 +54,26 @@ export const prerender = true;
   const draft = document.querySelector<HTMLTextAreaElement>('#contact-draft');
   const copy = document.querySelector<HTMLButtonElement>('#copy-draft');
   const status = document.querySelector('#contact-status');
-  if (draft && copy && status) {
+  const network = document.querySelector<HTMLElement>('#contact-network');
+  if (network) {
+    const updateNetwork = () => {
+      if (navigator.onLine) {
+        network.removeAttribute('data-state');
+        network.textContent = '';
+      } else {
+        network.dataset.state = 'offline';
+        network.textContent = 'أنت غير متصل. يمكنك تحرير المسودة الآن وإرسالها بعد عودة الاتصال.';
+      }
+    };
+    addEventListener('online', updateNetwork);
+    addEventListener('offline', updateNetwork);
+    updateNetwork();
+  }
+  if (draft && copy && status instanceof HTMLElement) {
+    const feedback = (state: string, message: string) => {
+      status.dataset.state = state;
+      status.textContent = message;
+    };
     copy.hidden = false;
     const query = new URLSearchParams(location.search);
     if (query.has('access') && location.hash === '#contact') {
@@ -68,20 +95,36 @@ export const prerender = true;
       }
     }
     copy.addEventListener('click', async () => {
+      if (copy.getAttribute('aria-disabled') === 'true') return;
       if (!draft.value.trim()) {
-        status.textContent = 'اكتب وصفًا عامًا لاحتياجك أولًا، أو افتح قناة التواصل مباشرة.';
+        feedback('empty', 'اكتب وصفًا عامًا أولًا، أو افتح قناة التواصل مباشرة.');
+        draft.setAttribute('aria-invalid', 'true');
+        draft.setAttribute('aria-errormessage', 'contact-status');
         draft.focus();
         return;
       }
+      copy.setAttribute('aria-disabled', 'true');
+      feedback('loading', 'جارٍ نسخ المسودة…');
       try {
         await navigator.clipboard.writeText(draft.value);
-        status.textContent = 'نُسخت المسودة فقط. الصقها في تطبيقك وراجعها ثم أرسلها؛ لم يُرسل طلب من الموقع.';
-      } catch {
-        status.textContent = 'تعذر النسخ التلقائي. حدّد النص وانسخه يدويًا، ثم الصقه في تطبيقك. لم يُرسل طلب.';
+        feedback('success', 'نُسخت المسودة. الصقها في تطبيقك وراجعها قبل الإرسال.');
+      } catch (error) {
+        const denied = error instanceof DOMException && error.name === 'NotAllowedError';
+        feedback(denied ? 'denied' : 'error', denied
+          ? 'المتصفح رفض الوصول إلى الحافظة. انسخ النص المحدد يدويًا.'
+          : 'تعذر النسخ التلقائي. انسخ النص المحدد يدويًا.');
         draft.focus();
         draft.select();
+      } finally {
+        copy.removeAttribute('aria-disabled');
       }
     });
-    draft.addEventListener('input', () => { status.textContent = ''; });
+    draft.addEventListener('input', () => {
+      draft.removeAttribute('aria-invalid');
+      draft.removeAttribute('aria-errormessage');
+      if (status.dataset.state === 'loading') return;
+      status.removeAttribute('data-state');
+      status.textContent = '';
+    });
   }
 </script>

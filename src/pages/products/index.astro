@@ -1,4 +1,5 @@
 ---
+import ReleaseLegend from '../../components/ReleaseLegend.astro';
 import ProductCatalog from '../../components/ProductCatalog.astro';
 import ContentExtension from '../../components/ContentExtension.astro';
 import PageShell from '../../components/PageShell.astro';
@@ -8,6 +9,7 @@ export const prerender = true;
 ---
 <PageShell title="منتجات حوكمة وأمان الذكاء الاصطناعي AIGAS | BRIGHTAI" description="قارن الأدوار المستهدفة لمنتجات AIGAS للمنشآت السعودية: حماية الطلبات، تقييم المخاطر، الموافقات البشرية، سجل التدقيق والمحادثة المؤسسية." crumbs={[{ name: 'المنتجات' }]}>
   <ProductCatalog />
+  <ReleaseLegend />
   <section class="block"><h2>مكوّن مشترك. وخمسة منتجات مستقلة.</h2><p>يوفر Kernel أساس الهوية والسياسات. استكشف دور كل منتج وعلاقته بالمنظومة.</p><SystemMap compact /></section>
   <section class="block" aria-labelledby="verification-title"><h2 id="verification-title">ما الذي يتطلب تحققاً؟</h2><p>قبل أي اعتماد تجاري، يلزم إثبات حالة التشغيل، ونطاق الوظائف، ومقدمي الخدمات ومناطق المعالجة، وضوابط الأمن والخصوصية، وشروط الخدمة والاحتفاظ. لا تثبت هذه الصفحة وجود أي من ذلك.</p><div class="actions"><a class="button" href="/pricing/">اطلب عرض سعر</a><a class="ghost" href="/docs/">اقرأ مركز المعرفة</a></div></section>
 

@@ -9,25 +9,21 @@
 .hub-resume{font-size:14px;color:var(--color-focus);min-block-size:44px;align-content:center}
 .hub-heading .hub-resume-status:not([hidden]){display:block;font-size:12px;color:var(--color-text-muted);max-inline-size:30ch}
 .hub-intro{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px 24px;padding-block:12px 20px;color:var(--color-text-muted);font-size:14px}
-.hub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-.hub-card{display:flex;position:relative;min-inline-size:0;background:var(--surface-raised);border:1px solid var(--border-subtle);border-radius:var(--radius-content);overflow:hidden}
+.hub-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:0;scroll-margin-block-start:5rem}
+.hub-card{display:flex;position:relative;min-inline-size:0;border-block-end:1px solid var(--border-subtle)}
 .hub-card-body{padding:clamp(20px,2.8vw,36px);min-inline-size:0;flex:1;display:flex;flex-direction:column}
-.hub-card-id{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--color-text-muted)}
-.hub-card-id>bdi{margin-inline-start:auto;color:var(--color-text-subtle);font-family:var(--font-monospace)}
+.hub-card-id{display:flex;flex-wrap:wrap;align-items:center;gap:12px;font-size:14px;color:var(--color-text-muted)}
+.hub-card-id [data-release-stage]{margin-inline-start:auto}
 .hub-card h2{font-size:32px;margin:18px 0 8px;line-height:1.35}
 .hub-purpose{font-size:16px;color:var(--color-text-copy);margin:0 0 20px;max-inline-size:42ch}
 .hub-example{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 18px;padding-block:18px;border-block:1px solid var(--border-subtle);font-size:14px;margin-block:20px 0}
 .hub-example>span{color:var(--icon-accent-strong)}
 .hub-example p{margin:0;color:var(--color-text-muted)}
-.hub-featured{grid-column:1/-1;border-color:var(--border-strong)}
+.hub-featured{grid-column:1/-1;border:1px solid var(--border-strong);border-radius:var(--radius-content);background:var(--surface-raised)}
 .hub-featured .hub-card-body{flex:1.2}
 .hub-drawing{display:none;pointer-events:none;align-self:center}
 .hub-featured .hub-drawing{display:block;inline-size:36%;padding:24px}
-.hub-card .product-journey.compact{margin-block-start:0;padding:0}
-.hub-card .journey-entry{border-radius:var(--radius-control);padding:6px 18px}
-.hub-card .journey-arrow{background:transparent}
-.hub-card .journey-entry:is(:hover,:focus-visible){color:var(--color-action-contrast)!important;background:var(--color-action-hover-strong)}
-.hub-kernel{padding:32px;background:var(--surface-sunken);border:1px dashed var(--border-strong);border-radius:var(--radius-content);display:flex;flex-direction:column;align-items:start;justify-content:center}
+.hub-kernel{margin-block-start:1rem;padding:32px;background:var(--surface-sunken);border:1px dashed var(--border-strong);border-radius:var(--radius-content);display:flex;flex-direction:column;align-items:start;justify-content:center}
 .hub-kernel h2{font-size:32px;margin:0 0 12px}.hub-kernel h2 span{color:var(--icon-accent)}
 .hub-kernel p:not(.hub-kicker){font-size:16px;color:var(--color-text-copy);max-inline-size:44ch;margin:0 0 18px}
 .hub-kernel a{color:var(--color-focus);min-block-size:48px;align-content:center}.hub-kernel small{color:var(--color-text-subtle);font-size:12px;margin-block-start:12px}
@@ -57,10 +53,8 @@
 
 /* Ledger only: preserve the other labs' order and layout. */
 .lab-shell[data-product="ledger"] .lab-body{display:flex;flex-direction:column}
-.lab-shell[data-product="ledger"] #ledger-demo{order:-1;margin:12px;padding:16px}
+.lab-shell[data-product="ledger"] #ledger-demo{margin:12px;padding:16px}
 .lab-shell[data-product="ledger"] #ledger-demo>p:nth-of-type(2){font-size:12px;line-height:1.5;max-inline-size:48ch}
 .lab-shell[data-product="ledger"] #ledger-demo .evidence-grid{display:flex;flex-direction:column;gap:12px}
-.lab-shell[data-product="ledger"] #ledger-demo .evidence-grid>section:last-child{order:-1}
 .lab-shell[data-product="ledger"] #chain-status::before{content:"ⓘ الحالة: ";font-weight:bold}
 .lab-shell[data-product="ledger"] #chain-inspector:empty::before{content:"○ Empty — لا توجد تفاصيل بعد"}
-@media(max-width:999px){.lab-shell[data-product="ledger"] .lab-sidebar{grid-row:2}}

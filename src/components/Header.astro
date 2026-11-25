@@ -28,6 +28,13 @@ const links = [
       syncExpandedState();
     };
     navigation.addEventListener('toggle', syncExpandedState);
+    navigation.addEventListener('keydown', event => {
+      if (event.key !== 'Escape' || !compactViewport.matches || !navigation.open) return;
+      event.preventDefault();
+      navigation.open = false;
+      syncExpandedState();
+      navigationSummary.focus();
+    });
     compactViewport.addEventListener('change', syncViewport);
     syncViewport();
   }
