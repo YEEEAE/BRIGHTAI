@@ -203,16 +203,18 @@ export async function cancelTrial(identity, requested, trial, body = {}) {
   });
 }
 
-export async function operatorListTrials(identity) {
+export async function operatorListTrials(identity, page = 1) {
   return transaction(async db => {
     await operatorScope(db, identity);
     const rows = (await db.query(`SELECT id,tenant_id,requested_by,requested_products,deployment_mode,data_mode,
       state,decision_source,decided_by,decided_at,activated_at,expires_at,closed_at,reason,version,created_at,updated_at
-      FROM public.aigas_trial_requests ORDER BY created_at DESC,id DESC LIMIT 100`)).rows;
+      FROM public.aigas_trial_requests ORDER BY created_at DESC,id DESC LIMIT 101 OFFSET $1`, [(page - 1) * 100])).rows;
     return {
       operator: true,
       activation: activationContext() ? 'READY_CHECK_REQUIRED' : 'CONTEXT_UNAVAILABLE',
-      trials: rows.map(row => ({
+      page,
+      hasMore: page < 999 && rows.length > 100,
+      trials: rows.slice(0, 100).map(row => ({
         trialId: row.id,
         tenantId: row.tenant_id,
         requestedBy: row.requested_by,

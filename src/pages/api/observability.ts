@@ -1,3 +1,5 @@
+import { observabilityBodySchema } from '../../server/api/request-schemas.mjs';
+import { hasTrustedApiOrigin } from '../../server/api/origin.mjs';
 import type { APIRoute } from 'astro';
 import { env } from '../../server/kernel/env.mjs';
 import { sentrySettings, posthogSettings } from '../../server/observability/config.mjs';
@@ -14,7 +16,7 @@ export const POST: APIRoute = async ({ request }) => {
   const errors = sentrySettings().enabled && env('AIGAS_SENTRY_BROWSER_ENABLED') === 'true';
   const analytics = posthogSettings().enabled;
   if (!errors && !analytics) return reply();
-  if (request.headers.get('origin') !== new URL(request.url).origin || request.headers.get('sec-fetch-site') !== 'same-origin') return reply(403);
+  if (!hasTrustedApiOrigin(request) || request.headers.get('sec-fetch-site') !== 'same-origin') return reply(403);
   if (request.headers.get('content-type')?.split(';')[0] !== 'application/json') return reply(415);
   const now = Date.now();
   if (now >= windowEnd) { windowEnd = now + 60_000; count = 0; }
@@ -33,18 +35,18 @@ export const POST: APIRoute = async ({ request }) => {
       if (size > 256) { void reader.cancel().catch(() => {}); return reply(413); }
       chunks.push(value);
     }
-    const data = JSON.parse(Buffer.concat(chunks).toString('utf8'));
-    if (!data || typeof data !== 'object' || Array.isArray(data) || Object.keys(data).some(key => !['kind', 'section', 'status_code'].includes(key))) return reply(400);
+    const parsed = observabilityBodySchema.safeParse(JSON.parse(Buffer.concat(chunks).toString('utf8')));
+    if (!parsed.success) return reply(400);
+    const data = parsed.data;
     const section = safeSection(data.section);
     if (!section || section === 'public') return reply(400);
     const pathname = section === 'auth' ? '/auth/' : section === 'portal' ? '/app/' : `/app/${section}/`;
     if (data.kind === 'login_flow_result') {
-      if (![200, 409].includes(data.status_code) && !(Number.isInteger(data.status_code) && data.status_code >= 400 && data.status_code <= 599)) return reply(400);
       if (analytics) void captureProductEvent('login_flow_result', { status_code: data.status_code });
       if (errors && data.status_code >= 400) void captureServerFailure(null, { surface: 'browser', code: 'CLIENT_AUTH_FAILURE', status: data.status_code, pathname });
-    } else if (['client_error', 'client_rejection'].includes(data.kind) && data.status_code === undefined) {
+    } else {
       if (errors) void captureServerFailure(null, { surface: 'browser', code: data.kind === 'client_error' ? 'CLIENT_ERROR' : 'CLIENT_REJECTION', status: 500, pathname });
-    } else return reply(400);
+    }
     return reply();
   } catch {
     return reply(400);

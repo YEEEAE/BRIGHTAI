@@ -19,6 +19,10 @@ const metrics = root.querySelector<HTMLElement>('[data-metrics]')!;
 const membersList = root.querySelector<HTMLElement>('[data-members]')!;
 const membersState = root.querySelector<HTMLElement>('[data-members-state]')!;
 const memberCount = root.querySelector<HTMLElement>('[data-member-count]')!;
+const memberPagination = root.querySelector<HTMLElement>('[data-members-pagination]')!;
+const memberPrevious = root.querySelector<HTMLButtonElement>('[data-members-previous]')!;
+const memberNext = root.querySelector<HTMLButtonElement>('[data-members-next]')!;
+let memberPage = 1;
 const activityList = root.querySelector<HTMLElement>('[data-activity]')!;
 const activityState = root.querySelector<HTMLElement>('[data-activity-state]')!;
 const healthList = root.querySelector<HTMLElement>('[data-health-list]')!;
@@ -178,6 +182,8 @@ function clearPrivate() {
   dashboardUpdated.hidden = true; dashboardUpdated.textContent = '';
   dashboardError.hidden = true; dashboardErrorType.textContent = '';
   metrics.hidden = true;
+  memberPagination.hidden = true;
+  memberPage = 1;
   membersList.replaceChildren(); memberCount.textContent = ''; membersState.textContent = 'تُحمّل الأعضاء بعد التحقق من العضوية.';
   departmentsPanel.hidden = true; departmentsList.replaceChildren(); departmentsState.textContent = 'تُحمّل الإدارات بعد التحقق من العضوية.';
   activityList.replaceChildren(); activityState.textContent = 'تُحمّل الأنشطة بعد التحقق من العضوية.';
@@ -219,23 +225,28 @@ function showError(message: string, unauthorized = false, type = '') {
   if (type) { dashboardError.hidden = false; dashboardErrorType.textContent = type; }
   if (login) login.hidden = !unauthorized;
 }
+let pendingWorkspace: { name: string; key: string } | undefined;
 async function api(method = 'GET', name?: string, workspace?: string) {
   const session = await getWorkspaceSession(auth);
   const token = await auth.getJWTToken();
   if (session.error || !session.data?.user || !token) { const e = new Error('سجّل الدخول لعرض بيانات مؤسستك.'); Object.assign(e, { unauthorized: true }); throw e; }
+  if (method === 'POST' && name !== undefined && pendingWorkspace?.name !== name) {
+    pendingWorkspace = { name, key: crypto.randomUUID() };
+  }
   const response = await appFetch(auth, `/app/api/kernel/${workspace ? `?workspace=${encodeURIComponent(workspace)}` : ''}`, {
-    method, cache: 'no-store', headers: { Authorization: `Bearer ${token}`, ...(method === 'POST' ? { 'Content-Type': 'application/json' } : {}) },
+    method, cache: 'no-store', headers: { Authorization: `Bearer ${token}`, ...(method === 'POST' ? { 'Content-Type': 'application/json', ...(pendingWorkspace && { 'Idempotency-Key': pendingWorkspace.key }) } : {}) },
     ...(method === 'POST' ? { body: JSON.stringify({ name }) } : {}),
   });
   const data = await response.json();
   if (!response.ok) { const e = new Error(data.message); Object.assign(e, { unauthorized: response.status === 401, code: data.code }); throw e; }
+  if (method === 'POST') pendingWorkspace = undefined;
   return data;
 }
-async function members(workspace?: string) {
+async function members(workspace: string, page = 1) {
   await getWorkspaceSession(auth);
   const token = await auth.getJWTToken();
   if (!token) { const e = new Error('سجّل الدخول لعرض أعضاء المؤسسة.'); Object.assign(e, { unauthorized: true }); throw e; }
-  const response = await appFetch(auth, `/app/api/kernel/members/${workspace ? `?workspace=${encodeURIComponent(workspace)}` : ''}`, { cache: 'no-store', headers: { Authorization: `Bearer ${token}` } });
+  const response = await appFetch(auth, `/app/api/kernel/members/?${new URLSearchParams({ workspace, page: String(page) })}`, { cache: 'no-store', headers: { Authorization: `Bearer ${token}` } });
   const data = await response.json();
   if (!response.ok) { const e = new Error(data.message); Object.assign(e, { unauthorized: response.status === 401, code: data.code, dependencyStatus: data.dependencyStatus, status: response.status }); throw e; }
   return data;
@@ -271,7 +282,11 @@ function renderDepartments(departments: any) {
 }
 async function renderMembers(data: any) {
   membersList.replaceChildren();
-  memberCount.textContent = `${data.members.length} عضو`;
+  memberPage = data.page;
+  memberPagination.hidden = memberPage === 1 && !data.hasMore;
+  memberPrevious.disabled = memberPage <= 1;
+  memberNext.disabled = !data.hasMore;
+  memberCount.textContent = `${data.members.length} عضو · صفحة ${memberPage}`;
   membersState.textContent = data.members.length ? '' : 'لا يوجد أعضاء محمّلون لهذه المؤسسة.';
   const note = root.querySelector<HTMLElement>('[data-invite-note]')!;
   invitationConfig = data.invitation;
@@ -544,6 +559,21 @@ root.querySelector<HTMLFormElement>('[data-department-create]')!.addEventListene
 root.querySelector<HTMLFormElement>('[data-department-member]')!.addEventListener('submit',event=>{event.preventDefault();const form=event.currentTarget as HTMLFormElement,values=new FormData(form);void adminRun(async()=>{await endpoint('policies','POST',{operation:'department-member-add',departmentId:String(values.get('departmentId')),userId:String(values.get('userId')).trim(),reason:String(values.get('reason')).trim()},currentTenant?.tenant_id);form.reset();await loadPolicyConsole();});});
 root.querySelector('[data-department-member-remove]')!.addEventListener('click',()=>{const form=root.querySelector<HTMLFormElement>('[data-department-member]')!,values=new FormData(form),reason=window.prompt('اكتب سبب إيقاف عضوية الإدارة:');if(!reason||reason.trim().length<3)return;void adminRun(async()=>{await endpoint('policies','POST',{operation:'department-member-remove',departmentId:String(values.get('departmentId')),userId:String(values.get('userId')).trim(),reason:reason.trim()},currentTenant?.tenant_id);await loadPolicyConsole();});});
 root.querySelector<HTMLFormElement>('[data-policy-delegate]')!.addEventListener('submit',event=>{event.preventDefault();const form=event.currentTarget as HTMLFormElement,values=new FormData(form);void adminRun(async()=>{const expiry=new Date(String(values.get('expiresAt')));await endpoint('policies','POST',{operation:'delegate-approver',userId:String(values.get('userId')).trim(),expiresAt:expiry.toISOString(),reason:String(values.get('reason')).trim()},currentTenant?.tenant_id);form.reset();await loadPolicyConsole();});});
+async function loadMemberPage(page: number) {
+  const tenant = currentTenant?.tenant_id;
+  if (!tenant || memberPagination.getAttribute('aria-busy') === 'true') return;
+  memberPagination.setAttribute('aria-busy', 'true');
+  try {
+    const data = await members(tenant, page);
+    if (currentTenant?.tenant_id === tenant) await renderMembers(data);
+  } catch (error) {
+    membersState.textContent = error instanceof Error ? error.message : 'تعذر تحميل الأعضاء.';
+  } finally {
+    memberPagination.removeAttribute('aria-busy');
+  }
+}
+memberPrevious.addEventListener('click', () => void loadMemberPage(memberPage - 1));
+memberNext.addEventListener('click', () => void loadMemberPage(memberPage + 1));
 async function load(workspace?: string) {
   workspace ||= selectedWorkspace();
   clearPrivate();
@@ -589,8 +619,8 @@ async function health() {
     }));
     const checkedAt = new Date(data.updatedAt);
     healthUpdated.textContent = Number.isNaN(checkedAt.getTime()) ? 'وقت آخر تحديث غير متاح.' : `آخر تحديث من الخادم: ${new Intl.DateTimeFormat('ar-SA', { timeZone: 'Asia/Riyadh', dateStyle: 'medium', timeStyle: 'short' }).format(checkedAt)}`;
-    if (data.errorType) { healthError.hidden = false; healthErrorType.textContent = data.errorType; }
-    if (!response.ok && !data.errorType) { healthError.hidden = false; healthErrorType.textContent = `HTTP_${response.status}`; }
+    if (data.errorType || data.code) { healthError.hidden = false; healthErrorType.textContent = data.errorType ?? data.code; }
+    if (!response.ok && !data.errorType && !data.code) { healthError.hidden = false; healthErrorType.textContent = `HTTP_${response.status}`; }
   } catch (error) {
     const failed = document.createElement('li'); failed.textContent = 'فشل اتصال الشبكة؛ تعذر قراءة حالة التشغيل. أعد المحاولة.'; healthList.replaceChildren(failed);
     healthUpdated.textContent = 'لم يصل تحديث جديد من الخادم.';

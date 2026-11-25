@@ -1,3 +1,4 @@
+import { lockIdempotentCreate } from '../api/idempotency.mjs';
 import { ledgerDependency, recordKernelAuditEvidence, recordProductEvent } from '../ledger/writer.mjs';
 import { requireProductAccess } from '../kernel/access.mjs';
 import { randomUUID } from 'node:crypto';
@@ -27,7 +28,7 @@ const bodyKeys={
 };
 const requestsWithId=new Set(['decide','execute','cancel']);
 export function createHumanGateService(transact=transaction) {
- return async(identity,requested,operation,body={},params=new URLSearchParams(),id)=>{
+ return async(identity,requested,operation,body={},params=new URLSearchParams(),id,key=null)=>{
   if(!Object.hasOwn(bodyKeys,operation)) throw new KernelError(404,'NOT_FOUND','المسار غير موجود.');
   exact(body,bodyKeys[operation]);
   if((requestsWithId.has(operation)||operation==='revoke-delegation')&&!uuid(id)) throw new KernelError(400,'INVALID_ID','معرّف العملية غير صالح.');
@@ -140,22 +141,38 @@ export function createHumanGateService(transact=transaction) {
     return {allowed:true,delegated:true,delegation_id:delegation.id,level:delegation.level};
    };
    if(operation==='create'){
-    if(!policy?.enabled) throw new KernelError(409,'POLICY_REQUIRED','يلزم أن يحدد المالك أو المسؤول مهلة سياسة مفعّلة أولًا.');
     if(body.synthetic_confirmed!==true) throw new KernelError(400,'SYNTHETIC_REQUIRED','أكد استخدام مساحة تجريبية ونصوص غير حساسة، دون بيانات عميل حقيقية.');
     if(!['KERNEL_WORKSPACE_RENAME','INTERNAL_DEMO_NOTE'].includes(body.operation_type)) throw new KernelError(400,'INVALID_SCOPE','اختر عملية متاحة.');
     const requestId=randomUUID(),title=text(body.title,120),description=text(body.description),reason=text(body.reason);
-    let subjectRef=requestId,payload={note:description};
-    if(body.operation_type==='KERNEL_WORKSPACE_RENAME'){
-     requireRole(member,['OWNER','ADMIN']);
-     const tenant=(await db.query('SELECT id,name,profile_version FROM public.aigas_tenants WHERE id=$1 FOR SHARE',[tenantId])).rows[0];
-     const newName=workspaceName(text(body.new_name,100));
-     if(newName===tenant.name) throw new KernelError(400,'NO_CHANGE','الاسم الجديد يطابق الاسم الحالي.');
-     subjectRef=tenant.id;payload={expected_name:tenant.name,expected_version:String(tenant.profile_version),new_name:newName};
-    }else if(body.new_name) throw new KernelError(400,'INVALID_BODY','الملاحظة التجريبية لا تغيّر اسم المساحة.');
+    const rename = body.operation_type === 'KERNEL_WORKSPACE_RENAME';
+    let newName = null;
+    if (rename) {
+      requireRole(member, ['OWNER', 'ADMIN']);
+      newName = workspaceName(text(body.new_name, 100));
+    } else if (body.new_name) throw new KernelError(400,'INVALID_BODY','الملاحظة التجريبية لا تغيّر اسم المساحة.');
+    const reservation = await lockIdempotentCreate(db, {
+      identity, tenantId, operation: 'human-gate.request.create', key,
+      input: [title, description, reason, body.operation_type, newName],
+    });
+    if (reservation?.resourceId) {
+      const request = (await db.query('SELECT * FROM public.aigas_hg_requests WHERE tenant_id=$1 AND id=$2 AND requester_id=$3', [tenantId, reservation.resourceId, identity.userId])).rows[0];
+      if (!request) throw new KernelError(409, 'IDEMPOTENCY_RESOURCE_UNAVAILABLE', 'نتيجة الطلب السابقة غير متاحة.');
+      return { request, persisted: true, binding_version: bindingVersion, replayed: true };
+    }
+    if (!policy?.enabled) throw new KernelError(409,'POLICY_REQUIRED','يلزم أن يحدد المالك أو المسؤول مهلة سياسة مفعّلة أولًا.');
+    let subjectRef = requestId;
+    let payload = { note: description };
+    if (rename) {
+      const tenant = (await db.query('SELECT id,name,profile_version FROM public.aigas_tenants WHERE id=$1 FOR SHARE', [tenantId])).rows[0];
+      if (newName === tenant.name) throw new KernelError(400,'NO_CHANGE','الاسم الجديد يطابق الاسم الحالي.');
+      subjectRef = tenant.id;
+      payload = { expected_name: tenant.name, expected_version: String(tenant.profile_version), new_name: newName };
+    }
     const provider=providerFor(body.operation_type);
     const data={tenant_id:tenantId,requester_id:identity.userId,operation_type:body.operation_type,provider_ref:provider,subject_ref:subjectRef,payload,policy_version:policy.version};
     const request=(await db.query('INSERT INTO public.aigas_hg_requests(id,tenant_id,requester_id,title,description,reason,operation_scope,operation_type,subject_ref,payload,payload_digest,policy_version,provider_ref,expires_at) VALUES($1,$2,$3,$4,$5,$6,$7,$7,$8,$9,$10,$11,$12,clock_timestamp()+make_interval(mins=>$13)) RETURNING *',[requestId,tenantId,identity.userId,title,description,reason,body.operation_type,subjectRef,payload,binding(data),policy.version,provider,policy.pending_minutes])).rows[0];
     await record('request.created',request,'CREATED');
+    await reservation?.save(request.id);
     return {request,persisted:true,binding_version:bindingVersion};
    }
    if(operation==='delegate'){

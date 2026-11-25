@@ -1,3 +1,6 @@
+import { bodySchemaFor } from '../api/request-schemas.mjs';
+import { readJsonObject, validateBody } from '../api/json.mjs';
+import { hasTrustedApiOrigin } from '../api/origin.mjs';
 import { authenticate } from '../kernel/auth.mjs';
 import { KernelError, dependencyStatusForError, workspaceSelector } from '../kernel/core.mjs';
 import { contractHeaders, errorBody } from '../kernel/contracts.mjs';
@@ -17,15 +20,8 @@ async function readBody(request, operation) {
   const origin = request.headers.get('origin');
   // Integration clients use the same authenticated user JWT and may omit Origin.
   // Browser mutations must remain same-origin. No CORS or cookie authentication.
-  if (origin !== new URL(request.url).origin && !(operation === 'enforce' && origin === null && /^Bearer\s+\S+$/i.test(request.headers.get('authorization') ?? ''))) throw new KernelError(403, 'ORIGIN_REJECTED', 'مصدر الطلب غير مسموح.');
-  if (request.headers.get('content-type')?.split(';')[0] !== 'application/json') throw new KernelError(415, 'INVALID_BODY', 'أرسل JSON فقط.');
-  const reader = request.body?.getReader();
-  if (!reader) throw new KernelError(400, 'INVALID_BODY', 'الطلب فارغ.');
-  const chunks = []; let size = 0;
-  try { while (true) { const { done, value } = await reader.read(); if (done) break; size += value.length; if (size > 18000) { await reader.cancel(); throw new KernelError(413, 'BODY_TOO_LARGE', 'الطلب أكبر من الحد المسموح.'); } chunks.push(value); } }
-  finally { reader.releaseLock(); }
-  try { const body = JSON.parse(Buffer.concat(chunks).toString('utf8')); if (!body || Array.isArray(body) || typeof body !== 'object') throw 0; return body; }
-  catch { throw new KernelError(400, 'INVALID_BODY', 'تعذر قراءة الطلب.'); }
+  if (!hasTrustedApiOrigin(request) && !(operation === 'enforce' && origin === null && /^Bearer\s+\S+$/i.test(request.headers.get('authorization') ?? ''))) throw new KernelError(403, 'ORIGIN_REJECTED', 'مصدر الطلب غير مسموح.');
+  return readJsonObject(request, 18000);
 }
 // Database setup states are reported by code, never by raw driver text.
 // `setup: true` lets the UI say «التهيئة غير مكتملة» instead of showing a decision.
@@ -42,7 +38,9 @@ export function createHandler(auth = authenticate, service = operate) {
       const url = new URL(request.url);
       const fields = allowedFields[operation];
       if (!fields) throw new KernelError(404, 'NOT_FOUND', 'المسار غير موجود.');
-      const body = operation === 'dashboard' ? {} : await readBody(request, operation);
+      let body = operation === 'dashboard' ? {} : await readBody(request, operation);
+      const schema = bodySchemaFor(request);
+      if (schema) body = validateBody(schema, body);
       if (Object.keys(body).some(key => !fields.includes(key))) throw new KernelError(400, 'INVALID_BODY', 'حقول الطلب غير مسموحة.');
       const query = Object.fromEntries(['action', 'reason', 'mode', 'from', 'to', 'page'].map(key => [key, url.searchParams.get(key) ?? (key === 'page' ? '1' : '')]));
       const data = await service(identity, workspaceSelector(url.searchParams), operation, body, query);
@@ -52,7 +50,11 @@ export function createHandler(auth = authenticate, service = operate) {
       if (data?.code === 'PROVIDER_UNAVAILABLE' && (data?.httpStatus ?? 200) >= 500) {
         void captureServerFailure(null, { surface:'firewall', code:'PROVIDER_TIMEOUT', status:data.httpStatus, pathname:url.pathname, dependency:'temporarily unavailable', operation:'POST' });
       }
-      return Response.json(payload, { headers, status: httpStatus ?? (operation === 'create' ? 201 : 200) });
+      const status = httpStatus ?? (operation === 'create' ? 201 : 200);
+      if (status >= 400) {
+        return Response.json(errorBody({ status, code: payload.code, message: payload.message, dependencyStatus: payload.dependencyStatus }), { headers, status });
+      }
+      return Response.json(payload, { headers, status });
     } catch (error) {
       const known = error instanceof KernelError ? error : setupError(error);
       if (known) {

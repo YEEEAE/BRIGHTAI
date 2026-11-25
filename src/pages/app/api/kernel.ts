@@ -1,11 +1,10 @@
 import type { APIRoute } from 'astro';
-import { kernelHandler, exact, headers } from '../../../server/kernel/http.mjs';
+import { kernelHandler, headers } from '../../../server/kernel/http.mjs';
 import { dashboard, createWorkspace } from '../../../server/kernel/service.mjs';
 export const prerender = false;
 export const GET = kernelHandler(dashboard);
-const create = kernelHandler(async (identity: { userId: string }, _workspace: string | null, body: { name?: unknown }) => {
-  exact(body, ['name']);
-  const tenantId = await createWorkspace(identity, body.name);
+const create = kernelHandler(async (identity: { userId: string }, _workspace: string | null, body: { name: string }, request: Request) => {
+  const tenantId = await createWorkspace(identity, body.name, request.headers.get('Idempotency-Key'));
   // Creation committed. Keep its result independent of a subsequent dashboard read.
   try { return { ...await dashboard(identity, tenantId), persisted: true, tenantId }; }
   catch { return { persisted: true, tenantId, refreshRequired: true }; }

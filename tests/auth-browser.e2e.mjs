@@ -315,9 +315,8 @@ try {
   assert.match(await firewallResult.innerText(), /سياسة Kernel — خارج مسار العملية/);
   await page.locator('[data-eval-mode]').selectOption('GUARD');
   await page.locator('[data-eval-submit]').click();
-  await firewallResult.getByText('سياسة Kernel — غير مهيأ · يحجب المسار', { exact: true }).waitFor();
-  assert.match(await firewallResult.innerText(), /NOT_EXECUTED/);
-  assert.match(await firewallResult.innerText(), /DENY/);
+  await firewallResult.filter({ hasText: /لا تعِد التنفيذ تلقائيًا/ }).waitFor();
+  assert.match(await page.locator('[data-eval-error]').innerText(), /KERNEL_POLICY_REQUIRED|POLICY_BLOCKED/);
   await checkWidths(widths);
 
   await page.goto(`${base}/auth/sign-up/?returnTo=%2Fapp%2Ffirewall%2F`);

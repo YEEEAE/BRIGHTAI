@@ -23,7 +23,7 @@ async function api(path='',method='GET',body?:object){
  const generation=epoch;
  const session=await getWorkspaceSession(auth);const token=await auth.getJWTToken();
  if(session.error||!session.data?.user||!token)throw new Error('يلزم تسجيل الدخول عبر Kernel. تحقق من إعداد الأصل الموثوق.');
- const params=new URLSearchParams({type:type.value,source:source.value,classification:classification.value,period:period.value,page:String(page),q:search.value});if(workspace.value)params.set('workspace',workspace.value);
+ const params=new URLSearchParams(method==='GET'&&!path?{type:type.value,source:source.value,classification:classification.value,period:period.value,page:String(page),q:search.value}:{});if(workspace.value)params.set('workspace',workspace.value);
  const response=await appFetch(auth,`/app/api/ledger/events/${path}?${params}`,{method,cache:'no-store',headers:{Authorization:`Bearer ${token}`,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})});
  const data=await response.json();
  if(generation!==epoch)throw new Error('تغيرت الجلسة؛ حدّث السجل.');

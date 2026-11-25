@@ -1,8 +1,9 @@
+import { checkIdempotencyKey } from '../api/idempotency.mjs';
 import { workspaceGuidance } from './guidance.mjs';
 import { explorationGrants, EXPLORATION_CAPABILITIES, selfServiceAccessState } from './exploration.mjs';
 import { listApprovedModels } from '../secure-chat/models.mjs';
 import { providerReady } from '../secure-chat/adapter.mjs';
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { database, transaction, setActorScope, setTenantScope, connectionPrivilege } from './db.mjs';
 import { env } from './env.mjs';
 import { authConfig } from './auth.mjs';
@@ -103,15 +104,15 @@ export async function dashboard(identity, requested) {
     return { ...scope, nextStep: workspaceGuidance(scope.tenant, states), products: states, trialLifecycle: trial, connection: 'CONNECTED', system, summary, activity, policyEngine, canManageMembers: ['OWNER','ADMIN'].includes(scope.tenant.role), canManageProducts: scope.tenant.role === 'OWNER' && adminReady, contract_version: HTTP_CONTRACT_VERSION };
   });
 }
-export async function tenantMembers(identity, requested) {
+export async function tenantMembers(identity, requested, page = 1) {
   return transaction(async db => {
     const scope = await tenantGuard(identity, requested, db);
     if (!scope.tenant) throw new KernelError(403, 'NO_WORKSPACE', 'أنشئ مساحة عمل من Kernel أولًا.');
     scope.tenant = await lockMember(db, identity, scope.tenant);
     const canManage = ['OWNER','ADMIN'].includes(scope.tenant.role);
-    const rows = (await db.query(`SELECT m.user_id,m.role,m.created_at,u.name,u.email,u.banned FROM public.aigas_memberships m LEFT JOIN neon_auth."user" u ON u.id=m.user_id WHERE m.tenant_id=$1 ORDER BY CASE m.role WHEN 'OWNER' THEN 0 WHEN 'ADMIN' THEN 1 ELSE 2 END,m.created_at,m.user_id`, [scope.tenant.tenant_id])).rows;
+    const rows = (await db.query(`SELECT m.user_id,m.role,m.created_at,u.name,u.email,u.banned FROM public.aigas_memberships m LEFT JOIN neon_auth."user" u ON u.id=m.user_id WHERE m.tenant_id=$1 ORDER BY CASE m.role WHEN 'OWNER' THEN 0 WHEN 'ADMIN' THEN 1 ELSE 2 END,m.created_at,m.user_id LIMIT 101 OFFSET $2`, [scope.tenant.tenant_id, (page - 1) * 100])).rows;
     const { invitationState } = await import('./administration.mjs');
-    return { ...scope, canManage, members: rows.map(row => ({ userId: canManage ? row.user_id : null, isSelf: row.user_id === identity.userId, name: row.name || 'عضو', role: row.role, roleLabel: roleLabel(row.role), created_at: row.created_at, status: row.banned ? 'BANNED' : 'ACTIVE', email: canManage ? row.email ?? null : null })), departments: await departmentRoster(db, identity, scope.tenant, canManage), invitation: await invitationState(db, identity, scope.tenant) };
+    return { ...scope, canManage, page, hasMore: page < 999 && rows.length > 100, members: rows.slice(0, 100).map(row => ({ userId: canManage ? row.user_id : null, isSelf: row.user_id === identity.userId, name: row.name || 'عضو', role: row.role, roleLabel: roleLabel(row.role), created_at: row.created_at, status: row.banned ? 'BANNED' : 'ACTIVE', email: canManage ? row.email ?? null : null })), departments: await departmentRoster(db, identity, scope.tenant, canManage), invitation: await invitationState(db, identity, scope.tenant) };
   });
 }
 // Department membership is tenant-scoped and is also enforced by the policy evaluator.
@@ -172,12 +173,34 @@ export async function audit(db, identity, tenantId, action, context = {}) {
   }
   throw new KernelError(503, 'AUDIT_UNAVAILABLE', 'تعذر حفظ سجل الإدارة؛ لم تكتمل العملية.');
 }
-export async function createWorkspace(identity, name) {
+export async function createWorkspace(identity, name, key = null) {
   const validated = workspaceName(name);
+  checkIdempotencyKey(key);
+  const fingerprint = key ? createHash('sha256').update(validated).digest('hex') : null;
   return transaction(async db => {
     await setActorScope(db, identity.userId);
     try {
-      return (await db.query('SELECT public.aigas_bootstrap_workspace($1) AS id', [validated])).rows[0].id;
+      if (key) {
+        await db.query("SELECT pg_advisory_xact_lock(hashtextextended('workspace-create:' || $1 || ':' || $2, 0))", [identity.userId, key]);
+        const previous = (await db.query(
+          'SELECT request_fingerprint,workspace_id FROM public.aigas_workspace_idempotency WHERE actor_id=$1 AND request_key=$2',
+          [identity.userId, key],
+        )).rows[0];
+        if (previous) {
+          const member = await db.query('SELECT role FROM public.aigas_lock_member($1,$2)', [previous.workspace_id, identity.userId]);
+          if (!member.rowCount) throw new KernelError(403, 'WORKSPACE_FORBIDDEN', 'الحساب غير مؤهل لعرض مساحة العمل.');
+          if (previous.request_fingerprint !== fingerprint) throw new KernelError(409, 'IDEMPOTENCY_CONFLICT', 'المفتاح مستخدم لطلب مختلف.');
+          return previous.workspace_id;
+        }
+      }
+      const workspaceId = (await db.query('SELECT public.aigas_bootstrap_workspace($1) AS id', [validated])).rows[0].id;
+      if (key) {
+        await db.query(
+          'INSERT INTO public.aigas_workspace_idempotency(actor_id,request_key,request_fingerprint,workspace_id) VALUES($1,$2,$3,$4)',
+          [identity.userId, key, fingerprint, workspaceId],
+        );
+      }
+      return workspaceId;
     } catch (error) {
       if (error?.code === '42501') throw new KernelError(403, 'WORKSPACE_FORBIDDEN', 'الحساب غير مؤهل لإنشاء مؤسسة.');
       if (error?.code === '54000') throw new KernelError(409, 'WORKSPACE_LIMIT', 'بلغت الحد الأقصى للمؤسسات التي تملكها بهذا الحساب.');

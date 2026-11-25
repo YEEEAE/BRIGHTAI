@@ -24,8 +24,9 @@ test('Postgres: policy CRUD, priority, tenant isolation, permissions, metadata p
     const operate=(user,scope,op,body={},query)=>service(user,scope,op,op==='evaluate'?{...body,synthetic:true}:body,query);
     const handler = createHandler(async () => owner, service);
     const post = async (scope, body, operation = 'evaluate') => {
-      const request = new Request(`http://localhost/app/api/firewall/evaluate/?workspace=${scope}`, {
-        method: 'POST', headers: { origin: 'http://localhost', 'content-type': 'application/json' }, body: JSON.stringify(body),
+      const path = operation === 'enforce' ? 'guarded-executions' : 'evaluate';
+      const request = new Request(`https://brightai.live/app/api/firewall/${path}/?workspace=${scope}`, {
+        method: 'POST', headers: { origin: 'https://brightai.live', 'content-type': 'application/json' }, body: JSON.stringify(body),
       });
       const response = await handler(request, operation);
       return { status: response.status, data: await response.json() };
@@ -61,7 +62,9 @@ test('Postgres: policy CRUD, priority, tenant isolation, permissions, metadata p
     const guarded = { text: 'معلومة عامة', synthetic: true, request_id: requestId };
     const first = await post(tenant, guarded, 'enforce');
     assert.equal(first.status, 403);
-    assert.equal(first.data.decision.reason, 'KERNEL_POLICY_DENIED');
+    assert.equal(first.data.code, 'POLICY_BLOCKED');
+    const savedDecision = await db.query('SELECT reason FROM aigas_fw_decisions WHERE tenant_id=$1 AND request_id=$2', [tenant, requestId]);
+    assert.equal(savedDecision.rows[0].reason, 'KERNEL_POLICY_DENIED');
     const replay = await post(tenant, guarded, 'enforce');
     assert.equal(replay.status, 409);
     assert.equal(replay.data.code, 'REQUEST_ALREADY_EVALUATED');

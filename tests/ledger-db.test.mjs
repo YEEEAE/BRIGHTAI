@@ -27,7 +27,8 @@ test('Postgres + HTTP: durable event, readback, integrity/tamper, tenant isolati
  const service=createLedgerService(transact);
  const send=async(identity,op='list',body={},id,scope=tenant,query='')=>{
   const handler=createHandler(async()=>identity,service);const method=['create','verify'].includes(op)?'POST':'GET';
-  const req=new Request(`https://local/app/api/ledger/events/?workspace=${scope}&${query}`,{method,headers:{origin:'https://local','content-type':'application/json'},...(method==='POST'?{body:JSON.stringify(body)}:{})});
+  const path={detail:`/${id}`,verify:`/${id}/verify`,export:`/${id}/export`}[op]??'';
+  const req=new Request(`https://brightai.live/app/api/ledger/events${path}/?workspace=${scope}&${query}`,{method,headers:{origin:'https://brightai.live','content-type':'application/json'},...(method==='POST'?{body:JSON.stringify(body)}:{})});
   const response=await handler(req,op,id);return {status:response.status,headers:response.headers,data:await response.json()};
  };
  assert.equal((await send(owner)).data.events.length,0);
@@ -37,7 +38,7 @@ test('Postgres + HTTP: durable event, readback, integrity/tamper, tenant isolati
  assert.equal(duplicate.status,400);assert.equal(duplicate.data.code,'INVALID_WORKSPACE');
  const foreignBody=await send(owner,'create',{...input,workspace:other});
  assert.equal(foreignBody.status,400);assert.equal(foreignBody.data.code,'INVALID_BODY');
- const anonymous=await createHandler()(new Request('https://local/app/api/ledger/events/'),'list');
+ const anonymous=await createHandler()(new Request('https://brightai.live/app/api/ledger/events/'),'list');
  assert.equal(anonymous.status,401);assert.equal((await anonymous.json()).authorizationCode,'UNAUTHORIZED');
  const replay=await send(owner,'create',input);assert.equal(replay.status,201);assert.equal(replay.data.replayed,true);assert.equal(replay.data.event.event_id,id);
  assert.equal((await send(owner,'create',{...input,event_type:'synthetic.review.recorded'})).status,409);

@@ -120,7 +120,7 @@ KERNEL_AUTH_E2E_DATABASE_URL=postgresql://postgres@127.0.0.1:5432/brightai_auth_
 | المسار | النتيجة المتوقعة |
 |---|---|
 | `/healthz` و`/healthz/` | `200` وJSON يتضمن `status: "ok"` و`version` و`commit`. يظل الفحص ناجحًا عند تعطل قاعدة البيانات. |
-| `/readyz` و`/readyz/` | `200` عند نجاح فحوص PostgreSQL وتهيئة Auth. تعيد الإعدادات الناقصة والاعتماديات المتعطلة `503` مع حالة عامة وهوية البناء. |
+| `/readyz` و`/readyz/` | `200` عند نجاح فحوص PostgreSQL وتهيئة Auth. تعيد الإعدادات الناقصة والاعتماديات المتعطلة `503` بعقد الخطأ المشترك. تُقرأ هوية البناء من `/healthz/`. |
 
 تجيب الصيغ الأربع مباشرة عند التشغيل بـ`npm start`. يعيد `HEAD` الترويسات ورمز الحالة بجسم فارغ. تعتمد الجاهزية على `DATABASE_URL` وإعدادات Neon Auth. يفعّل الـBlueprint فحص JWKS الشبكي. اضبط القيم في إعدادات Runtime في Render.
 
@@ -135,3 +135,5 @@ npm run smoke:healthz -- https://brightai.live --require-ready --expect-commit="
 ```
 
 يتحقق الـsmoke من `GET` و`HEAD`، وهوية البناء، وJSON، و`no-store`، ويرفض التحويلات. لتشغيل اختبار الجاهزية الإيجابي محليًا، مرّر `HEALTHZ_READY_DATABASE_URL` لقاعدة PostgreSQL مؤقتة على loopback تحتوي على `public.aigas_tenants`. تفاصيل العقد في [دليل فحوص التشغيل](docs/HEALTHZ-READINESS.md).
+
+[عقد HTTP API](docs/API-CONTRACT.md) و[خطة ترحيله](docs/API-CONTRACT-MIGRATION.md).

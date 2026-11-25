@@ -98,7 +98,9 @@ export async function appFetch(auth: WorkspaceAuth, input: string, init: Request
   // endpoint re-authorizes it. It is never copied into navigation links until the
   // backend has confirmed the tenant; `verifiedWorkspace` wins once available.
   const requestedWorkspace = verifiedWorkspace || selectedWorkspace();
-  if (!url.searchParams.has('workspace') && requestedWorkspace) url.searchParams.set('workspace', requestedWorkspace);
+  if (!url.pathname.startsWith('/app/api/operator/') && !url.searchParams.has('workspace') && requestedWorkspace) {
+    url.searchParams.set('workspace', requestedWorkspace);
+  }
   const headers = new Headers(init.headers); headers.set('Authorization', `Bearer ${token}`);
   let response = await fetch(url, { ...init, headers, cache: 'no-store' });
   if (response.status === 401) {

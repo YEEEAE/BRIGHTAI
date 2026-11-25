@@ -1,3 +1,6 @@
+import { bodySchemaFor } from '../api/request-schemas.mjs';
+import { readJsonObject, validateBody } from '../api/json.mjs';
+import { hasTrustedApiOrigin } from '../api/origin.mjs';
 import { authenticate } from '../kernel/auth.mjs';
 import { KernelError, dependencyStatusForError, workspaceSelector } from '../kernel/core.mjs';
 import { contractHeaders, errorBody } from '../kernel/contracts.mjs';
@@ -5,23 +8,18 @@ import { captureServerFailure } from '../observability/index.mjs';
 import { operate } from './service.mjs';
 const headers = contractHeaders({ 'Cache-Control':'private, no-store', 'X-Robots-Tag':'noindex, nofollow', 'X-Content-Type-Options':'nosniff', 'Referrer-Policy':'no-referrer', Vary:'Authorization' });
 export async function readBody(request) {
-  if (request.headers.get('origin') !== new URL(request.url).origin) throw new KernelError(403,'ORIGIN_REJECTED','مصدر الطلب غير مسموح.');
-  if (request.headers.get('content-type')?.split(';')[0] !== 'application/json') throw new KernelError(415,'INVALID_BODY','أرسل JSON فقط.');
-  const reader = request.body?.getReader();
-  if (!reader) throw new KernelError(400,'INVALID_BODY','الطلب فارغ.');
-  const chunks = []; let size=0;
-  try { while(true) { const {done,value}=await reader.read(); if(done) break; size+=value.length; if(size>8192) { await reader.cancel(); throw new KernelError(413,'BODY_TOO_LARGE','الحد الأقصى للطلب 8KB.'); } chunks.push(value); } }
-  finally { reader.releaseLock(); }
-  try { return JSON.parse(Buffer.concat(chunks).toString('utf8')); }
-  catch { throw new KernelError(400,'INVALID_BODY','تعذر قراءة JSON.'); }
+  if (!hasTrustedApiOrigin(request)) throw new KernelError(403,'ORIGIN_REJECTED','مصدر الطلب غير مسموح.');
+  return readJsonObject(request, 8192);
 }
 export function createHandler(auth=authenticate, service=operate) {
   return async (request,operation,id) => {
     try {
       const identity=await auth(request);
       const params=new URL(request.url).searchParams;
-      const body=['create','update','assess','save-treatment','archive'].includes(operation)?await readBody(request):{};
-      const data=await service(identity,workspaceSelector(params),operation,body,params,id);
+      let body=['create','update','assess','save-treatment','archive'].includes(operation)?await readBody(request):{};
+      const schema = bodySchemaFor(request);
+      if (schema) body = validateBody(schema, body);
+      const data=await service(identity,workspaceSelector(params),operation,body,params,id,request.headers.get('Idempotency-Key'));
       return Response.json(data,{status:['create','assess','save-treatment'].includes(operation)?201:200,headers:{...headers,...(operation==='export'?{'Content-Disposition':'attachment; filename="aigas-risk-register.json"'}:{})}});
     } catch(error) {
       if(error?.code==='42P01'||error?.code==='42703')error=new KernelError(503,'RISK_ENGINE_SCHEMA_MISSING','مخطط Risk Engine أو أحدث حقوله غير متاح؛ يلزم تطبيق 0005 ثم 0008 ثم 0015 ثم 0026 على بيئة معتمدة.');

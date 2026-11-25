@@ -18,15 +18,27 @@ test('Risk Engine DB: persistence, version history, tenant/role rejection, races
   for(const [u,t,r]of [[owner,tenant,'OWNER'],[admin,tenant,'ADMIN'],[member,tenant,'MEMBER'],[outsider,other,'OWNER']])await pool.query('INSERT INTO aigas_memberships(tenant_id,user_id,role) VALUES($1,$2,$3)',[t,u.userId,r]);
  await grantProduct(pool,tenant,'risk-engine'); await grantProduct(pool,other,'risk-engine');
   const transact=async work=>{const c=await pool.connect();try{await c.query('BEGIN');await runtime(c);const result=await work(c);await c.query('COMMIT');return result;}catch(e){await c.query('ROLLBACK'); throw e;}finally{c.release();}};
-  const send=async(user,op='list',body={},id,scope=tenant,page=1,filters={})=>{
+  const send=async(user,op='list',body={},id,scope=tenant,page=1,filters={},key)=>{
    // Inject verified identity only in this harness; production handler keeps JWT verification.
-   const handler=createHandler(async()=>user,createRiskEngineService(transact)),method=['list','history','revisions'].includes(op)?'GET':op==='update'?'PATCH':'POST';
+   const handler=createHandler(async()=>user,createRiskEngineService(transact)),method=['list','history','revisions'].includes(op)?'GET':op==='update'?'PATCH':op==='archive'?'DELETE':'POST';
    const query=new URLSearchParams({workspace:scope,page:String(page),...filters});
-   const r=await handler(new Request(`https://local/app/api/risk-engine/assets/?${query}`,{method,headers:{origin:'https://local','content-type':'application/json'},...(method!=='GET'?{body:JSON.stringify({...body,synthetic_data_confirmed:true})}:{})}),op,id);return {status:r.status,data:await r.json()};
+   const path={list:'assets',create:'assets',history:`assets/${id}/assessments`,assess:`assets/${id}/assessments`,
+    revisions:`assets/${id}/revisions`,treatments:`assets/${id}/treatments`,'save-treatment':`assets/${id}/treatments`,
+    actions:'actions',export:'export'}[op]??`assets/${id}`;
+   const r=await handler(new Request(`https://brightai.live/app/api/risk-engine/${path}/?${query}`,{method,headers:{origin:'https://brightai.live','content-type':'application/json',...(key?{'Idempotency-Key':key}:{})},...(method!=='GET'?{body:JSON.stringify({...body,synthetic_data_confirmed:true})}:{})}),op,id);return {status:r.status,data:await r.json()};
   };
   const a={name:'Synthetic use',owner:'Synthetic team',purpose:'Public summaries',data_classification:'PUBLIC'};
   const assessment={asset_version:1,likelihood:1,impact:2,likelihood_reason:'Limited synthetic use',impact_reason:'Reversible synthetic impact',controls_reason:'Manual review and data minimization'};
-  const created=await send(owner,'create',a);assert.equal(created.status,201);const id=created.data.asset.id;
+  const createKey=randomUUID();
+  const [created,replay]=await Promise.all([
+   send(owner,'create',a,undefined,tenant,1,{},createKey),
+   send(owner,'create',a,undefined,tenant,1,{},createKey),
+  ]);
+  assert.equal(created.status,201);assert.equal(replay.status,201);
+  const id=created.data.asset.id;
+  assert.equal(replay.data.asset.id,id);
+  assert.equal([created,replay].filter(item=>item.data.replayed).length,1);
+  assert.equal((await send(owner,'create',{...a,name:'Different asset'},undefined,tenant,1,{},createKey)).data.code,'IDEMPOTENCY_CONFLICT');
   assert.equal((await send(owner)).data.assets[0].assessment_status,'NOT_ASSESSED');
   assert.equal((await send(owner)).data.summary.needs_reassessment,1);
   assert.equal((await send(owner,'list',{},undefined,tenant,1)).data.filteredTotal,1);

@@ -97,12 +97,14 @@ async function api(path: string, method = 'GET', body?: object) {
   if (session.error || !session.data?.user || !token) throw new ApiError('يلزم تسجيل الدخول عبر Kernel. تحقق أيضًا من إعداد الأصل الموثوق.', 'AUTH_REQUIRED');
   const params = new URLSearchParams();
   if (workspace.value) params.set('workspace', workspace.value);
-  if (actionFilter.value) params.set('action', actionFilter.value);
-  if (reasonFilter.value) params.set('reason', reasonFilter.value);
-  if (modeFilter.value) params.set('mode', modeFilter.value);
-  if (fromFilter.value) params.set('from', fromFilter.value);
-  if (toFilter.value) params.set('to', toFilter.value);
-  params.set('page', String(page));
+  if (path === 'rules' && method === 'GET') {
+    if (actionFilter.value) params.set('action', actionFilter.value);
+    if (reasonFilter.value) params.set('reason', reasonFilter.value);
+    if (modeFilter.value) params.set('mode', modeFilter.value);
+    if (fromFilter.value) params.set('from', fromFilter.value);
+    if (toFilter.value) params.set('to', toFilter.value);
+    params.set('page', String(page));
+  }
   const response = await appFetch(auth!, `/app/api/firewall/${path}/?${params}`, {
     method, cache: 'no-store',
     headers: { Authorization: `Bearer ${token}`, ...(body ? { 'Content-Type': 'application/json' } : {}) },
@@ -111,7 +113,6 @@ async function api(path: string, method = 'GET', body?: object) {
   let data: any = null;
   try { data = await response.json(); } catch { /* non-JSON failures are reported generically below */ }
   if (epoch !== viewEpoch) throw new ApiError('تغيرت الجلسة؛ أعد تحميل المؤسسة.', 'SESSION_CHANGED');
-  if (path === 'guarded-executions' && data?.persisted === true && data?.decision?.id) return data;
   if (!response.ok && ['FORBIDDEN', 'NO_WORKSPACE', 'PRODUCT_NOT_ENABLED'].includes(data?.code)) clearPrivate();
   if (!response.ok) throw new ApiError(dependencyErrorMessage(data?.message || 'تعذر إكمال الطلب.', data?.dependencyStatus), data?.code ?? '');
   return data;
@@ -444,7 +445,7 @@ root.querySelector('form[data-evaluate]')!.addEventListener('submit', event => {
         evalError.textContent = '';
         return;
       }
-      evalError.textContent = messageOf(error);
+      evalError.textContent = error instanceof ApiError && error.code ? `${error.code} — ${messageOf(error)}` : messageOf(error);
       result.dataset.state = 'error';
       result.textContent = 'تعذر تأكيد نتيجة الطلب. لا تتعامل معه كسماح، ولا تعِد التنفيذ تلقائيًا؛ راجع السجل أولًا.';
     }

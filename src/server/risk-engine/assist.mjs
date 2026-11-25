@@ -1,3 +1,5 @@
+import { bodySchemaFor } from '../api/request-schemas.mjs';
+import { validateBody } from '../api/json.mjs';
 import { authenticate } from '../kernel/auth.mjs';
 import { KernelError, requireRole, workspaceSelector } from '../kernel/core.mjs';
 import { transaction } from '../kernel/db.mjs';
@@ -58,7 +60,8 @@ export function createAssistHandler(auth=authenticate,assist=createRiskAssist())
       if(request.method!=='POST') throw new KernelError(405,'METHOD_NOT_ALLOWED','استخدم POST.');
       const identity=await auth(request);
       const body=await readBody(request);
-      return Response.json(await assist(identity,workspaceSelector(new URL(request.url).searchParams),body,request.signal),{headers});
+      const schema = bodySchemaFor(request);
+      return Response.json(await assist(identity,workspaceSelector(new URL(request.url).searchParams),schema ? validateBody(schema, body) : body,request.signal),{headers});
     } catch(error) {
       const known=error instanceof KernelError;
       return Response.json(errorBody({status:known?error.status:503,code:known?error.code:'RISK_ASSIST_UNAVAILABLE',message:known?error.message:'تعذر إنشاء المسودة؛ الصياغة اليدوية متاحة.',dependencyStatus:'temporarily unavailable'}),{status:known?error.status:503,headers});

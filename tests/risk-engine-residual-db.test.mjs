@@ -18,8 +18,11 @@ test('Risk Engine: residual decisions and export persist with tenant and version
   await grantProduct(pool,tenant,'risk-engine'); await grantProduct(pool,other,'risk-engine');
   let dbFailure; const transact=async work=>{const c=await pool.connect();try{await c.query('BEGIN');await runtime(c);const result=await work(c);await c.query('COMMIT');return result;}catch(e){dbFailure={code:e.code,message:e.message,where:e.where};await c.query('ROLLBACK');throw e;}finally{c.release();}};
   const send=async(user,op,body={},id,scope=tenant)=>{
-   const method=['history','treatments','export'].includes(op)?'GET':op==='update'?'PATCH':'POST';
-   const response=await createHandler(async()=>user,createRiskEngineService(transact))(new Request(`https://local/app/api/risk-engine/assets/?workspace=${scope}`,{method,headers:{origin:'https://local','content-type':'application/json'},...(method==='GET'?{}:{body:JSON.stringify({...body,synthetic_data_confirmed:true})})}),op,id);
+   const method=['history','treatments','export'].includes(op)?'GET':op==='update'?'PATCH':op==='archive'?'DELETE':'POST';
+   const path={list:'assets',create:'assets',history:`assets/${id}/assessments`,assess:`assets/${id}/assessments`,
+    revisions:`assets/${id}/revisions`,treatments:`assets/${id}/treatments`,'save-treatment':`assets/${id}/treatments`,
+    actions:'actions',export:'export'}[op]??`assets/${id}`;
+   const response=await createHandler(async()=>user,createRiskEngineService(transact))(new Request(`https://brightai.live/app/api/risk-engine/${path}/?workspace=${scope}`,{method,headers:{origin:'https://brightai.live','content-type':'application/json'},...(method==='GET'?{}:{body:JSON.stringify({...body,synthetic_data_confirmed:true})})}),op,id);
    return {status:response.status,headers:response.headers,data:await response.json()};
   };
   const asset={name:'Synthetic asset',owner:'Synthetic team',purpose:'Synthetic assessment',data_classification:'PUBLIC'};

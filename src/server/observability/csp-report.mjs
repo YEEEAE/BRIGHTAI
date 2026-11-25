@@ -1,3 +1,4 @@
+import { cspReportBodySchema } from '../api/request-schemas.mjs';
 const MAX_BYTES = 8192;
 const MAX_PER_MINUTE = 120;
 const DIRECTIVES = new Set([
@@ -57,7 +58,9 @@ export async function receiveCspReport(request) {
       body += decoder.decode(value, { stream: true });
     }
     if (timedOut) return reply(408);
-    const directive = JSON.parse(body + decoder.decode())?.['csp-report']?.['effective-directive'];
+    const parsed = cspReportBodySchema.safeParse(JSON.parse(body + decoder.decode()));
+    if (!parsed.success) return reply(400);
+    const directive = parsed.data['csp-report']['effective-directive'];
     if (!DIRECTIVES.has(directive)) return reply(400);
     if (minute === now) counts.set(directive, (counts.get(directive) ?? 0) + 1);
     return reply(204);

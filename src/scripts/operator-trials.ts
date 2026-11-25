@@ -106,7 +106,7 @@ function render(trials: any[]) {
       actions.append(action('محاولة تفعيل (تتطلب جاهزية معتمدة)', () => call(`/app/api/operator/trials/${trial.trialId}/activate`, 'POST', { customerAcknowledged: true }), 'warn'));
     }
     if (trial.state === 'ACTIVATED') {
-      actions.append(action('تسجيل انتهاء النافذة', () => call(`/app/api/operator/trials/${trial.trialId}/expire`, 'POST')));
+      actions.append(action('تسجيل انتهاء النافذة', () => call(`/app/api/operator/trials/${trial.trialId}/expire`, 'POST', {})));
     }
     if (['EXPIRED', 'REJECTED', 'CANCELLED'].includes(trial.state)) {
       actions.append(action('إغلاق', () => call(`/app/api/operator/trials/${trial.trialId}/close`, 'POST', reason.value ? { reason: reason.value } : {})));

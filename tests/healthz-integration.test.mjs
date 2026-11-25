@@ -87,9 +87,10 @@ function assertNoDisclosure(text) {
   for (const pattern of FORBIDDEN) assert(!pattern.test(text), `response must not match ${pattern}`);
 }
 
-function assertNotReady(body) {
-  assert.equal(body.status, 'not_ready');
-  assert.notEqual(body.state, 'ready');
+function assertNotReady(response, body) {
+  assert.deepEqual(Object.keys(body).sort(), ['code', 'dependencyStatus', 'message', 'requestId']);
+  assert.equal(body.dependencyStatus, 'temporarily unavailable');
+  assert.equal(body.requestId, response.headers.get('x-request-id'));
 }
 
 test('GET and HEAD /readyz answer the JSON readiness contract', { skip: BUILT ? false : BUILT_REASON }, async () => {
@@ -120,12 +121,7 @@ test('GET and HEAD /readyz answer the JSON readiness contract', { skip: BUILT ? 
       const text = await response.text();
       assertNoDisclosure(text);
       const body = JSON.parse(text);
-      assertEnvelope(body);
-      assertNotReady(body);
-      assert.equal(body.dependencies.database, 'UNCONFIGURED');
-      assert.equal(body.dependencies.auth, 'UNCONFIGURED');
-      assert.equal(body.dependencies.authProbe, 'SKIPPED');
-      assert.equal(body.dependencies.portal, 'DISABLED');
+      assertNotReady(response, body);
     }
 
     for (const path of ['/readyz', '/readyz/']) {
@@ -178,10 +174,7 @@ test('database connection failure degrades readiness only', async () => {
     assertNoDisclosure(text);
     assert(!text.includes('synthetic_secret'));
     const body = JSON.parse(text);
-    assert.equal(body.dependencies.database, 'UNAVAILABLE');
-    const identity = await live.json();
-    assert.equal(body.version, identity.version);
-    assert.equal(body.commit, identity.commit);
+    assertNotReady(ready, body);
   });
 });
 
@@ -200,7 +193,9 @@ test('malformed requests are rejected and ordinary canonical redirects still wor
       const post = await fetch(`${base}${path}`, { method: 'POST', redirect: 'manual' });
       assert.equal(post.status, 405);
       assert.equal(post.headers.get('allow'), 'GET, HEAD');
-      assert.deepEqual(await post.json(), { error: 'METHOD_NOT_ALLOWED' });
+      const body = await post.json();
+      assert.equal(body.code, 'METHOD_NOT_ALLOWED');
+      assert.equal(body.requestId, post.headers.get('x-request-id'));
     }
     const malformedPath = await fetch(`${base}/readyz/%ZZ`, { redirect: 'manual' });
     assert.equal(malformedPath.status, 400);

@@ -9,15 +9,15 @@
 
 ## 3. العقد الثابت
 
-كل استجابة GET للجاهزية بحالة 200 أو 503 تحتوي المفاتيح التالية:
+تحتوي استجابة GET للجاهزية بحالة 200 على المفاتيح التالية:
 
 ```json
 {
   "schema": 1,
   "version": "2.0.0",
   "commit": "<40-character git SHA>",
-  "status": "ready | not_ready",
-  "state": "ready | setup_required | blocked | unavailable",
+  "status": "ready",
+  "state": "ready",
   "checkedAt": "ISO-8601",
   "dependencies": {
     "database": "READY | UNCONFIGURED | SCHEMA_MISSING | PRIVILEGE_DENIED | UNAVAILABLE | UNKNOWN",
@@ -33,15 +33,13 @@
 
 - يكتب البناء الإصدار وSHA في `dist/server/version.json`. يمكن أن تكون الهوية `null` عند غياب البيانات، ويرفضها فحص ما بعد النشر.
 - `release` و`service` حقول هوية إضافية ثابتة، وليست إعدادات سرية.
-- عند فشل الفحص نفسه: `error` كود محدود مثل `READINESS_CHECK_FAILED` أو
-  `READINESS_CONTRACT_INVALID`، وحالات الاعتماديات `UNKNOWN` مع استمرار عرض حالة البوابة. لا يُسرَّب نص
-  الاستثناء.
+- يعيد HTTP 503 عقد الخطأ المشترك مع `X-Request-ID`. تستخدم الصفحة العامة `/status/` التقرير الداخلي لعرض تفاصيل الجاهزية. [عقد API](API-CONTRACT.md)
 - `release`/`service` تكون `null` فقط إذا تعذّر بناء هوية العملية.
 - أي تقرير داخلي لا يطابق العقد يُعامل كـ503 وليس 200.
 
 ## 4. الحالات ورمز HTTP
 
-| state | المعنى | HTTP |
+| الحالة الداخلية | المعنى | HTTP |
 |---|---|---|
 | `ready` | DB جاهز، Auth مهيأ، إصدار البناء متسق | 200 |
 | `setup_required` | DB أو Auth غير مهيأ | 503 |

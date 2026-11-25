@@ -1,3 +1,4 @@
+import { lockIdempotentCreate } from '../api/idempotency.mjs';
 import { ledgerDependency, recordProductEvent } from '../ledger/writer.mjs';
 import { lockHumanGate } from '../human-gate/integration.mjs';
 import { riskReviewOperation } from '../human-gate/core.mjs';
@@ -28,7 +29,7 @@ function acceptanceDeniedMessage(reasons) {
 }
 
 export function createRiskEngineService(transact=transaction) {
- return async(identity,requested,operation,body={},params=new URLSearchParams(),id)=>{
+ return async(identity,requested,operation,body={},params=new URLSearchParams(),id,key=null)=>{
   if(!['list','create','update','assess','history','revisions','treatments','save-treatment','archive','actions','export'].includes(operation))throw new KernelError(404,'NOT_FOUND','المسار غير موجود.');
   const mutating=['create','update','assess','save-treatment','archive'].includes(operation);
   const allowed=operation==='create'?assetFields:operation==='update'?[...assetFields,'asset_version']:operation==='assess'?['asset_version','likelihood','impact','likelihood_reason','impact_reason','controls_reason','evidence_references']:operation==='save-treatment'?treatmentFields:operation==='archive'?['asset_version','reason']:[];
@@ -108,15 +109,23 @@ export function createRiskEngineService(transact=transaction) {
       WHERE a.tenant_id=$1 AND ($2='' OR t.status=$2) AND (NOT $3::boolean OR t.review_on<=timezone('Asia/Riyadh',now())::date)
       ORDER BY t.review_on ASC NULLS LAST,a.id LIMIT 26 OFFSET $4`,[tenantId,treatmentStatus,dueOnly,(page-1)*25])).rows;
     const actions=rows.slice(0,25).map(row=>({...row,record_state:row.assessment_status==='NOT_ASSESSED'?'NOT_ASSESSED':row.assessment_status==='REASSESSMENT_REQUIRED'?'REASSESSMENT_REQUIRED':row.review_required?'TREATMENT_REVIEW_REQUIRED':row.acceptance_review_due?'ACCEPTANCE_REVIEW_DUE':'CURRENT'}));
-    return {actions,hasMore:rows.length>25,page,canWrite,acceptance_policy:acceptancePolicy,contract_version:HTTP_CONTRACT_VERSION};
+    return {actions,hasMore:rows.length>25&&page<10000,page,canWrite,acceptance_policy:acceptancePolicy,contract_version:HTTP_CONTRACT_VERSION};
    }
    if(operation==='create'){
     const a=assetInput(body);
+    const reservation = await lockIdempotentCreate(db, { identity, tenantId, operation: 'risk-engine.asset.create', key, input: a });
+    if (reservation?.resourceId) {
+      const asset = (await db.query('SELECT * FROM public.aigas_re_assets WHERE tenant_id=$1 AND id=$2', [tenantId, reservation.resourceId])).rows[0];
+      if (!asset) throw new KernelError(409, 'IDEMPOTENCY_RESOURCE_UNAVAILABLE', 'نتيجة الطلب السابقة غير متاحة.');
+      const latest = (await db.query('SELECT asset_version FROM public.aigas_re_assessments WHERE tenant_id=$1 AND asset_id=$2 ORDER BY created_at DESC,id DESC LIMIT 1', [tenantId, asset.id])).rows[0];
+      return { asset, persisted: true, assessment_status: assessmentStatus(asset, latest), method: METHOD, replayed: true };
+    }
     const asset=(await db.query(`INSERT INTO public.aigas_re_assets(id,tenant_id,name,owner,purpose,data_classification,data_context,provider_reference,model_reference,model_version,approval_status,lifecycle_status,created_by)
       VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING *`,[randomUUID(),tenantId,a.name,a.owner,a.purpose,a.data_classification,a.data_context,a.provider_reference,a.model_reference,a.model_version,a.approval_status,a.lifecycle_status,identity.userId])).rows[0];
     await saveRevision(asset);
     await audit(`risk_engine.asset.created:${asset.id}`,{correlationId:asset.id,policyVersion:'risk-asset-schema-v2',idempotencyKey:`risk-engine:asset:${asset.id}:created:v${asset.version}`});
     await recordProductEvent(db,identity,tenantId,{source:'risk-engine',event_type:'risk_engine.asset.created',correlation_id:asset.id,decision_id:asset.id,policy_version:'risk-asset-schema-v2',metadata_json:{synthetic:false,asset_ref:asset.id,asset_version:asset.version},idempotency_key:`asset:${asset.id}:v${asset.version}`});
+    await reservation?.save(asset.id);
     return {asset,persisted:true,assessment_status:'NOT_ASSESSED',method:METHOD};
    }
    if(operation==='list'){
@@ -134,7 +143,7 @@ export function createRiskEngineService(transact=transaction) {
       AND ($6='' OR $6=CASE WHEN s.id IS NULL THEN 'NOT_ASSESSED' WHEN s.asset_version<>a.version THEN 'REASSESSMENT_REQUIRED' ELSE 'ASSESSED' END)
       ORDER BY a.created_at DESC,a.id DESC LIMIT 26 OFFSET $5`,[tenantId,search,classification,riskLevel,(page-1)*25,assessmentStatusFilter])).rows;
     const filteredTotal=(await db.query(`SELECT count(*)::int AS total FROM public.aigas_re_assets a LEFT JOIN LATERAL(SELECT id,risk_level,asset_version FROM public.aigas_re_assessments WHERE tenant_id=a.tenant_id AND asset_id=a.id ORDER BY created_at DESC,id DESC LIMIT 1)s ON true WHERE a.tenant_id=$1 AND ($2='' OR a.name ILIKE '%'||$2||'%' OR a.owner ILIKE '%'||$2||'%' OR a.purpose ILIKE '%'||$2||'%' OR a.provider_reference ILIKE '%'||$2||'%' OR a.model_reference ILIKE '%'||$2||'%') AND ($3='' OR a.data_classification=$3) AND ($4='' OR (s.asset_version=a.version AND s.risk_level=$4)) AND ($5='' OR $5=CASE WHEN s.id IS NULL THEN 'NOT_ASSESSED' WHEN s.asset_version<>a.version THEN 'REASSESSMENT_REQUIRED' ELSE 'ASSESSED' END)`,[tenantId,search,classification,riskLevel,assessmentStatusFilter])).rows[0].total;
-    return {tenant:{...scope.tenant,role:member.role},memberships:scope.memberships,canWrite,assets:rows.slice(0,25),hasMore:rows.length>25,page,summary,filteredTotal,method:METHOD,contract_version:HTTP_CONTRACT_VERSION};
+    return {tenant:{...scope.tenant,role:member.role},memberships:scope.memberships,canWrite,assets:rows.slice(0,25),hasMore:rows.length>25&&page<10000,page,summary,filteredTotal,method:METHOD,contract_version:HTTP_CONTRACT_VERSION};
    }
    // Read paths share-lock so a saved revision cannot tear a multi-query view;
    // only mutating operations take the row lock that serializes versions.
@@ -150,7 +159,7 @@ export function createRiskEngineService(transact=transaction) {
    const acceptancePreview=acceptanceDecision(asset,latestAssessment,{review_on:null,residual_level:null,rationale:''},member,identity.userId);
    if(operation==='treatments'){
     const rows=(await db.query('SELECT * FROM public.aigas_re_treatment_revisions WHERE tenant_id=$1 AND asset_id=$2 ORDER BY version DESC LIMIT 26 OFFSET $3',[tenantId,id,(page-1)*25])).rows;
-    return {asset,treatments:rows.slice(0,25),latestTreatment,latestAssessment,page,hasMore:rows.length>25,canWrite,assessment_status:currentAssessmentStatus,reviewRequired:currentTreatmentReview,record_state:currentRecordState,acceptance_review_due:acceptanceReviewDue,canAcceptHigh:member.role==='OWNER'&&currentAssessmentStatus==='ASSESSED'&&latestAssessment.evaluator_id!==identity.userId,acceptance_policy:acceptancePolicy,acceptance_requirements:acceptancePreview.reasons,acceptance_scope:acceptanceScope,method:METHOD};
+    return {asset,treatments:rows.slice(0,25),latestTreatment,latestAssessment,page,hasMore:rows.length>25&&page<10000,canWrite,assessment_status:currentAssessmentStatus,reviewRequired:currentTreatmentReview,record_state:currentRecordState,acceptance_review_due:acceptanceReviewDue,canAcceptHigh:member.role==='OWNER'&&currentAssessmentStatus==='ASSESSED'&&latestAssessment.evaluator_id!==identity.userId,acceptance_policy:acceptancePolicy,acceptance_requirements:acceptancePreview.reasons,acceptance_scope:acceptanceScope,method:METHOD};
    }
    if(operation==='history'){
     const rows=(await db.query(`SELECT s.*,CASE WHEN r.id IS NOT NULL THEN jsonb_build_object(
@@ -163,11 +172,11 @@ export function createRiskEngineService(transact=transaction) {
       LEFT JOIN public.aigas_hg_policies p ON p.tenant_id=r.tenant_id
       WHERE s.tenant_id=$1 AND s.asset_id=$2 ORDER BY s.created_at DESC,s.id DESC LIMIT 26 OFFSET $3`,
     [tenantId,id,(page-1)*25,latestAssessment?.id??null,asset.version,asset.lifecycle_status,riskReviewOperation,identity.userId])).rows;
-    return {asset,assessments:rows.slice(0,25),latestAssessment,page,hasMore:rows.length>25,canWrite,assessment_status:currentAssessmentStatus,treatment_review_required:currentTreatmentReview,record_state:currentRecordState,acceptance_review_due:acceptanceReviewDue,acceptance_policy:acceptancePolicy,method:METHOD};
+    return {asset,assessments:rows.slice(0,25),latestAssessment,page,hasMore:rows.length>25&&page<10000,canWrite,assessment_status:currentAssessmentStatus,treatment_review_required:currentTreatmentReview,record_state:currentRecordState,acceptance_review_due:acceptanceReviewDue,acceptance_policy:acceptancePolicy,method:METHOD};
    }
    if(operation==='revisions'){
     const rows=(await db.query('SELECT asset_version,asset_snapshot,changed_by,changed_at FROM public.aigas_re_asset_revisions WHERE tenant_id=$1 AND asset_id=$2 ORDER BY asset_version DESC LIMIT 26 OFFSET $3',[tenantId,id,(page-1)*25])).rows;
-    return {asset,revisions:rows.slice(0,25),page,hasMore:rows.length>25,canWrite,assessment_status:currentAssessmentStatus};
+    return {asset,revisions:rows.slice(0,25),page,hasMore:rows.length>25&&page<10000,canWrite,assessment_status:currentAssessmentStatus};
    }
    if(version(body.asset_version)!==asset.version)throw new KernelError(409,'STALE_ASSET','تغيرت الحالة؛ حدّث بياناتها قبل التعديل أو التقييم.');
    if(operation==='archive'){

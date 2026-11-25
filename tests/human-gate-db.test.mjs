@@ -18,15 +18,27 @@ test('Human Gate: durable decisions, independent reviewer, isolation, concurrenc
  await grantProduct(pool,tenant,'human-gate'); await grantProduct(pool,other,'human-gate');
  const transact=async work=>{const c=await pool.connect();try{await c.query('BEGIN');await runtime(c);const result=await work(c);await c.query('COMMIT');return result;}catch(e){await c.query('ROLLBACK'); throw e;}finally{c.release();}};
  const service=createHumanGateService(transact);
- const send=async(user,op='list',body={},id,scope=tenant,status='PENDING')=>{
-  const handler=createHandler(async()=>user,service),method=op==='list'?'GET':'POST';
-  const response=await handler(new Request(`https://local/app/api/human-gate/requests/?workspace=${scope}&status=${status}&view=${user===owner||user===member?'mine':'review'}`,{method,headers:{origin:'https://local','content-type':'application/json'},...(method==='POST'?{body:JSON.stringify(body)}:{})}),op,id);
+ const send=async(user,op='list',body={},id,scope=tenant,status='PENDING',key)=>{
+  const handler=createHandler(async()=>user,service),method=['list','delegations'].includes(op)?'GET':'POST';
+  const path={list:'requests',create:'requests',policy:'policy',delegate:'delegations',delegations:'delegations',
+   'revoke-delegation':`delegations/${id}/revoke`}[op]??`requests/${id}/${op}`;
+  const response=await handler(new Request(`https://brightai.live/app/api/human-gate/${path}/?workspace=${scope}&status=${status}&view=${user===owner||user===member?'mine':'review'}`,{method,headers:{origin:'https://brightai.live','content-type':'application/json',...(key?{'Idempotency-Key':key}:{})},...(method==='POST'?{body:JSON.stringify(body)}:{})}),op,id);
   const data=await response.json();return {status:response.status,data};
  };
  assert.equal((await send(owner,'policy',{version:null,pending_minutes:60,approval_minutes:30,enabled:true})).status,200);
  const input={title:'Synthetic note',description:'Synthetic description',reason:'Synthetic reason',operation_type:'INTERNAL_DEMO_NOTE',synthetic_confirmed:true};
  const create=async(user=owner)=>{const r=await send(user,'create',input);assert.equal(r.status,201);assert.equal(r.data.request.status,'PENDING');assert.equal(r.data.request.completed_at,null);return r.data.request.id;};
- const id=await create();
+ const createKey=randomUUID();
+ const [firstCreate,replayCreate]=await Promise.all([
+  send(owner,'create',input,undefined,tenant,'PENDING',createKey),
+  send(owner,'create',input,undefined,tenant,'PENDING',createKey),
+ ]);
+ assert.equal(firstCreate.status,201);
+ assert.equal(replayCreate.status,201);
+ const id=firstCreate.data.request.id;
+ assert.equal(replayCreate.data.request.id,id);
+ assert.equal([firstCreate,replayCreate].filter(item=>item.data.replayed).length,1);
+ assert.equal((await send(owner,'create',{...input,title:'Different title'},undefined,tenant,'PENDING',createKey)).data.code,'IDEMPOTENCY_CONFLICT');
  assert.equal((await send(owner)).data.requests[0].id,id);
  assert.equal((await send(owner)).data.requests[0].canDecide,false);
  assert.equal((await send(reviewer)).data.requests[0].canDecide,true);

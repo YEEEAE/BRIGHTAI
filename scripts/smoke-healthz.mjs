@@ -114,6 +114,10 @@ for (const path of ['/healthz', '/healthz/', '/readyz', '/readyz/']) {
       if (!/no-store/.test(response.headers.get('cache-control') ?? '')) fail(`${label}: expected no-store`);
       if (method === 'HEAD') {
         if (text !== '') fail(`${label}: unexpected body`);
+      } else if (response.status === 503 && expected.includes(503)) {
+        const body = JSON.parse(text);
+        if (Object.keys(body).sort().join(',') !== 'code,dependencyStatus,message,requestId'
+          || body.requestId !== response.headers.get('x-request-id')) fail(`${label}: invalid readiness error envelope`);
       } else if (expected.includes(response.status)) {
         const body = JSON.parse(text);
         if (!body || typeof body !== 'object') throw new Error('Invalid JSON envelope');

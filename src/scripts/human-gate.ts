@@ -35,7 +35,7 @@ async function api(path='',body?:object,area:'requests'|'policy'|'delegations'='
  const generation=epoch,session=await getWorkspaceSession(auth),token=await auth.getJWTToken();
  if(generation!==epoch)throw new Error('تغيرت الجلسة؛ حدّث البيانات.');
  if(session.error||!session.data?.user||!token)throw new Error('يلزم تسجيل الدخول عبر Kernel. تحقق من إعداد الأصل الموثوق.');
- const query=new URLSearchParams({view,status:filter,page:String(page)});const selected=workspace.value||selectedWorkspace();if(selected)query.set('workspace',selected);
+ const query=new URLSearchParams(area==='requests'&&!path&&!body?{view,status:filter,page:String(page)}:{});const selected=workspace.value||selectedWorkspace();if(selected)query.set('workspace',selected);
  if(requestRef&&area==='requests'&&!path&&!body)query.set('request',requestRef);
  const route=area==='policy'?'policy/':area==='delegations'?`delegations/${path}`:`requests/${path}`;
  const response=await appFetch(auth,`/app/api/human-gate/${route}?${query}`,{method:body?'POST':'GET',cache:'no-store',signal:active?.signal,headers:{Authorization:`Bearer ${token}`,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})});

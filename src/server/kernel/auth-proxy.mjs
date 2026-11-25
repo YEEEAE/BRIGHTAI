@@ -1,13 +1,11 @@
+import { authOperations } from '../api/routes.mjs';
+import { errorBody } from './contracts.mjs';
+import { readJsonObject, validateBody } from '../api/json.mjs';
+import { authBodySchemas } from '../api/request-schemas.mjs';
+import { trustedApiOrigin } from '../api/origin.mjs';
 import { authConfig } from './auth.mjs';
 import { isPortalEnabled } from './env.mjs';
 
-const reads = new Set(['get-session', 'token', 'organization/list', 'organization/list-invitations']);
-const writes = new Set([
-  'sign-up/email', 'sign-in/email', 'sign-in/email-otp', 'sign-out',
-  'email-otp/send-verification-otp', 'email-otp/verify-email',
-  'organization/accept-invitation', 'organization/cancel-invitation',
-  'organization/invite-member', 'organization/create',
-]);
 const upstreamPrefix = '__Secure-neon-auth.';
 const browserPrefix = '__Host-brightai-auth.';
 const allowedCookie = /^(?:session_token(?:\.\d+)?|session_data(?:\.\d+)?|dont_remember)$/;
@@ -21,7 +19,7 @@ const errors = {
   SIGN_IN_REJECTED: 'تعذر تسجيل الدخول. راجع البيانات أو اطلب رمزًا جديدًا.',
   VERIFICATION_REJECTED: 'تعذر التحقق من الرمز. راجع الرمز أو اطلب رمزًا جديدًا.',
 };
-const failure = (code, status) => json({ code, message: errors[code] ?? 'تعذر إكمال طلب المصادقة.' }, status);
+const failure = (code, status) => json(errorBody({ status, code, message: errors[code] ?? 'تعذر إكمال طلب المصادقة.', dependencyStatus: code === 'AUTH_SETUP_REQUIRED' ? 'not configured' : null }), status);
 
 function browserCookie(raw) {
   const [pair, ...attributes] = raw.split(';');
@@ -33,16 +31,17 @@ function browserCookie(raw) {
 export async function proxyAuth(request, path, fetchUpstream = fetch) {
   const url = new URL(request.url);
   const method = request.method;
-  if (!((method === 'GET' && reads.has(path)) || (method === 'POST' && writes.has(path)))) return failure('AUTH_ROUTE_UNAVAILABLE', 404);
+  if (!Object.hasOwn(authOperations, path) || authOperations[path] !== method) return failure('AUTH_ROUTE_UNAVAILABLE', 404);
   const config = authConfig();
   if (!config) return failure('AUTH_SETUP_REQUIRED', 503);
   if (!isPortalEnabled()) return failure('AUTH_PORTAL_CLOSED', 503);
 
   const origin = request.headers.get('origin');
-  if ((origin && origin !== url.origin) || ['cross-site', 'same-site'].includes(request.headers.get('sec-fetch-site'))) {
+  const expectedOrigin = trustedApiOrigin(request);
+  if (!expectedOrigin || (origin !== null && origin !== expectedOrigin) || ['cross-site', 'same-site'].includes(request.headers.get('sec-fetch-site'))) {
     return failure('ORIGIN_REJECTED', 403);
   }
-  const headers = new Headers({ Origin: url.origin, 'X-Neon-Auth-Middleware': 'true', Accept: 'application/json' });
+  const headers = new Headers({ Origin: expectedOrigin, 'X-Neon-Auth-Middleware': 'true', Accept: 'application/json' });
   const cookies = (request.headers.get('cookie') ?? '').split(';').map(cookie => cookie.trim())
     .filter(cookie => cookie.startsWith(browserPrefix) && allowedCookie.test(cookie.split('=')[0].slice(browserPrefix.length)))
     .map(cookie => upstreamPrefix + cookie.slice(browserPrefix.length));
@@ -52,32 +51,13 @@ export async function proxyAuth(request, path, fetchUpstream = fetch) {
 
   let body;
   if (method === 'POST') {
-    if (origin !== url.origin) return failure('ORIGIN_REJECTED', 403);
-    if (request.headers.get('content-type')?.split(';')[0].trim().toLowerCase() !== 'application/json') {
-      return failure('INVALID_BODY', 415);
-    }
-    const reader = request.body?.getReader();
-    if (!reader) return failure('INVALID_BODY', 400);
-    let size = 0;
-    const chunks = [];
+    if (origin !== expectedOrigin) return failure('ORIGIN_REJECTED', 403);
     try {
-      for (;;) {
-        const { value, done } = await reader.read();
-        if (done) break;
-        size += value.byteLength;
-        if (size > 8192) {
-          await reader.cancel();
-          return failure('INVALID_BODY', 413);
-        }
-        chunks.push(value);
-      }
-      const payload = JSON.parse(new TextDecoder().decode(Buffer.concat(chunks)));
-      if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return failure('INVALID_BODY', 400);
-      // Keep provider redirects out of the public API. The UI verifies by email OTP.
+      const payload = validateBody(authBodySchemas[path], await readJsonObject(request, 8192));
       delete payload.callbackURL;
       body = JSON.stringify(payload);
-    } catch {
-      return failure('INVALID_BODY', 400);
+    } catch (error) {
+      return failure(error.code ?? 'INVALID_BODY', error.status ?? 400);
     }
     headers.set('Content-Type', 'application/json');
   }

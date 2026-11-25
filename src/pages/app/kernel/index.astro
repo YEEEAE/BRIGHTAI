@@ -74,6 +74,10 @@ const signupPath = `/auth/sign-up/${intendedProduct ? `?returnTo=${encodeURIComp
         <div class="section-heading"><div><p class="overline">03 / MEMBERS</p><h2 id="members-title">أعضاء المؤسسة</h2></div><span class="count" data-member-count></span></div>
         <p data-members-state role="status" aria-live="polite">تُحمّل الأعضاء بعد التحقق من العضوية.</p>
         <ul class="member-list" data-members></ul>
+        <div data-members-pagination hidden>
+          <Button variant="secondary" type="button" data-members-previous>الأعضاء السابقون</Button>
+          <Button variant="secondary" type="button" data-members-next>الأعضاء التاليون</Button>
+        </div>
         <div class="member-actions"><p id="invite-note" data-invite-note>تظهر إمكانية الدعوة بعد التحقق من المؤسسة وصلاحيتك.</p>
           <div data-auth-link hidden><h3>ربط مؤسسة الدخول</h3><Select label="مؤسسة Auth تملكها بحسابك" id="auth-organization" data-auth-organizations dir="auto"></Select><Button variant="secondary" type="button" data-link-existing>ربط المؤسسة المختارة</Button><Button variant="secondary" type="button" data-create-auth>إنشاء مؤسسة Auth وربطها</Button><p>الربط لا يستورد أعضاء أو أدوارًا تلقائيًا، ولا ينقل ملكية.</p></div>
           <form data-invite hidden><Input label="بريد العضو المدعو" id="invite-email" name="email" type="email" autocomplete="off" dir="ltr" required maxlength="254" /><Button type="submit">دعوة بدور عضو</Button><p>العضوية تُمنح بعد قبول دعوة صحيحة ببريد موثّق. لا ترقيات أو نقل ملكية.</p></form>

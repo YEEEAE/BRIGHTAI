@@ -18,8 +18,8 @@ async function api(path='',body?:object,method=body?'POST':'GET',history=false,r
  if(!auth)throw new Error('يلزم إعداد الدخول عبر Neon Auth.');
  const session=await getWorkspaceSession(auth),token=await auth.getJWTToken();
  if(session.error||!session.data?.user||!token)throw Object.assign(new Error('يلزم تسجيل الدخول عبر Kernel. تحقق من إعداد الأصل الموثوق.'),{unauthorized:true});
- const query=new URLSearchParams({page:String(resource==='actions'?actionsPage:history?historyPage:path.endsWith('/revisions/')?revisionsPage:path.endsWith('/treatments/')?treatmentPage:page)});if(workspace.value)query.set('workspace',workspace.value);
- if(!path&&resource==='assets'){for(const key of ['q','classification','risk_level','assessment_status']){const value=(filterForm.elements.namedItem(key) as HTMLInputElement).value;if(value)query.set(key,value);}}
+ const query=new URLSearchParams(method==='GET'&&resource!=='export'?{page:String(resource==='actions'?actionsPage:history?historyPage:path.endsWith('/revisions/')?revisionsPage:path.endsWith('/treatments/')?treatmentPage:page)}:{});if(workspace.value)query.set('workspace',workspace.value);
+ if(method==='GET'&&!path&&resource==='assets'){for(const key of ['q','classification','risk_level','assessment_status']){const value=(filterForm.elements.namedItem(key) as HTMLInputElement).value;if(value)query.set(key,value);}}
  if(resource==='actions')for(const key of ['treatment_status','due']){const value=(actionsFilter.elements.namedItem(key) as HTMLSelectElement).value;if(value)query.set(key,value);}
  const response=await appFetch(auth!, `/app/api/risk-engine/${resource==='assets'?'assets/'+path:resource+'/'}?${query}`,{method,cache:'no-store',headers:{Authorization:`Bearer ${token}`,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})});
  const data=await response.json();if(!response.ok)throw Object.assign(new Error(dependencyErrorMessage(data.message||'تعذر إكمال العملية؛ لم يُؤكد الحفظ.',data.dependencyStatus)),{status:response.status,code:data.code});return data;

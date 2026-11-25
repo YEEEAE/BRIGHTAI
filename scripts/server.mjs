@@ -1,3 +1,5 @@
+import { isApiSurface, normalizePath, resolveRoute } from '../src/server/api/routes.mjs';
+import { apiBoundary } from '../src/server/api/boundary.mjs';
 import { createServer as httpServer } from 'node:http';
 import { createServer as httpsServer } from 'node:https';
 import { readFileSync } from 'node:fs';
@@ -78,6 +80,17 @@ const listener = (request, response) => {
     response.end();
     return;
   }
+  const apiPath = normalizePath(url.pathname);
+  if (isApiSurface(apiPath) && !resolveRoute(apiPath)) {
+    apiBoundary({ url: url.href, method: request.method }, apiPath, () => {
+      throw new Error('Unregistered API route');
+    }).then(async result => {
+      const body = await result.text();
+      response.writeHead(result.status, Object.fromEntries(result.headers));
+      response.end(body);
+    }).catch(() => response.destroy());
+    return;
+  }
   // Bypass Astro's canonical redirect for both spellings of each probe.
   if (/^\/(?:healthz|readyz)\/?$/.test(url.pathname)) {
     const method = request.method;
@@ -87,11 +100,11 @@ const listener = (request, response) => {
       response.writeHead(result.status, Object.fromEntries(result.headers));
       response.end(body);
     };
-    Promise.resolve().then(() => probe(method)).then(send).catch(() => {
-      if (response.headersSent) return response.destroy();
-      return send(probeResponse(method, 503, failureReport('HEALTH_RESPONSE_FAILED')))
-        .catch(() => response.destroy());
-    });
+    const boundaryRequest = { url: url.href, method };
+    apiBoundary(boundaryRequest, url.pathname, async () => {
+      try { return await probe(method); }
+      catch { return probeResponse(method, 503, failureReport('HEALTH_RESPONSE_FAILED')); }
+    }).then(send).catch(() => response.destroy());
     return;
   }
   // A rejected render must not become an unhandled rejection: that terminates
@@ -118,5 +131,5 @@ const port = Number(process.env.PORT ?? options.port ?? 8080);
 // "no open ports" while the process looks healthy in its own logs.
 // HOST=127.0.0.1 opts back in to loopback for local-only use.
 const host = process.env.HOST || '0.0.0.0';
-server.listen(port, host, () => console.log(`BRIGHTAI listening on ${host ?? 'localhost'}:${port}`));
+server.listen(port, host, () => console.log(`BRIGHTAI listening on ${host}:${server.address().port}`));
 server.on('error', error => { console.error(error); process.exitCode = 1; });
