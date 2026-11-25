@@ -1,0 +1,938 @@
+{
+  "inventory": [
+    {
+      "synthetic": true,
+      "id": "fixture-system",
+      "kind": "SYSTEM",
+      "version": 1,
+      "owner": "fixture-owner",
+      "purpose": "Exercise the local synthetic governance contract.",
+      "dataSource": {
+        "kind": "SYNTHETIC",
+        "reference": "fixture-catalog-v1"
+      },
+      "limits": [],
+      "review": {
+        "reviewer": "fixture-reviewer",
+        "dueOn": "2026-12-25"
+      }
+    },
+    {
+      "synthetic": true,
+      "id": "fixture-model",
+      "kind": "MODEL",
+      "version": 1,
+      "owner": "fixture-owner",
+      "purpose": "Exercise the local synthetic governance contract.",
+      "dataSource": {
+        "kind": "SYNTHETIC",
+        "reference": "fixture-catalog-v1"
+      },
+      "limits": [],
+      "review": {
+        "reviewer": "fixture-reviewer",
+        "dueOn": "2026-12-25"
+      }
+    },
+    {
+      "synthetic": true,
+      "id": "fixture-agent",
+      "kind": "AGENT",
+      "version": 1,
+      "owner": "fixture-owner",
+      "purpose": "Exercise the local synthetic governance contract.",
+      "dataSource": {
+        "kind": "SYNTHETIC",
+        "reference": "fixture-catalog-v1"
+      },
+      "limits": [
+        {
+          "tool": "fixture-catalog",
+          "action": "read",
+          "mode": "ALLOW"
+        },
+        {
+          "tool": "fixture-catalog",
+          "action": "delete",
+          "mode": "DENY"
+        },
+        {
+          "tool": "fixture-catalog",
+          "action": "publish",
+          "mode": "ESCALATE"
+        }
+      ],
+      "review": {
+        "reviewer": "fixture-reviewer",
+        "dueOn": "2026-12-25"
+      }
+    },
+    {
+      "synthetic": true,
+      "id": "fixture-use-case",
+      "kind": "USE_CASE",
+      "version": 1,
+      "owner": "fixture-owner",
+      "purpose": "Exercise the local synthetic governance contract.",
+      "dataSource": {
+        "kind": "SYNTHETIC",
+        "reference": "fixture-catalog-v1"
+      },
+      "limits": [],
+      "review": {
+        "reviewer": "fixture-reviewer",
+        "dueOn": "2026-12-25"
+      }
+    },
+    {
+      "synthetic": true,
+      "id": "fixture-vendor",
+      "kind": "VENDOR",
+      "version": 1,
+      "owner": "fixture-owner",
+      "purpose": "Exercise the local synthetic governance contract.",
+      "dataSource": {
+        "kind": "SYNTHETIC",
+        "reference": "fixture-catalog-v1"
+      },
+      "limits": [],
+      "review": {
+        "reviewer": "fixture-reviewer",
+        "dueOn": "2026-12-25"
+      }
+    }
+  ],
+  "assessment": {
+    "contractVersion": 1,
+    "synthetic": true,
+    "id": "96411a2cc92900613d0a6bab59e660b69d7c92030dc6d4793a5c1dd264d3c3ec",
+    "effective": true,
+    "asset": {
+      "synthetic": true,
+      "id": "fixture-agent",
+      "kind": "AGENT",
+      "version": 1,
+      "owner": "fixture-owner",
+      "purpose": "Exercise the local synthetic governance contract.",
+      "dataSource": {
+        "kind": "SYNTHETIC",
+        "reference": "fixture-catalog-v1"
+      },
+      "limits": [
+        {
+          "tool": "fixture-catalog",
+          "action": "read",
+          "mode": "ALLOW"
+        },
+        {
+          "tool": "fixture-catalog",
+          "action": "delete",
+          "mode": "DENY"
+        },
+        {
+          "tool": "fixture-catalog",
+          "action": "publish",
+          "mode": "ESCALATE"
+        }
+      ],
+      "review": {
+        "reviewer": "fixture-reviewer",
+        "dueOn": "2026-12-25"
+      }
+    },
+    "pack": {
+      "synthetic": true,
+      "id": "aigas.synthetic-baseline",
+      "version": 1,
+      "effectiveOn": "2026-11-25",
+      "source": {
+        "type": "INTERNAL",
+        "reference": "aigas.synthetic-governance-contract"
+      },
+      "appliesTo": [
+        "SYSTEM",
+        "MODEL",
+        "AGENT",
+        "USE_CASE",
+        "VENDOR"
+      ]
+    },
+    "appliedOn": "2026-11-25",
+    "reviewOverdue": false,
+    "checks": [
+      {
+        "id": "inventory",
+        "control": "versioned-asset",
+        "check": {
+          "id": "check.inventory",
+          "procedure": "Compare the current registry revision and review due date to the assessment."
+        },
+        "expectedEvidence": {
+          "kind": "versioned-asset",
+          "description": "Registry record with asset id, version, synthetic source and review owner."
+        },
+        "owner": "asset-steward",
+        "axis": "inventory",
+        "product": "kernel",
+        "severity": "P0",
+        "critical": true,
+        "appliesTo": true,
+        "requirement": "Register each asset with a responsible owner, documented purpose and review date.",
+        "applicableKinds": [
+          "SYSTEM",
+          "MODEL",
+          "AGENT",
+          "USE_CASE",
+          "VENDOR"
+        ],
+        "revision": 2,
+        "status": "Pass",
+        "reason": "Registry revision, ownership and review are recorded.",
+        "evidence": {
+          "synthetic": true,
+          "reference": "fixture.inventory",
+          "kind": "versioned-asset",
+          "summary": "Registry revision, ownership and review are recorded."
+        },
+        "review": {
+          "reviewer": "fixture-reviewer",
+          "outcome": "Pass",
+          "reason": "Registry revision, ownership and review are recorded.",
+          "reviewedOn": "2026-11-25"
+        },
+        "history": [
+          {
+            "revision": 0,
+            "status": "Needs Evidence",
+            "reason": "Evidence has not been submitted.",
+            "evidence": null,
+            "review": null
+          }
+        ]
+      },
+      {
+        "id": "agent-boundary",
+        "control": "tool-action-boundary",
+        "check": {
+          "id": "check.agent-boundary",
+          "procedure": "Exercise allowed, denied, approval-required and unknown pairs against the server baseline."
+        },
+        "expectedEvidence": {
+          "kind": "tool-action-boundary",
+          "description": "Version-bound decisions showing ALLOW, BLOCK/DENY, ESCALATE and default deny."
+        },
+        "owner": "security-steward",
+        "axis": "enforcement",
+        "product": "firewall",
+        "severity": "P0",
+        "critical": true,
+        "appliesTo": true,
+        "requirement": "Enforce immutable agent tool/action limits with default deny and an independent approval path.",
+        "applicableKinds": [
+          "AGENT"
+        ],
+        "revision": 2,
+        "status": "Pass",
+        "reason": "All four synthetic scenarios produced their expected decisions.",
+        "evidence": {
+          "synthetic": true,
+          "reference": "fixture.agent-boundary",
+          "kind": "tool-action-boundary",
+          "summary": "All four synthetic scenarios produced their expected decisions."
+        },
+        "review": {
+          "reviewer": "fixture-reviewer",
+          "outcome": "Pass",
+          "reason": "All four synthetic scenarios produced their expected decisions.",
+          "reviewedOn": "2026-11-25"
+        },
+        "history": [
+          {
+            "revision": 0,
+            "status": "Needs Evidence",
+            "reason": "Evidence has not been submitted.",
+            "evidence": null,
+            "review": null
+          }
+        ]
+      },
+      {
+        "id": "risk",
+        "control": "risk-assessment",
+        "check": {
+          "id": "check.risk",
+          "procedure": "Use the versioned Risk Engine method and document the rationale for likelihood and impact."
+        },
+        "expectedEvidence": {
+          "kind": "risk-assessment",
+          "description": "Risk method version, inputs, result and reviewer rationale."
+        },
+        "owner": "risk-steward",
+        "axis": "risk",
+        "product": "risk-engine",
+        "severity": "P0",
+        "critical": true,
+        "appliesTo": true,
+        "requirement": "Review the synthetic risk scenario at the current asset and pack revision.",
+        "applicableKinds": [
+          "SYSTEM",
+          "MODEL",
+          "AGENT",
+          "USE_CASE",
+          "VENDOR"
+        ],
+        "revision": 2,
+        "status": "Pass",
+        "reason": "Versioned draft risk scenario requires human review.",
+        "evidence": {
+          "synthetic": true,
+          "reference": "fixture.risk",
+          "kind": "risk-assessment",
+          "summary": "Versioned draft risk scenario requires human review."
+        },
+        "review": {
+          "reviewer": "fixture-reviewer",
+          "outcome": "Pass",
+          "reason": "Versioned draft risk scenario requires human review.",
+          "reviewedOn": "2026-11-25"
+        },
+        "history": [
+          {
+            "revision": 0,
+            "status": "Needs Evidence",
+            "reason": "Evidence has not been submitted.",
+            "evidence": null,
+            "review": null
+          }
+        ]
+      },
+      {
+        "id": "human-review",
+        "control": "independent-review",
+        "check": {
+          "id": "check.human-review",
+          "procedure": "Verify the pending review, deny self-review and reject mismatched bindings."
+        },
+        "expectedEvidence": {
+          "kind": "independent-review",
+          "description": "Pending review metadata and result of separation-of-duties and binding checks."
+        },
+        "owner": "review-steward",
+        "axis": "oversight",
+        "product": "human-gate",
+        "severity": "P0",
+        "critical": true,
+        "appliesTo": true,
+        "requirement": "Bind independent human review to the exact action, request and policy revision.",
+        "applicableKinds": [
+          "AGENT"
+        ],
+        "revision": 2,
+        "status": "Pass",
+        "reason": "Pending review matches the current action and prevents self-approval.",
+        "evidence": {
+          "synthetic": true,
+          "reference": "fixture.human-review",
+          "kind": "independent-review",
+          "summary": "Pending review matches the current action and prevents self-approval."
+        },
+        "review": {
+          "reviewer": "fixture-reviewer",
+          "outcome": "Pass",
+          "reason": "Pending review matches the current action and prevents self-approval.",
+          "reviewedOn": "2026-11-25"
+        },
+        "history": [
+          {
+            "revision": 0,
+            "status": "Needs Evidence",
+            "reason": "Evidence has not been submitted.",
+            "evidence": null,
+            "review": null
+          }
+        ]
+      },
+      {
+        "id": "evidence",
+        "control": "evidence-export",
+        "check": {
+          "id": "check.evidence",
+          "procedure": "Check control, check, scope, status, evidence reference and bound revision in the export."
+        },
+        "expectedEvidence": {
+          "kind": "evidence-export",
+          "description": "Machine-readable export and its SHA-256 digest."
+        },
+        "owner": "evidence-steward",
+        "axis": "traceability",
+        "product": "ledger",
+        "severity": "P0",
+        "critical": true,
+        "appliesTo": true,
+        "requirement": "Export the complete requirement-to-evidence chain at the current revision.",
+        "applicableKinds": [
+          "SYSTEM",
+          "MODEL",
+          "AGENT",
+          "USE_CASE",
+          "VENDOR"
+        ],
+        "revision": 2,
+        "status": "Pass",
+        "reason": "Initial export contains the five required controls and check references.",
+        "evidence": {
+          "synthetic": true,
+          "reference": "fixture.evidence",
+          "kind": "evidence-export",
+          "summary": "Initial export contains the five required controls and check references."
+        },
+        "review": {
+          "reviewer": "fixture-reviewer",
+          "outcome": "Pass",
+          "reason": "Initial export contains the five required controls and check references.",
+          "reviewedOn": "2026-11-25"
+        },
+        "history": [
+          {
+            "revision": 0,
+            "status": "Needs Evidence",
+            "reason": "Evidence has not been submitted.",
+            "evidence": null,
+            "review": null
+          }
+        ]
+      }
+    ],
+    "sha256": "774e9b0dcd272c33e5583bd88e94802f2c2de60a7e4cbb95d6b4007cb5f668f0"
+  },
+  "gate": {
+    "passed": true,
+    "byAxis": {
+      "inventory": {
+        "pass": 1,
+        "total": 1,
+        "meetsThreshold": true
+      },
+      "enforcement": {
+        "pass": 1,
+        "total": 1,
+        "meetsThreshold": true
+      },
+      "risk": {
+        "pass": 1,
+        "total": 1,
+        "meetsThreshold": true
+      },
+      "oversight": {
+        "pass": 1,
+        "total": 1,
+        "meetsThreshold": true
+      },
+      "traceability": {
+        "pass": 1,
+        "total": 1,
+        "meetsThreshold": true
+      }
+    },
+    "byProduct": {
+      "kernel": {
+        "pass": 1,
+        "total": 1,
+        "meetsThreshold": true
+      },
+      "firewall": {
+        "pass": 1,
+        "total": 1,
+        "meetsThreshold": true
+      },
+      "risk-engine": {
+        "pass": 1,
+        "total": 1,
+        "meetsThreshold": true
+      },
+      "human-gate": {
+        "pass": 1,
+        "total": 1,
+        "meetsThreshold": true
+      },
+      "ledger": {
+        "pass": 1,
+        "total": 1,
+        "meetsThreshold": true
+      }
+    },
+    "openP0": [],
+    "criticalPass": true
+  },
+  "versions": [
+    {
+      "id": "96411a2cc92900613d0a6bab59e660b69d7c92030dc6d4793a5c1dd264d3c3ec",
+      "packVersion": 1,
+      "effective": false,
+      "checks": [
+        {
+          "id": "inventory",
+          "status": "Needs Review",
+          "previousStatus": "Pass",
+          "reason": "Asset or pack revision superseded. Historical evidence is retained."
+        },
+        {
+          "id": "agent-boundary",
+          "status": "Needs Review",
+          "previousStatus": "Pass",
+          "reason": "Asset or pack revision superseded. Historical evidence is retained."
+        },
+        {
+          "id": "risk",
+          "status": "Needs Review",
+          "previousStatus": "Pass",
+          "reason": "Asset or pack revision superseded. Historical evidence is retained."
+        },
+        {
+          "id": "human-review",
+          "status": "Needs Review",
+          "previousStatus": "Pass",
+          "reason": "Asset or pack revision superseded. Historical evidence is retained."
+        },
+        {
+          "id": "evidence",
+          "status": "Needs Review",
+          "previousStatus": "Pass",
+          "reason": "Asset or pack revision superseded. Historical evidence is retained."
+        }
+      ]
+    },
+    {
+      "id": "b3bf744882da93483386970b53c3d74c3977aeb5cf976890f9e42f6e3a2bb31a",
+      "packVersion": 2,
+      "effective": true,
+      "checks": [
+        {
+          "id": "inventory",
+          "status": "Needs Evidence",
+          "reason": "Evidence has not been submitted."
+        },
+        {
+          "id": "agent-boundary",
+          "status": "Needs Evidence",
+          "reason": "Evidence has not been submitted."
+        },
+        {
+          "id": "risk",
+          "status": "Needs Evidence",
+          "reason": "Evidence has not been submitted."
+        },
+        {
+          "id": "human-review",
+          "status": "Needs Evidence",
+          "reason": "Evidence has not been submitted."
+        },
+        {
+          "id": "evidence",
+          "status": "Needs Evidence",
+          "reason": "Evidence has not been submitted."
+        }
+      ]
+    }
+  ],
+  "artifacts": {
+    "fixture.inventory": {
+      "synthetic": true,
+      "id": "fixture-agent",
+      "kind": "AGENT",
+      "version": 1,
+      "owner": "fixture-owner",
+      "purpose": "Exercise the local synthetic governance contract.",
+      "dataSource": {
+        "kind": "SYNTHETIC",
+        "reference": "fixture-catalog-v1"
+      },
+      "limits": [
+        {
+          "tool": "fixture-catalog",
+          "action": "read",
+          "mode": "ALLOW"
+        },
+        {
+          "tool": "fixture-catalog",
+          "action": "delete",
+          "mode": "DENY"
+        },
+        {
+          "tool": "fixture-catalog",
+          "action": "publish",
+          "mode": "ESCALATE"
+        }
+      ],
+      "review": {
+        "reviewer": "fixture-reviewer",
+        "dueOn": "2026-12-25"
+      }
+    },
+    "fixture.agent-boundary": {
+      "allowed": {
+        "synthetic": true,
+        "assessmentId": "96411a2cc92900613d0a6bab59e660b69d7c92030dc6d4793a5c1dd264d3c3ec",
+        "assetVersion": 1,
+        "packVersion": 1,
+        "decisionId": "9b71b5f6-c5e8-4086-93e9-d47a0a10ce07",
+        "ruleId": "a1de4764-07e4-4649-80a0-cb752961db78",
+        "ruleVersion": 1,
+        "requestId": "3ba9a344-da7a-492e-8db2-43bdb589a394",
+        "requestFingerprint": "5427c8fbfc5f3d7964be0c29220753627e809ac18e2ad2a84ca2ce905edd7b45",
+        "policyVersion": "kernel:b971aa04697710a65acb2945a0d4e4e47a1f99844b5a98702c6edf39c2a0ad08",
+        "kernelDecision": "ALLOW",
+        "firewallAction": "ALLOW",
+        "review": null,
+        "localCalls": 1,
+        "httpStatus": 200,
+        "code": null,
+        "executionStatus": "LOCAL_SANDBOX_COMPLETED",
+        "externalActionExecuted": false,
+        "independentReview": null
+      },
+      "blocked": {
+        "synthetic": true,
+        "assessmentId": "96411a2cc92900613d0a6bab59e660b69d7c92030dc6d4793a5c1dd264d3c3ec",
+        "assetVersion": 1,
+        "packVersion": 1,
+        "decisionId": "67e91b49-5ccd-4c51-98ad-e11bf1aba410",
+        "ruleId": "45a51b5c-691b-4b55-9da1-c71fc4f675cb",
+        "ruleVersion": 1,
+        "requestId": "b58b9cc4-e26c-4fea-a228-6cc679e476c3",
+        "requestFingerprint": "50f5f9b94ee343631b80002627d0de8bccf53f3baf05c391b6d8253909510c73",
+        "policyVersion": "kernel:b971aa04697710a65acb2945a0d4e4e47a1f99844b5a98702c6edf39c2a0ad08",
+        "kernelDecision": "BLOCK",
+        "firewallAction": "DENY",
+        "review": null,
+        "localCalls": 0,
+        "httpStatus": 403,
+        "code": "POLICY_BLOCKED",
+        "executionStatus": "NOT_EXECUTED",
+        "externalActionExecuted": false,
+        "independentReview": null
+      },
+      "review": {
+        "synthetic": true,
+        "assessmentId": "96411a2cc92900613d0a6bab59e660b69d7c92030dc6d4793a5c1dd264d3c3ec",
+        "assetVersion": 1,
+        "packVersion": 1,
+        "decisionId": "a03a570b-5851-4621-ab88-7014991c6490",
+        "ruleId": "acf78495-6a86-4375-9ccd-de4ff043b6c0",
+        "ruleVersion": 1,
+        "requestId": "f756ab7d-f566-4e28-a6b3-d3d6665c9e3f",
+        "requestFingerprint": "ffc0854c2dec3a75d728fd6a914655404445b547f9a7cb800d98a9ceeffbec53",
+        "policyVersion": "kernel:b971aa04697710a65acb2945a0d4e4e47a1f99844b5a98702c6edf39c2a0ad08",
+        "kernelDecision": "ALLOW",
+        "firewallAction": "ESCALATE",
+        "review": {
+          "id": "e487dbc0-6efa-4696-82e9-0cd906cdfbcd",
+          "tenant_id": "10000000-0000-4000-8000-000000000001",
+          "requester_id": "10000000-0000-4000-8000-000000000002",
+          "subject_ref": "a03a570b-5851-4621-ab88-7014991c6490",
+          "status": "PENDING",
+          "operation_type": "FIREWALL_ESCALATION_REVIEW",
+          "request_ref": "f756ab7d-f566-4e28-a6b3-d3d6665c9e3f",
+          "policy_version": "kernel:b971aa04697710a65acb2945a0d4e4e47a1f99844b5a98702c6edf39c2a0ad08",
+          "request_fingerprint": "ffc0854c2dec3a75d728fd6a914655404445b547f9a7cb800d98a9ceeffbec53",
+          "payload_digest": "9eb0567fb0e7c3c247cbf2243d139a4dc455961169550264db071b4fe3f963c7",
+          "review_policy_version": 1
+        },
+        "localCalls": 0,
+        "httpStatus": 202,
+        "code": "REVIEW_PENDING",
+        "executionStatus": "NOT_EXECUTED",
+        "externalActionExecuted": false,
+        "independentReview": {
+          "currentBinding": true,
+          "staleBinding": false,
+          "requesterAllowed": false,
+          "reviewerEligible": true
+        }
+      },
+      "unknown": {
+        "synthetic": true,
+        "assessmentId": "96411a2cc92900613d0a6bab59e660b69d7c92030dc6d4793a5c1dd264d3c3ec",
+        "assetVersion": 1,
+        "packVersion": 1,
+        "decisionId": "c331ea42-3949-4088-91bf-3c3df27f870a",
+        "ruleId": "c5d4f814-a244-4298-b7c1-095803731003",
+        "ruleVersion": 1,
+        "requestId": "269c2035-e0d7-4cbe-a8c9-e8d491da71dc",
+        "requestFingerprint": "42fe142a3b6161e681fc0c26eeb5d163e160744999bfd7d7ac27a6d139035997",
+        "policyVersion": "kernel:b971aa04697710a65acb2945a0d4e4e47a1f99844b5a98702c6edf39c2a0ad08",
+        "kernelDecision": "BLOCK",
+        "firewallAction": "DENY",
+        "review": null,
+        "localCalls": 0,
+        "httpStatus": 403,
+        "code": "POLICY_BLOCKED",
+        "executionStatus": "NOT_EXECUTED",
+        "externalActionExecuted": false,
+        "independentReview": null
+      }
+    },
+    "fixture.risk": {
+      "likelihood": 2,
+      "impact": 3,
+      "rationale": "Fixture publication has simulated material impact.",
+      "score": 6,
+      "risk_level": "HIGH",
+      "requires_human_review": true,
+      "method_version": "draft-likelihood-impact-v1",
+      "explanation": "الاحتمال 2 × الأثر 3 = 6؛ التصنيف HIGH حسب مسودة المصفوفة. يلزم عرض النتيجة على مراجع بشري؛ هذا التقييم لا يجيز التشغيل.",
+      "suggested_control": "اطلب مراجعة مختص للخصوصية والأمن والسلامة وحدّد ضوابط قبل أي قرار تشغيل."
+    },
+    "fixture.human-review": {
+      "synthetic": true,
+      "assessmentId": "96411a2cc92900613d0a6bab59e660b69d7c92030dc6d4793a5c1dd264d3c3ec",
+      "assetVersion": 1,
+      "packVersion": 1,
+      "decisionId": "a03a570b-5851-4621-ab88-7014991c6490",
+      "ruleId": "acf78495-6a86-4375-9ccd-de4ff043b6c0",
+      "ruleVersion": 1,
+      "requestId": "f756ab7d-f566-4e28-a6b3-d3d6665c9e3f",
+      "requestFingerprint": "ffc0854c2dec3a75d728fd6a914655404445b547f9a7cb800d98a9ceeffbec53",
+      "policyVersion": "kernel:b971aa04697710a65acb2945a0d4e4e47a1f99844b5a98702c6edf39c2a0ad08",
+      "kernelDecision": "ALLOW",
+      "firewallAction": "ESCALATE",
+      "review": {
+        "id": "e487dbc0-6efa-4696-82e9-0cd906cdfbcd",
+        "tenant_id": "10000000-0000-4000-8000-000000000001",
+        "requester_id": "10000000-0000-4000-8000-000000000002",
+        "subject_ref": "a03a570b-5851-4621-ab88-7014991c6490",
+        "status": "PENDING",
+        "operation_type": "FIREWALL_ESCALATION_REVIEW",
+        "request_ref": "f756ab7d-f566-4e28-a6b3-d3d6665c9e3f",
+        "policy_version": "kernel:b971aa04697710a65acb2945a0d4e4e47a1f99844b5a98702c6edf39c2a0ad08",
+        "request_fingerprint": "ffc0854c2dec3a75d728fd6a914655404445b547f9a7cb800d98a9ceeffbec53",
+        "payload_digest": "9eb0567fb0e7c3c247cbf2243d139a4dc455961169550264db071b4fe3f963c7",
+        "review_policy_version": 1
+      },
+      "localCalls": 0,
+      "httpStatus": 202,
+      "code": "REVIEW_PENDING",
+      "executionStatus": "NOT_EXECUTED",
+      "externalActionExecuted": false,
+      "independentReview": {
+        "currentBinding": true,
+        "staleBinding": false,
+        "requesterAllowed": false,
+        "reviewerEligible": true
+      }
+    },
+    "fixture.evidence": {
+      "contractVersion": 1,
+      "synthetic": true,
+      "id": "96411a2cc92900613d0a6bab59e660b69d7c92030dc6d4793a5c1dd264d3c3ec",
+      "effective": true,
+      "asset": {
+        "synthetic": true,
+        "id": "fixture-agent",
+        "kind": "AGENT",
+        "version": 1,
+        "owner": "fixture-owner",
+        "purpose": "Exercise the local synthetic governance contract.",
+        "dataSource": {
+          "kind": "SYNTHETIC",
+          "reference": "fixture-catalog-v1"
+        },
+        "limits": [
+          {
+            "tool": "fixture-catalog",
+            "action": "read",
+            "mode": "ALLOW"
+          },
+          {
+            "tool": "fixture-catalog",
+            "action": "delete",
+            "mode": "DENY"
+          },
+          {
+            "tool": "fixture-catalog",
+            "action": "publish",
+            "mode": "ESCALATE"
+          }
+        ],
+        "review": {
+          "reviewer": "fixture-reviewer",
+          "dueOn": "2026-12-25"
+        }
+      },
+      "pack": {
+        "synthetic": true,
+        "id": "aigas.synthetic-baseline",
+        "version": 1,
+        "effectiveOn": "2026-11-25",
+        "source": {
+          "type": "INTERNAL",
+          "reference": "aigas.synthetic-governance-contract"
+        },
+        "appliesTo": [
+          "SYSTEM",
+          "MODEL",
+          "AGENT",
+          "USE_CASE",
+          "VENDOR"
+        ]
+      },
+      "appliedOn": "2026-11-25",
+      "reviewOverdue": false,
+      "checks": [
+        {
+          "id": "inventory",
+          "control": "versioned-asset",
+          "check": {
+            "id": "check.inventory",
+            "procedure": "Compare the current registry revision and review due date to the assessment."
+          },
+          "expectedEvidence": {
+            "kind": "versioned-asset",
+            "description": "Registry record with asset id, version, synthetic source and review owner."
+          },
+          "owner": "asset-steward",
+          "axis": "inventory",
+          "product": "kernel",
+          "severity": "P0",
+          "critical": true,
+          "appliesTo": true,
+          "requirement": "Register each asset with a responsible owner, documented purpose and review date.",
+          "applicableKinds": [
+            "SYSTEM",
+            "MODEL",
+            "AGENT",
+            "USE_CASE",
+            "VENDOR"
+          ],
+          "revision": 0,
+          "status": "Needs Evidence",
+          "reason": "Evidence has not been submitted.",
+          "evidence": null,
+          "review": null,
+          "history": []
+        },
+        {
+          "id": "agent-boundary",
+          "control": "tool-action-boundary",
+          "check": {
+            "id": "check.agent-boundary",
+            "procedure": "Exercise allowed, denied, approval-required and unknown pairs against the server baseline."
+          },
+          "expectedEvidence": {
+            "kind": "tool-action-boundary",
+            "description": "Version-bound decisions showing ALLOW, BLOCK/DENY, ESCALATE and default deny."
+          },
+          "owner": "security-steward",
+          "axis": "enforcement",
+          "product": "firewall",
+          "severity": "P0",
+          "critical": true,
+          "appliesTo": true,
+          "requirement": "Enforce immutable agent tool/action limits with default deny and an independent approval path.",
+          "applicableKinds": [
+            "AGENT"
+          ],
+          "revision": 0,
+          "status": "Needs Evidence",
+          "reason": "Evidence has not been submitted.",
+          "evidence": null,
+          "review": null,
+          "history": []
+        },
+        {
+          "id": "risk",
+          "control": "risk-assessment",
+          "check": {
+            "id": "check.risk",
+            "procedure": "Use the versioned Risk Engine method and document the rationale for likelihood and impact."
+          },
+          "expectedEvidence": {
+            "kind": "risk-assessment",
+            "description": "Risk method version, inputs, result and reviewer rationale."
+          },
+          "owner": "risk-steward",
+          "axis": "risk",
+          "product": "risk-engine",
+          "severity": "P0",
+          "critical": true,
+          "appliesTo": true,
+          "requirement": "Review the synthetic risk scenario at the current asset and pack revision.",
+          "applicableKinds": [
+            "SYSTEM",
+            "MODEL",
+            "AGENT",
+            "USE_CASE",
+            "VENDOR"
+          ],
+          "revision": 0,
+          "status": "Needs Evidence",
+          "reason": "Evidence has not been submitted.",
+          "evidence": null,
+          "review": null,
+          "history": []
+        },
+        {
+          "id": "human-review",
+          "control": "independent-review",
+          "check": {
+            "id": "check.human-review",
+            "procedure": "Verify the pending review, deny self-review and reject mismatched bindings."
+          },
+          "expectedEvidence": {
+            "kind": "independent-review",
+            "description": "Pending review metadata and result of separation-of-duties and binding checks."
+          },
+          "owner": "review-steward",
+          "axis": "oversight",
+          "product": "human-gate",
+          "severity": "P0",
+          "critical": true,
+          "appliesTo": true,
+          "requirement": "Bind independent human review to the exact action, request and policy revision.",
+          "applicableKinds": [
+            "AGENT"
+          ],
+          "revision": 0,
+          "status": "Needs Evidence",
+          "reason": "Evidence has not been submitted.",
+          "evidence": null,
+          "review": null,
+          "history": []
+        },
+        {
+          "id": "evidence",
+          "control": "evidence-export",
+          "check": {
+            "id": "check.evidence",
+            "procedure": "Check control, check, scope, status, evidence reference and bound revision in the export."
+          },
+          "expectedEvidence": {
+            "kind": "evidence-export",
+            "description": "Machine-readable export and its SHA-256 digest."
+          },
+          "owner": "evidence-steward",
+          "axis": "traceability",
+          "product": "ledger",
+          "severity": "P0",
+          "critical": true,
+          "appliesTo": true,
+          "requirement": "Export the complete requirement-to-evidence chain at the current revision.",
+          "applicableKinds": [
+            "SYSTEM",
+            "MODEL",
+            "AGENT",
+            "USE_CASE",
+            "VENDOR"
+          ],
+          "revision": 0,
+          "status": "Needs Evidence",
+          "reason": "Evidence has not been submitted.",
+          "evidence": null,
+          "review": null,
+          "history": []
+        }
+      ],
+      "sha256": "856780532af5a7b7bb850f242ce4308d2c9e7a58e5b834f8ce8c4a753c77162c"
+    }
+  }
+}

@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "synthetic": {
+      "type": "boolean",
+      "const": true
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9.-]{0,63}$"
+    },
+    "version": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 999999
+    },
+    "effectiveOn": {
+      "type": "string",
+      "format": "date",
+      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "INTERNAL"
+        },
+        "reference": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9.-]{0,63}$"
+        }
+      },
+      "required": [
+        "type",
+        "reference"
+      ],
+      "additionalProperties": false
+    },
+    "appliesTo": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "SYSTEM",
+          "MODEL",
+          "AGENT",
+          "USE_CASE",
+          "VENDOR"
+        ]
+      }
+    },
+    "requirements": {
+      "minItems": 1,
+      "maxItems": 100,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9.-]{0,63}$"
+          },
+          "control": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9.-]{0,63}$"
+          },
+          "check": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9.-]{0,63}$"
+              },
+              "procedure": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 500
+              }
+            },
+            "required": [
+              "id",
+              "procedure"
+            ],
+            "additionalProperties": false
+          },
+          "expectedEvidence": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9.-]{0,63}$"
+              },
+              "description": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 500
+              }
+            },
+            "required": [
+              "kind",
+              "description"
+            ],
+            "additionalProperties": false
+          },
+          "owner": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9.-]{0,63}$"
+          },
+          "axis": {
+            "type": "string",
+            "enum": [
+              "inventory",
+              "enforcement",
+              "risk",
+              "oversight",
+              "traceability"
+            ]
+          },
+          "product": {
+            "type": "string",
+            "enum": [
+              "kernel",
+              "firewall",
+              "risk-engine",
+              "human-gate",
+              "ledger"
+            ]
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "P0",
+              "STANDARD"
+            ]
+          },
+          "critical": {
+            "type": "boolean"
+          },
+          "appliesTo": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "SYSTEM",
+                "MODEL",
+                "AGENT",
+                "USE_CASE",
+                "VENDOR"
+              ]
+            }
+          },
+          "requirement": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "id",
+          "control",
+          "check",
+          "expectedEvidence",
+          "owner",
+          "axis",
+          "product",
+          "severity",
+          "critical",
+          "appliesTo",
+          "requirement"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "synthetic",
+    "id",
+    "version",
+    "effectiveOn",
+    "source",
+    "appliesTo",
+    "requirements"
+  ],
+  "additionalProperties": false
+}
