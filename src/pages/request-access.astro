@@ -31,10 +31,10 @@ export const prerender = true;
 
   async function showTrialWhenReady() {
     try {
-      const response = await fetch('/readyz/', { cache: 'no-store', redirect: 'error' });
+      const response = await fetch('/api/trial-availability/', { cache: 'no-store', redirect: 'error' });
       if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) return;
       const report = await response.json();
-      if (report.status !== 'ready' || report.dependencies?.portal !== 'ENABLED') return;
+      if (report.available !== true) return;
       document.querySelector<HTMLAnchorElement>('#trial-account')!.href = trialAccountPath(product?.slug);
       document.querySelector<HTMLElement>('#trial-option')!.hidden = false;
     } catch {

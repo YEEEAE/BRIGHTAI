@@ -15,6 +15,9 @@ const product = z.enum(['firewall', 'ledger', 'human-gate', 'risk-engine', 'secu
 const reason = text(10, 1000);
 const empty = z.strictObject({});
 const email = z.email().max(254);
+export const enterpriseInquirySchema = z.strictObject({
+  submissionId: z.uuidv4(), email, message: z.string().trim().min(1).max(2000),
+});
 const password = z.string().min(1).max(256);
 const otp = z.string().regex(/^\d{4,10}$/);
 const callbackURL = z.string().max(2048).optional();
@@ -82,6 +85,7 @@ const policyOperation = z.discriminatedUnion('operation', [
 ]);
 
 const methodSchemas = {
+  'POST /api/enterprise-inquiry': enterpriseInquirySchema,
   'POST /app/api/kernel/policies': policyOperation,
   'POST /app/api/firewall/evaluate': ruleInput,
   'POST /app/api/firewall/guarded-executions': ruleInput.extend({ request_id: id, department_id: id.nullish() }),

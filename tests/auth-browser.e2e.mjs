@@ -401,15 +401,36 @@ try {
   assert.equal((await (await trialApi()).json()).status, 'EXPIRED');
 
   const closed = await startApp({ enabled: false, configured: true, cert });
+  await page.goto(`${base}/request-access/?product=firewall`);
+  const trialOption = page.getByRole('link', { name: 'تابع إلى تجربة 48 ساعة' });
+  await trialOption.waitFor();
+  assert.equal(await trialOption.getAttribute('href'), '/auth/sign-up/?trial=48h&product=firewall');
+  await db.query('REVOKE EXECUTE ON FUNCTION public.aigas_start_self_service_trial(uuid) FROM aigas_runtime');
+  try {
+    assert.equal((await fetch(`${base}/readyz/`)).status, 200);
+    assert.deepEqual(await (await fetch(`${base}/api/trial-availability/`)).json(), { available: false });
+  } finally {
+    await db.query('GRANT EXECUTE ON FUNCTION public.aigas_start_self_service_trial(uuid) TO aigas_runtime');
+  }
+
   for (const width of widths) {
     await page.setViewportSize({ width, height: 900 });
     for (const path of ['/products/', '/products/firewall/', '/request-access/?product=firewall', '/auth/sign-up/?trial=48h', '/app/trial/', '/status/']) {
       const response = await page.goto(closed + path, { waitUntil: 'domcontentloaded' });
       assert.equal(response.status(), path.startsWith('/app/') ? 503 : 200, path);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `${width}px: ${path}`);
-      if (path.startsWith('/request-access/')) continue;
-      assert.ok(await page.locator('[data-access-status]').first().isVisible(), path);
-      assert.ok(await page.getByRole('link', { name: 'حالة النظام', exact: true }).first().count(), path);
+      if (path.startsWith('/products/')) {
+        assert.ok(await page.locator('[data-release-stage="demo"]').first().isVisible(), path);
+        assert.ok(await page.getByRole('link', { name: 'طلب تجربة مؤسسية', exact: true }).first().isVisible(), path);
+      } else if (path.startsWith('/request-access/')) {
+        assert.ok(await page.getByRole('link', { name: 'جهّز طلب التواصل' }).isVisible(), path);
+      } else if (path === '/status/') {
+        assert.ok(await page.locator('[data-access-status="unavailable"]').isVisible(), path);
+        assert.ok(await page.getByRole('link', { name: 'إعادة الفحص' }).isVisible(), path);
+      } else {
+        assert.ok(await page.locator('[data-access-status]').first().isVisible(), path);
+        assert.ok(await page.getByRole('main').getByRole('link', { name: 'حالة النظام', exact: true }).isVisible(), path);
+      }
     }
   }
   await page.goto(`${closed}/request-access/?product=firewall`);

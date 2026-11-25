@@ -1,10 +1,8 @@
 ---
-import AccessBadge from '../components/AccessBadge.astro';
 import PageShell from '../components/PageShell.astro';
 export const prerender = true;
 ---
-<PageShell title="تواصل مع BRIGHTAI | ناقش احتياجك أو عرض السعر" description="جهّز استفسارك محليًا ثم أرسله بنفسك عبر البريد أو واتساب. لا يستقبل الموقع الطلبات ولا يؤكد وصولها." crumbs={[{ name: 'تواصل معنا' }]}>
-  <AccessBadge status="local" />
+<PageShell title="تواصل مع BRIGHTAI | ناقش احتياجك أو عرض السعر" description="جهّز استفسارك عن المنتجات أو عرض السعر، واختر طريقة التواصل مع فريق BRIGHTAI." crumbs={[{ name: 'تواصل معنا' }]}>
   <h1>ما القرار الذي تحتاج مساعدة فيه؟</h1>
   <p class="lead">يمكنك الآن الاستفسار عن منتج، أو مناقشة نطاق دعم، أو طلب عرض سعر للمراجعة. أي سعر أو موعد أو تشغيل مؤسسي يحتاج اتفاقًا مكتوبًا؛ الاستفسار لا يحجز موعدًا ولا يفعّل تجربة.</p>
   <div class="actions"><a class="button" href="#contact-draft">جهّز مسودة</a><a class="ghost" href="#contact-channels">اختر قناة التواصل</a></div>
@@ -12,12 +10,20 @@ export const prerender = true;
     <span class="draft-anchor" id="workshop"></span>
     <span class="draft-anchor" id="workshop-lab"></span>
     <h2 id="draft-title">1. جهّز رسالتك — اختياري</h2>
-    <p id="draft-help">اكتب الهدف والمخرج المطلوب، والمنتج أو بيئة النشر إن عرفتها. لا نحتاج اسمك أو اسم الجهة هنا. المسودة تبقى في الصفحة ولا يرسلها الموقع أو يحفظها على خادم.</p>
+    <p id="draft-help">اكتب الهدف والمخرج المطلوب، والمنتج أو بيئة النشر إن عرفتها. لا نحتاج اسمك أو اسم الجهة هنا. تبقى المسودة في الصفحة حتى تختار إرسالها.</p>
     <label for="contact-draft">مسودة الاستفسار</label>
     <textarea id="contact-draft" rows="6" maxlength="2000" autocomplete="off" aria-describedby="draft-help draft-limit" placeholder="نريد مناقشة تقييم مخاطر استخدام الذكاء الاصطناعي، والمخرج المطلوب ورقة عمل يراجعها فريقنا."></textarea>
     <p id="draft-limit" class="note">الحد الأقصى 2000 حرف. لا تكتب بيانات عملاء أو أسرارًا أو مفاتيح وصول.</p>
     <button id="copy-draft" class="button" type="button" hidden>انسخ المسودة</button>
     <p id="contact-status" class="contact-feedback" role="status" aria-atomic="true"></p>
+    <form id="enterprise-inquiry" method="post" hidden>
+      <h3>أرسل الاستفسار إلى فريق BRIGHTAI</h3>
+      <label for="inquiry-email">البريد الإلكتروني للرد</label>
+      <input id="inquiry-email" type="email" dir="ltr" autocomplete="email" maxlength="254" required />
+      <p class="note">يرسل زر الإرسال بريدك والمسودة إلى فريق BRIGHTAI لمراجعة طلبك. <a href="/privacy/">الخصوصية</a></p>
+      <button id="inquiry-submit" class="button" type="submit">أرسل الاستفسار</button>
+    </form>
+    <p id="inquiry-feedback" class="contact-feedback" role="status" aria-atomic="true"></p>
     <a id="return-to-access" href="/request-access/" hidden>العودة إلى خيارات الوصول</a>
     <noscript><p>يمكنك الكتابة هنا وتحديد النص ونسخه يدويًا، ثم لصقه في البريد أو واتساب. لا تحتاج JavaScript.</p></noscript>
   </section>
@@ -38,6 +44,8 @@ export const prerender = true;
 </PageShell>
 <style>
   .contact-form { position: relative; }
+  #enterprise-inquiry { margin-block-start: 1.5rem; }
+  #enterprise-inquiry input { display: block; inline-size: min(100%, 28rem); min-block-size: 48px; }
   :is(#contact, #contact-draft, #contact-channels) { scroll-margin-block-start: 6rem; }
   .contact-feedback[data-state] { border-inline-start: 3px solid currentColor; padding: .65rem .85rem; background: var(--surface-sunken); }
   [data-state="success"] { color: #a8e5cf; }
@@ -46,10 +54,11 @@ export const prerender = true;
   [data-state="error"] { color: #ffbdbd; }
   .draft-anchor { position: absolute; inset-block-start: 0; scroll-margin-block-start: 6rem; }
   .contact-form .button, .contact-options .button, #return-to-result { min-block-size: 48px; }
-  #copy-draft[hidden], #return-to-result[hidden], #return-to-access[hidden] { display: none !important; }
+  #enterprise-inquiry[hidden], #copy-draft[hidden], #return-to-result[hidden], #return-to-access[hidden] { display: none !important; }
 </style>
 <script>
   import { accessPath, accessTrack, accessTracks } from '../shared/access-journey.mjs';
+  import { enableEnterpriseInquiry } from '../scripts/enterprise-inquiry';
   import { productForSlug } from '../shared/product-navigation.mjs';
   const draft = document.querySelector<HTMLTextAreaElement>('#contact-draft');
   const copy = document.querySelector<HTMLButtonElement>('#copy-draft');
@@ -94,6 +103,7 @@ export const prerender = true;
         document.querySelector<HTMLAnchorElement>('#return-to-result')!.hidden = false;
       }
     }
+    void enableEnterpriseInquiry(draft);
     copy.addEventListener('click', async () => {
       if (copy.getAttribute('aria-disabled') === 'true') return;
       if (!draft.value.trim()) {

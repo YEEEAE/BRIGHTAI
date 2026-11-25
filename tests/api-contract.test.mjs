@@ -52,7 +52,9 @@ async function errorOf(response, status) {
   assert.equal(body.requestId, response.headers.get('x-request-id'));
   return body;
 }
-function expectedStatus(path) {
+function expectedStatus(path, method) {
+  if (path === '/api/enterprise-inquiry') return method === 'POST' ? 403 : 200;
+  if (path === '/api/trial-availability') return 200;
   if (['/healthz', '/api/measurement-status', '/app/api/kernel/health'].includes(path)) return 200;
   if (['/api/observability', '/api/security/csp-report'].includes(path)) return 204;
   if (path === '/app/api/secure-chat/messages') return 403;
@@ -89,7 +91,7 @@ for (const { path, methods } of routes) {
         options.body = JSON.stringify({ 'csp-report': { 'effective-directive': 'script-src' } });
       }
       const response = await fetch(url, options);
-      const status = expectedStatus(path);
+      const status = expectedStatus(path, method);
       assert.equal(response.status, status);
       assert.equal(response.headers.get('access-control-allow-origin'), null);
       const id = requestIdSchema.parse(response.headers.get('x-request-id'));

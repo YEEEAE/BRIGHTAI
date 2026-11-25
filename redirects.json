@@ -213,6 +213,10 @@
       "destination": "/contact/"
     },
     {
+      "source": "/request-access/index.html",
+      "destination": "/request-access/"
+    },
+    {
       "source": "/docs/index.html",
       "destination": "/docs/"
     },

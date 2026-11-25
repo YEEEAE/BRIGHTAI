@@ -2,6 +2,8 @@ import { z } from 'zod';
 import { firewallQuery, humanGateQuery, ledgerQuery, riskQuery, routeIdSchema, workspaceQuery } from './schemas.mjs';
 
 const endpoints = {
+  '/api/enterprise-inquiry': 'GET POST',
+  '/api/trial-availability': 'GET',
   '/api/measurement-status': 'GET',
   '/api/observability': 'POST',
   '/api/public-demo/groq-sandbox': 'POST',

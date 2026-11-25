@@ -6,14 +6,37 @@ import { isUuid, KernelError } from './core.mjs';
 const dependenciesUnavailable = () => new KernelError(503, 'TRIAL_DEPENDENCIES_UNAVAILABLE',
   'خدمة التجربة غير مهيأة حاليًا. يمكنك زيارة المختبرات العامة.', 'not configured');
 
+async function hasTrialRuntimeRole(db) {
+  return (await db.query(`SELECT current_user='aigas_runtime'
+    AND NOT rolsuper AND NOT rolbypassrls AS ready FROM pg_roles WHERE rolname=current_user`)).rows[0]?.ready;
+}
+
+async function readyTrialProducts(db) {
+  const dependencies = (await db.query('SELECT * FROM public.aigas_self_service_dependencies()')).rows;
+  return new Set(dependencies.filter(row => row.ready).map(row => row.product_slug));
+}
+
+const allTrialProductsReady = products => products.has('kernel') && productNavigation.every(product => products.has(product.slug));
+
+export async function trialDependenciesReady() {
+  try {
+    return await transaction(async db => {
+      if (!await hasTrialRuntimeRole(db)) return false;
+      const { ready } = (await db.query(`SELECT coalesce(has_function_privilege(
+        current_user, to_regprocedure('public.aigas_start_self_service_trial(uuid)'), 'EXECUTE'), false) AS ready`)).rows[0];
+      return ready && allTrialProductsReady(await readyTrialProducts(db));
+    });
+  } catch {
+    return false;
+  }
+}
+
 async function withTrialActor(identity, tenantId, work) {
   if (tenantId !== null && !isUuid(tenantId)) {
     throw new KernelError(400, 'INVALID_WORKSPACE', 'حدد مساحة عمل صالحة.');
   }
   return transaction(async db => {
-    const ready = (await db.query(`SELECT current_user='aigas_runtime'
-      AND NOT rolsuper AND NOT rolbypassrls AS ready FROM pg_roles WHERE rolname=current_user`)).rows[0]?.ready;
-    if (!ready) throw dependenciesUnavailable();
+    if (!await hasTrialRuntimeRole(db)) throw dependenciesUnavailable();
     await setActorScope(db, identity.userId);
     try {
       return await work(db);
@@ -43,10 +66,9 @@ export function startTrial(identity, tenantId = null) {
 export function trialHome(identity, tenantId = null) {
   return withTrialActor(identity, tenantId, async db => {
     const trial = (await db.query('SELECT * FROM public.aigas_read_self_service_trial($1)', [tenantId])).rows[0];
-    const dependencies = (await db.query('SELECT * FROM public.aigas_self_service_dependencies()')).rows;
-    const readyProducts = new Set(dependencies.filter(row => row.ready).map(row => row.product_slug));
+    const readyProducts = await readyTrialProducts(db);
     const kernelReady = readyProducts.has('kernel');
-    const configured = kernelReady && productNavigation.every(product => readyProducts.has(product.slug));
+    const configured = allTrialProductsReady(readyProducts);
     let grants = [];
     if (trial) {
       await setTenantScope(db, trial.tenant_id, identity.userId);
