@@ -1,3 +1,4 @@
+import { exportEvidence, verifyEvidence } from '../demo/governance-evidence.mjs';
 import { assetPurposes, assetTemplates, createGovernanceSession, SESSION_DURATION } from '../demo/governance.mjs';
 
 const get = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -24,6 +25,7 @@ const labels: Record<string, string> = {
 let session: ReturnType<typeof createGovernanceSession>;
 let timer: number;
 let selected = 1;
+let correlation = '';
 
 function navigate(focus = false) {
   if (lab.hidden) return;
@@ -123,6 +125,7 @@ function render() {
 
 function begin() {
   selected = 1;
+  correlation = globalThis.crypto?.randomUUID?.() ?? '';
   session = createGovernanceSession();
   lab.hidden = false;
   drawer.open = !mobile.matches;
@@ -178,10 +181,24 @@ summaryDownload.addEventListener('click', () => {
   const lines = ['ملخص محاكاة حوكمة ببيانات اصطناعية', ...['firewall-result', 'risk-result', 'review-result'].map(id => get(id).textContent)];
   saveLocally(lines.join('\n'), 'text/plain;charset=utf-8', 'brightai-governance-summary.txt');
 });
-download.addEventListener('click', () => {
+download.addEventListener('click', async () => {
   const state = read();
   if (!state || !consent.checked) return;
-  saveLocally(JSON.stringify(state, null, 2), 'application/json', 'brightai-governance-demo.json');
+  try {
+    const bundle = await exportEvidence(state, correlation);
+    if (!read()) return;
+    saveLocally(JSON.stringify(bundle, null, 2), 'application/json', 'brightai-governance-demo.json');
+    status.textContent = 'نُزّلت سلسلة محلية غير موقّعة؛ لا تثبت هوية المصدر.';
+  } catch { status.textContent = 'تعذّر إنشاء السلسلة؛ يلزم WebCrypto.'; }
+});
+get('governance-verify').addEventListener('click', async () => {
+  const state = read();
+  if (!state) return;
+  try {
+    const bundle = await exportEvidence(state, correlation);
+    const valid = await verifyEvidence(bundle);
+    if (read()) status.textContent = valid ? 'النسخة المُنشأة الآن متسقة وغير موقّعة؛ لا تثبت السجل السابق أو هوية المصدر.' : 'فشل التحقق من السلسلة المحلية.';
+  } catch { status.textContent = 'تعذّر التحقق؛ يلزم WebCrypto.'; }
 });
 
 function saveLocally(content: string, type: string, filename: string) {
