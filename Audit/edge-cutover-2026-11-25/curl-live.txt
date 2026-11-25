@@ -1,0 +1,1513 @@
+# Baseline — before Cloudflare cache rule
+
+### GET https://brightai-4x39.onrender.com/
+HTTP/2 200 
+date: Wed, 25 Nov 2026 12:04:56 GMT
+content-type: text/html; charset=utf-8
+cache-control: public, max-age=0, s-maxage=300
+etag: W/"b6ed8da9adcfcafdb672ee6b1ae0c602"
+last-modified: Wed, 25 Nov 2026 11:45:32 UTC
+rndr-id: 6013369f-2067-4df5
+server: cloudflare
+strict-transport-security: max-age=315360000; includeSubdomains; preload
+vary: Accept-Encoding
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: MISS
+cf-ray: a60084c8f9aea9cc-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai-4x39.onrender.com/
+HTTP/2 200 
+date: Wed, 25 Nov 2026 12:04:56 GMT
+content-type: text/html; charset=utf-8
+cache-control: public, max-age=0, s-maxage=300
+age: 0
+etag: W/"b6ed8da9adcfcafdb672ee6b1ae0c602"
+last-modified: Wed, 25 Nov 2026 11:45:32 UTC
+rndr-id: 6013369f-2067-4df5
+server: cloudflare
+strict-transport-security: max-age=315360000; includeSubdomains; preload
+vary: Accept-Encoding
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: HIT
+cf-ray: a60084ce9b870b96-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai-4x39.onrender.com/404/
+HTTP/2 200 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+cache-control: public, max-age=0, s-maxage=300
+cf-cache-status: MISS
+etag: W/"a07c352dd821b173e9912a34aee2b0d3"
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+rndr-id: acde7645-7f92-48de
+server: cloudflare
+strict-transport-security: max-age=315360000; includeSubdomains; preload
+vary: Accept-Encoding
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-ray: a60084c2fc1e4fea-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai-4x39.onrender.com/404/
+HTTP/2 200 
+date: Wed, 25 Nov 2026 12:04:57 GMT
+content-type: text/html; charset=utf-8
+cache-control: public, max-age=0, s-maxage=300
+age: 2
+etag: W/"a07c352dd821b173e9912a34aee2b0d3"
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+rndr-id: acde7645-7f92-48de
+server: cloudflare
+strict-transport-security: max-age=315360000; includeSubdomains; preload
+vary: Accept-Encoding
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: HIT
+cf-ray: a60084d3f8e1aead-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai-4x39.onrender.com/api/measurement-status/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+cache-control: public, max-age=0, s-maxage=300
+etag: W/"a07c352dd821b173e9912a34aee2b0d3"
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+rndr-id: 0623e152-aa0e-43cb
+server: cloudflare
+strict-transport-security: max-age=315360000; includeSubdomains; preload
+vary: Accept-Encoding
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: BYPASS
+cf-ray: a60084c2dbb52da8-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai-4x39.onrender.com/api/measurement-status/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:56 GMT
+content-type: text/plain; charset=utf-8
+rndr-id: c5b7fdd6-957d-4981
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: MISS
+server: cloudflare
+cf-ray: a60084cdadc19104-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai-4x39.onrender.com/app/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+cache-control: public, max-age=0, s-maxage=300
+etag: W/"a07c352dd821b173e9912a34aee2b0d3"
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+rndr-id: 30388080-1af9-4fb1
+server: cloudflare
+strict-transport-security: max-age=315360000; includeSubdomains; preload
+vary: Accept-Encoding
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: BYPASS
+cf-ray: a60084c2fbebdefa-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai-4x39.onrender.com/app/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:57 GMT
+content-type: text/plain; charset=utf-8
+rndr-id: 163e849a-4d19-4d4e
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: MISS
+server: cloudflare
+cf-ray: a60084d3fe72e1c1-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai-4x39.onrender.com/auth/api/get-session
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+cache-control: public, max-age=0, s-maxage=300
+etag: W/"a07c352dd821b173e9912a34aee2b0d3"
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+rndr-id: 7836b8d0-1909-4500
+server: cloudflare
+strict-transport-security: max-age=315360000; includeSubdomains; preload
+vary: Accept-Encoding
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: BYPASS
+cf-ray: a60084c2eecd890f-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai-4x39.onrender.com/auth/api/get-session
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:57 GMT
+content-type: text/plain; charset=utf-8
+rndr-id: 65cb5979-2a85-4a29
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: MISS
+server: cloudflare
+cf-ray: a60084d3fd41e244-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai-4x39.onrender.com/cutover-missing-96b599/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+cache-control: public, max-age=0, s-maxage=300
+etag: W/"a07c352dd821b173e9912a34aee2b0d3"
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+rndr-id: 619ee9b9-95f6-411f
+server: cloudflare
+strict-transport-security: max-age=315360000; includeSubdomains; preload
+vary: Accept-Encoding
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: BYPASS
+cf-ray: a60084c2ea638a1c-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai-4x39.onrender.com/cutover-missing-96b599/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:56 GMT
+content-type: text/plain; charset=utf-8
+rndr-id: 369818bf-5e06-4b90
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: MISS
+server: cloudflare
+cf-ray: a60084c99ee05d43-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai-4x39.onrender.com/docs/topics/ai-governance/index.html
+HTTP/2 200 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+cache-control: public, max-age=0, s-maxage=300
+etag: W/"cb5d282fe6a56a249324aa1d5ba53264"
+last-modified: Wed, 25 Nov 2026 11:45:32 UTC
+rndr-id: a055e6d4-ac1d-4d59
+server: cloudflare
+strict-transport-security: max-age=315360000; includeSubdomains; preload
+vary: Accept-Encoding
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: MISS
+cf-ray: a60084c2f92288ed-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai-4x39.onrender.com/docs/topics/ai-governance/index.html
+HTTP/2 200 
+date: Wed, 25 Nov 2026 12:04:56 GMT
+content-type: text/html; charset=utf-8
+cache-control: public, max-age=0, s-maxage=300
+age: 1
+etag: W/"cb5d282fe6a56a249324aa1d5ba53264"
+last-modified: Wed, 25 Nov 2026 11:45:32 UTC
+rndr-id: a055e6d4-ac1d-4d59
+server: cloudflare
+strict-transport-security: max-age=315360000; includeSubdomains; preload
+vary: Accept-Encoding
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: HIT
+cf-ray: a60084cdaebae1a6-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai-4x39.onrender.com/healthz
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+cache-control: public, max-age=0, s-maxage=300
+etag: W/"a07c352dd821b173e9912a34aee2b0d3"
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+rndr-id: 0fbc63e5-a56a-4b8b
+server: cloudflare
+strict-transport-security: max-age=315360000; includeSubdomains; preload
+vary: Accept-Encoding
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: BYPASS
+cf-ray: a60084c2ed8f121e-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai-4x39.onrender.com/healthz
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/plain; charset=utf-8
+rndr-id: 1f7d5c63-f28b-466f
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: MISS
+server: cloudflare
+cf-ray: a60084c80ba1a630-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai-4x39.onrender.com/healthz/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+cache-control: public, max-age=0, s-maxage=300
+etag: W/"a07c352dd821b173e9912a34aee2b0d3"
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+rndr-id: 39a15c85-5571-471c
+server: cloudflare
+strict-transport-security: max-age=315360000; includeSubdomains; preload
+vary: Accept-Encoding
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: BYPASS
+cf-ray: a60084c2fad2e286-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai-4x39.onrender.com/healthz/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/plain; charset=utf-8
+rndr-id: 1dc84279-3b5f-49c4
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: MISS
+server: cloudflare
+cf-ray: a60084c81eb1e204-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai-4x39.onrender.com/readyz
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+cache-control: public, max-age=0, s-maxage=300
+etag: W/"a07c352dd821b173e9912a34aee2b0d3"
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+rndr-id: 580c54a7-d016-4fff
+server: cloudflare
+strict-transport-security: max-age=315360000; includeSubdomains; preload
+vary: Accept-Encoding
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: BYPASS
+cf-ray: a60084c2f8ba3db4-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai-4x39.onrender.com/readyz
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:56 GMT
+content-type: text/plain; charset=utf-8
+rndr-id: 7b90eb7e-0a4a-4ec8
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: MISS
+server: cloudflare
+cf-ray: a60084c99e845eeb-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai-4x39.onrender.com/readyz/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+cache-control: public, max-age=0, s-maxage=300
+etag: W/"a07c352dd821b173e9912a34aee2b0d3"
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+rndr-id: 80e0713e-7b3d-412d
+server: cloudflare
+strict-transport-security: max-age=315360000; includeSubdomains; preload
+vary: Accept-Encoding
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: BYPASS
+cf-ray: a60084c2eec8e215-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai-4x39.onrender.com/readyz/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:56 GMT
+content-type: text/plain; charset=utf-8
+rndr-id: 0900b727-d316-4679
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: MISS
+server: cloudflare
+cf-ray: a60084ca4bace220-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai-4x39.onrender.com/request-access/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+cache-control: public, max-age=0, s-maxage=300
+etag: W/"a07c352dd821b173e9912a34aee2b0d3"
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+rndr-id: fc0a2ef8-e37c-41d6
+server: cloudflare
+strict-transport-security: max-age=315360000; includeSubdomains; preload
+vary: Accept-Encoding
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: BYPASS
+cf-ray: a60084c2ff3ce6f0-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai-4x39.onrender.com/request-access/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/plain; charset=utf-8
+rndr-id: 9f1ff43b-89dd-45e2
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: MISS
+server: cloudflare
+cf-ray: a60084c809d9bae0-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai-4x39.onrender.com/status/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+cache-control: public, max-age=0, s-maxage=300
+etag: W/"a07c352dd821b173e9912a34aee2b0d3"
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+rndr-id: dcd095b4-e168-46ec
+server: cloudflare
+strict-transport-security: max-age=315360000; includeSubdomains; preload
+vary: Accept-Encoding
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: BYPASS
+cf-ray: a60084c2fff88aa0-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai-4x39.onrender.com/status/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:56 GMT
+content-type: text/plain; charset=utf-8
+rndr-id: 4b366bea-ed38-42e5
+vary: Accept-Encoding
+x-content-type-options: nosniff
+cf-cache-status: MISS
+server: cloudflare
+cf-ray: a60084c81da5e229-MRS
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/
+HTTP/2 200 
+date: Wed, 25 Nov 2026 12:04:54 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60084c1dda1e208-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 11:45:32 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: a69a8301-dbb8-4a5e
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=XCqpgrlo6680ze0MkQl4YLzfZC66Y%2BJAgnF7zwa7GEzQ%2FhBOAxgETFI9mVkyWZvQUkJ4gKUJ%2FD6IwRlH2262Lztxa9sTV3h1MHNGq9MG%2Fk4ViSj4IA%2BmfQ2GWwfMSnUM"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/
+HTTP/2 200 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60084c81e0ee289-MRS
+cf-cache-status: DYNAMIC
+age: 0
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 11:45:32 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: a69a8301-dbb8-4a5e
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=VtmOU9IWeaH2XnfH8VOhCkpwG1duOwv238T4Twxcm%2BQbEJrmcRw1Tl3FIm5VA11sRm3mIwjQUVmHYOIPG%2Br4%2FuTALHbZkv7qdEQfoK5aXkUDBVQml49IoNeISHvL4gIl"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/404/
+HTTP/2 200 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60084c3b916cb4b-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: 1f5cffc4-6320-4367
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=wfuEYdvDJ0Z%2BWXyWSv85ngN9ys19tOR8obglDd%2BlBrFOAvG6sdxGKQN8L6NnT6rPPM8nIMy%2FeAQbpkM94dBuRAIL%2FX64%2FCeFkRC9l56DwLvN6JHidJvAYXRUuh8qRCdm"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/404/
+HTTP/2 200 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60084c91ea2e1bc-MRS
+cf-cache-status: DYNAMIC
+accept-ranges: bytes
+age: 0
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: 1f5cffc4-6320-4367
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=u942QbFdAPLprbffySUkeoq%2FMbJpUrRLbva0Wy5etM%2FFB2CygXIBUru5mvO23q%2FZ8fUK6g2M0M6zfLXezw2qvRe%2BykP5TyLlaG0IXxRvHJ79VPlHXM%2BG3jeRSUj920vO"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/api/measurement-status/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:54 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60084c1ef29b684-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: a81fdbff-feac-46cf
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=0a5vZZef2LcxKmU5o2tEoi3m15iyr5gw0fWCyEZWyS3M1Eieg3lxEicr3dhAlHAaByJfSpHzXig2nw2xKJnzleRxe24K55L%2FoVDiszwgp7D4tNVpA7ao4uCPZAxGOtc3"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/api/measurement-status/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:56 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a60084ca4be57154-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: 4974d215-6421-44d9
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=Kj0vZ5p%2B%2B0nalhoRP0Flp09v73q%2BVEIHWZXdSXZww5LNymwkBkvs0tOGvF%2BuqClZU6FOvQ9CxGHvdaa1h8WA99OSk85TWJEg%2BxA6P9V6bEvFMrIQ5tGHUDHe8oarwufn"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/app/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:54 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60084c1f98be8e7-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: 66256d01-a01e-4d63
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=24SWOn64dObYNUcmM0fLzI%2BkWwM2wSVp1LAYIcklR0TbBz4EO%2FJLMypp%2FubgR0kigwFZkGJnKgqts99ozsCgu64GbFpIq1Fc6wWh52864vZS1l5JHf9Lmk0SPL6EgWZg"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/app/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:56 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a60084ccc8f37d76-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: 3d578f07-ddae-40c5
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=2H%2B5EyrxhQAJo%2BtuHDLyAGt%2Fn8oFvK4rUSpkL8vpBkq166%2BuAGpKmTC4dvUi0B0SZ9SwaevglfbnfttuJTEgsdibyQ%2BiSlP8orDWAhgK77aFZ6u8IvgeN3pd%2FooXdKVO"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/auth/api/get-session
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:54 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60084c1faa0078b-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: 52df9a5e-6369-4432
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=ga2nmGmL7amlmlVW0YgnqMG4vBMC94wf0JL1Ol2eFVqArZk%2BdiwYaV4NR8RkBOdCK2ERmTHAX0V%2FmPDGkRXNtTfcvVBhqbmIA2kcOH5tneiTfXI9O5ZtxcwtvUNJp3d%2F"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/auth/api/get-session
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:56 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a60084ca4cdde1af-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: f3dd871a-bc23-4f55
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=YlIwwmoFboF%2FC%2BdzOPZoxhWnplRZTwEaz4NWolmx5iaNvliQf%2BBNOoW7r3lCucT6IU%2Fo8mrO91b%2FZaGNXa4i1j2u%2FHwvB9UieglCkibRmXuoq1K17XrJ6Ul9VB3DivQx"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/cutover-missing-96b599/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60084c2bb072d04-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: aec8008f-603c-4e10
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=2dXReTun8FynNBL3TuDLtP%2BAvCW5JKiRKl7qpTzCEHqI5kToNAzhY3C3GAfd4fA9K00hjqPtgE0RCgth6Smf8y3eblLAU0bs3bIye5gZ50KlaFbjtgs%2BpBSCablPasFN"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/cutover-missing-96b599/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a60084c7f8729a62-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: 33c22c4d-fa11-4da2
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=tWNw4UDTzPJTOnn0IbTLNu5k8O2TVhg%2BQ5HY0mB1Dt8oPw016wqg761tUHUU25M3tKdMftXvpzhia7oDLvO6gYlk1otJzMO8FCjBI%2FMzYbvgWSJkrBEaqeDeX0oKMnri"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/docs/topics/ai-governance/index.html
+HTTP/2 200 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60084c7f88ee187-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 11:45:32 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: f886581b-0fcd-44cd
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=YFtEO8MsslQ01ZAofxlywL09GkvPSXFtccMwAUoPfx3nksKnlMUA31ybAYjhR6fuN7WUkuCKpryFiYfDwl9qa2BmEsX%2FVTzNrMdtevd1dAbmd92rhm0DAjq6xupFCkez"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/docs/topics/ai-governance/index.html
+HTTP/2 200 
+date: Wed, 25 Nov 2026 12:04:56 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60084cc2e4b708d-MRS
+cf-cache-status: DYNAMIC
+age: 0
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 11:45:32 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: f886581b-0fcd-44cd
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=lzccFJP8yK0aHXPZZWbDXf7YxwgxisjNKvjk1M%2BFJQl9HdiI1rGNSdC43eqZ2KKCDVkAiESwauxYbvTLVJ3O1NudF7j8GSxaIFoo%2BjFaQyOXZJztj60JDsJomb6hCAQH"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/healthz
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:54 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60084c1ea03890e-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: 2fffd7bc-93b8-475b
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=e5%2F%2FEhLKoM5DlffaceNPy0VB7nI77IeTIyVCunzGao0XdNCBETuM4puYuaF3caUFPzNQA5wnyOadX8Yl%2FEYe%2BjY9vW7PUOaf8Wrm72kwFcILa3uRuMOJF%2BTAWwuyY9%2BE"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/healthz
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:56 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a60084ca7a3670ed-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: 9484e90c-c8f2-45a1
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=Z74i2dumBnbYk55mP%2BJ%2By1UQTfoAnIPpfQAy56venyNYjSPu%2FWR5Nl0J%2BFnHiDTagFGpNJOC50EpV%2BWMNnrYOmloYeb1bel4xmlfpXutiYtOyD76MZTXDXI2srOq7AUp"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/healthz/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:54 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60084c1e8883391-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: f31a5267-72fe-4f2c
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=p0Twgf6WnukX0qlWUk2ccwhUuI8jSemm7CFQ8xtmSvFuHKAu1eNRSGIlJrtmbiLysERTjCDp1cwjitvIUjhd1Cqv9Tkwbb5d6%2F2tL8WspXLBOYrZRh9FVhOTlzrC7XMS"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/healthz/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:56 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a60084ca8e72f4f6-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: 0c7239f9-732e-4d8c
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=kUZwx0zVWenM2341f7HTu5xAVHAbQ2F%2F0TPNikfxHqZaYPgTuIlc5zNHinbs67rGMTZw91nyUHQc8QtbdfjEUV7KUs%2BJ5zSv4SQJPL0cCBVnhdoq2xRKnwvfLGanejMQ"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/readyz
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:54 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60084c1ef6b6488-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: 05930750-6b30-45e4
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=lzUR5QG5HXSogevixzFvgcseBewAKHTfas87y7v3sAjv48hf44BNxVNJTaz4pgocrUv3pDE1b3QHCX2ml9BscxGxdUHvELnHNkE2f9n8DfuOEV3TfiQZuvY2xqbGZL%2F%2F"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/readyz
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a60084c76c2a0ba3-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: 60cbd0ef-5693-490f
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=Yy3M7lCHtIQWWtjr%2FU01CG17gYJIB%2BgWI2WK6X9C84VIeOPNADyTeSvfMqH%2F4qfHr7UuEWbmlxU9bgWhSwc1AEEpp2M%2FbVR3FwZH%2B0YHsKXmBxkYvEvHkZ4dxhfvYFVq"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/readyz/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:54 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60084c20ae9c08f-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: b5447045-f896-4949
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=JoKF9Jn%2FpOYd%2Fvv0AVCKYTP%2Bjeqo3rMWqrdZzamlmkLRgKNNwrldEGcf7ZUQkUJNHegiqapfFtoFSKmXfhAXfo%2FPB3wpbCNPYqcvEwqUq9VdU6efh5u7iK4ntpKGhmDn"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/readyz/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:56 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a60084ccbe90e1dd-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: 61ebcd5d-7552-4d17
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=%2B7j34ERzTAU5YSG2lWY1TdABqEN99a%2BsIjIM8G34g0zRvhLbTraeJwv5wO%2B%2BuwiawT2barVS1kPuCtEuqN%2B4OTEkzNzcaWKHMdN8ZlPaiJzuSyq6jqRNHRLgviFZTmiQ"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/request-access/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:54 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60084c1eae3c8e8-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: fd09e1a3-5311-4715
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=gkPYF0qwQ36lk%2FQTFd%2B5aGbJKYpgowbgcWjHfqiv4Ckda1swoKp%2FHGGPEJqtUwtlNhzbMqL%2BWDYwnvUwlOkTLIWqMvJP0BbrYZ7zavRUnITx%2Frr9Itk8l1dcToORMUqG"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/request-access/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:56 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a60084ca5a9132f7-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: 4d9e82cc-ee00-42eb
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=o33CVe%2BXdM9xhnCsMkzoNw8PlOaZh6sUCpblfn8HwPxlA4jOLewocfmw826%2FKb%2FeNlWo1zukRimsSZLz2V9DX%2FNXNbyOmwc42n2uQpAvg4dHGP1s4wMU0QocUTaeEXxD"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/status/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:54 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60084c1e93cdefa-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 11:45:31 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: 1816ef8f-a4ed-4a30
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=PZKIwguRbgUmoG3Pc0ZBUo0PTdDX428qP4NNPE98BQiaxfELTfvzEISUbJdBpWEwtyC%2B2%2F5aDWlSqvXYRFBpbPVrYcPjHhFWSudjKIPgok88PxO%2F6yxtOL5JtBekEsW0"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/status/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a60084c75851e221-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: f3109047-0e54-4699
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=G3hh1OyzH%2BiUy%2FgAWm7yOIBngGpvwvKAoeFtGXsF6h5XMe9h1vnyDUF9NMZVcmbC3G8gdyspmwUCagUMFDTLgY0DKyvywQBojAMpzjdARuvoNOlEEUUIlNuCLBv6NiGH"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://www.brightai.live/
+HTTP/2 301 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+location: https://brightai.live/
+cf-ray: a60084c2ffa5e1ac-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: accept-encoding
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=68CEcuZ6aU5EkxCqmcHhoQAwx8Dblaq5aowCp3Soj37yHJWf8D7OHgbNvzbGFsw0XcTQ4NlDv5rk2QRAef1BTMydMQ4eh7yV7mqC6iC%2F7%2BphcMCSAYTteWbqy%2B8NRrjYawlADQ%3D%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://www.brightai.live/
+HTTP/2 301 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+location: https://brightai.live/
+cf-ray: a60084c7fdbc2c49-MRS
+cf-cache-status: DYNAMIC
+age: 0
+server: cloudflare
+vary: accept-encoding
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=%2FpCLRc%2FlDPo31scpJZXM2KujoT1ULgrUnfKwOXDzOz0Yoz4o1mFbjgg%2FNJpsHe6mHGzLg0P3ZCyXOPYAiBH41vRBMB3sQOGDZWP1jjLwzE7Q8%2F%2BBQ0sUl0BAEbKJUzNiV3vRKw%3D%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://www.brightai.live/healthz/
+HTTP/2 301 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+location: https://brightai.live/healthz/
+cf-ray: a60084c2fbb98057-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: accept-encoding
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=VL3sMDZmudyS064IG4u73pK%2Bjfcb6sbXtzwwD1Nlm5Du9sSUpT2sFt3P%2F1GBSC56L6e1KIvKBWEN4Ax7k%2Bsot4Cv0FcgoR06cd7dxeiU7eQD01e%2FGdZcPY4aFAk6nhpdvQ3M5Q%3D%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://www.brightai.live/healthz/
+HTTP/2 301 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+location: https://brightai.live/healthz/
+cf-ray: a60084c76ec8dd3b-MRS
+cf-cache-status: DYNAMIC
+age: 0
+server: cloudflare
+vary: accept-encoding
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=G8cVh4ps5fQILWpYru6VeVGB4fwZYURM%2Fd1%2B0y10KxUxm2S4UqG%2FFpqumZJDp3a6zn6ZpPw0qkmBRQgm6m8qfYpeoF7xXSZNhyGg0weEVIqoTTOSQaTekHGi9bmxIZVcN%2Bl2Pw%3D%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://www.brightai.live/request-access/
+HTTP/2 301 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+location: https://brightai.live/request-access/
+cf-ray: a60084c2ff29e19a-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: accept-encoding
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=K71ol%2BO6HzOmh2x8ojrFmft5%2B7%2Bxm%2F2XyUpZN6pkrehuCFTQlqmHBJ1d%2BIRNIdtcFikgi8TNTYeIpwAWNz8XhzNMDl4HD7MSqwzHjA1KhAdlCBxs0ArA0IneJUgyvDYzarZ9ZA%3D%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://www.brightai.live/request-access/
+HTTP/2 301 
+date: Wed, 25 Nov 2026 12:04:55 GMT
+content-type: text/html; charset=utf-8
+location: https://brightai.live/request-access/
+cf-ray: a60084c7fa554aaf-MRS
+cf-cache-status: DYNAMIC
+age: 0
+server: cloudflare
+vary: accept-encoding
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=EWeXIUkWQzPaxjNqLUUnAGSpemVpqzN3LxqyKHsBA8FKPQMAPuERGab9dFP4gAwwEOTLUsQwjN2VJnfe8as151WKHkjGTbZ7kn9rq%2Fwv14VQ4c01pHDEh3EIPCu2fKbewa3ecg%3D%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+# After Cloudflare cache rule — existing static origin
+
+### GET https://brightai.live/api/measurement-status/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:25 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60086fa2e1d83cc-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 12:06:05 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: d8eec9c2-f0a2-4e1a
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=Xnf%2F8KeqtcTm8BERTvfP0IHKukd5Fkn%2B%2BrpM%2FZaHAv3lavRmjJ6zb9kW9U4UYHPL9w7B8PJa95lwmaYiC%2BlnD%2FllSEunrdkbv9FCjTTX%2Bd3hdOtNQyMksMEjZRwOBHJs"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/api/measurement-status/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:26 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a60086fecdc1b684-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: 581d75a8-d2f3-4325
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=etGMTVBbPaMDXSH5disy0qmIE8xjnkVYT%2FAY8eOLx%2FVLCoCZ5d0wYB1Xn%2BDFRF8ApW3UFQhgoT9CNzeiQV8hLWI625mokc8ijIBsGIfKX1kDAtF2UOTEIzPrOYweKdfO"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/api/measurement-status/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:28 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a600870a2900fb98-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 12:06:05 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: 027dad93-aa56-4e0e
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=9Kd4EfxReF73dnh%2BlsVL8scrvpsvcSHYrNKuO4Eg5vV3%2BiDGVkpoO%2BlsEOz3TkADtmQBo7k1bVxwioop1IqprTXn6dqIR3433jT3KLoSKvPHQs6wUI%2BqKn%2FBZg1WZpOG"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/api/measurement-status/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:29 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a600870e5dade1b2-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: 0ea6fe0e-70f6-48d1
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=w9Z45aCckBHJuBm5YLtnZlmV5arCo1t6WdQsyNaK3JXACzM6N%2F%2FHbIa%2FqdDg%2BywnTzR%2BigOwWcF2VMcZ0u3mXbhgzfM9b51J%2FhZgP3RFEhuMzToGmVZdxCejH2r6G%2Fu3"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/app/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:25 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60086fa3bcbc84f-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 12:06:05 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: ecdede97-f7b1-4e8e
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=lxK3UbK3IIxZKrI2YeExbnAXHNXCLtGaFAd2G%2BUOyc8D%2Bs%2BSjuPlhmK5wmeUIMCssg3EM62zsGvzOG6S2OL9jHRrNSZzfB3hy8ySzapXM4ZXUeR73Q8psBADZhhF6TNb"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/app/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:26 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a60086feca185d43-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: d249ff73-0ae7-4db3
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=7B1cp1Vgu4F9jeqB%2Byw27ePo%2F2MNB1Js2RhQQv1aAhFm4L6sdOuAraFHENhEhx9%2BtbbOi3DVuTD8y5hFZ0LI1AlpCqcvztOA6lF33fbzYGwlmW57vTgw4vgi0HFlFdTd"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/app/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:27 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a6008701e83de1fd-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 12:06:05 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: 68f50c41-f565-4e70
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=UdC%2FRdQsGUiS4JwYsuZ%2Ff3JhXl%2BOUHy9NNidhlyy99lrnjCmGrFXIyyTYiToxwr%2Bb2UJEwTgANcjEotOQ4%2BH5uY5JJ03jwaLuMI40i2Ci7pQzKLEM%2BuUm%2B8zkt0PlTci"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/app/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:27 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a6008705c9d0e209-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: 3071f36d-a9d3-47ae
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=rDUMs%2B7z4O84VffmN0EQo8KdVG%2FyVGhnWg9ECfRoRLuDhDZaF9GKd69NQrjDqDDwbWW1hnmiJvImxWYyF6yqA1dXW6a5POkCJiKdFUALHPlJTSslEJl4UfOkXtfSnygy"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/auth/api/get-session
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:25 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60086fa2dd549f0-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 12:06:05 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: 4dcaf6ee-0b33-41f0
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=eImi6p5YgYYjsT2NNVxiQuKfzpxf4OgH%2FRfqj%2F4EdnVH9s%2Bg9fc49gn5Ai9yIODtUZc%2F5ZnY6qcnQqPPyVRsEJ6PHjnriARyeWnZmPq0unkZHDJEaGXwIr0nunDQhz2i"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/auth/api/get-session
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:26 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a60086fecf086073-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: e1ceb769-b4ea-42e4
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=V5lCQxxWEyatl4zTJX9HZ%2Bj9qxjHYYsochiZ83TNbEmFJXCjgutfxjnSaL5Yu0tuAJ68xqhtszkXsqLCLYVasN3sSKyE4NNvMs6ZEmSRe0LtTwgQikvLaxjj3UaVi0Br"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/auth/api/get-session
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:28 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a600870a084ce284-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 12:06:05 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: 3e09cdd3-b318-4df0
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=qs6kvf%2BbU3lxUPYg0j9Lg2F9Q0C2c2%2FKkjA0bHg%2BvinsEBc1j%2BjLaWcpPcNXFQcaHePB57RBds66ZinFeyDJJDeLMPA9X7xm0Ka79i5BlDjaWdrtpJlrunxvJ73lEkxQ"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/auth/api/get-session
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:29 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a600870e4854e1f5-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: 4fa49935-30c6-4fa5
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=B8V1cxSI3yGnqBMoIRyRGflfWkYfD8fg2lWtsaskfiPk1h2PGbuXlmiQOX2csRNMKw3Z3CtwhoiXjW%2FqpuaatM%2BMC9WL9b1ARDJwTvaxjD7ZuUcs%2FVCmy5g%2Fw4c%2BJGKH"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/healthz
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:25 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60086fa2ce44dd6-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 12:06:05 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: 23b5b513-08e4-4cf1
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=4l5w%2BDBesvvNmiAHS1bfZMcwcymPg3iMrAJ24gI6O3Yy%2FXaR%2B2WkhQ50zA45ze%2FDNlXpWE8%2BY%2F4FmfecCVt3RzI%2Fxwkn%2FumBhvCi%2BYTtts7JjUNYYdKZGAUZtLaxao4t"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/healthz
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:26 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a60086feb9374591-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: 8e977dd9-4d86-487e
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=XjaiKvyGeXumgzSBMJFVHw4tZ%2FbGa90vuNyDUrEZbk0kWNrCoUJR%2BJtvPRpZYwhJAgCdHvcZB61eOWNnBlhr%2FOrH0duXRw2WiC77PHzEnUblT%2BTSpA4Fm%2B0xuqGoFg31"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/healthz
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:27 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60087026fa3e209-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 12:06:05 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: 522b1d8c-1c18-4708
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=mBTL0l7TKS1vG4U%2FBYHIv4MY6AoS7kBoViMsMiws5ZfKKACc6QPMDKwjGpinz6%2FYhEoKnkAE6CMibHbv4sZY5%2BQNZGNogyRBFbeDVqR2lkU6qk5YKZUd4q2wBPbST2UI"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/healthz
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:27 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a6008705c867e15d-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: 65f8f5e4-5750-4949
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=%2BfzTgl8%2FlaaGOincMzfWUjAf3BTPeZbg1%2BUyKJDujpcmhVLGzbHnO1i84CvsMUesflSfyH7PgIrMJIbbkM4r6MuKQvsurZoCB9BXnbF0GBRNtCjtP25o%2BnsmJObGC%2BBf"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/healthz/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:25 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60086fa2eafe049-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 12:06:05 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: 1f8696ba-e1bb-4276
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=iLtrWW9YvrEYdXDymDqxTepyanxNvGu1IUAS243cizXA8%2FzaVuARCUnCLiuGp3NJCQufNwDHVHw1QuvaefEWtmbK9nwWtdNZvr1VDK8e26II94tc7xesOuHbesDH6GWY"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/healthz/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:26 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a60086fecb7f0b96-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: ee7da19a-aaf9-49cf
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=ORpjG1yvRCfEqvsBbBWfp45Y67xFJ9sEDAUkYj9H2HgRAV8Qk1yf0f%2F9jfwBp9E1%2B8SBrtQ71umSh1rAF%2BGK9JqLwiuC%2BzgPBCt5zZQkVRf%2FS0Ww6tyelTRpWcLh9ARh"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/healthz/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:28 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a600870a2db5146b-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 12:06:05 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: 267ceaae-6279-4149
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=YB83GYpIv1NPEK9oBwXs7sNcwcQo4vgDHJb%2By6JwV3hrXg6SPmFse%2B2XIPdMUdt4jB0vTB7jH0CRwgBQpvAEC4wHm8q52VhoTRggAkvuVAogLV4iGiLzH%2Faxn0xlOd9Q"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/healthz/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:29 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a600870e496b708c-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: 1f307ee3-7425-4bad
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=87znbiZWAMSFUEMMv7cMo%2BX644JawvMiE5VDgMGP0FZ1AGpmSYgQUE2RoiLpaz%2FMVn7gEV0xBye0sOfcRzjaeql20hqJpS6054O6j0CQshlukRHI7TaYI7J2JdHhiDYB"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/readyz
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:25 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60086fa2e7ef519-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 12:06:05 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: ee1095a7-7d48-42f8
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=RKXsw10rYk%2FYZbHPtpcCMnUwHpUu9mKk9F7HgnGYS7inl9GxMK1lOY9r31%2B6DI3UE5oaF1iGJHvwD6epaiLGtZn4tr7csJ0wEob7cgV9PvLE8HJxrGcaPr1%2BrGauCbKp"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/readyz
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:26 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a60086fecd4697b3-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: e531f7d4-a880-4954
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=CrVCYjCV5RvH9SQq1%2B3d1htPZjvELdTmpRjy8JjZwcjGC4U5PCwcYhkx37qgrcKrnS8MBKXTh1sEkISLhZv0EvabvthpcaojPX3mIKOTbNWm4HmLk9TrzJAtQLHY4oY7"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/readyz
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:27 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60087024ef78e31-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 12:06:05 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: c9edc341-4733-44d7
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=%2BZDQpqhNJjHwzJ1c0dJ1193zd7weuHmy7ZUJghAlwD4JSIbahQium2hSIvVmJmuYOd4ScUOrihxTr04y8%2F7A7EUAJY4eKLqvzYto5pUYWQe9fUhQ8rhZDJiaPcVnGuD0"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/readyz
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:27 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a6008705cba873ab-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: c4af43cf-cc26-4861
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=5BBJRb9k14x1nuY90pXew2LEZit2MhygAzNNx1e0hJ4AWpkjgrt8h3%2B6iSWyJT7EPbNgX37zY5g%2FvtgPw%2FiRiu3LwBsvp%2FH0%2Bno0cXQbGXJUes80eaNoWJIRicCy3xTS"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/readyz/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:25 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60086fa3806e210-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 12:06:05 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: 38003c87-55d9-4583
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=ge0yVXTnAhMfg7V7pQl4Y2bjQWb6gjbDtYS0OKe08aFSJNsEQJf9e%2BSLOIY1hGWDQsJsozINTZ%2BbhTWs5RvK6PaDQENZNR3sd7KwmBaKKelfqH3v3QWwB3bn9kk3NQhL"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/readyz/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:26 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a60086febc0ee197-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: 565ee147-85f8-472e
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=jCO09paz%2B6ffKKDfurGzxFRdrC6rdcagRk7jskx73MMiyn0W1oCVg9ehLFu%2B1quOOKPKqjAGUa2KkTxNfAxuVqyPzTM0z33cGscLgKXSSPHNa6mZDkMtU2rUssZd4PTr"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/readyz/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:27 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a6008701ccc3e218-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 12:06:05 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: 324ba56f-fdd1-4697
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=J3jufx57svx5iueAMgqzI8ZTU3pkU1T%2BUdZ%2BDwqWqE1EY2j33UwkMIuZmRtfqcouVr5vrUoTms5JZ0%2B581YMhEs%2Fo%2BTU6Q5YmRcazC4YE1EGjubO4HHvFXKyeUeGCiI0"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/readyz/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:27 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a6008705091fcfa3-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: 00be3648-b55a-4c71
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=nvx6L0IroeelJtQOhdB85dhPIIKah7zGh28abEPzPAm3ptSrhk7AXVCcem34za9A9UIzYUtFUSIdbTEfh1Yt6lozQInUqNsiSi%2FZwzChLAlp%2FDzGefI4yNxp%2FKdJbVzL"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/request-access/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:25 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60086fa3e72a65d-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 12:06:05 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: 9d3515b3-7940-480b
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=z8zxWgIIZNuy3Ge0Tpgk6xD64SOTxqE3gmEn%2FyaHxmrQfLLTRvnBifxXA7kjKE7GldDK4xP1YGGsVDJBUK09fe08J6IhwRYYr06MY9u0uH%2FMPO045OiziAT5k6aEnedX"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/request-access/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:26 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a60086febeb59a42-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: 87d06df5-5e62-402a
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=oRmsNN6S1pB2VkX2kK59iNcfeyRxMo3ZGHfnUljJu29UWSJHTur6ZOtXSSBzddX9I0fbJquX0S%2FtTO4wHjX5M4KnheliAfBTMPVbclrot9YjM1W1mff74u6MpjGLT71n"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/request-access/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:27 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a6008701aad8f6d2-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 12:06:05 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: 16e7cae4-c5ec-4c67
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=Mg6QNo9mxQe1AQJqikJs%2FmCdrP0Wl4UtKhJggUqQYs29o7fwdYFeDgJBQT9z947UgBdlQKJhfiyQ7Gk%2FHmEJqPz59IL0vjmpphteELy6FSctF6YJME6PhHQtT69NoXB6"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/request-access/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:27 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a60087050a74989e-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: f72f8237-52a4-400b
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=h2jSVgc1ULrTbxDf1ohwO9vrAVXxiFDtwwbjrY6jxLP5FP5YV19oo4%2Fi8KZfoE01OzsrWiUE5mpIR1pZpLnDRjgf%2Ff1Tumek4wU0e8sqbl8fbsK47sVcKB%2F%2FNeFCCwDn"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/status/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:25 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60086fa3a946073-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 12:06:05 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: 8459d7e9-4c86-4cf0
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=IQiHiqu%2BBSECRw37%2FuWo7Qm%2BYc1Zj0jZos8zT1Cf8Crn06C2C3nVfRP9gC4uXmJrNbTkvMgG%2BqXOtsuxi2xBh%2B9ge1rDSNVzJBTgTHzEcXMn6p0nRKfSQLZeYVzyLaZ8"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/status/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:26 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a60086fedc5ae211-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: 755ed8d3-5c4e-4265
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=eeoRTlpeLOWQ3Jvi5bqpTj%2FiNzwQLXJLuL1DEe%2BRbGq%2FMGpysloY9PW4VjDY1SmteALF4oU0w7CRRnCriIQ3gQVU2lVctPD6oVyZjGZQ7xQXT%2FhqsGmmmoNgH3yqjUR%2B"}]}
+alt-svc: h3=":443"; ma=86400
+
+
+### GET https://brightai.live/status/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:28 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a60087096c13a6ea-MRS
+cf-cache-status: DYNAMIC
+cache-control: public, max-age=0, s-maxage=300
+last-modified: Wed, 25 Nov 2026 12:06:05 UTC
+server: cloudflare
+vary: Accept-Encoding, Accept-Encoding
+rndr-id: 58373ea4-8b38-4b2a
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=CqNwhHtjBww%2FrF2Qn0df2DYAJtU5Jk8GubRugVjKLkDMkQwXPooMnMPLX44tl%2Bn2mI%2BdDKRLrDHFvhmWGlv12uQK0E5BSdJwfJx3wz0AP8d2B1vfybsR6sCkzWEjPXtg"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+alt-svc: h3=":443"; ma=86400
+
+
+### HEAD https://brightai.live/status/
+HTTP/2 404 
+date: Wed, 25 Nov 2026 12:06:28 GMT
+content-type: text/plain; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a600870db944406b-MRS
+cf-cache-status: DYNAMIC
+server: cloudflare
+vary: Accept-Encoding
+rndr-id: 096445f8-10f3-42e6
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=kX3Za%2BJ%2FwVn97mh%2BysVdBkkwenUc%2Bv2SKyMJGuO2%2BQDHNCrwu7gkixB5KevoDiz59CqeKC6QOVDyDT1oYyXQK5tnVb5NcCLTGuaHMblIWEnNpEsgEfZBhJq6OXNu6U7D"}]}
+alt-svc: h3=":443"; ma=86400
+
