@@ -8,75 +8,9 @@
 
 ---
 
-## 1. سياسة CSP — الجرد والقرار
+## 1 و2. سياسة CSP وترويسات الاستجابة
 
-### 1.1 ما هو مفروض الآن (`SOURCE_PRESENT`)
-
-`src/middleware.ts` يفرض على كل استجابة:
-
-| التوجيه | القيمة |
-|---|---|
-| `frame-ancestors` | `'none'` لمنطقة `/app`، `'self'` للعام |
-| `base-uri` | `'self'` |
-| `form-action` | `'self'` |
-| `object-src` | `'none'` |
-
-لا تُستبدل سياسة يضيفها المسار؛ يُضاف فقط التوجيه الغائب.
-
-### 1.2 سياسة الموارد الكاملة — `Content-Security-Policy-Report-Only` افتراضيًا
-
-| التوجيه | القيمة | سبب كل مصدر |
-|---|---|---|
-| `default-src` | `'self'` | لا مصدر افتراضي خارجي |
-| `script-src` | `'self'` + `https://www.googletagmanager.com` + بصمتان SHA-256 لسكربتين inline ثابتين | سكربتات الموقع كلها حزم same-origin من Astro. GTM هو المحمّل الخارجي الوحيد (وسم GA4 `G-9LMB4PGTWJ`). الصفحات العامة prerendered، فلا يصلح nonce؛ لذلك الهاش. |
-| `connect-src` | `'self'` + مضيفات جمع GA4 + أصل Neon Auth وقت التشغيل | نداءات المنتجات same-origin تحت `/app/api`. عميل الدخول يتصل بـ`NEON_AUTH_BASE_URL`، ويُقرأ على الخادم فقط. |
-| `img-src` | `'self'` + `data:` + مضيفات GA4 | لا صور خارجية في المصدر |
-| `font-src` | `'self'` | خط IBM Plex Arabic محلي |
-| `style-src` | `'self'` + `'unsafe-inline'` | Astro يضمّن أوراق أنماط صغيرة، وواجهة الدخول تعتمد عليها. **تخفيف معروف وموثق**، وليس ادعاء حماية أنماط كاملة. |
-| `frame-ancestors` | كما في 1.1 | — |
-
-**السكربتات inline الثلاثة التي تغطيها البصمات:**
-
-1. كتلة تهيئة GA4 في `src/layouts/BaseLayout.astro` (`sha256-HJkD1lF4177kuaga0wHI556h4MfrYdnXNWbSalg2REQ=`).
-2. و3. `document.documentElement.classList.add('js');` في صفحتي معرفة (`sha256-/x7W7R75k8Roq0WaVRQX9blP4OufE5xbAdzklGxsgpw=`).
-
-أي تعديل على نص أي كتلة inline يُبطل بصمتها. **لا تُفرض السياسة قبل إعادة حساب البصمات وفحص المتصفح.**
-
-### 1.3 بوابة الترقية إلى الفرض
-
-- الافتراضي: `Content-Security-Policy-Report-Only`. لا تكسر Analytics أو الدخول؛ تُظهر المخالفات في وحدة تحكم المتصفح فقط.
-- الفرض يتطلب `AIGAS_CSP_ENFORCE=true` بعد تحقق مخوّل. **لم يُضبط في `render.yaml`، ولم يُفرض في أي بيئة.**
-- الفرض يتطلب أيضًا أن يكون `NEON_AUTH_BASE_URL` مضبوطًا بـHTTPS على الخادم؛ بدونه لا يُضاف أصل Auth إلى `connect-src` فيتعطل الدخول. السياسة تفشل مغلقة لهذا الأصل بدل توسيعها.
-- قبل الفرض يلزم: بناء الموقع، فحص صفحة عامة + `/auth/sign-up/` + `/app/kernel/` بمتصفح حقيقي، وتأكيد عدم وجود مخالفة `script-src`/`connect-src`، وتوثيق النتيجة.
-- **ممنوع** إضافة `'unsafe-eval'` أو `'unsafe-inline'` إلى `script-src` لتجاوز مخالفة.
-
-### 1.4 فجوات معروفة
-
-- بصمات inline غير متحققة على مخرجات build (لم يُشغّل build في هذه المهمة). عدم تطابقها يظهر كمخالفة report-only فقط.
-- لا يوجد `report-to`/`report-uri`: لا نقطة جمع بلاغات، ولا نظام SIEM.
-- `style-src 'unsafe-inline'` يبقي حماية الأنماط ضعيفة.
-
----
-
-## 2. ترويسات الاستجابة — المصفوفة
-
-| الترويسة | العام | `/app/*` و`/app/api/*` |
-|---|---|---|
-| `Cache-Control` | حسب المسار | `private, no-store, max-age=0` |
-| `CDN-Cache-Control` / `Cloudflare-CDN-Cache-Control` | — | `no-store` |
-| `X-Robots-Tag` | حسب الصفحة | `noindex, nofollow` |
-| `X-Content-Type-Options` | `nosniff` | `nosniff` |
-| `X-Frame-Options` | `SAMEORIGIN` | `DENY` |
-| `Referrer-Policy` | `strict-origin-when-cross-origin` | `no-referrer` |
-| `Permissions-Policy` | `camera=(), microphone=(), geolocation=(), payment=(), usb=()` | نفسها |
-| `Strict-Transport-Security` | `max-age=15552000` عند تأكيد HTTPS فقط | نفسها |
-| `Cross-Origin-Resource-Policy` | `same-origin` | `same-origin` |
-| `X-Permitted-Cross-Domain-Policies` | `none` | `none` |
-
-الحالة: `SOURCE_PRESENT` في `src/middleware.ts` + `src/server/kernel/http.mjs` + `src/server/kernel/unavailable.mjs`.
-**غير متحقق:** الاستجابة الفعلية من الخدمة المنشورة، وأن المنشور هو HEAD نفسه.
-
----
+تُفرض السياسة الكاملة في نسخة Node المحلية. راجع [مصفوفة الترويسات، المصادر ودليل الاختبار](../Audit/security-headers-2026-11-25/REPORT.md) للتفاصيل وحالة النشر.
 
 ## 3. السجلات: لا أسرار ولا محتوى عميل
 

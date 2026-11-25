@@ -399,29 +399,21 @@ test('GA4 loader is shared by every HTML template', () => {
   }
 });
 
-test('CSP promotion and rollback use the same resource policy', async () => {
+test('CSP enforces resource policy across surfaces', async () => {
   const { applySecurityPolicy } = await import('../src/server/observability/security-policy.mjs');
-  const old = process.env.AIGAS_CSP_ENFORCE;
-  const auth = process.env.NEON_AUTH_BASE_URL;
-  try {
-    process.env.NEON_AUTH_BASE_URL = 'https://auth.synthetic.invalid/neondb/auth';
-    for (const portal of [false, true]) {
-      process.env.AIGAS_CSP_ENFORCE = 'false';
-      const report = new Headers(); applySecurityPolicy(report, portal);
-      assert.match(report.get('Content-Security-Policy-Report-Only'), /font-src 'self'/);
-      assert.match(report.get('Content-Security-Policy-Report-Only'), /https:\/\/auth.synthetic.invalid/);
-      process.env.AIGAS_CSP_ENFORCE = 'true';
-      const enforced = new Headers(); applySecurityPolicy(enforced, portal);
-      assert.equal(enforced.has('Content-Security-Policy-Report-Only'), false);
-      for (const directive of report.get('Content-Security-Policy-Report-Only').split('; ')) {
-        assert.ok(enforced.get('Content-Security-Policy').includes(directive));
-      }
-      assert.doesNotMatch(enforced.get('Content-Security-Policy'), /script-src[^;]*unsafe-inline/);
-    }
-  } finally {
-    if (old === undefined) delete process.env.AIGAS_CSP_ENFORCE; else process.env.AIGAS_CSP_ENFORCE = old;
-    if (auth === undefined) delete process.env.NEON_AUTH_BASE_URL; else process.env.NEON_AUTH_BASE_URL = auth;
+  for (const portal of [false, true]) {
+    const headers = new Headers();
+    applySecurityPolicy(headers, portal, { secureTransport: true });
+    assert.equal(headers.has('Content-Security-Policy-Report-Only'), false);
+    const csp = headers.get('Content-Security-Policy');
+    assert.match(csp, /font-src 'self'/);
+    assert.match(csp, /script-src-attr 'none'/);
+    assert.doesNotMatch(csp, /unsafe-eval|script-src[^;]*unsafe-inline/);
+    assert.equal(headers.get('Cross-Origin-Opener-Policy'), 'same-origin');
   }
+  const headers = new Headers();
+  applySecurityPolicy(headers, true, { confidential: true });
+  assert.doesNotMatch(headers.get('Content-Security-Policy'), /google|unsafe-inline/);
 });
 
 test('one global kill switch stops both transports at send time', async () => {

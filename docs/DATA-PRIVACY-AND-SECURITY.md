@@ -54,16 +54,15 @@
 | الترويسة | القيمة |
 |---|---|
 | `X-Content-Type-Options` | `nosniff` |
-| `X-Frame-Options` | `DENY` لمنطقة `/app` وكل API؛ `SAMEORIGIN` للعام |
-| `Content-Security-Policy` | `frame-ancestors` + `base-uri 'self'` + `form-action 'self'` + `object-src 'none'`؛ تُدمج مع أي سياسة يضيفها المسار بدل استبدالها |
-| `Content-Security-Policy-Report-Only` | سياسة موارد كاملة (`script-src`, `connect-src`, `img-src`, `font-src`, `style-src`) بحد أدنى من المصادر |
-| `Referrer-Policy` | `no-referrer` لمنطقة `/app`، `strict-origin-when-cross-origin` للعام |
+| `X-Frame-Options` | `DENY` لمنطقتي `/app` و`/auth`؛ `SAMEORIGIN` للعام |
+| `Content-Security-Policy` | سياسة الموارد الكاملة مع `frame-ancestors` و`frame-src 'none'` ووجهة بلاغات |
+| `Referrer-Policy` | `no-referrer` لمنطقتي `/app` و`/auth`، `strict-origin-when-cross-origin` للعام |
 | `Permissions-Policy` | تعطيل الكاميرا والميكروفون والموقع والدفع وUSB |
 | `Strict-Transport-Security` | `max-age=15552000` عند تأكيد HTTPS فقط |
-| `Cross-Origin-Resource-Policy` | `same-origin` |
+| `Cross-Origin-Resource-Policy` و`Cross-Origin-Opener-Policy` | `same-origin` |
 | `X-Permitted-Cross-Domain-Policies` | `none` |
 
-**سياسة السكربتات/الاتصالات معرّفة لكنها غير مفروضة:** أُضيفت في `src/middleware.ts` سياسة موارد كاملة تجرد المصادر المطلوبة فعليًا (`'self'`، GTM لوسم GA4، مضيفات جمع GA4، أصل Neon Auth من إعداد الخادم، بصمتا SHA-256 للسكربتين inline الثابتين). تُرسل افتراضيًا كـ`Content-Security-Policy-Report-Only` حتى لا تُعطّل Analytics أو عميل الدخول دون فحص متصفح؛ الفرض يتطلب `AIGAS_CSP_ENFORCE=true` بعد تحقق مخوّل. **لا `unsafe-eval`.** يبقى `style-src 'unsafe-inline'` تخفيفًا معروفًا لأن Astro يضمّن أنماطًا ولأن واجهة الدخول تعتمد عليها. الجرد وبوابة الفرض في `docs/PRE-BETA-SECURITY-AND-OPERATIONS-RUNBOOK.md` §1.
+**سياسة السكربتات والاتصالات مفروضة في نسخة Node المحلية.** تعتمد على ملفات Astro من الأصل نفسه وبصمات SHA-256 للسكربتات الثابتة. يعمل وسيط Neon Auth عبر `/auth/api/`. راجع [مصفوفة CSP والتحقق](../Audit/security-headers-2026-11-25/REPORT.md).
 
 ### 2.5 بوابة `/app` لا تُتجاوز بمسار مُرمّز — `SOURCE_PRESENT` بعد هذه المهمة
 
@@ -233,7 +232,7 @@ Astro يطابق المسارات على مسار **مفكوك الترميز**�
 | Origin على كل كتابة | فحص مسارات الكتابة | `SOURCE_PRESENT` |
 | no-store/noindex لمنطقة `/app` | `src/middleware.ts` + `AppLayout` | `SOURCE_PRESENT` |
 | إغلاق مسار مُرمّز لبوابة `/app` | `normalizePath` في `src/middleware.ts` | `SOURCE_PRESENT` |
-| سياسة CSP موارد محددة | `resourcePolicy` في `src/middleware.ts`؛ تُرسل Report-Only | `SOURCE_PRESENT` / غير مفروضة |
+| سياسة CSP موارد محددة | `src/server/observability/security-policy.mjs` | مفروضة محليًا |
 | الاحتفاظ/الحذف/الحوادث/on-call | قوالب ملء وحقول اعتماد في `docs/PRE-BETA-SECURITY-AND-OPERATIONS-RUNBOOK.md` | `BLOCKED — توقيع المالك/القانوني/الأمن` |
 | تشغيل/اختبار/بناء/اختراق/نشر | لم يُشغّل بطلب المهمة | `NOT RUN` / `NOT_VERIFIED` |
 

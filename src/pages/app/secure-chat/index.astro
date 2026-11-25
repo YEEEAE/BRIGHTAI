@@ -10,11 +10,6 @@ import '../../../styles/secure-chat.css';
 import { authConfig } from '../../../server/kernel/auth.mjs';
 export const prerender = false;
 const config = authConfig();
-Astro.response.headers.set('Content-Security-Policy', [
-  "default-src 'self'", "script-src 'self'", "connect-src 'self'",
-  "style-src 'self' 'unsafe-inline'", "img-src 'self' data:",
-  "frame-ancestors 'none'", "form-action 'self'", "base-uri 'self'", "object-src 'none'",
-].join('; '));
 ---
 <AppLayout title="Secure Chat" confidential>
   <section class="secure-chat" data-secure-chat data-auth-configured={!!config}>

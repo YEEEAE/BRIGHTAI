@@ -162,6 +162,7 @@ try {
   upstreamOrigin = base;
   browser = await chromium.launch({ channel: 'chrome', headless: true });
   const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  await context.route(/^https:\/\//, route => route.abort());
   const page = await context.newPage();
   const status = page.locator('[data-auth-status]');
   const waitStatus = async pattern => {
@@ -368,12 +369,20 @@ try {
   await trialStatus.filter({ hasText: /بريدك موثّق/ }).waitFor();
   assert.equal((await trialApi({ operation: 'start', expires_at: '2099-01-01' })).status, 400);
   assert.equal((await trialApi({ operation: 'start' }, workspace)).status, 403);
+  const writeResponse = page.waitForResponse(response =>
+    response.url() === `${base}/app/api/trial/` && response.request().method() === 'POST');
   await page.locator('[data-trial-start]').click();
+  const write = await writeResponse;
+  assert.ok(write.ok());
+  assert.match(await write.headerValue('content-security-policy'), /frame-ancestors 'none'/);
   await trialStatus.filter({ hasText: /التجربة نشطة/ }).waitFor();
   assert.equal(await page.getByText('متاح للقراءة فقط', { exact: true }).count(), 5);
   await checkWidths(widths);
   assert.match(await page.locator('[data-trial-clock]').textContent(), /المتبقي:/);
-  const activeTrial = await (await trialApi()).json();
+  const read = await trialApi();
+  assert.ok(read.ok);
+  assert.match(read.headers.get('content-security-policy'), /frame-ancestors 'none'/);
+  const activeTrial = await read.json();
   assert.equal(new Date(activeTrial.expiresAt) - new Date(activeTrial.startedAt), 172800000);
   await page.locator('[data-trial-products] article').filter({ hasText: 'Firewall' }).getByRole('button', { name: 'فتح المنتج' }).click();
   await page.waitForURL(`${base}/app/firewall/?workspace=${activeTrial.tenantId}`);
@@ -419,7 +428,8 @@ try {
     assert.ok(await access.getByRole('link', { name: 'جهّز طلبك' }).isVisible());
   }
   await access.getByRole('link', { name: 'جهّز طلبك' }).click();
-  assert.match(await page.locator('#contact-draft').inputValue(), /طلب مراجعة للتشغيل المؤسسي لمنتج Firewall/);
+  await page.waitForFunction(() =>
+    /طلب مراجعة للتشغيل المؤسسي لمنتج Firewall/.test(document.querySelector('#contact-draft')?.value ?? ''));
   await page.goto(`${closed}/auth/sign-up/?trial=48h`);
   assert.match(await page.locator('.auth-unavailable').textContent(), /التسجيل مغلق/);
   assert.match(page.url(), /\/auth\/sign-up/);

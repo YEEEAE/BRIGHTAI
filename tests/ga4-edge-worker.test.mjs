@@ -107,3 +107,12 @@ test('does not invent analytics when an HTML response lacks an html/head inserti
   assert.equal(result.changed, false);
   assert.equal(result.reason, 'no-html-document');
 });
+
+test('preserves confidential Secure Chat HTML even on encoded aliases', async () => {
+  for (const path of ['/app/secure-chat/', '/%61pp/%73ecure-chat/']) {
+    const original = new Response('<html><head></head></html>', {
+      headers: { 'content-type': 'text/html' },
+    });
+    assert.equal(await handleRequest(new Request('https://brightai.live' + path), async () => original), original);
+  }
+});

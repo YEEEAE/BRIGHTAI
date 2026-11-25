@@ -17,7 +17,8 @@
     "test:accessibility:smoke": "node tests/accessibility-performance-smoke.mjs",
     "test:seo": "npm run build && node --test tests/sitemap-regression.test.mjs tests/seo-build.test.mjs tests/seo-redirects.test.mjs tests/editorial-schema.test.mjs",
     "test:healthz": "node --test tests/healthz.test.mjs tests/healthz-integration.test.mjs",
-    "smoke:healthz": "node ./scripts/smoke-healthz.mjs"
+    "smoke:healthz": "node ./scripts/smoke-healthz.mjs",
+    "test:security:smoke": "node tests/security-headers-smoke.mjs"
   },
   "dependencies": {
     "@astrojs/node": "^10.1.4",
@@ -28,7 +29,8 @@
     "astro": "^6.0.0",
     "jose": "^6.2.14",
     "pg": "^8.23.1",
-    "react-useanimations": "^3.1.1"
+    "react-useanimations": "^3.1.1",
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.1",

@@ -58,13 +58,13 @@ const listener = (request, response) => {
   // Prerendered HTML bypasses Astro middleware. Apply the same runtime policy
   // before the adapter writes headers, including redirects and error responses.
   const security = new Headers();
-  const privateSurface = /^\/(?:app|auth)(?:\/|$)/.test(url.pathname);
-  applySecurityPolicy(security, privateSurface);
-  for (const [name, value] of security) response.setHeader(name, value);
+  const privateSurface = /^\/+(?:app|auth)(?:\/|$)/.test(decodeURI(url.pathname));
   const forwardedProto = request.headers['x-forwarded-proto']?.split(',')[0]?.trim();
-  if (request.socket.encrypted || forwardedProto === 'https') {
-    response.setHeader('Strict-Transport-Security', 'max-age=15552000');
-  }
+  applySecurityPolicy(security, privateSurface, {
+    secureTransport: Boolean(request.socket.encrypted || forwardedProto === 'https'),
+    confidential: /^\/+app\/secure-chat(?:\/|$)/.test(decodeURI(url.pathname)),
+  });
+  for (const [name, value] of security) response.setHeader(name, value);
   // The adapter serves prerendered 404.html as a normal file on explicit access.
   // Serve that artifact with its real status, including the directory-style URL.
   if (['/404', '/404/', '/404.html'].includes(url.pathname) && ['GET', 'HEAD'].includes(request.method)) {

@@ -33,21 +33,9 @@ function normalizePath(pathname: string) {
 const isPortalPath = (pathname: string) => pathname === '/app' || pathname.startsWith('/app/');
 const isApiPath = (pathname: string) => pathname === '/app/api' || pathname.startsWith('/app/api/');
 
-// Baseline response hardening. The framing/navigation baseline and the private
-// cache/indexing headers are enforced; the full script/connect policy is defined
-// here and promoted from report-only only after an authorized browser check.
-function harden(response: Response, options: { portal: boolean; secureTransport: boolean }) {
+function harden(response: Response, options: { portal: boolean; secureTransport: boolean; confidential?: boolean }) {
   const headers = response.headers;
-  headers.set('X-Content-Type-Options', 'nosniff');
-  headers.set('X-Frame-Options', options.portal ? 'DENY' : 'SAMEORIGIN');
-  applySecurityPolicy(headers, options.portal);
-  headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=(), usb=()');
-  headers.set('Referrer-Policy', options.portal ? 'no-referrer' : 'strict-origin-when-cross-origin');
-  // Private and public responses alike must not be read as a cross-origin document.
-  headers.set('Cross-Origin-Resource-Policy', 'same-origin');
-  headers.set('X-Permitted-Cross-Domain-Policies', 'none');
-  // TLS terminates in front of the Node service; send HSTS only for confirmed HTTPS.
-  if (options.secureTransport) headers.set('Strict-Transport-Security', 'max-age=15552000');
+  applySecurityPolicy(headers, options.portal, options);
 
   if (options.portal) {
     // Private workspace responses must not be stored by a browser, proxy or CDN.
@@ -87,7 +75,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
         throw error;
       }
     }
-    return harden(response, { portal: true, secureTransport });
+    return harden(response, { portal: true, secureTransport, confidential: isPortalEnabled() && /^\/app\/secure-chat(?:\/|$)/.test(normalizedPath) });
   }
 
   // Use the original request URL so dev and the Node service preserve the same query.

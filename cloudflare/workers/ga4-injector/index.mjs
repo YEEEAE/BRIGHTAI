@@ -108,6 +108,13 @@ function withoutConditionalValidators(request) {
 
 export async function handleRequest(request, originFetch = fetch) {
   let response = await originFetch(request);
+  // Secure Chat has no analytics scripts, including on encoded path aliases.
+  const pathname = new URL(request.url).pathname;
+  try {
+    if (/^\/+app\/+secure-chat(?:\/|$)/.test(decodeURI(pathname))) return response;
+  } catch {
+    return response;
+  }
   const acceptsHtml = (request.headers.get('accept') ?? '').toLowerCase().includes('text/html');
   if (response.status === 304 && request.method === 'GET' && acceptsHtml) {
     response = await originFetch(withoutConditionalValidators(request));

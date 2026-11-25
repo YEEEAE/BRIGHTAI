@@ -1,3 +1,4 @@
+import './auth-validation';
 import { createAuthClient, type VanillaBetterAuthClient } from '@neon/neon-js/auth';
 import { BetterAuthVanillaAdapter } from '@neon/neon-js/auth/vanilla/adapters';
 export type WorkspaceAuth = VanillaBetterAuthClient & { getJWTToken: () => Promise<string | null> };

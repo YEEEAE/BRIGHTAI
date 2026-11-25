@@ -10,6 +10,7 @@ export default defineConfig({
   trailingSlash: 'always',
   // Keep bundled scripts external so runtime CSP can allow only same-origin modules.
   vite: { build: { assetsInlineLimit: 0 } },
+  build: { inlineStylesheets: 'never' },
   output: 'server',
   adapter: node({ mode: 'standalone' }),
   integrations: [sitemap({ filter: page => isPublicIndexPath(new URL(page).pathname) }), seoBuild(), buildVersion()],

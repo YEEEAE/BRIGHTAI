@@ -27,6 +27,10 @@ select { font: inherit; }
 .button span,main .ghost span,.node-arrow { display: inline-block; transition: transform var(--motion-hover) var(--ease-out); }
 main :is(.button,.ghost):is(:hover,:focus-visible) span { transform: translate(-3px,-1px); }
 .product-icon { flex: 0 0 auto; inline-size: var(--icon-size, 40px); block-size: var(--icon-size, 40px); color: var(--icon-accent); transition: transform var(--motion-hover); }
+.product-icon[width="16"] { --icon-size: 16px; }
+.product-icon[width="20"] { --icon-size: 20px; }
+.product-icon[width="24"] { --icon-size: 24px; }
+.product-icon[width="32"] { --icon-size: 32px; }
 a:hover .product-icon { transform: translateY(-3px); }
 .eyebrow { font-size: 13px; }
 .page { padding-block-start: 24px; }
