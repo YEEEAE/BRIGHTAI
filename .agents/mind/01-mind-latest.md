@@ -17,9 +17,14 @@
 - 2026-11-24 PARTIAL Days17–25: العام/Render ‏200 وwww 301؛ 64/64 canonical/loader؛ sitemap.xml ‏264 و404/ ‏200؛ GA4 static API404→control true وEnhanced Measurement مخالف لقيد العقد؛ PostHog720936 صفر 17–23/Sentry لا مشاريع مرئية؛ Node/Chrome وهمي و57 tests PASS؛ M1–M3/W1–W3 مفتوحة؛ `Audit/days-17-25-measurement-2026-11-24/REPORT.md`.
 - 2026-11-24 PARTIAL GA4 live: Worker `brightai-ga4-edge` منشور وroutes apex/www مفعّلة؛ CNAME proxied إلى Render origin؛ `workers.dev` معطل. عينة Firecrawl/DOM 4 URLs (apex, www, `/about/`, legacy `/blog/ai-governance/`) 200 مع config واحد وloader واحد؛ Worker يحقن الناقص في HTML GET 200 فقط، لا Range/HEAD/غير HTML؛ unit61 وbuild PASS. جرد الإرث متباين (251/254/264) والتغطية الشاملة NOT VERIFIED؛ GA4 ingestion/التقارير NOT VERIFIED لتعذر الموصل؛ `Audit/ga4-live-coverage-2026-11-24.md`.
 - 2026-11-24 VERIFIED LOCAL تكامل المنتجات: قفل حوكمة للمؤسسة تحت RLS، Kernel GUARD مغلق عند الفشل، مراجعة HIGH وتصعيد Firewall بلا إرسال، وتراجع ذري للأدلة الإلزامية؛ PostgreSQL18 والتزامن وChrome LAB/GUARD PASS؛ Kernel REQUEST_APPROVAL العام يحجب واستئناف المزود غير مهيأ؛ `docs/PRODUCT-INTEGRATION-MATRIX.md`.
--
+
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-26] — إغلاق دورة Human Gate وLedger
+- **تم:** مراجعة عقد lifecycle الحالي وتوثيق حدود التحقق؛ لا تعديل كود دون إعادة إنتاج فشل 403.
+- **التحقق:** unit 4 PASS؛ DB integration 1 SKIP لغياب fixture المحلي؛ Neon staging غير ظاهر؛ public demo chain NOT IMPLEMENTED.
+- **الحالة:** BLOCKED؛ لا كتابة إنتاج أو staging. `Audit/human-gate-ledger-lifecycle-2026-11-26.md`.
 
 ## [2026-11-26] — ربط استعادة التحويل P0
 - **تم:** استلام مؤسسي بإيصال ومفتاح إعادة محاولة، وإتاحة 48 ساعة مشروطة بصلاحيات التجربة؛ MagicPath يحيل إلى صفحة التواصل.
