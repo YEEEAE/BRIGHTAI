@@ -124,6 +124,7 @@ const methodSchemas = {
   'POST /app/api/risk-engine/assist': z.strictObject({ purpose: shortReason, data_classification: z.enum(classifications), synthetic: z.boolean() }),
   'POST /app/api/kernel': z.strictObject({ name: text(2, 100) }),
   'PATCH /app/api/kernel/products': z.strictObject({ slug: product, status: z.enum(['FOUNDATION', 'ENABLED', 'DISABLED']), version: z.number().int().positive() }),
+  'POST /app/api/kernel/pilot-report': z.strictObject({ from: z.iso.datetime(), until: z.iso.datetime() }),
   'POST /app/api/kernel/members': z.discriminatedUnion('operation', [
     z.strictObject({ operation: z.literal('set-role'), userId: id, role: z.enum(['ADMIN', 'MEMBER']) }),
     z.strictObject({ operation: z.literal('revoke'), userId: id }),

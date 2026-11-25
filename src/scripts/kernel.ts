@@ -280,7 +280,24 @@ function renderDepartments(departments: any) {
     departmentsList.append(item);
   }
 }
+const exportButton = root.querySelector<HTMLButtonElement>('[data-pilot-report]')!;
+exportButton.addEventListener('click', () => void adminRun(async () => {
+  const workspace = currentTenant?.tenant_id;
+  if (!workspace) return;
+  const until = new Date();
+  const from = new Date(until.getTime() - 86400000);
+  const result = await endpoint('pilot-report', 'POST', { from: from.toISOString(), until: until.toISOString() }, workspace);
+  if (currentTenant?.tenant_id !== workspace) return;
+  const url = URL.createObjectURL(new Blob([JSON.stringify(result)], { type: 'application/json' }));
+  const download = document.createElement('a');
+  download.href = url;
+  download.download = 'brightai-pilot-report-' + workspace + '.json';
+  download.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  adminStatus.textContent = 'أُعدّ التقرير للتنزيل.';
+}));
 async function renderMembers(data: any) {
+  exportButton.hidden = !data.canManage;
   membersList.replaceChildren();
   memberPage = data.page;
   memberPagination.hidden = memberPage === 1 && !data.hasMore;

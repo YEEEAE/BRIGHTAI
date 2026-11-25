@@ -59,6 +59,7 @@ export const responseSchemas = {
   'GET /app/api/kernel/health': z.object({ status: z.string(), state: z.string(), checks: record, configuration: record }),
   'GET /app/api/kernel/invitations': z.object({ available: z.boolean(), invitations: rows }),
   'GET /app/api/kernel/members': page.extend({ tenant: record, memberships: rows, canManage: z.boolean(), members: rows.max(100), invitation: record }),
+  'POST /app/api/kernel/pilot-report': z.strictObject({ report: record, sha256: z.string().regex(/^[a-f0-9]{64}$/), receipt: id }),
   'POST /app/api/kernel/members': persisted,
   'PATCH /app/api/kernel/products': persisted.extend({ status: z.string(), version }),
   'GET /app/api/kernel/policies': z.union([z.object({ policies: rows, departments: rows }), policyHistory]),

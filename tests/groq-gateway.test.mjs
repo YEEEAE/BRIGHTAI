@@ -18,6 +18,14 @@ function fixture(t, fetchImpl, extra={}) {
   t.after(()=>{ for(const k of Object.keys(process.env)) if(!(k in prior)) delete process.env[k]; Object.assign(process.env,prior); rmSync(dir,{recursive:true,force:true}); });
   return createGroqGateway({registry:[model],fetchImpl,...extra});
 }
+test('incident switch stops requests before provider contact or budget reservation', async t => {
+  let calls = 0;
+  const gateway = fixture(t, async () => { calls++; return ok(); });
+  process.env.AIGAS_GROQ_DISABLED = 'true';
+  await assert.rejects(gateway({ model, messages: [] }), { code: 'PROVIDER_NOT_CONFIGURED' });
+  assert.equal(calls, 0);
+  assert.deepEqual(JSON.parse(readFileSync(process.env.AIGAS_GROQ_BUDGET_FILE)), emptyLedger());
+});
 test('200 governed body and actual cost persisted across gateway instances',async t=>{
   const gateway=fixture(t,async(url,init)=>{const b=JSON.parse(init.body);assert.equal(b.reasoning_effort,'none');assert.equal(b.temperature,0.7);assert.equal(b.top_p,0.8);assert.equal(b.stream,false);assert.equal(b.n,1);assert.equal(b.reasoning_format,undefined);return ok();});
   await gateway({model,messages:[]});

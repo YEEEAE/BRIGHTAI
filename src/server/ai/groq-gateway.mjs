@@ -96,6 +96,7 @@ async function json(response) {
 }
 
 function gatewaySettings(model) {
+  if (process.env.AIGAS_GROQ_DISABLED === 'true') throw failure('PROVIDER_NOT_CONFIGURED');
   let key;
   try { key = resolveProviderSecret(model.apiKeyEnv); } catch { throw failure('PROVIDER_NOT_CONFIGURED'); }
   const path = process.env.AIGAS_GROQ_BUDGET_FILE;

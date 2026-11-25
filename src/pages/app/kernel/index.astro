@@ -72,6 +72,7 @@ const signupPath = `/auth/sign-up/${intendedProduct ? `?returnTo=${encodeURIComp
     <div class="ops-row">
       <Card class="panel members" aria-labelledby="members-title">
         <div class="section-heading"><div><p class="overline">03 / MEMBERS</p><h2 id="members-title">أعضاء المؤسسة</h2></div><span class="count" data-member-count></span></div>
+        <Button hidden type="button" variant="secondary" data-pilot-report>تنزيل سجل التدقيق واستخدام التجربة لآخر 24 ساعة</Button>
         <p data-members-state role="status" aria-live="polite">تُحمّل الأعضاء بعد التحقق من العضوية.</p>
         <ul class="member-list" data-members></ul>
         <div data-members-pagination hidden>

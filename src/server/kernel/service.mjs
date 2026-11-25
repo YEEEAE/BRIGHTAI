@@ -238,3 +238,27 @@ export async function operationalHealth() {
     return { status: 'degraded', state: errorType === 'SCHEMA_MISSING' ? 'blocked' : 'degraded', errorType, updatedAt, configuration: { ...configuration, schema: errorType === 'SCHEMA_MISSING' ? 'UNCONFIGURED' : 'UNKNOWN', administration: 'UNKNOWN' }, checks };
   }
 }
+
+export function pilotReport(identity, workspace, { from, until }) {
+  const duration = Date.parse(until) - Date.parse(from);
+  if (!(duration > 0 && duration <= 31 * 86400000)) {
+    throw new KernelError(400, 'INVALID_PERIOD', 'حدد فترة موجبة لا تتجاوز 31 يومًا.');
+  }
+  return transaction(async db => {
+    const { tenant } = await tenantGuard(identity, workspace, db);
+    if (!tenant) throw new KernelError(403, 'NO_WORKSPACE', 'يلزم تحديد مؤسسة.');
+    requireRole(await lockMember(db, identity, tenant), ['OWNER', 'ADMIN']);
+    const scope = [tenant.tenant_id, from, until];
+    const events = (await db.query(
+      'SELECT id, action, created_at FROM public.aigas_audit_events WHERE tenant_id=$1 AND created_at >= $2 AND created_at < $3 ORDER BY created_at,id LIMIT 1001', scope
+    )).rows;
+    if (events.length > 1000) throw new KernelError(422, 'EXPORT_LIMIT', 'اختر فترة أقصر لتصدير كل الأحداث.');
+    const usage = (await db.query(
+      'SELECT product_slug, sum(units)::text AS reserved_units FROM public.aigas_trial_quota_reservations WHERE tenant_id=$1 AND allowed AND created_at >= $2 AND created_at < $3 GROUP BY product_slug ORDER BY product_slug', scope
+    )).rows;
+    const report = { workspace: tenant.tenant_id, from, until, count: events.length, events, trialUsage: usage };
+    const sha256 = createHash('sha256').update(JSON.stringify(report)).digest('hex');
+    const receipt = await audit(db, identity, tenant.tenant_id, 'PILOT_REPORT_EXPORTED');
+    return { report, sha256, receipt };
+  });
+}

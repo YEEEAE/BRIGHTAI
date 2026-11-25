@@ -3,7 +3,7 @@ import { localDatabaseUrl, installSchema, grantProduct, runtime } from './helper
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import pg from 'pg';
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 const url=localDatabaseUrl('KERNEL_TEST_DATABASE_URL');
 test('Kernel DB: real product state, tenant-scoped totals, activity and member roles', { skip: !url }, async () => {
   const pool = new pg.Pool({ connectionString: url, max: 5 });
@@ -51,7 +51,7 @@ test('Kernel DB: real product state, tenant-scoped totals, activity and member r
     process.env.AIGAS_REQUIRE_RLS='true';
     delete process.env.NEON_AUTH_BASE_URL; delete process.env.NEON_AUTH_URL;
     delete process.env.NEON_AUTH_JWKS_URL; delete process.env.NEON_JWKS_URL;
-    const { dashboard, tenantMembers, operationalHealth } = await import('../src/server/kernel/service.mjs');
+    const { dashboard, tenantMembers, operationalHealth, pilotReport } = await import('../src/server/kernel/service.mjs');
     const seen = await dashboard({ userId: owner });
     assert.equal(seen.tenant.tenant_id, a);
     assert.equal(seen.connection, 'CONNECTED');
@@ -73,6 +73,13 @@ test('Kernel DB: real product state, tenant-scoped totals, activity and member r
     const elsewhere = await dashboard({ userId: outsider });
     assert.equal(elsewhere.tenant.tenant_id, b);
     assert.equal(elsewhere.summary.members, 1); assert.equal(elsewhere.summary.events, 1);
+    const period = { from: new Date(Date.now()-86400000).toISOString(), until: new Date(Date.now()+60000).toISOString() };
+    await assert.rejects(pilotReport({ userId: outsider }, a, period), { status: 403 });
+    await assert.rejects(pilotReport({ userId: member }, a, period), { status: 403 });
+    const exported = await pilotReport({ userId: admin }, a, period);
+    assert.equal(exported.report.count, 2);
+    assert.equal(exported.sha256, createHash('sha256').update(JSON.stringify(exported.report)).digest('hex'));
+    assert.equal((await pool.query('SELECT action FROM aigas_audit_events WHERE tenant_id=$1 AND id=$2', [a, exported.receipt])).rows[0].action, 'PILOT_REPORT_EXPORTED');
     // Membership in one tenant never authorizes another.
     await assert.rejects(dashboard({ userId: outsider }, a), { status: 403 });
     await assert.rejects(tenantMembers({ userId: outsider }, a), { status: 403 });

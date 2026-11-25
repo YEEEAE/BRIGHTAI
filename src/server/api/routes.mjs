@@ -19,6 +19,7 @@ const endpoints = {
   '/app/api/kernel': 'GET POST',
   '/app/api/kernel/health': 'GET',
   '/app/api/kernel/invitations': 'GET',
+  '/app/api/kernel/pilot-report': 'POST',
   '/app/api/kernel/members': 'GET POST',
   '/app/api/kernel/policies': 'GET POST',
   '/app/api/kernel/products': 'PATCH',
