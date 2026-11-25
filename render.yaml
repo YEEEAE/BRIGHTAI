@@ -6,6 +6,7 @@ services:
   - type: web
     runtime: node
     name: brightai-site
+    autoDeployTrigger: off
     # The committed lockfile is package-lock.json; no pnpm lockfile is present.
     buildCommand: npm ci && npm run build
     # Operator: attach the domain to this Node web service, not dist/client.
@@ -16,7 +17,7 @@ services:
     healthCheckPath: /readyz/
     envVars:
       - key: NODE_VERSION
-        value: 22.22.2
+        value: 22.23.5
       - key: HOST
         value: 0.0.0.0
       - key: PORT

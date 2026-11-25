@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": "22.x"
+    "node": "22.23.5",
+    "npm": "10.9.7"
   },
   "scripts": {
     "dev": "astro dev",
@@ -21,12 +22,12 @@
     "test:security:smoke": "node tests/security-headers-smoke.mjs"
   },
   "dependencies": {
-    "@astrojs/node": "^10.1.4",
+    "@astrojs/node": "11.1.14",
     "@astrojs/sitemap": "^3.7.4",
     "@neon/config": "^1.10.0",
     "@neon/env": "^1.6.8",
     "@neon/neon-js": "^0.10.2",
-    "astro": "^6.0.0",
+    "astro": "7.4.13",
     "jose": "^6.2.14",
     "pg": "^8.23.1",
     "react-useanimations": "^3.1.1",

@@ -21,6 +21,16 @@
 
 ## Ledger (الأحدث أولًا)
 
+## [2026-11-26] — مرشّح Node SSR P0
+- **تم:** Astro 7.4.13 / Node adapter 11.1.14 / Node 22.23.5؛ إبقاء الحواجز والبوابة مغلقة؛ `docs/NODE-P0-DEPLOY-HANDOFF.md`.
+- **التحقق:** build وhealth 16/16 وChrome smoke PASS؛ npm audit صفر؛ Auth E2E FAIL عند `/products/`؛ CI المرشّح وRender staging NOT VERIFIED.
+- **الحالة:** PARTIAL / NO-GO؛ مرحلة 01 شرط للتفعيل؛ لا نشر ولا DNS.
+
+## [2026-11-26] — مطابقة Schema وRLS
+- **تم:** Neon قراءة فقط: production بقيد Ledger الثلاثي وبلا runtime/ledger receipts؛ staging قيد خماسي و32 إيصالًا مطابقًا حتى 0036.
+- **التحقق:** rehearsal محلي PASS؛ مصفوفة RLS ثلاث حالات FAIL؛ قبول staging والاستعادة NOT RUN.
+- **الحالة:** PARTIAL؛ لا ربط مؤسسي. `Audit/schema-parity.md`.
+
 ## [2026-11-25] — مختبر الحوكمة الموحّد
 - **تم:** `/demo/governance/` لأربعة منتجات بسياق اصطناعي لكل صفحة ونافذة 30 دقيقة، مع مسار 48 ساعة مستقل.
 - **التحقق:** Node 7/7 وChrome للمختبر وPostgreSQL لعزل التجربة PASS؛ build الشجرة يتعطل بمسار design-system مكرر على HEAD، والبناء المعزول PASS.

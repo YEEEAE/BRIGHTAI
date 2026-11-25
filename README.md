@@ -115,7 +115,7 @@ KERNEL_AUTH_E2E_DATABASE_URL=postgresql://postgres@127.0.0.1:5432/brightai_auth_
 
 ## فحص تشغيل Node بعد النشر على Render
 
-يضبط `render.yaml` خدمة Node على الإصدار `22.22.2` والمنفذ `10000` مع الاستماع على `0.0.0.0`. تستخدم الخدمة `npm ci && npm run build` للبناء و`npm start` للتشغيل. يختبر Render المسار `/readyz/`. تجاوز كاش الحافة لكلا الفحصين بصيغتيهما.
+يضبط `render.yaml` مرشّح خدمة Node على الإصدار `22.23.5` والمنفذ `10000` مع الاستماع على `0.0.0.0`. تستخدم الخدمة `npm ci && npm run build` للبناء و`npm start` للتشغيل. يختبر Render المسار `/readyz/`. تجاوز كاش الحافة لكلا الفحصين بصيغتيهما. راجع [تسليم نشر Node المعزول](docs/NODE-P0-DEPLOY-HANDOFF.md) قبل أي تغيير على Render.
 
 | المسار | النتيجة المتوقعة |
 |---|---|
