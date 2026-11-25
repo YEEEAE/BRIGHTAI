@@ -1,0 +1,5 @@
+# Session and tenant isolation — partial source review
+
+`src/server/kernel/db.mjs:105` sets transaction-local tenant/user context; `src/server/secure-chat/requests.mjs:25` checks product access before setting Secure Chat aggregate context. `src/server/secure-chat/service.mjs:52` derives identity from authentication and resolves workspace through server membership. Workspace selection in a query is a selector, not proof of authorization. `src/server/api/origin.mjs` and middleware govern Origin separately from access.
+
+The public governance demo creates a synthetic in-memory session with a 30-minute window (`src/demo/governance.mjs:5`–`:29`); this observation does not prove the absence of all network paths or isolation across every public route. Enterprise data uses PostgreSQL under runtime role/RLS when properly configured; source alone does not establish the target role, migrations or RLS posture. Full cross-tenant, expired-session, replay and browser history tests on the intended build remain open. No production write is authorized by this report.
