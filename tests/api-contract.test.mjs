@@ -134,6 +134,16 @@ test('rejects malformed dynamic IDs, duplicate filters and paths outside the inv
   await errorOf(await fetch(new URL('/api/unknown/', base)), 404);
 });
 
+test('policy history accepts independent bounded page parameters on HTTP', async () => {
+  const url = new URL('/app/api/kernel/policies/', base);
+  url.searchParams.set('versions_page', '2');
+  await errorOf(await fetch(url), 400);
+  url.searchParams.set('policy_id', uuid);
+  url.searchParams.set('approvals_page', '3');
+  await errorOf(await fetch(url), 401);
+  url.searchParams.set('approvals_page', '1000');
+  await errorOf(await fetch(url), 400);
+});
 test('unexpected failures lose internal exception contents and CORS headers', async () => {
   const path = '/api/measurement-status/';
   const request = new Request('https://brightai.live' + path);

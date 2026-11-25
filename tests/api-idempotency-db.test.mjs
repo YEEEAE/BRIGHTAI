@@ -25,7 +25,19 @@ test('workspace creation replay is atomic, payload-bound and isolated by actor',
     assert.equal(await createWorkspace(actor, ' Synthetic workspace ', key), first);
     await assert.rejects(createWorkspace(actor, 'Different workspace', key), { status: 409, code: 'IDEMPOTENCY_CONFLICT' });
     await assert.rejects(createWorkspace(actor, 'Different workspace', 'bad key'), { status: 400 });
-    assert.notEqual(await createWorkspace(other, 'Different workspace', key), first);
+    const otherWorkspace = await createWorkspace(other, 'Different workspace', key);
+    assert.notEqual(otherWorkspace, first);
+    const { reserveRiskAssist } = await import('../src/server/risk-engine/assist.mjs');
+    const fingerprint = 'a'.repeat(64);
+    const attempts = await Promise.allSettled([
+      reserveRiskAssist(actor, first, key, fingerprint),
+      reserveRiskAssist(actor, first, key, fingerprint),
+    ]);
+    assert.equal(attempts.filter(result => result.status === 'fulfilled').length, 1);
+    assert.equal(attempts.find(result => result.status === 'rejected').reason.code, 'ASSIST_ALREADY_ATTEMPTED');
+    await assert.rejects(reserveRiskAssist(actor, first, key, 'b'.repeat(64)), { status: 409, code: 'IDEMPOTENCY_CONFLICT' });
+    await assert.rejects(reserveRiskAssist(other, first, key, fingerprint));
+    await reserveRiskAssist(other, otherWorkspace, key, fingerprint);
     assert.equal((await pool.query('SELECT count(*)::int AS n FROM public.aigas_tenants')).rows[0].n, 2);
     assert.equal((await pool.query("SELECT count(*)::int AS n FROM public.aigas_audit_events WHERE action='workspace.created'")).rows[0].n, 2);
     const client = await pool.connect();

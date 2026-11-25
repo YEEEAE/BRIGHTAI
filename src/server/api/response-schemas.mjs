@@ -13,6 +13,20 @@ const release = { version: z.string().nullable(), commit: z.string().regex(/^[a-
 const success = z.strictObject({ success: z.literal(true) });
 const authSignIn = z.union([z.object({ user: record }), z.strictObject({ twoFactorRedirect: z.literal(true) })]);
 const firewallDashboard = z.object({ rules: rows.max(25), decisions: rows.max(12), page: version, hasNext: z.boolean(), tenant: record });
+const policyHistory = z.strictObject({
+  policyId: id,
+  versions: z.array(z.strictObject({
+    version, status: z.string(), conditions: record, effect: z.string(), obligations: z.array(z.string()),
+    is_mandatory: z.boolean(), required_approvals: version, effective_from: instant.nullable(),
+    expires_at: instant.nullable(), checksum: z.string(), change_reason: z.string(), created_by: id,
+    approved_by: id.nullable(), created_at: instant, published_at: instant.nullable(),
+  })).max(50),
+  approvals: z.array(z.strictObject({
+    version, action: z.string(), actor_user_id: id, reason: z.string(), created_at: instant,
+  })).max(50),
+  versionsPage: version.max(999), approvalsPage: version.max(999),
+  hasMoreVersions: z.boolean(), hasMoreApprovals: z.boolean(),
+});
 const authInvitation = z.object({ invitation: record });
 
 export const responseSchemas = {
@@ -47,9 +61,9 @@ export const responseSchemas = {
   'GET /app/api/kernel/members': page.extend({ tenant: record, memberships: rows, canManage: z.boolean(), members: rows.max(100), invitation: record }),
   'POST /app/api/kernel/members': persisted,
   'PATCH /app/api/kernel/products': persisted.extend({ status: z.string(), version }),
-  'GET /app/api/kernel/policies': z.union([z.object({ policies: rows, departments: rows }), z.object({ policyId: id, versions: rows, approvals: rows })]),
+  'GET /app/api/kernel/policies': z.union([z.object({ policies: rows, departments: rows }), policyHistory]),
   'POST /app/api/kernel/policies': z.union([
-    z.object({ policies: rows, departments: rows }), z.object({ policyId: id, versions: rows, approvals: rows }),
+    z.object({ policies: rows, departments: rows }), policyHistory,
     z.object({ policyId: id, status: z.string(), version }), z.object({ departmentId: id, status: z.string() }),
     z.object({ userId: id, status: z.string(), action: z.literal('APPROVE') }),
   ]),

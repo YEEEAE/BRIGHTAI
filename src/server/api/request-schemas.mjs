@@ -70,7 +70,7 @@ const definition = z.strictObject({
 });
 const policyOperation = z.discriminatedUnion('operation', [
   z.strictObject({ operation: z.literal('list') }),
-  z.strictObject({ operation: z.literal('history'), policyId: id }),
+  z.strictObject({ operation: z.literal('history'), policyId: id, versionsPage: z.number().int().min(1).max(999).optional(), approvalsPage: z.number().int().min(1).max(999).optional() }),
   z.strictObject({ operation: z.literal('create'), definition }),
   z.strictObject({ operation: z.literal('revise'), definition, policyId: id, expectedVersion: z.number().int().nonnegative() }),
   z.strictObject({ operation: z.literal('department-create'), name: text(2, 100), reason: policyText }),

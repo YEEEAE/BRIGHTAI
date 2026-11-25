@@ -42,9 +42,29 @@ test('output protection and provider failures fail closed',async()=>{
 test('HTTP authenticates, checks origin/size/content type and hides unknown failures',async()=>{
  let calls=0;
  const handler=createAssistHandler(async()=>({userId:'actor'}),async()=>{calls++;return {draft,advisory_only:true};});
- const req=(patch={})=>new Request('https://example.test/app/api/risk-engine/assist/?workspace=a',{method:'POST',headers:{origin:'https://example.test','content-type':'application/json'},body:JSON.stringify(body),...patch});
+ const req=(patch={})=>new Request('https://brightai.live/app/api/risk-engine/assist/?workspace=a',{method:'POST',headers:{origin:'https://brightai.live','content-type':'application/json'},body:JSON.stringify(body),...patch});
  assert.equal((await handler(req())).status,200);assert.equal(calls,1);
- for(const request of [req({headers:{origin:'https://evil.test','content-type':'application/json'}}),req({headers:{origin:'https://example.test'}}),req({body:'x'.repeat(8193)})])assert.ok((await handler(request)).status>=400);
+ for(const request of [req({headers:{origin:'https://evil.test','content-type':'application/json'}}),req({headers:{origin:'https://brightai.live'}}),req({body:'x'.repeat(8193)})])assert.ok((await handler(request)).status>=400);
  assert.equal(calls,1);
  const denied=createAssistHandler(async()=>{throw Error('secret');},async()=>{throw Error('never');});const res=await denied(req());assert.equal(res.status,503);assert.ok(!(await res.text()).includes('secret'));assert.match(res.headers.get('cache-control'),/no-store/);
+});
+
+
+test('a consumed Risk Assist key suppresses provider retries after ambiguous failure', async () => {
+ let attempts = 0;
+ const seen = new Map();
+ const f = fixture({
+  reserve: async (_actor, _tenant, key, fingerprint) => {
+   if (seen.has(key)) throw Object.assign(new Error(), {
+    code: seen.get(key) === fingerprint ? 'ASSIST_ALREADY_ATTEMPTED' : 'IDEMPOTENCY_CONFLICT',
+   });
+   seen.set(key, fingerprint);
+  },
+  request: async () => { attempts++; throw new Error('provider connection lost'); },
+ });
+ const send = input => f.assist({userId:'actor'}, 'tenant-a', input, undefined, 'key-1');
+ await assert.rejects(send(body), /connection lost/);
+ await assert.rejects(send(body), {code:'ASSIST_ALREADY_ATTEMPTED'});
+ await assert.rejects(send({...body,purpose:'وصف اصطناعي مختلف'}), {code:'IDEMPOTENCY_CONFLICT'});
+ assert.equal(attempts, 1);
 });

@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import pg from 'pg';
+import { responseSchemas } from '../src/server/api/response-schemas.mjs';
 import { grantProduct, installSchema, localDatabaseUrl } from './helpers/database.mjs';
 
 // Explicit disposable localhost DB only. The app connection is switched to the
@@ -91,6 +92,18 @@ test('AU02/AU05/AU06/AU07 runtime: identity-scoped memberships, member races and
     await assert.rejects(policyOperation({ userId: ids.owner1 }, a, { operation: 'approve', policyId: allow.policyId, version: 1, reason: 'اعتماد ذاتي مرفوض' }), { status: 403, code: 'SEPARATION_OF_DUTIES' });
     assert.equal((await policyOperation({ userId: ids.admin1 }, a, { operation: 'approve', policyId: allow.policyId, version: 1, reason: 'اعتماد مفوض' })).status, 'APPROVED');
     assert.equal((await policyOperation({ userId: ids.owner2 }, a, { operation: 'publish', policyId: allow.policyId, version: 1, expectedVersion: 0, reason: 'نشر الاختبار' })).status, 'PUBLISHED');
+    const history = { operation: 'history', policyId: allow.policyId };
+    const firstPage = await policyOperation({ userId: ids.owner2 }, a, history);
+    responseSchemas['GET /app/api/kernel/policies'].parse(JSON.parse(JSON.stringify(firstPage)));
+    assert.equal(firstPage.versions[0].version, 1);
+    assert.equal(firstPage.hasMoreVersions, false);
+    assert.ok(firstPage.approvals.length > 0);
+    const nextPage = await policyOperation({ userId: ids.owner2 }, a, { ...history, versionsPage: 2 });
+    assert.deepEqual(nextPage.versions, []);
+    assert.deepEqual(nextPage.approvals, firstPage.approvals);
+    await assert.rejects(policyOperation({ userId: ids.owner2 }, a, { ...history, approvalsPage: 1000 }), { status: 400, code: 'INVALID_PAGE' });
+    await assert.rejects(policyOperation({ userId: ids.owner2 }, a, { ...history, policyId: randomUUID() }), { status: 404, code: 'POLICY_NOT_FOUND' });
+
     assert.equal((await evaluate({ userId: ids.member1 }, a, { operation: 'chat.send', productSlug: 'secure-chat', resource_type: 'message' })).decision, 'ALLOW');
 
     const mandatory = await policyOperation({ userId: ids.owner1 }, a, { operation: 'create', definition: definition({ ruleKey: 'deny-secret', effect: 'HARD_DENY', mandatory: true }) });

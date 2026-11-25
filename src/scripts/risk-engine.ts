@@ -14,6 +14,7 @@ const stateLabels:Record<string,string>={CURRENT:'السجل محدّث للنس
 const node=(tag:string,value:string)=>{const el=document.createElement(tag);el.textContent=value;return el;};
 const time=(value:string)=>new Date(value).toLocaleString('ar-SA',{timeZone:'Asia/Riyadh'});
 function clear(){area.hidden=true;get('[data-assets]').replaceChildren();get('[data-history]').replaceChildren();get('[data-revisions]').replaceChildren();get('[data-summary]').replaceChildren();get('[data-actions]').replaceChildren();get('[data-treatments]').replaceChildren();treatmentForm.reset();treatmentForm.hidden=true;archiveForm.reset();archiveForm.hidden=true;treatmentData=null;workspace.replaceChildren();get('[data-role]').textContent='';get('[data-selected-title]').textContent='';get('[data-selected-description]').textContent='';recordState.textContent='';exportState.textContent='';residualPreview.textContent='';selected=null;editing=null;assetForm.reset();assessmentForm.reset();get('[data-editor]').hidden=true;get('[data-detail]').hidden=true;}
+let pendingAssist: { fingerprint: string; key: string } | undefined;
 async function api(path='',body?:object,method=body?'POST':'GET',history=false,resource='assets'){
  if(!auth)throw new Error('يلزم إعداد الدخول عبر Neon Auth.');
  const session=await getWorkspaceSession(auth),token=await auth.getJWTToken();
@@ -21,8 +22,14 @@ async function api(path='',body?:object,method=body?'POST':'GET',history=false,r
  const query=new URLSearchParams(method==='GET'&&resource!=='export'?{page:String(resource==='actions'?actionsPage:history?historyPage:path.endsWith('/revisions/')?revisionsPage:path.endsWith('/treatments/')?treatmentPage:page)}:{});if(workspace.value)query.set('workspace',workspace.value);
  if(method==='GET'&&!path&&resource==='assets'){for(const key of ['q','classification','risk_level','assessment_status']){const value=(filterForm.elements.namedItem(key) as HTMLInputElement).value;if(value)query.set(key,value);}}
  if(resource==='actions')for(const key of ['treatment_status','due']){const value=(actionsFilter.elements.namedItem(key) as HTMLSelectElement).value;if(value)query.set(key,value);}
- const response=await appFetch(auth!, `/app/api/risk-engine/${resource==='assets'?'assets/'+path:resource+'/'}?${query}`,{method,cache:'no-store',headers:{Authorization:`Bearer ${token}`,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})});
- const data=await response.json();if(!response.ok)throw Object.assign(new Error(dependencyErrorMessage(data.message||'تعذر إكمال العملية؛ لم يُؤكد الحفظ.',data.dependencyStatus)),{status:response.status,code:data.code});return data;
+ const assistFingerprint = resource === 'assist' ? JSON.stringify([session.data.user.id, query.get('workspace'), body]) : null;
+ if (assistFingerprint && pendingAssist?.fingerprint !== assistFingerprint) {
+   pendingAssist = { fingerprint: assistFingerprint, key: crypto.randomUUID() };
+ }
+ const response=await appFetch(auth!, `/app/api/risk-engine/${resource==='assets'?'assets/'+path:resource+'/'}?${query}`,{method,cache:'no-store',headers:{Authorization:`Bearer ${token}`,...(body?{'Content-Type':'application/json'}:{}), ...(assistFingerprint && pendingAssist ? {'Idempotency-Key':pendingAssist.key} : {})},...(body?{body:JSON.stringify(body)}:{})});
+ const data=await response.json();if(!response.ok)throw Object.assign(new Error(dependencyErrorMessage(data.message||'تعذر إكمال العملية؛ لم يُؤكد الحفظ.',data.dependencyStatus)),{status:response.status,code:data.code});
+ if (assistFingerprint) pendingAssist = undefined;
+ return data;
 }
 function sync(){get<HTMLButtonElement>('[data-treatment-prev]').disabled=busy||treatmentPage===1;get<HTMLButtonElement>('[data-treatment-next]').disabled=busy||!treatmentMore;get<HTMLButtonElement>('[data-actions-prev]').disabled=busy||actionsPage===1;get<HTMLButtonElement>('[data-actions-next]').disabled=busy||!actionsMore;syncTreatment();root.querySelectorAll<HTMLElement>('[data-write]').forEach(el=>el.hidden=!canWrite);get<HTMLButtonElement>('[data-archive-open]').hidden=!canWrite||selected?.lifecycle_status!=='ACTIVE';get<HTMLButtonElement>('[data-prev]').disabled=busy||page===1;get<HTMLButtonElement>('[data-next]').disabled=busy||!hasMore;get<HTMLButtonElement>('[data-history-prev]').disabled=busy||historyPage===1;get<HTMLButtonElement>('[data-history-next]').disabled=busy||!historyMore;get<HTMLButtonElement>('[data-revisions-prev]').disabled=busy||revisionsPage===1;get<HTMLButtonElement>('[data-revisions-next]').disabled=busy||!revisionsMore;}
 async function run(task:()=>Promise<void|string>,success='تمت قراءة البيانات من الخادم.',errorNode?:HTMLElement){

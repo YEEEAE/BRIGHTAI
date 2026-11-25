@@ -75,7 +75,7 @@ async function reviewSchema(db) {
 export async function policyOperation(identity, workspace, body) {
   const op = body.operation;
   if (!['list','history','department-create','department-member-add','department-member-remove','delegate-approver','revoke-approver','create','revise','submit','approve','withdraw','publish','retire'].includes(op)) throw new KernelError(404,'NOT_FOUND','عملية سياسة غير موجودة.');
-  const topLevelKeys = op==='create' ? ['operation','definition'] : op==='revise' ? ['operation','definition','policyId','expectedVersion'] : op==='department-create' ? ['operation','name','reason'] : op==='department-member-add'||op==='department-member-remove' ? ['operation','departmentId','userId','reason'] : op==='delegate-approver' ? ['operation','userId','expiresAt','reason'] : op==='revoke-approver' ? ['operation','userId','reason'] : op==='list' ? ['operation'] : op==='history' ? ['operation','policyId'] : op==='publish' ? ['operation','policyId','version','expectedVersion','reason'] : ['operation','policyId','version','reason'];
+  const topLevelKeys = op==='create' ? ['operation','definition'] : op==='revise' ? ['operation','definition','policyId','expectedVersion'] : op==='department-create' ? ['operation','name','reason'] : op==='department-member-add'||op==='department-member-remove' ? ['operation','departmentId','userId','reason'] : op==='delegate-approver' ? ['operation','userId','expiresAt','reason'] : op==='revoke-approver' ? ['operation','userId','reason'] : op==='list' ? ['operation'] : op==='history' ? ['operation','policyId','versionsPage','approvalsPage'] : op==='publish' ? ['operation','policyId','version','expectedVersion','reason'] : ['operation','policyId','version','reason'];
   if (Object.keys(body).some(key=>!topLevelKeys.includes(key))) throw new KernelError(400,'INVALID_BODY','حقول الطلب غير مسموحة.');
   return transaction(async db => {
     const reviewRead=op==='list'||op==='history';
@@ -133,11 +133,24 @@ export async function policyOperation(identity, workspace, body) {
     }
     if (op==='history') {
       if (!uuid.test(body.policyId ?? '')) throw new KernelError(400,'INVALID_ID','معرف السياسة غير صالح.');
+      const { versionsPage = 1, approvalsPage = 1 } = body;
+      if (![versionsPage, approvalsPage].every(page => Number.isInteger(page) && page >= 1 && page <= 999)) {
+        throw new KernelError(400, 'INVALID_PAGE', 'رقم الصفحة غير صالح.');
+      }
+      const exists = await db.query('SELECT 1 FROM public.aigas_policy_versions WHERE tenant_id=$1 AND policy_id=$2 LIMIT 1', [tenantId, body.policyId]);
+      if (!exists.rowCount) throw new KernelError(404,'POLICY_NOT_FOUND','السياسة غير موجودة.');
       const requiredColumn = schema.requiredApprovals ? 'required_approvals' : '1::smallint AS required_approvals';
-      const versions=(await db.query(`SELECT version,status,conditions,effect,obligations,is_mandatory,${requiredColumn},effective_from,expires_at,checksum,change_reason,created_by,approved_by,created_at,published_at FROM public.aigas_policy_versions WHERE tenant_id=$1 AND policy_id=$2 ORDER BY version DESC`,[tenantId,body.policyId])).rows;
-      if (!versions.length) throw new KernelError(404,'POLICY_NOT_FOUND','السياسة غير موجودة.');
-      const approvals=(await db.query('SELECT version,action,actor_user_id,reason,created_at FROM public.aigas_policy_approvals WHERE tenant_id=$1 AND policy_id=$2 ORDER BY created_at, id',[tenantId,body.policyId])).rows;
-      return {policyId:body.policyId,versions,approvals};
+      const versions = (await db.query(`SELECT version,status,conditions,effect,obligations,is_mandatory,${requiredColumn},effective_from,expires_at,checksum,change_reason,created_by,approved_by,created_at,published_at FROM public.aigas_policy_versions WHERE tenant_id=$1 AND policy_id=$2 ORDER BY version DESC LIMIT 51 OFFSET $3`, [tenantId, body.policyId, (versionsPage - 1) * 50])).rows;
+      const approvals = (await db.query('SELECT version,action,actor_user_id,reason,created_at FROM public.aigas_policy_approvals WHERE tenant_id=$1 AND policy_id=$2 ORDER BY created_at,id LIMIT 51 OFFSET $3', [tenantId, body.policyId, (approvalsPage - 1) * 50])).rows;
+      return {
+        policyId: body.policyId,
+        versions: versions.slice(0, 50),
+        approvals: approvals.slice(0, 50),
+        versionsPage,
+        approvalsPage,
+        hasMoreVersions: versionsPage < 999 && versions.length > 50,
+        hasMoreApprovals: approvalsPage < 999 && approvals.length > 50,
+      };
     }
     if (op === 'department-create') {
       const name=text(body.name,2,100,'INVALID_DEPARTMENT');

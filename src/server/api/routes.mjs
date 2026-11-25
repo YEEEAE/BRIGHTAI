@@ -72,11 +72,14 @@ export function isApiSurface(path) {
   return /^\/(?:app\/api|auth\/api|api)(?:\/|$)/.test(path) || /^\/(?:healthz|readyz)\/?$/.test(path);
 }
 
-export function queryShape(path, method) {
+export function queryShape(path, method, params) {
   if (method === 'HEAD') method = 'GET';
   if (path === '/auth/api/organization/list-invitations') return { organizationId: z.string().min(1).max(128) };
   if (path === '/auth/api/get-session') return { disableCookieCache: z.enum(['true', 'false']), disableRefresh: z.enum(['true', 'false']) };
-  if (path === '/app/api/kernel/policies' && method === 'GET') return { ...workspaceQuery, policy_id: routeIdSchema };
+  if (path === '/app/api/kernel/policies' && method === 'GET') {
+    const page = z.string().regex(/^[1-9]\d{0,2}$/);
+    return params?.has('policy_id') ? { ...workspaceQuery, policy_id: routeIdSchema, versions_page: page, approvals_page: page } : workspaceQuery;
+  }
   if (method === 'GET' && ['/app/api/operator/trials', '/app/api/kernel/members'].includes(path)) {
     const page = z.string().regex(/^[1-9]\d{0,2}$/);
     return path.endsWith('/members') ? { ...workspaceQuery, page } : { page };

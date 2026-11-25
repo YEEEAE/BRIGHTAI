@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { errorSchema, idempotencyKeySchema, queryMatches } from './schemas.mjs';
 import { queryShape, resolveRoute } from './routes.mjs';
 
-const keyedCreates = new Set(['/app/api/kernel', '/app/api/human-gate/requests', '/app/api/risk-engine/assets']);
+const keyedCreates = new Set(['/app/api/kernel', '/app/api/human-gate/requests', '/app/api/risk-engine/assets', '/app/api/risk-engine/assist']);
 
 const statusErrors = {
   400: ['INVALID_REQUEST', 'بيانات الطلب غير صالحة.'],
@@ -33,13 +33,14 @@ export function apiError(status, requestId, input = {}) {
 export async function apiBoundary(request, path, next) {
   const requestId = randomUUID();
   const resolved = resolveRoute(path);
+  const params = new URL(request.url).searchParams;
   let response;
   let mapped;
   try {
     if (!resolved) response = new Response(null, { status: 404 });
     else if (!resolved.route.methods.includes(request.method)) {
       response = new Response(null, { status: 405, headers: { Allow: resolved.route.methods.join(', ') } });
-    } else if (!resolved.validParams || !queryMatches(new URL(request.url).searchParams, queryShape(resolved.route.path, request.method))) {
+    } else if (!resolved.validParams || !queryMatches(params, queryShape(resolved.route.path, request.method, params))) {
       response = new Response(null, { status: 400 });
       mapped = { code: 'INVALID_REQUEST' };
     } else if (request.headers?.has('Idempotency-Key')
