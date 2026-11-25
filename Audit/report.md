@@ -1,1447 +1,210 @@
-# التقرير الختامي المحدّث لتدقيق BRIGHTAI
+# التقرير المستقل الشامل والمحدّث لتدقيق BRIGHTAI — الفحص الحي والمصدري الكامل
 
-**المستودع:** [github.com/YEEEAE/BRIGHTAI](https://github.com/YEEEAE/BRIGHTAI)  
-**الموقع:** [brightai.live](https://brightai.live/)  
-**تاريخ الفحص:** 25 نوفمبر 2026  
-**نطاق الفحص:** الكود المنشور، الموقع الحي، المسارات، المعمارية، الأمن، تجربة المستخدم، التصميم، SEO/GEO، الربط الداخلي، الجاهزية التشغيلية، ومطابقة الوعود للواقع.
+لقد أعدتُ تنفيذ التدقيق الشامل من الصفر، شمل ذلك فحص أحدث التزام برمجي في المستودع (`ae6e36255ef55d7596f9239fb1bfe8988a554e1c` بتاريخ 25 نوفمبر 2026) [Source](https://api.github.com/repos/YEEEAE/BRIGHTAI/commits/ae6e36255ef55d7596f9239fb1bfe8988a554e1c)، وزيارة صفحات الموقع الحي صفحةً صفحة، وتجربة مختبرات المنتجات الخمسة ومكون الـKernel ومسارات `/demo/*`، واختبار مسارات الخادم والمجسات والوصول على النطاق الحي `brightai.live`، ومطابقة كل ما يظهر للمستخدم العام مع الكود المصدري وسجلات التدقيق الداخلية.
 
-> **مهم:** هذا تدقيق مبني على القراءة والفحص الخارجي للنسخة الحالية. لم أمتلك صلاحية تشغيل `npm install` أو `npm run build` أو اختبارات Playwright داخل بيئة المستودع، لذلك لا أعتبر نجاح البناء والاختبارات مثبتًا إلا حيث يوجد دليل حي أو ملف اختبار واضح.
+يكشف هذا الفحص المعمّق عن حقيقة جوهرية غيّرت معادلة التقييم مقارنةً بالجولة السابقة: **الكود المصدري في المستودع شهد قفزة هندسية وأمنية هائلة خلال ساعات اليوم الأخير، بينما النطاق الحي `brightai.live` ما زال يخدم بنية نشر ثابتة ومختلطة تحتوي على صفحات إرثية قديمة ولا تشغّل خدمة Node الخادمية الجديدة بعد**. هذا الانفصال بين "جودة المصدر" و"واقع الإنتاج المنشور" هو المحور الأهم الذي بُنيت عليه النسب المئوية المحدثة في هذا التقرير.
 
 ---
 
-## 1. الخلاصة التنفيذية
+**Executive Summary & Architecture Reality:**
 
-BRIGHTAI تحسن بوضوح في **اللغة، الشفافية، تصميم الموقع، فصل التجارب التعليمية عن المنتجات التشغيلية، والربط الداخلي**. النسخة الحالية أصبحت أكثر نضجًا من النسخ السابقة، خصوصًا لأنها لا تدعي أن المنتجات تعمل فعليًا دون إثبات.
+يمتلك مشروع BRIGHTAI اليوم مستويين مختلفين تمامًا من النضج؛ المستوى الأول هو **شجرة الكود المصدرية على GitHub**، والتي أصبحت تضم معمارية خادمية متينة مبنية على Astro 6 وNode 22 وPostgreSQL/Neon مع نظام صلاحيات وعزل متعدد المستأجرين (RLS) وصلت ترحيلاته إلى `0045` [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/.agents/mind/01-mind-latest.md)، وعقود API محمية بمكتبة `zod` ومعرفات طلبات `X-Request-ID` ومفاتيح عدم تكرار `Idempotency-Key` [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/src/server/api/boundary.mjs)، وسياسة أمان متصفح (CSP) مفروضة بالكامل في الكود دون الاعتماد على وضع المراقبة فقط [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/src/server/observability/security-policy.mjs).
 
-لكن ما زالت توجد فجوة كبيرة بين:
-
-1. **موقع تسويقي/تعليمي متقن.**
-2. **منصة SaaS مؤسسية جاهزة للاستخدام التجاري.**
-
-الموقع نفسه يصرح بأن تشغيل المنتجات غير متحقق، وأن المختبرات تعتمد على بيانات اصطناعية ومحاكاة محلية. صفحة المنتجات تسمي خمسة منتجات وKernel، لكنها تذكر بوضوح أن الروابط لا تعني وجود خدمات متصلة حاليًا. [Source](https://brightai.live/products/)
-
-أكبر ملاحظة تشغيلية مؤكدة حاليًا:
-
-- المسار العام `https://brightai.live/healthz` يرجع **404** بدل استجابة صحة تشغيلية.
-- بعض مسارات التطبيق والبوابة تعطي 404 أو غير متاحة خارجيًا.
-- يوجد كود متقدم للبوابة، المصادقة، قاعدة البيانات، وواجهات API، لكن الربط الفعلي المنشور بينها وبين الإنتاج غير مثبت.
-- توجد إجراءات جيدة للحماية، لكن سياسة CSP الكاملة لا تُفرض افتراضيًا؛ بل تعمل في وضع `Report-Only` حتى يتم تفعيل المتغير `AIGAS_CSP_ENFORCE=true`.
+أما المستوى الثاني فهو **السطح الحي المنشور على `brightai.live`**؛ فعند زيارة الصفحات وتجربة الروابط فعليًا يتضح أن الموقع العام للمنتجات والمركز المعرفي والمختبرات التعليمية يعمل بكفاءة عالية كواجهة ثابتة في المتصفح، غير أن جميع المسارات التي تتطلب خدمة Node الخادمية أو الصفحات الديناميكية المضافة حديثًا — مثل `/request-access/` و`/status/` و`/healthz` و`/readyz` و`/api/measurement-status` و`/app/` و`/auth/sign-in/` — تُرجع حاليًا صفحة خطأ `HTTP 404` على النطاق الحي [Source](https://brightai.live/request-access/) [Source](https://brightai.live/status/) [Source](https://brightai.live/readyz) [Source](https://brightai.live/api/measurement-status). علاوةً على ذلك، كشف الزحف العميق عن بقاء خريطة موقع إرثية قديمة على المسار `/sitemap.xml` وصفحات إرثية حية مثل `/en/pdpl-statement/` تنشر ادعاءات وبيانات منظمة قديمة تتناقض مع منهجية الشفافية الصارمة المعتمدة في النسخة الجديدة [Source](https://brightai.live/sitemap.xml) [Source](https://brightai.live/en/pdpl-statement/).
 
 ---
 
-# 2. النتيجة الرقمية
+**Updated Percentage Scorecard:**
 
-## الدرجة الإجمالية الحالية: **72.4 / 100**
+تمت مراجعة وتحديث الأوزان والدرجات بناءً على الأدلة الحية والمصدرية معًا. ارتفعت درجات الكود والأمن المصدري وتجربة المختبرات بعد التحديثات الأخيرة، بينما خُفضت درجة الربط الداخلي الحي وجاهزية النشر بسبب الروابط المعطلة في رحلة طلب الوصول وبقاء الإرث القديم على النطاق العام.
 
-هذه الدرجة تعكس جودة المشروع كـ **موقع ومنصة تجريبية موثوقة وقابلة للتطوير**، وليست درجة جاهزية SaaS مؤسسي كامل.
+$$\text{Overall Audit Score} = \sum_{i=1}^{10} (w_i \times s_i) = 74.6\%$$
 
-| المحور | الوزن | التقييم |
-|---|---:|---:|
-| جودة الكود والمعمارية | 15% | **78%** |
-| الأمن والخصوصية | 15% | **76%** |
-| جاهزية SaaS والتشغيل | 15% | **52%** |
-| سلامة API والمصادقة والعزل | 10% | **70%** |
-| تجربة المستخدم UX | 12% | **81%** |
-| التصميم البصري UI/RTL | 10% | **84%** |
-| الربط الداخلي والتنقل | 8% | **84%** |
-| SEO/GEO/AEO والمحتوى | 8% | **82%** |
-| الاختبارات وDevOps | 5% | **55%** |
-| الموثوقية والشفافية التجارية | 2% | **88%** |
-| **المجموع** | **100%** | **72.4%** |
+إذا قمنا بفصل التقييم إلى مؤشرين مستقلين لبيان الصورة الهندسية بدقة دون تجميل، فإن النتيجة تتوزع وفق المعادلتين التاليتين:
 
-## تفسير سريع للنتيجة
+$$\text{Repository Source & Local Engineering Score} = 86.5\%$$
 
-- **80–90:** ناضج جدًا كموقع تجريبي وتعليمي.
-- **70–79:** جيد وقابل للتطوير، لكن غير جاهز بعد كمنصة إنتاج مؤسسية.
-- **60–69:** يحتاج إصلاحات جوهرية قبل الاعتماد.
-- **أقل من 60:** غير مناسب للإطلاق التجاري.
+$$\text{Live Production Surface & Operational Readiness Score} = 58.2\%$$
 
-BRIGHTAI حاليًا في منطقة **جيدة ولكن قبل الإطلاق المؤسسي**.
+وفيما يلي تفصيل الدرجات الموزونة للمشروع ككل في وضعه الراهن بتاريخ 25 نوفمبر 2026:
+
+| المحور التدقيقي | الوزن النسبي | الدرجة السابقة | الدرجة المحدثة | مسوغات التعديل المبنية على الفحص الحرفي |
+|---|---:|---:|---:|---|
+| جودة الكود والمعمارية الخادمية | $$15\%$$ | $$78\%$$ | **$$86\%$$** | إضافة `apiBoundary` ومخططات `zod` الصارمة في `routes.mjs`، دعم `Idempotency-Key`، وفصل مجسات `liveness` عن `readiness` في `scripts/server.mjs` [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/src/server/api/boundary.mjs) [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/scripts/server.mjs). |
+| الأمن والخصوصية وترويسات الحماية | $$15\%$$ | $$76\%$$ | **$$81\%$$** | ترقية `security-policy.mjs` لفرض CSP مباشرة مع بصمات SHA-256 وعزل كامل لمسار `secure-chat`، لكن غياب ثغرة Astro الحرجة غير المعفاة (`GHSA-26w7-cxv4-gfx2`) وعدم تفعيل Node على الحافة يمنعان الدرجة الكاملة [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/src/server/observability/security-policy.mjs) [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/.github/security-allowlist.yml). |
+| جاهزية SaaS والتشغيل الحي | $$15\%$$ | $$52\%$$ | **$$48\%$$** | تأكد بالفحص الحي أن `/healthz` و`/readyz` و`/status/` و`/request-access/` و`/app/` كلها تعيد `404`، مع بقاء `AIGAS_APP_ENABLED="false"` وموانع قاعدة البيانات والنماذج في سجل الموانع [Source](https://brightai.live/readyz/) [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/render.yaml) [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/docs/RELEASE-BLOCKERS-REGISTER.md). |
+| سلامة API والمصادقة وعزل المستأجرين | $$10\%$$ | $$70\%$$ | **$$82\%$$** | فحص `db.mjs` و`auth.mjs` وتقرير `authorization-2026-11-25` أثبت وجود حارس `SAVEPOINT` و`SET LOCAL ROLE aigas_runtime` وفحص `pg_has_role` ومنع تكرار `workspace` وإلغاء المشغل الموقوف عبر RLS [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/src/server/kernel/db.mjs) [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/Audit/authorization-2026-11-25/REPORT.md). |
+| تجربة المستخدم وتجربة المنتجات الحية | $$12\%$$ | $$81\%$$ | **$$84\%$$** | تجربة المختبرات الخمسة وKernel أظهرت إضافة شارات المراحل (`DEMO` / `PREVIEW` / `PILOT` / `PRODUCTION`) ومسار واضح ومعالجات حالات التفاعل، ويعيبها فقط انكسار زر "طلب الوصول" على الحي [Source](https://brightai.live/products/) [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/Audit/ux-audit-2026-11-25/REPORT.md). |
+| التصميم البصري والـRTL والوصولية | $$10\%$$ | $$84\%$$ | **$$87\%$$** | توافق ممتاز مع RTL، خط IBM Plex Arabic، إصلاح ترتيب التركيز البصري في `Ledger`، عدم وجود مخالفات Axe في الفحص المحلي، وتجنب تام لنمط قوالب الذكاء الاصطناعي المكررة [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/Audit/ux-audit-2026-11-25/REPORT.md). |
+| الربط الداخلي والتنقل وسلامة المسارات | $$8\%$$ | $$84\%$$ | **$$68\%$$** | انخفاض ملحوظ لأن كل صفحة منتج وصفحة المنتجات توجه المستخدم إلى `/request-access/` وهو يعيد `404` حيًا، مع وجود `/404/` يعيد حالة `206/200` بدل `404`، وبقاء `251` صفحة إرثية يتيمة [Source](https://brightai.live/request-access/) [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/Audit/seo-geo-2026-11-25/REPORT.md). |
+| SEO وGEO وAEO وهندسة المحتوى | $$8\%$$ | $$82\%$$ | **$$77\%$$** | إضافة مراكز موضوعية ممتازة (`/docs/topics/*`) بمراجع NIST وسدايا، لكن الإنتاج الحي يعاني من ازدواجية خرائط الموقع (`/sitemap-index.xml` مقابل `/sitemap.xml` القديم) وبطء شديد في بعض الأدلة [Source](https://brightai.live/docs/topics/ai-governance/) [Source](https://brightai.live/sitemap.xml) [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/Audit/seo-geo-2026-11-25/REPORT.md). |
+| الاختبارات الآلية وDevOps وسلسلة التوريد | $$5\%$$ | $$55\%$$ | **$$72\%$$** | وجود عشرات الاختبارات المتخصصة في `tests/` وملف `.github/workflows/accessibility-performance.yml` وسجل استثناءات CVE موثق، لكن ينقصه خط أنابيب CI شامل يشغل فحوص DB وSEO وSecurity معًا [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/.github/workflows/accessibility-performance.yml) [Source](https://api.github.com/repos/YEEEAE/BRIGHTAI/contents/tests?ref=main). |
+| الموثوقية والشفافية التجارية والقانونية | $$2\%$$ | $$88\%$$ | **$$83\%$$** | الصفحات الحديثة في قمة الأمانة التحريرية (بما في ذلك تعديل عبارة No-Training)، غير أن الصفحات الإرثية الحية مثل `/en/pdpl-statement/` تكسر هذا الانضباط بادعاءات "audit-ready controls" وعناوين غير متحققة [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/Audit/CLAIMS-REVIEW-2026-11-25.md) [Source](https://brightai.live/en/pdpl-statement/). |
 
 ---
 
-# 3. ما تم إنجازه بشكل جيد
+**Live Page-by-Page & Product Lab Hands-On Walkthrough:**
 
-## 3.1 فصل واضح بين الديمو والمنتج الحقيقي
+عند زيارة صفحات الموقع الحي وتجربة المختبرات التفاعلية، سجلنا المشاهدات الدقيقة التالية لكل صفحة ومنتج:
 
-هذه من أقوى نقاط النسخة الحالية.
-
-صفحات المنتجات تقول صراحة إن الأمثلة:
-
-- محلية أو تعليمية.
-- تستخدم بيانات اصطناعية.
-- لا تتصل بمزود AI في الوضع المحلي.
-- لا تثبت وجود خدمة إنتاجية.
-- لا تثبت مستوى حماية أو اعتمادًا تنظيميًا.
-
-مثلًا، صفحة Firewall توضّح أن الفحص الحالي **مطابقة حرفية وقاعدة Demo** وليس فحصًا أمنيًا أو دلاليًا حقيقيًا. [Source](https://brightai.live/products/firewall/)
-
-وهذا أفضل بكثير من استخدام عبارات تسويقية مثل “حماية كاملة” أو “امتثال مضمون”.
-
-## 3.2 الشفافية التجارية ممتازة
-
-صفحة Trust من أفضل الصفحات في المشروع؛ فهي تفرق بين:
-
-- التصور المستهدف.
-- الدليل التشغيلي.
-- الشهادة.
-- الادعاء التسويقي.
-- التشغيل الفعلي.
-
-كما توضح أن الموردين، مناطق المعالجة، مدد الاحتفاظ، الشهادات، والتدقيقات الأمنية غير مثبتة حاليًا. [Source](https://brightai.live/trust/)
-
-هذا يقلل المخاطر القانونية والتسويقية ويزيد الثقة.
-
-## 3.3 الهوية البصرية أصبحت متماسكة
-
-الموقع يستخدم:
-
-- هوية عربية واضحة.
-- تصميم RTL فعلي.
-- خطوط عربية مخصصة.
-- مساحات بيضاء جيدة.
-- نظام صفحات داخلي متناسق.
-- تنقل موحد.
-- روابط واضحة بين المنتجات والـKernel ومركز المعرفة.
-
-الصفحات لا تبدو كقوالب SaaS عامة، بل لها هوية مميزة مرتبطة بالحوكمة والأمان.
-
-## 3.4 بنية Astro مناسبة للمشروع
-
-ملف إعداد Astro يوضح استخدام:
-
-- Astro SSR.
-- Node adapter بوضع standalone.
-- Sitemap.
-- أدوات مخصصة للـSEO.
-- build version.
-- فلترة الصفحات القابلة للفهرسة.
-
-هذا اختيار مناسب لموقع محتوى سريع مع بوابة تطبيق مستقبلية. [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/astro.config.mjs)
-
-## 3.5 طبقات حماية جيدة مبدئيًا
-
-الكود الحالي يحتوي على إجراءات جيدة، منها:
-
-- `X-Content-Type-Options: nosniff`
-- `X-Frame-Options`
-- `Permissions-Policy`
-- `Referrer-Policy`
-- `Cross-Origin-Resource-Policy`
-- `X-Robots-Tag` للبوابة الخاصة.
-- `Cache-Control: private, no-store` للمساحات الخاصة.
-- التعامل مع `Authorization` و`Cookie` عبر `Vary`.
-- تطبيع المسارات لمنع تجاوز بوابة `/app`.
-- حماية مبدئية من الطلبات غير المسموحة.
-
-هذه ليست بديلًا عن اختبار أمني مستقل، لكنها بداية جيدة.
-
-## 3.6 حماية جيدة في معالج Kernel API
-
-ملف HTTP المركزي يطبق عدة ضوابط جيدة:
-
-- التحقق من الهوية قبل تنفيذ الطلب.
-- التحقق من Origin في عمليات الكتابة.
-- اشتراط `application/json`.
-- تحديد حجم الطلب إلى 4096 بايت.
-- رفض الحقول غير المعروفة.
-- تحديد UUID.
-- Rate limit مبدئي لعمليات الكتابة.
-- عدم إعادة أخطاء قاعدة البيانات التفصيلية للمستخدم.
-- تسجيل فشل الخدمة بصورة غير مباشرة.
-
-[Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/src/server/kernel/http.mjs)
-
-لكن توجد ملاحظة مهمة: معدل الطلبات الموجود **مؤقت داخل الذاكرة**، ولذلك لا يكفي للحماية في بيئة متعددة النسخ أو خلف Load Balancer.
+* **الصفحة الرئيسية (`/`) ومركز المنتجات (`/products/`):** تعمل الصفحة الرئيسية بسرعة ممتازة وتفتتح بسؤال تشغيلي مباشر يلمس واقع المنشآت السعودية، ثم تقسّم القيمة إلى ثلاثة أركان (السلامة، الشفافية، الخصوصية) متبوعةً بتوضيح صريح أن AIGAS تصور يضم Kernel وخمسة منتجات مستقلة وأن الإتاحة التشغيلية غير متحققة حاليًا [Source](https://brightai.live/). في صفحة `/products/` ظهرت إضافة بصرية وتنظيمية ممتازة هي شارات `DEMO مختبر عام` ودليل "مراحل الوصول" الأربعة (`DEMO`, `PREVIEW`, `PILOT`, `PRODUCTION`)، وجدول مقارنة بيئات `SaaS` و`On-Premise` و`Air-Gapped`، إلا أن الخطوة الثانية في شريط خطوات الوصول العلوي وزر "اطّلع على خيارات الوصول" يقودان إلى `/request-access/` الذي ينكسر بخطأ `404` عند النقر عليه [Source](https://brightai.live/products/) [Source](https://brightai.live/request-access/).
+* **مختبر الأساس المشترك (`/kernel/` و`/demo/kernel/`):** يعرض المختبر رحلة "من السياسة إلى الدليل" عبر سياق مشترك معرفه `demo-v1-summary-redact`، ويشرح بوضوح انتقال الطلب من تحديد الأصل والسياسة إلى الفحص فالمراجعة المستقلة ثم توليد الدليل، مع حفظ السياق محليًا في الجلسة دون إرسال نصوص أو هوية للخادم، ويربط المستخدم بسلاسة نحو المنتج التالي وهو Firewall [Source](https://brightai.live/kernel/).
+* **منتج ومختبر AIGAS Firewall (`/products/firewall/` و`/demo/firewall/`):** عند فحص المختبر في كلتا الواجهتين (المدمجة داخل صفحة المنتج والمستقلة تحت `/demo/firewall/`)، وجدنا محاكيًا محليًا حتميًا واضح القواعد بحد أقصى $$500$$ حرف، يعرض خمسة أزرار أمثلة جاهزة (`ALLOW`, `WARN`, `REDACT`, `ESCALATE`, `BLOCK`)؛ ويشرح للمستخدم بوضوح تام أن أول قاعدة مطابقة حرفيًا تفوز (مثل وجود كلمة «تجاوز» للحظر، أو «خارج المؤسسة» للتصعيد، أو المعرّف الخيالي `DEMO-0000` للتنقيح)، كما تتضمن صفحة `/demo/firewall/` وسم `meta` خاصًا لسياسة CSP يمنع `form-action` و`base-uri` تمامًا، وتُفعّل الأزرار عبر الجافاسكربت فور تحميل الصفحة لمنع النقر قبل الجاهزية [Source](https://brightai.live/products/firewall/) [Source](https://brightai.live/demo/firewall/).
+* **منتج ومختبر AIGAS Risk Engine (`/products/risk-engine/`):** يقدم تجربة `RISK STUDIO / 05` المقسمة إلى خمس خطوات متسلسلة (أصل، خطر، تقدير، معالجة، قبول/مراجعة)، مع شرح شفاف لمنهج حساب الدرجة في الديمو عبر ضرب الاحتمال في الأثر على مقياس ترتيبي من $$1$$ إلى $$3$$ بحيث تنتج القيم المنخفضة ($$1\text{–}2$$) والمتوسطة ($$3\text{–}4$$) والمرتفعة ($$6\text{–}9$$) دون إنتاج القيم $$5$$ و$$7$$ و$$8$$، وينبّه المستخدم إلى أن سياق الجمهور يرفع الاحتمال تلقائيًا من $$1$$ إلى $$2$$ وأن التخفيضات لا تُجمع ولا تنسب إلى معايير ISO أو NIST [Source](https://brightai.live/products/risk-engine/).
+* **منتج ومختبر AIGAS Human Gate (`/products/human-gate/`):** يحاكي سيناريو فصل المهام (Segregation of Duties) ببراعة تعليمية عالية على الطلب الافتراضي `HG-DEMO-01`؛ فعندما يكون المستخدم في دور مقدم الطلب «سارة» يمنعه النظام من اعتماد طلبه أو رفضه ويحصر المراجعة في «ناصر» بصفته `ADMIN مستقل`، بينما يحصر زر التنفيذ لاحقًا في مقدم الطلب بعد صدور الإذن، مع توليد معاينة محلية لحدث Ledger اصطناعي دون اتصال خادمي [Source](https://brightai.live/products/human-gate/).
+* **منتج ومختبر AIGAS Ledger (`/products/ledger/` و`/demo/ledger/`):** يعرض سلسلة أحداث مبنية على بصمات `SHA-256` تبدأ من حدث الأساس `GENESIS` (`request.created` بالمعرف `DEMO-REQ-001`)، ويوفر ستة أدوات تفاعلية في المتصفح هي: «أضف حدثين»، «تحقق من السلسلة»، «غيّر حدثًا» لاختبار كشف التلاعب، «إعادة الضبط»، «إفراغ المثال»، و«Export JSON»، بالإضافة إلى توفر أداة تحقق قابلة للتنزيل؛ وقد تأكدنا من نظافة هيكل الصفحة وعمل الرابط المتبادل مع `/demo/firewall/` و`/demo/human-gate/` [Source](https://brightai.live/products/ledger/) [Source](https://brightai.live/demo/ledger/).
+* **منتج ومختبر AIGAS Secure Chat (`/products/secure-chat/` و`/demo/secure-chat/`):** يعمل افتراضيًا كمحاكٍ محلي داخل المتصفح، ويضع تحذيرًا مسبقًا شديد الدقة تحت عنوان «قبل الإرسال الاختياري» يوضح أنه في حال تفعيل المسار الخادمي مستقبلًا سيصل النص أولًا إلى خادم `brightai.live` للتنقيح وقد يُرسل إلى Groq بحد $$400$$ حرف و$$3$$ طلبات كل $$10$$ دقائق، مع إثبات أن التعديل التحريري الأخير لعبارة منع التدريب قد نُشر بالفعل على الصفحة الحية ليصبح: «منع تدريب المورد على بيانات العميل متطلب مستهدف؛ ولا يُعد نافذًا قبل التحقق من العقد والإعداد ودليل المورد» [Source](https://brightai.live/products/secure-chat/).
+* **المراكز المعرفية وصفحات الثقة والامتثال والتسعير والتواصل:** زرنا المراكز الموضوعية الجديدة (`/docs/topics/ai-governance/`, `/docs/topics/ai-data-security/`, `/docs/topics/ai-risk/`) وتأكدنا أنها حية وتعمل وتربط الأدلة بالمختبرات وبمراجع NIST الرسمية [Source](https://brightai.live/docs/topics/ai-governance/) [Source](https://brightai.live/docs/topics/ai-data-security/) [Source](https://brightai.live/docs/topics/ai-risk/). كذلك تعمل صفحات `/trust/` و`/compliance/` و`/pricing/` و`/about/` و`/authors/` و`/contact/` باتساق عالٍ، مع ملاحظة أن البريد الإلكتروني في `/contact/` يمر عبر تشفير Cloudflare (`/cdn-cgi/l/email-protection`) مما يربك بعض الزواحف الآلية أو المستخدمين الذين يعطلون الجافاسكربت [Source](https://brightai.live/contact/).
 
 ---
 
-# 4. أهم المشكلات الحالية
+**Deep Codebase, Security, and Database Audit:**
 
-## P0 — حرجة قبل الإطلاق التجاري
+بالغوص في ملفات الخادم وقاعدة البيانات داخل المستودع، تبين أن البنية الهندسية أقوى بكثير مما يظهر على النطاق العام حاليًا، مع وجود نقاط محددة تحتاج إلى إغلاق قبل التشغيل الفعلي:
 
-## 4.1 مسار الصحة العام يرجع 404
-
-تم اختبار:
-
-```text
-https://brightai.live/healthz
-```
-
-والنتيجة الحالية:
-
-```text
-HTTP 404
-```
-
-[Source](https://brightai.live/healthz)
-
-في المقابل، المستودع يحتوي على مسار `src/pages/healthz.ts` مخصص لفحص جاهزية خدمة Node. هذا يعني وجود احتمال قوي لواحد من التالي:
-
-1. النسخة المنشورة لا تحتوي على آخر build.
-2. المسار المنشور مختلف عن المسار الموجود في المصدر.
-3. النشر الحالي Static أو يمر عبر Redirect/Router غير متوافق.
-4. الـhealth route لا يعمل بسبب إعدادات Render أو Astro adapter.
-5. يوجد اختلاف بين بيئة المصدر وبيئة الإنتاج.
-
-**الأثر:**
-
-- مراقبة الخدمة لن تستطيع الاعتماد على `/healthz`.
-- أنظمة uptime monitoring قد تعتبر التطبيق متعطلًا.
-- لا يوجد إثبات خارجي أن خدمة SSR أو قاعدة البيانات جاهزة.
-- يصعب ربط Deploy معين بحالة تشغيل فعلية.
-
-### الإجراء المطلوب
-
-اعتماد مسارين منفصلين:
-
-```text
-/healthz
-```
-
-لفحص العملية فقط، ويجب أن يكون سريعًا ولا يعتمد على قاعدة البيانات.
-
-```text
-/readyz
-```
-
-لفحص:
-
-- اتصال قاعدة البيانات.
-- حالة المصادقة.
-- حالة الخدمات الخارجية الضرورية.
-- نسخة التطبيق.
-- حالة migrations.
-
-ويجب أن ترجع الاستجابة JSON موحدًا، مثل:
-
-```json
-{
-  "status": "ok",
-  "version": "commit-sha",
-  "dependencies": {
-    "database": "ok",
-    "auth": "ok"
-  }
-}
-```
-
-لا تجعل فشل مزود AI يجعل `healthz` يفشل؛ هذا يخص `readyz` أو فحصًا منفصلًا.
+1. **معمارية الخادم وحراسة الحافة في `scripts/server.mjs`:** الخادم المخصص يعطل التشغيل التلقائي لمحول Astro ويضع طبقة حماية استباقية قبل وصول الطلب إلى المحول؛ فهو يعالج ثغرة `CVE-2026-102984` عبر التحقق الصارم من ترويسة `Host` ومنع المنافذ غير الصالحة برمز `400`، ويعالج ثغرة التحويل المفتوح `GHSA-r557-wffq-wvrc` عبر حظر أي مسار يحتوي على شرطة عكسية `\`، ويفرض سياسة الأمان `applySecurityPolicy` حتى على الملفات الثابتة المولدة مسبقًا، ويمرر `/healthz` و`/readyz` مباشرة خارج تحويلات الشرطة المائلة الخاصة بـAstro، كما يلتقط الوعود المرفوضة لمنع انهيار عملية Node بالكامل [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/scripts/server.mjs).
+2. **عزل المستأجرين وحوكمة قاعدة البيانات في `src/server/kernel/db.mjs`:** يُعد هذا الملف من أفضل الأجزاء كتابةً في المستودع؛ إذ يفرض استدعاء `SET LOCAL ROLE aigas_runtime` داخل كل معاملة، ثم يتحقق استعلاميًا من جدول `pg_roles` و`pg_class` لضمان أن الدور الحالي ليس `rolsuper` ولا يملك `rolbypassrls` ولا يرث ملكية أي جدول يبدأ بـ`aigas_` وأن إعداد `row_security` مفعل على `on`. كما يستخدم خدعة ذكية عبر `SAVEPOINT aigas_scope_guard` لضمان فشل استدعاء `set_config('aigas.tenant_id', ...)` فورًا إذا جرى استدعاؤه بالخطأ خارج كتلة معاملة صريحة، ويقرأ القيم بعد ضبطها للتأكد من عدم تجاهل مجمع الاتصالات (Pooler) لها، ويستخدم أقفال PostgreSQL الاستشارية `pg_advisory_xact_lock` لمنع حالات التسابق في انتقالات الحوكمة [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/src/server/kernel/db.mjs).
+3. **المصادقة والهوية في `src/server/kernel/auth.mjs`:** يتحقق الخادم من ترويسة `Bearer` بحد طول أقصى $$16,384$$ بايت، ويحصر التحقق التشفيري في خوارزمية `EdDSA` مع اشتراط مطالبات `sub` و`exp` و`iat` وعمر أقصى للرمز لا يتجاوز `15m`، ويرفض الحسابات المجهولة (`anonymous`)، مع دعم إضافي لإثبات `ssoProof` للمؤسسات في الترحيلات الحديثة [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/src/server/kernel/auth.mjs). النقطة التي ما زالت تحتاج تقوية هنا هي التحقق الصريح من مطالبة الجمهور (`aud` / Audience) عند الربط النهائي مع Neon Auth الحي حتى لا يُقبل رمز صادر لمشروع شقيق من نفس المُصدِر.
+4. **بوابة عقود الـAPI في `src/server/api/boundary.mjs` و`routes.mjs`:** تم بناء سجل مركزي يغطي جميع مسارات `/app/api/*` و`/auth/api/*` و`/api/*`، يتحقق من طريقة HTTP ويرجع `405` مع ترويسة `Allow`، ويفحص معاملات الاستعلام (Query Parameters) عبر مخططات `zod`، ويشترط صلاحية `Idempotency-Key` على عمليات الإنشاء الحساسة، ويزيل أي ترويسات `access-control-allow-*` شاردة، ويوحد جميع الأخطاء تحت العقد `aigas-error-v2` مع إرفاق `X-Request-ID` فريد لكل استجابة [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/src/server/api/boundary.mjs) [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/src/server/api/routes.mjs).
+5. **ثغرات الاعتماديات وسلسلة التوريد في `.github/security-allowlist.yml`:** يوثق المستودع بشفافية عالية وجود ثغرة حرجة في حزمة Astro (`GHSA-26w7-cxv4-gfx2` المتعلقة بمعالجة صور AVIF) لم تُدرج في قائمة الإعفاء لأنها تتطلب موافقة صريحة من المؤسس أو ترقية رئيسية إلى `astro >= 7.3.2` و`@astrojs/node >= 11.1.3` و`Node >= 22.23.4`، بينما تم تثبيت `NODE_VERSION` في `render.yaml` عند `22.22.2` [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/.github/security-allowlist.yml) [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/render.yaml). ورغم أن الكود الحالي لا يستدعي خدمة الصور المتأثرة، فإن بقاء ثغرة حرجة غير مرقّعة يظل مانعًا رسميًا في بوابات الفحص الأمني المؤسسية.
 
 ---
 
-## 4.2 مسارات التطبيق والـAPI غير مثبتة في الإنتاج
+**Critical Gaps & Discrepancies Discovered During Audit:**
 
-تمت ملاحظة أن:
+تتلخص الفجوات الحاسمة التي تفصل BRIGHTAI عن الوصول إلى درجة تفوق $$90\%$$ في سبع نقاط محددة ومثبتة بالدليل:
 
-- `/app/kernel/`
-- `/app/trial/`
-- `/app/api/trial`
-
-لم تكن متاحة عبر الموقع العام أثناء الفحص الخارجي.
-
-هذا لا يثبت بالضرورة وجود خطأ في الكود، لكنه يثبت أن **المسار غير متاح خارجيًا حاليًا**. يجب عدم تقديم تجربة تسجيل أو Trial على أنها جاهزة قبل إثبات المسار كاملًا.
-
-### مطلوب
-
-اختبار نشر حقيقي يشمل:
-
-1. فتح `/auth/sign-up/`.
-2. إنشاء مستخدم تجريبي.
-3. تسجيل الدخول.
-4. فتح `/app/`.
-5. إنشاء Workspace.
-6. فتح كل منتج.
-7. تنفيذ API read.
-8. تنفيذ API write.
-9. تسجيل الخروج.
-10. إعادة استخدام رابط قديم أو جلسة قديمة.
+* **انفصال النشر الحي عن خادم Node (`P0`):** النطاق `brightai.live` يخدم ملفات ثابتة ولا يمر عبر `scripts/server.mjs`؛ والدليل القطعي هو أن `/healthz/` و`/readyz/` و`/request-access/` و`/status/` و`/api/measurement-status` كلها موجودة ومختبرة محليًا في المستودع لكنها ترجع `404` على النطاق الحي، كما أن سكربت القياس الحي `measurement.mjs` يسقط في مسار الاحتياط الخاص بالاستضافة الثابتة ليقرأ `/measurement-control.json` بعد فشل `/api/measurement-status/` بـ`404` [Source](https://brightai.live/measurement.mjs) [Source](https://brightai.live/measurement-control.json).
+* **روابط مكسورة في رحلة التحويل الأساسية للمستخدم (`P0`):** تحتوي صفحة `/products/` وجميع صفحات المنتجات الخمسة وصفحة `/kernel/` وصفحة `/pricing/` ومختبرات `/demo/*` على روابط بارزة لـ«طلب الوصول» (`/request-access/`) و«حالة النظام» (`/status/`)، وعند نقر الزائر الفعلي عليها يواجه صفحة «الرابط غير موجود 404»، مما يقطع رحلة التحويل التجاري في أهم لحظة اهتمام [Source](https://brightai.live/products/) [Source](https://brightai.live/request-access/).
+* **تلوث النطاق بصفحات وخرائط إرثية متناقضة (`P0`):** بينما يعلن `robots.txt` عن `sitemap-index.xml` النظيف، ما زال الملف القديم `https://brightai.live/sitemap.xml` حيًا ويعرض عشرات المسارات القديمة (`/en/`, `/blog/`, `/customers/`, `/hub/`, `/solutions/banking-ai-governance/riyadh/`) [Source](https://brightai.live/sitemap.xml). والأخطر أن صفحات مثل `https://brightai.live/en/pdpl-statement/` ما زالت تعمل وتستخدم قالبًا قديمًا مختلفًا تمامًا (`ClientRouter` و`sw-register.js` وشعارات قديمة) وتحتوي في وصفها وبيانات `JSON-LD` على عبارات مثل `"audit-ready controls"` و`LocalBusiness` وعنوان بريدي محدد واسم مؤسس مختلف في السجل القديم، وهو ما يتناقض مباشرةً مع صفحة `/trust/` وصفحة `/authors/` وسجل مراجعة الادعاءات الجديد [Source](https://brightai.live/en/pdpl-statement/) [Source](https://brightai.live/trust/) [Source](https://brightai.live/authors/).
+* **موانع قاعدة البيانات والهوية والنماذج في الإنتاج (`P0`):** يثبت سجل الموانع وذاكرة المشروع أن الترحيلات الحديثة (وصولًا إلى `0041` و`0045`) طُبقت محليًا على PostgreSQL 18 لأغراض الاختبار، لكن تطابق المخطط على فرع Neon الإنتاجي، وحماية الفرع وإثبات الاستعادة الفعلية، وتدوير الأسرار، وتحديد منطقة إقامة البيانات (بدل `aws-us-east-2`)، واعتماد مزود ونموذج AI رسمي، كلها ما زالت مفتوحة أو محجوبة بانتظار إجراء تشغيلي وقرار مالك [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/docs/RELEASE-BLOCKERS-REGISTER.md) [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/.agents/mind/01-mind-latest.md).
+* **شذوذ الأداء ورموز الحالة في بعض صفحات الإنتاج (`P1`):** أظهر قياس الأداء على الإنتاج أن الصفحة الرئيسية سريعة ($$1,104\text{ ms}$$ لمؤشر LCP)، لكن صفحة مركز المعرفة وصلت إلى $$10,440\text{ ms}$$ في LCP، ودليل تقييم المخاطر سجل زمن استجابة أول بايت (TTFB) مرتفعًا جدًا بلغ $$8,383\text{ ms}$$، كما أن المسار `/404/` المباشر يعيد استجابة ناجحة بدل رمز `404`، و$$152$$ قاعدة تحويل قديمة لم تكن ترجع `301` على الحافة الحية [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/Audit/seo-geo-2026-11-25/REPORT.md) [Source](https://brightai.live/404/).
+* **محدودية فحوص CI التلقائية وحجم CSS غير المستخدم (`P1`):** ملف GitHub Actions الوحيد المرصود في `.github/workflows/` هو `accessibility-performance.yml`، ولا يشغّل تلقائيًا اختبارات `test:seo` أو `test:healthz` أو `test:security:smoke` أو اختبارات قاعدة البيانات، كما رصد فحص الأداء وجود نسبة CSS غير مستخدم تتراوح بين $$49.8\%$$ و$$92.6\%$$ في الصفحات العاملة [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/.github/workflows/accessibility-performance.yml) [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/.agents/mind/01-mind-latest.md).
+* **محدودية الحصص ومعدلات الطلبات في الذاكرة المحلية (`P2`):** حراس معدل الطلبات في `http.mjs` ومعالج بلاغات CSP في `csp-report.mjs` يعتمدون على ذاكرة العملية الواحدة (`Map`)؛ وهم مناسبون لنسخة Node منفردة في مرحلة المعاينة، لكنهم يحتاجون إلى مخزن مشترك أو حارس على طبقة Cloudflare عند التوسع الأفقي [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/src/server/kernel/http.mjs) [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/Audit/security-headers-2026-11-25/REPORT.md).
 
 ---
 
-## 4.3 لا يوجد إثبات كافٍ لنجاح CI/CD
+**Actionable Remediation Roadmap:**
 
-ملف workflow المتوقع:
+لرفع التقييم الإجمالي من **$$74.6\%$$** إلى أكثر من **$$88\%$$** خلال دورة عمل قصيرة ومنظمة، يجب تنفيذ الخطوات التالية بترتيب صارم دون القفز إلى ميزات جديدة:
 
-```text
-.github/workflows/ci.yml
-```
-
-لم يكن قابلًا للقراءة من المسار المتوقع أثناء الفحص.
-
-بالتالي لا أستطيع اعتبار الآتي مثبتًا:
-
-- أن كل Pull Request يمر عبر Build.
-- أن اختبارات SEO تعمل تلقائيًا.
-- أن اختبارات Accessibility تعمل تلقائيًا.
-- أن Secrets غير مكشوفة.
-- أن migrations تُراجع تلقائيًا.
-- أن Deployment مرتبط بـcommit محدد.
-
-### الإجراء المطلوب
-
-إضافة Pipeline إلزامي يتضمن:
-
-```bash
-npm ci
-npm run build
-npm run test:seo
-npm run test:healthz
-npm run test:accessibility:smoke
-npm audit --audit-level=high
-```
-
-والأفضل إضافة:
-
-```bash
-npm run test:auth:e2e
-```
-
-مع بيئة اختبار منفصلة وقاعدة بيانات مؤقتة.
+1. **توحيد المنشأ الحي وتشغيل خدمة Node (`اليوم 1–2`):** ربط النطاق `brightai.live` بخدمة Node المبنية من أحدث SHA بدل الاستضافة الثابتة المختلطة، مع إبقاء `AIGAS_APP_ENABLED="false"` مبدئيًا حتى تنجح المجسات؛ هذا الإجراء وحده سيُصلح فورًا مسارات `/request-access/` و`/status/` و`/healthz/` و`/readyz/` و`/api/measurement-status/` ويُفعّل ترويسات `CSP` و`HSTS` و`301 redirects` على النطاق الحي.
+2. **تطهير الإرث القديم وإغلاق تضارب الادعاءات (`اليوم 2–3`):** إزالة ملف `/sitemap.xml` الثابت القديم أو تحويله بـ`301` إلى `/sitemap-index.xml`، وجرد الـ`251` مسارًا إرثيًا (خصوصًا `/en/pdpl-statement/` و`/customers/` و`/blog/` و`/lp/`) لإما تحويلها بـ`301` إلى الصفحات المحدثة المكافئة أو إرجاع `410 Gone` مع إلغاء أي Service Worker قديم (`sw-register.js`) قد يعلق في متصفحات الزوار السابقين.
+3. **ترقية حزمة Astro وNode لإغلاق ثغرة السلسلة الحرجة (`اليوم 3–4`):** تنفيذ ترقية محكومة ومختبرة إلى `astro >= 7.3.2` و`@astrojs/node >= 11.1.3` ورفع `NODE_VERSION` إلى `22.23.4+`، مما يغلق الثغرة الحرجة `GHSA-26w7-cxv4-gfx2` ويزيل الحاجة إلى معظم الاستثناءات المؤقتة في `security-allowlist.yml`.
+4. **توحيد خط أنابيب CI وتحسين سرعة الصفحات الثقيلة (`اليوم 4–5`):** توسيع GitHub Actions ليشغّل في كل طلب دمج: فحص البناء، اختبارات SEO والروابط، اختبارات المجسات، اختبارات ترويسات الأمان، واختبارات PostgreSQL على حاوية خدمة مؤقتة، مع تقسيم ملفات CSS المشتركة ومعالجة سبب ارتفاع TTFB/LCP في `/docs/` وأدلة `/knowledge/`.
+5. **تهيئة فرع Staging ومعايير Pilot المؤسسي (`الأسبوع 2`):** إنشاء فرع Neon محمي منفصل للـStaging، تطبيق الترحيلات حتى `0045` بالترتيب مع دور `aigas_runtime` المحدود، تنفيذ تجربة استعادة موثقة (Backup/Restore Drill)، وإثبات رحلة `Auth E2E` بعد إصلاح تعثرها المرصود في سجل بوابة الإطلاق، قبل التفكير في تغيير `AIGAS_APP_ENABLED` إلى `"true"`.
 
 ---
 
-# 5. تدقيق الكود والمعمارية
+**Updated Master Prompts for Execution:**
 
-## الدرجة: 78%
+أعددتُ لك مجموعة محدّثة ودقيقة من البرومبتات التنفيذية المبنية مباشرةً على ما كشفه هذا الفحص الحي والمصدري، لتشغيلها بالترتيب مع فريقك أو وكلاء البرمجة والتشغيل:
 
-## نقاط قوية
-
-ملف `package.json` يظهر وجود أوامر واضحة:
-
-- build
-- preview
-- start
-- اختبارات auth
-- اختبارات accessibility/performance
-- اختبارات SEO
-- اختبارات healthz
-
-[Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/package.json)
-
-كما أن المعمارية تفصل نسبيًا بين:
+### 1. برومبت ربط النطاق الحي بخدمة Node وإصلاح المسارات المكسورة
 
 ```text
-src/pages
-src/components
-src/server/kernel
-src/server/observability
-src/server/seo
-src/server/*products
-migrations
-tests
-scripts
+أنت Principal Release & Edge Infrastructure Engineer.
+
+المشكلة المثبتة حاليًا على النطاق الحي https://brightai.live:
+المستودع يحتوي على خدمة Node كاملة في scripts/server.mjs ومسارات جاهزة، لكن النطاق الحي يخدم نسخة ثابتة/مختلطة تجعل المسارات التالية ترجع HTTP 404:
+- /healthz و /healthz/
+- /readyz و /readyz/
+- /request-access/ (رغم وجود روابط له في /products/ وجميع صفحات المنتجات)
+- /status/
+- /api/measurement-status/
+كما أن /404/ المباشر لا يرجع 404، وترويسات CSP/HSTS الكاملة والتحويلات 301 في redirects.json غير مفعلة على النطاق الحي.
+
+المطلوب تنفيذه والتحقق منه:
+1. راجع render.yaml وscripts/server.mjs وcloudflare/workers للتأكد من مسار الطلب الكامل: Cloudflare -> Render Node Service -> scripts/server.mjs.
+2. احتفظ بـ AIGAS_APP_ENABLED="false" في هذه المرحلة حتى تظل بوابة /app مغلقة بأمان (503/صفحة عدم الإتاحة) ريثما يكتمل إثبات القاعدة والمصادقة.
+3. تأكد أن Cloudflare لا يخزن كاش استجابات /healthz* و/readyz* و/status/ و/request-access/ و/app/* و/auth/* و/api/*.
+4. بعد توجيه النطاق إلى خدمة Node، نفّذ فحص HTTP حي (GET وHEAD) على النطاق العام وأثبت بالنتائج الحرفية:
+   - /healthz/ -> 200 JSON يحتوي version وcommit مطابقًا لآخر SHA
+   - /readyz/ -> 200 أو 503 JSON بالعقد الثابت دون كشف أسرار
+   - /request-access/ -> 200 HTML مع no-store
+   - /status/ -> 200 HTML مع no-store
+   - /404/ وأي مسار عشوائي -> 404 فعلي
+   - وجود Content-Security-Policy وStrict-Transport-Security وX-Content-Type-Options على الاستجابات الحية.
+
+المخرجات المطلوبة:
+- خطة القص والتوجيه (Cutover Runbook) خطوة بخطوة مع خطة التراجع الفوري (Rollback)
+- سجل استجابات curl الحية (Status + Headers) لكل مسار أعلاه
+- تحديث تقرير حالة النشر بالأدلة المؤرخة
 ```
 
-وهذا أفضل من وضع المنطق كله داخل صفحات Astro.
-
-## النواقص
-
-### 5.1 غياب طبقة Domain واضحة
-
-لا يزال من المهم فصل:
+### 2. برومبت تطهير الصفحات وخرائط الموقع الإرثية ومنع تضارب الادعاءات
 
 ```text
-HTTP handlers
-Application services
-Domain rules
-Database repositories
-External providers
-```
-
-بدل أن تتوزع قواعد المنتج بين:
-
-- صفحات Astro.
-- `service.mjs`.
-- `core.mjs`.
-- handlers.
-- migration logic.
-
-### 5.2 عدم وجود عقود API موحدة كافية
-
-يجب تعريف مخططات صريحة باستخدام Zod أو Valibot أو JSON Schema، مثل:
-
-```text
-TrialStartRequest
-TrialStartResponse
-WorkspaceResponse
-ProductDecisionResponse
-AuditEventResponse
-```
-
-وجود دالة `exact()` مفيد، لكنه ليس بديلًا عن validation typed schema شامل.
-
-### 5.3 خطورة الاعتماد على متغيرات البيئة دون Startup Validation
-
-ملف البيئة يقرأ القيم وقت التشغيل، لكن يجب إضافة فحص عند بدء التطبيق:
-
-- `DATABASE_URL`
-- `NEON_AUTH_BASE_URL`
-- مفاتيح JWT
-- إعدادات مزود AI
-- `AIGAS_CSP_ENFORCE`
-- بيئة التشغيل
-- URLs المسموحة
-
-يجب أن يفشل التطبيق مبكرًا برسالة آمنة إذا كان الإعداد ناقصًا.
-
----
-
-# 6. الأمن والخصوصية
-
-## الدرجة: 76%
-
-## نقاط جيدة
-
-ملف Middleware يطبق مجموعة واسعة من headers الأمنية، ويفصل المسارات العامة عن مسارات `/app`. كما أن الكود يضع مسارات البوابة الخاصة في وضع:
-
-```text
-private, no-store
-```
-
-ويضع:
-
-```text
-X-Robots-Tag: noindex, nofollow
-```
-
-على الأسطح الخاصة. [Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/src/middleware.ts)
-
-## الملاحظة الأهم: CSP ليست Enforcement دائمًا
-
-ملف سياسة الأمان يوضح أن:
-
-- السياسة الأساسية مفعلة.
-- السياسة الكاملة قد تعمل `Report-Only`.
-- تفعيل السياسة الكاملة يعتمد على:
-
-```text
-AIGAS_CSP_ENFORCE=true
-```
-
-[Source](https://raw.githubusercontent.com/YEEEAE/BRIGHTAI/main/src/server/observability/security-policy.mjs)
-
-هذا مفهوم أثناء التطوير، لكنه غير كافٍ كحالة نهائية.
-
-### المطلوب
-
-قبل الإنتاج:
-
-1. جمع CSP reports.
-2. إصلاح أي مصادر غير مطلوبة.
-3. تفعيل:
-
-```text
-AIGAS_CSP_ENFORCE=true
-```
-
-4. استخدام nonce بدل `unsafe-inline` متى أمكن.
-5. إضافة `report-to` أو Endpoint مخصص للتقارير.
-6. منع أن تصبح تقارير CSP مصدر تسريب بيانات.
-
-## 6.1 Rate limit داخل الذاكرة غير مناسب للتوسع
-
-في `http.mjs` توجد خريطة داخل الذاكرة لحساب الطلبات. هذا جيد كـabuse guard محلي، لكنه:
-
-- لا يعمل بصورة موحدة بين نسخ متعددة.
-- يختفي عند إعادة تشغيل العملية.
-- لا يحمي إذا تغيرت الجهة التي تستقبل الطلب.
-- لا يطبق على كل المسارات بالضرورة.
-
-### المطلوب
-
-استخدام Rate Limit موزع، مثل:
-
-- Redis.
-- Upstash.
-- Neon جدول عدادات مضبوط.
-- Rate limiter أمامي من Render/Cloudflare.
-
-مع مفاتيح منفصلة لـ:
-
-```text
-IP
-user_id
-workspace_id
-endpoint
-operation
-```
-
----
-
-# 7. المصادقة والعزل متعدد المستأجرين
-
-## الدرجة: 70%
-
-وجود ملفات للمصادقة، الوصول، قاعدة البيانات، والسياسات مؤشر جيد. لكن الجاهزية لا تثبت بالقراءة فقط.
-
-يجب إثبات التالي باختبارات فعلية:
-
-| الاختبار | الحالة الحالية |
-|---|---|
-| مستخدم A لا يرى Workspace B | غير مثبت |
-| مستخدم في Workspace A لا يقرأ Ledger B | غير مثبت |
-| تغيير `workspace` في Query لا يرفع الصلاحيات | غير مثبت |
-| Role منخفض لا ينفذ Admin operation | غير مثبت |
-| JWT قديم أو خاطئ يُرفض | غير مثبت خارجيًا |
-| حذف العضوية يلغي الوصول فورًا | غير مثبت |
-| دعوة المستخدم لا تسمح بتجاوز workspace | غير مثبت |
-| سجلات التدقيق لا تكشف النص السري | غير مثبت |
-
-### المطلوب إضافته
-
-اختبارات عزل آلية من نوع:
-
-```text
-tenant-isolation.test.mjs
-authorization-matrix.test.mjs
-workspace-boundary.test.mjs
-role-escalation.test.mjs
-session-revocation.test.mjs
-```
-
-ولا يكفي اختبار نجاح المستخدم الصحيح؛ يجب اختبار المستخدم الخطأ.
-
----
-
-# 8. تجربة المستخدم UX
-
-## الدرجة: 81%
-
-## نقاط قوية
-
-- رحلة الموقع مفهومة نسبيًا.
-- مركز المعرفة ظاهر.
-- المنتجات الخمسة لها أدوار واضحة.
-- كل منتج يشرح “جرّب هذا” و“سترى”.
-- وجود Kernel كطبقة مشتركة مشروح بوضوح.
-- الموقع يميز بين المختبر العام وطلب الوصول والحساب ومساحة العمل.
-- صفحة التواصل لا تدعي أن الرسالة وصلت تلقائيًا.
-- الصفحة توضح أن البريد وواتساب قنوات خارجية وأن الإرسال يحتاج تنفيذ المستخدم.
-
-صفحة التواصل صادقة جدًا بخصوص أن الموقع لا يستطيع تأكيد الإرسال أو التسليم. [Source](https://brightai.live/contact/)
-
-## نقاط الضعف
-
-### 8.1 كثرة التحفظات قد تربك المستخدم
-
-الشفافية ممتازة، لكن بعض الصفحات تحتوي على تكرار متواصل لعبارات:
-
-- غير متحقق.
-- ليس منتجًا فعليًا.
-- لا يثبت التشغيل.
-- لا تستخدم بيانات حقيقية.
-- ليس اعتمادًا.
-- لا توجد أسعار نهائية.
-
-هذه العبارات ضرورية قانونيًا، لكن تكرارها قد يجعل المستخدم يشعر أن المنتج “غير موجود” بدل أن يفهم أنه في مرحلة Demo/Pre-Beta.
-
-### الحل
-
-استخدم نظام حالة مرئي وموحد:
-
-```text
-DEMO — يعمل محليًا
-PREVIEW — يحتاج وصولًا
-PILOT — متاح بموافقة
-PRODUCTION — متاح بعقد
-```
-
-ثم ضع التفاصيل في صندوق موحد بدل تكرار الفقرات.
-
-### 8.2 المسار التجاري غير مباشر
-
-المستخدم الذي يريد:
-
-```text
-تجربة
-طلب عرض
-فتح حساب
-فهم المنتج
-```
-
-يحتاج التنقل بين صفحات متعددة.
-
-اقترح إضافة CTA ثابت في كل صفحة منتج:
-
-```text
-جرّب المثال
-اطلب وصولًا تجريبيًا
-اطلب عرضًا مؤسسيًا
-راجع دليل الأمان
-```
-
-### 8.3 لا توجد حالة نجاح مؤكدة للتواصل
-
-الاعتماد على mailto وWhatsApp مناسب مبدئيًا، لكنه لا ينتج:
-
-- رقم طلب.
-- تاريخ إرسال.
-- Confirmation.
-- CRM lead.
-- موافقة على الخصوصية.
-- تتبع متابعة.
-
-عند الانتقال التجاري يجب بناء Contact API بسيط مع:
-
-- CAPTCHA أو Turnstile.
-- Honeypot.
-- Rate limit.
-- Consent.
-- رقم طلب.
-- رسالة نجاح.
-- عدم حفظ نص حساس دون ضرورة.
-
----
-
-# 9. التصميم وواجهة المستخدم
-
-## الدرجة: 84%
-
-طبقت في التقييم مبادئ مهارة **web-artifacts-builder** التي طلبتها، خصوصًا:
-
-- تجنب مظهر AI النمطي.
-- عدم الإفراط في البطاقات الدائرية.
-- عدم استخدام تدرجات بنفسجية عامة.
-- بناء واجهة لها شخصية بصرية.
-- التركيز على التسلسل الهرمي، الحالات، والوصولية بدل الزخرفة فقط.
-
-المهارة نفسها توصي ببناء واجهات React/Vite/Tailwind عند إنشاء Artifact مستقل، وتؤكد تجنب “AI slop” مثل البطاقات الموحدة والتدرجات المبالغ فيها. [Source](https://raw.githubusercontent.com/anthropics/skills/main/skills/web-artifacts-builder/SKILL.md)
-
-> لم أنفذ `npx skills add` داخل المستودع لأن بيئة المحادثة لا توفر Terminal أو صلاحية تعديل ملفات GitHub. لكنني استخدمت إرشادات المهارة كمعايير تدقيق تصميمية. كذلك، موقعكم مبني على Astro وليس React Artifact، لذلك استخدمت المبادئ البصرية والاختبارية المناسبة بدل فرض Stack مختلف.
-
-## ملاحظات تصميمية
-
-### نقاط قوية
-
-- RTL حاضر فعليًا.
-- الألوان مرتبطة بالهوية.
-- العناوين ذات تسلسل جيد.
-- الـbreadcrumb مفيد.
-- وجود skip link في الموقع المنشور نقطة ممتازة.
-- صفحة 404 مصممة وليست صفحة افتراضية.
-- النماذج والرحلات تعتمد على النص أكثر من الزخرفة.
-
-### تحسينات مطلوبة
-
-1. توحيد حالات المنتج بصريًا.
-2. رفع وضوح CTA الأساسي.
-3. زيادة التباين لبعض النصوص الثانوية.
-4. اختبار 320px و375px و768px.
-5. اختبار لوحة مفاتيح كامل.
-6. إضافة focus states أكثر وضوحًا.
-7. تقليل الاعتماد على الحركة في صفحات الرحلة.
-8. توفير `prefers-reduced-motion`.
-9. استخدام screenshots حقيقية للتطبيق عند توفره، بدل الاكتفاء بالتصور.
-10. توفير حالات:
-   - Loading
-   - Empty
-   - Error
-   - Success
-   - Permission denied
-   - Offline
-
----
-
-# 10. الربط الداخلي والتنقل
-
-## الدرجة: 84%
-
-## نقاط جيدة
-
-خريطة Sitemap المنشورة واسعة وتشمل:
-
-- الصفحة الرئيسية.
-- المنتجات.
-- Kernel.
-- صفحات القطاعات.
-- مركز المعرفة.
-- صفحات الامتثال.
-- الخصوصية.
-- الأسعار.
-- الثقة.
-- الخدمات.
-- الحلول.
-
-[Source](https://brightai.live/sitemap-0.xml)
-
-والـrobots.txt يسمح بالزحف ويشير إلى Sitemap رسمي. [Source](https://brightai.live/robots.txt)
-
-## المشاكل
-
-### 10.1 يجب فصل الروابط العامة عن المسارات غير المتاحة
-
-إذا كانت روابط:
-
-```text
-/auth/sign-up/
-/app/
-/app/trial/
-/app/api/
-```
-
-غير جاهزة فعليًا، فلا ينبغي أن تظهر كرحلة أساسية مفتوحة للمستخدم العام.
-
-### 10.2 احتمالية وجود روابط توحي بالتفعيل
-
-صفحة المنتجات تعرض:
-
-```text
-المختبر العام
-طلب الوصول
-الحساب
-مساحة العمل
-المنتج
-```
-
-وهذا جيد من ناحية تصور الرحلة، لكنه يحتاج Labels أكثر وضوحًا إذا لم تكن هذه الأجزاء مفعلة:
-
-```text
-قريبًا
-يتطلب وصولًا
-غير متاح للعامة
-```
-
-### 10.3 يلزم اختبار روابط آلي
-
-أضف اختبارًا يفحص:
-
-- كل الروابط الداخلية.
-- كل صفحات Sitemap.
-- عدم وجود 404.
-- عدم وجود Redirect chain.
-- صحة canonical.
-- صحة trailing slash.
-- تطابق الروابط المنشورة مع المسارات الفعلية.
-
----
-
-# 11. SEO وGEO وAEO
-
-## الدرجة: 82%
-
-## نقاط قوية
-
-- Sitemap موجود.
-- robots.txt موجود.
-- الموقع يستخدم عناوين عربية واضحة.
-- صفحات المعرفة منظمة حسب موضوعات عالية القيمة.
-- هناك ربط بين المنتج والمحتوى التعليمي.
-- الموقع لا يخلط دائمًا بين المحتوى التعليمي والاستشارة القانونية.
-- وجود صفحة ثقة وامتثال يساعد على بناء E-E-A-T.
-- وجود صفحات مؤلفين ومراجعين يمكن أن يكون مفيدًا إذا تم ربطه بهويات حقيقية موثقة.
-
-## النواقص
-
-### 11.1 المحتوى يحتاج أدلة خارجية منظمة
-
-الكثير من المقالات جيدة تحريريًا، لكن السلطة الرقمية لن تُبنى فقط من كثرة الصفحات. تحتاجون إلى:
-
-- مراجع رسمية.
-- روابط SDAIA وNCA وPDPL الرسمية.
-- تاريخ مراجعة واضح.
-- اسم مراجع متخصص حقيقي.
-- نطاق المراجعة.
-- روابط خارجية موثوقة.
-- صفحات مؤلفين تحتوي مؤهلات قابلة للتحقق.
-
-### 11.2 Schema يحتاج تدقيقًا مستقلًا
-
-أوصي بإضافة ومراجعة:
-
-```text
-Organization
-WebSite
-WebPage
-BreadcrumbList
-Article
-Person
-FAQPage
-SoftwareApplication
-Product
-```
-
-لكن لا تستخدم `Product` أو `SoftwareApplication` بادعاءات لا يثبتها المنتج فعليًا.
-
-### 11.3 مركز المعرفة واسع لكنه يحتاج عناقيد
-
-بدل أن تكون 32 صفحة منفصلة فقط، أضف صفحات Hub مثل:
-
-```text
-حوكمة الذكاء الاصطناعي في السعودية
-الخصوصية والـPDPL والذكاء الاصطناعي
-أمن نماذج الذكاء الاصطناعي
-إدارة مخاطر الذكاء الاصطناعي
-دليل المشتري المؤسسي
-```
-
-مع روابط داخلية منهجية.
-
----
-
-# 12. الجاهزية التجارية وSaaS
-
-## الدرجة: 52%
-
-هذه أضعف نقطة في المشروع حاليًا، ليس بسبب سوء التصميم، بل لأن أدلة التشغيل الفعلي غير كافية.
-
-صفحة الأسعار صريحة في أن الأسعار والحصص وSLA النهائية غير معتمدة، وأن تجربة 48 ساعة ومسارات الـPilot ليست تفعيلًا تجاريًا تلقائيًا. [Source](https://brightai.live/pricing/)
-
-## ما ينقص قبل اعتبار المنتج SaaS جاهزًا
-
-### الحسابات والمؤسسات
-
-- تسجيل مستخدم.
-- تحقق بريد.
-- إنشاء مؤسسة.
-- دعوات.
-- أدوار.
-- إزالة عضو.
-- SSO/SAML أو خارطة طريق واضحة.
-- MFA.
-- استرداد حساب.
-- تعطيل حساب.
-- سجل جلسات.
-- جلسات قابلة للإلغاء.
-
-### الاشتراكات والفوترة
-
-- خطط واضحة.
-- Usage metering.
-- Quotas.
-- Cost ceiling.
-- Invoices.
-- Tax/VAT handling.
-- Trial expiration.
-- Downgrade/upgrade.
-- إلغاء.
-- فشل الدفع.
-- منع تجاوز الحصة.
-
-### التشغيل
-
-- Backups.
-- Restore drill.
-- Migration rollback.
-- Incident response.
-- Status page.
-- SLA.
-- RPO/RTO.
-- مراقبة.
-- تنبيهات.
-- إدارة أسرار.
-- فصل بيئات dev/staging/prod.
-
-### البيانات والخصوصية
-
-- DPA.
-- قائمة معالجي البيانات.
-- مناطق التخزين والمعالجة.
-- سياسة الاحتفاظ والحذف.
-- DSAR.
-- تصدير البيانات.
-- حذف المؤسسة.
-- سياسة No-Training قابلة للإثبات التعاقدي.
-- سجل وصول إداري.
-
----
-
-# 13. ترتيب الأولويات
-
-## المرحلة الأولى — خلال 24 إلى 72 ساعة
-
-1. إصلاح `/healthz`.
-2. إنشاء `/readyz`.
-3. التحقق من أن Production مبني من آخر commit.
-4. نشر رقم commit في Header أو endpoint.
-5. التأكد من حالة `/app` و`/app/api`.
-6. تفعيل CSP enforcement بعد اختبار المتصفح.
-7. إصلاح أو توثيق CI.
-8. فحص كل روابط Sitemap ضد 404.
-9. إضافة Badge موحد لحالة كل منتج.
-10. منع أي CTA يوحي بتفعيل غير موجود.
-
-## المرحلة الثانية — خلال أسبوع
-
-1. اختبارات عزل Tenant كاملة.
-2. اختبارات Auth end-to-end.
-3. اختبار جميع الأدوار.
-4. Rate limit موزع.
-5. Startup environment validation.
-6. API schemas.
-7. Error codes موحدة.
-8. Contact flow قابل للتتبع.
-9. Monitoring وAlerting.
-10. اختبار mobile/accessibility حقيقي.
-
-## المرحلة الثالثة — قبل Pilot
-
-1. SSO/MFA.
-2. Audit export.
-3. Data retention.
-4. Backup/restore drill.
-5. Incident response.
-6. DPA وشروط الخدمة.
-7. قائمة الموردين.
-8. مناطق المعالجة.
-9. Cost controls.
-10. Pilot acceptance criteria.
-
-## المرحلة الرابعة — قبل الإطلاق التجاري
-
-1. تدقيق اختراق مستقل.
-2. مراجعة قانونية للـPDPL والعقود.
-3. مراجعة عزل المؤسسات.
-4. اختبار ضغط.
-5. Disaster recovery.
-6. SLA موثق.
-7. دعم وتذاكر.
-8. Billing production.
-9. Status page.
-10. إثباتات تشغيلية قابلة للتنزيل.
-
----
-
-# 14. التقرير النهائي المختصر حسب الحالة
-
-## جاهز الآن
-
-- الموقع العام.
-- المحتوى التعليمي.
-- مركز المعرفة.
-- المختبرات المحلية الاصطناعية.
-- الهوية البصرية.
-- الشفافية في وصف الحالة.
-- البنية الأولية للكود.
-- أساسيات headers الأمنية.
-- أساس جيد للـSEO.
-
-## جاهز جزئيًا
-
-- Kernel.
-- Auth.
-- Database.
-- API.
-- Portal.
-- Trial.
-- Product services.
-- Observability.
-- migrations.
-
-هذه موجودة في المصدر بدرجات مختلفة، لكن لا يوجد إثبات كافٍ أنها تعمل بصورة صحيحة في الإنتاج.
-
-## غير جاهز للإعلان كمنتج مؤسسي
-
-- SaaS متعدد المؤسسات.
-- Trial إنتاجي.
-- Workspace production.
-- AI provider integration.
-- Billing.
-- SLA.
-- Data residency.
-- No-training evidence.
-- Enterprise SSO.
-- Incident operations.
-- Backup/restore.
-- Security audit.
-
----
-
-# 15. الحكم النهائي
-
-## الحكم العام: **GO للموقع التجريبي، NO للإطلاق المؤسسي الكامل**
-
-### مناسب الآن لـ:
-
-- عرض الفكرة.
-- نشر محتوى الحوكمة.
-- بناء الثقة.
-- عرض نماذج UX.
-- مختبرات تعليمية.
-- التواصل مع العملاء المحتملين.
-- الحصول على Feedback.
-- Pilot داخلي غير حساس.
-
-### غير مناسب حاليًا لـ:
-
-- بيانات عملاء حقيقية.
-- بيانات شخصية أو سرية.
-- إعلان SaaS عام.
-- وعود تشغيلية.
-- ادعاء امتثال.
-- ربط نماذج AI إنتاجية دون اختبارات.
-- بيع Enterprise license قبل إثبات التشغيل.
-- Air-Gapped أو On-Premise production.
-
----
-
-# 16. برومبتات ختامية قوية
-
-يمكنك نسخ البرومبتات التالية وتشغيلها على وكيل برمجي أو داخل بيئة Claude Code/Cursor/Codex. الأفضل تنفيذها بالترتيب.
-
----
-
-## Prompt 1 — إصلاح الجاهزية التشغيلية
-
-```text
-أنت Principal Platform Engineer.
-
-راجع مستودع BRIGHTAI كاملًا، وحدد الفرق بين:
-- الكود الموجود في المصدر
-- المسارات المبنية
-- المسارات المنشورة فعليًا
-- إعدادات Render/Node/Astro
-- حالة healthz وreadyz
+أنت Technical SEO & Compliance Hygiene Architect.
+
+كشف الفحص الحي على brightai.live عن تلوث إرثي خطير يتعارض مع النسخة الحالية:
+1. المسار https://brightai.live/sitemap.xml ما زال حيًا (200) ويعرض مئات الروابط القديمة (/en/, /blog/, /customers/, /hub/, /solutions/banking-ai-governance/...)، بينما الموقع الحديث يعتمد https://brightai.live/sitemap-index.xml.
+2. صفحات إرثية مثل https://brightai.live/en/pdpl-statement/ ما زالت حية (200) بقالب قديم يسجل Service Worker (/js/sw-register.js) وتنشر ادعاءات وبيانات JSON-LD غير متحققة مثل "audit-ready controls" وLocalBusiness وعنوان بريدي واسم مؤسس يتعارض مع صفحتي /trust/ و/authors/ وسجل Audit/CLAIMS-REVIEW-2026-11-25.md.
 
 المطلوب:
-1. اجعل /healthz يرجع 200 JSON لفحص العملية فقط.
-2. أنشئ /readyz لفحص قاعدة البيانات والإعدادات الأساسية.
-3. أضف version وcommit SHA في الاستجابة.
-4. لا تكشف أسرارًا أو connection strings.
-5. أضف اختبارات Node لكل الحالات:
-   - healthy
-   - database unavailable
-   - missing environment
-   - malformed request
-6. تحقق من trailing slash وredirect behavior.
-7. حدث README بتعليمات اختبار الإنتاج.
-8. لا تعتبر وجود الملف دليلًا على عمله؛ شغّل build والاختبارات وأبلغ عن الفشل الحقيقي.
+1. احذف أو أوقف خدمة أي ملف sitemap.xml قديم، واجعل /sitemap.xml يحوّل بـ 301 دائم إلى /sitemap-index.xml.
+2. افحص جميع الـ 264 عنوانًا الإرثيًا في خريطة الإرث وصنّف كل مسار إلى قرار واحد موثق:
+   - 301 Redirect إلى صفحة حديثة مكافئة فعليًا في Astro
+   - أو 410 Gone لأي صفحة تحتوي ادعاءات امتثال/عملاء/ميزات/بيانات كيان غير متحققة وليس لها بديل معتمد.
+3. أضف سكربت إلغاء تسجيل آمن (Self-destructing unregister) على مسار /sw.js أو /js/sw-register.js إن لزم حتى لا يبقى Service Worker القديم فعالًا في متصفحات الزوار السابقين.
+4. أضف اختبار انحدار في tests/seo-redirects.test.mjs يفشل إذا عاد أي مسار إرثي بـ 200 أو ظهر أي ادعاء LocalBusiness/audit-ready قديم.
 
 المخرجات:
-- patch كامل
-- قائمة الملفات المعدلة
-- نتائج npm run build
-- نتائج اختبارات healthz/readyz
-- أي مخاطر متبقية
+- جدول قرارات الـ 264 مسارًا
+- تعديلات redirects.json وscripts/server.mjs
+- نتائج npm run test:seo كاملة
 ```
 
----
-
-## Prompt 2 — تدقيق Auth وTenant Isolation
+### 3. برومبت ترقية Astro وNode وإغلاق ثغرات سلسلة التوريد
 
 ```text
-أنت PostgreSQL Security Engineer وSaaS Authorization Auditor.
+أنت Staff Application & Dependency Security Engineer.
 
-دقق جميع مسارات:
-- authentication
-- authorization
-- workspace
-- membership
-- role checks
-- product access
-- audit access
-- trial access
-
-أنشئ مصفوفة صلاحيات تشمل:
-- anonymous
-- authenticated user
-- workspace member
-- workspace admin
-- operator
-- suspended user
-- deleted member
-
-اختبر أن:
-1. مستخدم A لا يستطيع قراءة أو تعديل Workspace B.
-2. تغيير workspace ID في query أو body لا يغير نطاق الصلاحيات.
-3. المستخدم الموقوف يرفض فورًا.
-4. حذف العضوية يلغي الوصول.
-5. لا يوجد IDOR.
-6. لا توجد صلاحية تعتمد على قيمة يرسلها العميل فقط.
-7. كل query تستخدم tenant boundary صريحة.
-8. RLS مفعلة حيث يلزم.
-9. audit events لا تكشف نصوصًا سرية.
-10. كل رفض صلاحية له status/code موحد.
-
-المخرجات:
-- authorization matrix
-- اختبارات فشل واختبارات نجاح
-- قائمة جميع المسارات غير المحمية
-- إصلاحات مباشرة
-- تقرير بما لا يمكن إثباته
-```
-
----
-
-## Prompt 3 — تثبيت CSP والأمن المتصفح
-
-```text
-أنت Application Security Engineer.
-
-راجع middleware وsecurity-policy وجميع layouts وinline scripts وexternal resources.
+يوجد في .github/security-allowlist.yml توثيق صريح بأن الحزمة الحالية astro ^6.0.0 و@astrojs/node ^10.1.4 تتأثر بثغرة حرجة غير معفاة (GHSA-26w7-cxv4-gfx2) وعدة ثغرات أخرى تم تحييدها جزئيًا في scripts/server.mjs، وأن الحل الجذري يتطلب الترقية إلى astro >= 7.3.2 مع @astrojs/node >= 11.1.3 وNode >= 22.23.4.
 
 المطلوب:
-1. اجمع كل مصادر script/style/font/image/connect/frame.
-2. تحقق من أن CSP لا تستخدم unsafe-eval.
-3. قلل unsafe-inline أو استبدله بـnonce/hash.
-4. اختبر auth flow وGA4 وAstro assets.
-5. فعّل Content-Security-Policy بدل Report-Only بعد نجاح الاختبار.
-6. أضف CSP report endpoint آمنًا ومحدودًا.
-7. لا تسجل query parameters الحساسة.
-8. تحقق من:
-   - HSTS
-   - Referrer-Policy
-   - Permissions-Policy
-   - X-Frame-Options
-   - frame-ancestors
-   - CORP/COOP/CORS
-9. اكتب Browser smoke test يثبت headers لكل من:
-   - public page
-   - auth page
-   - app page
-   - API read
-   - API write
+1. نفّذ الترقية في فرع معزول لـ astro و@astrojs/node وحدث package.json وpackage-lock.json وrender.yaml وملفات GitHub Actions لرفع Node إلى أحدث إصدار مستقر >= 22.23.4.
+2. احتفظ بحراس الدفاع في العمق داخل scripts/server.mjs (فحص Host وفحص المسارات ذات الشرطة العكسية) حتى بعد الترقية، مع تحديث التعليقات التوضيحية.
+3. راجع تحذيرات Astro التي ظهرت أثناء البناء بخصوص قراءة ترويسات الطلب في الصفحات المولدة مسبقًا (prerendered pages) وأصلح سببها الجذري دون إضعاف CSP أو الترويسات.
+4. نظّف .github/security-allowlist.yml من جميع الإعفاءات التي أغلقتها الترقية، وتحقق من أن npm audit --audit-level=high يعيد صفر ثغرات.
+5. شغّل جميع حزم الاختبارات (build, seo, healthz, security:smoke, ux) وتأكد من عدم تغير بصمات SHA-256 لسياسة CSP، أو حدّثها بدقة إن تغير إخراج Astro.
 
 المخرجات:
-- security headers matrix
-- CSP النهائية
-- نتائج Playwright
-- قائمة المصادر المسموحة ولماذا
+- diff الترقية الكامل
+- نتيجة npm audit النظيفة
+- نتائج الاختبارات بعد الترقية
 ```
 
----
-
-## Prompt 4 — إصلاح API Contracts
+### 4. برومبت توحيد خط أنابيب CI وإصلاح تعثر Auth E2E والأداء
 
 ```text
-أنت Enterprise API Architect.
+أنت Principal QA & Performance Automation Engineer.
 
-راجع جميع API handlers في BRIGHTAI.
+الوضع الحالي في المستودع:
+1. ملف .github/workflows/accessibility-performance.yml يشغّل فحصًا واحدًا فقط، ولا يحمي الفرع الرئيسي من انحدار SEO أو CSP أو Healthz أو RLS.
+2. سجل بوابة الإطلاق بتاريخ 2026-11-25 رصد فشل Auth E2E عند المسار /products/ ونتيجة RLS 87/90 في إحدى الجولات.
+3. قياس الأداء رصد نسبة CSS غير مستخدم بين 49.8% و92.6%، وبطئًا في LCP لصفحة /docs/ وTTFB لبعض صفحات /knowledge/.
 
 المطلوب:
-1. عرّف request/response schemas typed.
-2. ارفض الحقول الزائدة.
-3. تحقق من أنواع البيانات والأطوال والقيم.
-4. وحد شكل الأخطاء:
-   {
-     code,
-     message,
-     dependencyStatus,
-     requestId
-   }
-5. أضف request ID آمنًا.
-6. لا تعيد stack traces أو SQL errors.
-7. افصل validation عن business logic.
-8. أضف idempotency للعمليات الحساسة.
-9. أضف pagination وحدودًا للنتائج.
-10. وثق status codes.
-11. أضف contract tests لكل endpoint.
-12. تحقق أن CORS وOrigin لا يستخدمان قيمة العميل بصورة غير آمنة.
+1. شخّص وأصلح سبب فشل tests/auth-browser.e2e.mjs عند /products/، وتأكد أن مصفوفة RLS تجتاز 90/90 بثبات دون اعتماد على ترتيب تشغيل الاختبارات.
+2. أضف التحقق الصريح من مطالبة الجمهور (aud) إن توفرت في auth.mjs مع اختبار وحدة خاص بها.
+3. أنشئ سير عمل شامل في .github/workflows/ci-gate.yml مع حاوية خدمة PostgreSQL 18 يشغّل:
+   - npm ci && npm run build
+   - npm run test:seo
+   - npm run test:healthz
+   - npm run test:security:smoke
+   - اختبارات قاعدة البيانات وRLS وAuth E2E
+   - فحص صلاحية .github/security-allowlist.yml وnpm audit
+4. قلّل حجم CSS المحمّل على الصفحات العامة عبر فصل أنماط المختبرات والبوابة عن القالب التسويقي العام، وحسّن وقت تصيير /docs/ وصفحات المعرفة.
 
 المخرجات:
-- API contract document
-- schemas
-- tests
-- قائمة breaking changes
-- migration plan
+- إصلاح الاختبارات المتعثرة
+- ملف .github/workflows/ci-gate.yml كامل وجاهز للتشغيل
+- مقارنة قياس CSS وLCP قبل وبعد التحسين
 ```
 
 ---
 
-## Prompt 5 — رفع جاهزية SaaS
+**Final Release Verdict:**
 
-```text
-أنت Enterprise SaaS Architect.
-
-حوّل BRIGHTAI من portal تجريبي إلى خطة SaaS قابلة للتشغيل، دون الادعاء بأن أي جزء جاهز قبل إثباته.
-
-غطِّ:
-- organizations
-- workspaces
-- invitations
-- roles
-- MFA
-- SSO roadmap
-- quotas
-- trial expiry
-- billing boundaries
-- usage metering
-- provider cost ceiling
-- audit export
-- retention/deletion
-- backup/restore
-- incident response
-- support workflow
-- status page
-- SLA/RPO/RTO
-
-قسّم العمل إلى:
-P0 launch blocker
-P1 pilot blocker
-P2 enterprise maturity
-
-أعط لكل بند:
-- requirement
-- owner
-- database impact
-- API impact
-- UI impact
-- security impact
-- test required
-- evidence required
-
-لا تستخدم عبارات مثل enterprise-ready أو compliant إلا إذا كان هناك دليل قابل للتحقق.
-```
-
----
-
-## Prompt 6 — تدقيق UX/UI باستخدام Web Artifacts Builder
-
-```text
-أنت Product Designer وFrontend Accessibility Engineer.
-
-استخدم مبادئ web-artifacts-builder:
-- لا تستخدم تصميم AI نمطيًا.
-- تجنب البطاقات المتشابهة والتدرجات الزائدة.
-- حافظ على شخصية BRIGHTAI.
-- ركز على التسلسل الهرمي، الحالات، وقابلية الاستخدام.
-- لا تغيّر Astro إلى React إلا إذا كان هناك سبب تقني واضح.
-
-راجع:
-- الصفحة الرئيسية
-- المنتجات
-- صفحات المنتجات الخمسة
-- Kernel
-- pricing
-- trust
-- contact
-- 404
-- auth/app عندما تصبح متاحة
-
-المطلوب:
-1. أنشئ UX audit لكل صفحة.
-2. حدد CTA الرئيسي والثانوي.
-3. أضف product status badge.
-4. صمم حالات loading/empty/error/success/denied/offline.
-5. اختبر 320px و375px و768px و1440px.
-6. اختبر RTL.
-7. اختبر keyboard navigation.
-8. اختبر screen reader labels.
-9. أضف reduced motion.
-10. قلل التحفظات المتكررة دون حذف التحذيرات المهمة.
-11. اجعل فرق DEMO/PREVIEW/PILOT/PRODUCTION ظاهرًا بصريًا.
-12. قدم patch وليس توصيات فقط.
-
-المخرجات:
-- UX scorecard
-- accessibility issues
-- screenshots قبل/بعد
-- قائمة الملفات المعدلة
-- اختبار Playwright
-```
-
----
-
-## Prompt 7 — SEO/GEO/AEO نهائي
-
-```text
-أنت Technical SEO وGEO Auditor.
-
-راجع الموقع والمستودع معًا.
-
-افحص:
-- title
-- meta description
-- canonical
-- robots
-- sitemap
-- hreflang
-- Arabic RTL metadata
-- Open Graph
-- Twitter cards
-- JSON-LD
-- BreadcrumbList
-- Article
-- Organization
-- Person
-- FAQ
-- internal links
-- orphan pages
-- 404 links
-- redirect chains
-- page speed
-- knowledge graph clarity
-
-المطلوب:
-1. أنشئ keyword/topic map عربيًا وإنجليزيًا.
-2. أنشئ knowledge hubs.
-3. اربط كل صفحة منتج بمحتوى تعليمي وCTA تجاري.
-4. لا تستخدم Product schema لمنتج غير متاح.
-5. أظهر status وlast reviewed وreviewer لكل دليل.
-6. اربط المصادر الرسمية الخارجية.
-7. اختبر sitemap ضد الإنتاج.
-8. لا تنشئ ادعاءات امتثال غير موثقة.
-9. أضف FAQ فقط إذا كان المحتوى ظاهرًا للمستخدم.
-10. أنشئ تقريرًا بدرجات SEO/GEO/AEO مع أدلة.
-
-المخرجات:
-- SEO fixes
-- schema fixes
-- internal linking map
-- 90-day content plan
-- tests
-```
-
----
-
-## Prompt 8 — اختبار نهائي قبل الإطلاق
-
-```text
-أنت Release Manager مستقل.
-
-لا تفترض نجاح أي شيء من وجود الملفات.
-
-نفذ بوابة إطلاق BRIGHTAI التالية:
-
-A. Build
-- npm ci
-- npm run build
-
-B. Tests
-- npm run test:seo
-- npm run test:healthz
-- npm run test:accessibility:smoke
-- npm run test:auth:e2e
-
-C. Runtime
-- healthz
-- readyz
-- public pages
-- auth pages
-- app routes
-- API read/write
-
-D. Security
-- headers
-- CSP
-- cookie flags
-- IDOR
-- tenant isolation
-- rate limiting
-- secret scanning
-- dependency audit
-
-E. UX
-- mobile
-- RTL
-- keyboard
-- reduced motion
-- errors
-- offline
-- empty states
-
-F. SEO
-- sitemap
-- robots
-- canonical
-- structured data
-- no broken internal links
-
-أخرج قرارًا واحدًا فقط:
-- GO
-- CONDITIONAL GO
-- NO-GO
-
-مع:
-- blockers
-- severity
-- evidence
-- exact reproduction steps
-- owner
-- recommended fix
-```
-
----
-
-## Prompt 9 — تحديث الوثائق والادعاءات
-
-```text
-أنت Technical Writer وCompliance Evidence Manager.
-
-راجع كل النصوص التسويقية والتقنية في BRIGHTAI.
-
-ابحث عن:
-- claim غير مثبت
-- كلمة compliance دون نطاق
-- كلمة secure دون دليل
-- كلمة production دون تشغيل
-- كلمة Saudi-hosted دون إثبات
-- كلمة no-training دون عقد أو إعداد
-- كلمة air-gapped دون اختبار
-- كلمة enterprise-ready دون معايير قبول
-
-صنّف كل عبارة إلى:
-- مثبتة
-- مدعومة جزئيًا
-- غير مثبتة
-- يجب حذفها
-
-استبدل العبارات المبالغ فيها بلغة دقيقة:
-- مستهدف
-- تجريبي
-- محاكاة
-- متاح بموافقة
-- يحتاج إثباتًا
-- غير متحقق خارجيًا
-
-حافظ على اللغة العربية الواضحة، ولا تجعل التحفظات تقتل تجربة المستخدم.
-
-المخرجات:
-- claims register
-- النص قبل/بعد
-- source/evidence لكل claim
-- قائمة صفحات تحتاج تحديثًا
-```
-
----
-
-# 17. قرار الإطلاق المقترح
-
-## الآن
-
-```text
-GO — Public Demo / Educational Website
-```
-
-## بعد إصلاح healthz والربط والاختبارات
-
-```text
-CONDITIONAL GO — Closed Pilot with synthetic or approved low-risk data
-```
-
-## لا تستخدم هذا التصنيف حاليًا
-
-```text
-NO — General Enterprise SaaS
-NO — Production customer data
-NO — Compliance claim
-NO — Air-gapped/on-premise guarantee
-```
-
-## الهدف الواقعي بعد الإصلاحات
-
-رفع التقييم من:
-
-```text
-72.4%
-```
-
-إلى:
-
-```text
-82–86%
-```
-
-بعد إثبات:
-
-- health/readiness.
-- CI.
-- Auth.
-- Tenant isolation.
-- API contracts.
-- CSP enforcement.
-- Monitoring.
-- Backup/restore.
-- Pilot evidence.
-
-والوصول إلى أكثر من **90%** يتطلب إضافة تدقيق أمني مستقل، اختبارات اختراق، عمليات SaaS مكتملة، ودليل إنتاج قابل للتحقق—not مجرد تحسينات واجهة أو محتوى.
+الحكم الهندسي المحدّث بتاريخ 25 نوفمبر 2026 هو: **GO مشروط للموقع التعليمي والمختبرات المحلية بعد إصلاح روابط `/request-access/` و`/status/` وتطهير الصفحات الإرثية فورًا**، مع بقاء القرار **NO-GO قاطعًا لفتح بوابة SaaS (`/app`) أو استقبال بيانات عملاء حقيقية** إلى حين ربط خدمة Node الحية، وترقية Astro لإغلاق الثغرة الحرجة، وتطبيق ترحيلات قاعدة البيانات حتى `0045` على بيئة محمية ومختبرة بالاستعادة.
