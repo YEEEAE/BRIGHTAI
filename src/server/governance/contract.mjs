@@ -30,7 +30,18 @@ export const packSchema = z.strictObject({
   id: reference,
   version,
   effectiveOn: z.iso.date(),
-  source: z.strictObject({ type: z.literal('INTERNAL'), reference }),
+  source: z.discriminatedUnion('type', [
+    z.strictObject({ type: z.literal('INTERNAL'), reference }),
+    z.strictObject({ type: z.literal('OFFICIAL_REFERENCE'), reference,
+      url: z.url().refine(value => {
+        const url = new URL(value);
+        return url.protocol === 'https:' && ['dgp.sdaia.gov.sa', 'www.nist.gov'].includes(url.hostname) && !url.username && !url.password;
+      }),
+      documentVersion: z.string().trim().min(1).max(100),
+      accessedOn: z.iso.date(),
+      status: z.literal('REFERENCE_NOT_APPROVED'),
+    }),
+  ]),
   appliesTo: z.array(z.enum(assetKinds)).min(1).refine(items => new Set(items).size === items.length),
   requirements: z.array(z.strictObject({
     id: reference,

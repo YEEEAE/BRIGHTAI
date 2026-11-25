@@ -64,6 +64,7 @@ export function createGovernanceRegistry({ today = riyadhToday } = {}) {
       const asset = current(assets, assetId);
       const pack = activePack(packId);
       if (!asset || !pack?.appliesTo.includes(asset.kind)) throw Error('No effective applicable pack');
+      if (pack.source.type === 'OFFICIAL_REFERENCE') throw Error('Reference pack has not been independently approved');
       const id = digest(key(asset.id, asset.version, pack.id, pack.version));
       if (!assessments.has(id)) {
         const checks = pack.requirements.map(requirement => {
