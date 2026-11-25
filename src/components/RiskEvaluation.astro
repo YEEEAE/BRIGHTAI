@@ -20,7 +20,12 @@ const value = (metric, key) => metric.value === null
 <Card as="div" class="risk-evidence">
   <h3>{heading}</h3>
   <Badge tone="info">إعادة عرض · بيانات اصطناعية</Badge>
-  <p>المقاييس وصفية لهذه العينات. الحد الأدنى لعرض معدل المجموعة {minimumGroupSize} حالة. لم يُجرَ اختبار دلالة إحصائية.</p>
+  <p>المقاييس وصفية لهذه العينات. الحد الأدنى لعرض معدل المجموعة {minimumGroupSize} حالة. يُحجب المعدل أيضًا إن كان مقامه أقل من الحد. لم يُجرَ اختبار دلالة إحصائية؛ العينة صغيرة ولا تمثل المجتمع.</p>
+  <details>
+    <summary>سجل تشغيلات اصطناعية مؤرخة · ليس رصدًا حيًا</summary>
+    <p>التواريخ تسميات افتراضية للسيناريوهات وليست أوقات تشغيل تاريخية موثقة. مجموعات ونماذج اصطناعية مختلفة؛ التسلسل وصفي ولا يثبت تحسنًا أو انحرافًا، لأن البيانات والنموذج تغيرا معًا. المقادير قليلة ولا تدعم استنتاجًا إحصائيًا.</p>
+    {report.history.map(run => <p><bdi>{run.date} · {run.dataset} · {run.model}</bdi> — الحالات <bdi>{run.result.size}</bdi>، الدقة <bdi>{run.result.metrics.accuracy.numerator}/{run.result.metrics.accuracy.denominator}</bdi> · TP {run.result.counts.tp} / FP {run.result.counts.fp} / TN {run.result.counts.tn} / FN {run.result.counts.fn}</p>)}
+  </details>
   <details>
     <summary>المصنّف الثنائي · مصفوفة الالتباس ومعدلات المجموعات</summary>
     <p>الفئة الموجبة تعني توجيه الطلب لمسار سريع. المصدر <bdi>{report.sources.classifier}</bdi>.</p>

@@ -58,3 +58,15 @@ test('replay records versioned findings and reruns without changing risk or cros
   assert.equal(foreign.read(105).events.length, 0);
   assert.throws(() => act({ type: 'replay' }, 100 + SESSION_DURATION));
 });
+
+test('dated synthetic cases reproduce distinct replay results without implying live monitoring', async () => {
+  const { replayHistory } = await import('../src/server/risk-engine/evaluation.mjs');
+  const [first, second] = replayHistory();
+  assert.notEqual(first.dataset, second.dataset);
+  assert.notEqual(first.model, second.model);
+  assert.equal(first.mode, 'synthetic-replay');
+  assert.deepEqual(first.result.counts, { tp: 2, fp: 1, tn: 3, fn: 2 });
+  assert.deepEqual(second.result.counts, { tp: 3, fp: 1, tn: 3, fn: 1 });
+  assert.equal(first.result.metrics.accuracy.value, 5 / 8);
+  assert.equal(second.result.metrics.accuracy.value, 6 / 8);
+});

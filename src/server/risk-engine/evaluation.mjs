@@ -1,3 +1,5 @@
+import replayData from './evaluation-data/replays-v1.json' with { type: 'json' };
+
 // Versioned synthetic replay. Classifier tuples are [TP, FP, TN, FN].
 const classifier = [
   { id: 'A', counts: [18, 4, 16, 2] },
@@ -25,14 +27,14 @@ function rate(numerator, denominator, suppressed = false) {
 function classify(id, counts, grouped) {
   const [tp, fp, tn, fn] = counts;
   const size = tp + fp + tn + fn;
-  const small = grouped && size < minimumGroupSize;
+  const small = denominator => grouped && (size < minimumGroupSize || denominator < minimumGroupSize);
   return { id, counts: { tp, fp, tn, fn }, size, metrics: {
-    precision: rate(tp, tp + fp, small),
-    recall: rate(tp, tp + fn, small),
-    fpr: rate(fp, fp + tn, small),
-    fnr: rate(fn, tp + fn, small),
-    accuracy: rate(tp + tn, size, small),
-    selection: rate(tp + fp, size, small),
+    precision: rate(tp, tp + fp, small(tp + fp)),
+    recall: rate(tp, tp + fn, small(tp + fn)),
+    fpr: rate(fp, fp + tn, small(fp + tn)),
+    fnr: rate(fn, tp + fn, small(tp + fn)),
+    accuracy: rate(tp + tn, size, small(size)),
+    selection: rate(tp + fp, size, small(size)),
   } };
 }
 
@@ -52,10 +54,24 @@ function scoreScenarios(kind, rows) {
   } };
 }
 
+// Separately versioned, individually labeled synthetic records. Both model and dataset
+// change, so the chronological display cannot establish model improvement or drift.
+export function replayHistory() {
+  return replayData.runs.map(run => {
+    const counts = [0, 0, 0, 0];
+    for (const row of run.cases) {
+      if (![0, 1].includes(row.truth) || ![0, 1].includes(row.prediction)) throw new Error('Invalid synthetic label');
+      counts[row.truth ? (row.prediction ? 0 : 3) : (row.prediction ? 1 : 2)]++;
+    }
+    return { id: run.id, date: run.date, dataset: run.dataset, model: run.model,
+      mode: 'synthetic-replay', result: classify('all', counts, false) };
+  });
+}
+
 export function replayEvaluation() {
   const totals = [0, 1, 2, 3].map(index => classifier.reduce((sum, group) => sum + group.counts[index], 0));
   return {
-    mode: 'synthetic-replay', version: evaluationVersion,
+    mode: 'synthetic-replay', version: evaluationVersion, history: replayHistory(),
     sources: { classifier: 'intake-confusion-v1', scenarios: 'language-agent-scenarios-v1', judge: 'not-run' },
     classifier: [classify('all', totals, false), ...classifier.map(group => classify(group.id, group.counts, true))],
     scenarios: structuredClone(scenarios),

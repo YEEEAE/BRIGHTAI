@@ -1,0 +1,14 @@
+{
+  "version": "synthetic-cases-v1",
+  "description": "Fictional cases; truth and predictions are hand-authored, not provider output or personal data.",
+  "runs": [
+    {"id":"replay-2026-11-20", "date":"2026-11-20", "dataset":"synthetic-intake-alpha-v1", "model":"synthetic-classifier-a-v1", "cases":[
+      {"id":"a01","group":"A","truth":1,"prediction":1},{"id":"a02","group":"A","truth":1,"prediction":0},{"id":"a03","group":"A","truth":0,"prediction":1},{"id":"a04","group":"A","truth":0,"prediction":0},
+      {"id":"a05","group":"B","truth":1,"prediction":1},{"id":"a06","group":"B","truth":1,"prediction":0},{"id":"a07","group":"B","truth":0,"prediction":0},{"id":"a08","group":"B","truth":0,"prediction":0}
+    ]},
+    {"id":"replay-2026-11-25", "date":"2026-11-25", "dataset":"synthetic-intake-beta-v1", "model":"synthetic-classifier-b-v1", "cases":[
+      {"id":"b01","group":"A","truth":1,"prediction":1},{"id":"b02","group":"A","truth":1,"prediction":1},{"id":"b03","group":"A","truth":0,"prediction":0},{"id":"b04","group":"A","truth":0,"prediction":0},
+      {"id":"b05","group":"B","truth":1,"prediction":1},{"id":"b06","group":"B","truth":1,"prediction":0},{"id":"b07","group":"B","truth":0,"prediction":1},{"id":"b08","group":"B","truth":0,"prediction":0}
+    ]}
+  ]
+}
