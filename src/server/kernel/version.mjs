@@ -11,12 +11,15 @@ import { env } from './env.mjs';
 // Nothing here is a secret; identifiers and digests only, never configuration
 // values or connection strings.
 const COMMIT = /^[a-f0-9]{40}$/;
+const VERSION = /^\d{1,9}\.\d{1,9}\.\d{1,9}(?:[-+][0-9a-z.-]{1,48})?$/i;
 const DIGEST = /^sha256:[a-f0-9]{64}$/;
 
 function commitFrom(value) {
   const normalized = (value ?? '').trim().toLowerCase();
   return COMMIT.test(normalized) ? normalized : null;
 }
+
+const publicIdentifier = (value, pattern) => pattern.test(value ?? '') ? value : null;
 
 let cached;
 
@@ -41,8 +44,9 @@ function readArtifact() {
       return {
         present: true,
         commit: commitFrom(data.commit),
-        builtAt: typeof data.builtAt === 'string' ? data.builtAt : null,
-        node: typeof data.node === 'string' ? data.node : null,
+        version: publicIdentifier(data.version, VERSION),
+        builtAt: publicIdentifier(data.builtAt, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/),
+        node: publicIdentifier(data.node, /^v\d{1,9}\.\d{1,9}\.\d{1,9}$/),
         packageLock: DIGEST.test(packageLock) ? packageLock : null,
         digest: `sha256:${createHash('sha256').update(raw).digest('hex')}`,
       };
@@ -50,7 +54,7 @@ function readArtifact() {
       // Try the next candidate; a malformed artifact must not break readiness.
     }
   }
-  return { present: false, commit: null, builtAt: null, node: null, packageLock: null, digest: null };
+  return { present: false, version: null, commit: null, builtAt: null, node: null, packageLock: null, digest: null };
 }
 
 export function buildIdentity() {
@@ -64,18 +68,19 @@ export function buildIdentity() {
   const commit = artifact.commit ?? declaredCommit ?? runtimeCommit;
   const claimed = declaredCommit ?? runtimeCommit;
   cached = Object.freeze({
+    version: artifact.version,
     commit,
     consistent: artifact.commit && claimed
       ? [declaredCommit, runtimeCommit].filter(Boolean).every(value => value === artifact.commit)
       : null,
     artifact,
     service: {
-      id: env('RENDER_SERVICE_ID') || null,
-      name: env('RENDER_SERVICE_NAME') || null,
-      type: env('RENDER_SERVICE_TYPE') || null,
+      id: publicIdentifier(env('RENDER_SERVICE_ID'), /^srv-[a-z0-9-]{1,64}$/),
+      name: publicIdentifier(env('RENDER_SERVICE_NAME'), /^[a-z0-9][a-z0-9-]{0,62}$/i),
+      type: ['web', 'web_service', 'static_site', 'private_service'].includes(env('RENDER_SERVICE_TYPE')) ? env('RENDER_SERVICE_TYPE') : null,
     },
     deploy: {
-      id: env('AIGAS_DEPLOY_ID') || null,
+      id: publicIdentifier(env('AIGAS_DEPLOY_ID'), /^dep-[a-z0-9-]{1,64}$/),
       imageDigest: DIGEST.test(imageDigest) ? imageDigest : null,
       claimedCommit: claimed,
     },

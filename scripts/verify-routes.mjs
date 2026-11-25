@@ -97,7 +97,7 @@ for (const path of routes) {
 // Private app/auth routes are gated by runtime configuration (P04: they answer
 // 503 without DB/Auth), so they are not public crawl targets. They must stay
 // out of the sitemap and noindex; front-end links to them are checked there.
-const privatePrefix = path => /^\/(app|auth|healthz)(\/|$)/.test(path);
+const privatePrefix = path => /^\/(app|auth|healthz|readyz)(\/|$)/.test(path);
 const checked = new Set();
 const anchorDocuments = new Map(pages);
 for (const { from, url } of references) {
@@ -163,10 +163,16 @@ while (previous !== reachable.size) {
   }
 }
 assert.equal(reachable.size, routes.length, 'Orphan sitemap pages');
-for (const path of ['/app/kernel/', '/app/operator/trials/', '/healthz/']) {
+for (const path of ['/app/kernel/', '/app/operator/trials/']) {
   const response = await fetch(new URL(path, base), { redirect: 'manual' });
   assert(![200, 301].includes(response.status), `Private route must not be public: ${path}`);
   assert(!routes.includes(path), `Private route leaked into sitemap: ${path}`);
+}
+for (const path of ['/healthz/', '/readyz/']) {
+  const response = await fetch(new URL(path, base), { redirect: 'manual' });
+  assert((path === '/healthz/' ? [200] : [200, 503]).includes(response.status), `Unexpected probe status: ${path}`);
+  assert.match(response.headers.get('x-robots-tag') ?? '', /noindex/);
+  assert(!routes.includes(path), `Probe leaked into sitemap: ${path}`);
 }
 // The account surface is the only retained noindex: it is a signed-out screen,
 // not public content, and every public page must stay indexable.

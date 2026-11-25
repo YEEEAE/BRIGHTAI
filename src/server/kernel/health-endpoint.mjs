@@ -1,3 +1,4 @@
+import { probeResponse, methodNotAllowed } from './probe-response.mjs';
 import { readiness } from './readiness.mjs';
 import { buildIdentity } from './version.mjs';
 import { isPortalEnabled } from './env.mjs';
@@ -21,14 +22,6 @@ const DEPENDENCY_KEYS = ['database', 'auth', 'authProbe', 'portal'];
 const DEPENDENCY_VALUE = /^[A-Z][A-Z_]{0,31}$/;
 const ERROR_CODE = /^[A-Z][A-Z_]{0,63}$/;
 
-export const HEALTH_HEADERS = Object.freeze({
-  'Cache-Control': 'no-store, max-age=0',
-  'CDN-Cache-Control': 'no-store',
-  'Cloudflare-CDN-Cache-Control': 'no-store',
-  'X-Robots-Tag': 'noindex, nofollow',
-  'X-Content-Type-Options': 'nosniff',
-});
-
 function identity() {
   try {
     return buildIdentity();
@@ -48,6 +41,8 @@ export function failureReport(errorCode = 'READINESS_CHECK_FAILED') {
   const current = identity();
   return {
     schema: HEALTH_SCHEMA,
+    version: current?.version ?? null,
+    commit: current?.commit ?? null,
     status: 'not_ready',
     state: 'unavailable',
     checkedAt: new Date().toISOString(),
@@ -78,14 +73,19 @@ function normalize(report) {
     if (typeof value !== 'string' || !DEPENDENCY_VALUE.test(value)) return null;
     dependencies[key] = value;
   }
+  const current = identity();
   return {
     schema: HEALTH_SCHEMA,
+    version: current?.version ?? null,
+    commit: current?.commit ?? null,
     status: report.status,
     state: report.state,
     checkedAt: report.checkedAt,
     dependencies,
-    release: report.release && typeof report.release === 'object' ? report.release : null,
-    service: report.service && typeof report.service === 'object' ? report.service : null,
+    release: current
+      ? { commit: current.commit, consistent: current.consistent, artifact: current.artifact, deploy: current.deploy }
+      : null,
+    service: current?.service ?? null,
     error: null,
   };
 }
@@ -104,11 +104,8 @@ export async function evaluateHealth(options = {}) {
   }
 }
 
-export async function healthResponse(method = 'GET', options = {}) {
+export async function readyResponse(method = 'GET', options = {}) {
+  if (method !== 'GET' && method !== 'HEAD') return methodNotAllowed();
   const { status, body } = await evaluateHealth(options);
-  const headers = new Headers(HEALTH_HEADERS);
-  // HEAD must expose the same media type as GET. The body stays empty, but a
-  // checker that only inspects headers still sees a JSON contract, not HTML.
-  headers.set('Content-Type', 'application/json; charset=utf-8');
-  return new Response(method === 'HEAD' ? null : JSON.stringify(body), { status, headers });
+  return probeResponse(method, status, body);
 }

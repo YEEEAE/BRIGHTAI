@@ -111,3 +111,27 @@ KERNEL_AUTH_E2E_DATABASE_URL=postgresql://postgres@127.0.0.1:5432/brightai_auth_
 تتطلب `/app/trial/` بوابة مفعّلة، ومصادقة Neon Auth، ودور اتصال `aigas_runtime` مع RLS، وترحيل `0040` قبل نشر نسخة التطبيق التي تعتمد عليه. يتحقق التفعيل من جاهزية مخططات وصلاحيات القراءة للمنتجات الخمسة قبل إنشاء المساحة.
 
 تُنشئ التجربة مساحة بيانات اصطناعية لكل حساب موثّق وتسمح بالتصفح المحدود. يحفظ PostgreSQL بداية النافذة ونهايتها بتوقيت الخادم. يعيد طلب البدء المكرر مرجع المساحة نفسها، وتبقى صلاحيات المنتجات منتهية عند حد الـ48 ساعة. يسجّل أول طلب لحالة التجربة بعد الحد الانتقال إلى الحالة المنتهية في سجل التدقيق.
+
+
+## فحص تشغيل Node بعد النشر على Render
+
+يضبط `render.yaml` خدمة Node على الإصدار `22.22.2` والمنفذ `10000` مع الاستماع على `0.0.0.0`. تستخدم الخدمة `npm ci && npm run build` للبناء و`npm start` للتشغيل. يختبر Render المسار `/readyz/`. تجاوز كاش الحافة لكلا الفحصين بصيغتيهما.
+
+| المسار | النتيجة المتوقعة |
+|---|---|
+| `/healthz` و`/healthz/` | `200` وJSON يتضمن `status: "ok"` و`version` و`commit`. يظل الفحص ناجحًا عند تعطل قاعدة البيانات. |
+| `/readyz` و`/readyz/` | `200` عند نجاح فحوص PostgreSQL وتهيئة Auth. تعيد الإعدادات الناقصة والاعتماديات المتعطلة `503` مع حالة عامة وهوية البناء. |
+
+تجيب الصيغ الأربع مباشرة عند التشغيل بـ`npm start`. يعيد `HEAD` الترويسات ورمز الحالة بجسم فارغ. تعتمد الجاهزية على `DATABASE_URL` وإعدادات Neon Auth. يفعّل الـBlueprint فحص JWKS الشبكي. اضبط القيم في إعدادات Runtime في Render.
+
+```sh
+npm run build
+npm run test:healthz
+
+# مرّر عنوان المنشأ الفعلي لخدمة Node وSHA الظاهر في نشر Render.
+npm run smoke:healthz -- "$RENDER_ORIGIN_URL" --require-ready --expect-commit="$EXPECTED_COMMIT"
+# بعد ربط النطاق، أعد الفحص على النطاق العام.
+npm run smoke:healthz -- https://brightai.live --require-ready --expect-commit="$EXPECTED_COMMIT"
+```
+
+يتحقق الـsmoke من `GET` و`HEAD`، وهوية البناء، وJSON، و`no-store`، ويرفض التحويلات. لتشغيل اختبار الجاهزية الإيجابي محليًا، مرّر `HEALTHZ_READY_DATABASE_URL` لقاعدة PostgreSQL مؤقتة على loopback تحتوي على `public.aigas_tenants`. تفاصيل العقد في [دليل فحوص التشغيل](docs/HEALTHZ-READINESS.md).

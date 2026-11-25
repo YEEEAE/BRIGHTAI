@@ -12,12 +12,8 @@ services:
     # Forward /app/* and /app/api/* unchanged; bypass every CDN cache for /app/*.
     # Existing static hosting requires an operator-managed origin change; not deployed here.
     startCommand: npm start
-    # Readiness, not liveness: a failed database or auth dependency keeps the
-    # deploy unhealthy instead of routing traffic to an unready process.
-    # /healthz/ answers JSON with dependency states and the build identity.
-    # Both /healthz/ and /healthz answer directly (no redirect): Render treats
-    # any 2xx/3xx as healthy, so a redirect would bypass the dependency check.
-    healthCheckPath: /healthz/
+    # Gate traffic on dependencies. /healthz/ reports process liveness.
+    healthCheckPath: /readyz/
     envVars:
       - key: NODE_VERSION
         value: 22.22.2
@@ -51,7 +47,7 @@ services:
         sync: false
       # Traceability: RENDER_SERVICE_ID / RENDER_SERVICE_NAME / RENDER_GIT_COMMIT
       # are injected by Render; AIGAS_DEPLOY_ID and AIGAS_IMAGE_DIGEST are
-      # optional operator/CI values that /healthz/ reports when present.
+      # optional operator/CI values that /readyz/ reports when present.
       - key: DATABASE_URL
         sync: false
       - key: NEON_AUTH_BASE_URL

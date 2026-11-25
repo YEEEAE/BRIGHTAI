@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { request } from 'node:http';
 import net from 'node:net';
 
 // Integration coverage for the shipped Node entry point (scripts/server.mjs).
@@ -10,7 +11,7 @@ import net from 'node:net';
 // DATABASE_URL, so the honest answer is 503 with the fixed readiness schema.
 //
 //   npm run build
-//   node --test tests/healthz-integration.test.mjs
+//   node --test tests/readyz-integration.test.mjs
 //
 // A positive 200 case runs only when HEALTHZ_READY_DATABASE_URL points at a
 // disposable localhost database that already contains public.aigas_tenants.
@@ -60,9 +61,8 @@ async function withServer(env, run) {
     },
     stdio: ['ignore', 'pipe', 'pipe'],
   });
-  let output = '';
-  child.stdout.on('data', chunk => { output += chunk; });
-  child.stderr.on('data', chunk => { output += chunk; });
+  child.stdout.resume();
+  child.stderr.resume();
   const base = `http://127.0.0.1:${port}`;
   try {
     await waitFor(base);
@@ -77,7 +77,7 @@ async function withServer(env, run) {
 }
 
 function assertEnvelope(body) {
-  assert.deepEqual(Object.keys(body).sort(), ['checkedAt', 'dependencies', 'error', 'release', 'schema', 'service', 'state', 'status']);
+  assert.deepEqual(Object.keys(body).sort(), ['checkedAt', 'commit', 'dependencies', 'error', 'release', 'schema', 'service', 'state', 'status', 'version']);
   assert.deepEqual(Object.keys(body.dependencies).sort(), ['auth', 'authProbe', 'database', 'portal']);
   assert.equal(body.schema, 1);
   assert.equal(Number.isNaN(Date.parse(body.checkedAt)), false);
@@ -92,9 +92,24 @@ function assertNotReady(body) {
   assert.notEqual(body.state, 'ready');
 }
 
-test('GET and HEAD /healthz answer the JSON readiness contract', { skip: BUILT ? false : BUILT_REASON }, async () => {
+test('GET and HEAD /readyz answer the JSON readiness contract', { skip: BUILT ? false : BUILT_REASON }, async () => {
   await withServer({ AIGAS_APP_ENABLED: 'false' }, async base => {
     for (const path of ['/healthz', '/healthz/']) {
+      const get = await fetch(`${base}${path}`, { redirect: 'manual' });
+      assert.equal(get.status, 200);
+      assert.equal(get.headers.has('location'), false);
+      assert.match(get.headers.get('content-type'), /^application\/json/);
+      assert.match(get.headers.get('cache-control'), /no-store/);
+      const body = await get.json();
+      assert.deepEqual(Object.keys(body).sort(), ['commit', 'status', 'version']);
+      assert.equal(body.status, 'ok');
+      assert.match(body.version, /^\d+\.\d+\.\d+/);
+      assert.match(body.commit, /^[a-f0-9]{40}$/);
+      const head = await fetch(`${base}${path}`, { method: 'HEAD', redirect: 'manual' });
+      assert.equal(head.status, 200);
+      assert.equal(await head.text(), '');
+    }
+    for (const path of ['/readyz', '/readyz/']) {
       const response = await fetch(`${base}${path}`, { redirect: 'manual' });
       assert.equal(response.status, 503, `${path} must not redirect or fall through to Astro HTML`);
       assert.match(response.headers.get('content-type') ?? '', /^application\/json/, `${path} content-type`);
@@ -113,7 +128,7 @@ test('GET and HEAD /healthz answer the JSON readiness contract', { skip: BUILT ?
       assert.equal(body.dependencies.portal, 'DISABLED');
     }
 
-    for (const path of ['/healthz', '/healthz/']) {
+    for (const path of ['/readyz', '/readyz/']) {
       const head = await fetch(`${base}${path}`, { method: 'HEAD', redirect: 'manual' });
       assert.equal(head.status, 503, `HEAD ${path}`);
       assert.match(head.headers.get('content-type') ?? '', /^application\/json/, `HEAD ${path} content-type`);
@@ -131,7 +146,7 @@ test('a ready database and configured auth answer 200', {
     NEON_AUTH_BASE_URL: 'https://auth.example.test',
     NEON_AUTH_JWKS_URL: 'https://auth.example.test/jwks',
   }, async base => {
-    for (const path of ['/healthz', '/healthz/']) {
+    for (const path of ['/readyz', '/readyz/']) {
       const response = await fetch(`${base}${path}`, { redirect: 'manual' });
       assert.equal(response.status, 200, `${path} must be 200 when dependencies are ready`);
       const body = await response.json();
@@ -142,8 +157,56 @@ test('a ready database and configured auth answer 200', {
       assert.equal(body.dependencies.auth, 'READY');
       assert.equal(body.error, null);
     }
-    const head = await fetch(`${base}/healthz`, { method: 'HEAD', redirect: 'manual' });
+    const head = await fetch(`${base}/readyz`, { method: 'HEAD', redirect: 'manual' });
     assert.equal(head.status, 200);
     assert.equal(await head.text(), '');
+  });
+});
+
+test('database connection failure degrades readiness only', async () => {
+  const closedPort = await freePort();
+  await withServer({
+    DATABASE_URL: `postgresql://probe:synthetic_secret@127.0.0.1:${closedPort}/unavailable`,
+    NEON_AUTH_BASE_URL: 'https://auth.example.test',
+    NEON_AUTH_JWKS_URL: 'https://auth.example.test/jwks',
+  }, async base => {
+    const live = await fetch(`${base}/healthz/`, { redirect: 'manual' });
+    const ready = await fetch(`${base}/readyz/`, { redirect: 'manual' });
+    assert.equal(live.status, 200);
+    assert.equal(ready.status, 503);
+    const text = await ready.text();
+    assertNoDisclosure(text);
+    assert(!text.includes('synthetic_secret'));
+    const body = JSON.parse(text);
+    assert.equal(body.dependencies.database, 'UNAVAILABLE');
+    const identity = await live.json();
+    assert.equal(body.version, identity.version);
+    assert.equal(body.commit, identity.commit);
+  });
+});
+
+test('malformed requests are rejected and ordinary canonical redirects still work', async () => {
+  await withServer({}, async base => {
+    for (const path of ['/healthz', '/healthz/', '/readyz', '/readyz/']) {
+      const badHost = await new Promise((resolve, reject) => {
+        const req = request(`${base}${path}`, { headers: { Host: 'example.test:65536' } }, response => {
+          response.resume();
+          resolve(response.statusCode);
+        });
+        req.on('error', reject);
+        req.end();
+      });
+      assert.equal(badHost, 400);
+      const post = await fetch(`${base}${path}`, { method: 'POST', redirect: 'manual' });
+      assert.equal(post.status, 405);
+      assert.equal(post.headers.get('allow'), 'GET, HEAD');
+      assert.deepEqual(await post.json(), { error: 'METHOD_NOT_ALLOWED' });
+    }
+    const malformedPath = await fetch(`${base}/readyz/%ZZ`, { redirect: 'manual' });
+    assert.equal(malformedPath.status, 400);
+    const canonical = await fetch(`${base}/terms?source=probe`, { redirect: 'manual' });
+    assert.equal(canonical.status, 301);
+    assert.equal(canonical.headers.get('location'), '/terms/?source=probe');
+    assert.equal((await fetch(`${base}/healthz/`)).status, 200);
   });
 });

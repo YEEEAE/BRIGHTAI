@@ -341,7 +341,7 @@ GRANT aigas_runtime TO aigas_app_login WITH SET TRUE;
 2. **اربط الاتصال بالدور:** إما `options=-c role=aigas_runtime` في DSN (URL-encoded)، أو `SET ROLE aigas_runtime` بعد الاتصال في `db.mjs`. لا تعتمد على `NOINHERIT` وحدها.
 3. **اضبط** `AIGAS_REQUIRE_RLS=true` و`AIGAS_APP_ENABLED=false` أولًا.
 4. **Smoke محلي/Staging** قبل Production:
-   - `/healthz/` = 200، و`/app/api/kernel/health` = حالة متسقة.
+   - `/readyz/` = 200، و`/app/api/kernel/health` = حالة متسقة.
    - `createWorkspace` عبر `aigas_bootstrap_workspace` (0035).
    - dashboard + product browse + cross-tenant denial.
    - `pg_stat_activity`: `current_user=aigas_runtime` بعد SET ROLE، و`rolbypassrls=false`.

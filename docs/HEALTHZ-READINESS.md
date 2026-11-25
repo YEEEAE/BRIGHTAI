@@ -1,52 +1,21 @@
-# Healthz — عقد الجاهزية والفرق بين liveness وreadiness
+# فحوص تشغيل خدمة BRIGHTAI على Node
 
-> الحالة 2026-11-24: العقد مُنفَّذ ومُختبَر محليًا. الإنتاج لم يُفحص في هذا التدقيق.
-> المصدر: `src/pages/healthz.ts` → `src/server/kernel/health-endpoint.mjs` → `src/server/kernel/readiness.mjs`.
+`/healthz` يفحص استجابة العملية ويعيد `200` مع `status: "ok"` و`version` و`commit`.
+`/readyz` يفحص PostgreSQL وتهيئة Auth واتساق هوية النشر. يستخدم Render `/readyz/` في الـBlueprint. مسار `/app/api/kernel/health/` يبقى فحص المنتج ويخضع لبوابة التطبيق.
 
-## 1. الفرق بين liveness وreadiness
+يستقبل `npm start` صيغتي المسارين مباشرة. يعيد `HEAD` ترويسات JSON ورمز الحالة بجسم فارغ، وتعيد الطرق الأخرى `405` مع `Allow: GET, HEAD`. يرفض مدخل Node الطلبات المشوهة بـ`400` قبل تشغيل الفحوص.
 
-| | liveness | readiness |
-|---|---|---|
-| السؤال | هل العملية حيّة؟ | هل يمكنها خدمة الطلب الآن؟ |
-| يعتمد على DB/Auth؟ | لا | نعم |
-| عند الفشل | أعد تشغيل العملية | لا توجّه إليها traffic |
-| المسار الحالي | فحص TCP على منفذ الخدمة (Render الافتراضي) | `GET /healthz/` و`GET /healthz` |
-| لا يصلح له | — | `/` أو أي صفحة HTML |
-
-`/healthz` هو **readiness** فقط. لا يوجد liveness HTTP منفصل: فحص Render TCP يكفي
-لإثبات أن العملية تستمع، و`/healthz` يضيف فحص DB وAuth وإصدار البناء. لا يجوز
-استخدام `/healthz` كـliveness (لأن فشل DB سيؤدي إلى restart بلا فائدة)، ولا
-استخدام `/` كـreadiness (لأن صفحة HTML قد تعمل بينما DB/Auth متعطلان).
-
-المسار `/app/api/kernel/health/` يخصّ صحة منتج Kernel خلف بوابة `/app`، وليس
-بديلًا عن فحص المنصة.
-
-## 2. المسارات والطرق
-
-| المسار | الطرق | الاستجابة |
-|---|---|---|
-| `/healthz/` | GET, HEAD | JSON بعقد ثابت |
-| `/healthz` | GET, HEAD | نفس JSON مباشرة (بدون redirect) |
-
-`astro.config.mjs` يستخدم `trailingSlash: 'always'`، لذلك Astro يعيد 301 لـ
-`/healthz` قبل تشغيل الـroute أو الـmiddleware. يعالج `scripts/server.mjs`
-المسار بلا slash بنفس الدالة، لأن Render يعتبر **أي 2xx أو 3xx صحية**؛ redirect
-كان سيجعل الفحص ينجح دون تقييم أي اعتمادية. في `astro dev` و`astro preview`
-فقط (بلا `scripts/server.mjs`) يبقى `/healthz` تحويلًا إلى `/healthz/`.
-
-الاستجابة `Content-Type: application/json; charset=utf-8`، و:
-`Cache-Control: no-store, max-age=0`، `CDN-Cache-Control: no-store`،
-`Cloudflare-CDN-Cache-Control: no-store`، `X-Robots-Tag: noindex, nofollow`،
-`X-Content-Type-Options: nosniff`.
-HEAD يعيد نفس الترويسات بلا body.
+تتضمن استجابات الفحص `Cache-Control: no-store, max-age=0` وترويسات منع كاش CDN و`X-Robots-Tag: noindex, nofollow`. تبقى سياسة Astro `trailingSlash: 'always'` للصفحات العامة. استخدم `npm start` لفحص سلوك الإنتاج، لأن Astro يشغّل canonical redirect عند الوصول إليه مباشرة دون مدخل Node الخاص بالمشروع.
 
 ## 3. العقد الثابت
 
-كل استجابة — نجاحًا أو فشلًا — تحتوي المفاتيح التالية:
+كل استجابة GET للجاهزية بحالة 200 أو 503 تحتوي المفاتيح التالية:
 
 ```json
 {
   "schema": 1,
+  "version": "2.0.0",
+  "commit": "<40-character git SHA>",
   "status": "ready | not_ready",
   "state": "ready | setup_required | blocked | unavailable",
   "checkedAt": "ISO-8601",
@@ -62,10 +31,10 @@ HEAD يعيد نفس الترويسات بلا body.
 }
 ```
 
-- المفاتيح الخمسة المطلوبة دائمًا: `schema`, `status`, `state`, `checkedAt`, `dependencies`.
+- يكتب البناء الإصدار وSHA في `dist/server/version.json`. يمكن أن تكون الهوية `null` عند غياب البيانات، ويرفضها فحص ما بعد النشر.
 - `release` و`service` حقول هوية إضافية ثابتة، وليست إعدادات سرية.
 - عند فشل الفحص نفسه: `error` كود محدود مثل `READINESS_CHECK_FAILED` أو
-  `READINESS_CONTRACT_INVALID`، و`dependencies` كلها `UNKNOWN`. لا يُسرَّب نص
+  `READINESS_CONTRACT_INVALID`، وحالات الاعتماديات `UNKNOWN` مع استمرار عرض حالة البوابة. لا يُسرَّب نص
   الاستثناء.
 - `release`/`service` تكون `null` فقط إذا تعذّر بناء هوية العملية.
 - أي تقرير داخلي لا يطابق العقد يُعامل كـ503 وليس 200.
@@ -98,52 +67,10 @@ HEAD يعيد نفس الترويسات بلا body.
 `PRIVILEGE_DENIED` وأي خطأ آخر إلى `UNAVAILABLE`. استُخرج إنشاء `pg.Client`
 داخل `try` حتى لا يتحول DSN مشوّه إلى استثناء يفلت من العقد.
 
-## 6. Render
+## 6. تشغيل الاختبارات
 
-`render.yaml` يستخدم:
+اتبع أوامر [فحص الإنتاج في README](../README.md#فحص-تشغيل-node-بعد-النشر-على-render). استخدم `--require-ready` عند فحص النسخة المنشورة حتى يفشل الاختبار إذا أعاد `/readyz` الرمز `503`.
 
-```yaml
-healthCheckPath: /healthz/
-```
+يقبل Render استجابة `2xx` أو `3xx` خلال خمس ثوانٍ ويرصد فشل الخدمة أثناء النشر وبعده. لهذا يختبر الـsmoke الوصول المباشر ويرفض أي تحويل. تعطل الاعتماديات المتكرر قد يوقف توجيه الطلبات ويعيد تشغيل العملية وفق سياسة Render. [توثيق فحوص Render](https://render.com/docs/health-checks)
 
-هذا صحيح: الفحص يصل إلى route الجاهزية مباشرة، ويعيد 503 عند تعطل الاعتمادية.
-لا تضبطه على `/` أو على مسار HTML. ولا تضبطه على `/healthz` في نشر يعتمد على
-redirect قديم؛ المسار بلا slash يجب أن يعيد JSON عبر `scripts/server.mjs`.
-
-وفق توثيق Render: الفحص HTTP يعتبر النجاح عند `2xx` أو `3xx` خلال 5 ثوانٍ.
-لذلك أي redirect إلى `/healthz/` قد يُخفى كنجاح حتى لو كانت الاعتماديات متعطلة.
-Render يوقف التوجيه بعد 15 ثانية من الفشل المتتالي، ويعيد التشغيل بعد 60 ثانية،
-ويلغي النشر الجديد إذا لم تنجح كل العينات خلال 15 دقيقة.
-
-## 7. الاختبارات وsmoke
-
-```bash
-npm run build
-npm run test:healthz          # unit + integration (503 path)
-node --test tests/healthz.test.mjs
-
-# positive 200 against a disposable localhost DB with public.aigas_tenants:
-HEALTHZ_READY_DATABASE_URL=postgresql://…/aigas_healthz npm run test:healthz
-
-# post-deploy (read-only, no credentials):
-node scripts/smoke-healthz.mjs https://<service>.onrender.com
-node scripts/smoke-healthz.mjs https://<service>.onrender.com --require-ready --expect-commit=<sha>
-```
-
-- Unit: عقد الاستجابة، 200/503، الحالات، HEAD، منع التسريب، تعارض commit،
-  تقرير مشوّه، ومسار 42501.
-- Integration: يشغّل `scripts/server.mjs` الحقيقي ويختبر GET/HEAD للمسارين
-  دون DB (503).
-- Smoke: يرفض أي 3xx، ويتحقق من JSON والعقد وعدم التسريب وتطابق الحالة مع
-  رمز HTTP، ويمكنه اشتراط 200 وتطابق SHA.
-
-## 8. حدود التحقق
-
-- محليًا: البناء تم بـNode 24.20.0 وAstro 7.4.12 الموجود في `node_modules`؛
-  `package-lock.json` يثبت Astro 6.4.8. هذا انحراف سابق في بيئة التطوير وليس
-  تغييرًا في هذا التدقيق، ويجب أن يُعاد البناء بـ`npm ci` قبل الاعتماد النهائي.
-- مسار 200 يحتاج قاعدة بيانات تحوي `public.aigas_tenants`؛ الاختبار الملتزم
-  يجعله اختياريًا عبر `HEALTHZ_READY_DATABASE_URL`.
-- لم يُنشر شيء ولم يُفحص Render أو الدومين في هذا التدقيق.
-- نجاح 200 لا يعني اكتمال كل migrations أو RLS أو منح المنتجات؛ الفحص يثبت
-  وجود جدول `aigas_tenants` فقط.
+فحص PostgreSQL يتحقق من الاتصال ودور التشغيل ووجود `public.aigas_tenants`. تحقق الترحيلات وصلاحيات المنتجات وعزل المؤسسات له اختبارات مستقلة. يختبر الفحص الشبكي لـAuth مفاتيح JWKS عند تفعيله.

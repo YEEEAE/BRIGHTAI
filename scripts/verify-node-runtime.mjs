@@ -90,7 +90,7 @@ async function withServer(port, env, run) {
 // Portal closed, no database and no auth configuration: the shipped default for
 // a service where AIGAS_APP_ENABLED is not yet authorized.
 await withServer(4397, { AIGAS_APP_ENABLED: 'false' }, async base => {
-  const health = await fetch(`${base}/healthz/`, { redirect: 'manual' });
+  const health = await fetch(`${base}/readyz/`, { redirect: 'manual' });
   const body = await health.json();
   await check('A1 readiness is 503 without dependencies', async () => {
     assert.equal(health.status, 503);
@@ -113,7 +113,7 @@ await withServer(4397, { AIGAS_APP_ENABLED: 'false' }, async base => {
     assert.equal(header('cdn-cache-control'), 'no-store');
   });
   await check('A4 HEAD readiness answers without a body', async () => {
-    const head = await fetch(`${base}/healthz/`, { method: 'HEAD', redirect: 'manual' });
+    const head = await fetch(`${base}/readyz/`, { method: 'HEAD', redirect: 'manual' });
     assert.equal(head.status, 503);
     assert.equal((await head.text()).length, 0);
   });
@@ -185,13 +185,13 @@ await withServer(4397, { AIGAS_APP_ENABLED: 'false' }, async base => {
     // CVE-2026-102984 / GHSA-qh8j-hqjv-7m4x: the adapter throws `Invalid URL`
     // while building the request, which used to answer 500 on every SSR route.
     for (const host of ['example.com:65536', 'example.com:8080:8080', '[::1]:abc', '']) {
-      const response = await requestWithHost(base, host, '/healthz/');
+      const response = await requestWithHost(base, host, '/readyz/');
       assert.equal(response.status, 400, `${JSON.stringify(host)} must be rejected, not rendered`);
       assert(!/Invalid URL/.test(response.body), 'no adapter error text is returned');
     }
-    const normal = await requestWithHost(base, `127.0.0.1:${new URL(base).port}`, '/healthz/');
+    const normal = await requestWithHost(base, `127.0.0.1:${new URL(base).port}`, '/readyz/');
     assert.equal(normal.status, 503, 'a well-formed Host still reaches the readiness route');
-    const after = await fetch(`${base}/healthz/`);
+    const after = await fetch(`${base}/readyz/`);
     assert.equal(after.status, 503, 'the server keeps answering after malformed Host probes');
   });
   await check('A11 a backslash path cannot become a protocol-relative redirect', async () => {
@@ -258,14 +258,14 @@ await withServer(4398, {
     assert.equal(json.dependencyStatus, 'not configured');
   });
   await check('B3 unreachable database closes readiness', async () => {
-    const health = await fetch(`${base}/healthz/`);
+    const health = await fetch(`${base}/readyz/`);
     const json = await health.json();
     assert.equal(health.status, 503);
     assert.equal(json.dependencies.database, 'UNAVAILABLE');
     assert.equal(json.dependencies.portal, 'ENABLED');
   });
   await check('B4 service/deploy/commit identity is read back', async () => {
-    const json = await (await fetch(`${base}/healthz/`)).json();
+    const json = await (await fetch(`${base}/readyz/`)).json();
     assert.equal(json.service.id, 'srv-local-proof');
     assert.equal(json.service.name, 'brightai-local-proof');
     assert.equal(json.service.type, 'web');
@@ -274,7 +274,7 @@ await withServer(4398, {
     assert.equal(json.release.consistent, true, 'artifact and platform commit must agree');
   });
   await check('B5 readiness body never leaks the DSN marker', async () => {
-    const text = await (await fetch(`${base}/healthz/`)).text();
+    const text = await (await fetch(`${base}/readyz/`)).text();
     assert(!text.includes(SECRET_MARKER));
     assert(!/postgres(ql)?:\/\//.test(text));
   });
@@ -293,7 +293,7 @@ if (!readyUrl) {
     NEON_AUTH_JWKS_URL: 'https://auth.example.invalid/.well-known/jwks.json',
   }, async base => {
     await check('C1 readiness is 200 when database and auth are configured', async () => {
-      const health = await fetch(`${base}/healthz/`);
+      const health = await fetch(`${base}/readyz/`);
       const json = await health.json();
       assert.equal(health.status, 200);
       assert.equal(json.state, 'ready');

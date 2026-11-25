@@ -3,7 +3,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 
 // Records what this build was produced from, next to the server entry point.
-// The file is read back by /healthz, so a running process can prove the commit
+// The file is read back by /healthz and /readyz, so a running process can prove the commit
 // and dependency set it was built from instead of trusting a deploy label.
 // Non-secret by design: commit, build time, Node version, lockfile digest.
 const COMMIT = /^[a-f0-9]{40}$/;
@@ -43,6 +43,7 @@ function lockfileDigest() {
 
 export default function buildVersion() {
   let serverDir;
+  const { version } = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
   return {
     name: 'brightai-build-version',
     hooks: {
@@ -52,6 +53,7 @@ export default function buildVersion() {
       'astro:build:done': ({ logger }) => {
         const info = {
           schema: 1,
+          version,
           commit: resolveCommit(),
           builtAt: new Date().toISOString(),
           node: process.version,

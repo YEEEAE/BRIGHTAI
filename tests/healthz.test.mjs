@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import pg from 'pg';
 import { resetBuildIdentity } from '../src/server/kernel/version.mjs';
-import { evaluateHealth, failureReport, healthResponse } from '../src/server/kernel/health-endpoint.mjs';
+import { evaluateHealth, failureReport, readyResponse } from '../src/server/kernel/health-endpoint.mjs';
 
 // Unit coverage for the readiness HTTP contract. These tests never reach a real
 // database or auth host: pg.Client is stubbed, and the network probe is disabled.
@@ -49,7 +49,7 @@ function stubPostgres({ rows = [{ kernel_schema: true }], queryError, connectErr
 }
 
 function assertFixedEnvelope(body) {
-  assert.deepEqual(Object.keys(body).sort(), ['checkedAt', 'dependencies', 'error', 'release', 'schema', 'service', 'state', 'status']);
+  assert.deepEqual(Object.keys(body).sort(), ['checkedAt', 'commit', 'dependencies', 'error', 'release', 'schema', 'service', 'state', 'status', 'version']);
   assert.deepEqual(Object.keys(body.dependencies).sort(), ['auth', 'authProbe', 'database', 'portal']);
   assert.equal(body.schema, 1);
   assert.equal(Number.isNaN(Date.parse(body.checkedAt)), false);
@@ -65,7 +65,7 @@ test('ready dependencies answer 200 with the fixed schema', async t => {
   configureAuth();
   stubPostgres();
 
-  const response = await healthResponse('GET');
+  const response = await readyResponse('GET');
   assert.equal(response.status, 200);
   assert.match(response.headers.get('content-type') ?? '', /^application\/json/);
   assert.match(response.headers.get('cache-control') ?? '', /no-store/);
@@ -84,7 +84,7 @@ test('ready dependencies answer 200 with the fixed schema', async t => {
 test('missing configuration answers 503, never a 200', async t => {
   prepare(t);
   stubPostgres();
-  const response = await healthResponse('GET');
+  const response = await readyResponse('GET');
   assert.equal(response.status, 503);
   const body = await response.json();
   assertFixedEnvelope(body);
@@ -101,7 +101,7 @@ test('unreachable database answers 503 and never echoes the driver message', asy
   const driver = Object.assign(new Error('connect failed for postgresql://runtime:SYNTHETIC_SECRET@db.internal/aigas role=aigas_runtime'), { code: 'ECONNREFUSED' });
   stubPostgres({ connectError: driver });
 
-  const response = await healthResponse('GET');
+  const response = await readyResponse('GET');
   assert.equal(response.status, 503);
   const body = await response.json();
   assertFixedEnvelope(body);
@@ -119,7 +119,7 @@ test('a 42501 privilege error is reported as blocked without naming the role', a
   const denied = Object.assign(new Error('permission denied for table aigas_tenants while acting as aigas_runtime'), { code: '42501' });
   stubPostgres({ queryError: denied });
 
-  const response = await healthResponse('GET');
+  const response = await readyResponse('GET');
   assert.equal(response.status, 503);
   const body = await response.json();
   assertFixedEnvelope(body);
@@ -134,7 +134,7 @@ test('a missing kernel schema answers 503 blocked', async t => {
   configureAuth();
   stubPostgres({ rows: [{ kernel_schema: false }] });
 
-  const response = await healthResponse('GET');
+  const response = await readyResponse('GET');
   assert.equal(response.status, 503);
   const body = await response.json();
   assert.equal(body.state, 'blocked');
@@ -148,14 +148,14 @@ test('a configured runtime role is used but never returned', async t => {
   configureAuth();
   stubPostgres();
 
-  const body = await (await healthResponse('GET')).json();
+  const body = await (await readyResponse('GET')).json();
   assert.equal(body.state, 'ready');
   assert(!JSON.stringify(body).includes('aigas_runtime'));
 });
 
 test('a thrown readiness check keeps the fixed schema and a bounded code', async t => {
   prepare(t);
-  const response = await healthResponse('GET', {
+  const response = await readyResponse('GET', {
     check: async () => { throw new Error('postgresql://runtime:secret@db.internal/aigas'); },
   });
   assert.equal(response.status, 503);
@@ -169,7 +169,7 @@ test('a thrown readiness check keeps the fixed schema and a bounded code', async
 
 test('a malformed readiness report fails closed instead of answering 200', async t => {
   prepare(t);
-  const response = await healthResponse('GET', { check: async () => ({ state: 'ready', status: 'ready' }) });
+  const response = await readyResponse('GET', { check: async () => ({ state: 'ready', status: 'ready' }) });
   assert.equal(response.status, 503);
   const body = await response.json();
   assertFixedEnvelope(body);
@@ -193,7 +193,7 @@ test('HEAD carries the JSON headers and no body', async t => {
   configureAuth();
   stubPostgres();
 
-  const response = await healthResponse('HEAD');
+  const response = await readyResponse('HEAD');
   assert.equal(response.status, 200);
   assert.match(response.headers.get('content-type') ?? '', /^application\/json/);
   assert.equal(await response.text(), '');
@@ -208,7 +208,6 @@ test('failureReport always contains every required key', () => {
 
 test('Render health check points at the readiness route, not a redirect', () => {
   const yaml = readFileSync(new URL('../render.yaml', import.meta.url), 'utf8');
-  assert.match(yaml, /^\s*healthCheckPath:\s*\/healthz\/\s*$/m);
+  assert.match(yaml, /^\s*healthCheckPath:\s*\/readyz\/\s*$/m);
   assert(!/^\s*healthCheckPath:\s*\/(?:\s*)$/m.test(yaml), 'healthCheckPath must not be /');
-  assert(!/^\s*healthCheckPath:\s*\/healthz\s*$/m.test(yaml), 'no-slash path is a redirect for Astro pages');
 });

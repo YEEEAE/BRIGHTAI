@@ -115,7 +115,7 @@ psql -d aigas_p04_readiness -c 'CREATE TABLE aigas_tenants(id uuid primary key d
 P04_READY_DATABASE_URL="postgresql://$USER@127.0.0.1:5432/aigas_p04_readiness" node scripts/verify-node-runtime.mjs
 ```
 
-### 9.2 عقد readiness — `/healthz/`
+### 9.2 عقد readiness — `/readyz/`
 
 | البند | السلوك |
 |---|---|
@@ -153,7 +153,7 @@ P04_READY_DATABASE_URL="postgresql://$USER@127.0.0.1:5432/aigas_p04_readiness" n
 | النوع | `type: web`، `runtime: node` (ليس `static_site`) |
 | البناء | `npm ci && npm run build` |
 | التشغيل | `npm start` (`scripts/server.mjs` → Astro standalone) |
-| فحص الصحة | `/healthz/` |
+| فحص الصحة | `/readyz/` |
 | Node | `22.22.2` |
 | `AIGAS_APP_ENABLED` | `false` حتى اعتماد المالك |
 | `AIGAS_CSP_ENFORCE` | `false` (السياسة الكاملة Report-Only حتى P18) |
@@ -167,13 +167,13 @@ P04_READY_DATABASE_URL="postgresql://$USER@127.0.0.1:5432/aigas_p04_readiness" n
 ### 9.5 التراجع
 
 - إبقاء `AIGAS_APP_ENABLED=false` وعدم ربط الدومين يجعل التراجع إغلاق الخدمة أو إعادة آخر deploy صالح.
-- لا حذف خدمة أو deploy؛ التتبع يبقى عبر `deployId` و`commit` المسجلين في `/healthz/`.
-- أي rollback يرافقه إعادة قراءة `/healthz/` وسجل `consistent` للنسخة السابقة.
+- لا حذف خدمة أو deploy؛ التتبع يبقى عبر `deployId` و`commit` المسجلين في `/readyz/`.
+- أي rollback يرافقه إعادة قراءة `/readyz/` وسجل `consistent` للنسخة السابقة.
 
 ### 9.6 الحدود
 
 - OP04 (CSP/HSTS على كل استجابات HTTP، وكاش edge للخاص) وP18 هما مالك إثبات الحماية الكاملة؛ هذا المستند لا يدّعيها.
-- `healthCheckPath: /healthz/` يعني أن تعطل التبعيات يُفشل الـdeploy بدل توجيه الحركة؛ هذا مقصود، ويجب أن يبقى `DATABASE_URL` مضبوطًا قبل أول نشر ناجح.
+- `healthCheckPath: /readyz/` يعني أن تعطل التبعيات يُفشل الـdeploy بدل توجيه الحركة؛ هذا مقصود، ويجب أن يبقى `DATABASE_URL` مضبوطًا قبل أول نشر ناجح.
 - لا يوجد تمرين rollback حقيقي لأن لا خدمة Node قائمة.
 
 ### 9.7 خدمة Free Staging الفعلية (2026-11-10)
@@ -184,7 +184,7 @@ P04_READY_DATABASE_URL="postgresql://$USER@127.0.0.1:5432/aigas_p04_readiness" n
 | النوع/الخطة/المنطقة | `web_service` · `free` · `oregon` |
 | المصدر | `github.com/YEEEAE/BRIGHTAI` · `main` · auto-deploy على كل push |
 | العنوان | `https://brightai-staging-node.onrender.com` (بلا دومين مخصص، بلا DNS) |
-| فحص الصحة | الحالة التاريخية كانت `/`؛ الهدف الإلزامي `/healthz/` دون بديل liveness، مع ضبط DB/Auth قبل النشر |
+| فحص الصحة | الحالة التاريخية كانت `/`؛ الهدف الإلزامي `/readyz/` مع `/healthz/` لفحص liveness، مع ضبط DB/Auth قبل النشر |
 | التكلفة | **صفر**؛ 750 ساعة/شهر للـworkspace، والخدمة النائمة لا تستهلك |
 
 **درس إلزامي (عيب حقيقي ظهر عند أول نشر):** `scripts/server.mjs` كان يستخدم `HOST` من المهايئ فيستمع على `localhost`، وRender يعلن `No open ports detected on 0.0.0.0`. صار الافتراضي `0.0.0.0`، و`HOST=127.0.0.1` خيار محلي صريح. أي خدمة تُنشأ بدون `HOST` ستعمل الآن بلا هذا العيب.
@@ -197,8 +197,8 @@ P04_READY_DATABASE_URL="postgresql://$USER@127.0.0.1:5432/aigas_p04_readiness" n
 
 - قراءة Render عند `01:34–01:36 UTC`: الخدمة العامة `srv-d7m5bcjbc2fs73826v20` ما زالت `static_site`/`dist/client`، build=`pnpm install && pnpm run build`؛ deploy=`dep-dbpsb5ss728c738pbpmg` يطابق `8a5f498c8fde96a53e400b2e4be3641e129e41b5`. هذا اختلاف control plane عن Blueprint، ولا يصلحه تعديل خادم P04 الموجود.
 - خدمة staging التاريخية `srv-dbpj8jajnfac739je6lg` أعادت404 في workspace العامة `tea-d7m59qbeo5us73ekdu80`؛ لا تستنتج حذفها أو تنشئ بديلًا قبل قراءة workspace التاريخية `tea-dade102fngtc739064v0` والتحقق من الخدمة نفسها.
-- عقد النشر المعزول بعد تفويض العملية: `npm ci && npm run build`، `npm start`، `HOST=0.0.0.0`، `healthCheckPath=/healthz/`؛ بلا نقل دومين، والبوابة مغلقة حتى اعتماد الوصول. لا تستخدم `/` لتجاوز فشل الجاهزية.
-- يجب تجاوز كاش edge لجميع `/app` و`/app/*` و`/auth` و`/auth/*` و`/healthz` و`/healthz/`، بما فيها الأخطاء والتحويلات؛ احترام `Cache-Control` و`CDN-Cache-Control` و`Cloudflare-CDN-Cache-Control: no-store` و`Vary: Authorization, Cookie` للخاص. رؤوس origin وحدها لا تثبت إعداد edge.
+- عقد النشر المعزول بعد تفويض العملية: `npm ci && npm run build`، `npm start`، `HOST=0.0.0.0`، `healthCheckPath=/readyz/`؛ بلا نقل دومين، والبوابة مغلقة حتى اعتماد الوصول. لا تستخدم `/` لتجاوز فشل الجاهزية.
+- يجب تجاوز كاش edge لجميع `/app` و`/app/*` و`/auth` و`/auth/*` و`/healthz` و`/healthz/` و`/readyz` و`/readyz/`، بما فيها الأخطاء والتحويلات؛ احترام `Cache-Control` و`CDN-Cache-Control` و`Cloudflare-CDN-Cache-Control: no-store` و`Vary: Authorization, Cookie` للخاص. رؤوس origin وحدها لا تثبت إعداد edge.
 - الفحص الحي GET/HEAD: `/` و`/solutions/` و`/docs/`=200؛ `/app/` و`/app/kernel/` و`/healthz/` و`/app/api/kernel/health/` و`/knowledge/`=404. GET للأخطاء يحمل كاشًا عامًا300ث، بلا noindex؛ لم يُعدّل edge.
 - D01: مصدر `/solutions/` هو `src/pages/solutions.astro`. D07: فهرس المعرفة `src/pages/docs.astro` ومقالات `src/pages/knowledge/`؛ جذر `/knowledge/` ليس فهرسًا عاملًا، ومصالحته ضمن D07.
 - إعادة الإثبات المحلي: `node scripts/verify-node-runtime.mjs` يسجل SHA وNode ووقت كل فحص؛ readiness200 مع schema محلي وAuth configured لا يثبت Auth network حين `authProbe=SKIPPED`، ولا يغلق T02/T03.

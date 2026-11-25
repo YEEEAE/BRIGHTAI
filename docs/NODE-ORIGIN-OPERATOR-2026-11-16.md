@@ -6,7 +6,7 @@
 
 1. بعد اعتماد عملية النشر، راجع workspace التاريخية `tea-dade102fngtc739064v0` وخدمة `srv-dbpj8jajnfac739je6lg` قبل إنشاء بديل. لا تستنتج حذفها من غيابها في workspace العامة.
 2. اختر خدمة **Web Service / Node** مستقلة، بلا custom domain وبـauto-deploy معطل، ومن checkout معتمد يحوي الإصلاحات المحلية بعد مراجعتها. لا تغير الخدمة Static الحالية. راجع الخطة والتكلفة قبل الإنشاء؛ لا تفترض إتاحة free.
-3. Root repository؛ build `npm ci && npm run build`؛ start `npm start`؛ health path `/healthz/`؛ استماع جميع الواجهات على PORT المنصة. لا publish directory ولا SPA fallback ولا rewrite إلى index.html. إصدار Node المتحقق محليًا22.22.2 وفق blueprint، ومخاطر الاعتمادات/ترقيتها قرار منفصل موثق في المشروع.
+3. Root repository؛ build `npm ci && npm run build`؛ start `npm start`؛ health path `/readyz/`؛ استماع جميع الواجهات على PORT المنصة. لا publish directory ولا SPA fallback ولا rewrite إلى index.html. إصدار Node المتحقق محليًا22.22.2 وفق blueprint، ومخاطر الاعتمادات/ترقيتها قرار منفصل موثق في المشروع.
 4. أدخل القيم عبر لوحة البيئة فقط. الأسماء أدناه؛ لا تنسخ الأسرار إلى source أو logs. DB بدور runtime محدود وعلى staging معتمد، Auth مهيأ ومخطط migrations مطابق؛ لا تطبق ترحيلات إنتاج ضمن هذه الخطة. اسم REDIS_URL في blueprint توافق قديم وليس تبعية لهذا المسار.
 5. فعّل فحص Auth الشبكي وRLS، واترك بوابة المنتج مغلقة حتى اعتماد إتاحتها. البوابة المغلقة لا تفشل readiness إذا نجحت التبعيات. لا تستخدم `/` لتجاوز health503. الفحص الحالي يثبت اتصال DB ووجود aigas_tenants فقط؛ لا يثبت اكتمال كل migrations أو RLS/منح المنتجات، فتراجع منفصلة.
 6. اختبر HTTPS على عنوان onrender للخدمة المستقلة أولًا. سجّل GET/HEAD لكل مسار أدناه وhealth وAPI، ثم اختبار جلسة اصطناعية مخولة وخروجها، دون تسجيل tokens/cookies أو بيانات شخصية.
@@ -23,14 +23,14 @@ Optional operator identity: `AIGAS_RELEASE_SHA`, `AIGAS_DEPLOY_ID`, `AIGAS_IMAGE
 
 ## Cache / CSP / TLS
 
-- أي توجيه لاحق للحافة يحتاج تفويضًا مستقلًا. طابق `/app` أو بادئة `/app/` كاملة بما فيها API، وكذلك `/auth` وبادئتها وhealthz بنوعي slash. bypass لكل الطرق والأخطاء والتحويلات؛ عطّل Cache Everything/edge TTL overrides وSPA fallback لهذه المسارات، وامسح404 القديمة عند التحويل المعتمد. لا تكفي قاعدة `/api/*` لأن API هنا تحت `/app/api/*`.
+- أي توجيه لاحق للحافة يحتاج تفويضًا مستقلًا. طابق `/app` أو بادئة `/app/` كاملة بما فيها API، وكذلك `/auth` وبادئتها ومساري healthz وreadyz بنوعي slash. bypass لكل الطرق والأخطاء والتحويلات؛ عطّل Cache Everything/edge TTL overrides وSPA fallback لهذه المسارات، وامسح404 القديمة عند التحويل المعتمد. لا تكفي قاعدة `/api/*` لأن API هنا تحت `/app/api/*`.
 - origin الخاص: Cache-Control private/no-store، CDN-Cache-Control وCloudflare-CDN-Cache-Control no-store، X-Robots-Tag noindex/nofollow، Vary Cookie/Authorization. اختبر طلبين متتاليين بلا credentials ثم بجلسة اصطناعية؛ لا Age متزايد ولا cache HIT ولا استجابة مشتركة. افحص غير slash والتحويلات والمسارات المشفرة أيضًا قبل cutover.
 - CSP baseline مفروض؛ السياسة الكاملة Report-Only افتراضيًا. اختبر تحميل JS والدخول وNeon connect origin فعليًا، ثم فعّل enforcement في الخدمة المعزولة وأعد الاختبارات. لا wildcard auth origin ولا unsafe-inline للسكربتات. CSP ليس برهان امتثال شامل.
 - TLS ينتهي لدى Render/الحافة؛ HTTPS فقط خارجيًا وFull(strict) عند الحافة، لا downgrade. تحقق شهادة وHSTS من الاستجابة HTTPS، وأن proxy يضبط forwarded-proto الموثوق ويمنع تمرير قيمة عميل غير موثوقة. اتصال HTTP داخلي خلف TLS لا يستلزم ملفات شهادة محلية.
 
 ## SHA ومعيار الإغلاق
 
-سجّل intended commit وBuild log SHA وRender deploy ID/commit وحالةlive، ثم قارن `/healthz/` release.artifact.commit وrelease.deploy.claimedCommit مع نفس SHA وconsistent=true؛ null ليس نجاح مطابقة. سجل artifact.digest وpackageLock digest وbuiltAt. digest الحالي يخص version.json، وليس hash كامل ملفات bundle؛ المصدر المحلي غير الملتزم لا يثبت به SHA وحده.
+سجّل intended commit وBuild log SHA وRender deploy ID/commit وحالةlive، ثم قارن `/readyz/` release.artifact.commit وrelease.deploy.claimedCommit مع نفس SHA وconsistent=true؛ null ليس نجاح مطابقة. سجل artifact.digest وpackageLock digest وbuiltAt. digest الحالي يخص version.json، وليس hash كامل ملفات bundle؛ المصدر المحلي غير الملتزم لا يثبت به SHA وحده.
 
 القبول: health200 بتبعيات فعلية وAuth probe ACTIVE/CACHED ناجح، وجلسة اصطناعية صحيحة، وكل المساحات الست200/HEAD بلا404، وAPI بلاجلسة401 JSON برسالة دخول واضحة، والبوابة المغلقة503 JSON/HTML، وفحوص الكاش/CSP/TLS على الأصل ثم الحافة. صفحةSSR200 تثبت الوصول للغلاف فقط، لا صلاحية المنتج أو نجاح عملياته. returnTo مقتصر على المنتجات الخمسة canonical؛ اختبر رفض external/encoded/query/fragment وقبول الوجهة بعد تفويض الخادم فقط.
 
@@ -92,7 +92,7 @@ Optional operator identity: `AIGAS_RELEASE_SHA`, `AIGAS_DEPLOY_ID`, `AIGAS_IMAGE
 | `/app/risk-engine/[assetId]/` | `src/pages/app/risk-engine/[assetId].astro` | GET / HEAD (SSR page) |
 | `/app/risk-engine/` | `src/pages/app/risk-engine/index.astro` | GET / HEAD (SSR page) |
 | `/app/secure-chat/` | `src/pages/app/secure-chat/index.astro` | GET / HEAD (SSR page) |
-| `/healthz/` و`/healthz` | `src/pages/healthz.ts` + alias في `scripts/server.mjs` → `src/server/kernel/health-endpoint.mjs` | GET / HEAD (JSON مباشر بلا redirect) |
+| `/readyz/` و`/readyz` | `src/pages/readyz.ts` + alias في `scripts/server.mjs` → `src/server/kernel/health-endpoint.mjs` | GET / HEAD (JSON مباشر بلا redirect) |
 | `/auth/sign-up/` | `src/pages/auth/sign-up.astro` | GET / HEAD |
 | `/auth/accept-invitation/` | `src/pages/auth/accept-invitation.astro` | GET / HEAD |
 
@@ -100,4 +100,4 @@ Optional operator identity: `AIGAS_RELEASE_SHA`, `AIGAS_DEPLOY_ID`, `AIGAS_IMAGE
 
 خطة فقط: يلزم اعتماد المالك قبل أي إجراء Render/Cloudflare أو ربط brightai.live. الأصل الجديد على .onrender.com مع Neon Staging فقط. اضبط AIGAS_DB_RUNTIME_ROLE=aigas_runtime وAIGAS_REQUIRE_RLS=true؛ حساب القناة LOGIN محدود، NOBYPASSRLS/NOSUPERUSER، وله SET على aigas_runtime دون صلاحيات إدارة. لا تستخدم options=-c role في Pooler؛ SET LOCAL ROLE داخل كل معاملة وفحص DB مع قراءة current_user وrolbypassrls. يلزم إثبات هذه الصلاحيات على Staging؛ لا تمنحها هذه الخطة تلقائيًا.
 
-أسماء المزود: GROQ_API_KEY (سر)، GROQ_MODEL (إعداد)، وAIGAS_CSP_ENFORCE (موجود في blueprint، غير سري). قبل ربط الدومين: health200 وconsistent=true، ثم Bypass Cache للبادئات /app* و/auth* و/api* و/healthz*، بما فيها الأخطاء والتحويلات. أبق الخدمة الثابتة خيار رجوع فوري لتوجيه Cloudflare بعد التفويض؛ رجوعها لا يعني عمل المنتجات الخادمية.
+أسماء المزود: GROQ_API_KEY (سر)، GROQ_MODEL (إعداد)، وAIGAS_CSP_ENFORCE (موجود في blueprint، غير سري). قبل ربط الدومين: health200 وconsistent=true، ثم Bypass Cache للبادئات /app* و/auth* و/api* و/healthz* و/readyz*، بما فيها الأخطاء والتحويلات. أبق الخدمة الثابتة خيار رجوع فوري لتوجيه Cloudflare بعد التفويض؛ رجوعها لا يعني عمل المنتجات الخادمية.

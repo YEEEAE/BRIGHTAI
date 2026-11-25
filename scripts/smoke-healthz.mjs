@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import process from 'node:process';
 
-// Post-deploy smoke test for the readiness endpoint. Read-only: it performs
+// Post-deploy smoke test for both process probes. Read-only: it performs
 // GET/HEAD requests and never sends a credential, a cookie or a query string.
 //
 //   node scripts/smoke-healthz.mjs https://brightai-site.onrender.com
@@ -59,9 +59,9 @@ function verifyBody(body, label) {
   for (const key of REQUIRED) {
     if (!(key in body)) return fail(`${label}: missing "${key}"`);
   }
-  if (body.schema !== 1) fail(`${label}: schema must be 1, got ${JSON.stringify(body.schema)}`);
-  if (!['ready', 'not_ready'].includes(body.status)) fail(`${label}: invalid status ${JSON.stringify(body.status)}`);
-  if (!['ready', 'setup_required', 'blocked', 'unavailable'].includes(body.state)) fail(`${label}: invalid state ${JSON.stringify(body.state)}`);
+  if (body.schema !== 1) fail(`${label}: schema must be 1, got unexpected value`);
+  if (!['ready', 'not_ready'].includes(body.status)) fail(`${label}: invalid status value`);
+  if (!['ready', 'setup_required', 'blocked', 'unavailable'].includes(body.state)) fail(`${label}: invalid state value`);
   if (typeof body.checkedAt !== 'string' || Number.isNaN(Date.parse(body.checkedAt))) fail(`${label}: checkedAt is not an ISO timestamp`);
   if (!body.dependencies || typeof body.dependencies !== 'object') return fail(`${label}: dependencies is not an object`);
   for (const key of DEPENDENCY_KEYS) {
@@ -72,7 +72,7 @@ function verifyBody(body, label) {
     if (pattern.test(text)) fail(`${label}: response exposes a ${name}`);
   }
   if ((body.status === 'ready') !== (body.state === 'ready')) {
-    fail(`${label}: status/state disagree (${body.status}/${body.state})`);
+    fail(`${label}: status/state disagree `);
   }
   return undefined;
 }
@@ -99,60 +99,44 @@ async function head(path) {
 
 console.log(`healthz smoke: ${base}`);
 
-for (const path of ['/healthz', '/healthz/']) {
-  const before = failures.length;
-  let result;
-  try {
-    result = await get(path);
-  } catch (error) {
-    fail(`GET ${path}: request failed (${error?.name ?? 'error'})`);
-    continue;
+let reference;
+for (const path of ['/healthz', '/healthz/', '/readyz', '/readyz/']) {
+  const live = path.startsWith('/healthz');
+  for (const [method, request] of [['GET', get], ['HEAD', head]]) {
+    const label = `${method} ${path}`;
+    const before = failures.length;
+    try {
+      const { response, text } = await request(path);
+      const expected = live || requireReady ? [200] : [200, 503];
+      if (!expected.includes(response.status)) fail(`${label}: unexpected HTTP ${response.status}`);
+      if (response.headers.has('location')) fail(`${label}: unexpected Location header`);
+      if (!/^application\/json/.test(response.headers.get('content-type') ?? '')) fail(`${label}: expected JSON`);
+      if (!/no-store/.test(response.headers.get('cache-control') ?? '')) fail(`${label}: expected no-store`);
+      if (method === 'HEAD') {
+        if (text !== '') fail(`${label}: unexpected body`);
+      } else if (expected.includes(response.status)) {
+        const body = JSON.parse(text);
+        if (!body || typeof body !== 'object') throw new Error('Invalid JSON envelope');
+        if (typeof body.version !== 'string' || !/^\d+\.\d+\.\d+/.test(body.version)) fail(`${label}: invalid version`);
+        if (typeof body.commit !== 'string' || !/^[a-f0-9]{40}$/.test(body.commit)) fail(`${label}: invalid commit SHA`);
+        if (expectCommit && body.commit !== expectCommit) fail(`${label}: unexpected commit SHA`);
+        const identity = JSON.stringify([body.version, body.commit]);
+        reference ??= identity;
+        if (reference !== identity) fail(`${label}: inconsistent build identity`);
+        if (live) {
+          if (body.status !== 'ok' || Object.keys(body).length !== 3) fail(`${label}: invalid liveness envelope`);
+        } else {
+          verifyBody(body, label);
+          if (response.status !== (body.status === 'ready' ? 200 : 503)) fail(`${label}: status does not match body`);
+          if (body.release?.consistent === false) fail(`${label}: artifact/platform commit mismatch`);
+        }
+      }
+      if (failures.length === before) pass(`${label}: ${response.status}`);
+    } catch {
+      fail(`${label}: request failed or response body was invalid`);
+    }
   }
-  const { response, text } = result;
-  const label = `GET ${path}`;
-  if (response.status >= 300 && response.status < 400) {
-    fail(`${label}: ${response.status} redirect to ${response.headers.get('location') ?? 'unknown'} — checker never reaches readiness`);
-    continue;
-  }
-  if (![200, 503].includes(response.status)) {
-    fail(`${label}: expected 200 or 503, got ${response.status}`);
-    continue;
-  }
-  const type = response.headers.get('content-type') ?? '';
-  if (!/^application\/json/.test(type)) fail(`${label}: content-type is ${JSON.stringify(type)}`);
-  const cache = response.headers.get('cache-control') ?? '';
-  if (!/no-store/.test(cache)) fail(`${label}: cache-control is not no-store`);
-  let body;
-  try {
-    body = JSON.parse(text);
-  } catch {
-    fail(`${label}: body is not JSON`);
-    continue;
-  }
-  verifyBody(body, label);
-
-  const expectedStatus = body.status === 'ready' && body.state === 'ready' ? 200 : 503;
-  if (response.status !== expectedStatus) fail(`${label}: HTTP ${response.status} does not match ${body.status}/${body.state}`);
-  if (requireReady && response.status !== 200) fail(`${label}: --require-ready but state is ${body.state}`);
-
-  if (failures.length === before) pass(`${label}: ${response.status} ${body.status}/${body.state}`);
-
-  if (expectCommit) {
-    const actual = body.release?.commit ?? null;
-    if (actual !== expectCommit) fail(`${label}: release.commit is ${actual ?? 'null'}, expected ${expectCommit}`);
-    else pass(`${label}: release.commit matches`);
-  }
-  if (body.release?.consistent === false) fail(`${label}: artifact/platform commit mismatch`);
-
-  const headResult = await head(path);
-  const headStatus = headResult.response.status;
-  if (headStatus >= 300 && headStatus < 400) fail(`HEAD ${path}: ${headStatus} redirect`);
-  else if (![200, 503].includes(headStatus)) fail(`HEAD ${path}: expected 200 or 503, got ${headStatus}`);
-  else if (headResult.text.length !== 0) fail(`HEAD ${path}: body must be empty`);
-  else if (!/^application\/json/.test(headResult.response.headers.get('content-type') ?? '')) fail(`HEAD ${path}: content-type is not JSON`);
-  else pass(`HEAD ${path}: ${headStatus}`);
 }
 
-const target = failures.length === 0 ? 'OK' : `${failures.length} FAILED`;
-console.log(`\nhealthz smoke: ${target}`);
+console.log(failures.length ? `\nprobe smoke: ${failures.length} FAILED` : '\nprobe smoke: OK');
 if (failures.length) process.exitCode = 1;
