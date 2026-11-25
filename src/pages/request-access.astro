@@ -1,72 +1,46 @@
 ---
 import PageShell from '../components/PageShell.astro';
-import AccessBadge from '../components/AccessBadge.astro';
-import AccessSteps from '../components/AccessSteps.astro';
-import { accessPath, accessTrack, accessTracks, trialAccountPath } from '../shared/access-journey.mjs';
-import { productForSlug } from '../shared/product-navigation.mjs';
-import { isPortalEnabled } from '../server/kernel/env.mjs';
-import { authConfig } from '../server/kernel/auth.mjs';
-
-export const prerender = false;
-Astro.response.headers.set('Cache-Control', 'no-store');
-const product = productForSlug(Astro.url.searchParams.get('product'));
-const track = accessTrack(Astro.url.searchParams.get('track'));
-const accountAvailable = isPortalEnabled() && Boolean(authConfig());
-const contact = new URLSearchParams({ access: track });
-if (product) contact.set('product', product.slug);
-const accountPath = track === 'trial'
-  ? trialAccountPath(product?.slug)
-  : '/auth/sign-in/?access=production&returnTo=' + encodeURIComponent(product?.workspacePath ?? '/app/kernel/');
-const tracks = [
-  { key: 'trial', description: '٤٨ ساعة للقراءة في مساحة ببيانات اصطناعية. تُفحص الإتاحة بعد توثيق البريد.' },
-  { key: 'beta', description: 'انضمام بدعوة من الفريق إلى مساحة محددة الصلاحيات.' },
-  { key: 'production', description: 'تفعيل مؤسسي بعد مراجعة النطاق ومنح الوصول.' },
-] as const;
+export const prerender = true;
 ---
-<PageShell title="طلب الوصول | BRIGHTAI" description="اختر مسار الوصول إلى منتجات AIGAS." crumbs={[{ name: 'طلب الوصول' }]} robots="noindex, follow">
-  <AccessSteps current="request" slug={product?.slug} track={track} />
-  <h1>طلب الوصول</h1>
-  <p class="lead">{product ? <>اختر طريقة الوصول إلى <bdi dir="ltr">{product.name}</bdi>.</> : 'اختر المسار المناسب لك.'}</p>
-  <div class="access-options" aria-label="خيارات الوصول">
-    <article class="access-option" data-track="demo">
-      <AccessBadge status="local" />
-      <h2>المختبر العام</h2><p>محاكاة في المتصفح ببيانات اصطناعية، بلا حساب.</p>
-      <a href={product ? `${product.publicPath}#lab` : '/products/#lab'}>فتح المختبر</a>
-    </article>
-    {tracks.map(({ key, description }) => <article class="access-option" data-track={key} data-selected={key === track ? 'true' : undefined}>
-      <AccessBadge status={key === 'trial' && accountAvailable ? 'account' : 'unavailable'} />
-      <h2>{accessTracks[key].label}</h2><p>{description}</p>
-      {key === track ? <a class="selected-label" href="#access-action">المسار المختار · متابعة</a> : <a href={`${accessPath(product?.slug, key)}#access-action`}>اختيار {accessTracks[key].label}</a>}
-    </article>)}
-  </div>
-  <section class="card access-action" id="access-action" aria-labelledby="access-action-title">
-    <h2 id="access-action-title">{accessTracks[track].request}</h2>
-    {track === 'trial' && accountAvailable
-      ? <><p>أنشئ حسابًا أو سجّل الدخول للتحقق من إتاحة التجربة.</p><a class="button" href={accountPath}>المتابعة إلى الحساب</a></>
-      : <><p>{track === 'trial' ? 'التسجيل غير متاح حاليًا. تواصل مع الفريق للاستفسار عن الإتاحة.' : 'راسل الفريق لمراجعة طلبك. الدخول متاح لمن مُنح الوصول عند فتح البوابة.'}</p><a class="button" href={`/contact/?${contact}#contact`}>جهّز طلبك</a>
-        {track !== 'trial' && accountAvailable && <a class="existing" href={track === 'beta' ? '/auth/accept-invitation/' : accountPath}>{track === 'beta' ? 'لديّ دعوة · عرض الدعوات' : 'لديّ وصول · تسجيل الدخول'}</a>}</>}
-    <details><summary>شروط الوصول</summary><p>التجربة المحدودة للقراءة فقط. يبدأ عدّادها بعد التفعيل داخل مساحة العمل. الدعوات والتشغيل المؤسسي يخضعان لصلاحيات تمنحها الجهة المخوّلة.</p></details>
-    <a class="existing" href="/status/">حالة النظام</a>
+<PageShell title="طلب تجربة مؤسسية | BRIGHTAI" description="استفسر عن تجربة مؤسسية أو تقييم جاهزية الذكاء الاصطناعي." crumbs={[{ name: 'طلب تجربة مؤسسية' }]} robots="noindex, follow">
+  <h1>طلب تجربة مؤسسية</h1>
+  <p class="lead">صف الهدف الذي تريد اختباره، وراسل الفريق عبر البريد أو واتساب لمراجعة النطاق. يمكنك الاستفسار بدون حساب.</p>
+  <p><a class="button" id="enterprise-contact" href="/contact/?access=production#contact">جهّز طلب التواصل</a></p>
+  <section class="block">
+    <h2>تقييم جاهزية الذكاء الاصطناعي</h2>
+    <p>نراجع حالة استخدام واحدة مع فريقك، ونحدد متطلبات البيانات والحوكمة والتشغيل. التسليم المقترح تقرير مكتوب بالفجوات ذات الأولوية وخطوات المعالجة، مع جلسة لمراجعة النتائج. يحدد مالك العرض السعر وموعد التسليم في عرض مكتوب بعد مراجعة النطاق.</p>
+    <p>إذا رغبت في مشاركة نتيجة من المختبر، اختر ملخصًا ببيانات اصطناعية وراجعه وأضفه بنفسك إلى رسالة التواصل.</p>
+    <a href="/demo/governance/">افتح مختبر الحوكمة</a>
+  </section>
+  <section class="block">
+    <h2>تجربة الحساب المحدودة</h2>
+    <p>تظهر تجربة الـ48 ساعة عند إتاحة بوابة الحساب. تبدأ المدة عند التفعيل داخل مساحة عمل اصطناعية للقراءة فقط، وتنتهي بدون دفع تلقائي.</p>
+    <p id="trial-option" hidden><a id="trial-account" href="/auth/sign-up/?trial=48h">تابع إلى تجربة 48 ساعة</a></p>
   </section>
 </PageShell>
-<style>
-  .access-options { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .75rem; margin-block: 2rem; }
-  .access-option { --accent: #9fe1c9; display: flex; flex-direction: column; align-items: flex-start; gap: .65rem; min-inline-size: 0; padding: clamp(1rem, 2vw, 1.5rem); border: 1px solid var(--border-strong); border-block-start: 3px solid var(--accent); border-radius: 12px; background: var(--surface-raised); }
-  [data-track="trial"] { --accent: #cab4ff; }
-  [data-track="beta"] { --accent: #f6cc86; }
-  [data-track="production"] { --accent: #aaa9bc; }
-  [data-selected] { outline: 1px solid var(--accent); outline-offset: -1px; }
-  .access-option h2 { margin: 0; font-size: 1.15rem; }
-  .access-option p { margin: 0 0 auto; }
-  .access-option a, .existing, summary { display: inline-flex; align-items: center; min-block-size: 44px; }
-  .access-option a, .existing { text-decoration: underline; text-underline-offset: .25em; }
-  .access-option .selected-label { color: var(--accent); font-weight: 700; }
-  .access-action { max-inline-size: 44rem; scroll-margin-block-start: 7rem; }
-  .access-action details { margin-block-start: 1rem; }
-  .access-action summary { display: list-item; cursor: pointer; line-height: 44px; }
-  .existing { margin-inline-end: 1rem; }
-  .button + .existing { margin-inline-start: 1rem; }
-  :is(a, summary):focus-visible { outline: 2px solid var(--color-focus); outline-offset: 4px; }
-  @media (max-width: 850px) { .access-options { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  @media (max-width: 480px) { .access-options { grid-template-columns: 1fr; } }
-</style>
+<script>
+  import { accessTrack, trialAccountPath } from '../shared/access-journey.mjs';
+  import { productForSlug } from '../shared/product-navigation.mjs';
+
+  const query = new URLSearchParams(location.search);
+  const product = productForSlug(query.get('product'));
+  const contact = document.querySelector<HTMLAnchorElement>('#enterprise-contact')!;
+  const contactQuery = new URLSearchParams({ access: query.has('track') ? accessTrack(query.get('track')) : 'production' });
+  if (product) contactQuery.set('product', product.slug);
+  contact.href = `/contact/?${contactQuery}#contact`;
+
+  async function showTrialWhenReady() {
+    try {
+      const response = await fetch('/readyz/', { cache: 'no-store', redirect: 'error' });
+      if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) return;
+      const report = await response.json();
+      if (report.status !== 'ready' || report.dependencies?.portal !== 'ENABLED') return;
+      document.querySelector<HTMLAnchorElement>('#trial-account')!.href = trialAccountPath(product?.slug);
+      document.querySelector<HTMLElement>('#trial-option')!.hidden = false;
+    } catch {
+      // The public page also runs on static hosting without readiness or auth routes.
+    }
+  }
+
+  void showTrialWhenReady();
+</script>

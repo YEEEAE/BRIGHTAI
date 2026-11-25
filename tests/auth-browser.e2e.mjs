@@ -324,7 +324,7 @@ try {
   await page.goto(`${base}/products/firewall/#lab`);
   await page.getByRole('navigation', { name: 'مسار الوصول' }).getByRole('link', { name: 'طلب الوصول' }).click();
   await page.waitForURL(`${base}/request-access/?product=firewall`);
-  await page.getByRole('link', { name: 'المتابعة إلى الحساب' }).click();
+  await page.getByRole('link', { name: 'تابع إلى تجربة 48 ساعة' }).click();
   await page.waitForURL(`${base}/app/trial/?product=firewall`);
   assert.match(await page.locator('[data-trial-home]').innerText(), /المنتج المختار.*Firewall/);
   await page.goto(`${base}/auth/sign-up/?returnTo=%2F%2Fevil.example.test`);
@@ -407,26 +407,16 @@ try {
       const response = await page.goto(closed + path, { waitUntil: 'domcontentloaded' });
       assert.equal(response.status(), path.startsWith('/app/') ? 503 : 200, path);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `${width}px: ${path}`);
+      if (path.startsWith('/request-access/')) continue;
       assert.ok(await page.locator('[data-access-status]').first().isVisible(), path);
       assert.ok(await page.getByRole('link', { name: 'حالة النظام', exact: true }).first().count(), path);
     }
   }
   await page.goto(`${closed}/request-access/?product=firewall`);
   const access = page.locator('main');
-  assert.equal(await access.getByRole('article').count(), 4);
-  assert.equal(await access.getByRole('link', { name: 'المتابعة إلى الحساب' }).count(), 0);
-  assert.match(await access.ariaSnapshot(), /navigation "مسار الوصول"[\s\S]*المختبر العام[\s\S]*طلب الوصول[\s\S]*تجربة محدودة[\s\S]*نسخة تجريبية مغلقة[\s\S]*تشغيل مؤسسي/);
-  assert.equal(await access.locator('[aria-current="step"]').innerText(), 'طلب الوصول');
-  const summary = access.locator('#access-action summary');
-  await summary.focus();
-  await summary.press('Enter');
-  assert.equal(await summary.evaluate(element => element.parentElement.open), true);
-  for (const [track, label] of [['beta', 'نسخة تجريبية مغلقة'], ['production', 'تشغيل مؤسسي']]) {
-    await access.getByRole('link', { name: `اختيار ${label}`, exact: true }).click();
-    assert.equal(new URL(page.url()).searchParams.get('track'), track);
-    assert.ok(await access.getByRole('link', { name: 'جهّز طلبك' }).isVisible());
-  }
-  await access.getByRole('link', { name: 'جهّز طلبك' }).click();
+  assert.ok(await access.getByRole('heading', { name: 'طلب تجربة مؤسسية' }).isVisible());
+  assert.equal(await access.getByRole('link', { name: 'تابع إلى تجربة 48 ساعة' }).count(), 0);
+  await access.getByRole('link', { name: 'جهّز طلب التواصل' }).click();
   await page.waitForFunction(() =>
     /طلب مراجعة للتشغيل المؤسسي لمنتج Firewall/.test(document.querySelector('#contact-draft')?.value ?? ''));
   await page.goto(`${closed}/auth/sign-up/?trial=48h`);
@@ -440,7 +430,7 @@ try {
   await page.goto(`${missing}/auth/accept-invitation/`);
   assert.match(await page.locator('.accept-unavailable').textContent(), /خدمة الحسابات غير مهيأة/);
   assert.equal((await (await fetch(`${missing}/auth/api/get-session/`)).json()).code, 'AUTH_SETUP_REQUIRED');
-  process.stdout.write('PASS: registration and authentication, invitation, product selection, trial loading and retry, activation and expiry, closed access tracks, keyboard disclosure, accessibility tree and responsive layouts\n');
+  process.stdout.write('PASS: registration and authentication, invitation, product selection, trial loading and retry, activation and expiry, closed portal, public inquiry, accessibility tree and responsive layouts\n');
 } finally {
   firstSignup.resolve();
   await browser?.close();

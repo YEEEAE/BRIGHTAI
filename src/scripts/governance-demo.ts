@@ -8,6 +8,7 @@ const assetSelect = get<HTMLSelectElement>('governance-asset');
 const reviewSelect = get<HTMLSelectElement>('review-source');
 const consent = get<HTMLInputElement>('governance-consent');
 const download = get<HTMLButtonElement>('governance-export');
+const summaryDownload = get<HTMLButtonElement>('governance-summary-export');
 const panels = [...lab.querySelectorAll('section')];
 const drawer = get<HTMLDetailsElement>('governance-drawer');
 const mobile = matchMedia('(max-width: 48rem)');
@@ -47,6 +48,7 @@ function close(message: string, focus = false) {
   drawer.open = false;
   consent.checked = false;
   download.disabled = true;
+  summaryDownload.disabled = true;
   lab.hidden = true;
   start.hidden = false;
   status.textContent = message;
@@ -167,16 +169,28 @@ window.addEventListener('pagehide', () => close('مُسحت الجلسة عند 
 document.addEventListener('visibilitychange', () => { if (!document.hidden) read(); });
 start.addEventListener('click', () => { begin(); status.textContent = 'بدأت جلسة جديدة.'; navigate(true); });
 get('governance-clear').addEventListener('click', () => close('مُسحت الجلسة من هذه الصفحة.', true));
-consent.addEventListener('change', () => { download.disabled = !consent.checked; });
+consent.addEventListener('change', () => {
+  download.disabled = !consent.checked;
+  summaryDownload.disabled = !consent.checked;
+});
+summaryDownload.addEventListener('click', () => {
+  if (!read() || !consent.checked) return;
+  const lines = ['ملخص محاكاة حوكمة ببيانات اصطناعية', ...['firewall-result', 'risk-result', 'review-result'].map(id => get(id).textContent)];
+  saveLocally(lines.join('\n'), 'text/plain;charset=utf-8', 'brightai-governance-summary.txt');
+});
 download.addEventListener('click', () => {
   const state = read();
   if (!state || !consent.checked) return;
-  const url = URL.createObjectURL(new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' }));
+  saveLocally(JSON.stringify(state, null, 2), 'application/json', 'brightai-governance-demo.json');
+});
+
+function saveLocally(content: string, type: string, filename: string) {
+  const url = URL.createObjectURL(new Blob([content], { type }));
   const link = document.createElement('a');
   link.href = url;
-  link.download = 'brightai-governance-demo.json';
+  link.download = filename;
   link.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
-});
+}
 
 begin();

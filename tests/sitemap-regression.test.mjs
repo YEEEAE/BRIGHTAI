@@ -165,8 +165,8 @@ describe('published sitemap contract on the production Node entry point', {
         const access = await request(`/request-access/?track=production&product=${slug}`);
         assert.equal(access.status, 200, pathname);
         const accessHtml = await access.text();
-        assert.match(accessHtml, /data-track="production" data-selected="true"/, pathname);
-        assert(accessHtml.includes(`href="/contact/?access=production&amp;product=${slug}#contact"`), pathname);
+        assert.match(accessHtml, /href="\/contact\/\?access=production#contact"/, pathname);
+        assert.match(accessHtml, /rel="canonical" href="[^"]+\/request-access\/"/, pathname);
       }
       if (pathname.startsWith('/docs/topics/')) {
         assert.equal(page['@type'], 'CollectionPage');

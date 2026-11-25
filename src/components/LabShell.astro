@@ -14,7 +14,8 @@ const { kind, complaintStep } = Astro.props;
 const product = productForSlug(kind)!;
 ---
 <section class="lab-shell" id="lab" tabindex="-1" aria-label={`مختبر ${product.name}`} data-lab-shell data-complaint-step={complaintStep} data-product={kind}>
-  <div class="lab-sidebar"><p class="hub-kicker"><bdi dir="ltr">AIGAS / LABS</bdi></p><WorkspaceNavigation current={kind} complaint={Boolean(complaintStep)}/>{!complaintStep && <p class="lab-sidebar-note">انتقل بحرية.<br/>يُحفظ اسم هذا المختبر في هذه الجلسة فقط؛ لا يُحفظ نص المثال.</p>}</div>
+  <div class="lab-sidebar"><p class="hub-kicker"><bdi dir="ltr">AIGAS / LABS</bdi></p><WorkspaceNavigation current={kind} complaint={Boolean(complaintStep)}/>
+<a href={accessPath(kind, "production")}>طلب تجربة مؤسسية</a>{!complaintStep && <p class="lab-sidebar-note">انتقل بحرية.<br/>يُحفظ اسم هذا المختبر في هذه الجلسة فقط؛ لا يُحفظ نص المثال.</p>}</div>
   <div class="lab-body"><header class="lab-header"><div><ProductIcon kind={kind} size={24}/><div><h1><bdi dir="ltr">{product.name}</bdi></h1><p>{complaintStep ? "محاكاة محلية ببيانات افتراضية" : `${labBriefs[kind].task} / مختبر عام`}</p></div></div><ReleaseStage stage="demo" /></header>
   <div class="lab-access"><AccessSteps current="demo" slug={kind} /></div>
   {!complaintStep && <div class="actions lab-actions"><a class="button" href="#lab-controls">ابدأ المثال</a><a class="ghost" href={accessPath(kind)}>اطلب الوصول لهذا المنتج</a></div>}

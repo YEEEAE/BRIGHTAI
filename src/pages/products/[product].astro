@@ -44,7 +44,7 @@ const hub = knowledgeHubs.find(item => item.products.some(([id]) => id === slug)
       <li><a href={guidePath(guideSlug)}>{guideTitle}</a></li>
       {hub && <li><a href={hubPath(hub.slug)}>{hub.title}</a></li>}
     </ul>
-    <a class="button" href={accessPath(slug, 'production')}>استعرض خيارات الوصول واطلب مناقشة احتياج منشأتك</a>
+    <a class="button" href={accessPath(slug, 'production')}>طلب تجربة مؤسسية</a>
   </section>
   <ProductContentExtension kind={slug}/>
 </PageShell>

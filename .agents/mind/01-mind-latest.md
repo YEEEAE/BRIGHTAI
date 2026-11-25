@@ -21,6 +21,11 @@
 
 ## Ledger (الأحدث أولًا)
 
+## [2026-11-26] — استعادة التحويل P0
+- **تم:** صفحة طلب عامة ثابتة وCTA موحّد؛ رابط 48 ساعة مشروط بجاهزية البوابة.
+- **التحقق:** build وChrome 390/1440 وSEO 6/6 PASS محليًا.
+- **الحالة:** PARTIAL؛ وصول الطلب وتفعيل التجربة ومودال MagicPath مفتوحة. `Audit/conversion-recovery-2026-11-26.md`.
+
 ## [2026-11-26] — مرشّح Node SSR P0
 - **تم:** Astro 7.4.13 / Node adapter 11.1.14 / Node 22.23.5؛ إبقاء الحواجز والبوابة مغلقة؛ `docs/NODE-P0-DEPLOY-HANDOFF.md`.
 - **التحقق:** build وhealth 16/16 وChrome smoke PASS؛ npm audit صفر؛ Auth E2E FAIL عند `/products/`؛ CI المرشّح وRender staging NOT VERIFIED.
