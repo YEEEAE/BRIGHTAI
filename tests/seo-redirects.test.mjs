@@ -7,7 +7,7 @@ const { redirects } = JSON.parse(readFileSync(new URL('../redirects.json', impor
 const query = '?audit=1&topic=%D8%B9%D8%B1%D8%B6';
 
 test('every public alias returns the same 301 destination and preserves the query for GET and HEAD', () => {
-  assert.equal(redirects.length, 152);
+  assert.equal(redirects.length, 158);
   for (const { source, destination } of redirects) {
     for (const method of ['GET', 'HEAD']) {
       assert.deepEqual(publicRedirectForRequest(method, source, query), {

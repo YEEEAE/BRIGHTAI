@@ -1,6 +1,30 @@
 {
   "redirects": [
     {
+      "source": "/docs/topics/ai-governance/index.html",
+      "destination": "/docs/topics/ai-governance/"
+    },
+    {
+      "source": "/docs/topics/ai-risk/index.html",
+      "destination": "/docs/topics/ai-risk/"
+    },
+    {
+      "source": "/docs/topics/ai-data-security/index.html",
+      "destination": "/docs/topics/ai-data-security/"
+    },
+    {
+      "source": "/docs/topics/ai-governance.html",
+      "destination": "/docs/topics/ai-governance/"
+    },
+    {
+      "source": "/docs/topics/ai-risk.html",
+      "destination": "/docs/topics/ai-risk/"
+    },
+    {
+      "source": "/docs/topics/ai-data-security.html",
+      "destination": "/docs/topics/ai-data-security/"
+    },
+    {
       "source": "/knowledge",
       "destination": "/docs/"
     },

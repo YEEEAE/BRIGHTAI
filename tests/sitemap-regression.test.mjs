@@ -135,7 +135,6 @@ describe('published sitemap contract on the production Node entry point', {
         }
       }
       const expectedType = pathname.startsWith('/knowledge/') ? 'Article'
-        : /^\/products\/[^/]+\/$/.test(pathname) ? 'Product'
         : /^\/resources\/[^/]+\/$/.test(pathname) ? 'CreativeWork'
         : pathname === '/services/' ? 'Service' : undefined;
       if (expectedType) {
@@ -143,7 +142,41 @@ describe('published sitemap contract on the production Node entry point', {
         assert(main, pathname);
         assert.deepEqual(page.mainEntity, { '@id': main['@id'] });
         if (expectedType === 'Article') assert.equal(main.mainEntityOfPage['@id'], canonical);
-        if (expectedType === 'Product') assert.deepEqual(main.brand, { '@id': organization['@id'] });
+      }
+      for (const key of ['title', 'description', 'url', 'image', 'locale', 'type']) {
+        assert.match(html, new RegExp(`<meta property="og:${key}" content="[^"]+"`), pathname);
+      }
+      for (const key of ['title', 'description', 'image', 'card']) {
+        assert.match(html, new RegExp(`<meta name="twitter:${key}" content="[^"]+"`), pathname);
+      }
+      if (pathname.startsWith('/knowledge/')) {
+        for (const label of ['حالة المراجعة التخصصية', 'آخر مراجعة تخصصية', 'المراجع']) {
+          assert(html.includes(`<dt>${label}</dt>`), pathname);
+        }
+      }
+      if (/^\/products\/[^/]+\/$/.test(pathname)) {
+        assert.equal(entity('Product'), undefined, pathname);
+        const journey = html.match(/<section[^>]+data-product-next[^>]*>(.*?)<\/section>/s)?.[1] ?? '';
+        const guide = journey.match(/href="(\/knowledge\/[^"]+)"/)?.[1];
+        const hub = journey.match(/href="(\/docs\/topics\/[^"]+)"/)?.[1];
+        assert(paths.has(guide) && paths.has(hub), pathname);
+        const slug = pathname.split('/')[2];
+        assert(journey.includes(`href="/request-access/?track=production&amp;product=${slug}"`), pathname);
+        const access = await request(`/request-access/?track=production&product=${slug}`);
+        assert.equal(access.status, 200, pathname);
+        const accessHtml = await access.text();
+        assert.match(accessHtml, /data-track="production" data-selected="true"/, pathname);
+        assert(accessHtml.includes(`href="/contact/?access=production&amp;product=${slug}#contact"`), pathname);
+      }
+      if (pathname.startsWith('/docs/topics/')) {
+        assert.equal(page['@type'], 'CollectionPage');
+        assert.deepEqual(page.isPartOf, { '@id': website['@id'] });
+        assert((await (await request('/docs/')).text()).includes(`href="${pathname}"`), pathname);
+        for (const item of page.mainEntity.itemListElement) {
+          const guide = new URL(item.url).pathname;
+          assert(paths.has(guide) && html.includes(`href="${guide}"`), guide);
+          assert((await (await request(guide)).text()).includes(`href="${pathname}"`), guide);
+        }
       }
       if (pathname === '/docs/') assert.equal(page.mainEntity['@type'], 'ItemList');
       if (pathname === '/about/') assert.equal(page['@type'], 'AboutPage');

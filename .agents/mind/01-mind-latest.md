@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-25 PARTIAL SEO/GEO/AEO: 315/315 عناوين الإنتاج GET200 وcanonical ذاتي؛ 251 خارج مسار الرئيسية و152 alias بلا 301؛ محليًا 67 عنوانًا و3 مراكز و5 رحلات منتج، Node16/16 وChrome FAQ76/76؛ النشر وCWV الميداني NOT VERIFIED؛ `Audit/seo-geo-2026-11-25/REPORT.md`.
 - 2026-11-25 VERIFIED LOCAL UX: مراحل DEMO/PREVIEW/PILOT/PRODUCTION وحالات Contact وترتيب Ledger؛ Playwright 64/64 عبر 320/375/768/1440 وaxe صفر عند 375؛ App 503 محليًا وVoiceOver/NVDA والنشر NOT VERIFIED؛ `Audit/ux-audit-2026-11-25/REPORT.md`.
 - 2026-11-25 PARTIAL P2: OIDC إضافي لكل مؤسسة مع Neon؛ 0045 يثبت الفرض عند غياب إعدادات IdP؛ اختبارات الهوية والترحيلات 18/18 وPG18 وبناء محلي PASS؛ موفر العميل والمتصفح ومسار الطوارئ والنشر NOT VERIFIED. `docs/IDENTITY-AND-INVITATION-RUNBOOK.md`.
 - 2026-11-25 VERIFIED LOCAL CSP: فرض موحد في Node وAstro دون unsafe-eval أو inline scripts عامة؛ CSS خارجي وبلاغات محدودة بلا بيانات طلب؛ Chrome زار 77 مستندًا ونجح Auth اصطناعي وAPI GET/POST و35 اختبار Node؛ GA4 محاكى وCloudflare/Render NOT VERIFIED؛ `Audit/security-headers-2026-11-25/REPORT.md`.

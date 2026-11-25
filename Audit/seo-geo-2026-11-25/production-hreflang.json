@@ -1,0 +1,38 @@
+{
+  "checked": 251,
+  "links": 514,
+  "issues": [
+    [
+      "/en/",
+      "missing return",
+      "https://brightai.live/"
+    ],
+    [
+      "/en/",
+      "missing return",
+      "https://brightai.live/"
+    ],
+    [
+      "/en/terms/",
+      "missing return",
+      "https://brightai.live/terms/"
+    ],
+    [
+      "/en/terms/",
+      "missing return",
+      "https://brightai.live/terms/"
+    ]
+  ],
+  "retry": {
+    "previous_timeout": "/blog/iso-42001-audit-checklist-saudi/",
+    "status": 200,
+    "links": [
+      "ar-SA",
+      "x-default"
+    ],
+    "verified_no_return": [
+      "/",
+      "/terms/"
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+---
+import PageShell from '../../../components/PageShell.astro';
+import { knowledgeHubs, guidePath } from '../../../data/knowledge-hubs';
+
+export const prerender = true;
+export function getStaticPaths() {
+  return knowledgeHubs.map(hub => ({ params: { topic: hub.slug }, props: { hub } }));
+}
+const { hub } = Astro.props;
+const collection = {
+  '@type': 'CollectionPage',
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: hub.guides.map(([slug, name], index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name,
+      url: new URL(guidePath(slug), Astro.site).href,
+    })),
+  },
+};
+---
+<PageShell title={`${hub.title} | BRIGHTAI`} description={hub.description} crumbs={[{ name: 'مركز المعرفة', href: '/docs/' }, { name: hub.title }]} structuredData={collection}>
+  <header><h1>{hub.title}</h1><p class="lead">{hub.summary}</p></header>
+  <section class="block">
+    <h2>أدلة عملية للبدء</h2>
+    <ul>{hub.guides.map(([slug, name]) => <li><a href={guidePath(slug)}>{name}</a></li>)}</ul>
+  </section>
+  <section class="block">
+    <h2>مختبرات تعليمية مرتبطة</h2>
+    <p>جرّب السيناريوهات ببيانات اصطناعية.</p>
+    <ul>{hub.products.map(([slug, name]) => <li><a href={`/products/${slug}/`}>مختبر <bdi lang="en">{name}</bdi></a></li>)}</ul>
+  </section>
+  <section class="block">
+    <h2>مرجع رسمي</h2>
+    <p><a href={hub.source[1]} lang="en" dir="ltr">{hub.source[0]}</a></p>
+  </section>
+</PageShell>

@@ -1,4 +1,5 @@
 ---
+import { knowledgeHubs, hubPath } from '../data/knowledge-hubs';
 import PageShell from '../components/PageShell.astro';
 import BrandLogo from '../components/BrandLogo.astro';
 import Icon from '../components/KnowledgeIcon.astro';
@@ -51,6 +52,10 @@ const collectionSchema = {
     </details>
     <div class="kc-main">
       <header class="kc-heading"><div><p class="kc-kicker">ابحث. افهم. طبّق.</p><h1>أدلة حوكمة الذكاء الاصطناعي<br/><em>في السعودية.</em></h1><p>أدلة عربية لقرارات أوضح في حوكمة وأمان الذكاء الاصطناعي.</p></div><div class="kc-total"><b>{articles.length}</b><span>دليلًا من محتوى الموقع<br/>للفهم والتطبيق</span></div></header>
+      <nav aria-label="مسارات المعرفة" class="kc-notice">
+        <h2>مسارات المعرفة</h2>
+        <ul>{knowledgeHubs.map(hub => <li><a href={hubPath(hub.slug)}>{hub.title}</a></li>)}</ul>
+      </nav>
       <section aria-label="البحث وتصفية الأدلة" class="kc-controls" role="search">
         <div class="kc-search">
           <Icon kind="search"/>

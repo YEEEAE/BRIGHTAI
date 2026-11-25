@@ -1,0 +1,21 @@
+{
+  "robots_status": 200,
+  "robots": "User-agent: *\nAllow: /\n\nSitemap: https://brightai.live/sitemap-index.xml\n",
+  "maps": {
+    "/sitemap-index.xml": [
+      200,
+      1
+    ],
+    "/sitemap.xml": [
+      200,
+      264
+    ],
+    "/sitemap-0.xml": [
+      200,
+      64
+    ]
+  },
+  "sitemap_unique": 315,
+  "checked": 341,
+  "unprobed_link_targets": 0
+}

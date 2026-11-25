@@ -1,0 +1,201 @@
+{
+  "faq": [
+    {
+      "slug": "ai-audit-trail",
+      "questions": 2,
+      "mismatches": []
+    },
+    {
+      "slug": "ai-bias-fairness",
+      "questions": 2,
+      "mismatches": []
+    },
+    {
+      "slug": "ai-contract-clauses",
+      "questions": 2,
+      "mismatches": []
+    },
+    {
+      "slug": "ai-cybersecurity-nca",
+      "questions": 2,
+      "mismatches": []
+    },
+    {
+      "slug": "ai-data-residency-saudi",
+      "questions": 2,
+      "mismatches": []
+    },
+    {
+      "slug": "ai-employee-training",
+      "questions": 2,
+      "mismatches": []
+    },
+    {
+      "slug": "ai-governance-committee-raci",
+      "questions": 2,
+      "mismatches": []
+    },
+    {
+      "slug": "ai-governance-financial-sector",
+      "questions": 2,
+      "mismatches": []
+    },
+    {
+      "slug": "ai-governance-healthcare",
+      "questions": 2,
+      "mismatches": []
+    },
+    {
+      "slug": "ai-governance-saudi",
+      "questions": 2,
+      "mismatches": []
+    },
+    {
+      "slug": "ai-hallucinations-controls",
+      "questions": 2,
+      "mismatches": []
+    },
+    {
+      "slug": "ai-impact-assessment",
+      "questions": 2,
+      "mismatches": []
+    },
+    {
+      "slug": "ai-inventory-register",
+      "questions": 2,
+      "mismatches": []
+    },
+    {
+      "slug": "ai-vendor-assessment",
+      "questions": 2,
+      "mismatches": []
+    },
+    {
+      "slug": "choose-ai-governance-platform",
+      "questions": 2,
+      "mismatches": []
+    },
+    {
+      "slug": "data-breach-72-hours-ai",
+      "questions": 2,
+      "mismatches": []
+    },
+    {
+      "slug": "data-classification-for-ai",
+      "questions": 2,
+      "mismatches": []
+    },
+    {
+      "slug": "data-governance-vs-ai-governance",
+      "questions": 2,
+      "mismatches": []
+    },
+    {
+      "slug": "deepfake-policy-organizations",
+      "questions": 2,
+      "mismatches": []
+    },
+    {
+      "slug": "iso-42001-saudi",
+      "questions": 5,
+      "mismatches": []
+    },
+    {
+      "slug": "pdpl-and-ai",
+      "questions": 4,
+      "mismatches": []
+    },
+    {
+      "slug": "saudi-ai-ethics-principles",
+      "questions": 5,
+      "mismatches": []
+    },
+    {
+      "slug": "saudi-ai-law-binding-vs-guidance",
+      "questions": 5,
+      "mismatches": []
+    },
+    {
+      "slug": "saudi-ai-regulators-map",
+      "questions": 2,
+      "mismatches": []
+    },
+    {
+      "slug": "sdaia-ai-adoption-framework",
+      "questions": 5,
+      "mismatches": []
+    },
+    {
+      "slug": "sdaia-ai-ethics-self-assessment",
+      "questions": 5,
+      "mismatches": []
+    },
+    {
+      "slug": "sdaia-generative-ai-guidelines",
+      "questions": 5,
+      "mismatches": []
+    },
+    {
+      "slug": "shadow-ai-detection",
+      "questions": 2,
+      "mismatches": []
+    }
+  ],
+  "speed": [
+    {
+      "path": "/",
+      "status": 200,
+      "lcp": 1104,
+      "cls": 0.0031314950847525715,
+      "ttfb": 504.80000000074506,
+      "load": 1910.9000000003725
+    },
+    {
+      "path": "/docs/",
+      "status": 200,
+      "lcp": 10440,
+      "cls": 0,
+      "ttfb": 3069.300000000745,
+      "load": 12212.900000000373
+    },
+    {
+      "path": "/products/firewall/",
+      "status": 200,
+      "lcp": 2632,
+      "cls": 0,
+      "ttfb": 299.19999999925494,
+      "load": 11071.199999999255
+    },
+    {
+      "path": "/knowledge/ai-risk-assessment/",
+      "status": 200,
+      "lcp": 8444,
+      "cls": 0,
+      "ttfb": 8383,
+      "load": 9186.400000000373
+    }
+  ],
+  "hubs": [
+    {
+      "path": "/docs/topics/ai-governance/",
+      "status": 200,
+      "rtl": "rtl",
+      "h1": "حوكمة الذكاء الاصطناعي والرقابة البشرية",
+      "fits": true
+    },
+    {
+      "path": "/docs/topics/ai-risk/",
+      "status": 200,
+      "rtl": "rtl",
+      "h1": "مسار تقييم مخاطر الذكاء الاصطناعي",
+      "fits": true
+    },
+    {
+      "path": "/docs/topics/ai-data-security/",
+      "status": 200,
+      "rtl": "rtl",
+      "h1": "أمان الذكاء الاصطناعي وحماية بيانات المنشأة",
+      "fits": true
+    }
+  ]
+}

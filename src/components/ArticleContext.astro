@@ -1,9 +1,11 @@
 ---
 import { editorialFor, approvedReview, formatEditorialDate, type EditorialRecord } from '../data/editorial';
+import { knowledgeHubs, guidePath, hubPath } from '../data/knowledge-hubs';
 import { organization } from '../data/organization';
 interface Props { editorial?: EditorialRecord }
 const { editorial = editorialFor(Astro.url.pathname) } = Astro.props;
 const review = approvedReview(editorial);
+const hub = knowledgeHubs.find(item => item.guides.some(([slug]) => guidePath(slug) === Astro.url.pathname));
 const dates = [
   ['النشر', editorial.published],
   ['التحديث التحريري', editorial.modificationEvent ? editorial.modified : undefined],
@@ -13,7 +15,11 @@ const dates = [
 <aside class="note article-context" aria-label="بيانات التحرير والمراجعة">
   <p>إعداد ونشر: <a href="/about/">{organization.name}</a>.</p>
   <ul>{dates.map(([label, date]) => <li>{label}: {date ? <time datetime={date}>{formatEditorialDate(date)}</time> : 'غير موثق'}</li>)}</ul>
-  {review ? <p>المراجعة التخصصية المعتمدة: <a href={review.profileUrl}>{review.name}</a>؛ <time datetime={review.reviewedOn}>{formatEditorialDate(review.reviewedOn)}</time>.
-    نطاق المراجعة: {review.scope}. <a href={review.approval.evidenceUrl}>دليل الاعتماد</a>.</p>
-    : <p>المراجعة التخصصية: غير معتمدة؛ لا يوجد مراجع مختص موثق لهذه النسخة. الاطلاع على المصادر أو التحرير لا يثبت مراجعة تخصصية.</p>}
+  <dl>
+    <dt>حالة المراجعة التخصصية</dt><dd>{review ? 'معتمدة' : 'غير موثقة'}</dd>
+    <dt>آخر مراجعة تخصصية</dt><dd>{review ? <time datetime={review.reviewedOn}>{formatEditorialDate(review.reviewedOn)}</time> : 'غير موثقة'}</dd>
+    <dt>المراجع</dt><dd>{review ? <a href={review.profileUrl}>{review.name}</a> : 'غير موثق لهذه النسخة'}</dd>
+  </dl>
+  {review && <p>نطاق المراجعة: {review.scope}. <a href={review.approval.evidenceUrl}>دليل الاعتماد</a>.</p>}
+  {hub && <p>مسار المعرفة: <a href={hubPath(hub.slug)}>{hub.title}</a>.</p>}
 </aside>
