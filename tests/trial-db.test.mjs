@@ -80,6 +80,31 @@ test('P06-A runtime: request, review, operator channel, closed activation, quota
     // Tenant review path.
     assert.equal((await service.submitTrial({ userId: ids.requester }, a, trialA, {})).state, 'ELIGIBILITY_REVIEW');
     await assert.rejects(service.submitTrial({ userId: ids.requester }, a, trialA, {}), { status: 409 });
+    const operator = { userId: ids.operator };
+    assert.equal((await service.operatorState(operator)).operator, true);
+    await owner.query('UPDATE neon_auth."user" SET banned=true WHERE id=$1', [ids.operator]);
+    await assert.rejects(service.operatorState(operator), { status: 401, code: 'UNAUTHORIZED' });
+    await assert.rejects(service.operatorListTrials(operator), { status: 401, code: 'UNAUTHORIZED' });
+    await assert.rejects(service.operatorDecideTrial(operator, trialA, { decision: 'APPROVE' }), { status: 401, code: 'UNAUTHORIZED' });
+    await transaction(async db => {
+      await db.query("SELECT set_config('aigas.user_id',$1,true)", [ids.operator]);
+      assert.equal((await db.query('SELECT public.aigas_trial_operator_active() AS active')).rows[0].active, false);
+      assert.equal((await db.query('SELECT id FROM public.aigas_trial_requests WHERE id=$1', [trialA])).rowCount, 0);
+    });
+    await owner.query('UPDATE neon_auth."user" SET banned=false WHERE id=$1', [ids.operator]);
+    assert.ok((await service.operatorListTrials(operator)).trials.some(trial => trial.trialId === trialA));
+
+    const trialB = await service.requestTrial({ userId: ids.outsider }, b, {
+      products: ['firewall'], deploymentMode: 'SAAS', businessGoal: 'Synthetic cancellation privacy check',
+    });
+    const canary = 'synthetic private cancellation reason marker';
+    await assert.rejects(service.cancelTrial({ userId: ids.requester }, a, trialB.trialId, { reason: canary }), { status: 404 });
+    await service.cancelTrial({ userId: ids.outsider }, b, trialB.trialId, { reason: canary });
+    const { dashboard } = await import('../src/server/kernel/service.mjs');
+    const cancelled = (await dashboard({ userId: ids.outsider }, b)).trialLifecycle;
+    assert.equal(cancelled.events.at(-1).reason, 'CANCELLED_BY_TENANT');
+    assert.ok(!JSON.stringify(cancelled).includes(canary));
+
     // Not an operator: no decision, and no operator roster is exposed.
     await assert.rejects(service.operatorDecideTrial({ userId: ids.requester }, trialA, { decision: 'APPROVE' }), { status: 403, code: 'OPERATOR_REQUIRED' });
     assert.equal((await runtime.query('SELECT count(*)::int AS n FROM aigas_trial_operators')).rows[0].n, 0);

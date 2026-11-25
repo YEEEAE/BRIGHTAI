@@ -1,5 +1,5 @@
 import { authenticate } from '../kernel/auth.mjs';
-import { KernelError, dependencyStatusForError } from '../kernel/core.mjs';
+import { KernelError, dependencyStatusForError, workspaceSelector } from '../kernel/core.mjs';
 import { contractHeaders, errorBody } from '../kernel/contracts.mjs';
 import { captureIntegritySignal, captureServerFailure } from '../observability/index.mjs';
 import { operate } from './service.mjs';
@@ -21,7 +21,7 @@ export function createHandler(auth=authenticate, service=operate) {
       const identity=await auth(request);
       const params=new URL(request.url).searchParams;
       const body=['create','verify'].includes(operation)?await readBody(request):{};
-      const data=await service(identity,params.get('workspace'),operation,body,params,id);
+      const data=await service(identity,workspaceSelector(params),operation,body,params,id);
       // An integrity mismatch is a security incident even when the response is
       // a normal 200 carrying the evidence. No IDs or metadata are sent.
       if(operation==='verify' && (data?.mismatch===true || data?.state==='BLOCKED')) {
@@ -38,7 +38,7 @@ export function createHandler(auth=authenticate, service=operate) {
       const status=known?error.status:503;
       void captureServerFailure(error,{surface:'ledger',code,status,pathname:new URL(request.url).pathname,dependency:known?dependencyStatusForError(error):setupCode==='LEDGER_SCHEMA_MISSING'?'not configured':setupCode==='LEDGER_DB_PRIVILEGE'?'access denied':'temporarily unavailable',operation:'POST'});
       const message=known?error.message:setupCode==='LEDGER_SCHEMA_MISSING'?'مخطط Ledger غير مهيأ؛ يحتاج المشغّل مراجعة الترحيل المعتمد. لم يُؤكد الحفظ أو التحقق.':setupCode==='LEDGER_DB_PRIVILEGE'?'صلاحيات قاعدة البيانات لا تسمح بعملية Ledger؛ يلزم مراجعة إعداد دور الخادم. لم يُؤكد الحفظ أو التحقق.':'تعذر إكمال العملية؛ تحقق من اتصال القاعدة وترحيل Ledger. لم يُؤكد الحفظ أو التحقق.';
-      return Response.json(errorBody({code,message,dependencyStatus:known?dependencyStatusForError(error):setupCode==='LEDGER_SCHEMA_MISSING'?'not configured':setupCode==='LEDGER_DB_PRIVILEGE'?'access denied':'temporarily unavailable'}),{status,headers});
+      return Response.json(errorBody({status,code,message,dependencyStatus:known?dependencyStatusForError(error):setupCode==='LEDGER_SCHEMA_MISSING'?'not configured':setupCode==='LEDGER_DB_PRIVILEGE'?'access denied':'temporarily unavailable'}),{status,headers});
     }
   };
 }

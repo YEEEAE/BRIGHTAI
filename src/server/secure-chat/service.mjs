@@ -3,7 +3,7 @@ import { authenticate } from '../kernel/auth.mjs';
 import { audit, tenantGuard } from '../kernel/service.mjs';
 import { recordKernelAuditEvidence } from '../ledger/writer.mjs';
 import { transaction } from '../kernel/db.mjs';
-import { KernelError, dependencyStatusForError } from '../kernel/core.mjs';
+import { KernelError, dependencyStatusForError, workspaceSelector } from '../kernel/core.mjs';
 import { contractHeaders, errorBody, HTTP_CONTRACT_VERSION } from '../kernel/contracts.mjs';
 import { env } from '../kernel/env.mjs';
 import { captureProductEvent, captureServerFailure } from '../observability/index.mjs';
@@ -52,7 +52,7 @@ async function accessContext(request, operation = null) {
   const identity = await authenticate(request);
   // Membership discovery must run inside a transaction so the transaction-local actor scope
   // is visible to the query and is discarded before the connection is pooled.
-  const { tenant } = await transaction(db => tenantGuard(identity, new URL(request.url).searchParams.get('workspace'), db));
+  const { tenant } = await transaction(db => tenantGuard(identity, workspaceSelector(new URL(request.url).searchParams), db));
   if (!tenant) throw new KernelError(403, 'MEMBERSHIP_REQUIRED', 'يلزم الانضمام إلى مؤسسة قبل استخدام Secure Chat.');
   await transaction(db => requireProductAccess(db, identity, tenant.tenant_id, 'secure-chat', operation));
   return { identity, tenant };
@@ -298,5 +298,5 @@ export function errorResponse(error, operation = 'POST') {
   const dependencyStatus=known?dependencyStatusForError(error):code==='SECURE_CHAT_SCHEMA_MISSING'?'not configured':code==='SECURE_CHAT_DB_PRIVILEGE'?'access denied':'temporarily unavailable';
   void captureServerFailure(null, { surface: 'secure-chat', code, status, pathname: '/app/api/secure-chat', dependency: dependencyStatus, operation });
   const responseHeaders=known&&error.status===429?{...privateHeaders,'Retry-After':'60'}:privateHeaders;
-  return Response.json(errorBody({code,message,dependencyStatus}),{status,headers:responseHeaders});
+  return Response.json(errorBody({status,code,message,dependencyStatus}),{status,headers:responseHeaders});
 }

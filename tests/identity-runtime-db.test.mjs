@@ -44,12 +44,16 @@ test('AU02/AU05/AU06/AU07 runtime: identity-scoped memberships, member races and
     const { manageMember, manageInvitation, incomingInvitations } = await import('../src/server/kernel/administration.mjs');
     const { policyOperation, evaluateKernelPolicy } = await import('../src/server/kernel/policies.mjs');
     const { requireProductAccess } = await import('../src/server/kernel/access.mjs');
-    const { transaction } = await import('../src/server/kernel/db.mjs');
+    const { connectionPrivilege, transaction } = await import('../src/server/kernel/db.mjs');
     const productAccess = (identity, tenantId, slug) => transaction(db => requireProductAccess(db, identity, tenantId, slug));
     const evaluate = (identity, tenantId, context) => transaction(async db => {
       await tenantGuard(identity, tenantId, db);
       return evaluateKernelPolicy(db, identity, tenantId, context);
     });
+
+    assert.equal((await transaction(connectionPrivilege)).rlsEnforced, true);
+    assert.equal((await connectionPrivilege(pool)).rlsEnforced, false);
+    assert.equal((await transaction(connectionPrivilege)).rlsEnforced, true);
 
     // AU02: the tenant is selected only from the verified identity's own memberships.
     assert.equal((await dashboard({ userId: ids.member1 })).tenant.tenant_id, a);

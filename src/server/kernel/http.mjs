@@ -1,5 +1,5 @@
 import { authenticate } from './auth.mjs';
-import { KernelError, dependencyStatusForError } from './core.mjs';
+import { KernelError, dependencyStatusForError, workspaceSelector } from './core.mjs';
 import { contractHeaders, errorBody } from './contracts.mjs';
 import { captureServerFailure } from '../observability/index.mjs';
 export const headers = contractHeaders({
@@ -53,7 +53,7 @@ export function kernelHandler(work, write = false) {
         try { body = JSON.parse(raw); } catch (error) { if (error instanceof KernelError) throw error; throw new KernelError(400, 'INVALID_BODY', 'تعذر قراءة الطلب.'); }
         if (!body || typeof body !== 'object' || Array.isArray(body)) throw new KernelError(400, 'INVALID_BODY', 'صيغة الطلب غير صالحة.');
       }
-      return Response.json(await work(identity, new URL(request.url).searchParams.get('workspace'), body), { headers });
+      return Response.json(await work(identity, workspaceSelector(new URL(request.url).searchParams), body), { headers });
     } catch (error) {
       const known = error instanceof KernelError;
       const code = known ? error.code : error?.code === '42P01' || error?.code === '42703' ? 'KERNEL_SCHEMA_MISSING' : error?.code === '42501' ? 'KERNEL_DB_PRIVILEGE' : 'DB_UNAVAILABLE';
@@ -66,7 +66,7 @@ export function kernelHandler(work, write = false) {
       // Fire-and-forget. The observer never changes the response or throws.
       void captureServerFailure(error, { surface:'kernel', code, status, pathname:new URL(request.url).pathname, dependency:dependencyStatus, operation:request.method });
       const responseHeaders = code === 'RATE_LIMITED' ? { ...headers, 'Retry-After': '60' } : headers;
-      return Response.json(errorBody({ code, message, dependencyStatus }), { headers: responseHeaders, status });
+      return Response.json(errorBody({ status, code, message, dependencyStatus }), { headers: responseHeaders, status });
     }
   };
 }

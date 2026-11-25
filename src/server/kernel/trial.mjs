@@ -135,7 +135,7 @@ export async function trialLifecycle(db, tenantId) {
   let row;
   try {
     row = (await db.query(`SELECT id,tenant_id,requested_by,requested_products,deployment_mode,data_mode,
-      state,decision_source,decided_at,activated_at,expires_at,closed_at,reason,version,created_at,updated_at
+      state,decision_source,decided_at,activated_at,expires_at,closed_at,version,created_at,updated_at
       FROM public.aigas_trial_requests WHERE tenant_id=$1 ORDER BY created_at DESC,id DESC LIMIT 1`, [tenantId])).rows[0];
   } catch (error) {
     if (error?.code === '42P01' || error?.code === '42703' || error?.code === '42501') return notConfigured('TRIAL_SCHEMA_UNAVAILABLE');
@@ -156,7 +156,9 @@ export async function trialLifecycle(db, tenantId) {
   let entitlements = [];
   try {
     if (ready.events) {
-      events = (await db.query(`SELECT from_state,to_state,actor_source,reason,created_at
+      events = (await db.query(`SELECT from_state,to_state,actor_source,
+        CASE WHEN reason IN ('CANCELLED_BY_TENANT','ELIGIBILITY_APPROVED','ELIGIBILITY_REJECTED',
+          'ACTIVATED_AFTER_READINESS','CLOSED_BY_OPERATOR') THEN reason END AS reason,created_at
         FROM public.aigas_trial_events WHERE trial_id=$1 AND tenant_id=$2
         ORDER BY created_at ASC,id ASC LIMIT 50`, [row.id, tenantId])).rows.map(event => ({
         from: event.from_state,
@@ -186,7 +188,7 @@ export async function trialLifecycle(db, tenantId) {
     trialId: row.id,
     state: effectiveState,
     recordedState: row.state,
-    reason: invalid ? 'INVALID_48_HOUR_WINDOW' : row.reason ?? null,
+    reason: invalid ? 'INVALID_48_HOUR_WINDOW' : null,
     products: includedProducts,
     entitledProducts,
     deploymentMode: row.deployment_mode,

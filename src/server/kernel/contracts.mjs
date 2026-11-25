@@ -47,13 +47,15 @@ export function dependencyEntry(product, state, { required = false, reason = nul
 // Every product HTTP handler returns this shape on failure. `code` is a stable
 // machine code; `message` is Arabic operator-facing text; `dependencyStatus`
 // is only present when the failure is a classified dependency.
-export function errorBody({ code, message, dependencyStatus = null, extra = {} } = {}) {
+export function errorBody({ status, code, message, dependencyStatus = null, extra = {} } = {}) {
+  const authorizationCode = status === 401 ? 'UNAUTHORIZED' : status === 403 ? 'FORBIDDEN' : null;
   return {
     code,
     message,
     contract: { version: HTTP_CONTRACT_VERSION, error: ERROR_CONTRACT_VERSION },
     ...(dependencyStatus ? { dependencyStatus } : {}),
     ...extra,
+    ...(authorizationCode ? { authorizationCode } : {}),
   };
 }
 

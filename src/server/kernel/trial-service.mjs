@@ -3,7 +3,7 @@ import { transaction, setActorScope } from './db.mjs';
 import { env } from './env.mjs';
 import { KernelError, isUuid, requireRole, products } from './core.mjs';
 import { canTransitionTrial, TRIAL_DATA_MODE } from './trial.mjs';
-import { tenantGuard, audit } from './service.mjs';
+import { tenantGuard, assertActiveAccount, audit } from './service.mjs';
 
 // Server-side trial cycle for P06-A. Request, review, approval and activation are
 // separate steps with separate actors: a tenant request never approves itself, an
@@ -88,10 +88,15 @@ async function memberScope(db, identity, requested) {
 // an email pattern, a request parameter or a UI toggle.
 async function operatorScope(db, identity) {
   await setActorScope(db, identity.userId);
-  const row = (await db.query(`SELECT status FROM public.aigas_trial_operators
-    WHERE user_id=$1 AND status='ACTIVE'`, [identity.userId])).rows[0];
-  if (!row) throw new KernelError(403, 'OPERATOR_REQUIRED', 'هذه القناة للمشغلين المعتمدين فقط.');
+  await assertActiveAccount(db, identity.userId);
+  if (!(await activeOperator(db, identity.userId))) throw new KernelError(403, 'OPERATOR_REQUIRED', 'هذه القناة للمشغلين المعتمدين فقط.');
   return true;
+}
+
+async function activeOperator(db, userId) {
+  return (await db.query(`SELECT 1 FROM public.aigas_trial_operators o
+    JOIN neon_auth."user" u ON u.id=o.user_id
+    WHERE o.user_id=$1 AND o.status='ACTIVE' AND u.banned IS NOT TRUE`, [userId])).rowCount === 1;
 }
 
 async function loadTrial(db, id) {
@@ -125,8 +130,8 @@ async function tenantTransition(db, tenantId, id, to, reason) {
 export async function operatorState(identity) {
   return transaction(async db => {
     await setActorScope(db, identity.userId);
-    const row = (await db.query("SELECT 1 FROM public.aigas_trial_operators WHERE user_id=$1 AND status='ACTIVE'", [identity.userId])).rowCount;
-    return { operator: row === 1 };
+    await assertActiveAccount(db, identity.userId);
+    return { operator: await activeOperator(db, identity.userId) };
   });
 }
 
@@ -192,7 +197,7 @@ export async function cancelTrial(identity, requested, trial, body = {}) {
     const tenant = await requestScope(db, identity, requested);
     const result = await tenantTransition(db, tenant.tenant_id, trial, 'CANCELLED', reason);
     if (!result) throw new KernelError(404, 'TRIAL_NOT_FOUND', 'لا توجد تجربة بهذا المعرّف في مؤسستك.');
-    await appendEvent(db, { trialId: trial, tenantId: tenant.tenant_id, from: result.from_state, to: 'CANCELLED', actorSource: 'TENANT', actorUserId: identity.userId, reason });
+    await appendEvent(db, { trialId: trial, tenantId: tenant.tenant_id, from: result.from_state, to: 'CANCELLED', actorSource: 'TENANT', actorUserId: identity.userId, reason: 'CANCELLED_BY_TENANT' });
     await audit(db, identity, tenant.tenant_id, 'trial.request.cancelled');
     return { persisted: true, trialId: trial, state: result.state, version: result.version };
   });
@@ -251,7 +256,7 @@ export async function operatorDecideTrial(identity, trial, body = {}) {
       WHERE id=$1 AND tenant_id=$2 AND state=$6 RETURNING state,version`,
       [row.id, row.tenant_id, to, identity.userId, reason, row.state]);
     if (!updated.rowCount) throw new KernelError(409, 'TRIAL_STATE_CHANGED', 'تغيرت حالة التجربة؛ حدّث الصفحة قبل إعادة المحاولة.');
-    await appendEvent(db, { trialId: row.id, tenantId: row.tenant_id, from: row.state, to, actorSource: 'OPERATOR', actorUserId: identity.userId, reason: reason ?? 'ELIGIBILITY_APPROVED' });
+    await appendEvent(db, { trialId: row.id, tenantId: row.tenant_id, from: row.state, to, actorSource: 'OPERATOR', actorUserId: identity.userId, reason: approve ? 'ELIGIBILITY_APPROVED' : 'ELIGIBILITY_REJECTED' });
     return { persisted: true, trialId: row.id, state: to, version: updated.rows[0].version };
   });
 }
@@ -293,7 +298,7 @@ export async function operatorActivateTrial(identity, trial, body = {}) {
       SELECT r.id,r.tenant_id,unnest($3::text[]),'TRIAL','ACTIVE',r.activated_at,r.expires_at
       FROM public.aigas_trial_requests r WHERE r.id=$1 AND r.tenant_id=$2`,
       [row.id, row.tenant_id, row.requested_products]);
-    const window = (await db.query('SELECT activated_at,expires_at,version FROM public.aigas_trial_requests WHERE id=$1', [row.id])).rows[0];
+    const window = (await db.query('SELECT activated_at,expires_at,version FROM public.aigas_trial_requests WHERE id=$1 AND tenant_id=$2', [row.id, row.tenant_id])).rows[0];
     await appendEvent(db, { trialId: row.id, tenantId: row.tenant_id, from: 'APPROVED', to: 'ACTIVATED', actorSource: 'OPERATOR', actorUserId: identity.userId, reason: 'ACTIVATED_AFTER_READINESS' });
     return {
       persisted: true,
@@ -322,8 +327,8 @@ export async function operatorExpireTrial(identity, trial) {
     }
     await db.query("UPDATE public.aigas_trial_entitlements SET status='EXPIRED' WHERE trial_id=$1 AND tenant_id=$2 AND status='ACTIVE'", [row.id, row.tenant_id]);
     const updated = await db.query(`UPDATE public.aigas_trial_requests
-      SET state='EXPIRED', version=version+1 WHERE id=$1 AND state=$2 RETURNING state,version`,
-      [row.id, row.state]);
+      SET state='EXPIRED', version=version+1 WHERE id=$1 AND state=$2 AND tenant_id=$3 RETURNING state,version`,
+      [row.id, row.state, row.tenant_id]);
     if (!updated.rowCount) throw new KernelError(409, 'TRIAL_STATE_CHANGED', 'تغيرت حالة التجربة؛ حدّث الصفحة قبل إعادة المحاولة.');
     await appendEvent(db, { trialId: row.id, tenantId: row.tenant_id, from: row.state, to: 'EXPIRED', actorSource: 'SYSTEM', actorUserId: null });
     return { persisted: true, trialId: row.id, state: 'EXPIRED', version: updated.rows[0].version };
@@ -341,9 +346,9 @@ export async function operatorCloseTrial(identity, trial, body = {}) {
     transition(row, 'CLOSED', { actor: 'OPERATOR', reason: reason ?? '' });
     const updated = await db.query(`UPDATE public.aigas_trial_requests
       SET state='CLOSED', closed_at=now(), reason=COALESCE($3,reason), version=version+1
-      WHERE id=$1 AND state=$2 RETURNING state,version`, [row.id, row.state, reason]);
+      WHERE id=$1 AND state=$2 AND tenant_id=$4 RETURNING state,version`, [row.id, row.state, reason, row.tenant_id]);
     if (!updated.rowCount) throw new KernelError(409, 'TRIAL_STATE_CHANGED', 'تغيرت حالة التجربة؛ حدّث الصفحة قبل إعادة المحاولة.');
-    await appendEvent(db, { trialId: row.id, tenantId: row.tenant_id, from: row.state, to: 'CLOSED', actorSource: 'OPERATOR', actorUserId: identity.userId, reason: reason ?? 'CLOSED_BY_OPERATOR' });
+    await appendEvent(db, { trialId: row.id, tenantId: row.tenant_id, from: row.state, to: 'CLOSED', actorSource: 'OPERATOR', actorUserId: identity.userId, reason: 'CLOSED_BY_OPERATOR' });
     return { persisted: true, trialId: row.id, state: 'CLOSED', version: updated.rows[0].version };
   });
 }

@@ -1,5 +1,5 @@
 import { authenticate } from '../kernel/auth.mjs';
-import { KernelError, dependencyStatusForError } from '../kernel/core.mjs';
+import { KernelError, dependencyStatusForError, workspaceSelector } from '../kernel/core.mjs';
 import { contractHeaders, errorBody } from '../kernel/contracts.mjs';
 import { captureServerFailure } from '../observability/index.mjs';
 import { operate } from './service.mjs';
@@ -21,7 +21,7 @@ export function createHandler(auth=authenticate, service=operate) {
       const identity=await auth(request);
       const params=new URL(request.url).searchParams;
       const body=['create','update','assess','save-treatment','archive'].includes(operation)?await readBody(request):{};
-      const data=await service(identity,params.get('workspace'),operation,body,params,id);
+      const data=await service(identity,workspaceSelector(params),operation,body,params,id);
       return Response.json(data,{status:['create','assess','save-treatment'].includes(operation)?201:200,headers:{...headers,...(operation==='export'?{'Content-Disposition':'attachment; filename="aigas-risk-register.json"'}:{})}});
     } catch(error) {
       if(error?.code==='42P01'||error?.code==='42703')error=new KernelError(503,'RISK_ENGINE_SCHEMA_MISSING','مخطط Risk Engine أو أحدث حقوله غير متاح؛ يلزم تطبيق 0005 ثم 0008 ثم 0015 ثم 0026 على بيئة معتمدة.');
@@ -34,7 +34,7 @@ export function createHandler(auth=authenticate, service=operate) {
       const code=known?error.code:'RISK_ENGINE_UNAVAILABLE';
       const status=known?error.status:503;
       void captureServerFailure(error,{surface:'risk-engine',code,status,pathname:new URL(request.url).pathname,dependency:dependencyStatus,operation:'POST'});
-      return Response.json(errorBody({code,message:known?error.message:'تعذر إكمال العملية؛ تحقق من اتصال القاعدة وترحيل Risk Engine. لم يُؤكد الحفظ أو التحقق.',dependencyStatus}),{status,headers});
+      return Response.json(errorBody({status,code,message:known?error.message:'تعذر إكمال العملية؛ تحقق من اتصال القاعدة وترحيل Risk Engine. لم يُؤكد الحفظ أو التحقق.',dependencyStatus}),{status,headers});
     }
   };
 }

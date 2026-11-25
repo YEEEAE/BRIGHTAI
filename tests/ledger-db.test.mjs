@@ -33,6 +33,12 @@ test('Postgres + HTTP: durable event, readback, integrity/tamper, tenant isolati
  assert.equal((await send(owner)).data.events.length,0);
  const input={event_type:'synthetic.test.created',scenario:'integrity-check',idempotency_key:randomUUID()};
  const created=await send(owner,'create',input);assert.equal(created.status,201);assert.equal(created.data.persisted,true);const id=created.data.event.event_id;
+ const duplicate=await send(owner,'list',{},undefined,tenant,`workspace=${other}`);
+ assert.equal(duplicate.status,400);assert.equal(duplicate.data.code,'INVALID_WORKSPACE');
+ const foreignBody=await send(owner,'create',{...input,workspace:other});
+ assert.equal(foreignBody.status,400);assert.equal(foreignBody.data.code,'INVALID_BODY');
+ const anonymous=await createHandler()(new Request('https://local/app/api/ledger/events/'),'list');
+ assert.equal(anonymous.status,401);assert.equal((await anonymous.json()).authorizationCode,'UNAUTHORIZED');
  const replay=await send(owner,'create',input);assert.equal(replay.status,201);assert.equal(replay.data.replayed,true);assert.equal(replay.data.event.event_id,id);
  assert.equal((await send(owner,'create',{...input,event_type:'synthetic.review.recorded'})).status,409);
  for(const metadata of [{...created.data.event.metadata_json,prompt:'synthetic-secret'},{...created.data.event.metadata_json,scenario:null},{...created.data.event.metadata_json,decision_ref:null}])await assert.rejects(db.query('INSERT INTO aigas_ld_events(event_id,tenant_id,source,event_type,policy_version,metadata_json,created_at,created_by,integrity_hash,hash_profile,sequence_no,previous_hash,idempotency_key) SELECT $1,tenant_id,source,event_type,policy_version,$2::jsonb,created_at,created_by,repeat(chr(97),64),hash_profile,sequence_no+1,integrity_hash,chr(97) FROM aigas_ld_events WHERE event_id=$3',[randomUUID(),JSON.stringify(metadata),id]),e=>e.code==='23514');
@@ -46,7 +52,7 @@ test('Postgres + HTTP: durable event, readback, integrity/tamper, tenant isolati
  assert.equal((await send(owner,'verify',{},id)).data.result,'MATCH'); // candidate never changes stored row
  for(const op of ['detail','verify','export'])assert.equal((await send(outsider,op,{},id,other)).status,404);
  for(const op of ['list','create','detail','verify','export'])assert.equal((await send(outsider,op,op==='create'?input:{},id,tenant)).status,403);
- assert.equal((await send(member,'create',input)).status,403);assert.equal((await send(member,'export',{},id)).status,403);
+ const forbidden=await send(member,'create',input);assert.equal(forbidden.status,403);assert.equal(forbidden.data.authorizationCode,'FORBIDDEN');assert.equal((await send(member,'export',{},id)).status,403);
  const exported=await send(admin,'export',{},id);assert.equal(exported.status,200);assert.equal(exported.data.entries.at(-1).event.event_id,id);assert.equal(exported.data.verification.result,'MATCH');assert.match(exported.headers.get('content-disposition'),/attachment/);
  const portable=await mkdtemp(join(tmpdir(),'aigas-ledger-contract-'));
  try {

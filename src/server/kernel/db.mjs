@@ -69,6 +69,7 @@ export async function transaction(work) {
   try {
     await client.query('BEGIN');
     await activateRuntimeRole(client);
+    await requireRlsPosture(client);
     const result = await work(client);
     await client.query('COMMIT');
     return result;
@@ -122,27 +123,23 @@ export async function setActorScope(db, userId) {
   )).rows[0] ?? {};
   if (row.tenant_id !== '' || row.user_id !== userId) throw new KernelError(503, 'TENANT_SCOPE_UNAVAILABLE', 'تعذر تأكيد نطاق المؤسسة؛ لم تُنفذ العملية.');
 }
-// Opt-in runtime guard for staging and post-cutover verification. When
-// AIGAS_REQUIRE_RLS=true, product endpoints refuse to run on a connection that
-// bypasses RLS instead of silently relying on explicit predicates alone.
+// When configured, refuse transactions on roles that bypass RLS.
 export async function requireRlsPosture(db = database()) {
   if (env('AIGAS_REQUIRE_RLS') !== 'true') return;
   const posture = await connectionPrivilege(db);
   if (!posture.rlsEnforced) throw new KernelError(503, 'RLS_NOT_ENFORCED', 'اتصال قاعدة البيانات يتجاوز RLS؛ لم تُنفذ العملية.');
 }
-let privilege;
-// Read-only posture of the connection role. It is never returned as a role name or a DSN.
-// With the current owner connection RLS is bypassed, so every query must carry an explicit
-// tenant predicate; the NOBYPASSRLS role in migrations/0025 makes RLS a second layer.
+// Inspect the effective role of this transaction, including ownership or membership
+// in a table-owning role. A missing catalog row fails closed.
 export async function connectionPrivilege(db = database()) {
-  if (!privilege) {
-    const pending = db.query(`SELECT r.rolsuper,r.rolbypassrls FROM pg_roles r WHERE r.rolname=current_user`)
-      .then(result => {
-        const row = result.rows[0] ?? {};
-        const bypass = row.rolsuper === true || row.rolbypassrls === true;
-        return Object.freeze({ rlsEnforced: !bypass });
-      });
-    privilege = pending.catch(error => { privilege = undefined; throw error; });
-  }
-  return privilege;
+  const { rows: [row] } = await db.query(`SELECT NOT r.rolsuper AND NOT r.rolbypassrls
+    AND current_setting('row_security') = 'on'
+    AND NOT EXISTS (
+      SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
+      WHERE n.nspname = 'public' AND left(c.relname, 6) = 'aigas_'
+        AND c.relkind IN ('r', 'p')
+        AND pg_has_role(r.oid, c.relowner, 'USAGE')
+    ) AS enforced
+    FROM pg_roles r WHERE r.rolname = current_user`);
+  return Object.freeze({ rlsEnforced: row?.enforced === true });
 }

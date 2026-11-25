@@ -10,14 +10,15 @@ import { productGrants, resolveProductAccess } from './access.mjs';
 import { trialLifecycle, trialAccessFor, buildPovReport } from './trial.mjs';
 import { KernelError, products, productStates, selectMembership, workspaceName, roleLabel, auditActionLabel, requireRole, isUuid } from './core.mjs';
 import { HTTP_CONTRACT_VERSION } from './contracts.mjs';
-export async function memberships(userId, db = database()) {
-  if (!isUuid(userId)) throw new KernelError(401, 'UNAUTHORIZED', 'يلزم حساب مستخدم موثّق.');
-  // Actor scope comes from the verified token; it lets a least-privilege runtime role read
-  // only this user's membership rows before a tenant is chosen.
-  await setActorScope(db, userId);
-  // Excludes anonymous tokens and deleted identities using the actual Auth directory.
+export async function assertActiveAccount(db, userId) {
   const user = await db.query('SELECT id FROM neon_auth."user" WHERE id = $1 AND banned IS NOT TRUE', [userId]);
   if (!user.rowCount) throw new KernelError(401, 'UNAUTHORIZED', 'يلزم حساب مستخدم موثّق.');
+}
+
+export async function memberships(userId, db = database()) {
+  // Actor scope comes from the verified token, before any tenant is selected.
+  await setActorScope(db, userId);
+  await assertActiveAccount(db, userId);
   const result = await db.query('SELECT m.tenant_id, m.role, t.name, t.created_at FROM public.aigas_memberships m JOIN public.aigas_tenants t ON t.id = m.tenant_id WHERE m.user_id = $1 ORDER BY m.created_at, m.tenant_id', [userId]);
   return result.rows;
 }
@@ -41,8 +42,6 @@ export async function dashboard(identity, requested) {
     const scope = await tenantGuard(identity, requested, db);
     const updatedAt = (await db.query('SELECT clock_timestamp() AS updated_at')).rows[0].updated_at;
     const system = { connection: 'CONNECTED', membership: scope.tenant ? 'VERIFIED' : 'NONE', updatedAt,
-      // Authenticated view only: the current owner connection bypasses RLS, so isolation rests
-      // on explicit tenant predicates until migrations/0019 is approved and applied.
       rls: await connectionPrivilege(db).then(posture => posture.rlsEnforced ? 'ENFORCED' : 'BYPASSED').catch(() => 'NOT_CHECKED') };
     if (!scope.tenant) return { ...scope, nextStep: workspaceGuidance(null), products: productStates([]).map(p => ({ ...p, href: null, enabled: false })), connection: 'CONNECTED', system, summary: null, activity: [], canManageMembers: false, canManageProducts: false, policyEngine:{state:'NOT_CONFIGURED',publishedPolicies:0,departments:0} };
     scope.tenant = await lockMember(db, identity, scope.tenant);

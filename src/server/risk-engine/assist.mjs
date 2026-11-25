@@ -1,5 +1,5 @@
 import { authenticate } from '../kernel/auth.mjs';
-import { KernelError, requireRole } from '../kernel/core.mjs';
+import { KernelError, requireRole, workspaceSelector } from '../kernel/core.mjs';
 import { transaction } from '../kernel/db.mjs';
 import { tenantGuard } from '../kernel/service.mjs';
 import { requireProductAccess } from '../kernel/access.mjs';
@@ -58,10 +58,10 @@ export function createAssistHandler(auth=authenticate,assist=createRiskAssist())
       if(request.method!=='POST') throw new KernelError(405,'METHOD_NOT_ALLOWED','استخدم POST.');
       const identity=await auth(request);
       const body=await readBody(request);
-      return Response.json(await assist(identity,new URL(request.url).searchParams.get('workspace'),body,request.signal),{headers});
+      return Response.json(await assist(identity,workspaceSelector(new URL(request.url).searchParams),body,request.signal),{headers});
     } catch(error) {
       const known=error instanceof KernelError;
-      return Response.json(errorBody({code:known?error.code:'RISK_ASSIST_UNAVAILABLE',message:known?error.message:'تعذر إنشاء المسودة؛ الصياغة اليدوية متاحة.',dependencyStatus:'temporarily unavailable'}),{status:known?error.status:503,headers});
+      return Response.json(errorBody({status:known?error.status:503,code:known?error.code:'RISK_ASSIST_UNAVAILABLE',message:known?error.message:'تعذر إنشاء المسودة؛ الصياغة اليدوية متاحة.',dependencyStatus:'temporarily unavailable'}),{status:known?error.status:503,headers});
     }
   };
 }

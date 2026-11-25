@@ -73,9 +73,12 @@ export function productStates(access) {
 export function roleLabel(role) {
   return roleLabels[role] ?? 'دور غير معروف';
 }
+export function workspaceSelector(params) {
+  const values = params.getAll('workspace');
+  if (values.length > 1) throw new KernelError(400, 'INVALID_WORKSPACE', 'حدد مؤسسة واحدة للعملية.');
+  return values[0] ?? null;
+}
 export function selectMembership(memberships, requested) {
-  // A malformed or repeated workspace parameter is rejected before any lookup; the value is
-  // never echoed and never used as an authorization input on its own.
   if (requested != null && !isUuid(requested)) throw new KernelError(400, 'INVALID_WORKSPACE', 'حدد مؤسسة صالحة قبل تنفيذ العملية.');
   if (!memberships.length) { if (requested) throw new KernelError(403, 'FORBIDDEN', 'ليس لديك عضوية في المؤسسة المحددة.'); return null; }
   const member = requested ? memberships.find(m => m.tenant_id === requested) : memberships[0];
