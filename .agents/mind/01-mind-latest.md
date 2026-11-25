@@ -18,3 +18,14 @@
 - 2026-11-24 PARTIAL GA4 live: Worker `brightai-ga4-edge` منشور وroutes apex/www مفعّلة؛ CNAME proxied إلى Render origin؛ `workers.dev` معطل. عينة Firecrawl/DOM 4 URLs (apex, www, `/about/`, legacy `/blog/ai-governance/`) 200 مع config واحد وloader واحد؛ Worker يحقن الناقص في HTML GET 200 فقط، لا Range/HEAD/غير HTML؛ unit61 وbuild PASS. جرد الإرث متباين (251/254/264) والتغطية الشاملة NOT VERIFIED؛ GA4 ingestion/التقارير NOT VERIFIED لتعذر الموصل؛ `Audit/ga4-live-coverage-2026-11-24.md`.
 - 2026-11-24 VERIFIED LOCAL تكامل المنتجات: قفل حوكمة للمؤسسة تحت RLS، Kernel GUARD مغلق عند الفشل، مراجعة HIGH وتصعيد Firewall بلا إرسال، وتراجع ذري للأدلة الإلزامية؛ PostgreSQL18 والتزامن وChrome LAB/GUARD PASS؛ Kernel REQUEST_APPROVAL العام يحجب واستئناف المزود غير مهيأ؛ `docs/PRODUCT-INTEGRATION-MATRIX.md`.
 -
+
+## Ledger (الأحدث أولًا)
+
+## [2026-11-25] — تدقيق الادعاءات
+- **تم:** تعديل صياغة No-Training إلى متطلب مستهدف يحتاج إثبات المورد؛ سجل 15 ادعاءً وحدود الدليل في `Audit/CLAIMS-REVIEW-2026-11-25.md`.
+- **التحقق:** build PASS؛ المراجعة جزئية، والامتثال الشامل/النشر/إقامة البيانات غير متحققين.
+- **الحالة:** PARTIAL.
+
+## [2026-11-25] — بوابة إطلاق BRIGHTAI
+- **التحقق:** SHA `b0e1b398881262aa2d27da58496ef6d6ee8d0824`: build/SEO16/health16/UX64 PASS؛ Auth E2E FAIL في `/products/`؛ RLS 87/90.
+- **الحالة:** NO-GO — Astro audit حرجة؛ health/ready/Auth/App ‏404 على النطاق والمنشأ؛ غياب CSP/HSTS في عينة النطاق؛ 4 أهداف روابط ‏404.
