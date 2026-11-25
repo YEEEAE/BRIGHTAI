@@ -74,7 +74,7 @@ CONSTRAINTS: read-only GitHub؛ لا commit/push/merge؛ لا تغيير Render/
 
 ## PROMPT 02 — Enterprise Persistence & Trial Conversion (P1 مع بوابات P0)
 
-- [ ] **مكتمل** — التاريخ: `____` · الحالة (DONE/PARTIAL/BLOCKED): `____`
+- [x] **مكتمل** — التاريخ: `____` · الحالة (DONE/PARTIAL/BLOCKED): `____`
 
 ````text
 ROLE: Enterprise Product Architect / SaaS Security / Growth UX

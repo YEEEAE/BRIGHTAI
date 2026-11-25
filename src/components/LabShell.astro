@@ -18,6 +18,7 @@ const product = productForSlug(kind)!;
   <div class="lab-body"><header class="lab-header"><div><ProductIcon kind={kind} size={24}/><div><h1><bdi dir="ltr">{product.name}</bdi></h1><p>{complaintStep ? "محاكاة محلية ببيانات افتراضية" : `${labBriefs[kind].task} / مختبر عام`}</p></div></div><ReleaseStage stage="demo" /></header>
   <div class="lab-access"><AccessSteps current="demo" slug={kind} /></div>
   {!complaintStep && <div class="actions lab-actions"><a class="button" href="#lab-controls">ابدأ المثال</a><a class="ghost" href={accessPath(kind)}>اطلب الوصول لهذا المنتج</a></div>}
+  {!complaintStep && ['firewall', 'risk-engine', 'human-gate', 'ledger'].includes(kind) && <p class="lab-actions"><a href={`/demo/governance/#${kind}`}>افتح المنتج في مختبر الحوكمة الموحّد</a></p>}
   {complaintStep ? <ScenarioContext complaintStep={complaintStep}/> : <>
   <div class="lab-context"><span data-lab-progress>اختر مثالًا للبدء</span></div>
   {kind !== "ledger" && <ScenarioContext next={({firewall:"human-gate", "human-gate":"ledger", ledger:"risk-engine", "risk-engine":"secure-chat", "secure-chat":"firewall"})[kind]} />}

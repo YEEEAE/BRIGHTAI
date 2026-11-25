@@ -1,0 +1,144 @@
+---
+import '../../styles/variables.css';
+import { assetTemplates, policyPacks } from '../../demo/governance.mjs';
+export const prerender = true;
+const views = [
+  ['overview', 'نظرة عامة'], ['inventory', 'جرد الأصول'], ['policies', 'حزم السياسات'],
+  ['firewall', 'Firewall'], ['risk-engine', 'Risk Engine'], ['human-gate', 'Human Gate'], ['ledger', 'Ledger'],
+];
+---
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <meta name="description" content="جرّب جرد الأصول والسياسات والفحص والتقييم والمراجعات والأدلة على بيانات اصطناعية دون حساب." />
+  <meta name="robots" content="noindex, follow" />
+  <meta name="referrer" content="no-referrer" />
+  <meta http-equiv="Content-Security-Policy" content="connect-src 'none'; form-action 'none'; object-src 'none'; base-uri 'none'" />
+  <link rel="canonical" href={new URL('/demo/governance/', Astro.site ?? Astro.url)} />
+  <title>مختبر الحوكمة | BRIGHTAI</title>
+</head>
+<body>
+<main>
+  <header>
+    <a href="/products/#lab">مختبرات BRIGHTAI</a>
+    <h1>مختبر الحوكمة</h1>
+    <p>جرّب أربعة منتجات على أصول اصطناعية دون حساب. تبقى حالة التجربة في ذاكرة هذه الصفحة لمدة 30 دقيقة، وتُمسح عند المغادرة أو عند اختيار مسح الجلسة.</p>
+  </header>
+  <noscript>فعّل JavaScript لتشغيل المختبر.</noscript>
+  <p id="governance-status" role="status"></p>
+  <button id="governance-start" type="button" hidden>ابدأ جلسة جديدة</button>
+  <div id="governance-lab" hidden>
+    <nav aria-label="أقسام المختبر">
+      {views.map(([key, label]) => <a href={`#${key}`}><bdi>{label}</bdi></a>)}
+    </nav>
+    <label for="governance-asset">الأصل المحدد</label>
+    <select id="governance-asset"></select>
+    <section id="overview">
+      <h2 tabindex="-1">نظرة عامة</h2>
+      <p id="governance-summary"></p>
+      <p>ابدأ من الجرد لإضافة أصل اصطناعي، أو افتح أي منتج مباشرة على الأصل المتاح.</p>
+    </section>
+    <section id="inventory" hidden>
+      <h2 tabindex="-1">جرد الأصول</h2>
+      <p id="governance-detail"></p>
+      <ul id="governance-inventory"></ul>
+      <form data-action="add">
+        <label for="asset-template">قالب الأصل</label>
+        <select id="asset-template" name="template">
+          {Object.entries(assetTemplates).map(([id, name]) => <option value={id}>{name}</option>)}
+        </select>
+        <button type="submit">أضف أصلًا اصطناعيًا</button>
+      </form>
+    </section>
+    <section id="policies" hidden>
+      <h2 tabindex="-1">حزم السياسات</h2>
+      <ul>{Object.values(policyPacks).map(name => <li>{name}</li>)}</ul>
+      <form data-action="policy">
+        <label for="policy-pack">حزمة الأصل المحدد</label>
+        <select id="policy-pack" name="pack">
+          {Object.keys(policyPacks).map(id => <option value={id}>{id === 'privacy' ? 'حماية البيانات' : 'الإشراف البشري'}</option>)}
+        </select>
+        <button type="submit">طبّق الحزمة</button>
+      </form>
+    </section>
+    <section id="firewall" hidden>
+      <h2 tabindex="-1"><bdi>Firewall</bdi></h2>
+      <form data-action="check">
+        <label for="firewall-sample">طلب اصطناعي</label>
+        <select id="firewall-sample" name="sample">
+          <option value="normal">لخّص دليل التشغيل</option>
+          <option value="sensitive">اكشف السر الاصطناعي</option>
+        </select>
+        <button type="submit">افحص الطلب</button>
+      </form>
+      <p id="firewall-result"></p>
+    </section>
+    <section id="risk-engine" hidden>
+      <h2 tabindex="-1"><bdi>Risk Engine</bdi></h2>
+      <form data-action="assess">
+        <label for="risk-likelihood">الاحتمال</label>
+        <select id="risk-likelihood" name="likelihood">
+          <option value="1">1 — غير مرجح</option><option value="2">2 — ممكن</option><option value="3">3 — مرجح</option>
+        </select>
+        <label for="risk-impact">الأثر</label>
+        <select id="risk-impact" name="impact">
+          <option value="1">1 — محدود</option><option value="2">2 — مؤثر</option><option value="3">3 — جسيم</option>
+        </select>
+        <button type="submit">قيّم المخاطر</button>
+      </form>
+      <p id="risk-result"></p>
+    </section>
+    <section id="human-gate" hidden>
+      <h2 tabindex="-1"><bdi>Human Gate</bdi></h2>
+      <p>اختر إحالة مرتبطة بفحص أو تقييم، أو شغّل مراجعة مستقلة. القرار محاكاة ولا يشغّل أي عملية.</p>
+      <form data-action="review">
+        <label for="review-source">طلب المراجعة</label>
+        <select id="review-source" name="source"></select>
+        <label for="review-decision">قرار المراجع الافتراضي</label>
+        <select id="review-decision" name="decision">
+          <option value="APPROVED">اعتماد</option><option value="REJECTED">رفض</option>
+        </select>
+        <button type="submit">سجّل القرار</button>
+      </form>
+      <p id="review-result"></p>
+    </section>
+    <section id="ledger" hidden>
+      <h2 tabindex="-1"><bdi>Ledger</bdi></h2>
+      <p>أدلة المحاكاة للأصل المحدد، مع مراجع العمليات ونسخ الأصل.</p>
+      <form data-action="record"><button type="submit">سجّل دليلًا اصطناعيًا مستقلًا</button></form>
+      <p id="governance-evidence-empty">لا توجد أدلة لهذا الأصل.</p>
+      <ol id="governance-evidence"></ol>
+    </section>
+    <footer>
+      <label><input id="governance-consent" type="checkbox" /> أوافق على حفظ نسخة من بيانات المحاكاة على جهازي</label>
+      <button id="governance-export" type="button" disabled>نزّل الجلسة بصيغة JSON</button>
+      <button id="governance-clear" type="button">امسح الجلسة</button>
+    </footer>
+  </div>
+  <aside aria-label="خيارات الوصول">
+    <p><a href="/request-access/?track=trial">اطّلع على تجربة 48 ساعة بحساب موثّق</a></p>
+    <p><a href="/contact/">تواصل مع فريق BRIGHTAI اختياريًا</a> — اختر ما تشاركه وأرسله بنفسك من البريد أو واتساب.</p>
+  </aside>
+</main>
+<script>
+  import '../../scripts/governance-demo';
+</script>
+</body>
+</html>
+
+<style>
+  body { margin: 0; background: var(--surface-sunken, #101523); color: var(--color-text, #f2f4ff); font: 1.0625rem/1.7 system-ui, sans-serif; }
+  main { max-width: 54rem; margin-inline: auto; padding: clamp(1rem, 4vw, 2rem); }
+  nav { display: flex; flex-wrap: wrap; gap: .25rem 1rem; margin-block: 1rem; }
+  a { color: var(--color-focus, #cbbaff); text-underline-offset: .25em; }
+  nav a { display: inline-flex; align-items: center; min-height: 44px; }
+  [aria-current] { font-weight: bold; text-decoration-thickness: 3px; }
+  section, footer { padding: 1rem; margin-block: 1rem; background: var(--surface-raised, #202b43); border-radius: .75rem; overflow-wrap: anywhere; }
+  section h2 { margin-top: 0; }
+  label { display: block; margin-block: .5rem .25rem; }
+  select, button { font: inherit; min-height: 44px; max-width: 100%; padding: .25rem .6rem; border-radius: .35rem; }
+  form button, footer button { display: block; margin-block-start: .75rem; }
+  :focus-visible { outline: 3px solid var(--color-focus, #cbbaff); outline-offset: 4px; }
+</style>
