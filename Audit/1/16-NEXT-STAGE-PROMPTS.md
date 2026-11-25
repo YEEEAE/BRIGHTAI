@@ -105,7 +105,7 @@ CONSTRAINTS: read-only GitHub؛ لا commit/push/merge؛ لا تغيير Render/
 
 ## PROMPT 03 — Saudi & Global Policy Intelligence / Agent Governance (P1)
 
-- [ ] **مكتمل** — التاريخ: `____` · الحالة (DONE/PARTIAL/BLOCKED): `____`
+- [x] **مكتمل** — التاريخ: `____` · الحالة (DONE/PARTIAL/BLOCKED): `____`
 
 ````text
 ROLE: AI Governance Specialist / Policy Architect / Product Engineer
@@ -136,7 +136,7 @@ CONSTRAINTS: read-only GitHub؛ لا commit/push/merge؛ لا تغيير Render/
 
 ## PROMPT 04 — Model Assurance, Enterprise UX, Performance & SEO/GEO (P1)
 
-- [ ] **مكتمل** — التاريخ: `____` · الحالة (DONE/PARTIAL/BLOCKED): `____`
+- [x] **مكتمل** — التاريخ: `____` · الحالة (DONE/PARTIAL/BLOCKED): `____`
 
 ````text
 ROLE: Model Risk Engineer / Principal Designer / Astro Performance Specialist
@@ -168,7 +168,7 @@ CONSTRAINTS: read-only GitHub؛ لا commit/push/merge؛ لا تغيير Render/
 
 ## PROMPT 05 — Advanced Security & Release Assurance (P0)
 
-- [ ] **مكتمل** — التاريخ: `____` · القرار النهائي (LOCAL/PUBLIC/48H/COMMERCIAL): `____`
+- [x] **مكتمل** — التاريخ: `____` · القرار النهائي (LOCAL/PUBLIC/48H/COMMERCIAL): `____`
 
 ````text
 ROLE: Independent Release Auditor / Security Engineer / Groq Integration Engineer

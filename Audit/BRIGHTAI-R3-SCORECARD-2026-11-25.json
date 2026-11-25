@@ -1,0 +1,822 @@
+{
+  "date": "2026-11-25",
+  "head": "773fb6bc5e420ee70e811d5509aceefcaec32a8c",
+  "scope": "R3 selected evidence-driven 78-check mixed source/configuration baseline, not full repository or runtime certification",
+  "method": "S,C=1; F,U=0; equal within each domain, published domain weights. Coverage includes S,C,F. Not directly comparable to R2 74 checks.",
+  "overall": 44.66666666666667,
+  "coverage": 73.16666666666667,
+  "counts": {
+    "S": 24,
+    "U": 21,
+    "F": 24,
+    "C": 9
+  },
+  "domains": [
+    {
+      "id": "REG",
+      "name": "سجل الأصول والوكلاء",
+      "weight": 8,
+      "total": 6,
+      "passed": 3,
+      "counts": {
+        "S": 3,
+        "U": 3
+      },
+      "score": 50.0,
+      "coverage": 50.0
+    },
+    {
+      "id": "POL",
+      "name": "حزم السياسات والتتبع التنظيمي",
+      "weight": 8,
+      "total": 6,
+      "passed": 3,
+      "counts": {
+        "S": 3,
+        "F": 1,
+        "U": 2
+      },
+      "score": 50.0,
+      "coverage": 66.66666666666667
+    },
+    {
+      "id": "FW",
+      "name": "Firewall",
+      "weight": 10,
+      "total": 6,
+      "passed": 3,
+      "counts": {
+        "S": 3,
+        "F": 2,
+        "U": 1
+      },
+      "score": 50.0,
+      "coverage": 83.33333333333333
+    },
+    {
+      "id": "HG",
+      "name": "Human Gate",
+      "weight": 8,
+      "total": 6,
+      "passed": 3,
+      "counts": {
+        "S": 3,
+        "F": 1,
+        "U": 2
+      },
+      "score": 50.0,
+      "coverage": 66.66666666666667
+    },
+    {
+      "id": "RE",
+      "name": "Risk Engine وتقييم النماذج",
+      "weight": 12,
+      "total": 6,
+      "passed": 4,
+      "counts": {
+        "S": 4,
+        "F": 1,
+        "U": 1
+      },
+      "score": 66.66666666666667,
+      "coverage": 83.33333333333333
+    },
+    {
+      "id": "LD",
+      "name": "Ledger وسلامة الأدلة",
+      "weight": 10,
+      "total": 6,
+      "passed": 2,
+      "counts": {
+        "S": 2,
+        "F": 3,
+        "U": 1
+      },
+      "score": 33.333333333333336,
+      "coverage": 83.33333333333333
+    },
+    {
+      "id": "AI",
+      "name": "Groq",
+      "weight": 8,
+      "total": 6,
+      "passed": 2,
+      "counts": {
+        "S": 2,
+        "F": 3,
+        "U": 1
+      },
+      "score": 33.333333333333336,
+      "coverage": 83.33333333333333
+    },
+    {
+      "id": "INT",
+      "name": "تكامل المنتجات الأربعة",
+      "weight": 8,
+      "total": 6,
+      "passed": 3,
+      "counts": {
+        "S": 3,
+        "F": 2,
+        "U": 1
+      },
+      "score": 50.0,
+      "coverage": 83.33333333333333
+    },
+    {
+      "id": "UX",
+      "name": "التصميم وتجربة المستخدم وRTL",
+      "weight": 10,
+      "total": 6,
+      "passed": 2,
+      "counts": {
+        "C": 2,
+        "U": 3,
+        "F": 1
+      },
+      "score": 33.333333333333336,
+      "coverage": 50.0
+    },
+    {
+      "id": "PUB",
+      "name": "الإتاحة والتحويل التجاري",
+      "weight": 5,
+      "total": 6,
+      "passed": 3,
+      "counts": {
+        "C": 3,
+        "F": 3
+      },
+      "score": 50.0,
+      "coverage": 100.0
+    },
+    {
+      "id": "SEC",
+      "name": "الأمان والخصوصية",
+      "weight": 8,
+      "total": 6,
+      "passed": 2,
+      "counts": {
+        "C": 2,
+        "F": 2,
+        "U": 2
+      },
+      "score": 33.333333333333336,
+      "coverage": 66.66666666666667
+    },
+    {
+      "id": "ARC",
+      "name": "المعمارية والاعتماديات والأداء",
+      "weight": 3,
+      "total": 6,
+      "passed": 1,
+      "counts": {
+        "S": 1,
+        "F": 2,
+        "U": 3
+      },
+      "score": 16.666666666666668,
+      "coverage": 50.0
+    },
+    {
+      "id": "DEP",
+      "name": "النشر وSEO والقياس والمراقبة",
+      "weight": 2,
+      "total": 6,
+      "passed": 2,
+      "counts": {
+        "C": 2,
+        "F": 3,
+        "U": 1
+      },
+      "score": 33.333333333333336,
+      "coverage": 83.33333333333333
+    }
+  ],
+  "criteria": [
+    {
+      "id": "REG-01",
+      "domain": "REG",
+      "requirement": "عقد يميز النظام والنموذج والوكيل والمورد وحالة الاستخدام",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/governance/contract.mjs:6–26"
+    },
+    {
+      "id": "REG-02",
+      "domain": "REG",
+      "requirement": "إصدارات ومراجع مستقلة وحدود أدوات للأصل الاصطناعي",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/governance/registry.mjs؛ contract.mjs:15–26"
+    },
+    {
+      "id": "REG-03",
+      "domain": "REG",
+      "requirement": "جرد وتغيير الأصل في جلسة الحوكمة المشتركة",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/demo/governance.mjs:21–55"
+    },
+    {
+      "id": "REG-04",
+      "domain": "REG",
+      "requirement": "سجل مؤسسي دائم ومشترك بين جلسات المستخدم",
+      "status": "U",
+      "score": 0,
+      "evidence": "المختبر في ذاكرة المستند؛ لا إثبات تشغيل سجل دائم"
+    },
+    {
+      "id": "REG-05",
+      "domain": "REG",
+      "requirement": "دورة حياة Intake واعتماد وإعادة مراجعة مكتملة في البيئة المستهدفة",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا E2E مخول"
+    },
+    {
+      "id": "REG-06",
+      "domain": "REG",
+      "requirement": "اكتشاف Shadow AI من مصادر مؤسسية موصولة",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا تكامل اكتشاف متحقق"
+    },
+    {
+      "id": "POL-01",
+      "domain": "POL",
+      "requirement": "حزمة داخلية محددة الإصدار والانطباق",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/governance/internal-pack.mjs:10–41"
+    },
+    {
+      "id": "POL-02",
+      "domain": "POL",
+      "requirement": "متطلبات وفحوص ودليل متوقع ومالك",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/governance/contract.mjs:28–48"
+    },
+    {
+      "id": "POL-03",
+      "domain": "POL",
+      "requirement": "تتبع وتصدير بصمة assessment للحزمة الداخلية",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/governance/registry.mjs:63–113"
+    },
+    {
+      "id": "POL-04",
+      "domain": "POL",
+      "requirement": "حزم خارجية قابلة للتطبيق من PDPL/SDAIA وغيرها",
+      "status": "F",
+      "score": 0,
+      "evidence": "packSchema.source.type = INTERNAL فقط"
+    },
+    {
+      "id": "POL-05",
+      "domain": "POL",
+      "requirement": "مرجع تنظيمي خارجي موثق مرتبط بفحص وFinding",
+      "status": "U",
+      "score": 0,
+      "evidence": "لم يثبت عقد خارجي أو خريطة قانونية"
+    },
+    {
+      "id": "POL-06",
+      "domain": "POL",
+      "requirement": "اعتماد تغيير السياسة وتطبيقه حيًا عبر المؤسسات",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا تشغيل مؤسسي"
+    },
+    {
+      "id": "FW-01",
+      "domain": "FW",
+      "requirement": "القرارات الخمسة الحتمية في المحرك",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/firewall/core.mjs:10–13"
+    },
+    {
+      "id": "FW-02",
+      "domain": "FW",
+      "requirement": "تقديم DENY والإقفال عند سياسة غير صالحة",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/firewall/core.mjs:63–75"
+    },
+    {
+      "id": "FW-03",
+      "domain": "FW",
+      "requirement": "الفحص العام يتجاوز أربع مطابقات حرفية إلى كاشف بيانات حساس متحقق",
+      "status": "F",
+      "score": 0,
+      "evidence": "src/shared/firewall-demo.mjs:1–19"
+    },
+    {
+      "id": "FW-04",
+      "domain": "FW",
+      "requirement": "محاكاة فعل وكيل بقيود ثابتة وربط طلب مراجعة",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/governance/synthetic-agent.mjs:16–90"
+    },
+    {
+      "id": "FW-05",
+      "domain": "FW",
+      "requirement": "مزود Firewall معتمد",
+      "status": "F",
+      "score": 0,
+      "evidence": "src/server/firewall/provider.mjs:9؛ approvedProviders=[]"
+    },
+    {
+      "id": "FW-06",
+      "domain": "FW",
+      "requirement": "فحص المدخل والمخرج مع مزود فعلي ومعالجة القرارات الخمسة",
+      "status": "U",
+      "score": 0,
+      "evidence": "لم يرسل طلب Groq ولم ينفذ E2E"
+    },
+    {
+      "id": "HG-01",
+      "domain": "HG",
+      "requirement": "ربط تصعيد اصطناعي ببصمة طلب وسياسة",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/governance/synthetic-agent.mjs:30–71"
+    },
+    {
+      "id": "HG-02",
+      "domain": "HG",
+      "requirement": "عقد مراجع مستقل داخل سجل الحوكمة",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/governance/contract.mjs:22–26"
+    },
+    {
+      "id": "HG-03",
+      "domain": "HG",
+      "requirement": "واجهة مراجعة وقبول ورفض للجلسة",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/demo/governance.mjs:89–99"
+    },
+    {
+      "id": "HG-04",
+      "domain": "HG",
+      "requirement": "جدولا delegations وgrants موجودان في الإنتاج",
+      "status": "F",
+      "score": 0,
+      "evidence": "Neon SELECT to_regclass: كلاهما NULL"
+    },
+    {
+      "id": "HG-05",
+      "domain": "HG",
+      "requirement": "استئناف موثق بعد الموافقة مع منع إعادة الاستخدام في الهدف",
+      "status": "U",
+      "score": 0,
+      "evidence": "تقرير الوكيل: فشل firewall-review-binding؛ لم يعد الاختبار"
+    },
+    {
+      "id": "HG-06",
+      "domain": "HG",
+      "requirement": "موافقات متعددة أدوار بمسار قانوني وأمني وتجاري حي",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا اختبار مخول"
+    },
+    {
+      "id": "RE-01",
+      "domain": "RE",
+      "requirement": "حساب خطر من الاحتمال والأثر داخل المختبر",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/demo/governance.mjs:71–75"
+    },
+    {
+      "id": "RE-02",
+      "domain": "RE",
+      "requirement": "مقاييس تصنيف مفصلة: precision/recall/FPR/FNR/accuracy",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/risk-engine/evaluation.mjs:25–35"
+    },
+    {
+      "id": "RE-03",
+      "domain": "RE",
+      "requirement": "معالجة المقام الصفري والعينة الصغيرة",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/risk-engine/evaluation.mjs:17–35"
+    },
+    {
+      "id": "RE-04",
+      "domain": "RE",
+      "requirement": "Finding مؤرخ وإعادة عرض تقييم سابق",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/demo/governance.mjs:77–87"
+    },
+    {
+      "id": "RE-05",
+      "domain": "RE",
+      "requirement": "تقييم نموذج موصول على بيانات مستقلة مصرح بها ومراقبة drift",
+      "status": "F",
+      "score": 0,
+      "evidence": "evaluation.mjs:1,55–60 synthetic replay ثابت، لا اتصال في المختبر"
+    },
+    {
+      "id": "RE-06",
+      "domain": "RE",
+      "requirement": "منهج الخطر المتبقي مع قبول مخول ومكتبة قطاعية كاملة في الهدف",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا تشغيل مؤسسي أو اعتماد منهج في هذه الجولة"
+    },
+    {
+      "id": "LD-01",
+      "domain": "LD",
+      "requirement": "SHA-256 وملف تعريف سلسلة في الكود",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/ledger/core.mjs:4–17,46–60"
+    },
+    {
+      "id": "LD-02",
+      "domain": "LD",
+      "requirement": "عقد تصدير assessment ببصمة داخل سجل الحوكمة",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/governance/registry.mjs:113"
+    },
+    {
+      "id": "LD-03",
+      "domain": "LD",
+      "requirement": "قيد إنتاج Ledger يطابق القرارات الخمسة",
+      "status": "F",
+      "score": 0,
+      "evidence": "Neon aigas_ld_events_check يقبل ALLOW/BLOCK/REDACT فقط"
+    },
+    {
+      "id": "LD-04",
+      "domain": "LD",
+      "requirement": "حارس سلسلة قاعدة البيانات موجود في الإنتاج",
+      "status": "F",
+      "score": 0,
+      "evidence": "Neon pg_proc: chain_guard=0"
+    },
+    {
+      "id": "LD-05",
+      "domain": "LD",
+      "requirement": "تصدير مختبر الحوكمة نفسه يتضمن سلسلة hash قابلة لإعادة التحقق",
+      "status": "F",
+      "score": 0,
+      "evidence": "src/scripts/governance-demo.ts:171–177 يصدر JSON.stringify(state)؛ events لا تحمل hash chain"
+    },
+    {
+      "id": "LD-06",
+      "domain": "LD",
+      "requirement": "تحقق مستقل من حزمة الإصدار النهائي في البيئة المستهدفة",
+      "status": "U",
+      "score": 0,
+      "evidence": "تقرير محلي على مرشح سابق؛ لا إعادة اختبار"
+    },
+    {
+      "id": "AI-01",
+      "domain": "AI",
+      "requirement": "Gateway بخادم وميزانية وحدود ومهلة",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/ai/groq-gateway.mjs:49–75,99–145"
+    },
+    {
+      "id": "AI-02",
+      "domain": "AI",
+      "requirement": "حماية اسم المفتاح ومنع PUBLIC_GROQ",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/kernel/env.mjs:16–22"
+    },
+    {
+      "id": "AI-03",
+      "domain": "AI",
+      "requirement": "قائمتا اعتماد نموذج ومزود غير فارغتين وصالحتين",
+      "status": "F",
+      "score": 0,
+      "evidence": "secure-chat/models.mjs:3؛ firewall/provider.mjs:9"
+    },
+    {
+      "id": "AI-04",
+      "domain": "AI",
+      "requirement": "المسار العام متاح لإرسال اصطناعي معتمد",
+      "status": "F",
+      "score": 0,
+      "evidence": "public-sandbox-limiter.mjs:3–4؛ 503 DISABLED"
+    },
+    {
+      "id": "AI-05",
+      "domain": "AI",
+      "requirement": "Blueprint يصرح بأسماء اعتماد المفتاح المخصص والميزانية المطلوبة",
+      "status": "F",
+      "score": 0,
+      "evidence": "render.yaml:39–42: GROQ_API_KEY وGROQ_MODEL فقط؛ env.mjs:17؛ gateway.mjs:102–104"
+    },
+    {
+      "id": "AI-06",
+      "domain": "AI",
+      "requirement": "إثبات مفتاح ونموذج وميزانية صالحة واستدعاء حي مصرح",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا .env متاح ولا اختبار خارجي"
+    },
+    {
+      "id": "INT-01",
+      "domain": "INT",
+      "requirement": "سياق أحداث مشترك حسب الأصل والإصدار في المختبر",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/demo/governance.mjs:21–110"
+    },
+    {
+      "id": "INT-02",
+      "domain": "INT",
+      "requirement": "محاكاة agent تستدعي core وguard وHuman Gate binding",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/governance/synthetic-agent.mjs:1–90"
+    },
+    {
+      "id": "INT-03",
+      "domain": "INT",
+      "requirement": "المراجعة في المختبر ترتبط بفحص أو خطر من النسخة الحالية",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/demo/governance.mjs:89–99"
+    },
+    {
+      "id": "INT-04",
+      "domain": "INT",
+      "requirement": "مسار عام حي يوقف Groq ثم يستأنفه بإذن صالح",
+      "status": "F",
+      "score": 0,
+      "evidence": "demo prerender وCSP connect-src none؛ publicSandbox disabled"
+    },
+    {
+      "id": "INT-05",
+      "domain": "INT",
+      "requirement": "تسجيل كل حدث عام في سلسلة Ledger قابلة للتحقق",
+      "status": "F",
+      "score": 0,
+      "evidence": "governance.mjs:104–108 + governance-demo.ts:174"
+    },
+    {
+      "id": "INT-06",
+      "domain": "INT",
+      "requirement": "رحلة أصل→حزمة تنظيمية→فحص→معالجة→قرار→دليل في الهدف",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا E2E للبيئة المستهدفة"
+    },
+    {
+      "id": "UX-01",
+      "domain": "UX",
+      "requirement": "صفحة Overview وجرد وحزم وأربعة أقسام متاحة",
+      "status": "C",
+      "score": 1,
+      "evidence": "Firecrawl /demo/governance/ 200"
+    },
+    {
+      "id": "UX-02",
+      "domain": "UX",
+      "requirement": "صفحات المنتجات الأربعة تعرض تجارب متخصصة وروابط",
+      "status": "C",
+      "score": 1,
+      "evidence": "Firecrawl 4/4 HTTP200"
+    },
+    {
+      "id": "UX-03",
+      "domain": "UX",
+      "requirement": "تفاعل كامل مستقل لجميع الشاشات والأحجام",
+      "status": "U",
+      "score": 0,
+      "evidence": "Browser Use تحقق بصريًا من صفحتين على 1440 و390؛ لا اختبار كل الشاشات أو المهام"
+    },
+    {
+      "id": "UX-04",
+      "domain": "UX",
+      "requirement": "إمكانية الوصول والأداء عبر CI ناجح على HEAD",
+      "status": "F",
+      "score": 0,
+      "evidence": "GitHub Actions 45666864721: failure"
+    },
+    {
+      "id": "UX-05",
+      "domain": "UX",
+      "requirement": "مطابقة بصرية وسلوكية للـHero قبل وبعد",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا مرجع لقطات Hero متطابقة"
+    },
+    {
+      "id": "UX-06",
+      "domain": "UX",
+      "requirement": "جودة RTL وkeyboard وWCAG 2.2 AA مثبتة لكامل النطاق",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا قياس شامل"
+    },
+    {
+      "id": "PUB-01",
+      "domain": "PUB",
+      "requirement": "4/4 صفحات المنتجات العامة تفتح",
+      "status": "C",
+      "score": 1,
+      "evidence": "Firecrawl HTTP200"
+    },
+    {
+      "id": "PUB-02",
+      "domain": "PUB",
+      "requirement": "4/4 مختبرات مستقلة تفتح دون حساب",
+      "status": "C",
+      "score": 1,
+      "evidence": "Firecrawl HTTP200"
+    },
+    {
+      "id": "PUB-03",
+      "domain": "PUB",
+      "requirement": "المختبر الموحد يفتح دون حساب",
+      "status": "C",
+      "score": 1,
+      "evidence": "Firecrawl /demo/governance/ 200"
+    },
+    {
+      "id": "PUB-04",
+      "domain": "PUB",
+      "requirement": "بوابة التطبيق وKernel تفتحان",
+      "status": "F",
+      "score": 0,
+      "evidence": "/app/ و/app/kernel/ 404"
+    },
+    {
+      "id": "PUB-05",
+      "domain": "PUB",
+      "requirement": "طلب الوصول يعمل من CTA العام",
+      "status": "F",
+      "score": 0,
+      "evidence": "/request-access/ 404؛ governance.astro:139"
+    },
+    {
+      "id": "PUB-06",
+      "domain": "PUB",
+      "requirement": "تجربة 48 ساعة وعملية التسجيل مثبتتان في الهدف",
+      "status": "F",
+      "score": 0,
+      "evidence": "جدولا trial وexploration غائبان؛ بوابة 404"
+    },
+    {
+      "id": "SEC-01",
+      "domain": "SEC",
+      "requirement": "RLS enabled على جداول الإنتاج",
+      "status": "C",
+      "score": 1,
+      "evidence": "Neon 31/31 flags"
+    },
+    {
+      "id": "SEC-02",
+      "domain": "SEC",
+      "requirement": "جميع جداول Staging لها سياسات RLS",
+      "status": "C",
+      "score": 1,
+      "evidence": "Neon 43/43؛ 93 سياسة"
+    },
+    {
+      "id": "SEC-03",
+      "domain": "SEC",
+      "requirement": "جميع جداول الإنتاج لها سياسات RLS مناسبة",
+      "status": "F",
+      "score": 0,
+      "evidence": "Neon 2/31 فقط؛ لا ادعاء تسريب"
+    },
+    {
+      "id": "SEC-04",
+      "domain": "SEC",
+      "requirement": "دور تشغيل aigas_runtime موجود في الإنتاج",
+      "status": "F",
+      "score": 0,
+      "evidence": "Neon pg_roles: 0"
+    },
+    {
+      "id": "SEC-05",
+      "domain": "SEC",
+      "requirement": "اختبار عزل مؤسسات وجلسات في الهدف",
+      "status": "U",
+      "score": 0,
+      "evidence": "لم ينفذ اختبار مصرح"
+    },
+    {
+      "id": "SEC-06",
+      "domain": "SEC",
+      "requirement": "اعتماد معالجة البيانات وإقامتها وسياسة الحذف والمزود",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا دليل اعتماد الهدف"
+    },
+    {
+      "id": "ARC-01",
+      "domain": "ARC",
+      "requirement": "Blueprint يحدد Node SSR وreadiness",
+      "status": "S",
+      "score": 1,
+      "evidence": "render.yaml:6–16"
+    },
+    {
+      "id": "ARC-02",
+      "domain": "ARC",
+      "requirement": "محول Astro في إصدار يعالج GHSA-qh8j-hqjv-7m4x",
+      "status": "F",
+      "score": 0,
+      "evidence": "package-lock.json @astrojs/node 10.1.4؛ fixed 11.1.3"
+    },
+    {
+      "id": "ARC-03",
+      "domain": "ARC",
+      "requirement": "مدير حزم البناء المنشور يطابق lockfile المقصود",
+      "status": "F",
+      "score": 0,
+      "evidence": "Render pnpm install؛ render.yaml npm ci؛ package-lock موجود"
+    },
+    {
+      "id": "ARC-04",
+      "domain": "ARC",
+      "requirement": "npm build والتحقق الأمني المستقل على HEAD",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا checkout أو تشغيل مستقل"
+    },
+    {
+      "id": "ARC-05",
+      "domain": "ARC",
+      "requirement": "نظافة الملفات مثبتة بعد تحليل الاعتماديات",
+      "status": "U",
+      "score": 0,
+      "evidence": "7 ملفات بلواحق 2؛ ليست دليل حذف"
+    },
+    {
+      "id": "ARC-06",
+      "domain": "ARC",
+      "requirement": "LCP/INP/CLS مقاسة على كل رحلة",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا قياس ميداني أو مختبري شامل"
+    },
+    {
+      "id": "DEP-01",
+      "domain": "DEP",
+      "requirement": "Deploy مطابق SHA الحالي",
+      "status": "C",
+      "score": 1,
+      "evidence": "Render dep-dc3hq2m8bjmc73bvuan0 live"
+    },
+    {
+      "id": "DEP-02",
+      "domain": "DEP",
+      "requirement": "خدمة النشر الفعلية Node وتعرض readiness",
+      "status": "F",
+      "score": 0,
+      "evidence": "Render static_site dist/client؛ /readyz/ 404"
+    },
+    {
+      "id": "DEP-03",
+      "domain": "DEP",
+      "requirement": "مصالحة سجل ترحيلات Staging مع 45 ملفًا",
+      "status": "F",
+      "score": 0,
+      "evidence": "32 APPLIED؛ 13 بلا سجل APPLIED، ليس إثبات عدم تطبيقها"
+    },
+    {
+      "id": "DEP-04",
+      "domain": "DEP",
+      "requirement": "robots.txt وsitemap.xml متاحان",
+      "status": "C",
+      "score": 1,
+      "evidence": "Firecrawl كلاهما 200؛ robots يشير sitemap-index.xml"
+    },
+    {
+      "id": "DEP-05",
+      "domain": "DEP",
+      "requirement": "قياس GA4 للحركة الحية دون اختلاط تطوير",
+      "status": "F",
+      "score": 0,
+      "evidence": "Windsor: 48 جلسة localhost/127.0.0.1 ضمن الخاصية"
+    },
+    {
+      "id": "DEP-06",
+      "domain": "DEP",
+      "requirement": "مراقبة أخطاء وتنبيهات وفهرسة شاملة مثبتة",
+      "status": "U",
+      "score": 0,
+      "evidence": "GSC يقيس البحث فقط؛ Sentry/PostHog لم تثبت وجهتهما"
+    }
+  ]
+}

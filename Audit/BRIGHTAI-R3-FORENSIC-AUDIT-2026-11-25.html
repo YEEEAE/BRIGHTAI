@@ -1,0 +1,1169 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BRIGHT AI — R3 forensic audit</title><style>*{box-sizing:border-box}body{margin:0;background:#0b0a10;color:#eae5f2;font:15px/1.9 Tahoma,Arial,sans-serif}main{max-width:1280px;margin:auto;padding:clamp(16px,4vw,48px)}header{border:1px solid #3b304b;border-radius:16px;padding:24px;background:#171122}h1{font-size:clamp(25px,4vw,39px);line-height:1.5}h2{font-size:22px;border-bottom:1px solid #3c324c;margin:36px 0 16px}h3{font-size:17px;color:#d8c6ff}p,li{color:#d4cdda}a{color:#bb9bff;overflow-wrap:anywhere}code{direction:ltr;unicode-bidi:isolate;overflow-wrap:anywhere;color:#e9cbff;font-size:12px}table{border-collapse:collapse;width:100%;min-width:650px;font-size:13px}th,td{border:1px solid #3b304b;padding:10px;vertical-align:top;text-align:start}th{background:#251b35}tr:nth-child(even){background:#ffffff04}.table-wrap{overflow-x:auto;margin:16px 0}.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}.metric{border:1px solid #473957;border-radius:10px;padding:14px}.metric b{display:block;font-size:32px;color:#f7f1ff}.bar{height:7px;background:#342b40;border-radius:8px;overflow:hidden}.bar i{display:block;background:#a78bfa;height:100%}.scoreline{margin:10px 0}.scoreline span{float:left}.sub{font-size:12px;color:#c2b8ce}.nav{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}.nav a{padding:4px 10px;border:1px solid #4a3d5b;border-radius:5px}.prompt{border:1px solid #4a3d5b;padding:18px;border-radius:10px;margin:20px 0}button{background:#8052ff;color:white;border:0;border-radius:7px;padding:8px 14px;font:inherit;cursor:pointer}@media print{body,header{background:#fff;color:#111}p,li,td,code,a,h3,.metric b{color:#222}th{background:#eee;color:#111}table{min-width:0;font-size:10px}.table-wrap{overflow:visible}button,.nav{display:none}}</style></head><body><main><header><div class="sub">BRIGHT AI · R3 · READ ONLY · 773fb6bc5e42</div><h1>التدقيق الجنائي المستقل — الإصدار الثالث</h1><div class="metrics"><div class="metric">مؤشر العينة<b>44.67%</b></div><div class="metric">تغطية الأدلة<b>73.17%</b></div><div class="metric">الشروط<b>78</b></div><div class="metric">قرار الإنتاج<b>NO-GO</b></div></div><p>مقام جديد، لا يقارن مباشرة بـR2. النسبة ليست جاهزية تشغيلية.</p><div class="scoreline">سجل الأصول والوكلاء <span>50.00%</span><div class="bar"><i style="width:50.0%"></i></div></div><div class="scoreline">حزم السياسات والتتبع التنظيمي <span>50.00%</span><div class="bar"><i style="width:50.0%"></i></div></div><div class="scoreline">Firewall <span>50.00%</span><div class="bar"><i style="width:50.0%"></i></div></div><div class="scoreline">Human Gate <span>50.00%</span><div class="bar"><i style="width:50.0%"></i></div></div><div class="scoreline">Risk Engine وتقييم النماذج <span>66.67%</span><div class="bar"><i style="width:66.66666666666667%"></i></div></div><div class="scoreline">Ledger وسلامة الأدلة <span>33.33%</span><div class="bar"><i style="width:33.333333333333336%"></i></div></div><div class="scoreline">Groq <span>33.33%</span><div class="bar"><i style="width:33.333333333333336%"></i></div></div><div class="scoreline">تكامل المنتجات الأربعة <span>50.00%</span><div class="bar"><i style="width:50.0%"></i></div></div><div class="scoreline">التصميم وتجربة المستخدم وRTL <span>33.33%</span><div class="bar"><i style="width:33.333333333333336%"></i></div></div><div class="scoreline">الإتاحة والتحويل التجاري <span>50.00%</span><div class="bar"><i style="width:50.0%"></i></div></div><div class="scoreline">الأمان والخصوصية <span>33.33%</span><div class="bar"><i style="width:33.333333333333336%"></i></div></div><div class="scoreline">المعمارية والاعتماديات والأداء <span>16.67%</span><div class="bar"><i style="width:16.666666666666668%"></i></div></div><div class="scoreline">النشر وSEO والقياس والمراقبة <span>33.33%</span><div class="bar"><i style="width:33.333333333333336%"></i></div></div><div class="nav"><a href="#audit">التقرير</a><a href="#prompts">12 برومبت</a><button onclick="window.print()">طباعة</button></div></header><article id="audit"><h1>BRIGHT AI / AIGAS — تدقيق مستقل R3 من الصفر</h1>
+<p><strong>25 نوفمبر 2026 | قراءة فقط | GitHub HEAD <code>773fb6bc5e420ee70e811d5509aceefcaec32a8c</code></strong></p>
+<h2>1. الحكم التنفيذي</h2>
+<p><strong>NO-GO للتشغيل المؤسسي والتجاري.</strong> المختبر العام موجود ومتاح للزيارة، لكن ليس تجربة Groq حية ولا دليلًا على عزل مؤسسات أو موافقات تنفيذ فعلية. أقوى نتيجة جديدة: قيد Ledger في الإنتاج يقبل ALLOW/BLOCK/REDACT بينما Firewall والكود الحاليان يعتمدان ALLOW/WARN/REDACT/ESCALATE/DENY. Staging يطابق الخمسة. اختبرت قيد الكتالوج بالقراءة، لا الإدراج. كذلك <code>/request-access/</code> مفقود من النشر رغم وجوده في المصدر. لا تفتح بوابات الحماية قبل معالجة السبب.</p>
+<p>جرد GitHub: 5,820 ملفًا، 56 ملف Astro في src/pages، 49 ملف TS/JS في src/pages (لا يعني بالضرورة 49 endpoint حية)، 45 ملف migration. الشجرة غير مقتطعة، لكن المحتوى المقروء انتقائي وموجه للفرضيات؛ لا ادعاء مراجعة كل سطر في 5,820 ملفًا. أحدث Commit 17:38:14 UTC؛ Render نشر نفس SHA عند 17:38:59 UTC. لا تنفيذ أو تغيير أو طلب Groq أو اختبار اختراق. هذا التقرير يفحص النص المرفق كفرضيات وليس كمصدر إثبات مستقل.</p>
+<h2>2. النسب الجديدة — تعريف المقام</h2>
+<p><strong>44.67%</strong> مؤشر استيفاء العينة الموزونة الجديدة، و<strong>73.17%</strong> تغطية الأدلة الموزونة. عدد الشروط 78، منها 33 تحقق بالمصدر/التكوين (24 مصدر S، 9 قراءة/وصول C)، 24 مخالف F، و21 غير متحقق U. لا تعتبر نسبة الشروط الموزونة نسبة إنجاز SaaS بالكامل أو اعتماد تشغيل. ثُبتت المعايير والأوزان لهذا التقرير بعد جرد نطاق الادعاءات، لا لاختبار أعمى قبل اكتشاف النتائج. لا توجد نسبة بعد تطوير لأن هذه الجولة للقراءة فقط.</p>
+<p>المحاور وأوزانها من الهيكل السابق مع <strong>مقام جديد 78 شرطًا بدل 74</strong>؛ التقرير R2 السابق 66.65% لا يقارن مباشرة بهذه النسبة، ولا يجوز وصف الفرق كتراجع في الكود. الأوزان متساوية داخل كل محور. S وجود خاصية محددة بالمصدر، C قراءة تكوين أو وصول، F دليل مخالف، U غير متحقق (لا دليل غياب). S وC=1، F وU=0. Coverage = (S+C+F)/N؛ الإجمالي = مجموع وزن المحور × نسبته / 100. لا N/A في العينة. النتائج المحلية المبلغة من الوكيل لا تمنح نقاط تشغيل مستقلة.</p>
+<table>
+<thead>
+<tr>
+  <th>المحور</th>
+  <th style="text-align:right">الوزن</th>
+  <th style="text-align:right">ناجح / مطلوب</th>
+  <th style="text-align:right">النسبة</th>
+  <th style="text-align:right">التغطية</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>سجل الأصول والوكلاء</td>
+  <td style="text-align:right">8%</td>
+  <td style="text-align:right">3/6</td>
+  <td style="text-align:right">50.00%</td>
+  <td style="text-align:right">50.00%</td>
+</tr>
+<tr>
+  <td>حزم السياسات والتتبع التنظيمي</td>
+  <td style="text-align:right">8%</td>
+  <td style="text-align:right">3/6</td>
+  <td style="text-align:right">50.00%</td>
+  <td style="text-align:right">66.67%</td>
+</tr>
+<tr>
+  <td>Firewall</td>
+  <td style="text-align:right">10%</td>
+  <td style="text-align:right">3/6</td>
+  <td style="text-align:right">50.00%</td>
+  <td style="text-align:right">83.33%</td>
+</tr>
+<tr>
+  <td>Human Gate</td>
+  <td style="text-align:right">8%</td>
+  <td style="text-align:right">3/6</td>
+  <td style="text-align:right">50.00%</td>
+  <td style="text-align:right">66.67%</td>
+</tr>
+<tr>
+  <td>Risk Engine وتقييم النماذج</td>
+  <td style="text-align:right">12%</td>
+  <td style="text-align:right">4/6</td>
+  <td style="text-align:right">66.67%</td>
+  <td style="text-align:right">83.33%</td>
+</tr>
+<tr>
+  <td>Ledger وسلامة الأدلة</td>
+  <td style="text-align:right">10%</td>
+  <td style="text-align:right">2/6</td>
+  <td style="text-align:right">33.33%</td>
+  <td style="text-align:right">83.33%</td>
+</tr>
+<tr>
+  <td>Groq</td>
+  <td style="text-align:right">8%</td>
+  <td style="text-align:right">2/6</td>
+  <td style="text-align:right">33.33%</td>
+  <td style="text-align:right">83.33%</td>
+</tr>
+<tr>
+  <td>تكامل المنتجات الأربعة</td>
+  <td style="text-align:right">8%</td>
+  <td style="text-align:right">3/6</td>
+  <td style="text-align:right">50.00%</td>
+  <td style="text-align:right">83.33%</td>
+</tr>
+<tr>
+  <td>التصميم وتجربة المستخدم وRTL</td>
+  <td style="text-align:right">10%</td>
+  <td style="text-align:right">2/6</td>
+  <td style="text-align:right">33.33%</td>
+  <td style="text-align:right">50.00%</td>
+</tr>
+<tr>
+  <td>الإتاحة والتحويل التجاري</td>
+  <td style="text-align:right">5%</td>
+  <td style="text-align:right">3/6</td>
+  <td style="text-align:right">50.00%</td>
+  <td style="text-align:right">100.00%</td>
+</tr>
+<tr>
+  <td>الأمان والخصوصية</td>
+  <td style="text-align:right">8%</td>
+  <td style="text-align:right">2/6</td>
+  <td style="text-align:right">33.33%</td>
+  <td style="text-align:right">66.67%</td>
+</tr>
+<tr>
+  <td>المعمارية والاعتماديات والأداء</td>
+  <td style="text-align:right">3%</td>
+  <td style="text-align:right">1/6</td>
+  <td style="text-align:right">16.67%</td>
+  <td style="text-align:right">50.00%</td>
+</tr>
+<tr>
+  <td>النشر وSEO والقياس والمراقبة</td>
+  <td style="text-align:right">2%</td>
+  <td style="text-align:right">2/6</td>
+  <td style="text-align:right">33.33%</td>
+  <td style="text-align:right">83.33%</td>
+</tr>
+<tr>
+  <td>الإجمالي</td>
+  <td style="text-align:right">100%</td>
+  <td style="text-align:right">33/78*</td>
+  <td style="text-align:right"><strong>44.67%</strong></td>
+  <td style="text-align:right"><strong>73.17%</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>الكسر الخام يختلف عن الإجمالي الموزون. لا ترفع الدرجة بسبب ملفات تقرير أو تكرار اختبارات. لا يوجد إصدار تجاري مقبول إذا بقي أي مانع P0 مهما بلغت النسبة.</li>
+</ul>
+<h3>مؤشرات تشغيلية منفصلة (ليست جزءًا من النسبة المركبة)</h3>
+<table>
+<thead>
+<tr>
+  <th>المؤشر</th>
+  <th style="text-align:right">البسط/المقام</th>
+  <th style="text-align:right">النسبة</th>
+  <th>ماذا يثبت</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>صفحات المنتجات الأربعة</td>
+  <td style="text-align:right">4/4</td>
+  <td style="text-align:right">100%</td>
+  <td>HTTP200 فقط</td>
+</tr>
+<tr>
+  <td>المختبرات الأربعة + الموحد</td>
+  <td style="text-align:right">5/5</td>
+  <td style="text-align:right">100%</td>
+  <td>وصول للعرض فقط</td>
+</tr>
+<tr>
+  <td>app / app/kernel / healthz / readyz / request-access</td>
+  <td style="text-align:right">0/5</td>
+  <td style="text-align:right">0%</td>
+  <td>404 لكل الخمسة</td>
+</tr>
+<tr>
+  <td>قرارات Firewall المقبولة في قيد Ledger الإنتاجي</td>
+  <td style="text-align:right">2/5</td>
+  <td style="text-align:right">40%</td>
+  <td>قبول حرفي، لا إدراج</td>
+</tr>
+<tr>
+  <td>قرارات Firewall المقبولة في قيد Ledger Staging</td>
+  <td style="text-align:right">5/5</td>
+  <td style="text-align:right">100%</td>
+  <td>قبول حرفي، لا إدراج</td>
+</tr>
+<tr>
+  <td>تغطية RLS policies في الإنتاج</td>
+  <td style="text-align:right">2/31</td>
+  <td style="text-align:right">6.45%</td>
+  <td>وجود policy فقط</td>
+</tr>
+<tr>
+  <td>تغطية RLS policies في Staging</td>
+  <td style="text-align:right">43/43</td>
+  <td style="text-align:right">100%</td>
+  <td>وجود policy فقط</td>
+</tr>
+<tr>
+  <td>ملفات migration المسجلة APPLIED في Staging</td>
+  <td style="text-align:right">32/45</td>
+  <td style="text-align:right">71.11%</td>
+  <td>سجل لا يثبت غياب SQL الباقي</td>
+</tr>
+<tr>
+  <td>E2E حي مستقل للمنتجات الأربعة</td>
+  <td style="text-align:right">0/4</td>
+  <td style="text-align:right">0% مثبت</td>
+  <td>لم ينفذ؛ ليس فشلًا مثبتًا للأربعة</td>
+</tr>
+<tr>
+  <td>مزود ونموذج معتمدان في القوائم المصدرية</td>
+  <td style="text-align:right">0/2</td>
+  <td style="text-align:right">0%</td>
+  <td>قائمتان فارغتان</td>
+</tr>
+</tbody>
+</table>
+<h2>3. التحقيق في الادعاءات البرمجية — ماذا ثبت وما يحتاج تصحيحًا</h2>
+<h3>P0-01 — انحراف النشر</h3>
+<p>Render service <code>srv-d7m5bcjbc2fs73826v20</code> من نوع static_site ويخدم dist/client. نشر <code>dep-dc3hq2m8bjmc73bvuan0</code> بحالة live ومطابق HEAD، وليس خادم Node. <code>render.yaml:6–16</code> يحدد web/node، npm ci، npm start، <code>/readyz/</code>. السطر 25 وما بعده يحدد AIGAS_APP_ENABLED=false افتراضيًا؛ هذا إقفال مقصود حتى تفويض المالك، وليس خطأ يُلغى عشوائيًا. خدمة Render الفعلية تبني بـpnpm install خلاف الـBlueprint الذي يذكر package-lock.json. لا نثبت DNS/Cloudflare أو الأسرار الفعلية بقراءة هذه الخدمة فقط.</p>
+<p><strong>الإغلاق:</strong> خدمة staging SSR مستقلة، مدير حزم مطابق للـlockfile، فحص readyz/auth/RLS/health، origin صحيح وعدم cache للمسارات الخاصة، rollback، ثم موافقة نشر مستقلة. لا تُفتح البوابة قبل العزل.</p>
+<h3>P0-02 — اختلاف قرارات Firewall وLedger وقاعدة البيانات</h3>
+<p>في <code>src/server/firewall/core.mjs:10–13</code> و<code>src/server/ledger/core.mjs:40</code> قرارات ALLOW/WARN/REDACT/ESCALATE/DENY. واجهة العرض قد تسمي DENY بـBLOCK. قيد Firewall DB في البيئتين يقبل الخمسة. قيد <code>aigas_ld_events_check</code> في Production يقبل ALLOW/BLOCK/REDACT فقط لحدث firewall.decision.recorded، ويفتقد request_fingerprint ضمن المفاتيح المسموح بها؛ Staging يقبل الخمسة وrequest_fingerprint الاختياري. النتيجة احتمال رفض إدراج WARN/ESCALATE/DENY أو metadata المرتبطة ببصمة الطلب. لا تُعالج بتحويل كل DENY إلى BLOCK داخل التخزين أو تعطيل القيد. أصلح delta المخطط، واعتمد mapping للعرض وحده، وافحص الإدراج والـrollback ومرجع الأحداث على Staging فقط. يوجد قيد guard binding في Production بحالة NOT VALID؛ يلزم إثبات فحص البيانات القديمة قبل اعتماد اكتمال الترحيل. قيد synthetic reference في Staging أيضًا NOT VALID؛ لا تفترض أنه تحقق لكل الصفوف القديمة.</p>
+<table>
+<thead>
+<tr>
+  <th>المكون</th>
+  <th style="text-align:right">Production</th>
+  <th style="text-align:right">Staging</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>جداول AIGAS</td>
+  <td style="text-align:right">31</td>
+  <td style="text-align:right">43</td>
+</tr>
+<tr>
+  <td>RLS flags</td>
+  <td style="text-align:right">31</td>
+  <td style="text-align:right">43</td>
+</tr>
+<tr>
+  <td>جداول لها سياسات</td>
+  <td style="text-align:right">2</td>
+  <td style="text-align:right">43</td>
+</tr>
+<tr>
+  <td>السياسات</td>
+  <td style="text-align:right">2</td>
+  <td style="text-align:right">93</td>
+</tr>
+<tr>
+  <td>aigas_runtime</td>
+  <td style="text-align:right">غائب</td>
+  <td style="text-align:right">موجود</td>
+</tr>
+<tr>
+  <td>aigas_hg_delegations</td>
+  <td style="text-align:right">غائب</td>
+  <td style="text-align:right">موجود</td>
+</tr>
+<tr>
+  <td>aigas_hg_grants</td>
+  <td style="text-align:right">غائب</td>
+  <td style="text-align:right">موجود</td>
+</tr>
+<tr>
+  <td>aigas_trial_requests</td>
+  <td style="text-align:right">غائب</td>
+  <td style="text-align:right">موجود</td>
+</tr>
+<tr>
+  <td>aigas_self_service_trials</td>
+  <td style="text-align:right">غائب</td>
+  <td style="text-align:right">موجود</td>
+</tr>
+<tr>
+  <td>aigas_exploration_grants</td>
+  <td style="text-align:right">غائب</td>
+  <td style="text-align:right">موجود</td>
+</tr>
+<tr>
+  <td>aigas_ld_events_chain_guard function</td>
+  <td style="text-align:right">غائب</td>
+  <td style="text-align:right">موجود</td>
+</tr>
+</tbody>
+</table>
+<p>نفذنا COUNT(*) لكل جدول AIGAS في public بالإنتاج: <strong>31/31 جداول صفر صفوف</strong> وقت القراءة. لا يشمل هذا جداول غير AIGAS أو مخازن خارجية، ولا يثبت عدم وجود مستخدمين في Neon Auth. سجل Staging 32 APPLIED وآخر اسم 0036؛ المصدر 45 migration. لا تُعد تشغيل 45 ملفًا بلا مصالحة checksums وكتالوج وأدوار وtriggers؛ حتى migration غير المسجلة قد يكون أثرها موجودًا عبر إصلاح لاحق. نقص سياسات RLS ليس إثبات تسريب. الحماية لا تُختزل في عدد policies.</p>
+<h3>P0-03 — Groq: سلسلة اعتماد لا مجرد API key</h3>
+<table>
+<thead>
+<tr>
+  <th>الموضع</th>
+  <th>الحقيقة</th>
+  <th>المعالجة الصحيحة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>public-sandbox-limiter.mjs:3–4</td>
+  <td>503 DISABLED دائمًا؛ مسار POST موجود في المصدر لكنه non-prerender</td>
+  <td>إبقاء الإقفال حتى اعتماد public egress، ثم مسار مصرح بضوابط موحدة</td>
+</tr>
+<tr>
+  <td>kernel/env.mjs:16–22</td>
+  <td>صيغة AIGAS_SC_*_API_KEY فقط، وPUBLIC_GROQ مرفوض</td>
+  <td>مواءمة env/Blueprint/runbook مع المفتاح الخادمي، دون إظهار القيمة</td>
+</tr>
+<tr>
+  <td>secure-chat/models.mjs:3 وfirewall/provider.mjs:9</td>
+  <td>القائمتان فارغتان</td>
+  <td>اعتماد نموذج ومزود ونطاق ومدة وبيانات وتسعير، لا hardcode تجاوز</td>
+</tr>
+<tr>
+  <td>groq-gateway.mjs:49–75,99–145</td>
+  <td>ملف موجود مسبقًا بمسار مطلق، قفل ذري، يوم/شهر، concurrency، timeout</td>
+  <td>provisioning ومصالحة معتمدة؛ مخزن مشترك متين عبر النسخ أو بديل ذري مركزي</td>
+</tr>
+<tr>
+  <td>render.yaml:39–42</td>
+  <td>يسجل GROQ_API_KEY وGROQ_MODEL لا أسماء المفتاح والميزانية المطلوبة</td>
+  <td>تصحيح مواصفات النشر محليًا، لا ادعاء أن الإعداد المستهدف يحتويها</td>
+</tr>
+<tr>
+  <td>demo/governance.astro:22</td>
+  <td>CSP connect-src none وform-action none</td>
+  <td>حماية مقصودة للمختبر المنعزل؛ لا إزالة عامة للسماح لـGroq</td>
+</tr>
+</tbody>
+</table>
+<p>متغيرات يلزم فحص أسمائها فقط: AIGAS_SC_GROQ_API_KEY، GROQ_MODEL، AIGAS_GROQ_BUDGET_FILE، AIGAS_GROQ_DAILY_BUDGET_USD، AIGAS_GROQ_MONTHLY_BUDGET_USD، AIGAS_GROQ_MAX_CONCURRENCY، AIGAS_GROQ_TIMEOUT_MS، AIGAS_GROQ_DISABLED. تأكد من نموذج حساب المالك ومعالجة البيانات والاحتفاظ والمنطقة قبل أي طلب. لا مفتاح من محادثة قديمة. لا .env محلي متاح؛ لا طلب حي.</p>
+<p><strong>خطر تشغيلي إضافي من المصدر:</strong> التعليقات في gateway تؤكد احتفاظ الطلب المتعطل بالحجز والـactive حتى مصالحة المشغل؛ lock file المتروك أو مخزن غير مشترك قد يغلق الخدمة، وهو سلوك fail-closed لا حجة لإزالة الميزانية. خطط لرصد ومصالحة القفل والحجوزات وعدم تجاوز السقف عبر عدة مضيفين. اقتراح الملف المرفق الاكتفاء بـIP limiter في الذاكرة غير كافٍ لمنع تجاوز الميزانية المجمعة. استخدم بيانات اصطناعية محددة وقابلة للتحقق؛ لا ترسل نصوصًا حساسة إلى Groq بغرض اكتشافها قبل التنقيح. افصل حدود التفويض عن رأي النموذج.</p>
+<h3>P0-04 — الاعتماديات وسلسلة التوريد</h3>
+<p>package-lock.json يثبت astro 6.4.8 و@astrojs/node 10.1.4 و433 مدخل packages. <a href="https://github.com/advisories/GHSA-qh8j-hqjv-7m4x">GHSA-qh8j-hqjv-7m4x</a> يذكر الإصلاح في 11.1.3. <code>scripts/server.mjs:20–46</code> يتضمن حواجز Host ومسار غير آمن كتعويض، و<code>docs/DEPENDENCY-SECURITY-2026-11-10.md</code> يذكر نتائج تاريخية لأمن الحزم. هذه ليست نتيجة npm audit جديدة ولا إثبات استغلال على الموقع الثابت. أصلح النسخة مع توافق Astro والـadapter، اختبر origin مباشرة في بيئة مصرح بها، حافظ على compensating controls حتى تحقق البديل، افحص advisories لكل lockfile بعد الترقية. لا تسمح بتغيير جماعي غير مدروس في الإصدارات.</p>
+<h3>P0-05 — عائق المبيعات</h3>
+<p><code>src/pages/request-access.astro</code> يحدد prerender=false، ويعرض خيارات demo/trial/beta/production ويعتمد isPortalEnabled وAuth. المختبر الموحد في <code>src/pages/demo/governance.astro:139</code> يحيل إليه. حيًا <code>/request-access/</code> 404، وصفحة التواصل تعيد الإحالة إليه. هذا مسار مبيعات موجود في المصدر لكنه معطل بالنشر. لا تقل إن الموقع لا يحتوي CTA أصلًا. صفحة <code>/contact/</code> 200؛ تولد مسودة محلية وقنوات تواصل، لا إرسال تلقائي. اعتمد مسارًا عامًا يعمل دون بوابة خاصة: طلب عرض نطاق واضح، ملخص اصطناعي اختياري يختار العميل مشاركته، إثبات وصول الطلب عبر قناة مصرح بها، عدم ادعاء نجاح إرسال غير منفذ، وإتاحة مسار 48h منفصل عند جاهزيته.</p>
+<h2>4. تدقيق كل منتج — وظائف حقيقية وحدود التجربة</h2>
+<h3>Firewall</h3>
+<p>المصدر العام <code>src/shared/firewall-demo.mjs:1–19</code> يطابق أربع عبارات حرفية، حد 500 حرف، وتنقيح DEMO-0000 فقط؛ ALLOW افتراضي تعليمي. محرك الخادم يملك خمسة قرارات وأولوية حتمية لكنه يعتمد CONTAINS في قيد DB الحالي. لا تثبت هذه البنية كاشفًا شاملًا للهوية السعودية أو IBAN أو البريد أو injection. أضف محرك typed matchers بإصدار وقواعد اختبار، قبل أي مزود. دعم locale والتحقق من صيغة IBAN/checksum والضوابط، واختبارات false positive/negative، لا ادعاء منع كل تسريب. بعد الموافقة على AI يمكن أن يشرح النتائج أو يقيم سياقًا منقحًا ولا يملك قلب حظر حتمي. اعرض Policy Library، Asset scope، decision table، input/output controls، Finding، Evidence ID.</p>
+<h3>Human Gate</h3>
+<p>في المصدر مسار synthetic-agent يكوّن pending review مرتبطًا بالبصمة والإصدار والمراجع ويستعمل local provider فقط. مختبر الحوكمة يربط مراجعة محلية بنتيجة REVIEW_REQUIRED أو HIGH من نفس نسخة الأصل، ويرفض إعادة حسم المصدر. لا يثبت هذا التفويض المؤسسي أو الاستئناف الفعلي لـGroq. الجداول اللازمة في Production غائبة. أضف Review Inbox ومراحل Legal/Security/Business حسب مستوى الخطر، لا self-approval، expiry، single-use، revalidation، منع تغير الطلب بعد المراجعة. حافظ على فرق persona اصطناعي عن هوية مخولة.</p>
+<h3>Risk Engine</h3>
+<p>يوجد replay حسابي للمصنفات (precision/recall/FPR/FNR/accuracy ومقاييس مجموعات، حد 20 ومقام صفري)، ونتائج مؤرخة مع Findings. هذا يصحح الادعاء بأن كل تقييم عدالة غائب، لكنه لا يثبت تشغيل نموذج حقيقي أو drift؛ العينات ثابتة. أضف تقييمًا مستقلًا على dataset مصرح به، فصل metrics عن الاستنتاجات القانونية، sample size، نطاق/عدم يقين، تاريخ ونسخة dataset/model، إعادة تقييم ذات بيانات جديدة. أضف catalog من مخاطر وضوابط مرتبطة بمصادر وإجراءات تصحيحية، لا نسبة انخفاض عشوائية بمجرد تشغيل ضابط. تقييم LLM hallucination يعتمد ground truth/مهام محددة، LLM judge مساعد لا حكم نهائي. Shadow AI assessment استبيان وجرد يدوي موسوم، لا ادعاء اكتشاف شبكي.</p>
+<h3>Ledger</h3>
+<p>core فيه SHA-256 وcanonical metadata وverify، ويوجد digest لحزمة assessment في registry؛ ولكن المختبر الموحد <code>governance-demo.ts:171–177</code> يصدّر حالة الجلسة JSON مباشرة وحدث ledger.sample مجرد RECORDED في <code>governance.mjs:104–108</code>. <strong>هذه فجوة في الربط بين الميزة التشفيرية وتجربة الحوكمة، لا غياب Ledger كله.</strong> استخدم سلسلة حقيقية موحدة لكل حدث، sequence/correlation/asset version، تصدير Hash Manifest وCLI verifier، Tamper Test على نسخة، لا تغيير سجل الأصل. بصمة سلسلة لا تساوي توقيعًا أو إثبات عدم إعادة كتابة السلسلة بالكامل. إذا أضفت توقيعًا، يلزم مفتاح وإدارة ثقة ومرساة تحقق مستقلة؛ وإلا وصف Hash-Verified بدقة.</p>
+<h3>Kernel وSecure Chat</h3>
+<p>الـHero الحي يذكر خمسة منتجات مستقلة + Kernel، والنطاق المطلوب أربعة؛ لا تغير Hero أو تحذف Secure Chat تلقائيًا. أوصي بإبقائه وحدة مستقلة خارج نطاق تجربة الحوكمة، ويمكن إدخال واجهة محادثة اختيارية إذا اقتضت رحلة المنتج، دون تحويل المنصة إلى chat. سجّل قرار نطاق مستقلًا لكل صفحة وsitemap والاختبارات. Kernel طبقة مشتركة للهوية والسجل والسياسات والتفويض، لا منتج إضافي مفوتر. README يحتوي وصف Gemini/Redis و/api/ai/chat التاريخي مع تنبيه واضح بتاريخ 8 نوفمبر؛ يحتاج Current architecture في الأعلى وربط الأرشيف، لا حذف الأدلة التاريخية.</p>
+<h2>5. تجربة المستخدم والنشر العام</h2>
+<p>Firecrawl maxAge=0 أثبت في هذه الجولة:</p>
+<table>
+<thead>
+<tr>
+  <th>المسار</th>
+  <th style="text-align:right">HTTP</th>
+  <th>المعنى</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>/ و/products/</td>
+  <td style="text-align:right">200</td>
+  <td>الموقع والكتالوج</td>
+</tr>
+<tr>
+  <td>/products/firewall/ وhuman-gate وrisk-engine وledger</td>
+  <td style="text-align:right">200 لكل الأربعة</td>
+  <td>صفحات تسويق/مختبر</td>
+</tr>
+<tr>
+  <td>/demo/firewall/ وhuman-gate وrisk-engine وledger</td>
+  <td style="text-align:right">200 لكل الأربعة</td>
+  <td>أمثلة مستقلة</td>
+</tr>
+<tr>
+  <td>/demo/governance/</td>
+  <td style="text-align:right">200</td>
+  <td>جرد، حزم، أربعة أقسام</td>
+</tr>
+<tr>
+  <td>/contact/</td>
+  <td style="text-align:right">200</td>
+  <td>مسودة وقنوات تواصل</td>
+</tr>
+<tr>
+  <td>/app/ و/app/kernel/</td>
+  <td style="text-align:right">404</td>
+  <td>التطبيق محمي غير منشور</td>
+</tr>
+<tr>
+  <td>/healthz/ و/readyz/</td>
+  <td style="text-align:right">404</td>
+  <td>لا إثبات runtime</td>
+</tr>
+<tr>
+  <td>/request-access/</td>
+  <td style="text-align:right">404</td>
+  <td>خلل رحلة التحويل</td>
+</tr>
+<tr>
+  <td>/robots.txt و/sitemap.xml</td>
+  <td style="text-align:right">200</td>
+  <td>وصول ملفات SEO، لا اعتماد الفهرسة</td>
+</tr>
+</tbody>
+</table>
+<p>19 مسارًا إجمالًا (14 HTTP200، 5 HTTP404) ضمن هذه العينة، وليس الموقع كله. لا إرسال POST أو تشغيل مسارات التجربة من هذه القراءة. المختبر الموحد static/prerender مع CSP يقفل الاتصال: 30 دقيقة و10 أصول و100 حدث بالذاكرة. توجد حزم عرض privacy/supervision مختلفة عن server governance registry/internal-pack؛ لا تدّع أن واجهة العرض تستدعي مكتبة الخادم أو تحفظ أدلة مؤسسية. افصل Public Governance Workspace الاصطناعي، Trial 48h المخول، Commercial Production. اجعل لكل منتج شاشة عمل متخصصة مع جدول حالات، inspector، نتائج واضحة، export، links من الأصل إلى الضابط والدليل. لا تضف زخارف أو نصوص مبالغة؛ حافظ على عبارات الحقيقة لكن استخدم وسمًا مختصرًا «بيانات افتراضية — مساحة معزولة» واذكر بدقة العمليات التي تعمل. لا تحذف الإفصاح ولا تصف replay بأنه Live AI. Hero محمي بلا تغييرات من طرفنا؛ التصميم المرئي الكامل وWCAG وقياسات الأداء لا تزال غير متحققة.</p>
+<p><strong>نتيجة Browser Use المستقلة:</strong> فحص <a href="https://brightai.live/demo/governance/">مختبر الحوكمة</a> و<a href="https://brightai.live/request-access/">طلب الوصول</a> عند 1440×900 و390×844؛ المختبر داكن وRTL، تنقل جانبي على الديسكتوب يتحول إلى قائمة على الجوال، لا تجاوز أفقي في العرض المفحوص، وأدوات الموافقة والتصدير أسفل الشاشة الأولى. الصفحة تصرح بالبيانات الاصطناعية والجلسة المؤقتة. رابط <a href="https://brightai.live/request-access/?track=trial">تجربة 48 ساعة</a> يعيد 404 كذلك. الفحص بصري وقراءة DOM فقط؛ لا تفاعل وظيفي أو اختبار وصول شامل. لا تدخل نتيجة URL ذي query في مقام 19 مسارًا الأساسي.</p>
+<h2>6. المقارنة التنافسية — تسع منصات</h2>
+<p>استندت إلى صفحات المنتج/التوثيق العامة، لا حسابات داخلية أو اختبارات منافسين. هذه ادعاءات معلنة من الموردين، لا شهادات تشغيل مستقلة. لا أوافق على عبارة أن 70% من المنافسين لا يملكون runtime enforcement، أو أن العربية ملعب حصري، أو أن أي عميل سيشتري في 3 دقائق. المنافسون المذكورون يعلن بعضهم runtime enforcement وحوكمة أفعال ووكلاء فعلية، ولذلك لا يوجد أساس لترتيب AIGAS فوقهم اليوم.</p>
+<table>
+<thead>
+<tr>
+  <th>المنصة والمصدر</th>
+  <th>ما تعلنه</th>
+  <th>فجوة AIGAS المثبتة / اتجاه التطوير</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><a href="https://www.credo.ai/product">Credo AI</a></td>
+  <td>سجل الأصول والوكلاء وحزم تنظيمية وأدلة</td>
+  <td>حزمة داخلية فقط؛ تحويل متطلبات رسمية لفحوص قابلة للتتبع واعتماد إصدار</td>
+</tr>
+<tr>
+  <td><a href="https://go.holisticai.com/">Holistic AI</a></td>
+  <td>اختبار الأداء والعدالة ومراقبة الانحراف وضوابط runtime</td>
+  <td>replay ثابت؛ تقييم datasets/LLM/monitoring مستقل</td>
+</tr>
+<tr>
+  <td><a href="https://trustible.ai/platform-overview/">Trustible</a></td>
+  <td>Intake وinventory ومخاطر وموردون ومراجعات ودورة حياة</td>
+  <td>سجل ذاكرة وعقد داخلي؛ مسار لجان وتفويض دائم</td>
+</tr>
+<tr>
+  <td><a href="https://www.enz.ai/">Enzai</a></td>
+  <td>اكتشاف Shadow AI وحوكمة الأفعال والإنفاذ</td>
+  <td>synthetic-agent موجود؛ لا اكتشاف مؤسسي أو tool gateway متصل</td>
+</tr>
+<tr>
+  <td><a href="https://www.saidot.ai/product">Saidot</a></td>
+  <td>graph يربط أصولًا ومخاطر وضوابط وأدلة</td>
+  <td>catalog risk/control قابل لإعادة الاستخدام، لا أعداد مخترعة</td>
+</tr>
+<tr>
+  <td><a href="https://www.lumenova.ai/solutions/ai-security-teams/">Lumenova AI</a></td>
+  <td>self-hosted gateway وضوابط ومعالجة داخل نطاق العميل</td>
+  <td>إثبات Node أولًا ثم حزمة تثبيت وrestore وegress موثقة</td>
+</tr>
+<tr>
+  <td><a href="https://www.monitaur.ai/ai-governance">Monitaur</a></td>
+  <td>حوكمة نماذج للقطاعات المنظمة ومنها التأمين والمالي</td>
+  <td>قوالب قطاعية وتقييمات وأدلة بمراجع معتمدة</td>
+</tr>
+<tr>
+  <td><a href="https://asenion.ai/controlgen">Asenion</a></td>
+  <td>policy-to-code وحزم قابلة لإعادة الاستخدام والتحقق</td>
+  <td>محول وثيقة إلى مسودة ضابط typed، مراجعة بشرية واختبار قبل التفعيل</td>
+</tr>
+<tr>
+  <td><a href="https://verifywise.ai/faq">VerifyWise</a></td>
+  <td>source-available وself-hosted؛ الترخيص التجاري له شروط</td>
+  <td>توثيق verifier وSDK وبيئة تقييم؛ لا ادعاء أنه مجاني بلا قيود أو open source مطلقًا</td>
+</tr>
+</tbody>
+</table>
+<p><strong>الأولوية التنافسية:</strong> 1) إتاحة فعلية آمنة، 2) حزم سعودية مرجعية PDPL/SDAIA وسياقات SAMA/الصحة وفق انطباقها، 3) حوكمة أفعال الوكلاء، 4) Risk &amp; Control Catalog، 5) Developer Integration مع snippets فعلية مرتبطة بعقد API مثبت، 6) تقييم Shadow AI اليدوي ثم تكاملات اكتشاف مخولة، 7) حزمة مشتريات وتثبيت مستقلة قابلة للتكرار. ISO 42001 معيار لا قانون عام، ولا تترجم وثائق محمية حرفيًا. لا تُفعّل سياسة مولدة من Groq مباشرة. لا تكتب أمثلة SDK لعناوين API غير عاملة على النطاق الحي باعتبارها جاهزة؛ وسم Local/Planned عند الحاجة.</p>
+<h2>7. SEO / Analytics / Conversion</h2>
+<p>Search Console <code>sc-domain:brightai.live</code>، web، final من 26 أكتوبر إلى 22 نوفمبر: 783 impressions، 12 clicks، CTR 1.53%، متوسط الموضع 15.69. 10 صفوف صفحات أولى مسترجعة؛ ليست جرد فهرسة. من النتائج: مقال PDPL employee data rights له نقرتان من 3 مرات ظهور، صفحة ai-risk-classification نقرتان من 6؛ عينات صغيرة جدًا لا تتنبأ بالتحويل. robots.txt متاح ويشير إلى sitemap-index.xml؛ sitemap.xml 200. لا نسبة فهرسة من site: search، يلزم GSC index coverage/URL inspection وجرد canonical/redirects. لا ضمان ترتيب.</p>
+<p>Windsor GA4 Property 551941072، الفترة نفسها:</p>
+<table>
+<thead>
+<tr>
+  <th>Hostname</th>
+  <th style="text-align:right">Sessions</th>
+  <th style="text-align:right">Views</th>
+  <th style="text-align:right">Events</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>brightai.live</td>
+  <td style="text-align:right">152</td>
+  <td style="text-align:right">992</td>
+  <td style="text-align:right">1,899</td>
+</tr>
+<tr>
+  <td>127.0.0.1</td>
+  <td style="text-align:right">45</td>
+  <td style="text-align:right">428</td>
+  <td style="text-align:right">791</td>
+</tr>
+<tr>
+  <td>localhost</td>
+  <td style="text-align:right">3</td>
+  <td style="text-align:right">232</td>
+  <td style="text-align:right">376</td>
+</tr>
+<tr>
+  <td>brightai-4x39.onrender.com</td>
+  <td style="text-align:right">1</td>
+  <td style="text-align:right">1</td>
+  <td style="text-align:right">3</td>
+</tr>
+</tbody>
+</table>
+<p>المجموع الحسابي للصفوف 201 جلسة؛ 48/201=23.88% من الصفوف المجمعة تخص localhost/127.0.0.1. التقسيم حسب hostname قد يحسب جلسة متعددة النطاقات أكثر من مرة؛ لا نسمي الإجمالي عدد زوار فريدين. 152 ليست عملاء محتملين ولا تدل على مبيعات. المصدر <code>GoogleAnalytics.astro:63–66</code> يهيئ Measurement ID G-9LMB4PGTWJ ويحمّل gtag.js الصحيح؛ لا نضيف سكربتًا ثانيًا. افصل production hostname عن dev عبر إعداد بيئة/stream أو تقرير مفلتر، ثم تحقق من الاستقبال والخصوصية. OpenSEO يرجع مشروع Default بلا domain؛ لا تثبت خاصية GA4 المطابقة بهذه القراءة. Similarweb رفض endpoint بـ401، فلا تخترع traffic خارجيًا. قياس المنتج المطلوب (metadata فقط) demo_started، asset_created، policy_applied، assessment_completed، evidence_exported، access_requested، qualified_lead؛ لا تسرب المحتوى أو IDs خاصة. مختبر الحوكمة CSP يمنع الشبكة، فلا تغيّرها لأجل analytics فقط؛ استخدم مسارًا معتمدًا للقياس خارج مساحة الاختبار أو اقبل عدم جمع الحدث.</p>
+<h2>8. اختبارات وCI وملفات مكررة</h2>
+<p>GitHub Actions على HEAD الحالي: Accessibility and performance smoke — failure (<a href="https://github.com/YEEEAE/BRIGHTAI/actions/runs/45666864721">run</a>). سبب الخطوة غير مثبت في هذه الجولة. تقرير الوكيل <code>Audit/groq-release-2026-11-25/REPORT.md</code> على مرشح a1a2a3e… + patch: 87/91 → 91/91 مركزة، ثم 92/92 بعد إضافة اختبار؛ PostgreSQL 12/13، فشل firewall-review-binding عند السطر 204 حيث لم يحمل رد 403 الحقل policy.obligations، وAuth browser فشل عند 410 بغياب data-access-status، و4/4 وظائف محلية اصطناعية. لا إعادة تشغيل مستقلة. التحقق المحلي لا يساوي نجاح HEAD الحي. لا حذف أو تخفيف assertions. راجع 7 ملفات source ذات لاحقة 2: GoogleAnalytics 2.astro، RiskDemo 2.astro، BaseLayout 2.astro، workshop-preview/[view] 2.astro، kernel 2.css، secure-chat 2.css، site 2.css؛ مجرد أسماء لا تثبت كودًا ميتًا. احم migrations وملفات الأمن والأدلة. لا حذف من هذا التدقيق.</p>
+<h2>9. سجل الأدوات وحدود التحقق</h2>
+<table>
+<thead>
+<tr>
+  <th>الأداة</th>
+  <th>نتيجة الجولة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>GitHub</td>
+  <td>HEAD، tree، ملفات محورية، CI؛ read-only</td>
+</tr>
+<tr>
+  <td>Neon</td>
+  <td>SELECT كتالوج، قيود، جداول، COUNT(*)، migration ledger؛ لا كتابة</td>
+</tr>
+<tr>
+  <td>Render</td>
+  <td>نوع الخدمة وdeploy؛ لا تغييرات</td>
+</tr>
+<tr>
+  <td>Firecrawl</td>
+  <td>19 مسارًا live، لا عمليات</td>
+</tr>
+<tr>
+  <td>Browser Use</td>
+  <td>COMPLETED: فحص بصري عند 1440×900 و390×844؛ مختبر الحوكمة ظاهر، وطلب الوصول 404 في المقاسين؛ لا عمليات</td>
+</tr>
+<tr>
+  <td>Figma</td>
+  <td>whoami عاد؛ لم نفتح تصميمًا داخليًا أو نعدله</td>
+</tr>
+<tr>
+  <td>MagicPath</td>
+  <td>قائمة مشاريع knowledge/navigation؛ لا prototype جديد</td>
+</tr>
+<tr>
+  <td>Lazyweb</td>
+  <td>بحث flow أعاد صفر نتائج مطابقة؛ لا دليل UX إضافي</td>
+</tr>
+<tr>
+  <td>Better Design</td>
+  <td>قواعد مراجعة كاملة للمشروع؛ ليست نتيجة قياس مرئي</td>
+</tr>
+<tr>
+  <td>Windsor GA4</td>
+  <td>بيانات hostname حقيقية للفترة</td>
+</tr>
+<tr>
+  <td>HYPD Search Console</td>
+  <td>خاصية وبيانات أداء بحث فعلية</td>
+</tr>
+<tr>
+  <td>OpenSEO</td>
+  <td>Default بلا domain؛ لا إسناد لخاصية صحيحة</td>
+</tr>
+<tr>
+  <td>Similarweb</td>
+  <td>401؛ لا بيانات</td>
+</tr>
+<tr>
+  <td>Linear</td>
+  <td>قراءة قائمة teams أعادت نتيجة؛ لم تُنشأ أو تُعدل قضايا</td>
+</tr>
+<tr>
+  <td>PostHog</td>
+  <td>واجهة متاحة لكن مشروع BrightAI غير مؤكد هنا؛ لم تُقرأ بيانات مشروع غير مثبت</td>
+</tr>
+<tr>
+  <td>Auditin72، Modern Web Guidance، Sentry، Open Design، Animation Maker</td>
+  <td>لم تظهر إجراءات مباشرة قابلة للاستدعاء؛ بحث الإضافات لم يظهر تطابقًا مباشرًا؛ لا ادعاء استخدامها</td>
+</tr>
+</tbody>
+</table>
+<p>محدودية: لا نسخة مشروع محلية أو .env، لا تشغيل اختبارات أو مزود أو تعديل، لا فحص كل 5,820 ملفًا، ولا مقارنة صور قبل/بعد. نص الملصق مصدر نطاق الفرضيات لا مصدر إثبات. لا تُستخدم أدوات تصميم أو SEO لإثبات أمان DB.</p>
+<h2>10. بوابات القرار والمسار الحرج</h2>
+<table>
+<thead>
+<tr>
+  <th>الأولوية</th>
+  <th>المانع</th>
+  <th>معيار إغلاق موثق</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>P0</td>
+  <td>SSR وapp/readyz/request-access</td>
+  <td>خدمة Node آمنة وجميع المسارات المقصودة تعمل؛ مسار تواصل عام مستقل</td>
+</tr>
+<tr>
+  <td>P0</td>
+  <td>Firewall/Ledger schema parity + RLS + role</td>
+  <td>قيد 5/5 وحارس ودور؛ مصالحة migration؛ عزل وrollback على staging مخول</td>
+</tr>
+<tr>
+  <td>P0</td>
+  <td>Groq اعتماد/ميزانية/سر/خروج</td>
+  <td>سجل approved، ميزانية ذرية، طلب اصطناعي مصرح؛ DENY لا يرسل</td>
+</tr>
+<tr>
+  <td>P0</td>
+  <td>سلسلة التوريد وفشل CI/Auth/Review binding</td>
+  <td>ترقية متوافقة ونتائج CI وE2E على SHA، لا ادعاء نجاح اختبارات غير منفذة</td>
+</tr>
+<tr>
+  <td>P1</td>
+  <td>Registry/pack/evidence split</td>
+  <td>تجربة واحدة تربط الإصدار والفحص والمراجعة والحزمة؛ بدون بيانات إنتاج</td>
+</tr>
+<tr>
+  <td>P1</td>
+  <td>تقييم النماذج والمراقبة</td>
+  <td>dataset/model version، metrics قابلة للتحقق، قياسات جديدة لا replay فقط</td>
+</tr>
+<tr>
+  <td>P1</td>
+  <td>التحويل وقياس GA4</td>
+  <td>CTA لا 404، فصل dev، وصول طلب فعلي مصرح، عدم تسرب</td>
+</tr>
+<tr>
+  <td>P1</td>
+  <td>المنافسة المحلية</td>
+  <td>حزم مرجعية، agent-tool boundaries، risk catalog، integration docs، حزمة استضافة</td>
+</tr>
+</tbody>
+</table>
+<p>قرارات مستقلة: Public synthetic <strong>متاح للزيارة</strong>؛ قبول وظيفي حي <strong>NOT_VERIFIED</strong>؛ Enterprise 48h وCommercial <strong>NO-GO</strong>. 80% لكل محور شرط غير محقق، ولا يعوض P0. أوصي بترتيب 1) مصالحة المصدر والمخطط والتبعيات والنشر الآمن، 2) إتاحة CTA عام حقيقي، 3) توحيد رحلة الحوكمة وLedger، 4) اعتماد Groq، 5) حزم السياسات والتقييمات وAgent، 6) جاهزية تجارية وتحقق نهائي. لا حاجة لهدم المنتجات الحالية.</p>
+<h2>11. سجل الشروط الذرية (78)</h2>
+<table>
+<thead>
+<tr>
+  <th>ID</th>
+  <th>الشرط</th>
+  <th style="text-align:right">الحالة</th>
+  <th>الدليل</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>REG-01</td>
+  <td>عقد يميز النظام والنموذج والوكيل والمورد وحالة الاستخدام</td>
+  <td style="text-align:right">S</td>
+  <td>src/server/governance/contract.mjs:6–26</td>
+</tr>
+<tr>
+  <td>REG-02</td>
+  <td>إصدارات ومراجع مستقلة وحدود أدوات للأصل الاصطناعي</td>
+  <td style="text-align:right">S</td>
+  <td>src/server/governance/registry.mjs؛ contract.mjs:15–26</td>
+</tr>
+<tr>
+  <td>REG-03</td>
+  <td>جرد وتغيير الأصل في جلسة الحوكمة المشتركة</td>
+  <td style="text-align:right">S</td>
+  <td>src/demo/governance.mjs:21–55</td>
+</tr>
+<tr>
+  <td>REG-04</td>
+  <td>سجل مؤسسي دائم ومشترك بين جلسات المستخدم</td>
+  <td style="text-align:right">U</td>
+  <td>المختبر في ذاكرة المستند؛ لا إثبات تشغيل سجل دائم</td>
+</tr>
+<tr>
+  <td>REG-05</td>
+  <td>دورة حياة Intake واعتماد وإعادة مراجعة مكتملة في البيئة المستهدفة</td>
+  <td style="text-align:right">U</td>
+  <td>لا E2E مخول</td>
+</tr>
+<tr>
+  <td>REG-06</td>
+  <td>اكتشاف Shadow AI من مصادر مؤسسية موصولة</td>
+  <td style="text-align:right">U</td>
+  <td>لا تكامل اكتشاف متحقق</td>
+</tr>
+<tr>
+  <td>POL-01</td>
+  <td>حزمة داخلية محددة الإصدار والانطباق</td>
+  <td style="text-align:right">S</td>
+  <td>src/server/governance/internal-pack.mjs:10–41</td>
+</tr>
+<tr>
+  <td>POL-02</td>
+  <td>متطلبات وفحوص ودليل متوقع ومالك</td>
+  <td style="text-align:right">S</td>
+  <td>src/server/governance/contract.mjs:28–48</td>
+</tr>
+<tr>
+  <td>POL-03</td>
+  <td>تتبع وتصدير بصمة assessment للحزمة الداخلية</td>
+  <td style="text-align:right">S</td>
+  <td>src/server/governance/registry.mjs:63–113</td>
+</tr>
+<tr>
+  <td>POL-04</td>
+  <td>حزم خارجية قابلة للتطبيق من PDPL/SDAIA وغيرها</td>
+  <td style="text-align:right">F</td>
+  <td>packSchema.source.type = INTERNAL فقط</td>
+</tr>
+<tr>
+  <td>POL-05</td>
+  <td>مرجع تنظيمي خارجي موثق مرتبط بفحص وFinding</td>
+  <td style="text-align:right">U</td>
+  <td>لم يثبت عقد خارجي أو خريطة قانونية</td>
+</tr>
+<tr>
+  <td>POL-06</td>
+  <td>اعتماد تغيير السياسة وتطبيقه حيًا عبر المؤسسات</td>
+  <td style="text-align:right">U</td>
+  <td>لا تشغيل مؤسسي</td>
+</tr>
+<tr>
+  <td>FW-01</td>
+  <td>القرارات الخمسة الحتمية في المحرك</td>
+  <td style="text-align:right">S</td>
+  <td>src/server/firewall/core.mjs:10–13</td>
+</tr>
+<tr>
+  <td>FW-02</td>
+  <td>تقديم DENY والإقفال عند سياسة غير صالحة</td>
+  <td style="text-align:right">S</td>
+  <td>src/server/firewall/core.mjs:63–75</td>
+</tr>
+<tr>
+  <td>FW-03</td>
+  <td>الفحص العام يتجاوز أربع مطابقات حرفية إلى كاشف بيانات حساس متحقق</td>
+  <td style="text-align:right">F</td>
+  <td>src/shared/firewall-demo.mjs:1–19</td>
+</tr>
+<tr>
+  <td>FW-04</td>
+  <td>محاكاة فعل وكيل بقيود ثابتة وربط طلب مراجعة</td>
+  <td style="text-align:right">S</td>
+  <td>src/server/governance/synthetic-agent.mjs:16–90</td>
+</tr>
+<tr>
+  <td>FW-05</td>
+  <td>مزود Firewall معتمد</td>
+  <td style="text-align:right">F</td>
+  <td>src/server/firewall/provider.mjs:9؛ approvedProviders=[]</td>
+</tr>
+<tr>
+  <td>FW-06</td>
+  <td>فحص المدخل والمخرج مع مزود فعلي ومعالجة القرارات الخمسة</td>
+  <td style="text-align:right">U</td>
+  <td>لم يرسل طلب Groq ولم ينفذ E2E</td>
+</tr>
+<tr>
+  <td>HG-01</td>
+  <td>ربط تصعيد اصطناعي ببصمة طلب وسياسة</td>
+  <td style="text-align:right">S</td>
+  <td>src/server/governance/synthetic-agent.mjs:30–71</td>
+</tr>
+<tr>
+  <td>HG-02</td>
+  <td>عقد مراجع مستقل داخل سجل الحوكمة</td>
+  <td style="text-align:right">S</td>
+  <td>src/server/governance/contract.mjs:22–26</td>
+</tr>
+<tr>
+  <td>HG-03</td>
+  <td>واجهة مراجعة وقبول ورفض للجلسة</td>
+  <td style="text-align:right">S</td>
+  <td>src/demo/governance.mjs:89–99</td>
+</tr>
+<tr>
+  <td>HG-04</td>
+  <td>جدولا delegations وgrants موجودان في الإنتاج</td>
+  <td style="text-align:right">F</td>
+  <td>Neon SELECT to_regclass: كلاهما NULL</td>
+</tr>
+<tr>
+  <td>HG-05</td>
+  <td>استئناف موثق بعد الموافقة مع منع إعادة الاستخدام في الهدف</td>
+  <td style="text-align:right">U</td>
+  <td>تقرير الوكيل: فشل firewall-review-binding؛ لم يعد الاختبار</td>
+</tr>
+<tr>
+  <td>HG-06</td>
+  <td>موافقات متعددة أدوار بمسار قانوني وأمني وتجاري حي</td>
+  <td style="text-align:right">U</td>
+  <td>لا اختبار مخول</td>
+</tr>
+<tr>
+  <td>RE-01</td>
+  <td>حساب خطر من الاحتمال والأثر داخل المختبر</td>
+  <td style="text-align:right">S</td>
+  <td>src/demo/governance.mjs:71–75</td>
+</tr>
+<tr>
+  <td>RE-02</td>
+  <td>مقاييس تصنيف مفصلة: precision/recall/FPR/FNR/accuracy</td>
+  <td style="text-align:right">S</td>
+  <td>src/server/risk-engine/evaluation.mjs:25–35</td>
+</tr>
+<tr>
+  <td>RE-03</td>
+  <td>معالجة المقام الصفري والعينة الصغيرة</td>
+  <td style="text-align:right">S</td>
+  <td>src/server/risk-engine/evaluation.mjs:17–35</td>
+</tr>
+<tr>
+  <td>RE-04</td>
+  <td>Finding مؤرخ وإعادة عرض تقييم سابق</td>
+  <td style="text-align:right">S</td>
+  <td>src/demo/governance.mjs:77–87</td>
+</tr>
+<tr>
+  <td>RE-05</td>
+  <td>تقييم نموذج موصول على بيانات مستقلة مصرح بها ومراقبة drift</td>
+  <td style="text-align:right">F</td>
+  <td>evaluation.mjs:1,55–60 synthetic replay ثابت، لا اتصال في المختبر</td>
+</tr>
+<tr>
+  <td>RE-06</td>
+  <td>منهج الخطر المتبقي مع قبول مخول ومكتبة قطاعية كاملة في الهدف</td>
+  <td style="text-align:right">U</td>
+  <td>لا تشغيل مؤسسي أو اعتماد منهج في هذه الجولة</td>
+</tr>
+<tr>
+  <td>LD-01</td>
+  <td>SHA-256 وملف تعريف سلسلة في الكود</td>
+  <td style="text-align:right">S</td>
+  <td>src/server/ledger/core.mjs:4–17,46–60</td>
+</tr>
+<tr>
+  <td>LD-02</td>
+  <td>عقد تصدير assessment ببصمة داخل سجل الحوكمة</td>
+  <td style="text-align:right">S</td>
+  <td>src/server/governance/registry.mjs:113</td>
+</tr>
+<tr>
+  <td>LD-03</td>
+  <td>قيد إنتاج Ledger يطابق القرارات الخمسة</td>
+  <td style="text-align:right">F</td>
+  <td>Neon aigas_ld_events_check يقبل ALLOW/BLOCK/REDACT فقط</td>
+</tr>
+<tr>
+  <td>LD-04</td>
+  <td>حارس سلسلة قاعدة البيانات موجود في الإنتاج</td>
+  <td style="text-align:right">F</td>
+  <td>Neon pg_proc: chain_guard=0</td>
+</tr>
+<tr>
+  <td>LD-05</td>
+  <td>تصدير مختبر الحوكمة نفسه يتضمن سلسلة hash قابلة لإعادة التحقق</td>
+  <td style="text-align:right">F</td>
+  <td>src/scripts/governance-demo.ts:171–177 يصدر JSON.stringify(state)؛ events لا تحمل hash chain</td>
+</tr>
+<tr>
+  <td>LD-06</td>
+  <td>تحقق مستقل من حزمة الإصدار النهائي في البيئة المستهدفة</td>
+  <td style="text-align:right">U</td>
+  <td>تقرير محلي على مرشح سابق؛ لا إعادة اختبار</td>
+</tr>
+<tr>
+  <td>AI-01</td>
+  <td>Gateway بخادم وميزانية وحدود ومهلة</td>
+  <td style="text-align:right">S</td>
+  <td>src/server/ai/groq-gateway.mjs:49–75,99–145</td>
+</tr>
+<tr>
+  <td>AI-02</td>
+  <td>حماية اسم المفتاح ومنع PUBLIC_GROQ</td>
+  <td style="text-align:right">S</td>
+  <td>src/server/kernel/env.mjs:16–22</td>
+</tr>
+<tr>
+  <td>AI-03</td>
+  <td>قائمتا اعتماد نموذج ومزود غير فارغتين وصالحتين</td>
+  <td style="text-align:right">F</td>
+  <td>secure-chat/models.mjs:3؛ firewall/provider.mjs:9</td>
+</tr>
+<tr>
+  <td>AI-04</td>
+  <td>المسار العام متاح لإرسال اصطناعي معتمد</td>
+  <td style="text-align:right">F</td>
+  <td>public-sandbox-limiter.mjs:3–4؛ 503 DISABLED</td>
+</tr>
+<tr>
+  <td>AI-05</td>
+  <td>Blueprint يصرح بأسماء اعتماد المفتاح المخصص والميزانية المطلوبة</td>
+  <td style="text-align:right">F</td>
+  <td>render.yaml:39–42: GROQ_API_KEY وGROQ_MODEL فقط؛ env.mjs:17؛ gateway.mjs:102–104</td>
+</tr>
+<tr>
+  <td>AI-06</td>
+  <td>إثبات مفتاح ونموذج وميزانية صالحة واستدعاء حي مصرح</td>
+  <td style="text-align:right">U</td>
+  <td>لا .env متاح ولا اختبار خارجي</td>
+</tr>
+<tr>
+  <td>INT-01</td>
+  <td>سياق أحداث مشترك حسب الأصل والإصدار في المختبر</td>
+  <td style="text-align:right">S</td>
+  <td>src/demo/governance.mjs:21–110</td>
+</tr>
+<tr>
+  <td>INT-02</td>
+  <td>محاكاة agent تستدعي core وguard وHuman Gate binding</td>
+  <td style="text-align:right">S</td>
+  <td>src/server/governance/synthetic-agent.mjs:1–90</td>
+</tr>
+<tr>
+  <td>INT-03</td>
+  <td>المراجعة في المختبر ترتبط بفحص أو خطر من النسخة الحالية</td>
+  <td style="text-align:right">S</td>
+  <td>src/demo/governance.mjs:89–99</td>
+</tr>
+<tr>
+  <td>INT-04</td>
+  <td>مسار عام حي يوقف Groq ثم يستأنفه بإذن صالح</td>
+  <td style="text-align:right">F</td>
+  <td>demo prerender وCSP connect-src none؛ publicSandbox disabled</td>
+</tr>
+<tr>
+  <td>INT-05</td>
+  <td>تسجيل كل حدث عام في سلسلة Ledger قابلة للتحقق</td>
+  <td style="text-align:right">F</td>
+  <td>governance.mjs:104–108 + governance-demo.ts:174</td>
+</tr>
+<tr>
+  <td>INT-06</td>
+  <td>رحلة أصل→حزمة تنظيمية→فحص→معالجة→قرار→دليل في الهدف</td>
+  <td style="text-align:right">U</td>
+  <td>لا E2E للبيئة المستهدفة</td>
+</tr>
+<tr>
+  <td>UX-01</td>
+  <td>صفحة Overview وجرد وحزم وأربعة أقسام متاحة</td>
+  <td style="text-align:right">C</td>
+  <td>Firecrawl /demo/governance/ 200</td>
+</tr>
+<tr>
+  <td>UX-02</td>
+  <td>صفحات المنتجات الأربعة تعرض تجارب متخصصة وروابط</td>
+  <td style="text-align:right">C</td>
+  <td>Firecrawl 4/4 HTTP200</td>
+</tr>
+<tr>
+  <td>UX-03</td>
+  <td>تفاعل كامل مستقل لجميع الشاشات والأحجام</td>
+  <td style="text-align:right">U</td>
+  <td>Browser Use تحقق بصريًا من صفحتين على 1440 و390؛ لا اختبار كل الشاشات أو المهام</td>
+</tr>
+<tr>
+  <td>UX-04</td>
+  <td>إمكانية الوصول والأداء عبر CI ناجح على HEAD</td>
+  <td style="text-align:right">F</td>
+  <td>GitHub Actions 45666864721: failure</td>
+</tr>
+<tr>
+  <td>UX-05</td>
+  <td>مطابقة بصرية وسلوكية للـHero قبل وبعد</td>
+  <td style="text-align:right">U</td>
+  <td>لا مرجع لقطات Hero متطابقة</td>
+</tr>
+<tr>
+  <td>UX-06</td>
+  <td>جودة RTL وkeyboard وWCAG 2.2 AA مثبتة لكامل النطاق</td>
+  <td style="text-align:right">U</td>
+  <td>لا قياس شامل</td>
+</tr>
+<tr>
+  <td>PUB-01</td>
+  <td>4/4 صفحات المنتجات العامة تفتح</td>
+  <td style="text-align:right">C</td>
+  <td>Firecrawl HTTP200</td>
+</tr>
+<tr>
+  <td>PUB-02</td>
+  <td>4/4 مختبرات مستقلة تفتح دون حساب</td>
+  <td style="text-align:right">C</td>
+  <td>Firecrawl HTTP200</td>
+</tr>
+<tr>
+  <td>PUB-03</td>
+  <td>المختبر الموحد يفتح دون حساب</td>
+  <td style="text-align:right">C</td>
+  <td>Firecrawl /demo/governance/ 200</td>
+</tr>
+<tr>
+  <td>PUB-04</td>
+  <td>بوابة التطبيق وKernel تفتحان</td>
+  <td style="text-align:right">F</td>
+  <td>/app/ و/app/kernel/ 404</td>
+</tr>
+<tr>
+  <td>PUB-05</td>
+  <td>طلب الوصول يعمل من CTA العام</td>
+  <td style="text-align:right">F</td>
+  <td>/request-access/ 404؛ governance.astro:139</td>
+</tr>
+<tr>
+  <td>PUB-06</td>
+  <td>تجربة 48 ساعة وعملية التسجيل مثبتتان في الهدف</td>
+  <td style="text-align:right">F</td>
+  <td>جدولا trial وexploration غائبان؛ بوابة 404</td>
+</tr>
+<tr>
+  <td>SEC-01</td>
+  <td>RLS enabled على جداول الإنتاج</td>
+  <td style="text-align:right">C</td>
+  <td>Neon 31/31 flags</td>
+</tr>
+<tr>
+  <td>SEC-02</td>
+  <td>جميع جداول Staging لها سياسات RLS</td>
+  <td style="text-align:right">C</td>
+  <td>Neon 43/43؛ 93 سياسة</td>
+</tr>
+<tr>
+  <td>SEC-03</td>
+  <td>جميع جداول الإنتاج لها سياسات RLS مناسبة</td>
+  <td style="text-align:right">F</td>
+  <td>Neon 2/31 فقط؛ لا ادعاء تسريب</td>
+</tr>
+<tr>
+  <td>SEC-04</td>
+  <td>دور تشغيل aigas_runtime موجود في الإنتاج</td>
+  <td style="text-align:right">F</td>
+  <td>Neon pg_roles: 0</td>
+</tr>
+<tr>
+  <td>SEC-05</td>
+  <td>اختبار عزل مؤسسات وجلسات في الهدف</td>
+  <td style="text-align:right">U</td>
+  <td>لم ينفذ اختبار مصرح</td>
+</tr>
+<tr>
+  <td>SEC-06</td>
+  <td>اعتماد معالجة البيانات وإقامتها وسياسة الحذف والمزود</td>
+  <td style="text-align:right">U</td>
+  <td>لا دليل اعتماد الهدف</td>
+</tr>
+<tr>
+  <td>ARC-01</td>
+  <td>Blueprint يحدد Node SSR وreadiness</td>
+  <td style="text-align:right">S</td>
+  <td>render.yaml:6–16</td>
+</tr>
+<tr>
+  <td>ARC-02</td>
+  <td>محول Astro في إصدار يعالج GHSA-qh8j-hqjv-7m4x</td>
+  <td style="text-align:right">F</td>
+  <td>package-lock.json @astrojs/node 10.1.4؛ fixed 11.1.3</td>
+</tr>
+<tr>
+  <td>ARC-03</td>
+  <td>مدير حزم البناء المنشور يطابق lockfile المقصود</td>
+  <td style="text-align:right">F</td>
+  <td>Render pnpm install؛ render.yaml npm ci؛ package-lock موجود</td>
+</tr>
+<tr>
+  <td>ARC-04</td>
+  <td>npm build والتحقق الأمني المستقل على HEAD</td>
+  <td style="text-align:right">U</td>
+  <td>لا checkout أو تشغيل مستقل</td>
+</tr>
+<tr>
+  <td>ARC-05</td>
+  <td>نظافة الملفات مثبتة بعد تحليل الاعتماديات</td>
+  <td style="text-align:right">U</td>
+  <td>7 ملفات بلواحق 2؛ ليست دليل حذف</td>
+</tr>
+<tr>
+  <td>ARC-06</td>
+  <td>LCP/INP/CLS مقاسة على كل رحلة</td>
+  <td style="text-align:right">U</td>
+  <td>لا قياس ميداني أو مختبري شامل</td>
+</tr>
+<tr>
+  <td>DEP-01</td>
+  <td>Deploy مطابق SHA الحالي</td>
+  <td style="text-align:right">C</td>
+  <td>Render dep-dc3hq2m8bjmc73bvuan0 live</td>
+</tr>
+<tr>
+  <td>DEP-02</td>
+  <td>خدمة النشر الفعلية Node وتعرض readiness</td>
+  <td style="text-align:right">F</td>
+  <td>Render static_site dist/client؛ /readyz/ 404</td>
+</tr>
+<tr>
+  <td>DEP-03</td>
+  <td>مصالحة سجل ترحيلات Staging مع 45 ملفًا</td>
+  <td style="text-align:right">F</td>
+  <td>32 APPLIED؛ 13 بلا سجل APPLIED، ليس إثبات عدم تطبيقها</td>
+</tr>
+<tr>
+  <td>DEP-04</td>
+  <td>robots.txt وsitemap.xml متاحان</td>
+  <td style="text-align:right">C</td>
+  <td>Firecrawl كلاهما 200؛ robots يشير sitemap-index.xml</td>
+</tr>
+<tr>
+  <td>DEP-05</td>
+  <td>قياس GA4 للحركة الحية دون اختلاط تطوير</td>
+  <td style="text-align:right">F</td>
+  <td>Windsor: 48 جلسة localhost/127.0.0.1 ضمن الخاصية</td>
+</tr>
+<tr>
+  <td>DEP-06</td>
+  <td>مراقبة أخطاء وتنبيهات وفهرسة شاملة مثبتة</td>
+  <td style="text-align:right">U</td>
+  <td>GSC يقيس البحث فقط؛ Sentry/PostHog لم تثبت وجهتهما</td>
+</tr>
+</tbody>
+</table>
+<h2>12. المراجع والأدلة</h2>
+<ul>
+<li><a href="https://github.com/YEEEAE/BRIGHTAI/commit/773fb6bc5e420ee70e811d5509aceefcaec32a8c">GitHub HEAD</a> · <a href="https://github.com/YEEEAE/BRIGHTAI/tree/773fb6bc5e420ee70e811d5509aceefcaec32a8c">شجرة المستودع</a> · <a href="https://dashboard.render.com/static/srv-d7m5bcjbc2fs73826v20">Render</a></li>
+<li><a href="https://github.com/YEEEAE/BRIGHTAI/blob/773fb6bc5e420ee70e811d5509aceefcaec32a8c/src/server/ai/groq-gateway.mjs">Gateway</a> · <a href="https://github.com/YEEEAE/BRIGHTAI/blob/773fb6bc5e420ee70e811d5509aceefcaec32a8c/src/server/kernel/env.mjs">Env</a> · <a href="https://github.com/YEEEAE/BRIGHTAI/blob/773fb6bc5e420ee70e811d5509aceefcaec32a8c/src/server/secure-chat/models.mjs">Model registry</a> · <a href="https://github.com/YEEEAE/BRIGHTAI/blob/773fb6bc5e420ee70e811d5509aceefcaec32a8c/src/server/firewall/provider.mjs">Firewall provider</a> · <a href="https://github.com/YEEEAE/BRIGHTAI/blob/773fb6bc5e420ee70e811d5509aceefcaec32a8c/src/server/ai/public-sandbox-limiter.mjs">Public sandbox</a></li>
+<li><a href="https://github.com/YEEEAE/BRIGHTAI/blob/773fb6bc5e420ee70e811d5509aceefcaec32a8c/src/shared/firewall-demo.mjs">Firewall demo</a> · <a href="https://github.com/YEEEAE/BRIGHTAI/blob/773fb6bc5e420ee70e811d5509aceefcaec32a8c/src/demo/governance.mjs">Governance demo</a> · <a href="https://github.com/YEEEAE/BRIGHTAI/blob/773fb6bc5e420ee70e811d5509aceefcaec32a8c/src/scripts/governance-demo.ts">Export script</a> · <a href="https://github.com/YEEEAE/BRIGHTAI/blob/773fb6bc5e420ee70e811d5509aceefcaec32a8c/src/server/governance/registry.mjs">Governance registry</a> · <a href="https://github.com/YEEEAE/BRIGHTAI/blob/773fb6bc5e420ee70e811d5509aceefcaec32a8c/src/server/governance/internal-pack.mjs">Internal pack</a> · <a href="https://github.com/YEEEAE/BRIGHTAI/blob/773fb6bc5e420ee70e811d5509aceefcaec32a8c/src/server/risk-engine/evaluation.mjs">Evaluation</a></li>
+<li><a href="https://github.com/YEEEAE/BRIGHTAI/blob/773fb6bc5e420ee70e811d5509aceefcaec32a8c/src/server/ledger/core.mjs">Ledger core</a> · <a href="https://github.com/YEEEAE/BRIGHTAI/blob/773fb6bc5e420ee70e811d5509aceefcaec32a8c/migrations/0013_aigas_ledger_five_state_and_chain_guard.sql">Migration 0013</a> · <a href="https://github.com/YEEEAE/BRIGHTAI/blob/773fb6bc5e420ee70e811d5509aceefcaec32a8c/render.yaml">Render Blueprint</a> · <a href="https://github.com/YEEEAE/BRIGHTAI/blob/773fb6bc5e420ee70e811d5509aceefcaec32a8c/Audit/groq-release-2026-11-25/REPORT.md">Groq release report</a> · <a href="https://github.com/advisories/GHSA-qh8j-hqjv-7m4x">Advisory</a></li>
+<li>Neon: SELECT على public/pg_catalog وops.aigas_migration_ledger، النتائج الكلية موثقة في التقرير؛ لا سجلات حساسة. Search Console وWindsor: نافذة 2026-10-26 إلى 2026-11-22. روابط المنافسين في القسم 6.</li>
+</ul>
+</article><article id="prompts"><h1>BRIGHT AI / AIGAS — R3 | حزمة الإغلاق التنفيذية</h1>
+<p><strong>الأساس:</strong> 773fb6bc5e420ee70e811d5509aceefcaec32a8c — 25 نوفمبر 2026. هذه تعليمات لوكيل تطوير آخر بعد إذن المالك؛ لم تُنفّذ في هذا التدقيق. GitHub قراءة فقط؛ لا push/commit/PR/merge ولا تغيير Render/Neon/Cloudflare/حسابات أو إنفاق دون موافقة مستقلة. لا حذف ملفات أو تعديل مستودع من هذه المحادثة. إن لم يتوفر checkout مصرح به، سلّم Patch مقترحًا لا تنفذه. احم Hero بالكامل، واحفظ Secure Chat خارج نطاق الأربعة. لا أسرار أو بيانات عملاء؛ البيانات الاصطناعية فقط. ابدأ HEAD وgit status وأعد التحقق من gap قبل تنفيذها. لا تتجاوز fail-closed لتجميل التجربة. معايير القبول: 80% لكل محور و100% للبوابات الحرجة، وأدلة مع SHA وبيئة وتاريخ. لا تخترع نتائج. استخدم مصفوفة 78 شرطًا R3 كما هي في إعادة القياس مع فصل S/C/U/F والاختبارات التشغيلية.</p>
+<section class="prompt"><button data-copy="p1">نسخ البرومبت 01</button><h2>01 — P0 | Schema contract &amp; RLS parity</h2>
+<p>الدور PostgreSQL/security architect. اقرأ pg_constraint وpg_trigger وpg_policies وpg_roles وmigration ledger على البيئات المصرح بها. أصلح اختلاف production aigas_ld_events_check: الكود يقبل ALLOW/WARN/REDACT/ESCALATE/DENY، والقديم ALLOW/BLOCK/REDACT. اعتمد DENY في العقد وتحوّل BLOCK للعرض فقط؛ تحقق من request_fingerprint وقيد guard binding NOT VALID. افحص migration 0013 و0014 و0019 و0024–0045 واعتمادياتها/checksums بدل تطبيقها عشوائيًا. حدد delta للجداول الغائبة (HG delegations/grants، trial_requests، self_service_trials، exploration) والدالة chain_guard ودور aigas_runtime. خطط restore، قاعدة staging معزولة، least privilege وRLS وtenant context وFORCE عند الانطباق. لا تغيّر الإنتاج. القبول: 5/5 إدراج مشروع مع schema صحيح على staging مخول، رفض cross-tenant، عدم حذف تاريخ، rollback واضح، توثيق NOT VALID. المخرج: manifest، SQL patch مقترح، اختبار ومصفوفة الأدلة.</p>
+<textarea id="p1" hidden>## 01 — P0 | Schema contract &amp; RLS parity
+
+الدور PostgreSQL/security architect. اقرأ pg_constraint وpg_trigger وpg_policies وpg_roles وmigration ledger على البيئات المصرح بها. أصلح اختلاف production aigas_ld_events_check: الكود يقبل ALLOW/WARN/REDACT/ESCALATE/DENY، والقديم ALLOW/BLOCK/REDACT. اعتمد DENY في العقد وتحوّل BLOCK للعرض فقط؛ تحقق من request_fingerprint وقيد guard binding NOT VALID. افحص migration 0013 و0014 و0019 و0024–0045 واعتمادياتها/checksums بدل تطبيقها عشوائيًا. حدد delta للجداول الغائبة (HG delegations/grants، trial_requests، self_service_trials، exploration) والدالة chain_guard ودور aigas_runtime. خطط restore، قاعدة staging معزولة، least privilege وRLS وtenant context وFORCE عند الانطباق. لا تغيّر الإنتاج. القبول: 5/5 إدراج مشروع مع schema صحيح على staging مخول، رفض cross-tenant، عدم حذف تاريخ، rollback واضح، توثيق NOT VALID. المخرج: manifest، SQL patch مقترح، اختبار ومصفوفة الأدلة.
+</textarea></section><section class="prompt"><button data-copy="p2">نسخ البرومبت 02</button><h2>02 — P0 | Node SSR, dependency posture &amp; publication</h2>
+<p>الدور Astro/Node/SRE. افحص render.yaml وscripts/server.mjs وpackage-lock وastro.config. Render static_site dist/client وpnpm install مقابل npm ci. @astrojs/node 10.1.4 متأثر بـGHSA-qh8j-hqjv-7m4x؛ تحقق من توافق 11.1.3 أو أحدث إصلاح مناسب وAstro، لا تزيل mitigations قبل إثبات البديل. راجع كل advisories حديثًا، وقفل إصدار وbuild reproducibility. صمم Node origin staging منفصل وhealth/ready/auth، no-store وCSP، lockfile واحد، سجل SHA. AIGAS_APP_ENABLED يبقى false حتى اعتماد جاهزية العزل. لا DNS cutover ولا production deploy تلقائي. القبول: build وCI ناجحان على المرشح، health/ready دقيقان، مسارات app لا 404 عند تفعيل مصرح، rollback، لا regression Hero. تبعية 01 للنشر المحمي. المخرج: deploy handoff ونتائج قياس لا ادعاء نشر.</p>
+<textarea id="p2" hidden>## 02 — P0 | Node SSR, dependency posture &amp; publication
+
+الدور Astro/Node/SRE. افحص render.yaml وscripts/server.mjs وpackage-lock وastro.config. Render static_site dist/client وpnpm install مقابل npm ci. @astrojs/node 10.1.4 متأثر بـGHSA-qh8j-hqjv-7m4x؛ تحقق من توافق 11.1.3 أو أحدث إصلاح مناسب وAstro، لا تزيل mitigations قبل إثبات البديل. راجع كل advisories حديثًا، وقفل إصدار وbuild reproducibility. صمم Node origin staging منفصل وhealth/ready/auth، no-store وCSP، lockfile واحد، سجل SHA. AIGAS_APP_ENABLED يبقى false حتى اعتماد جاهزية العزل. لا DNS cutover ولا production deploy تلقائي. القبول: build وCI ناجحان على المرشح، health/ready دقيقان، مسارات app لا 404 عند تفعيل مصرح، rollback، لا regression Hero. تبعية 01 للنشر المحمي. المخرج: deploy handoff ونتائج قياس لا ادعاء نشر.
+</textarea></section><section class="prompt"><button data-copy="p3">نسخ البرومبت 03</button><h2>03 — P0 | Conversion recovery before launch</h2>
+<p>الدور product growth/UX. /request-access/ non-prerender ويرجع 404، والـCTA في governance.astro:139 يحيل إليه. افصل مسار الاستفسار التجاري العام القابل للنشر عن auth/trial SSR. أبق contact يعمل واربط CTA موحدًا في صفحات المنتجات والـdemo خارج Hero. قدم عرضًا تجاريًا محدد النطاق (مثل تقييم جاهزية AI، مخرجات وتسليم وسعر يحدده المالك) وملخص تجربة اصطناعية اختياري بموافقة العميل، لا إرسال دون فعل المستخدم. لا تختلق حجزًا أو قبولًا. وفر اختيار 48h عندما يعمل فعليًا؛ لا تحويل تلقائي للدفع. القبول: جميع روابط CTA المختبرة تعمل على desktop/mobile، مسار الوصول العام لا يحتاج auth، دليل وصول طلب تجريبي فقط في بيئة مصرح بها، بلا PII في URL أو analytics. راجع canonical وredirects. لا تغيّر Hero.</p>
+<textarea id="p3" hidden>## 03 — P0 | Conversion recovery before launch
+
+الدور product growth/UX. /request-access/ non-prerender ويرجع 404، والـCTA في governance.astro:139 يحيل إليه. افصل مسار الاستفسار التجاري العام القابل للنشر عن auth/trial SSR. أبق contact يعمل واربط CTA موحدًا في صفحات المنتجات والـdemo خارج Hero. قدم عرضًا تجاريًا محدد النطاق (مثل تقييم جاهزية AI، مخرجات وتسليم وسعر يحدده المالك) وملخص تجربة اصطناعية اختياري بموافقة العميل، لا إرسال دون فعل المستخدم. لا تختلق حجزًا أو قبولًا. وفر اختيار 48h عندما يعمل فعليًا؛ لا تحويل تلقائي للدفع. القبول: جميع روابط CTA المختبرة تعمل على desktop/mobile، مسار الوصول العام لا يحتاج auth، دليل وصول طلب تجريبي فقط في بيئة مصرح بها، بلا PII في URL أو analytics. راجع canonical وredirects. لا تغيّر Hero.
+</textarea></section><section class="prompt"><button data-copy="p4">نسخ البرومبت 04</button><h2>04 — P0 | Groq approved egress &amp; global spending</h2>
+<p>الدور AI security/FinOps. اقرأ env.mjs وmodels.mjs وprovider.mjs وgroq-gateway.mjs وpublic-sandbox-limiter. لا تفتح publicSandbox ولا تجعل GROQ_API_KEY fallback للتحايل. استخدم AIGAS_SC_GROQ_API_KEY وGROQ_MODEL من .env خادمي غير مكشوف؛ تحقق من تطابق الموديل مع سجل معتمد وموعد انتهاء ومزود/region/retention/noTraining والميزانية، لا تسجل القيم. صحح blueprint names للميزانية. استخدم مخزن إنفاق متينًا مشتركًا وatomic reserve/settle، سياسة stale lock/crash reconciliation، token/cost cap، IP/session quotas، concurrency، timeout، 429، circuit breaker. لا تعتمد memory-only كحد عالمي. أنشئ public egress محدودًا بمدخلات اصطناعية ثابتة/validated بعد موافقة منفصلة، أو أبق demo بلا egress، لا تغير CSP العامة عشوائيًا. لا استدعاء حتى اعتماد المالك. القبول: طلب اصطناعي محدود فعلي، DENY صفر اتصال، invalid config fail-closed، ميزانية متعددة نسخ مثبتة، لا سر في client/telemetry، حالات 503/429 واضحة. لا ترسل بيانات حساسة إلى LLM للفحص قبل التنقيح. تبعية 01/02/05.</p>
+<textarea id="p4" hidden>## 04 — P0 | Groq approved egress &amp; global spending
+
+الدور AI security/FinOps. اقرأ env.mjs وmodels.mjs وprovider.mjs وgroq-gateway.mjs وpublic-sandbox-limiter. لا تفتح publicSandbox ولا تجعل GROQ_API_KEY fallback للتحايل. استخدم AIGAS_SC_GROQ_API_KEY وGROQ_MODEL من .env خادمي غير مكشوف؛ تحقق من تطابق الموديل مع سجل معتمد وموعد انتهاء ومزود/region/retention/noTraining والميزانية، لا تسجل القيم. صحح blueprint names للميزانية. استخدم مخزن إنفاق متينًا مشتركًا وatomic reserve/settle، سياسة stale lock/crash reconciliation، token/cost cap، IP/session quotas، concurrency، timeout، 429، circuit breaker. لا تعتمد memory-only كحد عالمي. أنشئ public egress محدودًا بمدخلات اصطناعية ثابتة/validated بعد موافقة منفصلة، أو أبق demo بلا egress، لا تغير CSP العامة عشوائيًا. لا استدعاء حتى اعتماد المالك. القبول: طلب اصطناعي محدود فعلي، DENY صفر اتصال، invalid config fail-closed، ميزانية متعددة نسخ مثبتة، لا سر في client/telemetry، حالات 503/429 واضحة. لا ترسل بيانات حساسة إلى LLM للفحص قبل التنقيح. تبعية 01/02/05.
+</textarea></section><section class="prompt"><button data-copy="p5">نسخ البرومبت 05</button><h2>05 — P1 مع شروط P0 | Firewall &amp; Agent Tool-Call Governance</h2>
+<p>الدور AI control engineer. source demo يطابق 4 عبارات، DB match_type=CONTAINS. صمم typed matchers بمراحل validation وpolicy version: بيانات افتراضية للهوية/الإقامة/IBAN مع تحقق صيغة حيث ينطبق، بريد/جوال/أسرار/أنماط injection عربية وإنجليزية، توضيح حدود الكشف. اكتب corpus اصطناعي يشمل false positive/negative؛ لا ادعاء منع جميع الهجمات. ALLOW/WARN/REDACT/ESCALATE/DENY حتمية؛ BLOCK اسم عرض. Model advisory بعد redaction لا يملك تجاوز policy. Agent registry يحدد tool/action/resource/capability/version، default deny، simulate read/publish/delete دون أفعال خارجية، اربط التصعيد ببصمة الطلب والإصدار. لا تعتمد نصًا غير موثوق من model كأمر. القبول: كل قرار ومخرج مثبت بمهمة اصطناعية، لا bypass، Human Gate يوقف التنفيذ عند ESCALATE، deny قبل مزود. تبعية 01 و06 و04 للإرسال الخارجي.</p>
+<textarea id="p5" hidden>## 05 — P1 مع شروط P0 | Firewall &amp; Agent Tool-Call Governance
+
+الدور AI control engineer. source demo يطابق 4 عبارات، DB match_type=CONTAINS. صمم typed matchers بمراحل validation وpolicy version: بيانات افتراضية للهوية/الإقامة/IBAN مع تحقق صيغة حيث ينطبق، بريد/جوال/أسرار/أنماط injection عربية وإنجليزية، توضيح حدود الكشف. اكتب corpus اصطناعي يشمل false positive/negative؛ لا ادعاء منع جميع الهجمات. ALLOW/WARN/REDACT/ESCALATE/DENY حتمية؛ BLOCK اسم عرض. Model advisory بعد redaction لا يملك تجاوز policy. Agent registry يحدد tool/action/resource/capability/version، default deny، simulate read/publish/delete دون أفعال خارجية، اربط التصعيد ببصمة الطلب والإصدار. لا تعتمد نصًا غير موثوق من model كأمر. القبول: كل قرار ومخرج مثبت بمهمة اصطناعية، لا bypass، Human Gate يوقف التنفيذ عند ESCALATE، deny قبل مزود. تبعية 01 و06 و04 للإرسال الخارجي.
+</textarea></section><section class="prompt"><button data-copy="p6">نسخ البرومبت 06</button><h2>06 — P0 | Human Gate + Ledger lifecycle closure</h2>
+<p>الدور workflow and evidence engineer. عالج فشل tests/firewall-review-binding.test.mjs:204 بعد إعادة الإنتاج المصرح (403 صحيح، جسم الخطأ مختلف؛ لا تخفف assertion أو تكشف بيانات خطأ). تحقق من العقد المقصود، عدّل جهة الخطأ/adapter إذا ثبت. فصل الأدوار، approval مربوط بطلب وأصل وإصدار وسياسة، expiry، single-use atomic grant، revalidation، منع تعديل الطلب، عدم تنفيذ بعد الرفض. مختبر الحوكمة يصدر JSON.stringify(state) فقط: اربط كل event في نفس السياق بسلسلة SHA-256 canonical sequence/version/correlation، export manifest، CLI verifier، tamper copy. لا تصف البصمات كتوقيع. حافظ على سجل الأصل. القبول: review/resume/deny/replay و5/5 تسجيل Ledger في staging المخول؛ verify مستقل ومثال عبث؛ لا كتابة إنتاج. تبعية 01.</p>
+<textarea id="p6" hidden>## 06 — P0 | Human Gate + Ledger lifecycle closure
+
+الدور workflow and evidence engineer. عالج فشل tests/firewall-review-binding.test.mjs:204 بعد إعادة الإنتاج المصرح (403 صحيح، جسم الخطأ مختلف؛ لا تخفف assertion أو تكشف بيانات خطأ). تحقق من العقد المقصود، عدّل جهة الخطأ/adapter إذا ثبت. فصل الأدوار، approval مربوط بطلب وأصل وإصدار وسياسة، expiry، single-use atomic grant، revalidation، منع تعديل الطلب، عدم تنفيذ بعد الرفض. مختبر الحوكمة يصدر JSON.stringify(state) فقط: اربط كل event في نفس السياق بسلسلة SHA-256 canonical sequence/version/correlation، export manifest، CLI verifier، tamper copy. لا تصف البصمات كتوقيع. حافظ على سجل الأصل. القبول: review/resume/deny/replay و5/5 تسجيل Ledger في staging المخول؛ verify مستقل ومثال عبث؛ لا كتابة إنتاج. تبعية 01.
+</textarea></section><section class="prompt"><button data-copy="p7">نسخ البرومبت 07</button><h2>07 — P1 | Enterprise registry, policy packs &amp; risk-control library</h2>
+<p>الدور enterprise governance architect. توحيد سياق createGovernanceSession مع العقود الموجودة في governance/registry وinternal-pack دون تكرار مصدر الحقيقة. فصل demo memory عن persistence المؤسسة. Inventory/Agent/Vendor lifecycle، owner/purpose/versions/tool limits/review. packSchema يقبل INTERNAL فقط؛ وسّعه بتوافق آمن لمصادر رسمية موثقة وإصدار وتاريخ وانطباق. PDPL/SDAIA ثم SAMA/Health حسب القطاع ثم NIST وISO42001 حسب الحقوق، لا ادعاء شهادة. متطلب→ضابط→check→Finding→معالجة→review→evidence. أضف catalog صغير موثق وقابل للنمو لا أعداد مزيفة، قوالب القطاع والحالة، policy-to-code مسودة فقط مع موافقة ومراجعة وفحوص قبل التطبيق. Shadow AI manual assessment واضح أنه استبيان لا كشف شبكي. القبول: حزمة واحدة خارجية على الأقل مع أدلة مرجعية ومراجعة مستقلة، تغيير الإصدار يبطل القرار وفق العقد، كل منتج مستقلًا ومتكاملًا، evidence export. تبعية 05/06.</p>
+<textarea id="p7" hidden>## 07 — P1 | Enterprise registry, policy packs &amp; risk-control library
+
+الدور enterprise governance architect. توحيد سياق createGovernanceSession مع العقود الموجودة في governance/registry وinternal-pack دون تكرار مصدر الحقيقة. فصل demo memory عن persistence المؤسسة. Inventory/Agent/Vendor lifecycle، owner/purpose/versions/tool limits/review. packSchema يقبل INTERNAL فقط؛ وسّعه بتوافق آمن لمصادر رسمية موثقة وإصدار وتاريخ وانطباق. PDPL/SDAIA ثم SAMA/Health حسب القطاع ثم NIST وISO42001 حسب الحقوق، لا ادعاء شهادة. متطلب→ضابط→check→Finding→معالجة→review→evidence. أضف catalog صغير موثق وقابل للنمو لا أعداد مزيفة، قوالب القطاع والحالة، policy-to-code مسودة فقط مع موافقة ومراجعة وفحوص قبل التطبيق. Shadow AI manual assessment واضح أنه استبيان لا كشف شبكي. القبول: حزمة واحدة خارجية على الأقل مع أدلة مرجعية ومراجعة مستقلة، تغيير الإصدار يبطل القرار وفق العقد، كل منتج مستقلًا ومتكاملًا، evidence export. تبعية 05/06.
+</textarea></section><section class="prompt"><button data-copy="p8">نسخ البرومبت 08</button><h2>08 — P1 | Model evaluation, monitoring &amp; risk methodology</h2>
+<p>الدور model risk/evaluation engineer. ابدأ بـevaluation.mjs replay الحالي؛ لا تسميه monitoring حي. وفر dataset اصطناعي versioned وحقيقة مرجعية، حساب confusion matrix ومعدلات المجموعات والحدود والمقام الصفري، عينة صغيرة وuncertainty واضحة. أضف تشغيلات جديدة ذات dataset/model مختلف ومؤرخة، findings ومسؤول وموعد، trend لا fixture مكرر. LLM evaluations: مهام factuality/safety/policy/refusal/tool success، judge مساعد مع توثيق محدوديته. عند توفر مزود مخول، اربط قياسًا فعليًا بعد 04. المخاطر الأولية والمتبقية بمنهج معلن ومدخلات مبررة؛ لا خفض آلي بمجرد تفعيل ضابط. القبول: الحسابات قابلة لإعادة الإنتاج، حدود العدالة غير مضللة، الفصل بين replay/live، لا PII حقيقية. تبعية 07.</p>
+<textarea id="p8" hidden>## 08 — P1 | Model evaluation, monitoring &amp; risk methodology
+
+الدور model risk/evaluation engineer. ابدأ بـevaluation.mjs replay الحالي؛ لا تسميه monitoring حي. وفر dataset اصطناعي versioned وحقيقة مرجعية، حساب confusion matrix ومعدلات المجموعات والحدود والمقام الصفري، عينة صغيرة وuncertainty واضحة. أضف تشغيلات جديدة ذات dataset/model مختلف ومؤرخة، findings ومسؤول وموعد، trend لا fixture مكرر. LLM evaluations: مهام factuality/safety/policy/refusal/tool success، judge مساعد مع توثيق محدوديته. عند توفر مزود مخول، اربط قياسًا فعليًا بعد 04. المخاطر الأولية والمتبقية بمنهج معلن ومدخلات مبررة؛ لا خفض آلي بمجرد تفعيل ضابط. القبول: الحسابات قابلة لإعادة الإنتاج، حدود العدالة غير مضللة، الفصل بين replay/live، لا PII حقيقية. تبعية 07.
+</textarea></section><section class="prompt"><button data-copy="p9">نسخ البرومبت 09</button><h2>09 — P1 | Enterprise UX and developer integration</h2>
+<p>الدور Principal Product Designer/Frontend. استلهم Credo/Holistic/Trustible وEnzai/Saidot/Asenion/Monitaur/Lumenova/VerifyWise دون نسخ. واجهة Overview + Inventory + asset tabs + Packs + أربعة Workspaces، جدول أصول ومخاطر ومراجعات وأدلة مرتبط بإصدار، sidebar/drawer RTL، inspector، حالات تحميل وفشل وانتهاء. لكل منتج أول فعل مفيد. استعمل Design Tokens وحافظ على Hero حرفيًا ومرئيًا. قلل التكرار وعبارات التحذير دون إخفاء الفرق بين البيانات الاصطناعية والعمليات الحقيقية. Developer View: snippets cURL/Node/Python مبنية على عقد API موجود ومثبت فقط، أمثلة local/staging موسومة إن لم ينشر. لا عنوان إنتاجي وهمي أو مفاتيح. اختبار 320/390/768/1440/1920 وkeyboard/focus/reduced-motion، لا ادعاء WCAG بلا قياس. القبول: كل رحلة متاحة بلا حساب في public synthetic؛ enterprise auth منفصل، export، روابط 200، أداء مقاس، Hero قبل/بعد. تبعية 03/05–08.</p>
+<textarea id="p9" hidden>## 09 — P1 | Enterprise UX and developer integration
+
+الدور Principal Product Designer/Frontend. استلهم Credo/Holistic/Trustible وEnzai/Saidot/Asenion/Monitaur/Lumenova/VerifyWise دون نسخ. واجهة Overview + Inventory + asset tabs + Packs + أربعة Workspaces، جدول أصول ومخاطر ومراجعات وأدلة مرتبط بإصدار، sidebar/drawer RTL، inspector، حالات تحميل وفشل وانتهاء. لكل منتج أول فعل مفيد. استعمل Design Tokens وحافظ على Hero حرفيًا ومرئيًا. قلل التكرار وعبارات التحذير دون إخفاء الفرق بين البيانات الاصطناعية والعمليات الحقيقية. Developer View: snippets cURL/Node/Python مبنية على عقد API موجود ومثبت فقط، أمثلة local/staging موسومة إن لم ينشر. لا عنوان إنتاجي وهمي أو مفاتيح. اختبار 320/390/768/1440/1920 وkeyboard/focus/reduced-motion، لا ادعاء WCAG بلا قياس. القبول: كل رحلة متاحة بلا حساب في public synthetic؛ enterprise auth منفصل، export، روابط 200، أداء مقاس، Hero قبل/بعد. تبعية 03/05–08.
+</textarea></section><section class="prompt"><button data-copy="p10">نسخ البرومبت 10</button><h2>10 — P1 | Analytics, search visibility &amp; documentation</h2>
+<p>الدور analytics/SEO. Windsor 152 جلسة brightai.live و48 local، GSC 783 impressions/12 clicks (26 أكتوبر–22 نوفمبر). اعزل dev host من تقارير التسويق أو stream مخصص؛ لا تضف tag مكرر. افحص جميع HTML المؤهلة، privacy/consent، noindex للخاص، event delivery، duplicate page_view، لا URL/token/PII. Governance CSP يمنع اتصال الشبكة؛ لا تخففها لأجل tracking. OpenSEO Default بلا domain؛ صحح الربط فقط بإذن. GSC site index/URL inspections، sitemap-index وcanonical وredirects؛ لا ضمان ranking. README: Current Architecture أولًا وhistorical archive واضح؛ احم الأدلة وSecure Chat. لا حذف لاحقة 2 قبل تحقق dynamic routes/imports/build، ولا حذف من المشروع في هذه المحادثة. القبول: بيانات production منفصلة، تقارير قبل/بعد موثقة، لا وصول حساس، روابط indexable صحيحة. تبعية 03/09.</p>
+<textarea id="p10" hidden>## 10 — P1 | Analytics, search visibility &amp; documentation
+
+الدور analytics/SEO. Windsor 152 جلسة brightai.live و48 local، GSC 783 impressions/12 clicks (26 أكتوبر–22 نوفمبر). اعزل dev host من تقارير التسويق أو stream مخصص؛ لا تضف tag مكرر. افحص جميع HTML المؤهلة، privacy/consent، noindex للخاص، event delivery، duplicate page_view، لا URL/token/PII. Governance CSP يمنع اتصال الشبكة؛ لا تخففها لأجل tracking. OpenSEO Default بلا domain؛ صحح الربط فقط بإذن. GSC site index/URL inspections، sitemap-index وcanonical وredirects؛ لا ضمان ranking. README: Current Architecture أولًا وhistorical archive واضح؛ احم الأدلة وSecure Chat. لا حذف لاحقة 2 قبل تحقق dynamic routes/imports/build، ولا حذف من المشروع في هذه المحادثة. القبول: بيانات production منفصلة، تقارير قبل/بعد موثقة، لا وصول حساس، روابط indexable صحيحة. تبعية 03/09.
+</textarea></section><section class="prompt"><button data-copy="p11">نسخ البرومبت 11</button><h2>11 — P1 | Procurement &amp; self-hosted readiness</h2>
+<p>الدور enterprise deployment/procurement. بعد 01/02/04/06، جهز حزمة نشر قابلة للتكرار (container/compose أو Helm عند ملاءمة البنية)، سياسة secrets/egress/backup/restore وSBOM/update، دليل سيادة بيانات، installation/upgrade/rollback وacceptance. لا تدّع on-prem/air-gap جاهزًا من مجرد وجود Dockerfile أو استخدام Groq خارجي؛ Air-gap يحتاج مزود محلي أو تعطيل egress. استخرج تقريرًا عربيًا للطباعة وJSON/hash manifest وحدود التوقيع، قائمة أدلة مشتريات، DPA/retention كمسودة مراجعة مختصة. القبول: تثبيت واختبار استعادة في بيئة معزولة مصرح بها، لا تسريب، traceability. لا نشر أو شراء تلقائي.</p>
+<textarea id="p11" hidden>## 11 — P1 | Procurement &amp; self-hosted readiness
+
+الدور enterprise deployment/procurement. بعد 01/02/04/06، جهز حزمة نشر قابلة للتكرار (container/compose أو Helm عند ملاءمة البنية)، سياسة secrets/egress/backup/restore وSBOM/update، دليل سيادة بيانات، installation/upgrade/rollback وacceptance. لا تدّع on-prem/air-gap جاهزًا من مجرد وجود Dockerfile أو استخدام Groq خارجي؛ Air-gap يحتاج مزود محلي أو تعطيل egress. استخرج تقريرًا عربيًا للطباعة وJSON/hash manifest وحدود التوقيع، قائمة أدلة مشتريات، DPA/retention كمسودة مراجعة مختصة. القبول: تثبيت واختبار استعادة في بيئة معزولة مصرح بها، لا تسريب، traceability. لا نشر أو شراء تلقائي.
+</textarea></section><section class="prompt"><button data-copy="p12">نسخ البرومبت 12</button><h2>12 — P0 | Independent final release gate</h2>
+<p>الدور release auditor مستقل. أعد تثبيت SHA وقياس 78 شرطًا بالمقام والأوزان نفسها؛ كل نسبة مع S/C/F/U وتغطية، لا احتساب reported local كتشغيل حي. قارن source/local/staging/live منفصلة، أعد تشغيل الاختبارات المناسبة الموجودة على مرشح معتمد دون تخفيف assertions: npm run build وtest:seo وtest:healthz إن وجدت، CI smoke، auth، firewall-review، isolation، E2E الأربعة، التصدير وCLI، ميزانية Groq بعد الإذن. إذا لم يسمح المالك بالاختبارات، سجل NOT_VERIFIED؛ لا اختلق PASS. اعرض current routes, schema/constraints parity, runtime role, 48h, analytics privacy، hero قبل/بعد، scorecard، P0/P1/P2، rollback. قرار مستقل PUBLIC SYNTHETIC / PUBLIC LIVE AI / 48H / COMMERCIAL؛ معيار 80% لكل محور ليس بديلًا عن صفر P0. اطلب موافقة المالك للنشر فقط بعد إغلاق الأدلة. لا تغيّر GitHub أو الخدمات تلقائيًا.</p>
+<textarea id="p12" hidden>## 12 — P0 | Independent final release gate
+
+الدور release auditor مستقل. أعد تثبيت SHA وقياس 78 شرطًا بالمقام والأوزان نفسها؛ كل نسبة مع S/C/F/U وتغطية، لا احتساب reported local كتشغيل حي. قارن source/local/staging/live منفصلة، أعد تشغيل الاختبارات المناسبة الموجودة على مرشح معتمد دون تخفيف assertions: npm run build وtest:seo وtest:healthz إن وجدت، CI smoke، auth، firewall-review، isolation، E2E الأربعة، التصدير وCLI، ميزانية Groq بعد الإذن. إذا لم يسمح المالك بالاختبارات، سجل NOT_VERIFIED؛ لا اختلق PASS. اعرض current routes, schema/constraints parity, runtime role, 48h, analytics privacy، hero قبل/بعد، scorecard، P0/P1/P2، rollback. قرار مستقل PUBLIC SYNTHETIC / PUBLIC LIVE AI / 48H / COMMERCIAL؛ معيار 80% لكل محور ليس بديلًا عن صفر P0. اطلب موافقة المالك للنشر فقط بعد إغلاق الأدلة. لا تغيّر GitHub أو الخدمات تلقائيًا.
+</textarea></section></article></main><script>document.querySelectorAll("table").forEach(t=>{let w=document.createElement("div");w.className="table-wrap";t.before(w);w.append(t)});document.querySelectorAll("[data-copy]").forEach(b=>b.onclick=async()=>{let t=document.getElementById(b.dataset.copy);try{await navigator.clipboard.writeText(t.value);b.textContent="تم النسخ"}catch(e){t.hidden=false;t.style.width="100%";t.select();b.textContent="انسخ النص المحدد"}})</script></body></html>
