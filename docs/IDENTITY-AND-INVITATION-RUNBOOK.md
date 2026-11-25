@@ -174,3 +174,13 @@ Record each code and the resulting membership/audit state.
 | Cancellation unconfirmed | `CANCELLATION_NOT_CONFIRMED` | | | NOT RUN |
 | Replay after revoke | `INVITATION_ALREADY_CONSUMED` | | | NOT RUN |
 | Tenant B via URL as A | 403, cleared | | | NOT RUN |
+
+## Workspace OIDC verification (local implementation, 2026-11-25)
+
+Kernel supports an additional OIDC authorization-code challenge for an existing Neon identity. Open the workspace-specific Kernel URL to start the challenge. A verified subject maps to an existing Neon user ID and Kernel independently verifies the workspace membership. Neon sign-in, session issuance and the platform operator channel remain separate. SAML requires a customer integration decision.
+
+The identity owner configures AIGAS_OIDC_CONNECTIONS as a server-side JSON array. Each entry contains workspace (UUID), mode (test, required, suspended), revision (string), issuer, authorization, token, jwks (pinned HTTPS URLs), clientId and bindings (pairs of subject and userId). Use an OIDC public PKCE client registered for the exact HTTPS callback /auth/sso/callback/. For multiple issuers require the authorization response issuer parameter. Set AIGAS_OIDC_COOKIE_KEY to a shared secret of 32 random bytes encoded as 64 hex characters. Use identical approved settings on every replica. Restrict changes to identity operators.
+
+Start in test mode. Verify distinct accounts with the same email through their subject mappings, then set required. Test mode permits ordinary membership access. Required mode enforces a ten-minute workspace proof at tenantGuard and during Kernel invitation acceptance. To withdraw access, set suspended and roll out to every replica. Before enforcing for a customer, apply migration 0045 and have the database owner insert its tenant_id in aigas_workspace_sso_requirements. Missing, suspended or test-mode runtime configuration then blocks access, including after restart. When remapping identities or endpoints, increment revision. For an outage keep suspended or required and restore the last approved IdP configuration under incident control. Record the approver, snapshot revision and recovery outcome. Changing the cookie key invalidates outstanding flows and proofs.
+
+Workspaces without a durable requirement and without an OIDC connection retain the ordinary membership path. Before enabling on a customer workspace, verify configuration continuity on replica restart, signed-token validation with the customer's rotating JWKS, logout, invitation acceptance and every required product path. Preserve a tested administrative recovery channel independent of tenant sign-in. A real tenant and IdP must be selected before accepting the integration.

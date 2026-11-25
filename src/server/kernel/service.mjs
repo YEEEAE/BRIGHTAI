@@ -1,3 +1,4 @@
+import { requireWorkspaceSso } from './sso.mjs';
 import { checkIdempotencyKey } from '../api/idempotency.mjs';
 import { workspaceGuidance } from './guidance.mjs';
 import { explorationGrants, EXPLORATION_CAPABILITIES, selfServiceAccessState } from './exploration.mjs';
@@ -23,6 +24,11 @@ export async function memberships(userId, db = database()) {
   const result = await db.query('SELECT m.tenant_id, m.role, t.name, t.created_at FROM public.aigas_memberships m JOIN public.aigas_tenants t ON t.id = m.tenant_id WHERE m.user_id = $1 ORDER BY m.created_at, m.tenant_id', [userId]);
   return result.rows;
 }
+export async function enforceWorkspaceSso(db, identity, workspace) {
+  await setTenantScope(db, workspace, identity.userId);
+  const result = await db.query('SELECT tenant_id FROM public.aigas_workspace_sso_requirements WHERE tenant_id=$1', [workspace]);
+  requireWorkspaceSso(identity, workspace, result.rowCount > 0);
+}
 export async function tenantGuard(identity, requested, db = database()) {
   // Reject a malformed selector before reading any row; it is never echoed back.
   if (requested != null && !isUuid(requested)) throw new KernelError(400, 'INVALID_WORKSPACE', 'حدد مؤسسة صالحة قبل تنفيذ العملية.');
@@ -30,7 +36,9 @@ export async function tenantGuard(identity, requested, db = database()) {
   const tenant = selectMembership(rows, requested);
   // A workspace parameter is only a selector over the caller's own memberships. It never
   // grants scope and never becomes the tenant used by a query.
-  if (tenant) await setTenantScope(db, tenant.tenant_id, identity.userId);
+  if (tenant) {
+    await enforceWorkspaceSso(db, identity, tenant.tenant_id);
+  }
   return { memberships: rows, tenant };
 }
 async function lockMember(db, identity, tenant) {

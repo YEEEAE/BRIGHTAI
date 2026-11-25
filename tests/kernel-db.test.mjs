@@ -103,6 +103,9 @@ test('Kernel DB: real product state, tenant-scoped totals, activity and member r
     const health = await operationalHealth();
     assert.equal(health.checks.database, 'READY'); assert.equal(health.checks.schema, 'READY');
     assert.equal(health.checks.auth, 'AUTH_SETUP_REQUIRED'); assert.equal(health.status, 'degraded');
+    await pool.query('INSERT INTO public.aigas_workspace_sso_requirements(tenant_id) VALUES($1)', [a]);
+    await assert.rejects(dashboard({userId:owner},a), {code:'SSO_REQUIRED'});
+    assert.equal((await dashboard({userId:outsider},b)).tenant.tenant_id,b);
     await pool.query('ALTER TABLE public.aigas_audit_events RENAME TO fixture_unavailable_audit_events');
     const missing = await operationalHealth();
     assert.equal(missing.checks.schema, 'SCHEMA_MISSING'); assert.equal(missing.status, 'degraded');

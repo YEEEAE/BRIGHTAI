@@ -1,3 +1,4 @@
+import { ssoProof } from './sso.mjs';
 import { env } from './env.mjs';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 import { KernelError } from './core.mjs';
@@ -20,7 +21,9 @@ export async function authenticate(request) {
   if (!config) throw new KernelError(503, 'AUTH_SETUP_REQUIRED', 'يلزم إعداد الدخول عبر Neon Auth.', 'not configured');
   keys ??= createRemoteJWKSet(new URL(config.jwks), { timeoutDuration: 5000 });
   try {
-    return await verifyIdentity(header.slice(7), keys, config.issuer);
+    const identity = await verifyIdentity(header.slice(7), keys, config.issuer);
+    const sso = await ssoProof(request);
+    return sso ? { ...identity, sso } : identity;
   } catch (error) {
     if (error.code === 'ERR_JWKS_TIMEOUT' || error instanceof TypeError) throw new KernelError(503, 'AUTH_UNAVAILABLE', 'تعذر التحقق من الدخول. حاول لاحقًا.');
     throw new KernelError(401, 'UNAUTHORIZED', 'انتهت جلسة الدخول أو تعذر التحقق منها.');

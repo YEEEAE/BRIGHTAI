@@ -1,4 +1,5 @@
 ---
+import { workspaceSsoAvailable } from '../../../server/kernel/sso.mjs';
 import Alert from '../../../components/design-system/Alert.astro';
 import Button from '../../../components/design-system/Button.astro';
 import Card from '../../../components/design-system/Card.astro';
@@ -14,11 +15,14 @@ import { authConfig } from '../../../server/kernel/auth.mjs';
 import { products } from '../../../server/kernel/core.mjs';
 export const prerender = false;
 const config = authConfig();
+const ssoWorkspace = Astro.url.searchParams.get('workspace');
+const showSso = ssoWorkspace && workspaceSsoAvailable(ssoWorkspace);
 const intendedProduct = productForReturnTo(Astro.url.searchParams.get('returnTo'));
 const signupPath = `/auth/sign-up/${intendedProduct ? `?returnTo=${encodeURIComponent(intendedProduct.workspacePath)}` : ''}`;
 ---
 <AppLayout title="نواة المنظومة">
   <section class="kernel" data-kernel data-return-to={intendedProduct?.workspacePath} data-auth-configured={!!config}>
+    {showSso && <a href={'/auth/sso/start/?workspace=' + encodeURIComponent(ssoWorkspace!)}>التحقق عبر موفر هوية المؤسسة</a>}
     {intendedProduct && <Alert as="section" tone="warning" class="notice" aria-label="المنتج المختار"><div><h2>متابعة إلى <bdi dir="ltr">{intendedProduct.name}</bdi></h2><p data-product-intent role="status" aria-live="polite">سجّل الدخول ثم اختر مساحة عملك للمتابعة.</p><a href={intendedProduct.publicPath}>العودة إلى تفاصيل المنتج</a> · <a href={productContactPath(intendedProduct.slug)}>استفسار عن تقييم</a></div></Alert>}
     <div class="page-heading"><div><p class="overline">01 / SHARED FOUNDATION</p><h1>نواة المنظومة<span>مساحتك، ومنها تبدأ.</span></h1><p class="intro">مؤسستك ومنتجاتك في مساحة عمل واحدة، بصلاحيات مرتبطة بعضويتك. دور المالك أو المدير يخص المؤسسة المحددة؛ ولا يمنح صلاحية مشغّل التجارب.</p></div><Badge class="connection" data-connection>لم يُتحقق من الربط</Badge></div>
 

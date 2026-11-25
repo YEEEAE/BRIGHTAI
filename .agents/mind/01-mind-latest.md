@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-25 PARTIAL P2: OIDC إضافي لكل مؤسسة مع Neon؛ 0045 يثبت الفرض عند غياب إعدادات IdP؛ اختبارات الهوية والترحيلات 18/18 وPG18 وبناء محلي PASS؛ موفر العميل والمتصفح ومسار الطوارئ والنشر NOT VERIFIED. `docs/IDENTITY-AND-INVITATION-RUNBOOK.md`.
 - 2026-11-25 VERIFIED LOCAL CSP: فرض موحد في Node وAstro دون unsafe-eval أو inline scripts عامة؛ CSS خارجي وبلاغات محدودة بلا بيانات طلب؛ Chrome زار 77 مستندًا ونجح Auth اصطناعي وAPI GET/POST و35 اختبار Node؛ GA4 محاكى وCloudflare/Render NOT VERIFIED؛ `Audit/security-headers-2026-11-25/REPORT.md`.
 - 2026-11-25 PARTIAL LOCAL Authorization: 0041 يمنع المشغّل الموقوف عبر التطبيق وRLS ويقيّد أسباب أحداث التجربة؛ فحص الدور لكل معاملة ورفض workspace المكرر؛ PostgreSQL18 39/39 وRLS 90/90 وChrome/Auth اصطناعي وbuild PASS؛ Staging/Production والتغطية الشاملة لكل دور ومسار NOT VERIFIED؛ `Audit/authorization-2026-11-25/REPORT.md`.
 - 2026-11-25 PARTIAL accessibility/performance: Playwright+axe smoke لـ11 مسارًا، صفر مخالفات Axe وbuild/smoke PASS؛ `/app/trial/` محليًا 503، INP ميداني وCLS المستقر وCI البعيد غير متحقق؛ CSS غير المستخدم 49.8–92.6% للصفحات العاملة؛ `Audit/accessibility-performance-2026-11-25/REPORT.md`.

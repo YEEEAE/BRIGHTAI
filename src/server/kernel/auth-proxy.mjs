@@ -76,6 +76,9 @@ export async function proxyAuth(request, path, fetchUpstream = fetch) {
     if (path === 'get-session' && upstream.status === 401) return json(null);
     if (path === 'sign-out' && (upstream.ok || [401, 404].includes(upstream.status))) {
       const response = json({ success: true });
+      for (const name of ['__Host-brightai-oidc-proof','__Host-brightai-oidc-flow']) {
+        response.headers.append('Set-Cookie', name+'=; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=0');
+      }
       for (const name of new Set(['__Secure-neon-auth.session_token', ...cookies.map(cookie => cookie.split('=')[0])])) {
         response.headers.append('Set-Cookie', browserCookie(`${name}=; Max-Age=0`));
       }

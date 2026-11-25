@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { lockGovernance, transaction } from './db.mjs';
 import { productGrants, resolveProductAccess } from './access.mjs';
 import { trialProductAccess } from './trial.mjs';
-import { tenantGuard, memberships, audit } from './service.mjs';
+import { tenantGuard, memberships, audit, enforceWorkspaceSso } from './service.mjs';
 import { KernelError, requireRole, products } from './core.mjs';
 import { exact, uuid } from './http.mjs';
 const auditContext = () => ({ correlationId: randomUUID() });
@@ -140,6 +140,7 @@ export async function manageInvitation(identity, requested, body) {
         const { rows: [accepted] } = await db.query(
           'SELECT * FROM public.aigas_accept_workspace_invitation_v2($1)', [body.invitationId],
         );
+        await enforceWorkspaceSso(db, identity, accepted.workspace_id);
         const result = { persisted: true, tenantId: accepted.workspace_id, role: accepted.membership_role };
         return accepted.idempotent ? { ...result, idempotent: true } : result;
       } catch (error) {
