@@ -1,4 +1,5 @@
 import { decide } from './engine.mjs';
+import { replayEvaluation } from '../server/risk-engine/evaluation.mjs';
 import { evaluate } from '../server/risk-engine/core.mjs';
 
 export const SESSION_DURATION = 30 * 60 * 1000;
@@ -71,6 +72,17 @@ export function createGovernanceSession(startedAt = Date.now()) {
             const risk = evaluate(action.likelihood, action.impact);
             event = { type: 'risk.assessed', result: risk.risk_level, score: risk.score,
               likelihood: action.likelihood, impact: action.impact, method: risk.method_version };
+            break;
+          }
+          case 'replay': {
+            const previous = state.events.findLast(item => item.type === 'evaluation.replayed' && item.assetId === asset.id);
+            const evidence = replayEvaluation();
+            const findings = evidence.findings.map(finding => ({
+              ...finding,
+              dueAt: new Date(now + finding.dueInDays * 86400000).toISOString(),
+            }));
+            event = { type: 'evaluation.replayed', previousRunId: previous?.id ?? null,
+              policyPack: asset.pack, evidence: { ...evidence, findings } };
             break;
           }
           case 'review': {

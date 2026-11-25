@@ -1,0 +1,55 @@
+---
+import Card from './design-system/Card.astro';
+import Badge from './design-system/Badge.astro';
+import { minimumGroupSize, replayEvaluation } from '../server/risk-engine/evaluation.mjs';
+
+const { heading = 'تقييم أداء النماذج والعدالة' } = Astro.props;
+const report = replayEvaluation();
+const names = {
+  precision: 'Precision', recall: 'Recall', fpr: 'FPR', fnr: 'FNR',
+  accuracy: 'Accuracy', selection: 'معدل التصنيف الإيجابي',
+  taskSuccess: 'نجاح المهمة', policySafety: 'سلامة السياسة', refusal: 'الرفض المسجل', escalation: 'الإحالة المسجلة',
+  expectedRefusal: 'مطابقة الرفض المتوقع', expectedEscalation: 'مطابقة الإحالة المتوقعة', meanLatencyMs: 'متوسط الاستجابة بالمللي ثانية',
+};
+const outcomes = { answer: 'إجابة', refuse: 'رفض', escalate: 'إحالة' };
+const format = new Intl.NumberFormat('ar-SA', { style: 'percent', maximumFractionDigits: 1 });
+const value = (metric, key) => metric.value === null
+  ? (metric.status === 'small-group' ? 'عينة صغيرة' : 'مقام صفري')
+  : (key === 'meanLatencyMs' ? metric.value.toFixed(1) : format.format(metric.value));
+---
+<Card as="div" class="risk-evidence">
+  <h3>{heading}</h3>
+  <Badge tone="info">إعادة عرض · بيانات اصطناعية</Badge>
+  <p>المقاييس وصفية لهذه العينات. الحد الأدنى لعرض معدل المجموعة {minimumGroupSize} حالة. لم يُجرَ اختبار دلالة إحصائية.</p>
+  <details>
+    <summary>المصنّف الثنائي · مصفوفة الالتباس ومعدلات المجموعات</summary>
+    <p>الفئة الموجبة تعني توجيه الطلب لمسار سريع. المصدر <bdi>{report.sources.classifier}</bdi>.</p>
+    {report.classifier.map(group => <div class="risk-evidence-group">
+      <h4>{group.id === 'all' ? 'جميع الحالات' : <>المجموعة <bdi>{group.id}</bdi></>} · <bdi>{group.size}</bdi></h4>
+      <p><bdi>TP {group.counts.tp} · FP {group.counts.fp} · TN {group.counts.tn} · FN {group.counts.fn}</bdi></p>
+      <dl>{Object.entries(group.metrics).map(([key, metric]) => <div>
+        <dt><bdi>{names[key]}</bdi></dt><dd>{value(metric, key)} · <bdi>{metric.numerator}/{metric.denominator}</bdi></dd>
+      </div>)}</dl>
+    </div>)}
+  </details>
+  <details>
+    <summary>النموذج اللغوي والوكيل · نتائج السيناريوهات</summary>
+    <p>المصدر <bdi>{report.sources.scenarios}</bdi>. نتائج السيناريوهات وأزمنتها قيم إعادة العرض الاصطناعية. مساعد Groq غير مشغّل. أي حكم مساعد يتطلب مراجعة مستقلة.</p>
+    {report.language.map(group => <div class="risk-evidence-group">
+      <h4><bdi>{group.kind}</bdi></h4>
+      <dl>{Object.entries(group.metrics).map(([key, metric]) => <div>
+        <dt>{names[key]}</dt><dd>{value(metric, key)} · <bdi>{metric.numerator}/{metric.denominator}</bdi></dd>
+      </div>)}</dl>
+    </div>)}
+    <ul>{report.scenarios.map(row => <li><bdi>{row.id}</bdi> · {row.task} · المتوقع {outcomes[row.expected]}، المسجل {outcomes[row.observed]} · المهمة {row.taskPassed ? 'ناجحة' : 'فشلت'} · السياسة {row.policyPassed ? 'سليمة' : 'أخفقت'} · <bdi>{row.latencyMs} ms</bdi></li>)}</ul>
+  </details>
+</Card>
+<style>
+  .risk-evidence { margin-block: 1rem; padding: 1rem; border: 1px solid currentColor; border-radius: .75rem; overflow-wrap: anywhere; }
+  summary { cursor: pointer; padding-block: .65rem; }
+  summary:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
+  .risk-evidence-group { padding-block: .5rem; border-block-start: 1px solid currentColor; }
+  dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr)); gap: .5rem; }
+  dt { font-weight: 700; }
+  dd { margin: 0; }
+</style>

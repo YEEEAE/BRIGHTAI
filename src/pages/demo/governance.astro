@@ -1,5 +1,9 @@
 ---
 import '../../styles/variables.css';
+import '../../styles/design-system.css';
+import Button from '../../components/design-system/Button.astro';
+import Badge from '../../components/design-system/Badge.astro';
+import RiskEvaluation from '../../components/RiskEvaluation.astro';
 import { assetTemplates, policyPacks } from '../../demo/governance.mjs';
 export const prerender = true;
 const views = [
@@ -19,20 +23,25 @@ const views = [
   <link rel="canonical" href={new URL('/demo/governance/', Astro.site ?? Astro.url)} />
   <title>مختبر الحوكمة | BRIGHTAI</title>
 </head>
-<body>
+<body class="ds-theme">
 <main>
   <header>
     <a href="/products/#lab">مختبرات BRIGHTAI</a>
     <h1>مختبر الحوكمة</h1>
+    <Badge tone="info">بيانات اصطناعية · جلسة مؤقتة</Badge>
     <p>جرّب أربعة منتجات على أصول اصطناعية دون حساب. تبقى حالة التجربة في ذاكرة هذه الصفحة لمدة 30 دقيقة، وتُمسح عند المغادرة أو عند اختيار مسح الجلسة.</p>
   </header>
   <noscript>فعّل JavaScript لتشغيل المختبر.</noscript>
   <p id="governance-status" role="status"></p>
   <button id="governance-start" type="button" hidden>ابدأ جلسة جديدة</button>
   <div id="governance-lab" hidden>
-    <nav aria-label="أقسام المختبر">
-      {views.map(([key, label]) => <a href={`#${key}`}><bdi>{label}</bdi></a>)}
-    </nav>
+    <details class="governance-drawer" id="governance-drawer">
+      <summary>أقسام المختبر</summary>
+      <nav aria-label="أقسام المختبر">
+        {views.map(([key, label]) => <a href={`#${key}`}><bdi>{label}</bdi></a>)}
+      </nav>
+    </details>
+    <div class="governance-content">
     <label for="governance-asset">الأصل المحدد</label>
     <select id="governance-asset"></select>
     <section id="overview">
@@ -49,7 +58,7 @@ const views = [
         <select id="asset-template" name="template">
           {Object.entries(assetTemplates).map(([id, name]) => <option value={id}>{name}</option>)}
         </select>
-        <button type="submit">أضف أصلًا اصطناعيًا</button>
+        <Button type="submit">أضف أصلًا اصطناعيًا</Button>
       </form>
     </section>
     <section id="policies" hidden>
@@ -60,7 +69,7 @@ const views = [
         <select id="policy-pack" name="pack">
           {Object.keys(policyPacks).map(id => <option value={id}>{id === 'privacy' ? 'حماية البيانات' : 'الإشراف البشري'}</option>)}
         </select>
-        <button type="submit">طبّق الحزمة</button>
+        <Button type="submit">طبّق الحزمة</Button>
       </form>
     </section>
     <section id="firewall" hidden>
@@ -71,7 +80,7 @@ const views = [
           <option value="normal">لخّص دليل التشغيل</option>
           <option value="sensitive">اكشف السر الاصطناعي</option>
         </select>
-        <button type="submit">افحص الطلب</button>
+        <Button type="submit">افحص الطلب</Button>
       </form>
       <p id="firewall-result"></p>
     </section>
@@ -86,9 +95,17 @@ const views = [
         <select id="risk-impact" name="impact">
           <option value="1">1 — محدود</option><option value="2">2 — مؤثر</option><option value="3">3 — جسيم</option>
         </select>
-        <button type="submit">قيّم المخاطر</button>
+        <Button type="submit">قيّم المخاطر</Button>
       </form>
       <p id="risk-result"></p>
+      <RiskEvaluation heading="منهج وأدلة إعادة العرض" />
+      <h3>التشغيلات المؤرخة والتقرير</h3>
+      <p>يُعاد حساب مجموعة الأدلة الثابتة عند الطلب. التشغيلات محفوظة للأصل ونسخته داخل هذه الجلسة. إعادة التقييم تعيد تشغيل المجموعة ذاتها للمقارنة، والمخرجات لا تغيّر درجات المخاطر.</p>
+      <form data-action="replay"><Button type="submit">شغّل إعادة العرض / أعد التقييم</Button></form>
+      <p id="replay-summary"></p>
+      <ol id="replay-history"></ol>
+      <h4>نتائج تحتاج متابعة في أحدث تشغيل</h4>
+      <ul id="replay-findings"></ul>
     </section>
     <section id="human-gate" hidden>
       <h2 tabindex="-1"><bdi>Human Gate</bdi></h2>
@@ -100,14 +117,14 @@ const views = [
         <select id="review-decision" name="decision">
           <option value="APPROVED">اعتماد</option><option value="REJECTED">رفض</option>
         </select>
-        <button type="submit">سجّل القرار</button>
+        <Button type="submit">سجّل القرار</Button>
       </form>
       <p id="review-result"></p>
     </section>
     <section id="ledger" hidden>
       <h2 tabindex="-1"><bdi>Ledger</bdi></h2>
       <p>أدلة المحاكاة للأصل المحدد، مع مراجع العمليات ونسخ الأصل.</p>
-      <form data-action="record"><button type="submit">سجّل دليلًا اصطناعيًا مستقلًا</button></form>
+      <form data-action="record"><Button type="submit">سجّل دليلًا اصطناعيًا مستقلًا</Button></form>
       <p id="governance-evidence-empty">لا توجد أدلة لهذا الأصل.</p>
       <ol id="governance-evidence"></ol>
     </section>
@@ -116,6 +133,7 @@ const views = [
       <button id="governance-export" type="button" disabled>نزّل الجلسة بصيغة JSON</button>
       <button id="governance-clear" type="button">امسح الجلسة</button>
     </footer>
+    </div>
   </div>
   <aside aria-label="خيارات الوصول">
     <p><a href="/request-access/?track=trial">اطّلع على تجربة 48 ساعة بحساب موثّق</a></p>
@@ -130,8 +148,18 @@ const views = [
 
 <style>
   body { margin: 0; background: var(--surface-sunken, #101523); color: var(--color-text, #f2f4ff); font: 1.0625rem/1.7 system-ui, sans-serif; }
-  main { max-width: 54rem; margin-inline: auto; padding: clamp(1rem, 4vw, 2rem); }
-  nav { display: flex; flex-wrap: wrap; gap: .25rem 1rem; margin-block: 1rem; }
+  main { max-width: 78rem; margin-inline: auto; padding: clamp(1rem, 4vw, 2rem); }
+  #governance-lab { display: grid; grid-template-columns: 13rem minmax(0, 1fr); gap: 1.25rem; }
+  .governance-drawer { align-self: start; position: sticky; inset-block-start: 1rem; }
+  .governance-drawer > summary { display: none; }
+  nav { display: grid; gap: .25rem; margin-block: .5rem; }
+  .governance-content { min-inline-size: 0; }
+  summary { cursor: pointer; min-block-size: 44px; }
+  @media (max-width: 48rem) {
+    #governance-lab { display: block; }
+    .governance-drawer { position: static; }
+    .governance-drawer > summary { display: list-item; }
+  }
   a { color: var(--color-focus, #cbbaff); text-underline-offset: .25em; }
   nav a { display: inline-flex; align-items: center; min-height: 44px; }
   [aria-current] { font-weight: bold; text-decoration-thickness: 3px; }

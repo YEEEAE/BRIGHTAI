@@ -9,10 +9,12 @@ const reviewSelect = get<HTMLSelectElement>('review-source');
 const consent = get<HTMLInputElement>('governance-consent');
 const download = get<HTMLButtonElement>('governance-export');
 const panels = [...lab.querySelectorAll('section')];
+const drawer = get<HTMLDetailsElement>('governance-drawer');
+const mobile = matchMedia('(max-width: 48rem)');
 const links = [...lab.querySelectorAll('nav a')];
 const labels: Record<string, string> = {
   'asset.added': 'إضافة أصل', 'policy.changed': 'تغيير الحزمة', 'firewall.checked': 'فحص الطلب',
-  'risk.assessed': 'تقييم المخاطر', 'review.decided': 'قرار المراجعة', 'ledger.sample': 'دليل اصطناعي',
+  'risk.assessed': 'تقييم المخاطر', 'evaluation.replayed': 'إعادة عرض التقييم', 'review.decided': 'قرار المراجعة', 'ledger.sample': 'دليل اصطناعي',
   ALLOW: 'مسموح في المحاكاة', BLOCK: 'محجوب في المحاكاة', REVIEW_REQUIRED: 'يتطلب مراجعة',
   LOW: 'منخفض', MEDIUM: 'متوسط', HIGH: 'مرتفع', APPROVED: 'معتمد افتراضيًا',
   REJECTED: 'مرفوض افتراضيًا', RECORDED: 'مسجّل',
@@ -30,6 +32,7 @@ function navigate(focus = false) {
     if (link.hash === '#' + current.id) link.setAttribute('aria-current', 'location');
     else link.removeAttribute('aria-current');
   }
+  if (focus && mobile.matches) drawer.open = false;
   if (focus) current.querySelector('h2')?.focus();
 }
 
@@ -37,10 +40,11 @@ function close(message: string, focus = false) {
   session.close();
   clearTimeout(timer);
   for (const id of ['governance-summary', 'governance-detail', 'governance-inventory', 'governance-evidence',
-    'firewall-result', 'risk-result', 'review-result', 'governance-asset', 'review-source']) {
+    'firewall-result', 'risk-result', 'replay-summary', 'replay-history', 'replay-findings', 'review-result', 'governance-asset', 'review-source']) {
     get(id).replaceChildren();
   }
   for (const form of lab.querySelectorAll('form')) form.reset();
+  drawer.open = false;
   consent.checked = false;
   download.disabled = true;
   lab.hidden = true;
@@ -90,6 +94,18 @@ function render() {
   const check = last('firewall.checked');
   const risk = last('risk.assessed');
   const review = last('review.decided');
+  const replays = events.filter(item => item.type === 'evaluation.replayed');
+  const replay = last('evaluation.replayed');
+  const date = new Intl.DateTimeFormat('ar-SA', {
+    calendar: 'gregory', dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Riyadh',
+  });
+  get('replay-summary').textContent = replay
+    ? `أحدث تشغيل لهذه النسخة #${replay.id} · ${replay.evidence.version} · التقرير الكامل ضمن تنزيل الجلسة.`
+    : 'لا توجد تشغيلات محفوظة لهذه النسخة.';
+  list('replay-history', replays.toReversed().map(item =>
+    `#${item.id} · ${date.format(item.at)} · نسخة الأصل ${item.version} · ${labels[item.policyPack]}${item.version !== asset.version ? ' · نسخة سابقة' : ''}${item.previousRunId ? ' · التشغيل السابق #' + item.previousRunId : ''}`));
+  list('replay-findings', (replay?.evidence.findings ?? []).map(finding =>
+    `${finding.action} · المالك ${finding.owner} · المهلة ${date.format(new Date(finding.dueAt))} · الدليل ${finding.evidence.join('، ')}`));
   const checkReview = state.reviews.find(item => item.sourceId === check?.id);
   const checkDecision = current.find(item => item.id === checkReview?.eventId)?.result;
   get('firewall-result').textContent = check ? `آخر فحص #${check.id} · ${labels[check.result!]}${checkDecision ? ' · ' + labels[checkDecision] : ''}` : 'لا يوجد فحص لهذه النسخة.';
@@ -107,6 +123,7 @@ function begin() {
   selected = 1;
   session = createGovernanceSession();
   lab.hidden = false;
+  drawer.open = !mobile.matches;
   start.hidden = true;
   timer = window.setTimeout(() => close('انتهت مدة الجلسة ومُسحت البيانات.'), SESSION_DURATION);
   render();
@@ -134,6 +151,16 @@ for (const form of lab.querySelectorAll('form')) {
   });
 }
 
+for (const link of links) {
+  link.addEventListener('click', () => { if (link.hash === location.hash) navigate(true); });
+}
+drawer.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && mobile.matches && drawer.open) {
+    drawer.open = false;
+    drawer.querySelector('summary')?.focus();
+  }
+});
+mobile.addEventListener('change', () => { drawer.open = !mobile.matches; });
 assetSelect.addEventListener('change', () => { selected = Number(assetSelect.value); render(); });
 window.addEventListener('hashchange', () => { if (read()) navigate(true); });
 window.addEventListener('pagehide', () => close('مُسحت الجلسة عند مغادرة الصفحة.'));

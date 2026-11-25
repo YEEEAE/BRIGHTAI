@@ -1,4 +1,5 @@
 ---
+import RiskEvaluation from "./RiskEvaluation.astro";
 import Alert from './design-system/Alert.astro';
 import Button from './design-system/Button.astro';
 import Card from './design-system/Card.astro';
@@ -25,6 +26,8 @@ const levels={LOW:'منخفض',MEDIUM:'متوسط',HIGH:'مرتفع'};
    <p>التقييم يقيس <strong>الخطر الكامن</strong> من الاحتمال × الأثر قبل الاحتساب على الضوابط. <strong>الخطر المتبقي</strong> يُوصف نصيًا ويُقدّر بشريًا بالاحتمال × الأثر بعد الضوابط؛ لا يُخفض من الخطر الكامن تلقائيًا ولا يغيّر درجة التقييم الأصلية.</p>
    <p>اللون يساعد القراءة فقط ولا يعني اعتمادًا أو موافقة تشغيل؛ كل نتيجة لها تصنيف نصي وسبب وضابط مقترح. لا إيقاف آلي لأي نظام والمساعد الاختياري للصياغة فقط.</p>
   </Card>
+  <RiskEvaluation />
+  <p><a href="/demo/governance/#risk-engine">افتح سجل إعادة العرض الاصطناعي في مختبر الحوكمة</a></p>
   <div data-private hidden>
    <Card class="panel"><Select label="المؤسسة" id="re-workspace" data-workspace></Select><p data-role></p><p>المالك والمسؤول يديران الأصول والتقييمات والمعالجة والتصدير. العضو للقراءة حسب عقد الدور الحالي؛ لا يمنحه وصف مالك الأصل صلاحية إضافية. العضوية والصلاحيات تتحقق في الخادم.</p></Card>
    <Card class="panel" data-registry><div class="re-actions"><h2>ملخص المؤسسة</h2><Button variant="secondary" type="button" data-export data-write>تصدير ملخص المؤسسة JSON</Button></div><p data-export-state role="status" aria-live="polite"></p><p>التصدير يشمل كل أصول المؤسسة داخل نفس المستأجر وآخر تقييم ومعالجة لكل أصل، دون تأثير فلاتر العرض. حد تقني 10000 أصل؛ لا شهادة امتثال.</p><p>الأعداد من الأصول وآخر تقييم محفوظ لكل أصل في قاعدة البيانات؛ التقييم القديم بعد تعديل الأصل يظهر ضمن إعادة التقييم المطلوبة، ولا يُحسب ضمن المستويات الحالية. الأصل الذي لا يحمل تقييمًا للنسخة الحالية لا يظهر «منخفضًا» افتراضيًا؛ يظهر «يحتاج تقييمًا» أو «يحتاج إعادة تقييم» حتى يُحفظ تقييم جديد.</p><div class="re-summary" data-summary></div></Card>
