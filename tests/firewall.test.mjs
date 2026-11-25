@@ -74,13 +74,13 @@ test('HTTP rejects missing identity, cross origin, tenant injection, unknown fie
 
 test('missing Firewall tables and unknown failures never return ALLOW', async () => {
   const schemaHandler = createHandler(async () => ({ userId: 'test' }), async () => { const error = new Error('relation public.aigas_fw_rules does not exist'); error.code = '42P01'; throw error; });
-  const response = await schemaHandler(new Request('http://localhost/app/api/firewall/evaluate/', { method: 'POST', headers: { origin: 'http://localhost', 'content-type': 'application/json' }, body: '{"text":"synthetic"}' }), 'evaluate');
+  const response = await schemaHandler(new Request('http://localhost/app/api/firewall/evaluate/', { method: 'POST', headers: { origin: 'http://localhost', 'content-type': 'application/json' }, body: '{"text":"synthetic","synthetic":true}' }), 'evaluate');
   assert.equal(response.status, 503);
   assert.equal((await response.json()).code, 'FIREWALL_SCHEMA_MISSING');
   assert.equal(response.headers.get('cache-control'), 'private, no-store');
 
   const handler = createHandler(async () => ({ userId: 'test' }), async () => { throw new Error('secret request must not escape'); });
-  const failure = await handler(new Request('http://localhost/app/api/firewall/evaluate/', { method: 'POST', headers: { origin: 'http://localhost', 'content-type': 'application/json' }, body: '{"text":"synthetic"}' }), 'evaluate');
+  const failure = await handler(new Request('http://localhost/app/api/firewall/evaluate/', { method: 'POST', headers: { origin: 'http://localhost', 'content-type': 'application/json' }, body: '{"text":"synthetic","synthetic":true}' }), 'evaluate');
   assert.equal(failure.status, 503);
   assert.equal(failure.headers.get('cache-control'), 'private, no-store');
   assert.doesNotMatch(await failure.text(), /secret request/);

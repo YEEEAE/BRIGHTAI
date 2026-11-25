@@ -12,8 +12,7 @@ const ok = () => Response.json({ choices:[{finish_reason:'stop',message:{role:'a
 const emptyLedger = () => ({ days: {}, months: {}, active: 0, failures: 0, openUntil: 0 });
 function fixture(t, fetchImpl, extra={}) {
   const prior={...process.env}, dir=mkdtempSync(join(tmpdir(),'groq-test-'));
-  Object.assign(process.env,{ GROQ_API_KEY:'synthetic-secret', GROQ_MODEL:model.providerModel,AIGAS_GROQ_DAILY_BUDGET_USD:'1',AIGAS_GROQ_MONTHLY_BUDGET_USD:'10',AIGAS_GROQ_BUDGET_FILE:join(dir,'ledger'),AIGAS_GROQ_TIMEOUT_MS:'1000',AIGAS_GROQ_MAX_CONCURRENCY:'5' });
-  delete process.env.AIGAS_SC_GROQ_API_KEY;
+  Object.assign(process.env,{ AIGAS_SC_GROQ_API_KEY:'synthetic-secret', GROQ_MODEL:model.providerModel,AIGAS_GROQ_DAILY_BUDGET_USD:'1',AIGAS_GROQ_MONTHLY_BUDGET_USD:'10',AIGAS_GROQ_BUDGET_FILE:join(dir,'ledger'),AIGAS_GROQ_TIMEOUT_MS:'1000',AIGAS_GROQ_MAX_CONCURRENCY:'5' });
   writeFileSync(process.env.AIGAS_GROQ_BUDGET_FILE, JSON.stringify(emptyLedger()));
   t.after(()=>{ for(const k of Object.keys(process.env)) if(!(k in prior)) delete process.env[k]; Object.assign(process.env,prior); rmSync(dir,{recursive:true,force:true}); });
   return createGroqGateway({registry:[model],fetchImpl,...extra});
@@ -24,6 +23,13 @@ test('incident switch stops requests before provider contact or budget reservati
   process.env.AIGAS_GROQ_DISABLED = 'true';
   await assert.rejects(gateway({ model, messages: [] }), { code: 'PROVIDER_NOT_CONFIGURED' });
   assert.equal(calls, 0);
+  assert.deepEqual(JSON.parse(readFileSync(process.env.AIGAS_GROQ_BUDGET_FILE)), emptyLedger());
+});
+test('legacy credential cannot authorize a gateway request or reserve budget', async t => {
+  const gateway = fixture(t, async () => assert.fail('Unexpected provider call'));
+  delete process.env.AIGAS_SC_GROQ_API_KEY;
+  process.env.GROQ_API_KEY = 'synthetic-legacy-key';
+  await assert.rejects(gateway({ model, messages: [] }), { code: 'PROVIDER_NOT_CONFIGURED' });
   assert.deepEqual(JSON.parse(readFileSync(process.env.AIGAS_GROQ_BUDGET_FILE)), emptyLedger());
 });
 test('200 governed body and actual cost persisted across gateway instances',async t=>{
@@ -66,7 +72,7 @@ test('concurrency slot includes GET models; no secret in returned metadata',asyn
 test('invalid names, public variables and newline values rejected',t=>{
   fixture(t,async()=>ok());
   for(const name of ['GROQ_API_KEY','PUBLIC_GROQ_API_KEY','AIGAS_SC_bad_API_KEY']) assert.throws(()=>resolveProviderSecret(name),/INVALID_SECRET_NAME/);
-  process.env.GROQ_API_KEY='bad\nvalue';assert.throws(()=>resolveProviderSecret(model.apiKeyEnv),/PROVIDER_SECRET_UNAVAILABLE/);
+  process.env.AIGAS_SC_GROQ_API_KEY='bad\nvalue';assert.throws(()=>resolveProviderSecret(model.apiKeyEnv),/PROVIDER_SECRET_UNAVAILABLE/);
   process.env.PUBLIC_GROQ_TEST='';assert.throws(()=>resolveProviderSecret(model.apiKeyEnv),/PUBLIC_PROVIDER_SECRET_FORBIDDEN/);
 });
 test('unapproved object, model mismatch, missing ledger and raw network error fail closed',async t=>{

@@ -1,6 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {createSandbox, publicSandbox} from '../src/server/ai/public-sandbox-limiter.mjs';
+import {publicSandbox} from '../src/server/ai/public-sandbox-limiter.mjs';
+import {createSandbox} from './helpers/legacy-public-sandbox.mjs';
 const env={NODE_ENV:'development',AIGAS_PUBLIC_DEMO_GROQ_ENABLED:'true',AIGAS_PUBLIC_DEMO_DAILY_REQUESTS:'10',GROQ_API_KEY:'private-test-key',GROQ_MODEL:'test'};
 const req=(extra={},origin='http://localhost:4321')=>new Request('http://localhost:4321/api/public-demo/groq-sandbox',{method:'POST',headers:{origin},body:JSON.stringify({text:'لخص دليل عام',sessionId:'test',consent:{syntheticOnly:true,regionAndTermsAccepted:true},...extra})});
 

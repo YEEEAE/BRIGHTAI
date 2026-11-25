@@ -26,21 +26,22 @@ test('bounded filters reject huge pages and invalid types/periods',()=>{
 });
 test('HTTP rejects missing identity, cross-origin writes, invalid/oversized JSON, and hides internal failures',async()=>{
  let calls=0;const handler=createHandler(async()=>({userId:randomUUID()}),async()=>{calls++;return {};});
- const req=(body='{}',origin='https://local',content='application/json')=>new Request('https://local/app/api/ledger/events/',{method:'POST',headers:{origin,'content-type':content},body});
+ const req=(body='{}',origin='http://127.0.0.1',content='application/json')=>new Request('http://127.0.0.1/app/api/ledger/events/',{method:'POST',headers:{origin,'content-type':content},body});
  assert.equal((await handler(req('{}','https://evil.test'),'create')).status,403);
- assert.equal((await handler(req('{}','https://local','text/plain'),'create')).status,415);
+ assert.equal((await handler(req('{}','http://127.0.0.1','text/plain'),'create')).status,415);
  assert.equal((await handler(req('broken'),'create')).status,400);
  assert.equal((await handler(req(JSON.stringify({x:'a'.repeat(8200)})),'create')).status,413);
  assert.equal(calls,0);
  const unauthorized=createHandler(async()=>{throw new KernelError(401,'UNAUTHORIZED','سجّل الدخول.');});
  assert.equal((await unauthorized(req(),'create')).status,401);
  const fail=createHandler(async()=>({}),async()=>{throw new Error('database password synthetic-secret');});
- const response=await fail(req(),'create');assert.equal(response.status,503);assert.doesNotMatch(await response.text(),/password|synthetic-secret/);
+ const validBody=JSON.stringify({event_type:'synthetic.test.created',scenario:'integrity-check',idempotency_key:randomUUID()});
+ const response=await fail(req(validBody),'create');assert.equal(response.status,503);assert.doesNotMatch(await response.text(),/password|synthetic-secret/);
  assert.equal(response.headers.get('cache-control'),'private, no-store');
  const schemaFail=createHandler(async()=>({}),async()=>{const error=new Error('relation details hidden');error.code='42P01';throw error;});
- const schemaResponse=await schemaFail(new Request('https://local/app/api/ledger/events/'),'list');
+ const schemaResponse=await schemaFail(new Request('http://127.0.0.1/app/api/ledger/events/'),'list');
  assert.equal(schemaResponse.status,503);assert.equal((await schemaResponse.json()).code,'LEDGER_SCHEMA_MISSING');
  const privilegeFail=createHandler(async()=>({}),async()=>{const error=new Error('permission detail hidden');error.code='42501';throw error;});
- const privilegeResponse=await privilegeFail(new Request('https://local/app/api/ledger/events/'),'list');
+ const privilegeResponse=await privilegeFail(new Request('http://127.0.0.1/app/api/ledger/events/'),'list');
  assert.equal(privilegeResponse.status,503);assert.equal((await privilegeResponse.json()).code,'LEDGER_DB_PRIVILEGE');
 });

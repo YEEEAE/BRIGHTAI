@@ -123,9 +123,6 @@ function maxCost(model) {
 }
 
 export function requireGroqReadiness(model, now = Date.now()) {
-  // Secure Chat approval is scoped to its own provider account credential.
-  // Shared callers of the gateway may still use the legacy key.
-  if (!process.env[model.apiKeyEnv]?.trim()) throw failure('PROVIDER_NOT_CONFIGURED');
   const { path, daily, monthly, concurrency } = gatewaySettings(model);
   let state;
   try {

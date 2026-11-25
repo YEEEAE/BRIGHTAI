@@ -22,9 +22,9 @@ test('Risk Engine service: validate search and filter input before database acce
  assert.equal(calls,0);
 });
 test('Risk Engine HTTP: auth before data, origin, JSON limit, private failure',async()=>{
- const request=new Request('https://local/app/api/risk-engine/assets/');assert.equal((await createHandler()(request,'list')).status,401);
+ const request=new Request('http://127.0.0.1/app/api/risk-engine/assets/');assert.equal((await createHandler()(request,'list')).status,401);
  let calls=0;const handler=createHandler(async()=>({userId:'synthetic'}),async()=>{calls++;return {persisted:true};});
- for(const [headers,body,expected]of [[{},'{}',403],[{origin:'https://evil','content-type':'application/json'},'{}',403],[{origin:'https://local','content-type':'text/plain'},'{}',415],[{origin:'https://local','content-type':'application/json'},'{',400],[{origin:'https://local','content-type':'application/json'},'x'.repeat(8200),413]]){const r=await handler(new Request(request,{method:'POST',headers,body}),'assess');assert.equal(r.status,expected);assert.match(r.headers.get('cache-control'),/no-store/);}
+ for(const [headers,body,expected]of [[{},'{}',403],[{origin:'https://evil','content-type':'application/json'},'{}',403],[{origin:'http://127.0.0.1','content-type':'text/plain'},'{}',415],[{origin:'http://127.0.0.1','content-type':'application/json'},'{',400],[{origin:'http://127.0.0.1','content-type':'application/json'},'x'.repeat(8200),413]]){const r=await handler(new Request(request,{method:'POST',headers,body}),'assess');assert.equal(r.status,expected);assert.match(r.headers.get('cache-control'),/no-store/);}
  assert.equal(calls,0);const broken=createHandler(async()=>({userId:'synthetic'}),async()=>{throw new Error('SECRET');});const r=await broken(request,'history');assert.equal(r.status,503);assert.doesNotMatch(await r.text(),/SECRET/);
 });
 
@@ -32,6 +32,6 @@ test('audit constraint failures are dependency failures, never bad user input',a
  const handler=createHandler(async()=>({userId:'synthetic'}),async()=>{
   const error=new Error('private SQL details');error.code='23514';error.table='aigas_audit_events';throw error;
  });
- const response=await handler(new Request('https://local/app/api/risk-engine/assets/'),'list');
+ const response=await handler(new Request('http://127.0.0.1/app/api/risk-engine/assets/'),'list');
  assert.equal(response.status,503);assert.equal((await response.json()).code,'RISK_ENGINE_UNAVAILABLE');
 });
