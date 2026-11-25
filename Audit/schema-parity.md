@@ -1,35 +1,30 @@
-# P0 — Schema contract & RLS parity
+# P0 — مطابقة عقد Schema وRLS
 
-**الحالة: PARTIAL / NO-GO للربط المؤسسي.** Neon MCP: قراءات catalog فقط على فرعي production وstaging المحددين أدناه؛ لا DDL أو DML بعيد. Graphify لم يُستخدم لغياب الرسم المحلي؛ Linear وMagicPath لم يلزما لجرد قاعدة البيانات. مرجع المصدر `57153b52`.
+**PARTIAL / الربط المؤسسي ما زال محجوبًا.** نجح عقد Ledger على staging ‏5/5، ورفض RLS القراءة والإدراج عبر المؤسسات. فحص الإنتاج عبر Neon MCP كان للقراءة فقط. اختُبر الفرع الافتراضي لـstaging بعد أن حدّده المستخدم، ببيانات اصطناعية تُسترجع داخل المعاملة. مصدر الترحيلات `40fd3ab367d3c5d41e870b144c57d992cc6be410` مع تعديل العرض المحلي في نفس الشجرة. Graphify والأثر `graphify-out/graph.json` غير متاحين، فاستُخدم ترتيب الترحيلات والمصدر المباشر. Linear غير مطلوب لهذا الفحص.
 
-| الدليل | production (`br-young-bird-b43proeb`) | staging (`br-rough-wind-bdkmg13n`) |
+## مصفوفة الأدلة
+
+| الفحص | إنتاج Neon `br-young-bird-b43proeb` | staging Neon `br-rough-wind-bdkmg13n` / محلي |
 |---|---|---|
-| `pg_constraint` — Ledger metadata | قيد validated قديم `ALLOW/BLOCK/REDACT` ولا يسمح بمفتاح `request_fingerprint` | validated بالحالات الخمس والبصمة الاختيارية بصيغة hex؛ قيد المرجع الاصطناعي `0029` غير validated |
-| `pg_constraint` — Firewall binding | فحص 64 hex validated؛ `aigas_fw_decisions_guard_binding_check` موجود و`NOT VALID` | فحص الصيغة و`aigas_fw_decisions_check2` المكافئ للربط كلاهما validated |
-| `pg_trigger` / `pg_proc` | append-only وno-truncate موجودان؛ `aigas_ld_events_chain_guard()` وtrigger الإدراج غائبان | الثلاثة موجودة |
-| `pg_roles` / السياسات | 31 جدولًا، RLS على الكل، سياستان فقط، لا FORCE ولا `aigas_runtime`؛ `neondb_owner` يتجاوز RLS | 43 جدولًا عامًا و93 سياسة؛ FORCE على محادثات ورسائل Secure Chat؛ runtime يملك SELECT/INSERT على Ledger و`NOLOGIN/NOBYPASSRLS` |
-| الجداول المطلوبة | delegations/grants، trial requests، self-service trials وexploration grants غائبة | موجودة |
-| إيصالات migration | `ops.aigas_migration_ledger` غير موجود؛ لا نستنتج تطبيق ملف من وجود كائن | 32 إيصال `APPLIED` تتطابق مع SHA-256 لملفات الشجرة؛ `0024–0036` موجودة؛ `0013/0019` غير متوقعة على المسار fresh؛ `0037–0045` بلا إيصالات |
+| `pg_constraint` — Ledger | `aigas_ld_events_check` validated، يقبل `ALLOW/BLOCK/REDACT` ولا يسمح بمفتاح البصمة. عينة العدّ الحالية لصفوف `BLOCK` التاريخية: صفر على الفرع المقروء. | القيد validated بالحالات الخمس، ويقبل بصمة اختيارية بصيغة lowercase hex؛ `aigas_ld_synthetic_reference_required` هو `NOT VALID`. |
+| `pg_constraint` — binding | فحص صيغة البصمة validated. `aigas_fw_decisions_guard_binding_check` هو `NOT VALID`. عدد قرارات GUARD التاريخية بلا بصمة: صفر وقت القراءة. | `aigas_fw_decisions_check2` مكافئ وvalidated. تحقق الاختبار من رفض GUARD بلا بصمة. |
+| `pg_trigger` و`pg_proc` | append-only وno-truncate موجودان؛ دالة `aigas_ld_events_chain_guard()` وtrigger الإدراج غائبان. | الحراس الثلاثة موجودون؛ دالة السلسلة invoker. |
+| `pg_roles` و`pg_policies` | 31 جدول AIGAS بـRLS مفعّل وسياستان؛ `aigas_runtime` غائب و`neondb_owner` عنده `BYPASSRLS`. | 43 جدولًا و93 سياسة. FORCE على محادثات ورسائل Secure Chat. `aigas_runtime` ‏NOLOGIN/NOSUPERUSER/NOBYPASSRLS؛ اختُبر Ledger بهذا الدور. |
+| الجداول المطلوبة | HG delegations/grants وtrial requests وself-service trials وexploration grants غائبة. | موجودة. مفاتيح delta لكل جدول في الـmanifest. |
+| Migration ledger | `ops.aigas_migration_ledger` غائب. وجود كائن لا يثبت أن ترحيله طُبّق. | 32 إيصالًا من نوع `APPLIED` مطابقة byte-for-byte عبر SHA-256 حتى `0036`. تسعة إيصالات غائبة لـ`0037–0045`، وعينة الكتالوج المستهدفة غائبة لكل منها. |
+| SQL قبول staging | — | **PASS** 5/5 ‏`ALLOW/WARN/REDACT/ESCALATE/DENY`، ورفض `BLOCK` وبصمة مشوهة وإدراج GUARD بلا بصمة، وحجب قراءة صف موجود في مؤسسة أخرى ورفض إدراجها بـRLS. تحقق السكربت من زوال البيانات الاصطناعية بعد rollback. الإدراج هنا يختبر DB contract، ويفصل عن مسار HTTP والتحقق التشفيري. |
+| PostgreSQL 18.6 محلي | — | **PASS** rehearsal لمساري fresh (41 إيصالًا) وlegacy delta (42 إيصالًا) و13 اختبار حواجز. **PASS** SQL القبول على fresh المحلي. **PASS** تطبيق patch على baseline القديم، ثبات digest للصف التاريخي بكامل أعمدته، رفض `VALIDATE` مع `BLOCK`، رفض إعادة تشغيل patch، و`pg_dump/pg_restore` إلى قاعدة محلية منفصلة. |
+| مصفوفة RLS المحلية | — | **FAIL** 87/90. سياسات `aigas_client_deny` المقيِّدة تغطي 43 جدولًا وتغيب عن الجداول الأربعة المضافة بـ`0042/0043/0045`. اختبار جدول الأفعال يرصد منح SELECT/INSERT أو SELECT المقصودة في هذه الملفات. اختبار منح الأعمدة يرصد إضافة SELECT لخمسة أعمدة في quota reservations بـ`0044`. اعتمد baseline محدثة بعد مراجعة المنح وإثبات رفض أدوار العملاء، وراجع سياسة الرفض الصريحة قبل إغلاق المرحلة. |
+| عرض `BLOCK` | — | **PASS** ضمن 10 اختبارات Node لعرض Ledger وترتيب الترحيلات. العرض العام يطبّع `BLOCK` التاريخي إلى `DENY` بعد تصفية metadata. مسارا الكتابة وcanonical يرفضان `BLOCK`، والتصدير يبقى محجوبًا عند وجود حدث لا يمكن التحقق منه. |
+| استعادة Neon والتحقق من API المؤسسية | — | **NOT RUN**. قبول SQL لا يثبت استعادة فرع Neon أو تشغيل التطبيق ببيانات اعتماد الخدمة. |
 
-## Manifest قرار التنفيذ
+[Manifest الاعتماديات وSHA-256](schema-parity-manifest.csv) · [قراءات Neon ونتيجة القبول](schema-parity-neon-evidence.json) · [SQL المقترح](schema-parity-ledger-patch.sql) · [اختبار SQL](schema-parity-test.sql)
 
-- **SQL patch المقترح للـlegacy:** [0013](../migrations/0013_aigas_ledger_five_state_and_chain_guard.sql)، بعد مطابقة baseline فقط. يستبدل قيد metadata داخل معاملة ويضيف حارس السلسلة، دون تحديث أو حذف تاريخ. لا تشغله على staging ذي القيد الحديث؛ لا تعِد تشغيل `0003`. احتفظ بـ`BLOCK` التاريخي كما خُتم؛ عند العرض فقط يُترجم إلى تسمية المنع. قارئ Ledger الحالي لا يقبل `BLOCK` في `publicMetadata`؛ عرض تلك الحالات يحتاج projection منفصلًا دون تعديل canonical/export أو ادعاء تحقق لم يحصل.
-- `NOT VALID` لا يفحص الصفوف التاريخية عند إضافة القيد؛ يفرضه على الكتابات الجديدة. لا تعمل `VALIDATE` تلقائيًا ولا تعِد كتابة hashes. وثّق أعداد مخالفات القيد قبل أي طلب validation، منفصلة عن فحص صيغة البصمة. قيد Firewall binding يطلب بصمة لصف القرار GUARD؛ قيد Ledger يفحص صيغة البصمة إن وُجدت، ولا يثبت تطابقها مع صف القرار.
-- **Legacy delta المشروط:** [ترتيب المستودع](../scripts/migration-order.mjs) مرجع rehearsal وليس تفويضًا للتطبيق. `0014` بعد أساس HG؛ `0023` يضيف trial requests/events/entitlements قبل `0030`؛ `0033` يضيف exploration، و`0034` يضيف self-service قبل توسعة `0040`. `0018` و`0022` قبل `0025`؛ افحص تصادم الفهارس قبل الإنشاء. `0025` يحل محل `0019`، و`0027` يستكمل عزل Secure Chat. `0024` يصلح حارس السلسلة وحقول audit، لا قيد metadata؛ لا تضع `0017` بعد إضافة تلك الحقول عبر `0024`.
-- **ذيل staging المرشح بعد إعادة فحص كل prerequisite وإيصال:** `0037` ربط تصعيد HG بقرار Firewall؛ `0038` قبول الدعوات بعد bootstrap `0036`؛ `0039` مراجعة Risk داخل HG؛ `0040` lifecycle فوق `0033/0034`؛ `0041` صلاحيات المشغّل فوق دورة trial؛ `0042` idempotency؛ `0043` سجل المحاولات؛ `0044` قراءة quota pilot؛ `0045` اشتراط SSO. غياب الإيصال وحده لا يبرر التطبيق: قارن الدوال والأعمدة والسياسات والمنح الخاصة بكل ملف قبل الاستئناف. لا تُنشئ إيصالات بأثر رجعي دون مراجعة المالك.
+## قرار الترحيلات والتراجع
 
-## خطة الاختبار والاستعادة
-
-1. اعتمد هدفًا قابلًا للتخلص منه داخل مشروع staging، ببيانات اصطناعية وأسرار مستقلة. الفرع المقروء غير محمي؛ لا تستخدم الإنتاج كأصل بيانات. احفظ نقطة UTC/LSN ونسخة مخطط وإيصالات، واختبر الاستعادة إلى هدف منفصل قبل الكتابة؛ نافذة Neon المرئية ست ساعات.
-2. قارِن manifest checksums عبر `shasum -a 256 migrations/*.sql`. ثبّت دور التطبيق كـlogin مخصص غير مالك ولا يتجاوز RLS، مع تفعيل `aigas_runtime` حسب التصميم. لا تمنح DML عامًا. تحقق من Data API ومن المنح الفعلية، بما فيها منح الأعمدة والدوال. اضبط actor/tenant محليًا لكل معاملة من هوية وعضوية تحقق منهما الخادم؛ لا تثق بقيم المتصفح. أبقِ FORCE على محتوى Secure Chat، وراجع أثره على دوال bootstrap وعضوية SECURITY DEFINER قبل توسيعه.
-3. شغّل [اختبار عقد SQL](schema-parity-test.sql) تحت runtime بمعاملة تتراجع؛ يختبر الإدراج لا canonical hash أو HTTP. أضف فحص رفض GUARD دون بصمة في جدول القرار، واختبار API لحفظ الأدلة ذريًا، وقراءة عبر tenant آخر، ومقارنة أعداد الصفوف وhash heads قبل/بعد.
-4. قبل commit: أي فشل يعني `ROLLBACK`. بعد commit: أوقف الكتابات أولًا؛ لا تعِد قيد الحالات الثلاث فوق أحداث جديدة ولا تحذف صفوفًا. استعد إلى هدف منفصل، وقارن المخطط والإيصالات والأدلة، وصالح أي كتابة لاحقة لنقطة الاستعادة قبل إعادة التوجيه. لا تبدّل اتصال التطبيق إلى دور المالك كحل مؤقت.
-5. **MagicPath:** أبقِ Ledger/Human Gate مفصولين عن البيئة المؤسسية حتى مرور البوابة. واجهة React تعرض حالات الخادم فقط؛ mutations تمر عبر API الحالية مع تحقق الجلسة والعضوية والسياسة والـidempotency في الخادم. لا اتصال مباشر بقاعدة البيانات ولا صلاحيات مشتقة من حالة React.
-
-| معيار القبول | النتيجة |
-|---|---|
-| PostgreSQL 18.6: fresh + legacy delta rehearsal | PASS |
-| مصفوفة RLS محليًا | FAIL: `client-deny-restrictive` و`runtime-verb-matrix-exact` و`runtime-column-grants-exact`؛ لا تُعتمد baseline المصفوفة قبل تسوية الفروق |
-| 5/5 على staging ورفض cross-tenant | NOT RUN؛ يلزم اعتماد هدف كتابة معزول |
-| حفظ التاريخ وrollback | مقترح بلا DML على التاريخ؛ الاستعادة على الهدف لم تُختبر |
-| نشر أو ربط مؤسسي | لم يحدث |
+1. الـpatch المقترح مشتق من `0013` ويستهدف بصمة تعريف القيد القديم على PostgreSQL 18. يأخذ قفلًا بمهلة، ويتوقف عند اختلاف baseline أو وجود chain guard. يستبدل القيد داخل معاملة ويضيف الحارس. لا يُشغّل على staging الحالي أو مع `0013` ضمن المسار نفسه. لا تعدّل ترحيلًا مثبتًا ولا تسجّل إيصال `0013` لهذا الملف المستقل.
+2. `NOT VALID` يترك التاريخ على حاله ويفرض القيد على الكتابات اللاحقة. بصمة Ledger الاختيارية وفحص وجودها في قرار GUARD شرطان مختلفان. الربط الفعلي مع القرار مسؤولية مسار الخادم، ولا يثبته القيد المحلي على JSON. تحقّق قبل أي validation من العينة الكاملة على الهدف مع تعريف القيد النهائي. [PostgreSQL ALTER TABLE](https://www.postgresql.org/docs/18/sql-altertable.html)
+3. `0035` يتحقق من قيد Ledger داخل المعاملة. عند وجود أي صف قديم مخالف، يتوقف هذا المسار. أثبتت المحاكاة أن `BLOCK` التاريخي يكفي لإفشال `VALIDATE`. في هذه الحالة جهّز delta legacy معتمدًا ينفّذ تحصين العضوية والسياسات ويحفظ القيد `NOT VALID`، ثم يسجل إيصال الملف الفعلي. مصالحة الـledger تحتاج تعريفات الكتالوج ونتيجة الاختبار والـchecksum قبل أي تطبيق. `0025` يحل محل `0019`، و`0024` لا يصلح عقد metadata. بالنسبة إلى staging افحص بقية بصمات الكتالوج والـpreconditions لكل ترحيل من الذيل، ثم استخدم fresh-prefix resume على قاعدة معزولة. لا تستنتج أمان replay من علامة غائبة واحدة.
+4. أنشئ هدفًا قابلًا للتخلص منه في مشروع staging من مخطط فقط وبيانات اصطناعية، مع endpoint وبيانات اعتماد منفصلة. قبل كتابة delta احفظ UTC/LSN ومدة نافذة الاستعادة ونسخة مشفرة من المخطط والإيصالات حسب سياسة البيئة. اختبر الاستعادة إلى هدف مستقل وقارن تعريفات القيود والحراس والسياسات وأعداد الأحداث وhash heads. قيّد DDL والإيصالات بمعاملة واحدة لكل خطوة. قبل commit يكفي `ROLLBACK` عند الفشل. بعد commit أوقف الكتابات واستعد إلى هدف منفصل وصالح أحداث ما بعد نقطة الاستعادة قبل إعادة التوجيه. إعادة القيد الثلاثي بعد استقبال قرارات حديثة قد تفشل، وتبقى الأدلة محفوظة.
+5. خصص login للخادم يفعّل `aigas_runtime` وفق عقد المعاملة، بلا ملكية أو BYPASSRLS أو عضوية بدور إداري. راجع منح الجدول والعمود والدالة فعليًا وامنع وصول أدوار العميل مباشرةً. يأخذ الخادم actor من الجلسة ويثبت العضوية ثم يعيّن actor/tenant عبر `set_config(..., true)` لكل معاملة. أبقِ FORCE على محتوى Secure Chat، واختبر أثر توسيعه على bootstrap ودوال SECURITY DEFINER التي تعتمد على صلاحيات المالك. [PostgreSQL Row Security](https://www.postgresql.org/docs/18/ddl-rowsecurity.html)
+6. **MagicPath.** واجهة React تستدعي `/app/api/ledger/events/` للعرض والإضافة الاصطناعية والفحص والتصدير، وتستخدم `/app/api/human-gate/requests/` ومسارات القرار والإلغاء والتنفيذ والتفويض الحالية. الخادم يثبت الجلسة والنطاق وعضوية المستخدم ويتحقق من سياسة الإجراء ومنع التكرار حيث يدعمه العقد. حالة React تتحكم بالعرض فقط. أبقِ ربط Ledger/Human Gate بالبيئة المؤسسية مغلقًا حتى تسوية مصفوفة الأدوار وتحقق DB وAuth وHTTP على الهدف واستعادة قابلة للتكرار.

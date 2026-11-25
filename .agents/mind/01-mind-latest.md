@@ -21,6 +21,10 @@
 
 ## Ledger (الأحدث أولًا)
 
+## [2026-11-26] — فشل بناء Render على Node قديم
+- **التحقق:** Render FAIL على `40fd3ab367d3c5d41e870b144c57d992cc6be410` بسبب `NODE_VERSION=22.22.2` في سجل الخدمة؛ نفس المصدر مع Node `22.23.5` وAstro `7.4.13` build PASS محليًا وولّد مخرج SSR.
+- **الحالة:** PARTIAL؛ سجل Render يستخدم `pnpm install && pnpm run build` بخلاف عقد `render.yaml`؛ هوية الخدمة وإعادة البناء على Render NOT VERIFIED.
+
 ## [2026-11-26] — استعادة التحويل P0
 - **تم:** صفحة طلب عامة ثابتة وCTA موحّد؛ رابط 48 ساعة مشروط بجاهزية البوابة.
 - **التحقق:** build وChrome 390/1440 وSEO 6/6 PASS محليًا.
@@ -32,9 +36,9 @@
 - **الحالة:** PARTIAL / NO-GO؛ مرحلة 01 شرط للتفعيل؛ لا نشر ولا DNS.
 
 ## [2026-11-26] — مطابقة Schema وRLS
-- **تم:** Neon قراءة فقط: production بقيد Ledger الثلاثي وبلا runtime/ledger receipts؛ staging قيد خماسي و32 إيصالًا مطابقًا حتى 0036.
-- **التحقق:** rehearsal محلي PASS؛ مصفوفة RLS ثلاث حالات FAIL؛ قبول staging والاستعادة NOT RUN.
-- **الحالة:** PARTIAL؛ لا ربط مؤسسي. `Audit/schema-parity.md`.
+- **تم:** إنتاج Neon قراءة فقط: قيد Ledger الثلاثي وبلا runtime/ledger receipts؛ staging قيد خماسي و32 إيصالًا مطابقًا حتى 0036.
+- **التحقق:** staging 5/5 وعزل Ledger وGUARD binding وrollback PASS؛ patch وحفظ التاريخ والاستعادة محليًا PASS؛ RLS ‏87/90.
+- **الحالة:** PARTIAL؛ ذيل 0037–0045 واستعادة Neon وAPI المؤسسية مفتوحة؛ لا ربط مؤسسي. `Audit/schema-parity.md`.
 
 ## [2026-11-25] — مختبر الحوكمة الموحّد
 - **تم:** `/demo/governance/` لأربعة منتجات بسياق اصطناعي لكل صفحة ونافذة 30 دقيقة، مع مسار 48 ساعة مستقل.

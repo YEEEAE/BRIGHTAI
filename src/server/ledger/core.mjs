@@ -115,9 +115,13 @@ export function verificationState(integrity, chain) {
   const blocked = chainResult !== 'EMPTY' && reasons.some(reason => blockingReasons.has(reason));
   return {state:blocked?verificationStates.BLOCKED:verificationStates.UNVERIFIED,mismatch:false,reasons};
 }
-// Only allowlisted, scalar metadata leaves the server. A row that no longer
-// satisfies the current profile is returned as an empty object, never raw.
+// Project the legacy Firewall action for display without touching canonical inputs.
 export function publicMetadata(value, source, eventType) {
-  try { return {valid:true,value:metadata(value,source,eventType)}; }
+  const legacyBlock = source === 'firewall' && eventType === 'firewall.decision.recorded' &&
+    value?.action === 'BLOCK' && !Object.hasOwn(value, 'request_fingerprint');
+  try {
+    const display = legacyBlock ? {...value, action:'DENY'} : value;
+    return {valid:true,value:metadata(display,source,eventType)};
+  }
   catch { return {valid:false,value:{}}; }
 }

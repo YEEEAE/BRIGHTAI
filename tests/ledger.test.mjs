@@ -1,10 +1,20 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
-import { hashEvent, verifyEvent, filters, profile } from '../src/server/ledger/core.mjs';
+import { hashEvent, verifyEvent, filters, metadata, profile, publicMetadata } from '../src/server/ledger/core.mjs';
 import { createHandler } from '../src/server/ledger/http.mjs';
 import { KernelError } from '../src/server/kernel/core.mjs';
 const sample=()=>({hash_profile:profile,sequence_no:'1',previous_hash:null,idempotency_key:'synthetic:integrity:1',event_id:randomUUID(),tenant_id:randomUUID(),source:'ledger.synthetic-lab',event_type:'synthetic.test.created',policy_version:'foundation-v1',metadata_json:{synthetic:true,scenario:'integrity-check',outcome:'RECORDED',decision_ref:randomUUID()},created_at:'2026-11-01T00:00:00.123Z',created_by:randomUUID()});
+test('historical Firewall BLOCK projects to DENY only in public metadata',()=>{
+ const source='firewall', eventType='firewall.decision.recorded';
+ const legacy=Object.freeze({synthetic:true,decision_ref:randomUUID(),action:'BLOCK',mode:'GUARD',rule_ref:null,rule_version:null});
+ assert.deepEqual(publicMetadata(legacy,source,eventType),{valid:true,value:{...legacy,action:'DENY'}});
+ assert.equal(legacy.action,'BLOCK');
+ assert.throws(()=>metadata(legacy,source,eventType),/Invalid firewall metadata/);
+ assert.throws(()=>hashEvent({...sample(),source,event_type:eventType,metadata_json:legacy}),/Invalid firewall metadata/);
+ assert.deepEqual(publicMetadata({...legacy,unexpected:'hidden'},source,eventType),{valid:false,value:{}});
+ assert.deepEqual(publicMetadata({...legacy,request_fingerprint:'a'.repeat(64)},source,eventType),{valid:false,value:{}});
+});
 test('canonical digest survives DB time/JSON ordering; detects changes to each covered field',()=>{
  const e=sample();e.integrity_hash=hashEvent(e);
  assert.equal(verifyEvent({...e,created_at:new Date(e.created_at),metadata_json:Object.fromEntries(Object.entries(e.metadata_json).reverse())}),'MATCH');

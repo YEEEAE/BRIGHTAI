@@ -1,0 +1,1381 @@
+{
+  "source": "Neon MCP",
+  "date": "2026-11-26 (Asia/Riyadh)",
+  "revision": "40fd3ab367d3c5d41e870b144c57d992cc6be410",
+  "targets": {
+    "production": {
+      "project_id": "young-frog-60183055",
+      "branch_id": "br-young-bird-b43proeb"
+    },
+    "staging": {
+      "project_id": "lucky-salad-43566291",
+      "branch_id": "br-rough-wind-bdkmg13n"
+    }
+  },
+  "production": {
+    "rows": [
+      {
+        "db": "neondb",
+        "version": "18.7 (3190d2f)",
+        "ledger": null,
+        "checks": [
+          {
+            "name": "aigas_fw_decisions_action_check",
+            "validated": true,
+            "definition": "CHECK ((action = ANY (ARRAY['ALLOW'::text, 'WARN'::text, 'REDACT'::text, 'ESCALATE'::text, 'DENY'::text])))"
+          },
+          {
+            "name": "aigas_fw_decisions_check",
+            "validated": true,
+            "definition": "CHECK (((rule_id IS NULL) = (rule_version IS NULL)))"
+          },
+          {
+            "name": "aigas_fw_decisions_check1",
+            "validated": true,
+            "definition": "CHECK (((mode = 'GUARD'::text) = (request_id IS NOT NULL)))"
+          },
+          {
+            "name": "aigas_fw_decisions_guard_binding_check",
+            "validated": false,
+            "definition": "CHECK (((mode <> 'GUARD'::text) OR (request_fingerprint IS NOT NULL))) NOT VALID"
+          },
+          {
+            "name": "aigas_fw_decisions_guard_lab_check",
+            "validated": true,
+            "definition": "CHECK (((mode <> 'GUARD'::text) OR (reason <> 'NO_MATCH_LAB_ONLY'::text)))"
+          },
+          {
+            "name": "aigas_fw_decisions_kernel_deny_check",
+            "validated": true,
+            "definition": "CHECK (((reason <> 'KERNEL_POLICY_DENIED'::text) OR (mode = 'GUARD'::text)))"
+          },
+          {
+            "name": "aigas_fw_decisions_lab_guard_check",
+            "validated": true,
+            "definition": "CHECK (((mode <> 'LAB'::text) OR (reason <> 'NO_MATCH_ENFORCED'::text)))"
+          },
+          {
+            "name": "aigas_fw_decisions_mode_check",
+            "validated": true,
+            "definition": "CHECK ((mode = ANY (ARRAY['LAB'::text, 'GUARD'::text])))"
+          },
+          {
+            "name": "aigas_fw_decisions_policy_version_check",
+            "validated": true,
+            "definition": "CHECK ((policy_version ~ '^[a-zA-Z0-9_.:-]{1,120}$'::text))"
+          },
+          {
+            "name": "aigas_fw_decisions_reason_action_check",
+            "validated": true,
+            "definition": "CHECK ((((reason = ANY (ARRAY['NO_ACTIVE_POLICY'::text, 'INVALID_POLICY'::text, 'RULE_DENY'::text, 'NO_MATCH_ENFORCED'::text, 'KERNEL_POLICY_DENIED'::text])) AND (action = 'DENY'::text)) OR ((reason = 'RULE_ESCALATE'::text) AND (action = 'ESCALATE'::text)) OR ((reason = 'RULE_REDACT'::text) AND (action = 'REDACT'::text)) OR ((reason = 'RULE_WARN'::text) AND (action = 'WARN'::text)) OR ((reason = ANY (ARRAY['RULE_ALLOW'::text, 'NO_MATCH_LAB_ONLY'::text])) AND (action = 'ALLOW'::text))))"
+          },
+          {
+            "name": "aigas_fw_decisions_reason_check",
+            "validated": true,
+            "definition": "CHECK ((reason = ANY (ARRAY['NO_ACTIVE_POLICY'::text, 'INVALID_POLICY'::text, 'RULE_DENY'::text, 'RULE_ESCALATE'::text, 'RULE_REDACT'::text, 'RULE_WARN'::text, 'RULE_ALLOW'::text, 'NO_MATCH_LAB_ONLY'::text, 'NO_MATCH_ENFORCED'::text, 'KERNEL_POLICY_DENIED'::text])))"
+          },
+          {
+            "name": "aigas_fw_decisions_request_fingerprint_check",
+            "validated": true,
+            "definition": "CHECK (((request_fingerprint IS NULL) OR (request_fingerprint ~ '^[0-9a-f]{64}$'::text)))"
+          },
+          {
+            "name": "aigas_fw_decisions_rule_ref_check",
+            "validated": true,
+            "definition": "CHECK (((reason = ANY (ARRAY['RULE_DENY'::text, 'RULE_ESCALATE'::text, 'RULE_REDACT'::text, 'RULE_WARN'::text, 'RULE_ALLOW'::text])) = (rule_id IS NOT NULL)))"
+          },
+          {
+            "name": "aigas_fw_decisions_rule_version_check",
+            "validated": true,
+            "definition": "CHECK ((rule_version > 0))"
+          },
+          {
+            "name": "aigas_ld_events_check",
+            "validated": true,
+            "definition": "CHECK ((((jsonb_typeof(metadata_json) = 'object'::text) AND (octet_length((metadata_json)::text) <= 1024) AND (jsonb_typeof((metadata_json -> 'synthetic'::text)) = 'boolean'::text) AND ((NOT (metadata_json ? 'evidence_policy_version'::text)) OR ((metadata_json ->> 'evidence_policy_version'::text) ~ '^[a-zA-Z0-9_.:-]{1,120}$'::text)) AND\nCASE source\n    WHEN 'ledger.synthetic-lab'::text THEN ((event_type = ANY (ARRAY['synthetic.test.created'::text, 'synthetic.review.recorded'::text])) AND (metadata_json ?& ARRAY['synthetic'::text, 'scenario'::text, 'outcome'::text, 'decision_ref'::text]) AND ((metadata_json - ARRAY['synthetic'::text, 'scenario'::text, 'outcome'::text, 'decision_ref'::text, 'evidence_policy_version'::text]) = '{}'::jsonb) AND ((metadata_json -> 'synthetic'::text) = 'true'::jsonb) AND ((metadata_json ->> 'scenario'::text) = ANY (ARRAY['integrity-check'::text, 'access-check'::text])) AND ((metadata_json ->> 'outcome'::text) = ANY (ARRAY['RECORDED'::text, 'REVIEWED'::text])))\n    WHEN 'firewall'::text THEN ((event_type = 'firewall.decision.recorded'::text) AND (metadata_json ?& ARRAY['synthetic'::text, 'decision_ref'::text, 'action'::text, 'mode'::text, 'rule_ref'::text, 'rule_version'::text]) AND ((metadata_json - ARRAY['synthetic'::text, 'decision_ref'::text, 'action'::text, 'mode'::text, 'rule_ref'::text, 'rule_version'::text, 'evidence_policy_version'::text]) = '{}'::jsonb) AND ((metadata_json -> 'synthetic'::text) = 'true'::jsonb) AND ((metadata_json ->> 'action'::text) = ANY (ARRAY['ALLOW'::text, 'BLOCK'::text, 'REDACT'::text])) AND ((metadata_json ->> 'mode'::text) = ANY (ARRAY['LAB'::text, 'GUARD'::text])))\n    WHEN 'human-gate'::text THEN ((event_type = ANY (ARRAY['human_gate.request.created'::text, 'human_gate.decision.recorded'::text, 'human_gate.demo_note.completed'::text])) AND (metadata_json ?& ARRAY['synthetic'::text, 'request_ref'::text, 'operation_scope'::text]) AND ((metadata_json - ARRAY['synthetic'::text, 'request_ref'::text, 'decision_ref'::text, 'decision'::text, 'operation_scope'::text, 'evidence_policy_version'::text]) = '{}'::jsonb) AND ((metadata_json -> 'synthetic'::text) = 'true'::jsonb) AND ((metadata_json ->> 'operation_scope'::text) = 'INTERNAL_DEMO_NOTE'::text) AND ((event_type <> 'human_gate.decision.recorded'::text) OR ((metadata_json ?& ARRAY['decision_ref'::text, 'decision'::text]) AND ((metadata_json ->> 'decision'::text) = ANY (ARRAY['APPROVE'::text, 'REJECT'::text])))))\n    WHEN 'risk-engine'::text THEN ((event_type = ANY (ARRAY['risk_engine.asset.created'::text, 'risk_engine.asset.updated'::text, 'risk_engine.assessment.created'::text])) AND (metadata_json ?& ARRAY['synthetic'::text, 'asset_ref'::text, 'asset_version'::text]) AND ((metadata_json - ARRAY['synthetic'::text, 'asset_ref'::text, 'asset_version'::text, 'assessment_ref'::text, 'risk_level'::text, 'evidence_policy_version'::text]) = '{}'::jsonb) AND ((metadata_json -> 'synthetic'::text) = 'false'::jsonb) AND ((metadata_json ->> 'asset_version'::text) ~ '^[1-9][0-9]*$'::text) AND ((event_type <> 'risk_engine.assessment.created'::text) OR ((metadata_json ?& ARRAY['assessment_ref'::text, 'risk_level'::text]) AND ((metadata_json ->> 'risk_level'::text) = ANY (ARRAY['LOW'::text, 'MEDIUM'::text, 'HIGH'::text])))))\n    WHEN 'kernel'::text THEN ((event_type = 'kernel.audit.recorded'::text) AND (metadata_json ?& ARRAY['synthetic'::text, 'audit_ref'::text, 'action'::text]) AND ((metadata_json - ARRAY['synthetic'::text, 'audit_ref'::text, 'action'::text, 'evidence_policy_version'::text]) = '{}'::jsonb) AND ((metadata_json -> 'synthetic'::text) = 'false'::jsonb) AND (char_length((metadata_json ->> 'action'::text)) <= 100) AND ((metadata_json ->> 'action'::text) ~ '^(workspace[.]created|kernel[.][a-z_.-]+)$'::text))\n    ELSE false\nEND) IS TRUE))"
+          },
+          {
+            "name": "aigas_ld_events_check1",
+            "validated": true,
+            "definition": "CHECK ((((sequence_no = 1) AND (previous_hash IS NULL)) OR ((sequence_no > 1) AND (previous_hash IS NOT NULL))))"
+          },
+          {
+            "name": "aigas_ld_events_hash_profile_check",
+            "validated": true,
+            "definition": "CHECK ((hash_profile = 'aigas-ledger-sha256-chain-v2'::text))"
+          },
+          {
+            "name": "aigas_ld_events_idempotency_key_check",
+            "validated": true,
+            "definition": "CHECK ((idempotency_key ~ '^[a-zA-Z0-9_.:-]{1,180}$'::text))"
+          },
+          {
+            "name": "aigas_ld_events_integrity_hash_check",
+            "validated": true,
+            "definition": "CHECK ((integrity_hash ~ '^[0-9a-f]{64}$'::text))"
+          },
+          {
+            "name": "aigas_ld_events_metadata_json_check",
+            "validated": true,
+            "definition": "CHECK ((COALESCE((metadata_json ->> 'decision_ref'::text), '00000000-0000-0000-0000-000000000000'::text) ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'::text))"
+          },
+          {
+            "name": "aigas_ld_events_metadata_json_check1",
+            "validated": true,
+            "definition": "CHECK ((COALESCE((metadata_json ->> 'request_ref'::text), '00000000-0000-0000-0000-000000000000'::text) ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'::text))"
+          },
+          {
+            "name": "aigas_ld_events_metadata_json_check2",
+            "validated": true,
+            "definition": "CHECK ((COALESCE((metadata_json ->> 'asset_ref'::text), '00000000-0000-0000-0000-000000000000'::text) ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'::text))"
+          },
+          {
+            "name": "aigas_ld_events_metadata_json_check3",
+            "validated": true,
+            "definition": "CHECK ((COALESCE((metadata_json ->> 'assessment_ref'::text), '00000000-0000-0000-0000-000000000000'::text) ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'::text))"
+          },
+          {
+            "name": "aigas_ld_events_metadata_json_check4",
+            "validated": true,
+            "definition": "CHECK ((COALESCE((metadata_json ->> 'audit_ref'::text), '00000000-0000-0000-0000-000000000000'::text) ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'::text))"
+          },
+          {
+            "name": "aigas_ld_events_policy_version_check",
+            "validated": true,
+            "definition": "CHECK ((policy_version ~ '^[a-zA-Z0-9_.:-]{1,120}$'::text))"
+          },
+          {
+            "name": "aigas_ld_events_previous_hash_check",
+            "validated": true,
+            "definition": "CHECK ((previous_hash ~ '^[0-9a-f]{64}$'::text))"
+          },
+          {
+            "name": "aigas_ld_events_sequence_no_check",
+            "validated": true,
+            "definition": "CHECK ((sequence_no > 0))"
+          },
+          {
+            "name": "aigas_ld_events_source_check",
+            "validated": true,
+            "definition": "CHECK ((source = ANY (ARRAY['ledger.synthetic-lab'::text, 'firewall'::text, 'human-gate'::text, 'risk-engine'::text, 'kernel'::text])))"
+          }
+        ],
+        "triggers": [
+          {
+            "name": "aigas_ld_events_append_only",
+            "enabled": "O",
+            "definition": "CREATE TRIGGER aigas_ld_events_append_only BEFORE DELETE OR UPDATE ON public.aigas_ld_events FOR EACH ROW EXECUTE FUNCTION aigas_ld_events_reject_mutation()"
+          },
+          {
+            "name": "aigas_ld_events_no_truncate",
+            "enabled": "O",
+            "definition": "CREATE TRIGGER aigas_ld_events_no_truncate BEFORE TRUNCATE ON public.aigas_ld_events FOR EACH STATEMENT EXECUTE FUNCTION aigas_ld_events_reject_mutation()"
+          }
+        ],
+        "roles": [
+          {
+            "name": "anonymous",
+            "login": false,
+            "super": false,
+            "bypass": false
+          },
+          {
+            "name": "authenticated",
+            "login": false,
+            "super": false,
+            "bypass": false
+          },
+          {
+            "name": "neondb_owner",
+            "login": true,
+            "super": false,
+            "bypass": true
+          }
+        ],
+        "policy_summary": [
+          {
+            "policies": 1,
+            "tablename": "aigas_sc_cancellations"
+          },
+          {
+            "policies": 1,
+            "tablename": "aigas_sc_requests"
+          }
+        ],
+        "tables": [
+          {
+            "rls": true,
+            "name": "aigas_audit_events",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_auth_organizations",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_department_events",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_department_memberships",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_departments",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_fw_decisions",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_fw_rules",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_hg_decisions",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_hg_events",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_hg_policies",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_hg_requests",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_kernel_policy_decisions",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_ld_events",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_ld_evidence_requirements",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_member_invitations",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_memberships",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_policies",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_policy_approvals",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_policy_delegations",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_policy_versions",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_product_access",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_product_grants",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_re_assessments",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_re_asset_revisions",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_re_assets",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_re_treatment_revisions",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_sc_cancellations",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_sc_conversations",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_sc_messages",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_sc_requests",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_tenants",
+            "force": false
+          }
+        ]
+      }
+    ],
+    "totalRowCount": 1,
+    "truncated": false
+  },
+  "staging": {
+    "rows": [
+      {
+        "db": "neondb",
+        "version": "18.7 (3190d2f)",
+        "ledger": "ops.aigas_migration_ledger",
+        "checks": [
+          {
+            "name": "aigas_fw_decisions_action_check",
+            "validated": true,
+            "definition": "CHECK ((action = ANY (ARRAY['ALLOW'::text, 'WARN'::text, 'REDACT'::text, 'ESCALATE'::text, 'DENY'::text])))"
+          },
+          {
+            "name": "aigas_fw_decisions_check",
+            "validated": true,
+            "definition": "CHECK (((rule_id IS NULL) = (rule_version IS NULL)))"
+          },
+          {
+            "name": "aigas_fw_decisions_check1",
+            "validated": true,
+            "definition": "CHECK (((mode = 'GUARD'::text) = (request_id IS NOT NULL)))"
+          },
+          {
+            "name": "aigas_fw_decisions_check2",
+            "validated": true,
+            "definition": "CHECK (((mode <> 'GUARD'::text) OR (request_fingerprint IS NOT NULL)))"
+          },
+          {
+            "name": "aigas_fw_decisions_check3",
+            "validated": true,
+            "definition": "CHECK ((((reason = ANY (ARRAY['NO_ACTIVE_POLICY'::text, 'INVALID_POLICY'::text, 'RULE_DENY'::text, 'NO_MATCH_ENFORCED'::text, 'KERNEL_POLICY_DENIED'::text])) AND (action = 'DENY'::text)) OR ((reason = 'RULE_ESCALATE'::text) AND (action = 'ESCALATE'::text)) OR ((reason = 'RULE_REDACT'::text) AND (action = 'REDACT'::text)) OR ((reason = 'RULE_WARN'::text) AND (action = 'WARN'::text)) OR ((reason = ANY (ARRAY['RULE_ALLOW'::text, 'NO_MATCH_LAB_ONLY'::text])) AND (action = 'ALLOW'::text))))"
+          },
+          {
+            "name": "aigas_fw_decisions_check4",
+            "validated": true,
+            "definition": "CHECK (((reason = ANY (ARRAY['RULE_DENY'::text, 'RULE_ESCALATE'::text, 'RULE_REDACT'::text, 'RULE_WARN'::text, 'RULE_ALLOW'::text])) = (rule_id IS NOT NULL)))"
+          },
+          {
+            "name": "aigas_fw_decisions_check5",
+            "validated": true,
+            "definition": "CHECK (((mode <> 'GUARD'::text) OR (reason <> 'NO_MATCH_LAB_ONLY'::text)))"
+          },
+          {
+            "name": "aigas_fw_decisions_check6",
+            "validated": true,
+            "definition": "CHECK (((mode <> 'LAB'::text) OR (reason <> 'NO_MATCH_ENFORCED'::text)))"
+          },
+          {
+            "name": "aigas_fw_decisions_check7",
+            "validated": true,
+            "definition": "CHECK (((reason <> 'KERNEL_POLICY_DENIED'::text) OR (mode = 'GUARD'::text)))"
+          },
+          {
+            "name": "aigas_fw_decisions_mode_check",
+            "validated": true,
+            "definition": "CHECK ((mode = ANY (ARRAY['LAB'::text, 'GUARD'::text])))"
+          },
+          {
+            "name": "aigas_fw_decisions_policy_version_check",
+            "validated": true,
+            "definition": "CHECK ((policy_version ~ '^[a-zA-Z0-9_.:-]{1,120}$'::text))"
+          },
+          {
+            "name": "aigas_fw_decisions_reason_check",
+            "validated": true,
+            "definition": "CHECK ((reason = ANY (ARRAY['NO_ACTIVE_POLICY'::text, 'INVALID_POLICY'::text, 'RULE_DENY'::text, 'RULE_ESCALATE'::text, 'RULE_REDACT'::text, 'RULE_WARN'::text, 'RULE_ALLOW'::text, 'NO_MATCH_LAB_ONLY'::text, 'NO_MATCH_ENFORCED'::text, 'KERNEL_POLICY_DENIED'::text])))"
+          },
+          {
+            "name": "aigas_fw_decisions_request_fingerprint_check",
+            "validated": true,
+            "definition": "CHECK (((request_fingerprint IS NULL) OR (request_fingerprint ~ '^[0-9a-f]{64}$'::text)))"
+          },
+          {
+            "name": "aigas_fw_decisions_rule_version_check",
+            "validated": true,
+            "definition": "CHECK ((rule_version > 0))"
+          },
+          {
+            "name": "aigas_ld_events_check",
+            "validated": true,
+            "definition": "CHECK ((((jsonb_typeof(metadata_json) = 'object'::text) AND (octet_length((metadata_json)::text) <= 1024) AND (jsonb_typeof((metadata_json -> 'synthetic'::text)) = 'boolean'::text) AND ((NOT (metadata_json ? 'evidence_policy_version'::text)) OR ((metadata_json ->> 'evidence_policy_version'::text) ~ '^[a-zA-Z0-9_.:-]{1,120}$'::text)) AND\nCASE source\n    WHEN 'ledger.synthetic-lab'::text THEN ((event_type = ANY (ARRAY['synthetic.test.created'::text, 'synthetic.review.recorded'::text])) AND (metadata_json ?& ARRAY['synthetic'::text, 'scenario'::text, 'outcome'::text, 'decision_ref'::text]) AND ((metadata_json - ARRAY['synthetic'::text, 'scenario'::text, 'outcome'::text, 'decision_ref'::text, 'evidence_policy_version'::text]) = '{}'::jsonb) AND ((metadata_json -> 'synthetic'::text) = 'true'::jsonb) AND ((metadata_json ->> 'scenario'::text) = ANY (ARRAY['integrity-check'::text, 'access-check'::text])) AND ((metadata_json ->> 'outcome'::text) = ANY (ARRAY['RECORDED'::text, 'REVIEWED'::text])))\n    WHEN 'firewall'::text THEN ((event_type = 'firewall.decision.recorded'::text) AND (metadata_json ?& ARRAY['synthetic'::text, 'decision_ref'::text, 'action'::text, 'mode'::text, 'rule_ref'::text, 'rule_version'::text]) AND ((metadata_json - ARRAY['synthetic'::text, 'decision_ref'::text, 'action'::text, 'mode'::text, 'rule_ref'::text, 'rule_version'::text, 'request_fingerprint'::text, 'evidence_policy_version'::text]) = '{}'::jsonb) AND ((metadata_json -> 'synthetic'::text) = 'true'::jsonb) AND ((metadata_json ->> 'action'::text) = ANY (ARRAY['ALLOW'::text, 'WARN'::text, 'REDACT'::text, 'ESCALATE'::text, 'DENY'::text])) AND ((metadata_json ->> 'mode'::text) = ANY (ARRAY['LAB'::text, 'GUARD'::text])) AND ((NOT (metadata_json ? 'request_fingerprint'::text)) OR ((metadata_json ->> 'request_fingerprint'::text) ~ '^[0-9a-f]{64}$'::text)))\n    WHEN 'human-gate'::text THEN ((event_type = ANY (ARRAY['human_gate.request.created'::text, 'human_gate.decision.recorded'::text, 'human_gate.demo_note.completed'::text])) AND (metadata_json ?& ARRAY['synthetic'::text, 'request_ref'::text, 'operation_scope'::text]) AND ((metadata_json - ARRAY['synthetic'::text, 'request_ref'::text, 'decision_ref'::text, 'decision'::text, 'operation_scope'::text, 'evidence_policy_version'::text]) = '{}'::jsonb) AND ((metadata_json -> 'synthetic'::text) = 'true'::jsonb) AND ((metadata_json ->> 'operation_scope'::text) = 'INTERNAL_DEMO_NOTE'::text) AND ((event_type <> 'human_gate.decision.recorded'::text) OR ((metadata_json ?& ARRAY['decision_ref'::text, 'decision'::text]) AND ((metadata_json ->> 'decision'::text) = ANY (ARRAY['APPROVE'::text, 'REJECT'::text])))))\n    WHEN 'risk-engine'::text THEN ((event_type = ANY (ARRAY['risk_engine.asset.created'::text, 'risk_engine.asset.updated'::text, 'risk_engine.assessment.created'::text])) AND (metadata_json ?& ARRAY['synthetic'::text, 'asset_ref'::text, 'asset_version'::text]) AND ((metadata_json - ARRAY['synthetic'::text, 'asset_ref'::text, 'asset_version'::text, 'assessment_ref'::text, 'risk_level'::text, 'evidence_policy_version'::text]) = '{}'::jsonb) AND ((metadata_json -> 'synthetic'::text) = 'false'::jsonb) AND ((metadata_json ->> 'asset_version'::text) ~ '^[1-9][0-9]*$'::text) AND ((event_type <> 'risk_engine.assessment.created'::text) OR ((metadata_json ?& ARRAY['assessment_ref'::text, 'risk_level'::text]) AND ((metadata_json ->> 'risk_level'::text) = ANY (ARRAY['LOW'::text, 'MEDIUM'::text, 'HIGH'::text])))))\n    WHEN 'kernel'::text THEN ((event_type = 'kernel.audit.recorded'::text) AND (metadata_json ?& ARRAY['synthetic'::text, 'audit_ref'::text, 'action'::text]) AND ((metadata_json - ARRAY['synthetic'::text, 'audit_ref'::text, 'action'::text, 'evidence_policy_version'::text]) = '{}'::jsonb) AND ((metadata_json -> 'synthetic'::text) = 'false'::jsonb) AND (char_length((metadata_json ->> 'action'::text)) <= 100) AND ((metadata_json ->> 'action'::text) ~ '^(workspace[.]created|kernel[.][a-z_.-]+)$'::text))\n    ELSE false\nEND) IS TRUE))"
+          },
+          {
+            "name": "aigas_ld_events_check1",
+            "validated": true,
+            "definition": "CHECK ((((sequence_no = 1) AND (previous_hash IS NULL)) OR ((sequence_no > 1) AND (previous_hash IS NOT NULL))))"
+          },
+          {
+            "name": "aigas_ld_events_hash_profile_check",
+            "validated": true,
+            "definition": "CHECK ((hash_profile = 'aigas-ledger-sha256-chain-v2'::text))"
+          },
+          {
+            "name": "aigas_ld_events_idempotency_key_check",
+            "validated": true,
+            "definition": "CHECK ((idempotency_key ~ '^[a-zA-Z0-9_.:-]{1,180}$'::text))"
+          },
+          {
+            "name": "aigas_ld_events_integrity_hash_check",
+            "validated": true,
+            "definition": "CHECK ((integrity_hash ~ '^[0-9a-f]{64}$'::text))"
+          },
+          {
+            "name": "aigas_ld_events_metadata_json_check",
+            "validated": true,
+            "definition": "CHECK ((COALESCE((metadata_json ->> 'decision_ref'::text), '00000000-0000-0000-0000-000000000000'::text) ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'::text))"
+          },
+          {
+            "name": "aigas_ld_events_metadata_json_check1",
+            "validated": true,
+            "definition": "CHECK ((COALESCE((metadata_json ->> 'request_ref'::text), '00000000-0000-0000-0000-000000000000'::text) ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'::text))"
+          },
+          {
+            "name": "aigas_ld_events_metadata_json_check2",
+            "validated": true,
+            "definition": "CHECK ((COALESCE((metadata_json ->> 'asset_ref'::text), '00000000-0000-0000-0000-000000000000'::text) ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'::text))"
+          },
+          {
+            "name": "aigas_ld_events_metadata_json_check3",
+            "validated": true,
+            "definition": "CHECK ((COALESCE((metadata_json ->> 'assessment_ref'::text), '00000000-0000-0000-0000-000000000000'::text) ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'::text))"
+          },
+          {
+            "name": "aigas_ld_events_metadata_json_check4",
+            "validated": true,
+            "definition": "CHECK ((COALESCE((metadata_json ->> 'audit_ref'::text), '00000000-0000-0000-0000-000000000000'::text) ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'::text))"
+          },
+          {
+            "name": "aigas_ld_events_policy_version_check",
+            "validated": true,
+            "definition": "CHECK ((policy_version ~ '^[a-zA-Z0-9_.:-]{1,120}$'::text))"
+          },
+          {
+            "name": "aigas_ld_events_previous_hash_check",
+            "validated": true,
+            "definition": "CHECK ((previous_hash ~ '^[0-9a-f]{64}$'::text))"
+          },
+          {
+            "name": "aigas_ld_events_sequence_no_check",
+            "validated": true,
+            "definition": "CHECK ((sequence_no > 0))"
+          },
+          {
+            "name": "aigas_ld_events_source_check",
+            "validated": true,
+            "definition": "CHECK ((source = ANY (ARRAY['ledger.synthetic-lab'::text, 'firewall'::text, 'human-gate'::text, 'risk-engine'::text, 'kernel'::text])))"
+          },
+          {
+            "name": "aigas_ld_synthetic_reference_required",
+            "validated": false,
+            "definition": "CHECK (((source <> 'ledger.synthetic-lab'::text) OR (((metadata_json ->> 'decision_ref'::text) ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'::text) IS TRUE))) NOT VALID"
+          }
+        ],
+        "triggers": [
+          {
+            "name": "aigas_ld_events_append_only",
+            "enabled": "O",
+            "definition": "CREATE TRIGGER aigas_ld_events_append_only BEFORE DELETE OR UPDATE ON public.aigas_ld_events FOR EACH ROW EXECUTE FUNCTION aigas_ld_events_reject_mutation()"
+          },
+          {
+            "name": "aigas_ld_events_chain_guard",
+            "enabled": "O",
+            "definition": "CREATE TRIGGER aigas_ld_events_chain_guard BEFORE INSERT ON public.aigas_ld_events FOR EACH ROW EXECUTE FUNCTION aigas_ld_events_chain_guard()"
+          },
+          {
+            "name": "aigas_ld_events_no_truncate",
+            "enabled": "O",
+            "definition": "CREATE TRIGGER aigas_ld_events_no_truncate BEFORE TRUNCATE ON public.aigas_ld_events FOR EACH STATEMENT EXECUTE FUNCTION aigas_ld_events_reject_mutation()"
+          }
+        ],
+        "roles": [
+          {
+            "name": "aigas_runtime",
+            "login": false,
+            "super": false,
+            "bypass": false
+          },
+          {
+            "name": "anonymous",
+            "login": false,
+            "super": false,
+            "bypass": false
+          },
+          {
+            "name": "authenticated",
+            "login": false,
+            "super": false,
+            "bypass": false
+          },
+          {
+            "name": "neondb_owner",
+            "login": true,
+            "super": false,
+            "bypass": true
+          }
+        ],
+        "policy_summary": [
+          {
+            "policies": 2,
+            "tablename": "aigas_audit_events"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_auth_organizations"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_department_events"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_department_memberships"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_departments"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_exploration_grants"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_fw_decisions"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_fw_rules"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_hg_decisions"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_hg_delegations"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_hg_events"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_hg_grants"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_hg_policies"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_hg_requests"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_kernel_policy_decisions"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_ld_events"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_ld_evidence_requirements"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_member_invitations"
+          },
+          {
+            "policies": 6,
+            "tablename": "aigas_memberships"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_policies"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_policy_approvals"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_policy_delegations"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_policy_versions"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_product_access"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_product_grants"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_re_assessments"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_re_asset_revisions"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_re_assets"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_re_treatment_revisions"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_release_readiness"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_sc_cancellations"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_sc_conversations"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_sc_messages"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_sc_requests"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_self_service_trials"
+          },
+          {
+            "policies": 3,
+            "tablename": "aigas_tenants"
+          },
+          {
+            "policies": 4,
+            "tablename": "aigas_trial_entitlements"
+          },
+          {
+            "policies": 3,
+            "tablename": "aigas_trial_events"
+          },
+          {
+            "policies": 2,
+            "tablename": "aigas_trial_operators"
+          },
+          {
+            "policies": 1,
+            "tablename": "aigas_trial_quota_limits"
+          },
+          {
+            "policies": 1,
+            "tablename": "aigas_trial_quota_reservations"
+          },
+          {
+            "policies": 1,
+            "tablename": "aigas_trial_quota_usage"
+          },
+          {
+            "policies": 4,
+            "tablename": "aigas_trial_requests"
+          }
+        ],
+        "tables": [
+          {
+            "rls": true,
+            "name": "aigas_audit_events",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_auth_organizations",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_department_events",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_department_memberships",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_departments",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_exploration_grants",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_fw_decisions",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_fw_rules",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_hg_decisions",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_hg_delegations",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_hg_events",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_hg_grants",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_hg_policies",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_hg_requests",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_kernel_policy_decisions",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_ld_events",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_ld_evidence_requirements",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_member_invitations",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_memberships",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_policies",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_policy_approvals",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_policy_delegations",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_policy_versions",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_product_access",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_product_grants",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_re_assessments",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_re_asset_revisions",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_re_assets",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_re_treatment_revisions",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_release_readiness",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_sc_cancellations",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_sc_conversations",
+            "force": true
+          },
+          {
+            "rls": true,
+            "name": "aigas_sc_messages",
+            "force": true
+          },
+          {
+            "rls": true,
+            "name": "aigas_sc_requests",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_self_service_trials",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_tenants",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_trial_entitlements",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_trial_events",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_trial_operators",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_trial_quota_limits",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_trial_quota_reservations",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_trial_quota_usage",
+            "force": false
+          },
+          {
+            "rls": true,
+            "name": "aigas_trial_requests",
+            "force": false
+          }
+        ]
+      }
+    ],
+    "totalRowCount": 1,
+    "truncated": false
+  },
+  "productionDetails": {
+    "rows": [
+      {
+        "policies": null,
+        "chain_guard": null,
+        "historic_block": "0",
+        "guard_without_fingerprint": "0"
+      }
+    ],
+    "totalRowCount": 1,
+    "truncated": false
+  },
+  "stagingDetails": {
+    "rows": [
+      {
+        "policies": [
+          {
+            "cmd": "ALL",
+            "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+            "roles": [
+              "public"
+            ],
+            "tablename": "aigas_exploration_grants",
+            "permissive": "RESTRICTIVE",
+            "policyname": "aigas_client_deny",
+            "schemaname": "public",
+            "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+          },
+          {
+            "cmd": "SELECT",
+            "qual": "aigas_tenant_scope(tenant_id)",
+            "roles": [
+              "aigas_runtime"
+            ],
+            "tablename": "aigas_exploration_grants",
+            "permissive": "PERMISSIVE",
+            "policyname": "exploration_read",
+            "schemaname": "public",
+            "with_check": null
+          },
+          {
+            "cmd": "ALL",
+            "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+            "roles": [
+              "public"
+            ],
+            "tablename": "aigas_fw_decisions",
+            "permissive": "RESTRICTIVE",
+            "policyname": "aigas_client_deny",
+            "schemaname": "public",
+            "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+          },
+          {
+            "cmd": "ALL",
+            "qual": "aigas_tenant_scope(tenant_id)",
+            "roles": [
+              "aigas_runtime"
+            ],
+            "tablename": "aigas_fw_decisions",
+            "permissive": "PERMISSIVE",
+            "policyname": "aigas_runtime_tenant",
+            "schemaname": "public",
+            "with_check": "aigas_tenant_scope(tenant_id)"
+          },
+          {
+            "cmd": "ALL",
+            "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+            "roles": [
+              "public"
+            ],
+            "tablename": "aigas_hg_delegations",
+            "permissive": "RESTRICTIVE",
+            "policyname": "aigas_client_deny",
+            "schemaname": "public",
+            "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+          },
+          {
+            "cmd": "ALL",
+            "qual": "aigas_tenant_scope(tenant_id)",
+            "roles": [
+              "aigas_runtime"
+            ],
+            "tablename": "aigas_hg_delegations",
+            "permissive": "PERMISSIVE",
+            "policyname": "aigas_runtime_tenant",
+            "schemaname": "public",
+            "with_check": "aigas_tenant_scope(tenant_id)"
+          },
+          {
+            "cmd": "ALL",
+            "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+            "roles": [
+              "public"
+            ],
+            "tablename": "aigas_hg_grants",
+            "permissive": "RESTRICTIVE",
+            "policyname": "aigas_client_deny",
+            "schemaname": "public",
+            "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+          },
+          {
+            "cmd": "ALL",
+            "qual": "aigas_tenant_scope(tenant_id)",
+            "roles": [
+              "aigas_runtime"
+            ],
+            "tablename": "aigas_hg_grants",
+            "permissive": "PERMISSIVE",
+            "policyname": "aigas_runtime_tenant",
+            "schemaname": "public",
+            "with_check": "aigas_tenant_scope(tenant_id)"
+          },
+          {
+            "cmd": "ALL",
+            "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+            "roles": [
+              "public"
+            ],
+            "tablename": "aigas_ld_events",
+            "permissive": "RESTRICTIVE",
+            "policyname": "aigas_client_deny",
+            "schemaname": "public",
+            "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+          },
+          {
+            "cmd": "ALL",
+            "qual": "aigas_tenant_scope(tenant_id)",
+            "roles": [
+              "aigas_runtime"
+            ],
+            "tablename": "aigas_ld_events",
+            "permissive": "PERMISSIVE",
+            "policyname": "aigas_runtime_tenant",
+            "schemaname": "public",
+            "with_check": "aigas_tenant_scope(tenant_id)"
+          },
+          {
+            "cmd": "ALL",
+            "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+            "roles": [
+              "public"
+            ],
+            "tablename": "aigas_self_service_trials",
+            "permissive": "RESTRICTIVE",
+            "policyname": "aigas_client_deny",
+            "schemaname": "public",
+            "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+          },
+          {
+            "cmd": "SELECT",
+            "qual": "((user_id = aigas_actor()) AND aigas_tenant_scope(tenant_id))",
+            "roles": [
+              "aigas_runtime"
+            ],
+            "tablename": "aigas_self_service_trials",
+            "permissive": "PERMISSIVE",
+            "policyname": "own_trial",
+            "schemaname": "public",
+            "with_check": null
+          },
+          {
+            "cmd": "ALL",
+            "qual": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))",
+            "roles": [
+              "public"
+            ],
+            "tablename": "aigas_trial_requests",
+            "permissive": "RESTRICTIVE",
+            "policyname": "aigas_client_deny",
+            "schemaname": "public",
+            "with_check": "(CURRENT_USER <> ALL (ARRAY['authenticated'::name, 'anonymous'::name, 'authenticator'::name]))"
+          },
+          {
+            "cmd": "INSERT",
+            "qual": null,
+            "roles": [
+              "aigas_runtime"
+            ],
+            "tablename": "aigas_trial_requests",
+            "permissive": "PERMISSIVE",
+            "policyname": "aigas_trial_requests_insert",
+            "schemaname": "public",
+            "with_check": "(aigas_tenant_scope(tenant_id) AND aigas_actor_is_manager(tenant_id) AND (requested_by = aigas_actor()) AND (state = 'REQUESTED'::text) AND (decision_source IS NULL) AND (decided_by IS NULL) AND (decided_at IS NULL) AND (activated_at IS NULL) AND (expires_at IS NULL) AND (closed_at IS NULL))"
+          },
+          {
+            "cmd": "UPDATE",
+            "qual": "aigas_trial_operator_active()",
+            "roles": [
+              "aigas_runtime"
+            ],
+            "tablename": "aigas_trial_requests",
+            "permissive": "PERMISSIVE",
+            "policyname": "aigas_trial_requests_operator_update",
+            "schemaname": "public",
+            "with_check": "aigas_trial_operator_active()"
+          },
+          {
+            "cmd": "SELECT",
+            "qual": "(aigas_tenant_scope(tenant_id) OR aigas_trial_operator_active())",
+            "roles": [
+              "aigas_runtime"
+            ],
+            "tablename": "aigas_trial_requests",
+            "permissive": "PERMISSIVE",
+            "policyname": "aigas_trial_requests_select",
+            "schemaname": "public",
+            "with_check": null
+          }
+        ],
+        "chain_guard": [
+          {
+            "name": "aigas_ld_events_chain_guard",
+            "definition": "CREATE OR REPLACE FUNCTION public.aigas_ld_events_chain_guard()\n RETURNS trigger\n LANGUAGE plpgsql\nAS $function$\nDECLARE\n  parent public.aigas_ld_events%ROWTYPE;\nBEGIN\n  IF NEW.sequence_no = 1 THEN\n    IF NEW.previous_hash IS NOT NULL THEN\n      RAISE EXCEPTION 'Ledger genesis must not reference a previous hash';\n    END IF;\n    RETURN NEW;\n  END IF;\n\n  SELECT * INTO parent\n  FROM public.aigas_ld_events\n  WHERE tenant_id = NEW.tenant_id\n    AND sequence_no = NEW.sequence_no - 1;\n\n  IF NOT FOUND OR parent.integrity_hash IS DISTINCT FROM NEW.previous_hash THEN\n    RAISE EXCEPTION 'Ledger sequence gap or wrong previous hash';\n  END IF;\n\n  RETURN NEW;\nEND;\n$function$\n",
+            "security_definer": false
+          }
+        ],
+        "historic_block": "0",
+        "guard_without_fingerprint": "0"
+      }
+    ],
+    "totalRowCount": 1,
+    "truncated": false
+  },
+  "receipts": {
+    "rows": [
+      {
+        "filename": "0001_aigas_kernel.sql",
+        "sha256": "1c80c5abced0503f598e4cbe5b935e877622a57fb1f15a7f7f9e98f373e47ac7",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0002_aigas_firewall.sql",
+        "sha256": "4396ae21579a257b86eeb44d2c0e8ed0cace560c391a58fefb445417a33da2fb",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0003_aigas_ledger.sql",
+        "sha256": "7efef03a77c83b88a5abb67159213e06d467fe828f0182e59ae56d2851ff6642",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0004_aigas_human_gate.sql",
+        "sha256": "b707e5745272106a01e393a3479811f309e981f60dbe7bec65f9b23f935792ef",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0005_aigas_risk_engine.sql",
+        "sha256": "8bcd839c1afd937e1a6805ffd0cdd6231638f96a2ff0d492045459a54549046c",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0006_aigas_kernel_administration.sql",
+        "sha256": "b623dec133d85b6c47dc76a2f9e0a134290074eabe3abcf045ca461257511ce7",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0007_aigas_human_gate_enforcement.sql",
+        "sha256": "090ff73390db2bb063edcab0485a1c0c96787d6beb7afb9a559dd9a8cb7f3da8",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0008_aigas_risk_engine_lifecycle.sql",
+        "sha256": "625a640e5d1dc7877c92116801ecb1e2d0772c1b1eeed269c15afbab07d484d2",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0009_aigas_secure_chat.sql",
+        "sha256": "42dd8675ff9c91e2807bc983d69af49e8ddd5963961ccf28486de7cb99042cca",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0010_aigas_kernel_policy_hierarchy.sql",
+        "sha256": "e359220d6a46ff8c3b5b6fcc6af29482f3d9023dac818928e83eda54d1c26daa",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0014_aigas_human_gate_cancellation_delegation_and_grant.sql",
+        "sha256": "2424084ffc65a9dbd43158e9a8570c0285aa9ced388ff059edaef2f63b12dfe0",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0015_aigas_risk_engine_asset_context_residual_risk.sql",
+        "sha256": "df372952f4fc9e53604c7d892774fc46bded9dc1b4d52937705f366d9e923f0a",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0016_aigas_sc_user_token_quota.sql",
+        "sha256": "3e5017a9d80dc9cea5d947624f843c3d6c101ded50e763980cb1b6b2c04354d6",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0017_aigas_kernel_audit_context.sql",
+        "sha256": "61baef8eb746c91b2ffb527d7b1f21b8b1d571c5fc1773f6743ac4b8499b27e5",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0018_aigas_data_api_grant_hardening.sql",
+        "sha256": "87e47801e87d2aedb4155198548a589ef028787fee16fbbf5c62fd450c7092d2",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0020_aigas_kernel_policy_review_requirements.sql",
+        "sha256": "54f73a509a32e943efa19f6beaebb5e8bbc69a5947e2f546ab0351a310b55b92",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0021_aigas_risk_engine_acceptance_guard.sql",
+        "sha256": "b059020470a63d8a678b32463cd1093fe09ea5dbc9bf2a94e94d0fe220c32cd5",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0022_aigas_reference_scope_guard.sql",
+        "sha256": "dfed738a9ef94c2ce1f9672ebf14c3c0468883986b69388f1c98796567674141",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0023_aigas_enterprise_trial_lifecycle.sql",
+        "sha256": "e424e7eb1af6f0b14f14714c23aff19fc6d03656a9eab9b1a3cd68a041ef3189",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0024_aigas_catalog_parity_repair.sql",
+        "sha256": "13c2f7f6da29fd5823289eb30c681a7c129f1416bfffd25b543a2f8e712dfbd9",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0025_aigas_tenant_isolation_closure.sql",
+        "sha256": "013432e9fdb6905723d2d3fd7eb8110c5b3f9385dd61655e0a505719924d204b",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0026_aigas_risk_engine_residual_and_acceptance_policy.sql",
+        "sha256": "144abb18ba58956633a852da846a276594cd686f77342dd9924940315f275cc8",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0027_aigas_sc_content_participant_only.sql",
+        "sha256": "4a59eb0c528a40e371949f4650c4595cfbb3a26cbc5cb55dbcfae70e63baac1c",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0028_aigas_runtime_membership_lock.sql",
+        "sha256": "df314f3a23dfe03fbcdb755537d03bda717ca096c2caeb99c426f8b3ed0af2c4",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0029_aigas_ledger_required_reference.sql",
+        "sha256": "99be1b9d0aa2b584df8e610a292df30b6b9ac192ff223cc6ccc3b35acf7c2987",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0030_aigas_trial_server_cycle.sql",
+        "sha256": "325cd0881522311dd815b9d48d0117228eea5fd06604f57b07eb85f37d9c3df3",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0031_aigas_risk_treatment_runtime_lock.sql",
+        "sha256": "c33189f3debc821cc07a101aa5405843602a7171d0c3df0591a53b31db138e0a",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0032_aigas_trial_trigger_execute_lock.sql",
+        "sha256": "1f3bce9c6b26e3bac6b89f1af17c69b37788529f5fccab2760aad152cdb43164",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0033_aigas_exploration.sql",
+        "sha256": "faa5dc3b8554c6c11663e936b6c3b58e62b7fd12ff11c07a750ce79f3f028d34",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0034_aigas_self_service_trial.sql",
+        "sha256": "3eaec85c8fd31261d8626cc117500e051294b6b2ff52630743871d43eb1318ad",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0035_aigas_tenant_isolation_closure_v2.sql",
+        "sha256": "eed164931a2c35db405a326041036b48d76f3bd7f88c5671a83c5a6fe0e138bb",
+        "status": "APPLIED"
+      },
+      {
+        "filename": "0036_aigas_runtime_workspace_bootstrap.sql",
+        "sha256": "d2831ddff7c4704bee7929762d939debf604bbfa151d532d51f91e21bcb27283",
+        "status": "APPLIED"
+      }
+    ],
+    "totalRowCount": 32,
+    "truncated": false
+  },
+  "tail": {
+    "rows": [
+      {
+        "m0037": null,
+        "m0038": null,
+        "m0039": null,
+        "m0040": null,
+        "m0041": null,
+        "m0042": null,
+        "m0043": null,
+        "m0044": null,
+        "m0045": null
+      }
+    ],
+    "totalRowCount": 1,
+    "truncated": false
+  },
+  "stagingAcceptance": [
+    {
+      "rows": [],
+      "totalRowCount": 0,
+      "truncated": false
+    },
+    {
+      "rows": [
+        {
+          "result": "5/5; BLOCK and malformed fingerprint rejected; cross-tenant read/write denied; missing GUARD binding rejected; fixtures rolled back"
+        }
+      ],
+      "totalRowCount": 1,
+      "truncated": false
+    }
+  ]
+}
