@@ -5,34 +5,6 @@
 
 ---
 
-## P05 — Registry وPolicy Packs وهوية Agent
-
-**التبعيات:** P02 P03. **معايير الإغلاق:** RG-01 RG-02 RG-03 RG-04 RG-05.
-
-**الملفات المستهدفة من شجرة المصدر:**
-- `src/server/governance/contract.mjs`
-- `src/server/governance/registry.mjs`
-- `src/server/governance/internal-pack.mjs`
-- `src/server/governance/reference-catalog.mjs`
-- `src/server/kernel/policies.mjs`
-- `src/pages/app/api/kernel/policies.ts`
-- `src/pages/app/api/kernel/products.ts`
-- `tests/governance-packs.test.mjs`
-- `tests/governance-reference.test.mjs`
-
-**حدود التنفيذ:** نفّذ أساس هذه المهمة؛ أكمل التحقق والتعديلات المتخصصة في P19, P20, P27. لا تعِد تنفيذ إصلاح أو اختبار ثبت على نفس النسخة والبيئة.
-
-**أوامر العمل:**
-
-أصلح product enum وتطابق جميع العقود لتشمل Secure Chat، وعرّف سجلات agent/tool/model/vendor/asset بمالك وmandate ونسخة وscope وapproval expiry/revocation. افصل governing agents عن governed third-party agents. اربط Policy Packs بنسخ وsource references وapproval workflow وprecedence deterministic وhard deny. أضف عمليات CRUD المصرح بها وقراءة فقط للآخرين عبر Kernel؛ اربط واجهة Registry إلى سجلات حقيقية، ولا تعتمد local arrays. أضف tests للانتهاء، self-approval، تعارض النسخ، ترخيص منتج واحد وrevocation؛ لا تنشر نص قانوني مولد آليًا أو ادعاء شهادة.
-
-**معيار التسليم:**
-- `RG-01` — registry لمحاكاة الأصل/التقييم والإصدار موجود في المصدر → دليل PASS_VERIFIED في البيئة المطلوبة.
-- `RG-02` — asset/model/agent/vendor lifecycle وowner/mandate/capabilities → دليل PASS_VERIFIED في البيئة المطلوبة.
-- `RG-03` — سياسات versioned مراجع وربط requirement/control/finding/evidence → دليل PASS_VERIFIED في البيئة المطلوبة.
-- `RG-04` — تعديل policy بمراجعة ومنع self-approval وإلغاء التفويض → دليل PASS_VERIFIED في البيئة المطلوبة.
-- `RG-05` — تغطية سجل الحوكمة لمنتج Secure Chat بعقد متسق → دليل PASS_VERIFIED في البيئة المطلوبة.
-
 ---
 
 ## P06 — Firewall AI Agent

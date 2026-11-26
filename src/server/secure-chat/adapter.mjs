@@ -1,6 +1,7 @@
 import { KernelError } from '../kernel/core.mjs';
 import { groqRequest, requireGroqReadiness } from '../ai/groq-gateway.mjs';
 import { modelApprovalState } from './models.mjs';
+import { prepareTools, parseToolReply } from '../ai/tool-contract.mjs';
 
 /**
  * @typedef {{role: 'user'|'assistant', content: string}} ChatMessage
@@ -58,4 +59,17 @@ export function providerReady(model) {
 export async function complete(model, messages, signal) {
   signal.throwIfAborted();
   return providerConfiguration(model).complete(model, messages, signal);
+}
+
+// Internal only: tools, schemas and policy callbacks must be supplied by trusted
+// server code. This returns proposals; execution remains the agent executor's job.
+export async function completeWithTools(model, messages, signal, tools, toolPolicy) {
+  signal.throwIfAborted();
+  providerConfiguration(model);
+  const prepared = prepareTools(tools);
+  const body = await groqRequest({ model, messages, signal, tools, toolPolicy, retryRateLimit: false });
+  const choice = body.choices[0];
+  const usage = { inputTokens: body.usage.prompt_tokens, outputTokens: body.usage.completion_tokens, totalTokens: body.usage.total_tokens };
+  if (choice.finish_reason === 'tool_calls') return { type: 'tool_calls', calls: parseToolReply(body, prepared.byName), usage };
+  return { type: 'text', reply: choice.message.content, usage };
 }

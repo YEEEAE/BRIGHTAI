@@ -33,7 +33,7 @@ export function modelApprovalState(model, now = Date.now()) {
       model.inputOverheadTokens >= model.maxRequestTokens - model.maxOutputTokens ||
       !positiveInteger(model.timeoutMs) || model.timeoutMs < 1000 || model.timeoutMs > 120000 ||
       model.provider !== 'groq' || model.endpoint !== GROQ_CHAT_ENDPOINT ||
-      model.apiKeyEnv !== 'AIGAS_SC_GROQ_API_KEY' || model.protocol !== 'CHAT_COMPLETIONS_V1' ||
+      model.apiKeyEnv !== 'GROQ_API_KEY' || model.protocol !== 'CHAT_COMPLETIONS_V1' ||
       !Array.isArray(model.tenantIds) || !model.tenantIds.length || !model.tenantIds.every(nonempty)) return 'NOT_APPROVED';
   return 'APPROVED';
 }

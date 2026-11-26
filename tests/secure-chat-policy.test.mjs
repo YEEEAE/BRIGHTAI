@@ -119,7 +119,7 @@ test('valid registry shape still requires matching runtime model and server secr
   assert.throws(() => providerConfiguration(model), { code: 'NO_APPROVED_MODEL' });
   process.env.GROQ_MODEL = model.providerModel;
   delete process.env.AIGAS_SC_GROQ_API_KEY;
-  process.env.GROQ_API_KEY = 'legacy-fixture';
-  // The legacy key cannot make a Secure Chat adapter ready.
+  delete process.env.GROQ_API_KEY;
+  // Neither name is configured, so readiness must fail closed.
   assert.throws(() => providerConfiguration(model), { code: 'PROVIDER_NOT_CONFIGURED' });
 });

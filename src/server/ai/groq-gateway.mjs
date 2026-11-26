@@ -4,6 +4,7 @@ import { setTimeout as sleep } from 'node:timers/promises';
 import { KernelError } from '../kernel/core.mjs';
 import { resolveProviderSecret } from '../kernel/env.mjs';
 import { APPROVED_MODELS, GROQ_CHAT_ENDPOINT } from '../secure-chat/models.mjs';
+import { prepareTools, validateToolMessages, parseToolReply } from './tool-contract.mjs';
 
 const failureMessages = {
   REQUEST_LIMIT_REACHED: 'تجاوز النص حد الإدخال للنموذج. اختصر النص قبل المحاولة.',
@@ -134,19 +135,30 @@ export function requireGroqReadiness(model, now = Date.now()) {
 }
 
 export function createGroqGateway({ registry = APPROVED_MODELS, fetchImpl = (...args) => fetch(...args), now = Date.now, wait = sleep } = {}) {
-  return async function request({ model, messages, signal, models = false, internalAdvisory = false, retryRateLimit = true }) {
+  return async function request({ model, messages, signal, models = false, internalAdvisory = false, retryRateLimit = true, tools, toolPolicy }) {
     // Object identity prevents an unreviewed clone from supplying prices/bounds.
     if (!registry.includes(model) || !model.approval?.reference || model.approval.noTraining !== true ||
         !Number.isFinite(Date.parse(model.approval.expiresAt)) || Date.parse(model.approval.expiresAt) <= now() || process.env.GROQ_MODEL !== model.providerModel ||
-        model.apiKeyEnv !== 'AIGAS_SC_GROQ_API_KEY' || model.endpoint !== GROQ_CHAT_ENDPOINT ||
+        model.apiKeyEnv !== 'GROQ_API_KEY' || model.endpoint !== GROQ_CHAT_ENDPOINT ||
         !Number.isSafeInteger(model.maxRequestTokens) || !Number.isSafeInteger(model.maxOutputTokens) ||
         model.maxOutputTokens < 1 || model.maxRequestTokens <= model.maxOutputTokens ||
         !Number.isFinite(model.inputUsdPerMillion) || model.inputUsdPerMillion <= 0 ||
         !Number.isFinite(model.outputUsdPerMillion) || model.outputUsdPerMillion <= 0) throw failure('NO_APPROVED_MODEL');
     const { key, path, daily, monthly, concurrency, timeout } = gatewaySettings(model);
+    let prepared;
+    if (tools !== undefined) {
+      if (models || !toolPolicy || typeof toolPolicy.pre !== 'function' || typeof toolPolicy.post !== 'function') throw failure('POLICY_UNAVAILABLE');
+      prepared = prepareTools(tools);
+      // Copy before asynchronous policy checks so callers cannot mutate approved bytes.
+      try { messages = structuredClone(messages); } catch { throw failure('REQUEST_LIMIT_REACHED'); }
+      validateToolMessages(messages, prepared.byName);
+      let allowed = false;
+      try { allowed = await toolPolicy.pre(structuredClone(messages)) === true; } catch { throw failure('POLICY_UNAVAILABLE'); }
+      if (!allowed) throw failure('POLICY_DENIED', 403);
+    }
     if (!models && (!Array.isArray(messages) || !Number.isSafeInteger(model.inputOverheadTokens) || model.inputOverheadTokens < 0 ||
-        messages.some(m => !['system','user','assistant'].includes(m?.role) || typeof m.content !== 'string') ||
-        messages.reduce((n, m) => n + Buffer.byteLength(m.content, 'utf8'), 0) + model.inputOverheadTokens > model.maxRequestTokens - model.maxOutputTokens)) throw failure('REQUEST_LIMIT_REACHED');
+        (!prepared && messages.some(m => !['system','user','assistant'].includes(m?.role) || typeof m.content !== 'string')) ||
+        (prepared ? Buffer.byteLength(JSON.stringify({ messages, tools: prepared.wire }), 'utf8') : messages.reduce((n, m) => n + Buffer.byteLength(m.content, 'utf8'), 0)) + model.inputOverheadTokens > model.maxRequestTokens - model.maxOutputTokens)) throw failure('REQUEST_LIMIT_REACHED');
     const deadline = AbortSignal.timeout(timeout);
     const combined = signal ? AbortSignal.any([signal, deadline]) : deadline;
     combined.throwIfAborted();
@@ -172,6 +184,7 @@ export function createGroqGateway({ registry = APPROVED_MODELS, fetchImpl = (...
             headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
             ...(models ? {} : { body: JSON.stringify({ model: model.providerModel, messages, max_tokens: model.maxOutputTokens,
               reasoning_effort: 'none', temperature: 0.7, top_p: 0.80, stream: false, n: 1,
+              ...(prepared ? { tools: prepared.wire } : {}),
               ...(internalAdvisory ? { reasoning_format: 'hidden' } : {}) }) }),
           });
         } catch { networkFailure = !signal?.aborted; throw failure(deadline.aborted ? 'PROVIDER_TIMEOUT' : 'PROVIDER_UNAVAILABLE', deadline.aborted ? 504 : 502); }
@@ -198,6 +211,16 @@ export function createGroqGateway({ registry = APPROVED_MODELS, fetchImpl = (...
               u.total_tokens !== u.prompt_tokens + u.completion_tokens || u.prompt_tokens > model.maxRequestTokens - model.maxOutputTokens ||
               u.completion_tokens > model.maxOutputTokens) throw failure('INVALID_PROVIDER_USAGE', 502);
           actual = cost(u.prompt_tokens, u.completion_tokens);
+        }
+        if (prepared) {
+          const message = body?.choices?.[0]?.message;
+          const calls = body?.choices?.[0]?.finish_reason === 'tool_calls' ? parseToolReply(body, prepared.byName) : null;
+          if (!calls && (body?.choices?.length !== 1 || body.choices[0].finish_reason !== 'stop' || message?.role !== 'assistant' ||
+              typeof message.content !== 'string' || !message.content.trim() || message.content.length > 16000 || message.tool_calls || message.function_call)) throw failure('INVALID_PROVIDER_REPLY', 502);
+          let allowed = false;
+          try { allowed = await toolPolicy.post(structuredClone(calls ?? message.content)) === true; } catch { throw failure('POLICY_UNAVAILABLE'); }
+          if (!allowed) throw failure('POLICY_DENIED', 403);
+          combined.throwIfAborted();
         }
         success = true;
         // Models probing exposes only reviewed identifiers, never raw upstream metadata.

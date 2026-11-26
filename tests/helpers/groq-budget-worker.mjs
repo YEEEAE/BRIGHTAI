@@ -5,7 +5,7 @@ const [instant, mode] = process.argv.slice(2);
 const model = {
   providerModel: 'synthetic-model',
   endpoint: 'https://api.groq.com/openai/v1/chat/completions',
-  apiKeyEnv: 'AIGAS_SC_GROQ_API_KEY',
+  apiKeyEnv: 'GROQ_API_KEY',
   approval: { reference: 'test-only', noTraining: true, expiresAt: '2099-01-01' },
   inputOverheadTokens: 0,
   maxRequestTokens: 100,

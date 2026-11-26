@@ -14,9 +14,12 @@ export const isPortalEnabled = () => {
 };
 
 export function resolveProviderSecret(apiKeyEnv) {
-  if (!/^AIGAS_SC_[A-Z0-9_]+_API_KEY$/.test(apiKeyEnv ?? '')) throw new Error('INVALID_SECRET_NAME');
+  if (apiKeyEnv !== 'GROQ_API_KEY') throw new Error('INVALID_SECRET_NAME');
   if (Object.keys(process.env).some(name => name.startsWith('PUBLIC_GROQ'))) throw new Error('PUBLIC_PROVIDER_SECRET_FORBIDDEN');
-  const key = process.env[apiKeyEnv];
+  const canonical = process.env.GROQ_API_KEY;
+  const alias = process.env.AIGAS_SC_GROQ_API_KEY;
+  if (canonical && alias && canonical !== alias) throw new Error('PROVIDER_SECRET_CONFLICT');
+  const key = canonical || alias;
   if (!key?.trim() || /[\r\n]/.test(key)) throw new Error('PROVIDER_SECRET_UNAVAILABLE');
   return key;
 }
