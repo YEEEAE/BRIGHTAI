@@ -1,17 +1,17 @@
 const endpoint = '/api/enterprise-inquiry/';
 
-export async function enableEnterpriseInquiry(draft: HTMLTextAreaElement) {
+export async function enableEnterpriseInquiry(draft: HTMLTextAreaElement): Promise<boolean> {
   const form = document.querySelector<HTMLFormElement>('#enterprise-inquiry');
   const email = document.querySelector<HTMLInputElement>('#inquiry-email');
   const submit = document.querySelector<HTMLButtonElement>('#inquiry-submit');
   const feedback = document.querySelector<HTMLElement>('#inquiry-feedback');
-  if (!form || !email || !submit || !feedback || !crypto.randomUUID) return;
+  if (!form || !email || !submit || !feedback || !crypto.randomUUID) return false;
 
   try {
     const response = await fetch(endpoint, { cache: 'no-store', redirect: 'error', signal: AbortSignal.timeout(4000) });
-    if (!response.ok || (await response.json()).available !== true) return;
+    if (!response.ok || (await response.json()).available !== true) return false;
   } catch {
-    return;
+    return false;
   }
 
   let attempt: { submissionId: string; email: string; message: string } | undefined;
@@ -69,4 +69,5 @@ export async function enableEnterpriseInquiry(draft: HTMLTextAreaElement) {
     }
   });
   form.hidden = false;
+  return true;
 }
