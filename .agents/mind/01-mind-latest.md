@@ -23,6 +23,12 @@
 - 2026-11-26 PARTIAL Analytics/SEO: GA4 مقصور على brightai.live/www بلا وسم مكرر وتجزئة CSP محدَّثة بلا توسيع؛ README يبدأ بـCurrent Architecture وأرشيف تاريخي واضح؛ build PASS و67 صفحة واختبارات 65/66 (فشل قديم في ga4-attribution:30)؛ Windsor/GSC/OpenSEO/Firecrawl/Linear غير متاحة هنا، وstream مخصص وموافقة أحداث MagicPath والنشر NOT VERIFIED؛ `Audit/analytics-seo-2026-11-26/REPORT.md`.
 
 ## Ledger (الأحدث أولًا)
+## [2026-11-26] — procurement/self-hosted readiness pack
+- **تم:** حزمة أدلة محلية في `Audit/procurement-selfhost-2026-11-26/` — تقرير عربي، manifest بتجزئات، خريطة بطاقات مركز الثقة، أدلة مشتريات، مسودة DPA، وخطة قبول/استعادة؛ بلا نشر أو شراء أو توقيع.
+- **التحقق:** SHA-256 من الملفات الفعلية PASS؛ Render MCP BLOCKED (لا workspace مختار)؛ MagicPath BLOCKED (الحصة 50/50)؛ لا تثبيت أو استعادة أو فحص egress.
+- **الحالة:** PARTIAL؛ air-gap والتوقيع BLOCKED؛ القبول NOT RUN؛ لا ادعاء on-prem أو امتثال.
+- **ملفات:** `Audit/procurement-selfhost-2026-11-26/README.md`, `deployment-package.manifest.json`, `SELF-HOST-READINESS-REPORT.ar.md`.
+
 ## [2026-11-26] — analytics/SEO وتوثيق
 - **تم:** عزل GA4 عن dev host بلا وسم ثانٍ، تحديث تجزئة CSP دون توسيع السياسة، وREADME بمعمارية حالية وأرشيف واضح.
 - **التحقق:** build PASS؛ 67 صفحة؛ 65/66 اختبار؛ حارس المضيف localhost/staging OFF وbrightai.live ON.

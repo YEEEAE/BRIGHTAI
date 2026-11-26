@@ -1,0 +1,248 @@
+{
+  "schema": "brightai.trust-center.cards/v1",
+  "generated_at": "2026-11-26",
+  "rule": "No card is a marketing claim. Each card has a status and a reviewable evidence path or an explicit empty-evidence state.",
+  "status_values": [
+    "VERIFIED_SOURCE",
+    "PARTIAL",
+    "DRAFT",
+    "BLOCKED",
+    "NOT_VERIFIED",
+    "NOT_RUN",
+    "NOT_SIGNED"
+  ],
+  "magicpath_state": {
+    "mcp_available": false,
+    "reason": "EXTERNAL_AGENT_API_QUOTA_EXCEEDED (50/50)",
+    "model_edited": false,
+    "action": "Use this file when the model is next editable; do not invent evidence or badges."
+  },
+  "cards": [
+    {
+      "id": "tc-soc2",
+      "label_ar": "SOC 2 Type II",
+      "status": "NOT_VERIFIED",
+      "publishable": false,
+      "display_ar": "قيد المراجعة — لا يوجد تقرير تدقيق",
+      "evidence": []
+    },
+    {
+      "id": "tc-iso27001",
+      "label_ar": "ISO 27001",
+      "status": "NOT_VERIFIED",
+      "publishable": false,
+      "display_ar": "غير مُثبت",
+      "evidence": []
+    },
+    {
+      "id": "tc-hipaa",
+      "label_ar": "HIPAA",
+      "status": "NOT_VERIFIED",
+      "publishable": false,
+      "display_ar": "غير مُثبت — لا يُعرض",
+      "evidence": []
+    },
+    {
+      "id": "tc-gdpr",
+      "label_ar": "GDPR",
+      "status": "PARTIAL",
+      "publishable": false,
+      "display_ar": "مسودة سياسة — مراجعة قانونية مطلوبة",
+      "evidence": [
+        "../procurement-selfhost-2026-11-26/DPA-RETENTION-DRAFT.md",
+        "docs/DATA-PRIVACY-AND-SECURITY.md"
+      ]
+    },
+    {
+      "id": "tc-trust-page",
+      "label_ar": "صفحةTrust Center",
+      "status": "PARTIAL",
+      "publishable": false,
+      "display_ar": "صفحة عامة موجودة لكن الادعاءات غير مُثبتة",
+      "evidence": [
+        "/trust/",
+        "Audit/magicpath-p10-2026-11-26/UI-ACTION-BINDING-REGISTER.md"
+      ],
+      "note": "Audit register marks Trust Center links/evidence NOT_VERIFIED."
+    },
+    {
+      "id": "tc-encryption",
+      "label_ar": "تشفير",
+      "status": "PARTIAL",
+      "publishable": false,
+      "display_ar": "ضوابط مصدرية — لم تُختبر تشغيليًا",
+      "evidence": [
+        "docs/DATA-PRIVACY-AND-SECURITY.md"
+      ]
+    },
+    {
+      "id": "tc-residency",
+      "label_ar": "إقامة البيانات",
+      "status": "NOT_VERIFIED",
+      "publishable": false,
+      "display_ar": "غير محقق",
+      "evidence": [
+        "docs/NEON-BRANCH-PROTECTION-RUNBOOK.md"
+      ],
+      "note": "Historical observation aws-us-east-2; no Saudi residency attestation."
+    },
+    {
+      "id": "tc-subprocessors",
+      "label_ar": "المعالجات الفرعية",
+      "status": "PARTIAL",
+      "publishable": false,
+      "display_ar": "قائمة أولية — تحتاج موافقة",
+      "evidence": [
+        "render.yaml",
+        ".env.example"
+      ],
+      "note": "Render, Neon/Neon Auth, Groq, edge/CDN. No signed DPAs."
+    },
+    {
+      "id": "tc-dpa",
+      "label_ar": "DPA",
+      "status": "DRAFT",
+      "publishable": false,
+      "display_ar": "مسودة للمراجعة المختصة",
+      "evidence": [
+        "DPA-RETENTION-DRAFT.md"
+      ],
+      "note": "TBD fields; no signature."
+    },
+    {
+      "id": "tc-retention",
+      "label_ar": "الاحتفاظ",
+      "status": "BLOCKED",
+      "publishable": false,
+      "display_ar": "لا مدة معتمدة",
+      "evidence": [
+        "docs/NEON-BRANCH-PROTECTION-RUNBOOK.md"
+      ],
+      "note": "Historical retention 21600s is not an approved policy."
+    },
+    {
+      "id": "tc-sso",
+      "label_ar": "SSO/OIDC",
+      "status": "PARTIAL",
+      "publishable": false,
+      "display_ar": "تطبيق محلي جزئي — النشر غير متحقق",
+      "evidence": [
+        "docs/IDENTITY-AND-INVITATION-RUNBOOK.md"
+      ]
+    },
+    {
+      "id": "tc-mfa",
+      "label_ar": "MFA",
+      "status": "NOT_VERIFIED",
+      "publishable": false,
+      "display_ar": "غير مُثبت",
+      "evidence": []
+    },
+    {
+      "id": "tc-ledger",
+      "label_ar": "سجل Ledger",
+      "status": "PARTIAL",
+      "publishable": false,
+      "display_ar": "حارس سلسلة مصدر — لا إثبات إنتاج",
+      "evidence": [
+        "docs/DATA-PRIVACY-AND-SECURITY.md",
+        "docs/NEON-BRANCH-PROTECTION-RUNBOOK.md"
+      ]
+    },
+    {
+      "id": "tc-backup-restore",
+      "label_ar": "النسخ والاستعادة",
+      "status": "NOT_RUN",
+      "publishable": false,
+      "display_ar": "خطة فقط — لم تُنفّذ",
+      "evidence": [
+        "docs/NEON-BRANCH-PROTECTION-RUNBOOK.md"
+      ]
+    },
+    {
+      "id": "tc-onprem",
+      "label_ar": "on-prem",
+      "status": "BLOCKED",
+      "publishable": false,
+      "display_ar": "غير جاهز",
+      "evidence": [
+        "AIR-GAP-BOUNDARY.md"
+      ]
+    },
+    {
+      "id": "tc-airgap",
+      "label_ar": "air-gap",
+      "status": "BLOCKED",
+      "publishable": false,
+      "display_ar": "غير جاهز — مزود خارجي",
+      "evidence": [
+        "AIR-GAP-BOUNDARY.md",
+        ".env.example"
+      ]
+    },
+    {
+      "id": "tc-groq-egress",
+      "label_ar": "egress لـGroq",
+      "status": "PARTIAL",
+      "publishable": false,
+      "display_ar": "مقيّد بالاعتماد والميزانية لكنه خارجي",
+      "evidence": [
+        ".env.example",
+        "docs/DATA-PRIVACY-AND-SECURITY.md"
+      ],
+      "note": "Budget/approval controls do not make it air-gap."
+    },
+    {
+      "id": "tc-no-training",
+      "label_ar": "عدم التدريب على البيانات",
+      "status": "NOT_VERIFIED",
+      "publishable": false,
+      "display_ar": "متطلب مستهدف يحتاج إثبات المورد",
+      "evidence": [
+        "Audit/CLAIMS-REVIEW-2026-11-25.md"
+      ],
+      "note": "Mind records the claim was downgraded to a target requirement."
+    },
+    {
+      "id": "tc-sbom",
+      "label_ar": "SBOM",
+      "status": "PARTIAL",
+      "publishable": false,
+      "display_ar": "قفل مثبّت — لم يُولَّد SBOM",
+      "evidence": [
+        "package-lock.json",
+        "deployment-package.manifest.json"
+      ]
+    },
+    {
+      "id": "tc-signature",
+      "label_ar": "توقيع الأدلة",
+      "status": "NOT_SIGNED",
+      "publishable": false,
+      "display_ar": "تجزئات فقط",
+      "evidence": [
+        "deployment-package.manifest.json"
+      ]
+    },
+    {
+      "id": "tc-dev-workbench",
+      "label_ar": "Developer Workbench",
+      "status": "VERIFIED_SOURCE",
+      "publishable": false,
+      "display_ar": "مسارات حقيقية من المصدر، لا فحص runtime",
+      "evidence": [
+        "DEVELOPER-WORKBENCH-ENDPOINTS.md",
+        "src/server/api/routes.mjs"
+      ],
+      "note": "Invented /api/governance/evaluate excluded."
+    },
+    {
+      "id": "tc-sla",
+      "label_ar": "SLA",
+      "status": "NOT_VERIFIED",
+      "publishable": false,
+      "display_ar": "لا التزام منشور",
+      "evidence": []
+    }
+  ]
+}

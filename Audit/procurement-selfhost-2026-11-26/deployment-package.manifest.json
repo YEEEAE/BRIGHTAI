@@ -1,0 +1,142 @@
+{
+  "schema": "brightai.procurement.manifest/v1",
+  "generated_at": "2026-11-26",
+  "generated_by": "OpenCode agent — local source inspection only",
+  "purpose": "Reviewable procurement/self-hosted evidence pack. Not a release artifact, attestation, contract, or signed document.",
+  "source_of_truth": {
+    "project": "BRIGHTAI / AIGAS",
+    "local_path": "/Users/yzydalshmry/Desktop/BRIGHTAI",
+    "git_head": "f122aaf37b38ab2c2d7f4834d67479e0303428e9",
+    "deployment_blueprint": "render.yaml",
+    "pinned_runtime": {
+      "node": "22.23.5",
+      "npm": "10.9.7",
+      "astro": "7.4.13",
+      "node_adapter": "11.1.14"
+    },
+    "committed_lockfile": "package-lock.json"
+  },
+  "verification_boundary": {
+    "class": "SOURCE_PRESENT_RUNTIME_UNVERIFIED",
+    "meaning": "Contracts and hashes read from checkout. No install, deploy, migration, restore drill, external egress test, browser run, or production read executed for this pack.",
+    "evidence_class": "PARTIAL"
+  },
+  "deployment_model": {
+    "canonical": "Render Blueprint — single managed Node web service",
+    "build": "npm ci && npm run build",
+    "start": "npm start -> node ./scripts/server.mjs",
+    "liveness": "GET /healthz",
+    "readiness": "GET /readyz/ (also probes auth JWKS host when AIGAS_HEALTH_AUTH_PROBE=true)",
+    "app_portal": "AIGAS_APP_ENABLED=false until owner authorises exposure",
+    "auto_deploy": "off",
+    "container_or_helm": {
+      "state": "NOT_PRESENT",
+      "note": "No Dockerfile, compose, Helm chart, or on-prem installer in this checkout."
+    }
+  },
+  "artifacts": [
+    {
+      "path": "render.yaml",
+      "sha256": "d4a990923451f9ccfc43fbc53d0972c31eddf32db285a3a6c25dd34fa7f0d78d",
+      "role": "deployment blueprint (placeholder — replaced below)"
+    },
+    {
+      "path": "package.json",
+      "sha256": "a8cbd9eeb5dc2f0200ec3af9bb7e4426b5bfe556f4ed4f49256074306fa20ff2",
+      "role": "runtime/tool contract and direct dependencies"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "7c788be26a006529235bf8a5c795b4ce4d65383f9254d400e143915033ff4f85",
+      "role": "pinned dependency graph (SBOM input, not an SBOM)"
+    },
+    {
+      "path": ".env.example",
+      "sha256": "71077bb58f7a5b3e9aece55e4c83933f7e3526ac03f8a6244013218d02a2a03e",
+      "role": "secret-name inventory only"
+    },
+    {
+      "path": "astro.config.mjs",
+      "sha256": "6b755dd6a3cf1df8ba2d7eec66c547c643b65e8d195045a5d57f48b897eefa5c",
+      "role": "SSR adapter/host config"
+    },
+    {
+      "path": "docs/DATA-PRIVACY-AND-SECURITY.md",
+      "sha256": "16204bece2193e960fd2bf611888080ec12989227c49f1e474b0488b7ab67911",
+      "role": "source controls vs target requirements vs NOT_VERIFIED"
+    },
+    {
+      "path": "docs/NEON-BRANCH-PROTECTION-RUNBOOK.md",
+      "sha256": "b159c6e12577fcdea1f00c575516b773509cb7c6364329a7d59e3d1d0cd3bd35",
+      "role": "backup/restore/rollback plan — PLAN ONLY, NOT EXECUTED"
+    },
+    {
+      "path": "src/server/api/request-schemas.mjs",
+      "sha256": "5b5fb3dd5dd7cc28b9143f257daeb7bb45fb82e9c55c339956f9d948806e94e0",
+      "role": "request contract source for Developer Workbench"
+    }
+  ],
+  "signature": {
+    "status": "NOT_SIGNED",
+    "signing_authority": "NOT_CONFIGURED",
+    "limits": [
+      "SHA-256 values are integrity digests, not signatures or attestations.",
+      "No detached signature, key, certificate chain, timestamp authority, or revocation list exists.",
+      "A build or health PASS cannot approve a gate, deployment, or release.",
+      "No approved signer registry is present in the source controls reviewed here.",
+      "Any future signature must bind git SHA, build id, artifact digest, signer scope and environment."
+    ]
+  },
+  "secrets_and_egress": {
+    "secret_values_in_pack": false,
+    "runtime_secrets": [
+      "DATABASE_URL",
+      "NEON_AUTH_BASE_URL",
+      "NEON_AUTH_JWKS_URL",
+      "GROQ_API_KEY",
+      "GROQ_MODEL"
+    ],
+    "operator_only": [
+      "DATABASE_URL_UNPOOLED",
+      "NEON_PROJECT_ID",
+      "NEON_BRANCH",
+      "AIGAS_SC_GROQ_API_KEY",
+      "budget/ledger file paths"
+    ],
+    "outbound_destinations_declared": [
+      "Neon Auth JWKS host (readiness probe)",
+      "Groq API (approval-gated, budgeted)",
+      "Neon Postgres",
+      "operator edge/CDN"
+    ],
+    "air_gap_supported": false,
+    "air_gap_reason": "Managed Render/Neon topology; readiness probes an external JWKS host; Groq is an external provider. No local model or egress-denial bundle."
+  },
+  "backup_restore": {
+    "plan_status": "PLAN ONLY — NOT EXECUTED",
+    "drill_status": "NOT RUN",
+    "observed_snapshot_state": "No snapshots, no backup table, history_retention_seconds=21600 (historical read-only observation; must be re-inventoried)",
+    "branch_protection": "protected=false in the historical observation; must be rechecked",
+    "production_restore": "NOT AUTHORISED"
+  },
+  "claims_not_supported": [
+    "On-prem / self-hosted deployment ready",
+    "Air-gap deployment ready",
+    "SOC 2 / ISO 27001 / HIPAA / GDPR certification or attestation",
+    "Saudi/data-residency guarantee or cross-border transfer approval",
+    "Verified backup restore, RPO/RTO attainment, retention enforcement",
+    "Signed SBOM or signed release artifact",
+    "Production acceptance, UAT pass, security verification, or published SLA"
+  ],
+  "acceptance": {
+    "state": "NOT_RUN",
+    "runbook": "Audit/procurement-selfhost-2026-11-26/ACCEPTANCE-AND-RESTORE-RUNBOOK.md"
+  },
+  "handling": {
+    "no_publish": true,
+    "no_purchase": true,
+    "no_deploy": true,
+    "no_signature": true,
+    "no_customer_data": true
+  }
+}
