@@ -5,6 +5,7 @@ import { createServer as httpsServer } from 'node:https';
 import { readFileSync } from 'node:fs';
 import { applySecurityPolicy } from '../src/server/observability/security-policy.mjs';
 import { publicRedirectForRequest } from '../src/server/seo/redirects.mjs';
+import { publicSite } from '../src/server/seo/indexability.mjs';
 import { liveResponse } from '../src/server/kernel/liveness.mjs';
 import { probeResponse } from '../src/server/kernel/probe-response.mjs';
 import { readyResponse, failureReport } from '../src/server/kernel/health-endpoint.mjs';
@@ -35,6 +36,21 @@ const badRequest = response => {
   response.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8', 'X-Content-Type-Options': 'nosniff' });
   response.end('Bad request.');
 };
+
+// Preview/staging origins serve the same HTML as the public site. Mark those
+// copies noindex so they cannot compete with the canonical pages; the canonical
+// links built from publicSite stay unchanged on the main pages.
+const PUBLIC_HOSTS = new Set([
+  new URL(publicSite).hostname,
+  `www.${new URL(publicSite).hostname}`,
+  'localhost', '127.0.0.1', '::1',
+]);
+
+function requestHostname(value) {
+  const raw = (value ?? '').split(',')[0].trim().toLowerCase();
+  if (raw.startsWith('[')) return raw.slice(1, raw.indexOf(']'));
+  return raw.replace(/:\d+$/, '');
+}
 
 // GHSA-r557-wffq-wvrc (@astrojs/node >= 8.1.0 < 11.0.2): the trailing-slash
 // redirect echoes the request path, so a raw backslash reaches the client as
@@ -67,6 +83,9 @@ const listener = (request, response) => {
     confidential: /^\/+app\/secure-chat(?:\/|$)/.test(decodeURI(url.pathname)),
   });
   for (const [name, value] of security) response.setHeader(name, value);
+  if (!PUBLIC_HOSTS.has(requestHostname(request.headers.host))) {
+    response.setHeader('X-Robots-Tag', 'noindex, nofollow');
+  }
   // The adapter serves prerendered 404.html as a normal file on explicit access.
   // Serve that artifact with its real status, including the directory-style URL.
   if (['/404', '/404/', '/404.html'].includes(url.pathname) && ['GET', 'HEAD'].includes(request.method)) {
@@ -96,8 +115,16 @@ const listener = (request, response) => {
     const method = request.method;
     const probe = url.pathname.startsWith('/healthz') ? liveResponse : readyResponse;
     const send = async result => {
-      const body = await result.text();
-      response.writeHead(result.status, Object.fromEntries(result.headers));
+      const resolved = await result;
+      const body = await resolved.text();
+      const headers = Object.fromEntries(resolved.headers);
+      // Keep the probe cache/index contract even on boundary-generated 405/503
+      // error envelopes, which otherwise omit the CDN and robots headers.
+      headers['Cache-Control'] ??= 'no-store, max-age=0';
+      headers['CDN-Cache-Control'] ??= 'no-store';
+      headers['Cloudflare-CDN-Cache-Control'] ??= 'no-store';
+      headers['X-Robots-Tag'] ??= 'noindex, nofollow';
+      response.writeHead(resolved.status, headers);
       response.end(body);
     };
     const boundaryRequest = { url: url.href, method };

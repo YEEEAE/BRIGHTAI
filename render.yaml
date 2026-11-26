@@ -1,19 +1,25 @@
-# BrightAI Render Blueprint — Astro with the standalone Node adapter.
+# BrightAI Render Blueprint — existing isolated Node SSR candidate.
 # npm start applies redirects.json before static files via scripts/server.mjs;
 # src/middleware.ts also resolves aliases that reach Astro.
 
 services:
   - type: web
     runtime: node
-    name: brightai-site
+    # Reuse the already provisioned candidate service, never create a third one.
+    name: brightai-r51-audit
+    plan: free
+    region: ohio
     autoDeployTrigger: off
     # The committed lockfile is package-lock.json; no pnpm lockfile is present.
     buildCommand: npm ci && npm run build
     # Operator: attach the domain to this Node web service, not dist/client.
     # Forward /app/* and /app/api/* unchanged; bypass every CDN cache for /app/*.
-    # Existing static hosting requires an operator-managed origin change; not deployed here.
+    # Keep the current static origin (srv-d7m5bcjbc2fs73826v20) as the rollback
+    # target until P15; this Blueprint never changes DNS or the static service.
     startCommand: npm start
-    # Gate traffic on dependencies. /healthz/ reports process liveness.
+    # Fail closed: the platform probe is readiness, so traffic is not routed
+    # until dependencies are ready. /healthz/ stays the separate liveness probe
+    # for a dead process; both spellings are answered without a redirect.
     healthCheckPath: /readyz/
     envVars:
       - key: NODE_VERSION
@@ -33,6 +39,8 @@ services:
       # Runtime secret names required for a working service. Values are set in
       # the Render dashboard only, never in this file:
       #   DATABASE_URL, NEON_AUTH_BASE_URL, NEON_AUTH_JWKS_URL.
+      # This candidate uses only an isolated synthetic Neon branch and a
+      # least-privilege runtime role; never point it at production data.
       - key: AIGAS_REQUIRE_RLS
         value: "true"
       - key: AIGAS_DB_RUNTIME_ROLE

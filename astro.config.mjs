@@ -13,6 +13,8 @@ if (staging && (staging.protocol !== 'https:' || staging.origin !== stagingOrigi
 }
 
 export default defineConfig({
+  // Preview/staging hosts only add allowed origins; canonical links and the
+  // sitemap stay on publicSite. Main-page canonicals must not change.
   site: publicSite,
   trailingSlash: 'always',
   // Apply Origin checks in application middleware so API refusals use the API contract.

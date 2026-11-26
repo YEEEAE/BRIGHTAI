@@ -1,0 +1,90 @@
+{
+  "task": "P01 — تثبيت مرشح Node وخط النشر (أساس فقط)",
+  "generatedAt": "2026-11-26T18:12:28.793Z",
+  "repository": "/Users/yzydalshmry/Desktop/BRIGHTAI",
+  "sha": {
+    "head": "2dbbda5e76d1ca1bef5a549f08d4fc5c4cc5a2cd",
+    "remoteMain": "2dbbda5e76d1ca1bef5a549f08d4fc5c4cc5a2cd",
+    "liveCandidate": "5387cdf6282cc3775f73ade30c82f199967d9409",
+    "note": "Live candidate still serves the older SHA; the new SHA was not uploaded. Working tree is dirty, so the local artifact must not be claimed as a deployable 2dbbda5e build."
+  },
+  "changes": [
+    "render.yaml: reuse brightai-r51-audit (plan free, region ohio); keep healthCheckPath=/readyz/ as fail-closed gate; liveness stays /healthz/; static origin kept as rollback; synthetic-only DB note.",
+    "scripts/server.mjs: preview/staging Host header gets X-Robots-Tag noindex,nofollow without changing canonical links; probe boundary 405/503 now retain no-store/noindex/CDN headers.",
+    "astro.config.mjs: documented canonical invariant (site stays publicSite in preview/staging)."
+  ],
+  "verification": {
+    "npmCi": "PASS — 294 packages, 0 vulnerabilities; warnings: @better-fetch peer conflict and npm 10.9.9 vs engines 10.9.7 (non-blocking).",
+    "npmBuild": "PASS — 67 public pages in sitemap; version.json commit 2dbbda5e, node v22.23.5, packageLock sha256:7c788be26a006529235bf8a5c795b4ce4d65383f9254d400e143915033ff4f85.",
+    "lockfileDigest": "sha256:7c788be26a006529235bf8a5c795b4ce4d65383f9254d400e143915033ff4f85",
+    "probesLocal": "Audit/R51/P01-local/evidence.json — 33/33 PASS (GET/HEAD/405, JSON keys, no-store/noindex, preview noindex, canonical unchanged).",
+    "unitTests": "node --test tests/healthz.test.mjs tests/healthz-integration.test.mjs tests/node-readiness.test.mjs — 16 pass, 1 skip, 0 fail.",
+    "buildExcludesPreview": "dist/client has no workshop-preview output; public canonicals still https://brightai.live/.",
+    "sourceInventory": "107 source rows in Audit/R51/SOURCE-ROUTE-INVENTORY.csv; 51 API page wrappers (*.ts); 48 central endpoints + 14 auth operations + 2 SSO wrappers = 64 patterns."
+  },
+  "liveCandidateReference": {
+    "url": "https://brightai-r51-audit.onrender.com",
+    "serviceId": "srv-dc400fk9v7es73df3cc0",
+    "deployIdsFromAudit": [
+      "dep-dc40a2t6e07s73dpro4g",
+      "dep-dc400g49v7es73df3dq0"
+    ],
+    "deployIdCurrent": "NOT VERIFIED — Render MCP reports no workspace selected; no deploy was triggered.",
+    "getResults": [
+      {
+        "path": "/healthz/",
+        "status": 200,
+        "bodySha256": "sha256:ab36ea56f776eeaa57642c22498134d8889b1b5487353ba949919e87f933180f",
+        "note": "commit 5387cdf, no-store + CDN no-store + noindex"
+      },
+      {
+        "path": "/readyz/",
+        "status": 200,
+        "bodySha256": "sha256:2d0724e64d1572c5a675963c5b8560597b6229e7062abf023ae7fb9c8e52ad6c",
+        "note": "ready, DB/auth READY, authProbe ACTIVE, portal DISABLED, commit 5387cdf"
+      },
+      {
+        "path": "/api/trial-availability/",
+        "status": 200,
+        "body": "{\"available\":false}",
+        "bodySha256": "sha256:9c9729d235cfd4897778afaf5651db6b7e91ca68f8c5d052d66de5e09734d668",
+        "note": "no-store"
+      },
+      {
+        "path": "/api/measurement-status/",
+        "status": 200,
+        "body": "{\"enabled\":true}",
+        "bodySha256": "sha256:26b3426b2593763c96d0890b4a77a0bbf66d13fc512b0c6b138a23c290f30a2a",
+        "note": "no-store"
+      },
+      {
+        "path": "/api/enterprise-inquiry/",
+        "status": 200,
+        "body": "{\"available\":false}",
+        "bodySha256": "sha256:9c9729d235cfd4897778afaf5651db6b7e91ca68f8c5d052d66de5e09734d668",
+        "note": "no-store"
+      }
+    ],
+    "rawEvidence": "Audit/R51/P01-local/live/*.body and *.headers",
+    "caveat": "Readiness 200 here is the old SHA reference only; it does not verify the new version."
+  },
+  "criteria": {
+    "BE-02": "LOCAL PASS_VERIFIED (33/33); live on new SHA NOT VERIFIED — no upload.",
+    "BE-05": "SOURCE PASS_VERIFIED — 107 inventory rows; live new SHA NOT VERIFIED.",
+    "BE-06": "SOURCE PASS_VERIFIED — 51 wrappers + 64 patterns incl. SSO; live new SHA NOT VERIFIED.",
+    "BE-07": "LIVE REFERENCE PASS on current candidate GETs (old SHA); new version NOT VERIFIED.",
+    "IN-01": "FAIL on current candidate: live 5387cdf != main 2dbbda5e.",
+    "IN-02": "LIVE REFERENCE PASS: service.type=web and Blueprint runtime=node; new version NOT VERIFIED.",
+    "IN-03": "BLOCKED — no Cloudflare control-plane access; static origin preserved, no DNS change.",
+    "IN-06": "PARTIAL — live SHA matches audit-recorded deploy, but current deploy ID could not be read (Render workspace not selected)."
+  },
+  "blockers": [
+    "Render MCP: no workspace selected; user confirmation required before any Render read/write. No service was created and no deploy was triggered.",
+    "Isolated-environment upload requires explicit authorization; not granted in this task.",
+    "Cloudflare binding not verifiable; static origin intentionally preserved for P15 rollback."
+  ],
+  "deployment": {
+    "performed": false,
+    "reason": "Authorization for isolated environment upload not granted; Render workspace not confirmed."
+  }
+}

@@ -1,0 +1,24 @@
+HTTP/2 200 
+date: Thu, 26 Nov 2026 18:10:45 GMT
+content-type: application/json; charset=utf-8
+cache-control: no-store, max-age=0
+cdn-cache-control: no-store
+cf-cache-status: DYNAMIC
+content-security-policy: default-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; script-src 'self' https://www.googletagmanager.com 'sha256-rXFghexfQr0YH3VpkNUqc0owijMnd5VBvAIUyE0QhrE=' 'sha256-/ahxh2pzUcFi1E9lm6ltoUB1mNeCC4QSX0TWwNtcszc=' 'sha256-/x7W7R75k8Roq0WaVRQX9blP4OufE5xbAdzklGxsgpw='; script-src-attr 'none'; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' https://www.googletagmanager.com https://*.google-analytics.com; font-src 'self'; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-src 'none'; frame-ancestors 'self'; report-uri /api/security/csp-report/
+cross-origin-opener-policy: same-origin
+cross-origin-resource-policy: same-origin
+permissions-policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+referrer-policy: strict-origin-when-cross-origin
+rndr-id: cc7f28c3-9990-4170
+server: cloudflare
+strict-transport-security: max-age=15552000
+vary: Accept-Encoding
+x-content-type-options: nosniff
+x-frame-options: SAMEORIGIN
+x-permitted-cross-domain-policies: none
+x-render-origin-server: Render
+x-request-id: 9e0a2e6b-b87c-4d5c-b263-f0be14ff28e0
+x-robots-tag: noindex, nofollow
+cf-ray: a60ada094f5f83cc-MRS
+alt-svc: h3=":443"; ma=86400
+
