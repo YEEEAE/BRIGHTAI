@@ -72,6 +72,9 @@ export function replayEvaluation() {
   const totals = [0, 1, 2, 3].map(index => classifier.reduce((sum, group) => sum + group.counts[index], 0));
   return {
     mode: 'synthetic-replay', version: evaluationVersion, history: replayHistory(),
+    disclosure: { live_model_run:false, population:'synthetic fixtures', statistical_inference:false,
+      drift:{ status:'NOT_COMPARABLE', reason:'Dataset and model both change; no live baseline or independent sample.' },
+      fairness:{ status:'DESCRIPTIVE_ONLY', minimum_group_size:minimumGroupSize, representativeness:'NOT_ESTABLISHED' } },
     sources: { classifier: 'intake-confusion-v1', scenarios: 'language-agent-scenarios-v1', judge: 'not-run' },
     classifier: [classify('all', totals, false), ...classifier.map(group => classify(group.id, group.counts, true))],
     scenarios: structuredClone(scenarios),

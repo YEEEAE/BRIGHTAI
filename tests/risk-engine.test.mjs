@@ -1,8 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { evaluate,assetInput,assessmentInput,exact,version } from '../src/server/risk-engine/core.mjs';
+import { evaluate,assetInput,assessmentInput,exact,version,acceptanceIsCurrent,reviewDue,recordState } from '../src/server/risk-engine/core.mjs';
 import { createHandler } from '../src/server/risk-engine/http.mjs';
 import { createRiskEngineService } from '../src/server/risk-engine/service.mjs';
+test('due acceptance is excluded from current acceptance counts',()=>{
+ const due=reviewDue('2000-01-01');
+ assert.equal(due,true);
+ assert.equal(acceptanceIsCurrent({assessmentStatus:'ASSESSED',treatmentReviewRequired:false,acceptanceReviewDue:due}),false);
+ assert.equal(acceptanceIsCurrent({assessmentStatus:'ASSESSED',treatmentReviewRequired:false,acceptanceReviewDue:false}),true);
+ assert.equal(acceptanceIsCurrent({assessmentStatus:'REASSESSMENT_REQUIRED',treatmentReviewRequired:false,acceptanceReviewDue:false}),false);
+ assert.equal(recordState({asset:{version:1,lifecycle_status:'ACTIVE'},assessment:{asset_version:1},treatment:{status:'ACCEPTED'},acceptanceReviewDue:due}),'ACCEPTANCE_REVIEW_DUE');
+});
 test('Risk Engine: every draft matrix cell and untrusted fields',()=>{
  const expected=[['LOW','LOW','MEDIUM'],['LOW','MEDIUM','HIGH'],['MEDIUM','HIGH','HIGH']];
  for(let l=1;l<=3;l++)for(let i=1;i<=3;i++){const r=evaluate(l,i);assert.equal(r.risk_level,expected[l-1][i-1]);assert.equal(r.score,l*i);assert.match(r.explanation,new RegExp(`${l} × الأثر ${i}`));assert.ok(r.suggested_control);assert.equal(r.method_version,'draft-likelihood-impact-v1');}

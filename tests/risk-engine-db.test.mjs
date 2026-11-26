@@ -7,6 +7,7 @@ import { randomUUID } from 'node:crypto';
 import { createRiskEngineService } from '../src/server/risk-engine/service.mjs';
 import { createHandler } from '../src/server/risk-engine/http.mjs';
 import { createHumanGateService } from '../src/server/human-gate/service.mjs';
+import { createRiskAssist } from '../src/server/risk-engine/assist.mjs';
 const url=localDatabaseUrl('RISK_ENGINE_TEST_DATABASE_URL');
 test('Risk Engine DB: persistence, version history, tenant/role rejection, races and atomic audit',{skip:!url},async()=>{
  const pool=new pg.Pool({connectionString:url,max:5});
@@ -53,6 +54,18 @@ test('Risk Engine DB: persistence, version history, tenant/role rejection, races
   for(const key of ['risk_level','method_version','evaluator_id','asset_snapshot','created_at'])assert.equal((await send(owner,'assess',{...assessment,[key]:'forged'},id)).status,400);
   assert.equal((await send(owner,'assess',{...assessment,impact_reason:''},id)).status,400);
   const first=await send(admin,'assess',assessment,id);assert.equal(first.status,201);assert.equal(first.data.assessment.risk_level,'LOW');assert.equal(first.data.assessment.evaluator_id,admin.userId);
+  const previousModel=process.env.GROQ_MODEL;process.env.GROQ_MODEL='local-test-model';
+  try {
+   let calls=0;
+   const assist=createRiskAssist({transact,models:()=>[{providerModel:'local-test-model'}],request:async()=>{calls++;return {choices:[{message:{content:JSON.stringify({scenarios:['حالة اصطناعية'],suggestedControls:['مراجعة بشرية'],reviewQuestions:['ما حدود الاستخدام؟']})}}]};}});
+   const input={purpose:'Public summaries',data_classification:'PUBLIC',synthetic:true,asset_id:id,asset_version:1};
+   const result=await assist(owner,tenant,input);
+   assert.equal(result.steps[0].source.version,1);assert.equal(result.steps[3].result.draft_score,2);assert.equal(result.acceptance_authority,false);assert.equal(calls,1);
+   await assert.rejects(assist(owner,tenant,{...input,asset_version:2}),{code:'STALE_ASSET'});
+   await assert.rejects(assist(member,tenant,input),{code:'FORBIDDEN'});
+   await assert.rejects(assist(outsider,other,input),{code:'NOT_FOUND'});
+   assert.equal(calls,1);
+  } finally {if(previousModel===undefined)delete process.env.GROQ_MODEL;else process.env.GROQ_MODEL=previousModel;}
   const loaded=await send(member,'history',{},id);assert.equal(loaded.status,200);assert.equal(loaded.data.assessments[0].controls_reason,assessment.controls_reason);assert.equal(loaded.data.assessments[0].asset_snapshot.purpose,a.purpose);assert.equal(loaded.data.latestAssessment.id,loaded.data.assessments[0].id);
   assert.equal((await send(owner)).data.assets[0].assessment_status,'ASSESSED');
   assert.equal((await send(owner,'update',{...a,asset_version:1},id)).data.changed,false);

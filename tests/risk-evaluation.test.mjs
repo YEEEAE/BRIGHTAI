@@ -4,6 +4,10 @@ import { createGovernanceSession, SESSION_DURATION } from '../src/demo/governanc
 import { replayEvaluation } from '../src/server/risk-engine/evaluation.mjs';
 
 test('classifier proportions reproduce confusion counts and withhold insufficient rates', () => {
+  const disclosure=replayEvaluation().disclosure;
+  assert.equal(disclosure.live_model_run,false);
+  assert.equal(disclosure.drift.status,'NOT_COMPARABLE');
+  assert.equal(disclosure.fairness.minimum_group_size,20);
   const { classifier: [all, a, b, c] } = replayEvaluation();
   assert.deepEqual(all.counts, { tp: 30, fp: 12, tn: 31, fn: 10 });
   assert.equal(all.metrics.precision.value, 30 / 42);

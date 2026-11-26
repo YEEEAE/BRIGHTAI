@@ -98,6 +98,9 @@ export function riyadhToday(now=new Date()) {
 export function reviewDue(reviewOn) {
  return typeof reviewOn==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(reviewOn)&&reviewOn<=riyadhToday();
 }
+export function acceptanceIsCurrent({assessmentStatus,treatmentReviewRequired,acceptanceReviewDue}) {
+ return assessmentStatus==='ASSESSED' && treatmentReviewRequired===false && acceptanceReviewDue===false;
+}
 // A residual estimate is optional until the plan claims MITIGATED or ACCEPTED.
 // When present, both axes are required and the same deterministic matrix applies.
 export function residualAssessment(body) {
@@ -146,6 +149,7 @@ export function treatmentInput(body) {
  const residual=residualAssessment(body);
  if(body.status==='ACCEPTED'&&rationale.length<acceptancePolicy.min_rationale_length)throw new KernelError(400,'ACCEPTANCE_RATIONALE_REQUIRED','قبول الخطر يحتاج تعليلًا مسجلًا لا يقل عن 20 حرفًا يوضح سبب القبول ونطاقه.');
  if(body.status==='ACCEPTED'&&review_on===null)throw new KernelError(400,'ACCEPTANCE_REVIEW_REQUIRED','قبول الخطر يحتاج موعد مراجعة محددًا؛ القبول غير محدد المدة غير مسموح.');
+ if(body.status==='ACCEPTED'&&review_on!==null&&reviewDue(review_on))throw new KernelError(400,'ACCEPTANCE_REVIEW_EXPIRED','يجب أن يكون موعد مراجعة القبول بعد اليوم بتوقيت الرياض.');
  if(['MITIGATED','ACCEPTED'].includes(body.status)&&residual.residual_level===null)throw new KernelError(400,'RESIDUAL_ASSESSMENT_REQUIRED','الادعاء بأن الخطر عولج أو قبوله يحتاج تقييم الخطر المتبقي بالاحتمال × الأثر.');
  return {asset_version:version(body.asset_version),assessment_id:body.assessment_id,treatment_version:body.treatment_version,owner:text(body.owner,120),status:body.status,control_description:text(body.control_description,500),residual_risk_description:text(body.residual_risk_description),review_on,rationale,...residual};
 }

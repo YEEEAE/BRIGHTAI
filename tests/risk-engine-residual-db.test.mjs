@@ -30,7 +30,7 @@ test('Risk Engine: residual decisions and export persist with tenant and version
   assert.equal(created.data.asset.version,1); assert.ok(created.data.asset.created_at);
   const input={asset_version:1,likelihood:3,impact:3,likelihood_reason:'Synthetic likelihood',impact_reason:'Synthetic impact',controls_reason:'Synthetic controls'};
   const assessment=await send(evaluator,'assess',input,id); assert.equal(assessment.status,201); assert.equal(assessment.data.assessment.risk_level,'HIGH');
-  const treatment={asset_version:1,assessment_id:assessment.data.assessment.id,treatment_version:0,owner:'Synthetic owner',status:'ACCEPTED',control_description:'Synthetic control',residual_risk_description:'Residual synthetic risk',review_on:'2000-01-01',rationale:'Synthetic rationale with sufficient detail',residual_likelihood:2,residual_impact:2};
+  const treatment={asset_version:1,assessment_id:assessment.data.assessment.id,treatment_version:0,owner:'Synthetic owner',status:'ACCEPTED',control_description:'Synthetic control',residual_risk_description:'Residual synthetic risk',review_on:'9999-12-31',rationale:'Synthetic rationale with sufficient detail',residual_likelihood:2,residual_impact:2};
   assert.equal((await send(evaluator,'save-treatment',treatment,id)).status,403);
   const selfAssess=await send(owner,'assess',input,id); assert.equal(selfAssess.status,201);
   assert.equal((await send(owner,'save-treatment',{...treatment,assessment_id:selfAssess.data.assessment.id},id)).status,403);
@@ -38,15 +38,16 @@ test('Risk Engine: residual decisions and export persist with tenant and version
   treatment.assessment_id=reassessed.data.assessment.id;
   assert.equal((await send(owner,'save-treatment',{...treatment,residual_impact:null},id)).status,400);
   assert.equal((await send(owner,'save-treatment',{...treatment,review_on:null},id)).status,400);
+  assert.equal((await send(owner,'save-treatment',{...treatment,review_on:'2000-01-01'},id)).data.code,'ACCEPTANCE_REVIEW_EXPIRED');
   const accepted=await send(owner,'save-treatment',treatment,id); assert.equal(accepted.status,201,JSON.stringify(dbFailure));
   assert.equal(accepted.data.treatment.residual_score,4); assert.equal(accepted.data.treatment.residual_level,'MEDIUM');
-  assert.equal(accepted.data.deployment_authorized,false); assert.equal(accepted.data.policy_override,false); assert.equal(accepted.data.record_state,'ACCEPTANCE_REVIEW_DUE');
+  assert.equal(accepted.data.deployment_authorized,false); assert.equal(accepted.data.policy_override,false); assert.equal(accepted.data.record_state,'CURRENT');
   assert.equal((await send(owner,'save-treatment',treatment,id)).status,409);
   assert.equal((await send(outsider,'history',{},id,other)).status,404);
   assert.equal((await send(outsider,'export',{},undefined,tenant)).status,403);
   const exported=await send(owner,'export'); assert.equal(exported.status,200); assert.match(exported.headers.get('content-disposition'),/attachment/);
   assert.equal(exported.data.assets.length,1); assert.equal(exported.data.assets[0].treatment.residual_score,4); assert.equal(exported.data.assets[0].treatment.residual_level,'MEDIUM');
-  assert.equal(exported.data.assets[0].record_state,'ACCEPTANCE_REVIEW_DUE'); assert.equal(exported.data.authorization_scope.deployment_authorized,false);
+  assert.equal(exported.data.assets[0].record_state,'CURRENT'); assert.equal(exported.data.data_quality.accepted_current,1); assert.equal(exported.data.authorization_scope.deployment_authorized,false);
   const persisted=await pool.query('SELECT residual_likelihood,residual_impact,residual_score,residual_level FROM aigas_re_treatment_revisions WHERE asset_id=$1',[id]);
   assert.deepEqual(persisted.rows,[{residual_likelihood:2,residual_impact:2,residual_score:4,residual_level:'MEDIUM'}]);
   const insertCopy=`INSERT INTO aigas_re_treatment_revisions(id,tenant_id,asset_id,asset_version,assessment_id,version,owner,status,control_description,residual_risk_description,review_on,rationale,residual_likelihood,residual_impact,residual_score,residual_level,acceptance_policy_version,changed_by,actor_role)

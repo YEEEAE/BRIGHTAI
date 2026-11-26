@@ -155,6 +155,7 @@ treatmentForm.addEventListener('submit',event=>{
  event.preventDefault();if(!selected||!treatmentData?.latestAssessment)return;
  const fields=Object.fromEntries(new FormData(treatmentForm)),asset=selected,data=treatmentData;
  if(fields.status==='ACCEPTED'&&!fields.review_on){get('[data-treatment-state]').textContent='قبول الخطر يحتاج موعد مراجعة محددًا قبل الحفظ.';get<HTMLInputElement>('#re-treatment-review').focus();return;}
+ if(fields.status==='ACCEPTED'&&isReviewDue(String(fields.review_on))){get('[data-treatment-state]').textContent='اختر موعد مراجعة بعد اليوم بتوقيت الرياض قبل قبول الخطر.';get<HTMLInputElement>('#re-treatment-review').focus();return;}
  if(['MITIGATED','ACCEPTED'].includes(String(fields.status))&&(!fields.residual_likelihood||!fields.residual_impact)){get('[data-treatment-state]').textContent='«تمت المعالجة» أو «مقبولة إداريًا» يتطلبان اختيار الاحتمال والأثر المتبقيين معًا.';get<HTMLSelectElement>('#re-treatment-residual-likelihood').focus();return;}
  if(fields.status==='ACCEPTED'&&String(fields.rationale||'').trim().length<20){get('[data-treatment-state]').textContent='قبول الخطر يحتاج تعليلًا لا يقل عن 20 حرفًا.';get<HTMLTextAreaElement>('#re-treatment-rationale').focus();return;}
  void run(async()=>{const result=await api(`${asset.id}/treatments/`,{...fields,synthetic_data_confirmed:fields.synthetic_data_confirmed==='on',asset_version:asset.version,assessment_id:data.latestAssessment.id,treatment_version:data.latestTreatment?.version||0,residual_likelihood:fields.residual_likelihood?Number(fields.residual_likelihood):null,residual_impact:fields.residual_impact?Number(fields.residual_impact):null},'PATCH');committedMessage=result.acceptance?`تم حفظ إصدار المعالجة وقبول الخطر كقرار إداري مسجل (دور ${result.acceptance.actor_role}، خطر ${labels[result.acceptance.risk_level]||result.acceptance.risk_level}، متبقٍ ${labels[result.acceptance.residual_level]||result.acceptance.residual_level}، مراجعة ${dateOnly(result.acceptance.review_on)}). لا يصرّح بالنشر ولا يتجاوز سياسة إلزامية.`:'تم حفظ إصدار المعالجة.';treatmentPage=1;await load();await showHistory(asset.id);},'تم حفظ إصدار المعالجة في الخادم. القبول الإداري لا يصرح بالنشر.');
@@ -181,7 +182,7 @@ get('[data-assist]').addEventListener('click',()=>{
  const original=context.value, tenant=workspace.value, editor=editing;
  if(fields.get('synthetic_data_confirmed')!=='on'){get('[data-assist-state]').textContent='أكد استخدام مدخلات اصطناعية قبل طلب المسودة.';return;}
  void run(async()=>{
-  const result=await api('',{purpose,data_classification:classification,synthetic:true},'POST',false,'assist');
+  const result=await api('',{purpose,data_classification:classification,synthetic:true,...(editor?{asset_id:editor.id,asset_version:editor.version}:{})},'POST',false,'assist');
   if(area.hidden||get('[data-editor]').hidden||workspace.value!==tenant||editing!==editor||context.value!==original)throw new Error('تغير سياق التحرير؛ لم تُدرج المسودة.');
   const draft=result.draft, keys=['scenarios','suggestedControls','reviewQuestions'];
   if(result.advisory_only!==true||!draft||Object.keys(draft).length!==3||!keys.every(k=>Array.isArray(draft[k])&&draft[k].length>=1&&draft[k].length<=3&&draft[k].every((v:unknown)=>typeof v==='string'&&v.length>=2&&v.length<=100)))throw new Error('رُفضت مسودة غير صالحة؛ لم تتغير الحقول.');
@@ -189,6 +190,10 @@ get('[data-assist]').addEventListener('click',()=>{
   const next=[context.value,generated].filter(Boolean).join('\n');
   if(next.length>context.maxLength)throw new Error('المسودة تتجاوز سعة الوصف؛ اختصر السياق أو الغرض وأعد المحاولة. لم تتغير الحقول.');
   context.value=next;
-  get('[data-assist-state]').textContent='مسودة استشارية مولدة آليًا — راجع وصف السياق قبل الحفظ. لم يتغير التقييم أو القبول.';
+  const source=result.steps?.find((step:any)=>step.tool==='read_asset')?.source;
+  const assessment=result.steps?.find((step:any)=>step.tool==='assess');
+  const evidence=result.steps?.find((step:any)=>step.tool==='read_evidence');
+  const treatment=result.steps?.find((step:any)=>step.tool==='propose_treatment');
+  get('[data-assist-state]').textContent=`مسودة استشارية للمراجعة البشرية؛ ${source?.version?`الأصل نسخة ${source.version}`:'مدخلات غير محفوظة'}؛ التقييم ${assessment?.source?.id||'غير محفوظ'}، المعالجة ${treatment?.source?.version?`نسخة ${treatment.source.version}`:'غير محفوظة'}، مراجع الأدلة ${evidence?.result?.references_present?'موجودة ولم يتحقق منها':'غير متاحة'}. المنهج مسودة غير معتمدة. لم يتغير التقييم أو القبول.`;
  },'أُدرجت مسودة وصف غير محفوظة للمراجعة البشرية.',get('[data-assist-state]'));
 });

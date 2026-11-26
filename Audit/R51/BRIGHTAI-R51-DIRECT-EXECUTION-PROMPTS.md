@@ -1,32 +1,6 @@
 #
 ---
 
-## P08 — Human Gate AI Agent
-
-**التبعيات:** P03 P04 P05 P06 P07. **معايير الإغلاق:** HG-01 HG-02 HG-03 HG-04.
-
-**الملفات المستهدفة من شجرة المصدر:**
-- `src/server/human-gate/core.mjs`
-- `src/server/human-gate/service.mjs`
-- `src/server/human-gate/integration.mjs`
-- `src/server/human-gate/http.mjs`
-- `src/pages/app/api/human-gate/**`
-- `src/scripts/human-gate.ts`
-- `src/pages/app/human-gate/index.astro`
-- `tests/human-gate*.mjs`
-- `tests/firewall-review-binding.test.mjs`
-
-**حدود التنفيذ:** نفّذ أساس هذه المهمة؛ أكمل التحقق والتعديلات المتخصصة في P21, P26. لا تعِد تنفيذ إصلاح أو اختبار ثبت على نفس النسخة والبيئة.
-
-**أوامر العمل:**
-
-أضف human-gate-agent.mjs لتلخيص الطلب وشرح المخاطر وتقديم توصية فقط، بأدوات قراءة مأذونة. نفّذ workflow binding لهوية المراجع وصلاحياته ونسخة القرار وdigest والمدة، one-time grant وseparation of duties، منع self-approval، revoke/cancel/expire/replay، إعادة تقييم السياسة بعد الاستئناف؛ لا تجعل stage completed يعني APPROVED عند الرفض. اربط UI approve/reject/return/reason بالحالة الفعلية. اختبر الرفض والتعليق والقبول والانتهاء وتغيير payload وتزامن قرارين والتفويض الموقوف؛ إثبات no execution before authorized approval.
-
-**معيار التسليم:**
-- `HG-01` — state machine/grant binding في المصدر → دليل PASS_VERIFIED في البيئة المطلوبة.
-- `HG-02` — agent تلخيص الطلب بالأدوات والمراجع مع فصل المهام → دليل PASS_VERIFIED في البيئة المطلوبة.
-- `HG-03` — approve/reject/expiry/replay/one-time grant E2E → دليل PASS_VERIFIED في البيئة المطلوبة.
-- `HG-04` — اعتماد بشري لا يمكن للوكيل تزويره أو استئنافه دون إعادة فحص → دليل PASS_VERIFIED في البيئة المطلوبة.
 
 ---
 

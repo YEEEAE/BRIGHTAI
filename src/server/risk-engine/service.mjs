@@ -9,7 +9,7 @@ import { transaction } from '../kernel/db.mjs';
 import { audit as kernelAudit, tenantGuard } from '../kernel/service.mjs';
 import { KernelError, requireRole } from '../kernel/core.mjs';
 import { HTTP_CONTRACT_VERSION } from '../kernel/contracts.mjs';
-import { exact,uuid,assetFields,assetInput,assessmentInput,version,classifications,treatmentFields,treatmentInput,treatmentStatuses,text,METHOD,acceptanceScope,assessmentStatus,treatmentNeedsReview,acceptanceDecision,acceptancePolicy,ACCEPTANCE_POLICY_VERSION,recordState,reviewDue } from './core.mjs';
+import { exact,uuid,assetFields,assetInput,assessmentInput,version,classifications,treatmentFields,treatmentInput,treatmentStatuses,text,METHOD,acceptanceScope,assessmentStatus,treatmentNeedsReview,acceptanceDecision,acceptancePolicy,ACCEPTANCE_POLICY_VERSION,recordState,reviewDue,acceptanceIsCurrent } from './core.mjs';
 
 const redactedExportFields = Object.freeze(['created_by','evaluator_id','changed_by','actor_role','asset_snapshot','evidence_references','previous_assessment_id','tenant_id','data_context']);
 function exportAssessment(a) {
@@ -90,7 +90,7 @@ export function createRiskEngineService(transact=transaction) {
      else if(row.mitigation&&['MITIGATED','ACCEPTED'].includes(row.mitigation.status))dataQuality.residual_missing++;
      const acceptanceReviewDue=row.mitigation?.status==='ACCEPTED'&&reviewDue(row.mitigation.review_on);
      if(acceptanceReviewDue)dataQuality.acceptance_review_due++;
-     if(row.mitigation?.status==='ACCEPTED'){dataQuality.accepted++;if(row.assessment_status==='ASSESSED'&&row.treatment_review_required===false)dataQuality.accepted_current++;}
+     if(row.mitigation?.status==='ACCEPTED'){dataQuality.accepted++;if(acceptanceIsCurrent({assessmentStatus:row.assessment_status,treatmentReviewRequired:row.treatment_review_required,acceptanceReviewDue}))dataQuality.accepted_current++;}
      assets.push({asset:exportAsset(row),assessment_status:row.assessment_status,assessment:exportAssessment(row.assessment),treatment_review_required:row.treatment_review_required===true,treatment:exportTreatment(row.mitigation),review_due:row.review_due===true,acceptance_review_due:acceptanceReviewDue,record_state:recordState({asset:{version:row.version,lifecycle_status:row.lifecycle_status},assessment:row.assessment,treatment:row.mitigation,treatmentReviewRequired:row.treatment_review_required===true,acceptanceReviewDue})});
     }
     summary.not_assessed=dataQuality.not_assessed;

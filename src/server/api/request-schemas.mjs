@@ -159,7 +159,7 @@ const methodSchemas = {
   }),
   'POST /app/api/risk-engine/assets/[assetId]/treatments': treatment,
   'PATCH /app/api/risk-engine/assets/[assetId]/treatments': treatment,
-  'POST /app/api/risk-engine/assist': z.strictObject({ purpose: shortReason, data_classification: z.enum(classifications), synthetic: z.boolean() }),
+  'POST /app/api/risk-engine/assist': z.strictObject({ purpose: shortReason, data_classification: z.enum(classifications), synthetic: z.boolean(), asset_id:id.optional(), asset_version:version.optional() }),
   'POST /app/api/agents/runs': agentStart,
   'POST /app/api/agents/orchestrations': agentPlan,
   'POST /app/api/agents/runs/[runId]/step': agentStep,

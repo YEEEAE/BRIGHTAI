@@ -1,0 +1,11 @@
+# Risk Engine foundation — 2026-11-26
+
+Status: PARTIAL. Local implementation and disposable PostgreSQL only. No deployment or target database changes.
+
+- Assist runs five fixed, server-owned read/advisory steps over an optional tenant-scoped, share-locked asset revision. It reports source references, a draft matrix result, evidence presence and treatment revision; it neither saves treatment nor accepts risk. Free-text evidence and treatment owner are not sent to the model. The optional idempotency key includes the asset revision.
+- The steps are local orchestration, not P03 runtime invocations or model-selected tools. The provider is still called once for a strict advisory JSON draft; actual Groq and its approval/budget registry were not exercised.
+- The existing 3×3 method remains `DRAFT_NOT_APPROVED`. There is no approved numeric methodology in the product contract. A draft result must not be represented as an approved score; `approved_score` is null. References entered as text are not independently verified or separately versioned.
+- A new human acceptance requires a review date after today in Riyadh. Previously recorded due acceptances remain in history and are excluded from the `accepted_current` export count. Human acceptance does not authorize deployment.
+- Synthetic replay includes counts and denominators and explicitly discloses that live model execution and statistical inference were not performed. Changes to both dataset and model do not establish drift; subgroup rates use the existing suppression threshold.
+- Verification: focused unit/replay/HTTP tests 25/25 PASS; PostgreSQL 18 disposable local databases: risk persistence/concurrency/tenant isolation/agent snapshot PASS, residual and human acceptance PASS; Astro build PASS. Browser `/app/risk-engine/` reached the local unavailable-gateway page; authenticated UI NOT VERIFIED. Provider tests use an injected stub; staging, production, real approved model, and independent evidence validation NOT VERIFIED.
+- RE-01–RE-04 remain PARTIAL / NOT VERIFIED in their required environment. P24 and P26 specialist verification remains outstanding. Ledger currently classifies Risk events as operational despite the synthetic-only input confirmation; changing this requires a compatible ledger/database contract and migration, not a one-field edit.

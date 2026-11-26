@@ -17,7 +17,7 @@ test('strict complete output, no extra/nested/numeric/empty fields or malformed 
  assert.throws(()=>validateDraft('```json {} ```'));
 });
 test('authorized advisory uses protected purpose only and has no persistence',async()=>{
- const f=fixture();assert.deepEqual(await f.assist({userId:'actor'},'tenant-a',{...body,purpose:'مثال person@example.com'}),{draft,advisory_only:true});assert.equal(f.calls(),1);
+ const f=fixture();const result=await f.assist({userId:'actor'},'tenant-a',{...body,purpose:'مثال person@example.com'});assert.deepEqual(result.draft,draft);assert.equal(result.advisory_only,true);assert.equal(result.acceptance_authority,false);assert.deepEqual(result.steps.map(s=>s.tool),['read_asset','read_policy','read_evidence','assess','propose_treatment']);assert.equal(f.calls(),1);
 });
 test('admin can request an advisory draft',async()=>{
  const f=fixture({access:async()=>({role:'ADMIN'})});assert.equal((await f.assist({},'tenant-a',body)).advisory_only,true);assert.equal(f.calls(),1);
