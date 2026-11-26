@@ -30,6 +30,8 @@ const policyHistory = z.strictObject({
 const authInvitation = z.object({ invitation: record });
 
 export const responseSchemas = {
+  'GET /app/api/kernel/registry': z.object({ entries: rows.max(100) }),
+  'POST /app/api/kernel/registry': persisted.extend({ id, version, status: z.enum(['DRAFT','APPROVED','REVOKED']) }),
   'GET /healthz': z.strictObject({ ...release, status: z.literal('ok') }),
   'GET /readyz': z.strictObject({
     ...release, schema: z.literal(1), status: z.literal('ready'), state: z.literal('ready'), checkedAt: instant,

@@ -5,7 +5,7 @@ import { resolveKernelPolicy } from '../src/server/kernel/policies.mjs';
 import { createGovernanceRegistry } from '../src/server/governance/registry.mjs';
 import { internalPack } from '../src/server/governance/internal-pack.mjs';
 import { simulateAgentAction } from '../src/server/governance/synthetic-agent.mjs';
-import { fixtureAsset, run } from '../Audit/governance-packs-2026-11-25/run.mjs';
+import { fixtureAsset, run } from './fixtures/governance/run.mjs';
 
 function setup(kind = 'AGENT') {
   let date = '2026-11-25';
@@ -95,6 +95,14 @@ test('Kernel gives an immutable deny precedence regardless of rule order', () =>
   assert.deepEqual(result, resolveKernelPolicy([...rules].reverse()));
   assert.equal(result.decision, 'BLOCK');
   assert.equal(result.action, 'DENY');
+});
+
+test('Secure Chat is represented in the assessment and requires its own evidence', () => {
+  const { registry, record } = setup();
+  const chat = record.checks.find(row => row.product === 'secure-chat');
+  assert.ok(chat);
+  assert.equal(registry.gate(record.id).byProduct['secure-chat'].meetsThreshold, false);
+  assert.equal(chat.status, 'Needs Evidence');
 });
 
 test('gate requires 80 percent per axis and product plus all critical conditions', async () => {

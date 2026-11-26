@@ -36,6 +36,10 @@ export function internalPack() {
         'Export the complete requirement-to-evidence chain at the current revision.',
         'Check control, check, scope, status, evidence reference and bound revision in the export.',
         'Machine-readable export and its SHA-256 digest.', 'evidence-steward'),
+      requirement('secure-chat', 'chat-governance', 'secure-chat', 'enforcement',
+        'Review the synthetic chat action against its authorized model and policy boundaries.',
+        'Record the model approval and policy decision bound to this assessment revision.',
+        'Synthetic model approval and policy decision references.', 'security-steward'),
     ],
   };
 }

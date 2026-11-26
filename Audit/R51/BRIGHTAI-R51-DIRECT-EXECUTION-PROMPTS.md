@@ -3,42 +3,6 @@
 
 ---
 
----
-
----
-
-## P06 — Firewall AI Agent
-
-**التبعيات:** P03 P04 P05. **معايير الإغلاق:** FW-01 FW-03 FW-04.
-
-**الملفات المستهدفة من شجرة المصدر:**
-- `src/server/firewall/core.mjs`
-- `src/server/firewall/agent-registry.mjs`
-- `src/server/firewall/provider.mjs`
-- `src/server/firewall/guard.mjs`
-- `src/server/firewall/binding.mjs`
-- `src/server/firewall/escalation.mjs`
-- `src/server/firewall/service.mjs`
-- `src/server/firewall/http.mjs`
-- `src/pages/app/api/firewall/**`
-- `src/scripts/firewall.ts`
-- `src/components/FirewallWorkspace.astro`
-- `tests/firewall*.mjs`
-- `tests/fixtures/firewall-governance-corpus.mjs`
-
-**حدود التنفيذ:** نفّذ أساس هذه المهمة؛ أكمل التحقق والتعديلات المتخصصة في P22, P26. لا تعِد تنفيذ إصلاح أو اختبار ثبت على نفس النسخة والبيئة.
-
-**أوامر العمل:**
-
-أضف firewall-agent.mjs ضمن src/server/agents/ واربطه بـKernel runtime وGroq gateway؛ tools محددة inspect_input/read_policy/classify/recommend_redaction/explain_decision، لا تجعل توصية النموذج تتجاوز engine الحتمي. حافظ على حالات القرار الخمس الفعلية من core، وحماية prompt injection/PII/tool egress/SSRF/data disclosure، input+output+tool checks، escalation مرتبط بنسخة payload/grant وعند deny لا خروج. عدّل واجهة workspace لتعرض decision/reason/evidence دون معلومات حساسة. اختبر corpus مع المقامات FP/FN، replay، رفض المزود والحجب، الحالات الخمس، إعادة التحقق بعد تعديل payload أو policy؛ لا تختلق نسبة دقة.
-
-**معيار التسليم:**
-- `FW-01` — سجل أدوات اصطناعي default deny موجود بالمصدر → دليل PASS_VERIFIED في البيئة المطلوبة.
-- `FW-03` — agent tool loop حي مع five-state وinput/output checks وredact → دليل PASS_VERIFIED في البيئة المطلوبة.
-- `FW-04` — تغطية matchers وPII/injection ونتائج FPR/FNR بمقام → دليل PASS_VERIFIED في البيئة المطلوبة.
-
----
-
 ## P07 — Risk Engine AI Agent
 
 **التبعيات:** P03 P04 P05. **معايير الإغلاق:** RE-01 RE-02 RE-03 RE-04.

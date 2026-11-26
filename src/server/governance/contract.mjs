@@ -5,7 +5,7 @@ const description = z.string().trim().min(3).max(500);
 const version = z.number().int().positive().max(999999);
 export const assetKinds = ['SYSTEM', 'MODEL', 'AGENT', 'USE_CASE', 'VENDOR'];
 export const states = ['Pass', 'Fail', 'Needs Evidence', 'Needs Review', 'N/A'];
-export const products = ['kernel', 'firewall', 'risk-engine', 'human-gate', 'ledger'];
+export const products = ['kernel', 'firewall', 'risk-engine', 'human-gate', 'ledger', 'secure-chat'];
 export const axes = ['inventory', 'enforcement', 'risk', 'oversight', 'traceability'];
 export const actionModes = ['ALLOW', 'DENY', 'ESCALATE'];
 

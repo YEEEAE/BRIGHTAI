@@ -38,7 +38,8 @@ export async function simulateAgentAction(registry, assessmentId, tool, action) 
     match_type: 'CONTAINS', pattern: 'fixture-action', priority: 1,
     action: blocked ? 'DENY' : minimum === 'ESCALATE' || registered === 'ESCALATE' ? 'ESCALATE' : 'ALLOW' };
   const decision = { ...evaluate('fixture-action', [rule], { enforce: true }), id: decisionId };
-  const policyVersion = policyReference(kernelPolicy);
+  const outputRules = [{ ...rule, pattern: 'Synthetic fixture read', action: 'ALLOW' }];
+  const policyVersion = policyReference(kernelPolicy, outputRules);
   const requestFingerprint = decisionFingerprint({
     tenantId, actorUserId, requestId, policyVersion, result: decision, enforced: true,
   });
@@ -63,7 +64,7 @@ export async function simulateAgentAction(registry, assessmentId, tool, action) 
   const result = await enforceDecision({
     decision, tenantId, actorUserId, requestId, policyVersion, requestFingerprint,
     forwardText: decision.output, kernelPolicy, escalation,
-    outputRules: [{ ...rule, pattern: 'Synthetic fixture read', action: 'ALLOW' }],
+    outputRules,
   }, {
     resolveProvider: () => ({
       localSandbox: true, external: false,

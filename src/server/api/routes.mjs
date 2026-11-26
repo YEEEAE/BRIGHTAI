@@ -31,6 +31,7 @@ const endpoints = {
   '/app/api/kernel/pilot-report': 'POST',
   '/app/api/kernel/members': 'GET POST',
   '/app/api/kernel/policies': 'GET POST',
+  '/app/api/kernel/registry': 'GET POST',
   '/app/api/kernel/products': 'PATCH',
   '/app/api/kernel/trials': 'GET POST',
   '/app/api/kernel/trials/[trialId]/cancel': 'POST',

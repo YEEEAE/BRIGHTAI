@@ -158,6 +158,8 @@ function renderTrialSummary(trial: any) {
 }
 function clearPrivate() {
   currentTenant = null; invitationConfig = null;
+  root.querySelector('[data-registry-list]')!.replaceChildren();
+  root.querySelector('[data-registry-state]')!.textContent = 'اختر مؤسسة لتحميل السجل.';
   root.querySelector<HTMLElement>('[data-next-step]')!.hidden = true;
   root.querySelector('[data-next-step-message]')!.textContent = '';
   root.querySelector('[data-next-step-action]')!.replaceChildren();
@@ -594,6 +596,8 @@ memberNext.addEventListener('click', () => void loadMemberPage(memberPage + 1));
 async function load(workspace?: string) {
   workspace ||= selectedWorkspace();
   clearPrivate();
+  root.querySelector('[data-registry-list]')!.replaceChildren();
+  root.querySelector('[data-registry-state]')!.textContent = 'جارٍ تحميل السجل…';
   const session = await getWorkspaceSession(auth);
   if (session.error) { const error = new Error('تعذر استعادة جلسة الدخول؛ سجّل الدخول مجددًا أو أعد المحاولة.'); Object.assign(error, { unauthorized: true }); throw error; }
   if (!session.data?.user) { showError('سجّل الدخول بحسابك لعرض مساحة العمل.', true); logout.hidden = true; return; }
@@ -612,7 +616,31 @@ async function load(workspace?: string) {
     activityState.textContent = 'لا توجد مؤسسة بعد.';
   }
   await loadPolicyConsole(policyTeam);
+  await loadRegistry();
 }
+async function loadRegistry() {
+  const state = root.querySelector<HTMLElement>('[data-registry-state]')!;
+  const list = root.querySelector<HTMLElement>('[data-registry-list]')!;
+  list.replaceChildren();
+  if (!currentTenant) { state.textContent = 'اختر مؤسسة لتحميل السجل.'; return; }
+  const tenantId = currentTenant.tenant_id;
+  state.textContent = 'جارٍ تحميل السجل…';
+  try {
+    const response = await appFetch(auth, `/app/api/kernel/registry/?workspace=${encodeURIComponent(tenantId)}`);
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || 'تعذر تحميل السجل.');
+    if (currentTenant?.tenant_id !== tenantId) return;
+    for (const entry of data.entries) {
+      const item = document.createElement('li');
+      item.textContent = `${entry.name} · ${entry.kind} · ${entry.product_slug} · v${entry.version} · ${entry.status}`;
+      list.append(item);
+    }
+    state.textContent = data.entries.length ? `السجلات الحالية: ${data.entries.length}` : 'لا توجد سجلات في هذه المؤسسة.';
+  } catch {
+    if (currentTenant?.tenant_id === tenantId) state.textContent = 'تعذر تحميل السجل؛ تحقق من الاتصال وتهيئة قاعدة البيانات.';
+  }
+}
+root.querySelector('[data-registry-refresh]')!.addEventListener('click', () => void loadRegistry());
 async function health() {
   healthList.replaceChildren();
   const pending = document.createElement('li'); pending.textContent = 'جارٍ فحص الدخول والقاعدة…'; healthList.append(pending);

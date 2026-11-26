@@ -5,6 +5,7 @@ import { classifications, treatmentStatuses } from '../risk-engine/core.mjs';
 import { syntheticTypes } from '../ledger/core.mjs';
 import { operations, reviewLevels, riskReviewOperation } from '../human-gate/core.mjs';
 import { resolveRoute } from './routes.mjs';
+import { registryMutationSchema } from '../governance/persistent-contract.mjs';
 
 const id = routeIdSchema;
 const text = (min, max) => z.string().refine(value => {
@@ -117,6 +118,7 @@ const agentPlan = z.strictObject({
 const methodSchemas = {
   'POST /api/enterprise-inquiry': enterpriseInquirySchema,
   'POST /app/api/kernel/policies': policyOperation,
+  'POST /app/api/kernel/registry': registryMutationSchema,
   'POST /app/api/firewall/evaluate': ruleInput.or(z.strictObject({ tool_call: toolCall, synthetic: z.boolean() })),
   'POST /app/api/firewall/guarded-executions': ruleInput.extend({ request_id: id, department_id: id.nullish() }).or(
     z.strictObject({ tool_call: toolCall, synthetic: z.boolean(), request_id: id, department_id: id.nullish() })),
