@@ -12,9 +12,9 @@ import {
 import { providerState } from './provider.mjs';
 import { requestHumanReview, reviewIntegrationState } from './escalation.mjs';
 import { enforceDecision } from './guard.mjs';
-import { policyReference, evaluatorReference, decisionFingerprint } from './binding.mjs';
+import { policyReference, evaluatorReference, decisionFingerprint, reviewCommitment, reviewGrantCommitment } from './binding.mjs';
 import { matcherNotes } from '../../shared/firewall-policy.mjs';
-import { evaluateToolCall, registryVersion } from './agent-registry.mjs';
+import { evaluateToolCall, registryVersion, toolCallFields } from './agent-registry.mjs';
 import { evaluateKernelPolicy } from '../kernel/policies.mjs';
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -215,8 +215,24 @@ export function createFirewallService(transact = transaction) {
           : toolResult ?? evaluate(requestText, rules, { enforce: enforced });
         const id = randomUUID();
         const policyVersion = enforced ? policyReference(kernelPolicy, rules) : toolSimulation ? `agent-registry-v${registryVersion}` : evaluatorReference(rules);
+        let commitment = null, grantCommitment = null;
+        if (enforced && result.action === 'ESCALATE') {
+          const reviewPolicy = (await db.query('SELECT enabled,firewall_escalation_enabled FROM public.aigas_hg_policies WHERE tenant_id=$1 FOR SHARE', [tenantId])).rows[0];
+          if (reviewPolicy?.enabled && reviewPolicy.firewall_escalation_enabled === true) {
+            const grant = (await db.query(`SELECT product_slug,approval_reference,access_kind,approved_at,expires_at,revoked_at
+              FROM public.aigas_locked_product_grants($1) WHERE tenant_id=$1 AND product_slug='firewall'
+              AND revoked_at IS NULL AND approved_at<=clock_timestamp() AND expires_at>clock_timestamp()`, [tenantId])).rows[0];
+            try {
+              commitment = reviewCommitment({ tenantId, actorUserId:identity.userId, requestId,
+                payload:toolSimulation ? toolCallFields.map(field => body.tool_call[field]) : requestText, grant });
+              grantCommitment = reviewGrantCommitment({ tenantId, actorUserId:identity.userId, requestId, grant });
+            } catch {
+              throw new KernelError(503, 'REVIEW_BINDING_NOT_CONFIGURED', 'تعذر ربط المراجعة بالحمولة ومنحة Firewall الحالية؛ لم يُنشأ طلب ولم يُرسل النص.', 'not configured');
+            }
+          }
+        }
         const requestFingerprint = enforced
-          ? decisionFingerprint({ tenantId, actorUserId: identity.userId, requestId, policyVersion, result, enforced, toolCall: boundTool, departmentId: body.department_id ?? null })
+          ? decisionFingerprint({ tenantId, actorUserId: identity.userId, requestId, policyVersion, result, enforced, toolCall: boundTool, departmentId: body.department_id ?? null, reviewCommitment:commitment, reviewGrant:grantCommitment })
           : null;
         // Single-use request UUID. The pre-check runs under the governance lock taken
         // above, so retries are classified before any write; a UUID reused for a

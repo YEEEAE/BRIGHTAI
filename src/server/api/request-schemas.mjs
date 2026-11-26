@@ -93,7 +93,7 @@ const agentObjective = text(3, 500);
 const agentIdem = z.string().regex(/^[A-Za-z0-9_.:-]{1,128}$/);
 const agentCorrelation = z.uuidv4();
 const agentToolMessage = z.strictObject({
-  tool: z.string().regex(/^[a-z][a-z0-9-]{1,63}$/),
+  tool: z.string().regex(/^[a-z][a-z0-9_-]{1,63}$/),
   action: z.string().regex(/^[a-z][a-z0-9:.-]{0,79}$/),
   resource: z.string().regex(/^[a-z][a-z0-9:.-]{0,79}$/),
   capability: z.string().regex(/^[a-z][a-z0-9:.-]{0,79}$/),
@@ -120,6 +120,7 @@ const methodSchemas = {
   'POST /app/api/kernel/policies': policyOperation,
   'POST /app/api/kernel/registry': registryMutationSchema,
   'POST /app/api/firewall/evaluate': ruleInput.or(z.strictObject({ tool_call: toolCall, synthetic: z.boolean() })),
+  'POST /app/api/firewall/agent': z.strictObject({ text: z.string().min(1).max(800).refine(value => Boolean(value.trim())), synthetic: z.literal(true), correlationId: agentCorrelation, idempotencyKey: agentIdem.max(100) }),
   'POST /app/api/firewall/guarded-executions': ruleInput.extend({ request_id: id, department_id: id.nullish() }).or(
     z.strictObject({ tool_call: toolCall, synthetic: z.boolean(), request_id: id, department_id: id.nullish() })),
   'POST /app/api/firewall/rules': z.union([

@@ -64,6 +64,8 @@ export const TOOLS = Object.freeze([
   tool('evidence-append','kernel.evidence.append',['append'],['kernel:evidence']),
   tool('memory-read','kernel.context.read',['read'],['kernel:memory']),
   tool('firewall-evaluate','firewall.text.evaluate',['evaluate'],['firewall:text']),
+  ...['inspect_input','read_policy','classify','recommend_redaction','explain_decision'].map(name =>
+    tool(name, 'firewall.agent.'+name.replaceAll('_','-'), ['evaluate'], ['firewall:agent'])),
   tool('ledger-verify','ledger.chain.verify',['verify'],['ledger:chain']),
   tool('risk-assist','risk.engine.assist',['assist'],['risk-engine:assist']),
   tool('human-gate-status','human.gate.status',['read'],['human-gate:request']),
@@ -74,7 +76,7 @@ const manifest = (product, tools, maxSteps) => Object.freeze({
   product, agent_key: product + '-agent', version: '1.0.0', tools: Object.freeze(tools), maxSteps,
 });
 export const CAPABILITIES = Object.freeze([
-  manifest('firewall', ['policy-check','evidence-append','firewall-evaluate'], 12),
+  manifest('firewall', ['policy-check','evidence-append','firewall-evaluate','inspect_input','read_policy','classify','recommend_redaction','explain_decision'], 12),
   manifest('ledger', ['policy-check','evidence-append','memory-read','ledger-verify'], 10),
   manifest('human-gate', ['policy-check','evidence-append','human-gate-status'], 8),
   manifest('risk-engine', ['policy-check','evidence-append','risk-assist'], 10),

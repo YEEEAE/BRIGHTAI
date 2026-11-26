@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash, randomUUID } from 'node:crypto';
 import { enforceDecision } from '../src/server/firewall/guard.mjs';
 import { reviewBindingVersion } from '../src/server/firewall/escalation.mjs';
+import { reviewGrantCommitment } from '../src/server/firewall/binding.mjs';
 
 test('pending Firewall review requires the exact tenant/request/policy/fingerprint and operation', async () => {
   const tenantId = randomUUID(), requestId = randomUUID(), decisionId = randomUUID();
@@ -91,6 +92,13 @@ test('atomic metadata review is visible, independent, revocable and rolls back w
   await pool.query("INSERT INTO aigas_policy_versions(tenant_id,policy_id,version,status,effect,checksum,change_reason,created_by,approved_by,published_at) VALUES($1,$2,1,'PUBLISHED','ALLOW',$3,'Synthetic local fixture',$4,$5,now())",[tenant,policyId,checksum,owner.userId,reviewer.userId]);
   await grantProduct(pool,tenant,'ledger');
   const guarded=(requestId,text='Synthetic escalation fixture')=>firewall(post('/app/api/firewall/guarded-executions/',`workspace=${tenant}`,{text,synthetic:true,request_id:requestId}),'enforce');
+  const reviewKey=process.env.AIGAS_FIREWALL_REVIEW_BINDING_KEY;
+  delete process.env.AIGAS_FIREWALL_REVIEW_BINDING_KEY;
+  const noKey=await guarded(randomUUID());
+  assert.equal(noKey.status,503);
+  assert.equal((await noKey.json()).code,'REVIEW_BINDING_NOT_CONFIGURED');
+  assert.equal((await pool.query('SELECT count(*)::int AS n FROM aigas_hg_requests')).rows[0].n,0);
+  process.env.AIGAS_FIREWALL_REVIEW_BINDING_KEY=reviewKey;
   const submittedId=randomUUID();
   const submissions=await Promise.all([guarded(submittedId),guarded(submittedId.toUpperCase())]);
   assert.deepEqual(submissions.map(response=>response.status).sort(),[202,409]);
@@ -104,7 +112,12 @@ test('atomic metadata review is visible, independent, revocable and rolls back w
   assert.equal(submitted.request_id,submittedId);
   assert.equal(submitted.review.request_fingerprint,submitted.request_fingerprint);
   assert.equal((await submissions.find(response=>response.status===409).json()).code,'REQUEST_ALREADY_EVALUATED');
-  assert.equal((await (await guarded(submittedId,'Synthetic different text with same outcome')).json()).code,'REQUEST_ALREADY_EVALUATED');
+  assert.equal((await (await guarded(submittedId,'Synthetic different text with same outcome')).json()).code,'REQUEST_ID_CONFLICT');
+  await pool.query("UPDATE aigas_product_grants SET approval_reference='SYNTHETIC-NEW-GRANT' WHERE tenant_id=$1 AND product_slug='firewall'",[tenant]);
+  assert.equal((await (await guarded(submittedId)).json()).code,'REQUEST_ID_CONFLICT');
+  const changedGrantList=await createHumanGateService(transact)(owner,tenant,'list');
+  assert.equal(changedGrantList.requests.find(item=>item.id===submitted.review.id).bindingValid,false);
+  await pool.query("UPDATE aigas_product_grants SET approval_reference='LOCAL_SYNTHETIC_FIXTURE' WHERE tenant_id=$1 AND product_slug='firewall'",[tenant]);
   assert.equal((await (await guarded(submittedId,'Different outcome')).json()).code,'REQUEST_ID_CONFLICT');
   const reviewId=submitted.review.id;
   const selector=new URLSearchParams({workspace:tenant,request:reviewId});
@@ -168,7 +181,10 @@ test('atomic metadata review is visible, independent, revocable and rolls back w
 
   const create=async(fail=false)=>transact(async db=>{
    await tenantGuard(owner,tenant,db);
-   const context={decisionId:randomUUID(),requestId:randomUUID(),policyVersion:'kernel:synthetic',requestFingerprint:'a'.repeat(64)};
+   const requestId=randomUUID();
+   const grant=(await db.query("SELECT * FROM public.aigas_locked_product_grants($1) WHERE product_slug='firewall'",[tenant])).rows[0];
+   const grantPrefix=reviewGrantCommitment({tenantId:tenant,actorUserId:owner.userId,requestId,grant}).slice(0,32);
+   const context={decisionId:randomUUID(),requestId,policyVersion:'kernel:synthetic',requestFingerprint:grantPrefix+'a'.repeat(32)};
    await db.query("INSERT INTO aigas_fw_decisions(id,tenant_id,action,reason,rule_id,rule_version,mode,request_id,policy_version,request_fingerprint) VALUES($1,$2,'ESCALATE','RULE_ESCALATE',$3,1,'GUARD',$4,$5,$6)",[context.decisionId,tenant,ruleId,context.requestId,context.policyVersion,context.requestFingerprint]);
    const escalation=await requestHumanReview(db,owner,tenant,context);
    if(fail) throw Error('ROLLBACK');

@@ -1,6 +1,5 @@
 ---
 import DecisionCircuit from './DecisionCircuit.astro';
-import RedactionDemo from './RedactionDemo.astro';
 import {examples, rules, policyVersion} from '../shared/firewall-demo.mjs';
 ---
 <section class="decision-workspace ph-no-capture" data-demo-workspace data-ph-no-capture aria-label="Workspace قرار Firewall التعليمي">
@@ -16,11 +15,9 @@ import {examples, rules, policyVersion} from '../shared/firewall-demo.mjs';
       <button disabled type="button" data-clear>إعادة ضبط</button>
       <p id="demo-status" role="status" aria-live="polite">لم يُفحص أي طلب بعد.</p>
       <div data-result hidden>
-        <p>الإدخال ← قاعدة demo ← قرار ← السبب ← المخرج</p>
-        <p data-input-snapshot dir="auto"></p>
+        <p>الإدخال ← قاعدة demo ← القرار والسبب والدليل</p>
         <h3 data-decision></h3><p data-reason></p>
-        <h3>المخرج</h3><p data-output dir="auto"></p>
-        <div data-comparison hidden><RedactionDemo comparison /></div>
+        <p>الدليل: معرّف القاعدة ونسختها ظاهران أدناه، دون عرض نص الطلب أو المخرج.</p>
         <a data-escalate hidden href="/products/human-gate/?scenario=escalate#lab">افتح Queue Human Gate الاصطناعية ←</a>
       </div>
       <details open><summary>سياسة الفحص {policyVersion}</summary><p>الأولوية للحظر ثم التصعيد ثم التنقيح ثم التحذير. قد تطابق القواعد نصًا تعليميًا وقد تفوّت صياغات أخرى. تحقق الصيغة لا يثبت هوية أو ملكية بيانات.</p><ol>{rules.map(rule => <li><bdi>{rule.id} · v{rule.version}</bdi> — {rule.name}</li>)}</ol><p data-rule>القاعدة المطابقة: لم يُفحص.</p></details>
@@ -64,11 +61,9 @@ document.querySelectorAll<HTMLElement>('[data-demo-workspace]').forEach(root => 
    status.textContent='جارٍ تطبيق قواعد demo محليًا…';
    timer=setTimeout(() => {
      root.setAttribute('aria-busy','false'); check.disabled=false; result.hidden=false;
-     set('[data-input-snapshot]',input); set('[data-decision]',decision.label+' / '+(decision.code === 'DENY' ? 'BLOCK' : decision.code));
-     set('[data-reason]',decision.reason); set('[data-output]',decision.output ?? 'الطلب متوقف.');
+     set('[data-decision]',decision.label+' / '+(decision.code === 'DENY' ? 'BLOCK' : decision.code));
+     set('[data-reason]',decision.reason);
      set('[data-rule]',decision.ruleId+' · v'+decision.ruleVersion+' · '+decision.policyVersion);
-     root.querySelector<HTMLElement>('[data-comparison]')!.hidden=decision.code!=='REDACT';
-     set('[data-before]',input); set('[data-after]',decision.output!);
      root.querySelector<HTMLElement>('[data-escalate]')!.hidden=decision.code!=='ESCALATE';
      const index=examples.findIndex(example=>example[0]===decision.code);
      circuit.dataset.state=String(index); circuit.style.setProperty('--branch-color','var(--color-focus)');
@@ -87,6 +82,6 @@ textarea{display:block;box-sizing:border-box;width:100%;margin-block:12px;backgr
 button,a{min-height:44px}button{font:inherit;padding:10px 14px;background:var(--surface-raised);color:var(--color-text);border:1px solid var(--border-strong);border-radius:8px;cursor:pointer}button:disabled{opacity:.6;cursor:wait}
 button:focus-visible,textarea:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--color-focus);outline-offset:4px}
 p,li{line-height:1.9;overflow-wrap:anywhere}li{margin-block:12px}details{margin-block:24px;border-top:1px solid var(--border-strong);padding-top:20px}summary{cursor:pointer}
-[data-result]{border-inline-start:3px solid var(--color-focus);padding-inline:20px}[data-escalate]{display:inline-flex;align-items:center;color:var(--color-focus)}[hidden]{display:none!important}
+[data-result]{border-block-start:1px solid var(--border-strong);padding-block-start:16px}[data-escalate]{display:inline-flex;align-items:center;color:var(--color-focus)}[hidden]{display:none!important}
 @media(max-width:900px){.workspace-grid{grid-template-columns:minmax(0,1fr)}.experience-firewall{max-width:420px;width:100%;margin:auto}}
 </style>

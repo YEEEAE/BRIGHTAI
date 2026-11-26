@@ -4,6 +4,8 @@
 
 import { createAgentRuntime } from './runtime.mjs';
 import { createOrchestrator } from './orchestrator.mjs';
+import { firewallTools, createFirewallAgent } from './firewall-agent.mjs';
 
-export const runtime = createAgentRuntime();
+export const runtime = createAgentRuntime({ tools: firewallTools });
 export const orchestrator = createOrchestrator({ runtime });
+export const firewallAgent = createFirewallAgent({ runtime });

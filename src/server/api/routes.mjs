@@ -9,6 +9,7 @@ const endpoints = {
   '/api/public-demo/groq-sandbox': 'POST',
   '/api/security/csp-report': 'POST',
   '/app/api/firewall/evaluate': 'POST',
+  '/app/api/firewall/agent': 'POST',
   '/app/api/firewall/guarded-executions': 'POST',
   '/app/api/firewall/rules': 'GET POST PATCH DELETE',
   '/app/api/human-gate/delegations': 'GET POST',

@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-26 PARTIAL Firewall agent: API وحلقة metadata-only مع Kernel/Groq؛ مراجعة HG تربط الحمولة والمنحة وتعيد فحص المنحة؛ مفتاح الربط وتوحيد اسمَي مفتاح Groq محليًا PASS بلا اتصال خارجي؛ سجلا الاعتماد والميزانية غير مهيأة والبيئة المستهدفة NOT VERIFIED؛ تجربة فقط غير مدعومة في الربط؛ `Audit/firewall-agent-foundation-2026-11-26.md`, `Audit/firewall-groq-registry-pending-2026-11-26.md`.
 - 2026-11-26 P03 أساس Agent Runtime محلي: `src/server/agents/` + 7 نقاط `/app/api/agents/`،ب lifecycle محدود/handoff/allowlist/policy recheck/HG pause/outbox ذري؛ unit 15/15 وAPI contract 194/194 وbuild PASS؛ Postgres/RLS وStaging/Production وPASS_VERIFIED NOT VERIFIED. `Audit/p03-agent-runtime-2026-11-26/REPORT.md`.
 - 2026-11-26 P02 أساس Neon/RLS: 0047 أضيفت (7 جداول وكيل + RLS/FORCE + ACL + expiry + start/read(uuid))؛ DELTA_ORDER صار يشمل 0046/0047 بعد تحقق 31 جدولًا في prod؛ إصلاح owner-name في 0047 لا في 0018 (checksum مثبت)؛ دور aigas_app_login بـSET TRUE/INHERIT FALSE بلا منح مباشر؛ منع owner DSN في kernel/db.mjs. PG18 rehearsal: fresh 43/43 وdelta 44/44 و14/14 negative PASS؛ الفرع المعزول 54 جدولًا/112 سياسة/43 إيصالًا وتحقق وكيل PASS برجوع كامل؛ Staging 43 وProduction 31 لم تُلمس؛ خطتا delta جاهزتان؛ P15 بوابة الإنتاج. `Audit/r51-p02-2026-11-26/REPORT.md`.
 - 2026-11-26 P01 أساس Node SSR: Blueprint يعيد استخدام brightai-r51-audit (free/ohio) ويُبقي /readyz/ فحصَ منصة و/healthz/ liveness؛ preview noindex بلا تغيير canonical؛ npm ci/build PASS و33/33 فحوص محلية و16/16 اختبارات؛ المرشح الحي ما زال SHA 5387cdf وRender بلا workspace محدد، بلا نشر. Audit/R51/P01-local/REPORT.json.
@@ -28,6 +29,13 @@
 
 
 ## Ledger (الأحدث أولًا)
+## [2026-11-26] — إعداد Firewall وGroq المحلي
+- **تم:** ربط API والأدوات وقرار HG بالحمولة والمنحة؛ إضافة مفتاح ربط محلي وتوحيد اسمَي مفتاح Groq باختيار المالك.
+- **التحقق:** PASS محلي — build، API 200/200، اختبارات مركزة 56/56، PostgreSQL مؤقت 5/5؛ تطابق المفتاحين المحليين PASS.
+- **الحالة:** PARTIAL؛ اتصال Groq والبيئة المستهدفة NOT VERIFIED، ولا PASS_VERIFIED للمعايير الثلاثة.
+- **مفتوح:** اعتماد المؤسسة والمنطقة والاحتفاظ وعدم التدريب والميزانية، وسجلا الموفر والنموذج الفارغان؛ تنفيذ الموافقة الخارجي غير مهيأ.
+- **ملفات:** `Audit/firewall-agent-foundation-2026-11-26.md`, `Audit/firewall-groq-registry-pending-2026-11-26.md`.
+
 ## [2026-11-26] — أساس P03 Kernel Agent Runtime
 - **تم:** lifecycle/handoffs/allowlist/policy recheck/outbox ذري مع Kernel identity و7 endpoints مسجلة بالعقد.
 - **التحقق:** PASS محلي — unit 15/15، API contract 194/194، build PASS؛ البيئة المستهدفة NOT VERIFIED.

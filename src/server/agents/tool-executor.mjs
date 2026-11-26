@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { KernelError } from '../kernel/core.mjs';
 import { LIMITS, manifestFor, toolFor, reference, isUuid, policyVersion } from './contracts.mjs';
 
-const namePattern = /^[a-z][a-z0-9-]{1,63}$/;
+const namePattern = /^[a-z][a-z0-9_-]{1,63}$/;
 const valuePattern = /^[a-z][a-z0-9:.-]{0,79}$/;
 export const toolMessageSchema = z.strictObject({
   tool: z.string().regex(namePattern),
@@ -84,7 +84,7 @@ export function createToolExecutor({ tools = Object.create(null), evaluatePolicy
       }
       let raw;
       try {
-        raw = await withDeadline(() => handler({ identity, tenantId, agentKey, message: call, signal }), Math.min(deadlineMs, timeoutMs), signal);
+        raw = await withDeadline(() => handler({ tx, identity, tenantId, agentKey, message: call, signal }), Math.min(deadlineMs, timeoutMs), signal);
       } catch (error) {
         const cancelled = error?.code === 'RUN_CANCELLED';
         return toolResultSchema.parse({ tool: call.tool, status: cancelled ? 'CANCELLED' : 'FAILED', outcome: 'UNAVAILABLE',

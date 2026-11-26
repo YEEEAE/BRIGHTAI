@@ -1,5 +1,6 @@
 import { matcherNotes } from '../../shared/firewall-policy.mjs';
 import { registry, registryVersion } from '../firewall/agent-registry.mjs';
+import { reviewGrantCommitment } from '../firewall/binding.mjs';
 import { lockIdempotentCreate } from '../api/idempotency.mjs';
 import { ledgerDependency, recordKernelAuditEvidence, recordProductEvent } from '../ledger/writer.mjs';
 import { requireProductAccess } from '../kernel/access.mjs';
@@ -224,13 +225,20 @@ export function createHumanGateService(transact=transaction) {
     if(!requester||(request.operation_type==='KERNEL_WORKSPACE_RENAME'&&!admin(requester))) return false;
     if(request.operation_type==='FIREWALL_ESCALATION_REVIEW'){
      if(!policy.firewall_escalation_enabled) return false;
-     const current=(await db.query(`SELECT d.matcher_id,d.matcher_version FROM public.aigas_fw_decisions d
+     const current=(await db.query(`SELECT d.matcher_id,d.matcher_version,d.request_id FROM public.aigas_fw_decisions d
       LEFT JOIN public.aigas_fw_rules r ON r.tenant_id=d.tenant_id AND r.id=d.rule_id
       WHERE d.tenant_id=$1 AND d.id=$2 AND d.action='ESCALATE' AND d.mode='GUARD'
       AND (d.matcher_id IS NOT NULL OR (r.enabled AND r.version=d.rule_version))
       AND d.request_fingerprint=$3 AND coalesce(d.rule_id::text,d.matcher_id)=$4
       AND coalesce(d.rule_version,d.matcher_version)=$5`,[tenantId,request.subject_ref,request.payload.request_fingerprint,request.payload.rule_id,request.payload.rule_version])).rows[0];
      if(!current) return false;
+     const grant=(await db.query(`SELECT product_slug,approval_reference,access_kind,approved_at,expires_at,revoked_at
+      FROM public.aigas_locked_product_grants($1) WHERE tenant_id=$1 AND product_slug='firewall'
+      AND revoked_at IS NULL AND approved_at<=clock_timestamp() AND expires_at>clock_timestamp()`,[tenantId])).rows[0];
+     try {
+      const expected=reviewGrantCommitment({tenantId,actorUserId:request.requester_id,requestId:current.request_id,grant});
+      if(request.payload.request_fingerprint.slice(0,32)!==expected.slice(0,32)) return false;
+     } catch { return false; }
      if(current.matcher_id) {
       const activeMatcher = matcherNotes.some(rule => rule.action==='ESCALATE' && rule.id===current.matcher_id && rule.version===current.matcher_version);
       const activeTool = current.matcher_version===registryVersion && registry.some(rule => rule.id===current.matcher_id && rule.decision==='ESCALATE');

@@ -1,38 +1,6 @@
 #
 ---
 
----
-
-## P07 — Risk Engine AI Agent
-
-**التبعيات:** P03 P04 P05. **معايير الإغلاق:** RE-01 RE-02 RE-03 RE-04.
-
-**الملفات المستهدفة من شجرة المصدر:**
-- `src/server/risk-engine/core.mjs`
-- `src/server/risk-engine/assist.mjs`
-- `src/server/risk-engine/service.mjs`
-- `src/server/risk-engine/evaluation.mjs`
-- `src/server/risk-engine/review.mjs`
-- `src/server/risk-engine/http.mjs`
-- `src/pages/app/api/risk-engine/**`
-- `src/components/RiskWorkspace.astro`
-- `src/scripts/risk-engine.ts`
-- `tests/risk*.mjs`
-
-**حدود التنفيذ:** نفّذ أساس هذه المهمة؛ أكمل التحقق والتعديلات المتخصصة في P24, P26. لا تعِد تنفيذ إصلاح أو اختبار ثبت على نفس النسخة والبيئة.
-
-**أوامر العمل:**
-
-أضف risk-agent.mjs بأدوات read_asset/read_policy/assess/propose_treatment/read_evidence؛ حوّل assist من اقتراح منفرد إلى run محدود متعدد الأدوات. احسب الدرجات في deterministic engine وفق نسخة المقياس المعتمدة؛ لا تخصم رقمًا ثابتًا لكل control كما في prototype. اربط evidence/version وresidual risk وowner/due date وhuman acceptance، ومنع الوكيل من قبول الخطر بنفسه. حدّث صفحة الأصل ونتائج API. نفّذ حالات boundary/invalid input, concurrent revision, expired acceptance، replay/fairness/drift بمقام وsample disclosure؛ لا تعرض نتائج model حية من replay اصطناعي.
-
-**معيار التسليم:**
-- `RE-01` — advisory synthetic JSON وrole/idempotency في المصدر → دليل PASS_VERIFIED في البيئة المطلوبة.
-- `RE-02` — agent متعدد الأدوات لتقييم الأصل والمعالجات مع مصادر → دليل PASS_VERIFIED في البيئة المطلوبة.
-- `RE-03` — درجات مخاطر موثقة وresidual وقبول بشري E2E → دليل PASS_VERIFIED في البيئة المطلوبة.
-- `RE-04` — evaluation/drift/fairness ومقامات النتائج → دليل PASS_VERIFIED في البيئة المطلوبة.
-
----
-
 ## P08 — Human Gate AI Agent
 
 **التبعيات:** P03 P04 P05 P06 P07. **معايير الإغلاق:** HG-01 HG-02 HG-03 HG-04.

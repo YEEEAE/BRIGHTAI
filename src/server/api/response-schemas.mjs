@@ -111,6 +111,7 @@ export const responseSchemas = {
   'PATCH /app/api/firewall/rules': firewallDashboard,
   'DELETE /app/api/firewall/rules': firewallDashboard,
   'POST /app/api/firewall/evaluate': persisted.extend({ action: z.string(), external_action_executed: z.literal(false) }),
+  'POST /app/api/firewall/agent': z.strictObject({ action: z.enum(['ALLOW','REDACT']), reason: z.string(), advisory: z.literal('METADATA_REVIEWED'), run_id: id }),
   'POST /app/api/firewall/guarded-executions': persisted.extend({ decision: record, code: z.string().optional(), execution_status: z.string(), external_action_executed: z.boolean().nullable() }),
   'GET /app/api/human-gate/delegations': persisted.extend({ delegations: rows.max(100), canManage: z.boolean() }),
   'POST /app/api/human-gate/delegations': persisted.extend({ delegation: record }),
