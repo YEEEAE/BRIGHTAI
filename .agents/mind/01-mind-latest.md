@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-26 P03 أساس Agent Runtime محلي: `src/server/agents/` + 7 نقاط `/app/api/agents/`،ب lifecycle محدود/handoff/allowlist/policy recheck/HG pause/outbox ذري؛ unit 15/15 وAPI contract 194/194 وbuild PASS؛ Postgres/RLS وStaging/Production وPASS_VERIFIED NOT VERIFIED. `Audit/p03-agent-runtime-2026-11-26/REPORT.md`.
 - 2026-11-26 P02 أساس Neon/RLS: 0047 أضيفت (7 جداول وكيل + RLS/FORCE + ACL + expiry + start/read(uuid))؛ DELTA_ORDER صار يشمل 0046/0047 بعد تحقق 31 جدولًا في prod؛ إصلاح owner-name في 0047 لا في 0018 (checksum مثبت)؛ دور aigas_app_login بـSET TRUE/INHERIT FALSE بلا منح مباشر؛ منع owner DSN في kernel/db.mjs. PG18 rehearsal: fresh 43/43 وdelta 44/44 و14/14 negative PASS؛ الفرع المعزول 54 جدولًا/112 سياسة/43 إيصالًا وتحقق وكيل PASS برجوع كامل؛ Staging 43 وProduction 31 لم تُلمس؛ خطتا delta جاهزتان؛ P15 بوابة الإنتاج. `Audit/r51-p02-2026-11-26/REPORT.md`.
 - 2026-11-26 P01 أساس Node SSR: Blueprint يعيد استخدام brightai-r51-audit (free/ohio) ويُبقي /readyz/ فحصَ منصة و/healthz/ liveness؛ preview noindex بلا تغيير canonical؛ npm ci/build PASS و33/33 فحوص محلية و16/16 اختبارات؛ المرشح الحي ما زال SHA 5387cdf وRender بلا workspace محدد، بلا نشر. Audit/R51/P01-local/REPORT.json.
 - 2026-11-26 NO-GO بوابة إطلاق مستقلة 13 على SHA `961836f8`: source 36.5% / local 54% / staging 10% / live 2.5%؛ بناء وSEO16 وhealth15 وAPI177 وauth/governance/design PASS، DB 16/18، conversion CTA وSecure Chat E2E FAIL؛ Neon prod بلا `aigas_runtime` و2/31 سياسات؛ MagicPath 50/50 وRender unauthorized. R4 أثبت تطابق R3.1/78 معيارًا و13 وزنًا؛ لا إعادة قياس عند HEAD `8e879ba…`؛ revision MagicPath غير مطابق، البصري BLOCKED؛ `Audit/outhers/release-gate-13-2026-11-26/REPORT.md`, `Audit/BRIGHTAI-R4-FORENSIC-AUDIT-MAGICPATH.md`.
@@ -27,6 +28,12 @@
 
 
 ## Ledger (الأحدث أولًا)
+## [2026-11-26] — أساس P03 Kernel Agent Runtime
+- **تم:** lifecycle/handoffs/allowlist/policy recheck/outbox ذري مع Kernel identity و7 endpoints مسجلة بالعقد.
+- **التحقق:** PASS محلي — unit 15/15، API contract 194/194، build PASS؛ البيئة المستهدفة NOT VERIFIED.
+- **الحالة:** PARTIAL؛ P20/P21/P23 تكمل التخصص، لا نشر ولا كتابة إنتاج.
+- **ملفات:** `src/server/agents/runtime.mjs`, `src/server/agents/repository.mjs`, `tests/agent-runtime.test.mjs`.
+
 ## [2026-11-26] — إثبات استئناف P16 بعد فشل مرحلي وإيصال restore محلي
 - **تم:** `resumeOrder` يعيد محاولة إيصال FAILED بشرط مطابقة sha256 ويرفض العبث/الثقوب؛ حالة فشل مرحلي ودورة dump/restore محليتان أُضيفتا إلى rehearsal.
 - **التحقق:** PASS — unit 8/8؛ rehearsal PG18.6 fresh 43/43 وdelta 44/44 و16/16 negative (منها الاستئناف بعد الفشل وrestore بلا فقد صف اصطناعي)؛ `git diff --check` PASS.

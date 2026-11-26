@@ -3,36 +3,6 @@
 
 ---
 
-## P04 — Groq Gateway واحد وخمس وكلاء وFinOps
-
-**التبعيات:** P02 P03. **معايير الإغلاق:** SC-01 SC-02 SC-03 SC-04 SC-05 FW-02.
-
-**الملفات المستهدفة من شجرة المصدر:**
-- `src/server/ai/groq-gateway.mjs`
-- `src/server/ai/public-sandbox-limiter.mjs`
-- `src/server/secure-chat/models.mjs`
-- `src/server/secure-chat/adapter.mjs`
-- `src/server/kernel/env.mjs`
-- `.env.example`
-- `render.yaml`
-- `tests/helpers/secure-chat-model.mjs`
-- `tests/secure-chat.test.mjs`
-
-**حدود التنفيذ:** نفّذ أساس هذه المهمة؛ أكمل التحقق والتعديلات المتخصصة في P22. لا تعِد تنفيذ إصلاح أو اختبار ثبت على نفس النسخة والبيئة.
-
-**أوامر العمل:**
-
-حوّل البوابة إلى typed provider adapter يدعم رسائل tools/tool_calls/tool results، strict schemas وtool argument parsing، مع إبقاء مسار النص الحالي متوافقًا. وحد GROQ_API_KEY كاسم خادمي canonical مع alias مؤقت AIGAS_SC_GROQ_API_KEY؛ عند اختلاف القيم fail closed بلا طباعة، لا تكرر المفاتيح. حدّث .env.example بالأسماء فقط لا الأسرار. املأ سجل النماذج من موافقة موثقة وموديل Groq متاح فعليًا، لا تختلق موافقة أو نموذجًا. طبق policy pre/post، reservation ذري على DB بدل file-only في multi-worker، tenant/user/agent/global limits وtoken costs/timeout/429/backoff/cancel/reconciliation. مزود واحد مشترك ولا خمس مفاتيح، ولا client-side keys.
-نفّذ mock replay لأداة واحدة وعدة أدوات وmalformed tool/رفض/expiry/429/timeout، إثبات صفر provider calls عند الحجب. اربط كل وكيل لاحقًا عبر نفس gateway. في الميزانية الحالية 0 USD، لا inference مدفوع؛ نفّذ probe حقيقي فقط إن أمكن إثبات أنه مجاني ضمن الحساب وباعتماد صالح، وإلا احتفظ BLOCKED كمانع للنشر الحي؛ لا تعتبر mock أو connector health دليل inference.
-
-**معيار التسليم:**
-- `SC-01` — حدود الميزانية وtimeouts/circuit breaker في المصدر → دليل PASS_VERIFIED في البيئة المطلوبة.
-- `SC-02` — model approved registry في المصدر غير فارغ → دليل PASS_VERIFIED في البيئة المطلوبة.
-- `SC-03` — Secure Chat adapter يقبل tool_calls وفق العقد الآمن الجديد → دليل PASS_VERIFIED في البيئة المطلوبة.
-- `SC-04` — توحيد اسم secret بين gateway وblueprint → دليل PASS_VERIFIED في البيئة المطلوبة.
-- `SC-05` — shared key والاتصال والـusage فعليًا وbudgets متعددة العمال → دليل PASS_VERIFIED في البيئة المطلوبة.
-- `FW-02` — provider registry معتمد غير فارغ في المصدر → دليل PASS_VERIFIED في البيئة المطلوبة.
-
 ---
 
 ## P05 — Registry وPolicy Packs وهوية Agent

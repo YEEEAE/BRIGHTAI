@@ -86,6 +86,34 @@ const policyOperation = z.discriminatedUnion('operation', [
   z.strictObject({ operation: z.literal('publish'), policyId: id, version, expectedVersion: z.number().int().nonnegative(), reason: policyText.optional() }),
 ]);
 
+
+const agentKey = z.string().regex(/^[a-z][a-z0-9-]{1,63}$/);
+const agentObjective = text(3, 500);
+const agentIdem = z.string().regex(/^[A-Za-z0-9_.:-]{1,128}$/);
+const agentCorrelation = z.uuidv4();
+const agentToolMessage = z.strictObject({
+  tool: z.string().regex(/^[a-z][a-z0-9-]{1,63}$/),
+  action: z.string().regex(/^[a-z][a-z0-9:.-]{0,79}$/),
+  resource: z.string().regex(/^[a-z][a-z0-9:.-]{0,79}$/),
+  capability: z.string().regex(/^[a-z][a-z0-9:.-]{0,79}$/),
+  version: z.number().int().positive().max(1000),
+  arguments: z.record(z.string().max(64), z.json()).optional(),
+});
+const agentStart = z.strictObject({
+  agentKey, objective: agentObjective, synthetic: z.literal(true), correlationId: agentCorrelation,
+  idempotencyKey: agentIdem, parentRunId: id.nullish(), parentStepId: id.nullish(),
+  deadlineMs: z.number().int().min(1000).max(900000).optional(), handoff: z.record(z.string(), z.json()).nullish(),
+});
+const agentStep = z.discriminatedUnion('kind', [
+  z.strictObject({ kind: z.literal('TOOL'), message: agentToolMessage, note: text(3, 200).nullish(), correlationId: agentCorrelation, idempotencyKey: agentIdem }),
+  z.strictObject({ kind: z.enum(['PLAN','POLICY','RESULT','HUMAN_GATE']), note: text(3, 200).nullish(), correlationId: agentCorrelation, idempotencyKey: agentIdem }),
+]);
+const agentPlan = z.strictObject({
+  plan: z.array(z.strictObject({ agentKey, objective: agentObjective, messages: z.array(agentToolMessage).max(4).optional() })).min(1).max(5),
+  correlationId: agentCorrelation, idempotencyKey: agentIdem,
+  deadlineMs: z.number().int().min(1000).max(900000).optional(),
+});
+
 const methodSchemas = {
   'POST /api/enterprise-inquiry': enterpriseInquirySchema,
   'POST /app/api/kernel/policies': policyOperation,
@@ -129,6 +157,12 @@ const methodSchemas = {
   'POST /app/api/risk-engine/assets/[assetId]/treatments': treatment,
   'PATCH /app/api/risk-engine/assets/[assetId]/treatments': treatment,
   'POST /app/api/risk-engine/assist': z.strictObject({ purpose: shortReason, data_classification: z.enum(classifications), synthetic: z.boolean() }),
+  'POST /app/api/agents/runs': agentStart,
+  'POST /app/api/agents/orchestrations': agentPlan,
+  'POST /app/api/agents/runs/[runId]/step': agentStep,
+  'POST /app/api/agents/runs/[runId]/resume': z.strictObject({ approvalRef: id, correlationId: agentCorrelation, idempotencyKey: agentIdem }),
+  'POST /app/api/agents/runs/[runId]/cancel': z.strictObject({ reason: z.string().regex(/^[A-Z][A-Z0-9_]{1,79}$/), correlationId: agentCorrelation, idempotencyKey: agentIdem }),
+  'POST /app/api/agents/runs/[runId]/retry': z.strictObject({ correlationId: agentCorrelation, idempotencyKey: agentIdem }),
   'POST /app/api/kernel': z.strictObject({ name: text(2, 100) }),
   'PATCH /app/api/kernel/products': z.strictObject({ slug: product, status: z.enum(['FOUNDATION', 'ENABLED', 'DISABLED']), version: z.number().int().positive() }),
   'POST /app/api/kernel/pilot-report': z.strictObject({ from: z.iso.datetime(), until: z.iso.datetime() }),

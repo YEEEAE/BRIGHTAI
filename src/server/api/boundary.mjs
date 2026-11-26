@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { errorSchema, firewallErrorEvidence, idempotencyKeySchema, queryMatches } from './schemas.mjs';
 import { queryShape, resolveRoute } from './routes.mjs';
 
-const keyedCreates = new Set(['/app/api/kernel', '/app/api/human-gate/requests', '/app/api/risk-engine/assets', '/app/api/risk-engine/assist']);
+const keyedCreates = new Set(['/app/api/agents/orchestrations', '/app/api/agents/runs', '/app/api/kernel', '/app/api/human-gate/requests', '/app/api/risk-engine/assets', '/app/api/risk-engine/assist']);
 
 const statusErrors = {
   400: ['INVALID_REQUEST', 'بيانات الطلب غير صالحة.'],

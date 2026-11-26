@@ -190,7 +190,7 @@ test('Node rejects a forged same-origin authority and emits the JSON envelope', 
 });
 
 test('an invalid or unsupported idempotency header is rejected before a write', async () => {
-  for (const [path, key] of [['/app/api/kernel/', 'contains space'], ['/app/api/firewall/evaluate/', uuid]]) {
+  for (const [path, key] of [['/app/api/kernel/', 'contains space'], ['/app/api/firewall/evaluate/', uuid], ['/app/api/agents/runs/', 'contains space'], ['/app/api/agents/orchestrations/', 'contains space']]) {
     const response = await fetch(new URL(path, base), { method: 'POST', headers: { 'Idempotency-Key': key } });
     assert.equal((await errorOf(response, 400)).code, 'INVALID_IDEMPOTENCY_KEY');
   }
@@ -211,4 +211,26 @@ test('JSON transport rejects invalid UTF-8, oversized input and wrong media type
   await assert.rejects(readJsonObject(make('{"name":"' + 'x'.repeat(32) + '"}'), 16), { status: 413 });
   await assert.rejects(readJsonObject(make('{}', 'application/jsonx'), 16), { status: 415 });
   assert.deepEqual(await readJsonObject(make('{}', 'Application/JSON; charset=utf-8'), 16), {});
+});
+
+test('agent endpoints reject malformed run IDs and unregistered methods before authorization', async () => {
+  await errorOf(await fetch(new URL('/app/api/agents/runs/not-a-uuid/', base)), 400);
+  await errorOf(await fetch(new URL('/app/api/agents/runs/' + uuid + '/step/', base), { method: 'POST' }), 401);
+  const wrongMethod = await fetch(new URL('/app/api/agents/runs/', base), { method: 'PATCH' });
+  await errorOf(wrongMethod, 405);
+  assert.equal(wrongMethod.headers.get('allow'), 'POST');
+});
+
+test('agent request schemas reject role, scope and content bypass fields', () => {
+  const start = bodySchemaFor(new Request('https://brightai.live/app/api/agents/runs/', { method: 'POST' }));
+  const valid = { agentKey: 'firewall-agent', objective: 'تقييم اصطناعي داخل المؤسسة', synthetic: true,
+    correlationId: uuid, idempotencyKey: 'run-1' };
+  assert.equal(start.safeParse(valid).success, true);
+  for (const invalid of [{ ...valid, role: 'OWNER' }, { ...valid, tenant_id: uuid }, { ...valid, synthetic: false },
+    { ...valid, objective: 'x' }, { ...valid, secret: 'token' }, { ...valid, tenantId: uuid }]) {
+    assert.equal(start.safeParse(invalid).success, false);
+  }
+  const step = bodySchemaFor(new Request('https://brightai.live/app/api/agents/runs/' + uuid + '/step/', { method: 'POST' }));
+  assert.equal(step.safeParse({ kind: 'PLAN', note: 'خطة محدودة', correlationId: uuid, idempotencyKey: 'step-1' }).success, true);
+  assert.equal(step.safeParse({ kind: 'TOOL', correlationId: uuid, idempotencyKey: 'step-2' }).success, false);
 });

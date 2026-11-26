@@ -57,6 +57,28 @@ export const responseSchemas = {
   'POST /auth/api/organization/cancel-invitation': z.object({ id: z.string(), status: z.string() }),
   'POST /auth/api/organization/invite-member': z.object({ id: z.string(), status: z.string() }),
   'POST /auth/api/organization/create': z.object({ id: z.string(), name: z.string(), slug: z.string() }),
+  'POST /app/api/agents/runs': z.object({
+    run_id: id, tenant_id: id, status: z.string(), agent_key: z.string(),
+    agent_version: z.string(), policy_version: z.string(), correlation_id: id.nullable(),
+    handoff: record.nullable(), expires_at: z.iso.datetime().nullable(), created_at: z.iso.datetime().nullable(), replayed: z.boolean(),
+  }),
+  'GET /app/api/agents/runs/[runId]': z.object({
+    run_id: id, tenant_id: id, status: z.string(), agent_key: z.string(),
+    agent_version: z.string(), policy_version: z.string(), correlation_id: id.nullable(),
+    handoff: record.nullable(), expires_at: z.iso.datetime().nullable(), created_at: z.iso.datetime().nullable(),
+    steps: z.number().int().nonnegative(), outbox: z.array(z.object({ event_id: z.string(), event_type: z.string(), status: z.string(), attempts: z.number().int().nonnegative() })),
+  }),
+  'POST /app/api/agents/runs/[runId]/step': z.object({
+    status: z.string(), step_id: id, step_no: version, reason: z.string().optional(),
+    approval_fingerprint: z.string().optional(), tool: record.nullable().optional(),
+    invocation_id: id.nullable().optional(), handoff: record.nullable(),
+  }),
+  'POST /app/api/agents/runs/[runId]/resume': z.object({ status: z.literal('RUNNING'), step_no: version, handoff: record.nullable() }),
+  'POST /app/api/agents/runs/[runId]/cancel': z.object({ status: z.literal('CANCELLED'), run_id: id, reason: z.string() }),
+  'POST /app/api/agents/runs/[runId]/retry': z.object({ dispatched: version, failed: version, dead: version, remaining: version }),
+  'POST /app/api/agents/orchestrations': z.object({
+    status: z.string(), correlation_id: id, runs: z.array(z.object({ run_id: id.nullable(), agent_key: z.string(), product: z.string(), status: z.string(), reason: z.string().optional(), handoff: record.nullable().optional(), correlation_id: id })),
+  }),
   'GET /app/api/kernel': z.object({ tenant: record.nullable(), memberships: rows, products: rows, activity: rows, connection: z.literal('CONNECTED') }),
   'POST /app/api/kernel': persisted.extend({ tenantId: id, refreshRequired: z.literal(true).optional() }),
   'GET /app/api/kernel/health': z.object({ status: z.string(), state: z.string(), checks: record, configuration: record }),
