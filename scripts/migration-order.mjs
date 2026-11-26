@@ -51,23 +51,32 @@ export const CLIENT_ROLES = ['authenticated', 'anonymous'];
 
 // Resume only a verified prefix of the fresh-install ledger; never replay upgrade-only
 // migrations or infer application from table counts. Validate ALL rows before writing.
+// A FAILED receipt is not skipped: with a matching sha256 it becomes pending work and is
+// retried by applyMigration, which overwrites the row only after the schema commits. Any
+// changed hash, unknown file, hole or FAILED row followed by APPLIED work still refuses.
 export function resumeOrder(files, ledger) {
   const order = freshOrder(files);
   const expected = order.map(key => files.find(file => file.key === key));
   const known = new Map(expected.map(file => [file.name, file]));
   const applied = new Set();
+  const failed = new Set();
   for (const row of ledger) {
     const file = known.get(row.filename);
-    if (!file || row.status !== 'APPLIED' || row.sha256 !== file.sha256 || applied.has(row.filename)) {
+    if (!file || row.sha256 !== file.sha256 || applied.has(row.filename) || failed.has(row.filename)
+        || (row.status !== 'APPLIED' && row.status !== 'FAILED')) {
       throw new Error(`Unverified migration ledger: ${row.filename}`);
     }
-    applied.add(row.filename);
+    if (row.status === 'APPLIED') applied.add(row.filename);
+    else failed.add(row.filename);
   }
-  if (!applied.size) throw new Error('Resume requires an existing verified ledger');
-  let missing = false;
+  if (!applied.size && !failed.size) throw new Error('Resume requires an existing verified ledger');
+  let tail = false;
   for (const file of expected) {
-    if (!applied.has(file.name)) missing = true;
-    else if (missing) throw new Error(`Ledger is not a fresh-order prefix: ${file.name}`);
+    if (applied.has(file.name)) {
+      if (tail) throw new Error(`Ledger is not a fresh-order prefix: ${file.name}`);
+    } else {
+      tail = true;
+    }
   }
   return expected.filter(file => !applied.has(file.name));
 }

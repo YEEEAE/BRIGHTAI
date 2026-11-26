@@ -20,8 +20,16 @@ test('25 matching receipts resume with 0030–0047 only; complete ledger is a no
   assert.deepEqual(pending.map(f=>f.key),['0030','0031','0032','0033','0034','0035','0036','0037','0038','0039','0040','0041','0042','0043','0044','0045','0046','0047']);
   assert.deepEqual(resumeOrder(files,[...prefix,...pending.map(f=>({filename:f.name,sha256:f.sha256,status:'APPLIED'}))]),[]);
 });
-test('resume refuses changed hashes, failed rows, holes, unknown and empty ledgers', () => {
-  for (const rows of [[],prefix.slice(1),[...prefix,{filename:'unknown',sha256:'x',status:'APPLIED'}],prefix.map((r,i)=>i? r:{...r,sha256:'changed'}),prefix.map((r,i)=>i?r:{...r,status:'FAILED'})]) assert.throws(()=>resumeOrder(files,rows));
+test('resume refuses changed hashes, holes, unknown and empty ledgers', () => {
+  const next = files.find(f=>f.key==='0030');
+  const after = files.find(f=>f.key==='0031');
+  for (const rows of [[],prefix.slice(1),[...prefix,{filename:'unknown',sha256:'x',status:'APPLIED'}],prefix.map((r,i)=>i? r:{...r,sha256:'changed'}),[...prefix,{filename:next.name,sha256:next.sha256,status:'FAILED'},{filename:after.name,sha256:after.sha256,status:'APPLIED'}]]) assert.throws(()=>resumeOrder(files,rows));
+});
+test('resume retries a staged FAILED receipt with its verified hash instead of skipping it', () => {
+  const next = files.find(f=>f.key==='0030');
+  const failed = {filename:next.name,sha256:next.sha256,status:'FAILED'};
+  assert.deepEqual(resumeOrder(files,[...prefix,failed]).map(f=>f.key),['0030','0031','0032','0033','0034','0035','0036','0037','0038','0039','0040','0041','0042','0043','0044','0045','0046','0047']);
+  assert.throws(()=>resumeOrder(files,[...prefix,{...failed,sha256:'changed'}]));
 });
 test('all planned SQL files support an atomic schema and receipt transaction', () => {
   for (const key of new Set([...freshOrder(files),...DELTA_ORDER])) assert(migrationBody(files.find(f=>f.key===key).body).length>0,key);

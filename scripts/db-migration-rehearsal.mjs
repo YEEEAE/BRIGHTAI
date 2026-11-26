@@ -224,6 +224,30 @@ async function posture(database) {
   });
 }
 
+
+// Logical dump/restore roundtrip on the disposable cluster. No Neon, no DSN env var,
+// no customer data. Proves receipts and a synthetic row survive a restore by value.
+async function restoreRoundtrip(sourceDb) {
+  const dumpPath = join(WORK, 'restore.dump');
+  const dump = await run(join(PGBIN, 'pg_dump'), [`host=${SOCK} port=${PORT} dbname=${sourceDb} user=neondb_owner`, '-Fc', '-f', dumpPath]);
+  if (dump.code !== 0) throw new Error(`pg_dump failed: ${dump.err}`);
+  await withClient('postgres', async client => {
+    await client.query('DROP DATABASE IF EXISTS p02_restore WITH (FORCE)');
+    await client.query('CREATE DATABASE p02_restore OWNER neondb_owner');
+  }, 'bootstrap_admin');
+  const restore = await run(join(PGBIN, 'pg_restore'), ['-d', `host=${SOCK} port=${PORT} dbname=p02_restore user=neondb_owner`, '--exit-on-error', dumpPath]);
+  const state = await withClient('p02_restore', async client => {
+    const rows = async sql => (await client.query(sql)).rows;
+    return {
+      tables: (await rows(`SELECT count(*)::int AS n FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
+        WHERE n.nspname='public' AND c.relkind='r' AND c.relname LIKE 'aigas\\_%'`))[0].n,
+      receipts: await rows('SELECT filename, sha256, status FROM ops.aigas_migration_ledger ORDER BY filename'),
+      markerName: (await rows("SELECT name FROM public.aigas_tenants WHERE id='d1000000-0000-4000-8000-000000000001'"))[0]?.name ?? null,
+    };
+  });
+  return { restoreCode: restore.code, restoreErr: restore.err.trim().slice(0, 800), ...state };
+}
+
 async function expectFailure(database, file, label, expectRejected = true) {
   const outcome = await withClient(database, async client => {
     const started = Date.now();
@@ -402,6 +426,56 @@ async function main() {
       (await client.query("SELECT to_regclass('public.atomic_receipt_probe') AS t")).rows[0].t === null});
   });
   evidence.postures.resume = await posture(resume.database);
+
+  // P16: staged-failure resume. A failed attempt records a FAILED receipt with the
+  // correct SHA; the next run must retry that exact file, never skip it or accept a
+  // tampered hash. Synthetic data planted before the failure must survive intact.
+  const failureResume = await phase('failure_resume', [], prefixKeys, files);
+  const markerTenant = 'd1000000-0000-4000-8000-000000000001';
+  await withClient(failureResume.database, async client => {
+    await client.query("INSERT INTO public.aigas_tenants(id,name) VALUES($1,'Synthetic Resume Tenant')", [markerTenant]);
+  });
+  await withClient(failureResume.database, async client => {
+    const next = byKey('0030');
+    await client.query(
+      'INSERT INTO ops.aigas_migration_ledger(filename,sha256,duration_ms,status,detail) VALUES($1,$2,3,\'FAILED\',\'synthetic stage failure\') ON CONFLICT (filename) DO UPDATE SET status=\'FAILED\', detail=EXCLUDED.detail',
+      [next.name, next.sha256]);
+    const before = (await client.query('SELECT filename,sha256,status FROM ops.aigas_migration_ledger ORDER BY filename')).rows;
+    let tamperRefused = false;
+    try {
+      resumeOrder(files, before.map(row => row.filename === next.name ? {...row, sha256: '0'.repeat(64)} : row));
+    } catch { tamperRefused = true; }
+    const pending = resumeOrder(files, before);
+    for (const file of pending) await applyMigration(client, file);
+    const after = (await client.query('SELECT filename,sha256,status FROM ops.aigas_migration_ledger ORDER BY filename')).rows;
+    const preserved = (await client.query('SELECT name FROM public.aigas_tenants WHERE id=$1', [markerTenant])).rows[0]?.name;
+    const receipt = after.find(row => row.filename === next.name);
+    evidence.negative.push({
+      case: 'staged FAILED receipt is retried with its original hash, tamper refused, synthetic data preserved',
+      ok: tamperRefused && pending[0]?.key === '0030' &&
+          pending.length === freshKeys.filter(key => key >= '0030').length &&
+          after.every(row => row.status === 'APPLIED') && receipt?.sha256 === next.sha256 &&
+          preserved === 'Synthetic Resume Tenant',
+      detail: { pending: pending.map(file => file.key), tamperRefused, receipt, preserved },
+    });
+  });
+  evidence.postures.failureResume = await posture(failureResume.database);
+
+  // Logical restore receipt: a dump of the staged-failure database restores by value.
+  const restored = await restoreRoundtrip(failureResume.database);
+  const expectedSha = new Map(files.filter(file => !file.historical).map(file => [file.name, file.sha256]));
+  evidence.negative.push({
+    case: 'logical dump/restore preserves the synthetic row, every hash receipt and the schema',
+    ok: restored.restoreCode === 0 && restored.markerName === 'Synthetic Resume Tenant' &&
+        restored.receipts.length === freshKeys.length &&
+        restored.receipts.every(row => row.status === 'APPLIED' && expectedSha.get(row.filename) === row.sha256) &&
+        restored.tables === evidence.postures.failureResume.tables.length,
+    detail: {
+      restoreCode: restored.restoreCode, restoreErr: restored.restoreErr,
+      receipts: restored.receipts.length, tables: restored.tables,
+      markerName: restored.markerName,
+    },
+  });
   await resetCluster();
   const dropErrors = await withClient('postgres', async client => {
     const errors = [];

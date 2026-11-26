@@ -35,6 +35,7 @@ node scripts/apply-migrations.mjs --mode delta --confirm-live-baseline \
 - دوال start/read(uuid) وprosecdef/search_path مثبت وصفر صلاحية عميل.
 - عزل مؤسستين لكل أنواع الوصول وaigas_client_deny على كل جدول.
 - إثبات backup/restore وrollback بلا فقد بيانات اصطناعية.
+- إن سُجّل إيصال FAILED، يُعاد تشغيل نفس الملف بعد مطابقة sha256؛ لا تخطي ولا تعديل يدوي للإيصال.
 
 ## 5. التراجع
 

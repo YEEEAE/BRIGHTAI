@@ -36,7 +36,7 @@ node scripts/apply-migrations.mjs --mode resume --confirm-existing-ledger \
 ```
 
 ذيل السجل فقط: 0037 0038 0039 0040 0041 0042 0043 0044 0045 0046 0047.
-resumeOrder يرفض الإيصال غير المطابق أو الثقب أو صف FAILED قبل أي كتابة.
+resumeOrder يرفض الإيصال غير المطابق والثقب وأي صف APPLIED بعد إيصال FAILED قبل أي كتابة؛ إيصال FAILED مطابق الـSHA يُعاد تشغيله ولا يُتخطى.
 
 ## 4. التحقق بعد التطبيق
 
@@ -45,6 +45,7 @@ resumeOrder يرفض الإيصال غير المطابق أو الثقب أو �
 - aigas_runtime بلا superuser/bypassrls؛ aigas_app_login LOGIN/NOINHERIT وSET TRUE, INHERIT FALSE وصفر منح جداول مباشرة.
 - دوال aigas_%: prosecdef وproconfig search_path=pg_catalog, public وصفر EXECUTE للعميل.
 - محاولات cross-tenant لكل أنواع الوصول → صفر صفوف و42501/23514.
+- إن سُجّل إيصال FAILED، يُعاد تشغيل نفس الملف بعد مطابقة sha256؛ أي تغيير في الـSHA يوقف الاستئناف.
 - verify-agent-persistence.sql: write test يُرجَع دائمًا.
 
 ## 5. التراجع

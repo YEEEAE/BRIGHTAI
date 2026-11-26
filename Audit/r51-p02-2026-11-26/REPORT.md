@@ -13,7 +13,9 @@
 
 ## الأدلة
 
-- `rehearsal.json`: PG 18.6 — fresh 43/43، delta 44/44، resume 25 ثم 18/18، client_roles_absent 43/43، 54 جدولًا، 112 سياسة، و14/14 negative cases PASS.
+- `rehearsal.json`: PG 18.6 — fresh 43/43 (المرجع السابق 42/42 أصبح 43/43 بإضافة 0047، وليس خط أساس جديد)، delta 44/44، resume 25 ثم 18/18، client_roles_absent 43/43، 54 جدولًا، 112 سياسة، و16/16 negative cases PASS.
+- استئناف بعد فشل مرحلي: إيصال `FAILED` لـ0030 بـSHA الأصلي يُعاد تشغيله ولا يُتخطى؛ تعديل الـSHA يُرفض؛ صف `Synthetic Resume Tenant` المزروع قبل الفشل بقي بعد الاستئناف. `resumeOrder` يسمح بإعادة محاولة الإيصال الفاشل فقط إذا طابق sha256، ويرفض أي ثقب أو صف لاحق بعد فشل.
+- إيصال restore محلي: `pg_dump -Fc` ثم `pg_restore` في قاعدة disposable أخرى أعاد 43 إيصالًا مطابقًا للـSHA و54 جدولًا وصف المؤسسة الاصطناعي، بلا أخطاء restore وبلا فقد بيانات.
 - `verify-agent-persistence.sql` + تنفيذ على `raspy-surf-09603889/br-noisy-frog-bdwi4d6d` عبر معاملة أُرجعت: PASS للكتالوج، التوقيعات، grants/search_path، replay، cross-tenant،budget atomicity، ورفض مرجع يشبه سرًا؛ صفر صفوف متبقية بعد ROLLBACK.
 - `catalog-snapshot.json` / `catalog-diff.json` / `CHECKSUMS.txt`: قياسات حقيقية من الكتالوجات ومجموعات SHA-256 للملفات الـ47.
 - إيصال 0047 في الفرع المعزول: SHA `0d426c6291ea48b0b1c6529f5c30fcc18be58826997814d540e00fbbd3949cf6`، 209ms، APPLIED، 2026-11-26T18:51:37Z. الإيصالات الـ42 السابقة لم تُلمس.

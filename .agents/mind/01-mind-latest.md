@@ -27,6 +27,12 @@
 
 
 ## Ledger (الأحدث أولًا)
+## [2026-11-26] — إثبات استئناف P16 بعد فشل مرحلي وإيصال restore محلي
+- **تم:** `resumeOrder` يعيد محاولة إيصال FAILED بشرط مطابقة sha256 ويرفض العبث/الثقوب؛ حالة فشل مرحلي ودورة dump/restore محليتان أُضيفتا إلى rehearsal.
+- **التحقق:** PASS — unit 8/8؛ rehearsal PG18.6 fresh 43/43 وdelta 44/44 و16/16 negative (منها الاستئناف بعد الفشل وrestore بلا فقد صف اصطناعي)؛ `git diff --check` PASS.
+- **الحالة:** PARTIAL؛ لا كتابة على Staging/Production؛ DB-01/02/03/06 تنتظر P15/P16 plans.
+- **ملفات:** `scripts/migration-order.mjs`, `scripts/db-migration-rehearsal.mjs`, `tests/migration-order.test.mjs`, `Audit/r51-p02-2026-11-26/REPORT.md`.
+
 ## [2026-11-26] — أساس P02 لترحيلات Neon وعزل الوكلاء
 - **تم:** 0047 additive وrunner delta يشمل 0046/0047، إصلاح اعتماد اسم المالك قابلاً للنقل، دور login محدود، وحماية من owner DSN؛ خطتا Staging/Production منفصلتان.
 - **التحقق:** PASS محلي على PG18 (fresh 43/43، delta 44/44، 14/14) وPASS على الفرع المعزول (54 جدولًا/112 سياسة/43 إيصالًا، تحقق وكيل مُرجَع)؛ Staging/Production قراءة فقط.
