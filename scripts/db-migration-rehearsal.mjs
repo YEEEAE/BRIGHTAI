@@ -277,6 +277,44 @@ async function main() {
   const delta = await phase('delta', DELTA_BASELINE, DELTA_ORDER, files);
   evidence.postures.delta = await posture(delta.database);
 
+
+  // Agent persistence is behavioural, not just catalog shape: exercise the
+  // start(uuid)/read(uuid) signatures, idempotent budget reservation, and the
+  // no-secret CHECK constraints. Fixtures use the owner; the test uses the
+  // limited login role with SET ROLE, then rolls back.
+  const agentTenant = 'c1000000-0000-4000-8000-000000000001';
+  const agentActor = 'c2a00000-0000-4000-8000-000000000001';
+  await withClient(delta.database, async client => {
+    await client.query('INSERT INTO neon_auth."user"(id,name,email) VALUES($1,$2,$3) ON CONFLICT DO NOTHING', [agentActor,'Synthetic Agent','agent@example.test']);
+    await client.query("INSERT INTO public.aigas_tenants(id,name) VALUES($1,'Synthetic Agent Tenant') ON CONFLICT DO NOTHING", [agentTenant]);
+    await client.query("INSERT INTO public.aigas_memberships(tenant_id,user_id,role) VALUES($1,$2,'OWNER') ON CONFLICT DO NOTHING", [agentTenant,agentActor]);
+  });
+  evidence.negative.push(await withClient(delta.database, async client => {
+    const request = 'c3000000-0000-4000-8000-000000000001';
+    const budget = 'c5000000-0000-4000-8000-000000000001';
+    try {
+      await client.query('BEGIN');
+      await client.query('SET LOCAL ROLE aigas_runtime');
+      await client.query("SELECT set_config('aigas.tenant_id',$1,true) AS tenant_id, set_config('aigas.user_id',$2,true) AS user_id", [agentTenant,agentActor]);
+      const r1 = (await client.query('SELECT public.aigas_agent_start($1) AS id', [request])).rows[0].id;
+      const r2 = (await client.query('SELECT public.aigas_agent_start($1) AS id', [request])).rows[0].id;
+      const b1 = (await client.query('SELECT public.aigas_agent_reserve_budget($1,$2,$3,$4,$5) AS id', [agentTenant,r1,'firewall',7,budget])).rows[0].id;
+      const b2 = (await client.query('SELECT public.aigas_agent_reserve_budget($1,$2,$3,$4,$5) AS id', [agentTenant,r1,'firewall',7,budget])).rows[0].id;
+      const payload = (await client.query('SELECT public.aigas_agent_read($1) AS payload', [r1])).rows[0].payload;
+      let rejected = false;
+      try {
+        await client.query("INSERT INTO public.aigas_agent_steps(id,tenant_id,run_id,step_no,kind,status,summary,input_ref,policy_version,idempotency_key) VALUES(gen_random_uuid(),$1,$2,2,'PLAN','PENDING','short step','api_key=hidden-secret','p2','bad-ref')", [agentTenant,r1]);
+      } catch (error) { rejected = true; }
+      await client.query('ROLLBACK');
+      return { case: 'agent start/read/budget/no-secret checks behave atomically on delta via limited login',
+        ok: r1 === r2 && b1 === b2 && rejected === true && payload?.status === 'QUEUED',
+        detail: { run: r1, replay: r1 === r2, budgetReplay: b1 === b2, rejected, payload } };
+    } catch (error) {
+      await client.query('ROLLBACK').catch(() => {});
+      return { case: 'agent start/read/budget/no-secret checks behave atomically on delta via limited login', ok: false, detail: error.message };
+    }
+  }, 'aigas_app_login'));
+
   evidence.negative.push({ case: 'fresh and delta have identical final security posture',
     ok: JSON.stringify(evidence.postures.fresh) === JSON.stringify(evidence.postures.delta) });
 

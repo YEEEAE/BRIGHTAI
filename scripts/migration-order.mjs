@@ -14,9 +14,15 @@ export const DELTA_BASELINE = [
   '0008', '0009', '0010', '0015',
 ];
 
+// Verified against the inspected production branch on 2026-11-26: exactly the
+// 31 tables in LIVE_BASELINE_TABLES, no ops ledger, no aigas_runtime. 0046 is
+// part of the source closure and must be replayed in delta; 0047 is the additive
+// agent-persistence closure. 0011/0012/0013/0019 remain upgrade-only and are
+// never replayed on a fresh install.
 export const DELTA_ORDER = [
   '0013', '0014', '0016', '0017', '0018', '0020', '0021', '0022', '0023',
   '0025', '0026', '0027', '0028', '0029', '0024', '0030', '0031', '0032', '0033', '0034', '0035', '0036', '0037', '0038', '0039', '0040', '0041', '0042', '0043', '0044', '0045',
+  '0046', '0047',
 ];
 
 export function freshOrder(files) {

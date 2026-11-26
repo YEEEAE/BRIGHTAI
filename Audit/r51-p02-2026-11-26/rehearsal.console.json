@@ -1,0 +1,174 @@
+{
+  "result": "PASS",
+  "serverVersion": "18.6 (Homebrew)",
+  "fresh": [
+    "0001_aigas_kernel.sql:APPLIED",
+    "0002_aigas_firewall.sql:APPLIED",
+    "0003_aigas_ledger.sql:APPLIED",
+    "0004_aigas_human_gate.sql:APPLIED",
+    "0005_aigas_risk_engine.sql:APPLIED",
+    "0006_aigas_kernel_administration.sql:APPLIED",
+    "0007_aigas_human_gate_enforcement.sql:APPLIED",
+    "0008_aigas_risk_engine_lifecycle.sql:APPLIED",
+    "0009_aigas_secure_chat.sql:APPLIED",
+    "0010_aigas_kernel_policy_hierarchy.sql:APPLIED",
+    "0014_aigas_human_gate_cancellation_delegation_and_grant.sql:APPLIED",
+    "0015_aigas_risk_engine_asset_context_residual_risk.sql:APPLIED",
+    "0016_aigas_sc_user_token_quota.sql:APPLIED",
+    "0017_aigas_kernel_audit_context.sql:APPLIED",
+    "0018_aigas_data_api_grant_hardening.sql:APPLIED",
+    "0020_aigas_kernel_policy_review_requirements.sql:APPLIED",
+    "0021_aigas_risk_engine_acceptance_guard.sql:APPLIED",
+    "0022_aigas_reference_scope_guard.sql:APPLIED",
+    "0023_aigas_enterprise_trial_lifecycle.sql:APPLIED",
+    "0024_aigas_catalog_parity_repair.sql:APPLIED",
+    "0025_aigas_tenant_isolation_closure.sql:APPLIED",
+    "0026_aigas_risk_engine_residual_and_acceptance_policy.sql:APPLIED",
+    "0027_aigas_sc_content_participant_only.sql:APPLIED",
+    "0028_aigas_runtime_membership_lock.sql:APPLIED",
+    "0029_aigas_ledger_required_reference.sql:APPLIED",
+    "0030_aigas_trial_server_cycle.sql:APPLIED",
+    "0031_aigas_risk_treatment_runtime_lock.sql:APPLIED",
+    "0032_aigas_trial_trigger_execute_lock.sql:APPLIED",
+    "0033_aigas_exploration.sql:APPLIED",
+    "0034_aigas_self_service_trial.sql:APPLIED",
+    "0035_aigas_tenant_isolation_closure_v2.sql:APPLIED",
+    "0036_aigas_runtime_workspace_bootstrap.sql:APPLIED",
+    "0037_aigas_hg_firewall_escalation_op.sql:APPLIED",
+    "0038_aigas_runtime_invitation_flow.sql:APPLIED",
+    "0039_aigas_hg_risk_assessment_review.sql:APPLIED",
+    "0040_aigas_self_service_trial_lifecycle.sql:APPLIED",
+    "0041_aigas_operator_authorization.sql:APPLIED",
+    "0042_aigas_workspace_idempotency.sql:APPLIED",
+    "0043_aigas_risk_assist_attempts.sql:APPLIED",
+    "0044_aigas_pilot_usage_report.sql:APPLIED",
+    "0045_aigas_workspace_sso_requirement.sql:APPLIED",
+    "0046_aigas_firewall_matcher_evidence.sql:APPLIED",
+    "0047_aigas_agent_runtime_persistence.sql:APPLIED"
+  ],
+  "delta": [
+    "0001_aigas_kernel.sql:APPLIED",
+    "0002_aigas_firewall.sql:APPLIED",
+    "0003_aigas_ledger.sql@4e5f9f49^:APPLIED",
+    "0004_aigas_human_gate.sql:APPLIED",
+    "0005_aigas_risk_engine.sql:APPLIED",
+    "0006_aigas_kernel_administration.sql:APPLIED",
+    "0007_aigas_human_gate_enforcement.sql:APPLIED",
+    "0008_aigas_risk_engine_lifecycle.sql:APPLIED",
+    "0009_aigas_secure_chat.sql:APPLIED",
+    "0010_aigas_kernel_policy_hierarchy.sql:APPLIED",
+    "0015_aigas_risk_engine_asset_context_residual_risk.sql:APPLIED",
+    "0013_aigas_ledger_five_state_and_chain_guard.sql:APPLIED",
+    "0014_aigas_human_gate_cancellation_delegation_and_grant.sql:APPLIED",
+    "0016_aigas_sc_user_token_quota.sql:APPLIED",
+    "0017_aigas_kernel_audit_context.sql:APPLIED",
+    "0018_aigas_data_api_grant_hardening.sql:APPLIED",
+    "0020_aigas_kernel_policy_review_requirements.sql:APPLIED",
+    "0021_aigas_risk_engine_acceptance_guard.sql:APPLIED",
+    "0022_aigas_reference_scope_guard.sql:APPLIED",
+    "0023_aigas_enterprise_trial_lifecycle.sql:APPLIED",
+    "0025_aigas_tenant_isolation_closure.sql:APPLIED",
+    "0026_aigas_risk_engine_residual_and_acceptance_policy.sql:APPLIED",
+    "0027_aigas_sc_content_participant_only.sql:APPLIED",
+    "0028_aigas_runtime_membership_lock.sql:APPLIED",
+    "0029_aigas_ledger_required_reference.sql:APPLIED",
+    "0024_aigas_catalog_parity_repair.sql:APPLIED",
+    "0030_aigas_trial_server_cycle.sql:APPLIED",
+    "0031_aigas_risk_treatment_runtime_lock.sql:APPLIED",
+    "0032_aigas_trial_trigger_execute_lock.sql:APPLIED",
+    "0033_aigas_exploration.sql:APPLIED",
+    "0034_aigas_self_service_trial.sql:APPLIED",
+    "0035_aigas_tenant_isolation_closure_v2.sql:APPLIED",
+    "0036_aigas_runtime_workspace_bootstrap.sql:APPLIED",
+    "0037_aigas_hg_firewall_escalation_op.sql:APPLIED",
+    "0038_aigas_runtime_invitation_flow.sql:APPLIED",
+    "0039_aigas_hg_risk_assessment_review.sql:APPLIED",
+    "0040_aigas_self_service_trial_lifecycle.sql:APPLIED",
+    "0041_aigas_operator_authorization.sql:APPLIED",
+    "0042_aigas_workspace_idempotency.sql:APPLIED",
+    "0043_aigas_risk_assist_attempts.sql:APPLIED",
+    "0044_aigas_pilot_usage_report.sql:APPLIED",
+    "0045_aigas_workspace_sso_requirement.sql:APPLIED",
+    "0046_aigas_firewall_matcher_evidence.sql:APPLIED",
+    "0047_aigas_agent_runtime_persistence.sql:APPLIED"
+  ],
+  "negative": [
+    {
+      "case": "0027 refuses to run before 0025",
+      "ok": true,
+      "rejected": true
+    },
+    {
+      "case": "0019 refuses to run after 0025",
+      "ok": true,
+      "rejected": true
+    },
+    {
+      "case": "0018 refuses to run after 0025",
+      "ok": true,
+      "rejected": true
+    },
+    {
+      "case": "0016 replay is refused (CREATE FUNCTION is not idempotent)",
+      "ok": true,
+      "rejected": true
+    },
+    {
+      "case": "0017 replay is refused (ADD COLUMN is not idempotent)",
+      "ok": true,
+      "rejected": true
+    },
+    {
+      "case": "0029 replay is refused (constraint already exists)",
+      "ok": true,
+      "rejected": true
+    },
+    {
+      "case": "0013 replay is accepted (idempotent DROP CONSTRAINT IF EXISTS)",
+      "ok": true,
+      "rejected": false
+    },
+    {
+      "case": "agent start/read/budget/no-secret checks behave atomically on delta via limited login",
+      "ok": true
+    },
+    {
+      "case": "fresh and delta have identical final security posture",
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "case": "aigas_sc_usage_window_v2 is not executable by authenticated/anonymous after 0025",
+      "ok": true,
+      "rejected": true
+    },
+    {
+      "case": "resume applies the current suffix, preserves all 25 receipts, and rerun is empty",
+      "ok": true
+    },
+    {
+      "case": "receipt failure rolls schema back",
+      "ok": true
+    },
+    {
+      "case": "0018/0025 complete a fresh install with no authenticated/anonymous roles",
+      "ok": true,
+      "rejected": true
+    }
+  ],
+  "findings": [
+    {
+      "id": "SECDEF-0016-ACL",
+      "severity": "none",
+      "status": "CLOSED",
+      "detail": "0016 revokes EXECUTE from PUBLIC, authenticated and anonymous, so the SECURITY DEFINER aggregate is not reachable by a client role even before 0018/0025 runs.",
+      "evidence": {
+        "authenticated_can_execute": false,
+        "prosecdef": true,
+        "owner": "neondb_owner"
+      }
+    }
+  ]
+}

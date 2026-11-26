@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-26 P02 أساس Neon/RLS: 0047 أضيفت (7 جداول وكيل + RLS/FORCE + ACL + expiry + start/read(uuid))؛ DELTA_ORDER صار يشمل 0046/0047 بعد تحقق 31 جدولًا في prod؛ إصلاح owner-name في 0047 لا في 0018 (checksum مثبت)؛ دور aigas_app_login بـSET TRUE/INHERIT FALSE بلا منح مباشر؛ منع owner DSN في kernel/db.mjs. PG18 rehearsal: fresh 43/43 وdelta 44/44 و14/14 negative PASS؛ الفرع المعزول 54 جدولًا/112 سياسة/43 إيصالًا وتحقق وكيل PASS برجوع كامل؛ Staging 43 وProduction 31 لم تُلمس؛ خطتا delta جاهزتان؛ P15 بوابة الإنتاج. `Audit/r51-p02-2026-11-26/REPORT.md`.
 - 2026-11-26 P01 أساس Node SSR: Blueprint يعيد استخدام brightai-r51-audit (free/ohio) ويُبقي /readyz/ فحصَ منصة و/healthz/ liveness؛ preview noindex بلا تغيير canonical؛ npm ci/build PASS و33/33 فحوص محلية و16/16 اختبارات؛ المرشح الحي ما زال SHA 5387cdf وRender بلا workspace محدد، بلا نشر. Audit/R51/P01-local/REPORT.json.
 - 2026-11-26 NO-GO بوابة إطلاق مستقلة 13 على SHA `961836f8`: source 36.5% / local 54% / staging 10% / live 2.5%؛ بناء وSEO16 وhealth15 وAPI177 وauth/governance/design PASS، DB 16/18، conversion CTA وSecure Chat E2E FAIL؛ Neon prod بلا `aigas_runtime` و2/31 سياسات؛ MagicPath 50/50 وRender unauthorized. R4 أثبت تطابق R3.1/78 معيارًا و13 وزنًا؛ لا إعادة قياس عند HEAD `8e879ba…`؛ revision MagicPath غير مطابق، البصري BLOCKED؛ `Audit/outhers/release-gate-13-2026-11-26/REPORT.md`, `Audit/BRIGHTAI-R4-FORENSIC-AUDIT-MAGICPATH.md`.
 - 2026-11-25 PARTIAL SEO/GEO/AEO: 315/315 عناوين الإنتاج GET200 وcanonical ذاتي؛ 251 خارج مسار الرئيسية و152 alias بلا 301؛ محليًا 67 عنوانًا و3 مراكز و5 رحلات منتج، Node16/16 وChrome FAQ76/76؛ النشر وCWV الميداني NOT VERIFIED؛ `Audit/seo-geo-2026-11-25/REPORT.md`.
@@ -26,6 +27,12 @@
 
 
 ## Ledger (الأحدث أولًا)
+## [2026-11-26] — أساس P02 لترحيلات Neon وعزل الوكلاء
+- **تم:** 0047 additive وrunner delta يشمل 0046/0047، إصلاح اعتماد اسم المالك قابلاً للنقل، دور login محدود، وحماية من owner DSN؛ خطتا Staging/Production منفصلتان.
+- **التحقق:** PASS محلي على PG18 (fresh 43/43، delta 44/44، 14/14) وPASS على الفرع المعزول (54 جدولًا/112 سياسة/43 إيصالًا، تحقق وكيل مُرجَع)؛ Staging/Production قراءة فقط.
+- **الحالة:** PARTIAL؛ DB-01/02/03/06 لا تزال FAIL_VERIFIED في البيئات المستهدفة حتى P16/P34/P15.
+- **ملفات:** `migrations/0047_aigas_agent_runtime_persistence.sql`, `scripts/migration-order.mjs`, `Audit/r51-p02-2026-11-26/REPORT.md`.
+- **مفتوح:** تطبيق delta على Staging/Production بعد الموافقة وبوابة P15؛ إغلاق DB-05 في P20.
 ## [2026-11-26] — أساس P01 لمرشح Node SSR
 - **تم:** توحيد Blueprint مع الخدمة القائمة brightai-r51-audit، فصل liveness/readiness، حماية preview من الفهرسة بلا لمس canonical، والإبقاء على static origin للتراجع.
 - **التحقق:** npm ci/build PASS؛ 33/33 فحوص HTTP محلية و16/16 اختبارات صحية؛ live GETs مرجعية على SHA 5387cdf؛ Render workspace ورفع المرشح BLOCKED.

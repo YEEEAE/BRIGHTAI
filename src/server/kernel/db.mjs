@@ -25,6 +25,16 @@ async function activateRuntimeRole(client) {
   const role = env('AIGAS_DB_RUNTIME_ROLE');
   if (!role) return;
   if (role !== 'aigas_runtime') throw new KernelError(503, 'RUNTIME_ROLE_INVALID', 'إعداد دور التشغيل غير صالح.');
+  // The application must never authenticate as the table owner. session_user is
+  // stable across SET ROLE, so this rejects an owner DSN before any query runs.
+  const login = (await client.query(`SELECT session_user AS login, EXISTS (
+    SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
+    WHERE n.nspname = 'public' AND left(c.relname, 6) = 'aigas_'
+      AND c.relkind IN ('r', 'p') AND pg_get_userbyid(c.relowner) = session_user
+  ) AS owns_tables`)).rows[0];
+  if (login?.owns_tables === true) {
+    throw new KernelError(503, 'OWNER_DSN_REFUSED', 'اتصال قاعدة البيانات بمالك الجداول ممنوع؛ استخدم دور تسجيل الدخول المحدود.', 'owner dsn');
+  }
   await client.query('SET LOCAL ROLE aigas_runtime');
   const row = (await client.query("SELECT current_user AS role, rolsuper, rolbypassrls FROM pg_roles WHERE rolname=current_user")).rows[0];
   if (row?.role !== 'aigas_runtime' || row.rolsuper !== false || row.rolbypassrls !== false) {

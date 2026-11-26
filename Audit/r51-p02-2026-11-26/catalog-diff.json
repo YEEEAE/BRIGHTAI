@@ -1,0 +1,62 @@
+{
+  "staging": {
+    "missing_tables": [
+      "aigas_agent_runs",
+      "aigas_agent_steps",
+      "aigas_budget_reservations",
+      "aigas_checkpoints",
+      "aigas_command_idempotency",
+      "aigas_outbox",
+      "aigas_risk_assist_attempts",
+      "aigas_tenant_memory",
+      "aigas_tool_invocations",
+      "aigas_workspace_idempotency",
+      "aigas_workspace_sso_requirements"
+    ],
+    "extra_tables": [],
+    "policies_delta": 19,
+    "missing_fns": [
+      "aigas_agent_read(uuid)",
+      "aigas_agent_start(uuid)",
+      "aigas_read_self_service_trial(uuid)",
+      "aigas_start_self_service_trial(uuid)"
+    ],
+    "receipts_delta": 11
+  },
+  "production": {
+    "missing_tables": [
+      "aigas_agent_runs",
+      "aigas_agent_steps",
+      "aigas_budget_reservations",
+      "aigas_checkpoints",
+      "aigas_command_idempotency",
+      "aigas_exploration_grants",
+      "aigas_hg_delegations",
+      "aigas_hg_grants",
+      "aigas_outbox",
+      "aigas_release_readiness",
+      "aigas_risk_assist_attempts",
+      "aigas_self_service_trials",
+      "aigas_tenant_memory",
+      "aigas_tool_invocations",
+      "aigas_trial_entitlements",
+      "aigas_trial_events",
+      "aigas_trial_operators",
+      "aigas_trial_quota_limits",
+      "aigas_trial_quota_reservations",
+      "aigas_trial_quota_usage",
+      "aigas_trial_requests",
+      "aigas_workspace_idempotency",
+      "aigas_workspace_sso_requirements"
+    ],
+    "extra_tables": [],
+    "policies_delta": 110,
+    "missing_fns": [
+      "aigas_agent_read(uuid)",
+      "aigas_agent_start(uuid)",
+      "aigas_read_self_service_trial(uuid)",
+      "aigas_start_self_service_trial(uuid)"
+    ],
+    "receipts_delta": 43
+  }
+}
