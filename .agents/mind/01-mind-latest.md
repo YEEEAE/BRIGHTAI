@@ -20,7 +20,16 @@
 - 2026-11-24 VERIFIED LOCAL تكامل المنتجات: قفل حوكمة للمؤسسة تحت RLS، Kernel GUARD مغلق عند الفشل، مراجعة HIGH وتصعيد Firewall بلا إرسال، وتراجع ذري للأدلة الإلزامية؛ PostgreSQL18 والتزامن وChrome LAB/GUARD PASS؛ Kernel REQUEST_APPROVAL العام يحجب واستئناف المزود غير مهيأ؛ `docs/PRODUCT-INTEGRATION-MATRIX.md`.
 
 
+- 2026-11-26 PARTIAL Analytics/SEO: GA4 مقصور على brightai.live/www بلا وسم مكرر وتجزئة CSP محدَّثة بلا توسيع؛ README يبدأ بـCurrent Architecture وأرشيف تاريخي واضح؛ build PASS و67 صفحة واختبارات 65/66 (فشل قديم في ga4-attribution:30)؛ Windsor/GSC/OpenSEO/Firecrawl/Linear غير متاحة هنا، وstream مخصص وموافقة أحداث MagicPath والنشر NOT VERIFIED؛ `Audit/analytics-seo-2026-11-26/REPORT.md`.
+
 ## Ledger (الأحدث أولًا)
+## [2026-11-26] — analytics/SEO وتوثيق
+- **تم:** عزل GA4 عن dev host بلا وسم ثانٍ، تحديث تجزئة CSP دون توسيع السياسة، وREADME بمعمارية حالية وأرشيف واضح.
+- **التحقق:** build PASS؛ 67 صفحة؛ 65/66 اختبار؛ حارس المضيف localhost/staging OFF وbrightai.live ON.
+- **الحالة:** PARTIAL؛ أدوات Windsor/GSC/OpenSEO/Firecrawl/Linear غائبة، وstream وموافقة MagicPath والنشر NOT VERIFIED.
+- **ملفات:** `src/components/GoogleAnalytics.astro`, `src/server/observability/security-policy.mjs`, `README.md`.
+- **مفتوح:** فشل قديم في `tests/ga4-attribution.test.mjs:30`؛ لا حذف لملفات اللاحقة ` 2`.
+
 
 ## [2026-11-26] — تنفيذ shell محلي لـMagicPath P10
 - **تم:** shell RTL responsive ومؤشرات جلسة اصطناعية في مختبر الحوكمة؛ بلا ربط enterprise API.

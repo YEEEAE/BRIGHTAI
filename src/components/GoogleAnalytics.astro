@@ -1,7 +1,23 @@
+---
+// Public GA4 is production-only. Local, staging and every other host omit the
+// tag entirely, so their sessions never enter marketing reports. No second tag
+// is added: a dedicated dev stream needs an owner-approved measurement ID.
+const analyticsHosts = new Set(['brightai.live', 'www.brightai.live']);
+const analyticsEnabled = analyticsHosts.has(Astro.url.hostname.toLowerCase());
+---
 <!-- Site-wide GA4: page metadata only; never attach form or demo content. -->
+    {analyticsEnabled && <>
     <script is:inline>
       (function () {
       if (window.__brightaiGa4Initialized) return;
+      // Production-only reporting: a dev host must never enter marketing data.
+      // The disable flag is set before gtag.js loads; no second tag is added.
+      let analyticsHost = '';
+      try { analyticsHost = new URL(window.location.href).hostname.toLowerCase(); } catch { analyticsHost = ''; }
+      if (!['brightai.live', 'www.brightai.live'].includes(analyticsHost)) {
+        window['ga-disable-' + 'G-9LMB4PGTWJ'] = true;
+        return;
+      }
       window.__brightaiGa4Initialized = true;
       window.dataLayer = window.dataLayer || [];
       function gtag(){window.dataLayer.push(arguments);}
@@ -65,3 +81,4 @@
     </script>
     <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-9LMB4PGTWJ"></script>
     <script is:inline type="module" src="/measurement.mjs"></script>
+    </>}

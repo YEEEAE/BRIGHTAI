@@ -1,5 +1,24 @@
 # BRIGHT AI
 
+## Current Architecture — الوضع المعماري الحالي (موثّق 2026-11-26)
+
+- مصدر النشر: Astro 7.4.13 مع @astrojs/node 11.1.14 على Node 22.23.5، بإخراج SSR. بناء محلي ناجح ينتج 67 صفحة قابلة للفهرسة.
+- النطاق العام والـcanonical وخريطة XML: https://brightai.live؛ robots.txt يشير إلى /sitemap-index.xml؛ فحص البناء يفرض canonical ذاتيًا ويرفض الصفحات الخاصة من الفهرسة.
+- واجهات AIGAS تحت /app/api/* ومساحة العمل تحت /app/*؛ المختبر العام /demo/governance/ بياناته اصطناعية محليًا، وربط المؤسسات في P10 ما زال PARTIAL.
+- قياس عام واحد: وسم GA4 واحد G-9LMB4PGTWJ على brightai.live وwww فقط؛ localhost وstaging يعطّلان الوسم عبر ga-disable قبل تحميل المكتبة، بلا وسم ثانٍ وبلا توسيع CSP.
+- أحداث التفاعل تمر عبر public/measurement.mjs وقائمة السماح في public/measurement-core.mjs؛ لا نص حر ولا رابط ولا بريد ولا معرّف خاص.
+- PostHog وSentry مغلقان افتراضيًا ولا يُفتحان إلا بموافقة وبيئة وإصدار ووجهة معتمدة؛ لا SDK بائع محمّل في المتصفح.
+- CSP مطبّق في middleware وخادم Node؛ صفحة Secure Chat معزولة بـ noindex,nofollow وسياسة صارمة دون متتبعات.
+- الأدلة والتقارير في Audit/؛ حالة النشر والبيانات الحية خارج نطاق هذه المراجعة ما زالت NOT VERIFIED.
+
+## Protected surfaces — أسطح محمية
+
+- Audit/** أدلة مؤرخة؛ لا تُحذف ولا تُعاد كتابتها لإجمال الادعاءات.
+- /app/secure-chat/ سطح سري: بلا GA4 وبلا MonitoringGate، وscript-src وconnect-src محصوران في self.
+- لا وسم GA4 مكرر، ولا تخفيف لسياسة CSP من أجل القياس.
+
+## Historical archive — 2026-07-18 operating notes (HISTORICAL)
+
 > **تنبيه حالة (2026-11-08):** الوصف التشغيلي أدناه مؤرخ في 2026-07-18 وهو HISTORICAL، وليس جردًا للمصدر الحالي. أسماء Groq/Gemini و`/api/ai/chat/` وRedis/SSE لا تثبت مزودًا أو route أو إعدادًا عاملًا الآن؛ راجع `Audit/outhers/RELEASE-TRACEABILITY-BASELINE-2026-11-08.md` للتصنيف الحالي. المصدر الحالي يملك واجهات AIGAS تحت `/app/api/*`، لكن صفحات `/app/*` وHealth API أعادت 404 وقت الفحص، واعتمادات النماذج والمزودين فارغة.
 
 AI Governance and Safety (AIGAS)
@@ -94,6 +113,8 @@ https://brightai.live
   ربطنا `brightai.live` على Cloudflare كـ DNS/CDN وحماية قدّام Render، بدل الاعتماد على Hostinger للـ DNS.
 فعّلنا Client-side Security، وضبطنا الكاش بحيث `/api/*` بدون كاش وملفات `/_astro/*` و`/assets/*` بكاش طويل.
 وضبطنا Rate Limiting على `/api/ai/chat` لحماية استهلاك الـ AI من السبام والطلبات الزايدة.
+
+## Current operating checks — فحوص تشغيلية حالية
 
 ## اختبار المصادقة محليًا
 

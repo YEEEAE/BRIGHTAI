@@ -4,7 +4,7 @@ const GA_COLLECTION = [
   'https://*.analytics.google.com',
   'https://*.googletagmanager.com',
 ];
-const GA_INIT = "'sha256-kbWqACrSLys44xLn8eH8N6slPUGW61wmDsUE4JbnwE0='";
+const GA_INIT = "'sha256-rXFghexfQr0YH3VpkNUqc0owijMnd5VBvAIUyE0QhrE='";
 const EDGE_GA_INIT = "'sha256-/ahxh2pzUcFi1E9lm6ltoUB1mNeCC4QSX0TWwNtcszc='";
 const JS_CLASS = "'sha256-/x7W7R75k8Roq0WaVRQX9blP4OufE5xbAdzklGxsgpw='";
 const UNAVAILABLE_STYLE = "'sha256-BdNspLynP6vZMI4tacHjKIg8mS2Jnj3CAcxWk92zRKc='";

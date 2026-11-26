@@ -13,6 +13,14 @@ const PAGE = `<!doctype html>
 <script is:inline>
       (function () {
       if (window.__brightaiGa4Initialized) return;
+      // Production-only reporting: a dev host must never enter marketing data.
+      // The disable flag is set before gtag.js loads; no second tag is added.
+      let analyticsHost = '';
+      try { analyticsHost = new URL(window.location.href).hostname.toLowerCase(); } catch { analyticsHost = ''; }
+      if (!['brightai.live', 'www.brightai.live'].includes(analyticsHost)) {
+        window['ga-disable-' + 'G-9LMB4PGTWJ'] = true;
+        return;
+      }
       window.__brightaiGa4Initialized = true;
       window.dataLayer = window.dataLayer || [];
       function gtag(){window.dataLayer.push(arguments);}
