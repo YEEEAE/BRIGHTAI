@@ -1,0 +1,224 @@
+{
+  "schema_version": 1,
+  "task": "Prompt 13 independent MagicPath re-measurement",
+  "checked_at": "2026-11-26",
+  "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+  "reference": {
+    "project_id": "476406002938429440",
+    "component_id": "476406049398726656",
+    "revision_pinned": "476467892385353728",
+    "mcp_status": "BLOCKED_BY_COST_OR_SCOPE",
+    "reason": "MagicPath MCP rejected get_api_quota and get_project with EXTERNAL_AGENT_API_QUOTA_EXCEEDED 50/50; no reference screenshot or code context was obtainable in this pass."
+  },
+  "status_legend": [
+    "PASS_VERIFIED",
+    "FAILED",
+    "BLOCKED",
+    "NOT_VERIFIED"
+  ],
+  "acceptance": {
+    "public_synthetic_functional": {
+      "pass": 7,
+      "denominator": 12,
+      "percent": 58.3
+    },
+    "enterprise_authenticated_functional": {
+      "pass": 0,
+      "denominator": 12,
+      "percent": 0
+    },
+    "public_visual_parity": {
+      "pass": 0,
+      "denominator": 12,
+      "percent": 0,
+      "blocked": 12
+    },
+    "enterprise_visual_parity": {
+      "pass": 0,
+      "denominator": 12,
+      "percent": 0,
+      "blocked": 12
+    },
+    "note": "Re-measured at current SHA from P10 evidence plus this pass. Secure Chat is FAILED locally, not merely NOT_VERIFIED."
+  },
+  "screens": [
+    {
+      "id": "overview",
+      "public_route": "/demo/governance/#overview",
+      "enterprise_route": "/app/api/kernel (GET)",
+      "public_functional": "PASS_VERIFIED",
+      "enterprise_functional": "NOT_VERIFIED",
+      "visual_parity": "BLOCKED",
+      "evidence_ref": [
+        "E06",
+        "E07",
+        "E13"
+      ],
+      "limitation": "Carried from P10 candidate evidence; not re-executed per screen in this pass."
+    },
+    {
+      "id": "kernel",
+      "public_route": "/demo/governance/",
+      "enterprise_route": "/app/api/kernel (GET, POST)",
+      "public_functional": "NOT_VERIFIED",
+      "enterprise_functional": "NOT_VERIFIED",
+      "visual_parity": "BLOCKED",
+      "evidence_ref": [
+        "E06",
+        "E07",
+        "E13"
+      ],
+      "limitation": "Carried from P10 candidate evidence; not re-executed per screen in this pass."
+    },
+    {
+      "id": "firewall",
+      "public_route": "/demo/governance/#firewall; /demo/firewall/",
+      "enterprise_route": "/app/api/firewall/evaluate; /app/api/firewall/guarded-executions; /app/api/firewall/rules",
+      "public_functional": "PASS_VERIFIED",
+      "enterprise_functional": "NOT_VERIFIED",
+      "visual_parity": "BLOCKED",
+      "evidence_ref": [
+        "E06",
+        "E07",
+        "E13"
+      ],
+      "limitation": "Carried from P10 candidate evidence; not re-executed per screen in this pass."
+    },
+    {
+      "id": "risk-engine",
+      "public_route": "/demo/governance/#risk-engine; /demo/risk-engine/",
+      "enterprise_route": "/app/api/risk-engine/assets and child routes",
+      "public_functional": "PASS_VERIFIED",
+      "enterprise_functional": "NOT_VERIFIED",
+      "visual_parity": "BLOCKED",
+      "evidence_ref": [
+        "E06",
+        "E07",
+        "E13"
+      ],
+      "limitation": "Carried from P10 candidate evidence; not re-executed per screen in this pass."
+    },
+    {
+      "id": "human-gate",
+      "public_route": "/demo/governance/#human-gate; /demo/human-gate/",
+      "enterprise_route": "/app/api/human-gate/requests and child routes",
+      "public_functional": "PASS_VERIFIED",
+      "enterprise_functional": "NOT_VERIFIED",
+      "visual_parity": "BLOCKED",
+      "evidence_ref": [
+        "E06",
+        "E07",
+        "E13"
+      ],
+      "limitation": "Carried from P10 candidate evidence; not re-executed per screen in this pass."
+    },
+    {
+      "id": "ledger",
+      "public_route": "/demo/governance/#ledger; /demo/ledger/",
+      "enterprise_route": "/app/api/ledger/events and child routes",
+      "public_functional": "PASS_VERIFIED",
+      "enterprise_functional": "NOT_VERIFIED",
+      "visual_parity": "BLOCKED",
+      "evidence_ref": [
+        "E06",
+        "E07",
+        "E13"
+      ],
+      "limitation": "Carried from P10 candidate evidence; not re-executed per screen in this pass."
+    },
+    {
+      "id": "secure-chat",
+      "public_route": "/demo/secure-chat/",
+      "enterprise_route": "/app/api/secure-chat/models; /app/api/secure-chat/messages",
+      "public_functional": "FAILED",
+      "enterprise_functional": "NOT_VERIFIED",
+      "visual_parity": "BLOCKED",
+      "evidence_ref": [
+        "E04",
+        "E13"
+      ],
+      "limitation": "E04 secure-chat-security E2E assertion FAIL and e2e-secure-chat-retry.log CSP assertion FAIL; 4/4 R3 product success does not prove Secure Chat operation."
+    },
+    {
+      "id": "registry",
+      "public_route": "/demo/governance/#inventory",
+      "enterprise_route": "/app/api/risk-engine/assets and revisions",
+      "public_functional": "PASS_VERIFIED",
+      "enterprise_functional": "NOT_VERIFIED",
+      "visual_parity": "BLOCKED",
+      "evidence_ref": [
+        "E06",
+        "E07",
+        "E13"
+      ],
+      "limitation": "Carried from P10 candidate evidence; not re-executed per screen in this pass."
+    },
+    {
+      "id": "policy-packs",
+      "public_route": "/demo/governance/#policies",
+      "enterprise_route": "/app/api/kernel/policies; /app/api/firewall/rules",
+      "public_functional": "PASS_VERIFIED",
+      "enterprise_functional": "NOT_VERIFIED",
+      "visual_parity": "BLOCKED",
+      "evidence_ref": [
+        "E06",
+        "E07",
+        "E13"
+      ],
+      "limitation": "Carried from P10 candidate evidence; not re-executed per screen in this pass."
+    },
+    {
+      "id": "developer-workbench",
+      "public_route": null,
+      "enterprise_route": "Generated examples must derive from routes.mjs and request-schemas.mjs",
+      "public_functional": "NOT_VERIFIED",
+      "enterprise_functional": "NOT_VERIFIED",
+      "visual_parity": "BLOCKED",
+      "evidence_ref": [
+        "E06",
+        "E07",
+        "E13"
+      ],
+      "limitation": "Carried from P10 candidate evidence; not re-executed per screen in this pass."
+    },
+    {
+      "id": "trust-center",
+      "public_route": "/trust/",
+      "enterprise_route": "Public evidence only; no tenant API mapped",
+      "public_functional": "NOT_VERIFIED",
+      "enterprise_functional": "NOT_VERIFIED",
+      "visual_parity": "BLOCKED",
+      "evidence_ref": [
+        "E06",
+        "E07",
+        "E13"
+      ],
+      "limitation": "Carried from P10 candidate evidence; not re-executed per screen in this pass."
+    },
+    {
+      "id": "enterprise-request-modal",
+      "public_route": "/request-access/; /contact/; POST /api/enterprise-inquiry",
+      "enterprise_route": "/app/api/trial (GET, POST) after authentication and readiness",
+      "public_functional": "NOT_VERIFIED",
+      "enterprise_functional": "NOT_VERIFIED",
+      "visual_parity": "BLOCKED",
+      "evidence_ref": [
+        "E06",
+        "E07",
+        "E13"
+      ],
+      "limitation": "Carried from P10 candidate evidence; not re-executed per screen in this pass."
+    }
+  ],
+  "comparison_screenshots": {
+    "reference": [],
+    "candidate": [
+      "Audit/magicpath-p10-2026-11-26/candidate-overview-1440x900.png",
+      "Audit/magicpath-p10-2026-11-26/candidate-overview-390x844.png",
+      "Audit/release-gate-13-2026-11-26/hero-current-1440.png",
+      "Audit/release-gate-13-2026-11-26/hero-current-390.png"
+    ],
+    "status": "CANDIDATE_ONLY_REFERENCE_BLOCKED"
+  },
+  "decision": "DESIGN_NOT_ACCEPTED at every level: public synthetic 7/12, enterprise 0/12, visual parity 0/12 blocked by MagicPath quota; Secure Chat local runtime FAIL."
+}

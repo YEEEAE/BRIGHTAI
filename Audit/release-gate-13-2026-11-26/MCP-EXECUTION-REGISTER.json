@@ -1,0 +1,159 @@
+{
+  "role": "independent_release_auditor",
+  "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+  "recorded_at": "2026-11-26",
+  "fields": [
+    "server_alias",
+    "discovered_status",
+    "discovered_tool",
+    "operation",
+    "result",
+    "evidence_ref"
+  ],
+  "register": [
+    {
+      "server_alias": "Neon",
+      "discovered_status": "CONNECTED_READ_VERIFIED",
+      "discovered_tool": "list_projects, list_branches, run_sql (SELECT only)",
+      "stage": "13",
+      "permission": "read-only",
+      "environment": "session OpenCode",
+      "input_classification": "public identifiers only",
+      "evidence_ref": "E11",
+      "result": "staging + production schema/RLS/role evidence",
+      "limitation": "Connected is not PASS; results are untrusted reference data."
+    },
+    {
+      "server_alias": "playwright",
+      "discovered_status": "CONNECTED_READ_VERIFIED",
+      "discovered_tool": "browser E2E scripts run locally",
+      "stage": "13",
+      "permission": "read-only",
+      "environment": "session OpenCode",
+      "input_classification": "public identifiers only",
+      "evidence_ref": "E05,E06,E07",
+      "result": "governance, design, auth E2E",
+      "limitation": "Connected is not PASS; results are untrusted reference data."
+    },
+    {
+      "server_alias": "sentry",
+      "discovered_status": "CONNECTED_READ_VERIFIED",
+      "discovered_tool": "find_organizations, search_issues, find_releases",
+      "stage": "13",
+      "permission": "read-only",
+      "environment": "session OpenCode",
+      "input_classification": "public identifiers only",
+      "evidence_ref": "E15",
+      "result": "no issues, no releases",
+      "limitation": "Connected is not PASS; results are untrusted reference data."
+    },
+    {
+      "server_alias": "posthog",
+      "discovered_status": "CONNECTED_READ_VERIFIED",
+      "discovered_tool": "project-get",
+      "stage": "13",
+      "permission": "read-only",
+      "environment": "session OpenCode",
+      "input_classification": "public identifiers only",
+      "evidence_ref": "E16",
+      "result": "project 768444, ingested_event false",
+      "limitation": "Connected is not PASS; results are untrusted reference data."
+    },
+    {
+      "server_alias": "graphify",
+      "discovered_status": "AVAILABLE_NOT_USED",
+      "discovered_tool": "graph_stats",
+      "stage": "13",
+      "permission": "read-only",
+      "environment": "session OpenCode",
+      "input_classification": "public identifiers only",
+      "evidence_ref": "E17",
+      "result": "graph.json missing in repo; edge map NOT VERIFIED",
+      "limitation": "No current evidence from this server."
+    },
+    {
+      "server_alias": "magicpath",
+      "discovered_status": "BLOCKED_BY_COST_OR_SCOPE",
+      "discovered_tool": "get_api_quota, get_project",
+      "stage": "13",
+      "permission": "read-only",
+      "environment": "session OpenCode",
+      "input_classification": "public identifiers only",
+      "evidence_ref": "E13",
+      "result": "50/50 quota exceeded; reference BLOCKED",
+      "limitation": "No current evidence from this server."
+    },
+    {
+      "server_alias": "render",
+      "discovered_status": "AUTH_REQUIRED",
+      "discovered_tool": "get_selected_workspace, list_workspaces",
+      "stage": "13",
+      "permission": "read-only",
+      "environment": "session OpenCode",
+      "input_classification": "public identifiers only",
+      "evidence_ref": "E14",
+      "result": "no workspace selected; list_workspaces unauthorized",
+      "limitation": "No current evidence from this server."
+    },
+    {
+      "server_alias": "computer-use",
+      "discovered_status": "AVAILABLE_NOT_USED",
+      "discovered_tool": "computer",
+      "stage": "13",
+      "permission": "read-only",
+      "environment": "session OpenCode",
+      "input_classification": "public identifiers only",
+      "evidence_ref": "-",
+      "result": "not needed after local Playwright evidence",
+      "limitation": "No current evidence from this server."
+    },
+    {
+      "server_alias": "chrome-devtools",
+      "discovered_status": "UNAVAILABLE",
+      "discovered_tool": "-",
+      "stage": "13",
+      "permission": "read-only",
+      "environment": "session OpenCode",
+      "input_classification": "public identifiers only",
+      "evidence_ref": "-",
+      "result": "not in this OpenCode tool catalog",
+      "limitation": "No current evidence from this server."
+    },
+    {
+      "server_alias": "windsor",
+      "discovered_status": "UNAVAILABLE",
+      "discovered_tool": "-",
+      "stage": "13",
+      "permission": "read-only",
+      "environment": "session OpenCode",
+      "input_classification": "public identifiers only",
+      "evidence_ref": "-",
+      "result": "not in this OpenCode tool catalog; GA4 ingestion NOT VERIFIED",
+      "limitation": "No current evidence from this server."
+    },
+    {
+      "server_alias": "openseo",
+      "discovered_status": "UNAVAILABLE",
+      "discovered_tool": "-",
+      "stage": "13",
+      "permission": "read-only",
+      "environment": "session OpenCode",
+      "input_classification": "public identifiers only",
+      "evidence_ref": "-",
+      "result": "not in this OpenCode tool catalog",
+      "limitation": "No current evidence from this server."
+    },
+    {
+      "server_alias": "linear",
+      "discovered_status": "UNAVAILABLE",
+      "discovered_tool": "-",
+      "stage": "13",
+      "permission": "read-only",
+      "environment": "session OpenCode",
+      "input_classification": "public identifiers only",
+      "evidence_ref": "-",
+      "result": "not in this OpenCode tool catalog; no issue writes attempted",
+      "limitation": "No current evidence from this server."
+    }
+  ]
+}

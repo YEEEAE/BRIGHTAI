@@ -13,7 +13,7 @@ What to look for on the `-` side of a hunk and which skill owns the judgement. A
 | `lang=`, `dir=` | `better-typography` | Language metadata or text direction was dropped |
 | `text-wrap`, `line-clamp`, `overflow-wrap`, `tabular-nums`, `font-feature-settings` | `better-typography` | Text rendering, wrapping, or numeral alignment silently changed |
 | A color token swapped for a literal, or a token swapped for a lighter one | `better-colors` | The rendered contrast pair may now fail; measure it |
-| A user-facing string deleted or shortened | `better-writing` | A label, error, or empty state lost the information it carried |
+| A user-facing string deleted or shortened | `ux-writing-content-design` | A label, error, or empty state lost the information it carried |
 
 ## Equivalent replacements
 

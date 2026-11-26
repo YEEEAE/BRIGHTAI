@@ -16,7 +16,7 @@ An axis that stays contributes its scenarios as written here, plus any value the
 | Several sentences | Wrapping, line-height at multiple lines, containers that assumed one line |
 | One unbreakable string | A long URL or `Donaudampfschiffahrtsgesellschaft`: overflow with no wrap opportunity |
 
-Breaks land in `better-typography` for wrapping and truncation, `better-layout` where the container has no room and `better-writing` where the source copy is the problem.
+Breaks land in `better-typography` for wrapping and truncation, `better-layout` where the container has no room and `ux-writing-content-design` where the source copy is the problem.
 
 ## Content shape
 
@@ -43,7 +43,7 @@ Breaks land in `better-typography`; spatial mirroring lands in `better-layout`.
 | The realistic count | The baseline |
 | Ten times the realistic count | Missing scroll or pagination, performance collapse, sticky elements unsticking |
 
-Zero-item breaks land in `better-writing` for the empty state and `better-layout` for the region; the rest land in `better-layout`.
+Zero-item breaks land in `ux-writing-content-design` for the empty state and `better-layout` for the region; the rest land in `better-layout`.
 
 ## Container
 

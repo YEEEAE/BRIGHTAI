@@ -55,7 +55,7 @@ Report findings as a table, broken scenarios first:
 | Scenario | Observed | Owner |
 | --- | --- | --- |
 | One unbreakable 60-character string | Overflows the card, no wrap and no truncation | `better-typography` |
-| Zero items | Blank region with no message | `better-writing` |
+| Zero items | Blank region with no message | `ux-writing-content-design` |
 
 The owner column names the domain skill whose rules diagnose the break, so the fix starts in the right place. This skill owns no domain rules and issues no verdict.
 

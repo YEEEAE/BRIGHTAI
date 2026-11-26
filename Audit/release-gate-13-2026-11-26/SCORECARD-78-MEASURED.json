@@ -1,0 +1,3695 @@
+{
+  "schema_version": 1,
+  "role": "independent_release_auditor",
+  "measured_at": "2026-11-26",
+  "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+  "baseline_sha": "773fb6bc5e420ee70e811d5509aceefcaec32a8c",
+  "baseline_score": 44.66666666666667,
+  "baseline_coverage": 73.16666666666667,
+  "method": "Same 78 denominators and published domain weights. S,C=1; F,U=0; coverage=S+C+F. Reported local results are never counted as staging or live runs.",
+  "evidence_codes": {
+    "E01": "npm run build PASS at 961836f8010bfe6527dac75376ef15b386b1a818; 67 public pages; version.json SHA 961836f8010b",
+    "E02": "npm run test:seo PASS 16/16 at 961836f8010bfe6527dac75376ef15b386b1a818",
+    "E03": "npm run test:healthz PASS 15/15 with 1 skipped integration case at 961836f8010bfe6527dac75376ef15b386b1a818",
+    "E04": "PG18.6 disposable local cluster; 14 DB test files: 16 pass / 2 fail; logs/db-tests.log",
+    "E05": "tests/auth-browser.e2e.mjs PASS on fresh local PG18 fixture; logs/e2e-auth.log",
+    "E06": "tests/governance-demo-browser.e2e.mjs PASS (4 products, integration, isolation, export, reset, expiry, 320/768/1440, axe zero)",
+    "E07": "tests/design-system-browser.e2e.mjs PASS 27 RTL/reflow/keyboard/dialog/focus/target/forced-colors checks against local server with AIGAS_APP_ENABLED=true",
+    "E08": "npm run test:accessibility:smoke PASS; logs/ci-smoke.log",
+    "E09": "tests/conversion-recovery.e2e.mjs FAIL: CTA \"طلب تجربة مؤسسية\" absent from accessibility tree on /demo/governance/ at 320/375/768; logs/e2e-conversion.log + logs/cta-probe.mjs",
+    "E10": "18 focused unit files: 98 pass / 1 fail / 1 skipped; failure is missing fixture Audit/governance-packs-2026-11-25/run.mjs; logs/focused-units.log",
+    "E11": "Neon read-only SELECT: staging br-rough-wind-bdkmg13n 43 tables/43 RLS/93 policies/runtime least-privilege yes/no 0045-0046; production br-young-bird-b43proeb 31 tables/31 RLS flags/2 policies/runtime role absent/no 0045-0046; ledger constraints 15 vs 14; chain_guard 1 vs 0; HG delegation tables 2 vs 0",
+    "E12": "Live HTTPS probes: / 200, /request-access/ 200, www 301, /healthz/ 404, /readyz/ 404, /app/ 404, /app/kernel/ 404, /api/trial-availability/ 404, /sitemap-index.xml 200",
+    "E13": "MagicPath MCP EXTERNAL_AGENT_API_QUOTA_EXCEEDED 50/50: get_api_quota and get_project both rejected; reference screenshot BLOCKED",
+    "E14": "Render MCP: get_selected_workspace reports no workspace selected; list_workspaces returns unauthorized; deploy SHA and build logs NOT VERIFIED",
+    "E15": "Sentry MCP: organization 659ec3bf0cec reachable; search_issues empty; find_releases empty (no release evidence)",
+    "E16": "PostHog MCP: project 768444 created 2026-11-25; ingested_event=false; no event evidence in this pass",
+    "E17": "graphify MCP: graphify-out/graph.json not found in BRIGHTAI; edge map NOT VERIFIED from graph",
+    "E18": "Hero probe at / with reduced motion at 390 and 1440; screenshots hero-current-390.png and hero-current-1440.png; baseline REPORT.md describes 2026-11-18 source 44191520 but baseline image files are absent",
+    "E19": "Source/config inspection at 961836f8010bfe6527dac75376ef15b386b1a818: render.yaml npm ci and GROQ_API_KEY/GROQ_MODEL only; package-lock @astrojs/node 11.1.14; approvedProviders=[]; APPROVED_MODELS=[]; 48h windows in trial-service.mjs:292 and operator-exploration.mjs:42; GA4 and monitoring gates in observability/config.mjs",
+    "E20": "node --test tests/api-contract.test.mjs PASS 177/177; logs/api-contract.log"
+  },
+  "criteria": [
+    {
+      "id": "REG-01",
+      "domain": "REG",
+      "requirement": "عقد يميز النظام والنموذج والوكيل والمورد وحالة الاستخدام",
+      "baseline_status": "S",
+      "baseline_evidence": "src/server/governance/contract.mjs:6–26",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "REG-02",
+      "domain": "REG",
+      "requirement": "إصدارات ومراجع مستقلة وحدود أدوات للأصل الاصطناعي",
+      "baseline_status": "S",
+      "baseline_evidence": "src/server/governance/registry.mjs؛ contract.mjs:15–26",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "REG-03",
+      "domain": "REG",
+      "requirement": "جرد وتغيير الأصل في جلسة الحوكمة المشتركة",
+      "baseline_status": "S",
+      "baseline_evidence": "src/demo/governance.mjs:21–55",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "REG-04",
+      "domain": "REG",
+      "requirement": "سجل مؤسسي دائم ومشترك بين جلسات المستخدم",
+      "baseline_status": "U",
+      "baseline_evidence": "المختبر في ذاكرة المستند؛ لا إثبات تشغيل سجل دائم",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline U is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "REG-05",
+      "domain": "REG",
+      "requirement": "دورة حياة Intake واعتماد وإعادة مراجعة مكتملة في البيئة المستهدفة",
+      "baseline_status": "U",
+      "baseline_evidence": "لا E2E مخول",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline U is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "REG-06",
+      "domain": "REG",
+      "requirement": "اكتشاف Shadow AI من مصادر مؤسسية موصولة",
+      "baseline_status": "U",
+      "baseline_evidence": "لا تكامل اكتشاف متحقق",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline U is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "POL-01",
+      "domain": "POL",
+      "requirement": "حزمة داخلية محددة الإصدار والانطباق",
+      "baseline_status": "S",
+      "baseline_evidence": "src/server/governance/internal-pack.mjs:10–41",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "POL-02",
+      "domain": "POL",
+      "requirement": "متطلبات وفحوص ودليل متوقع ومالك",
+      "baseline_status": "S",
+      "baseline_evidence": "src/server/governance/contract.mjs:28–48",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "POL-03",
+      "domain": "POL",
+      "requirement": "تتبع وتصدير بصمة assessment للحزمة الداخلية",
+      "baseline_status": "S",
+      "baseline_evidence": "src/server/governance/registry.mjs:63–113",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "POL-04",
+      "domain": "POL",
+      "requirement": "حزم خارجية قابلة للتطبيق من PDPL/SDAIA وغيرها",
+      "baseline_status": "F",
+      "baseline_evidence": "packSchema.source.type = INTERNAL فقط",
+      "remeasured": {
+        "source": {
+          "status": "F",
+          "evidence_ref": [
+            "E19",
+            "E04"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline F is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "POL-05",
+      "domain": "POL",
+      "requirement": "مرجع تنظيمي خارجي موثق مرتبط بفحص وFinding",
+      "baseline_status": "U",
+      "baseline_evidence": "لم يثبت عقد خارجي أو خريطة قانونية",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline U is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "POL-06",
+      "domain": "POL",
+      "requirement": "اعتماد تغيير السياسة وتطبيقه حيًا عبر المؤسسات",
+      "baseline_status": "U",
+      "baseline_evidence": "لا تشغيل مؤسسي",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline U is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "FW-01",
+      "domain": "FW",
+      "requirement": "القرارات الخمسة الحتمية في المحرك",
+      "baseline_status": "S",
+      "baseline_evidence": "src/server/firewall/core.mjs:10–13",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "FW-02",
+      "domain": "FW",
+      "requirement": "تقديم DENY والإقفال عند سياسة غير صالحة",
+      "baseline_status": "S",
+      "baseline_evidence": "src/server/firewall/core.mjs:63–75",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "FW-03",
+      "domain": "FW",
+      "requirement": "الفحص العام يتجاوز أربع مطابقات حرفية إلى كاشف بيانات حساس متحقق",
+      "baseline_status": "F",
+      "baseline_evidence": "src/shared/firewall-demo.mjs:1–19",
+      "remeasured": {
+        "source": {
+          "status": "F",
+          "evidence_ref": [
+            "E19",
+            "E04"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline F is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "FW-04",
+      "domain": "FW",
+      "requirement": "محاكاة فعل وكيل بقيود ثابتة وربط طلب مراجعة",
+      "baseline_status": "S",
+      "baseline_evidence": "src/server/governance/synthetic-agent.mjs:16–90",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "FW-05",
+      "domain": "FW",
+      "requirement": "مزود Firewall معتمد",
+      "baseline_status": "F",
+      "baseline_evidence": "src/server/firewall/provider.mjs:9؛ approvedProviders=[]",
+      "remeasured": {
+        "source": {
+          "status": "F",
+          "evidence_ref": [
+            "E19",
+            "E04"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "F",
+          "evidence_ref": [
+            "E04",
+            "E09",
+            "E19"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline F is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "FW-06",
+      "domain": "FW",
+      "requirement": "فحص المدخل والمخرج مع مزود فعلي ومعالجة القرارات الخمسة",
+      "baseline_status": "U",
+      "baseline_evidence": "لم يرسل طلب Groq ولم ينفذ E2E",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline U is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "HG-01",
+      "domain": "HG",
+      "requirement": "ربط تصعيد اصطناعي ببصمة طلب وسياسة",
+      "baseline_status": "S",
+      "baseline_evidence": "src/server/governance/synthetic-agent.mjs:30–71",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "HG-02",
+      "domain": "HG",
+      "requirement": "عقد مراجع مستقل داخل سجل الحوكمة",
+      "baseline_status": "S",
+      "baseline_evidence": "src/server/governance/contract.mjs:22–26",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "HG-03",
+      "domain": "HG",
+      "requirement": "واجهة مراجعة وقبول ورفض للجلسة",
+      "baseline_status": "S",
+      "baseline_evidence": "src/demo/governance.mjs:89–99",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "HG-04",
+      "domain": "HG",
+      "requirement": "جدولا delegations وgrants موجودان في الإنتاج",
+      "baseline_status": "F",
+      "baseline_evidence": "Neon SELECT to_regclass: كلاهما NULL",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "S",
+          "evidence_ref": [
+            "E11"
+          ],
+          "limitation": null
+        },
+        "live": {
+          "status": "F",
+          "evidence_ref": [
+            "E12",
+            "E11"
+          ],
+          "limitation": null
+        }
+      }
+    },
+    {
+      "id": "HG-05",
+      "domain": "HG",
+      "requirement": "استئناف موثق بعد الموافقة مع منع إعادة الاستخدام في الهدف",
+      "baseline_status": "U",
+      "baseline_evidence": "تقرير الوكيل: فشل firewall-review-binding؛ لم يعد الاختبار",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline U is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "HG-06",
+      "domain": "HG",
+      "requirement": "موافقات متعددة أدوار بمسار قانوني وأمني وتجاري حي",
+      "baseline_status": "U",
+      "baseline_evidence": "لا اختبار مخول",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline U is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "RE-01",
+      "domain": "RE",
+      "requirement": "حساب خطر من الاحتمال والأثر داخل المختبر",
+      "baseline_status": "S",
+      "baseline_evidence": "src/demo/governance.mjs:71–75",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "RE-02",
+      "domain": "RE",
+      "requirement": "مقاييس تصنيف مفصلة: precision/recall/FPR/FNR/accuracy",
+      "baseline_status": "S",
+      "baseline_evidence": "src/server/risk-engine/evaluation.mjs:25–35",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "RE-03",
+      "domain": "RE",
+      "requirement": "معالجة المقام الصفري والعينة الصغيرة",
+      "baseline_status": "S",
+      "baseline_evidence": "src/server/risk-engine/evaluation.mjs:17–35",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "RE-04",
+      "domain": "RE",
+      "requirement": "Finding مؤرخ وإعادة عرض تقييم سابق",
+      "baseline_status": "S",
+      "baseline_evidence": "src/demo/governance.mjs:77–87",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "RE-05",
+      "domain": "RE",
+      "requirement": "تقييم نموذج موصول على بيانات مستقلة مصرح بها ومراقبة drift",
+      "baseline_status": "F",
+      "baseline_evidence": "evaluation.mjs:1,55–60 synthetic replay ثابت، لا اتصال في المختبر",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline F is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "RE-06",
+      "domain": "RE",
+      "requirement": "منهج الخطر المتبقي مع قبول مخول ومكتبة قطاعية كاملة في الهدف",
+      "baseline_status": "U",
+      "baseline_evidence": "لا تشغيل مؤسسي أو اعتماد منهج في هذه الجولة",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline U is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "LD-01",
+      "domain": "LD",
+      "requirement": "SHA-256 وملف تعريف سلسلة في الكود",
+      "baseline_status": "S",
+      "baseline_evidence": "src/server/ledger/core.mjs:4–17,46–60",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "LD-02",
+      "domain": "LD",
+      "requirement": "عقد تصدير assessment ببصمة داخل سجل الحوكمة",
+      "baseline_status": "S",
+      "baseline_evidence": "src/server/governance/registry.mjs:113",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "LD-03",
+      "domain": "LD",
+      "requirement": "قيد إنتاج Ledger يطابق القرارات الخمسة",
+      "baseline_status": "F",
+      "baseline_evidence": "Neon aigas_ld_events_check يقبل ALLOW/BLOCK/REDACT فقط",
+      "remeasured": {
+        "source": {
+          "status": "F",
+          "evidence_ref": [
+            "E19",
+            "E04"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "S",
+          "evidence_ref": [
+            "E11"
+          ],
+          "limitation": null
+        },
+        "live": {
+          "status": "F",
+          "evidence_ref": [
+            "E12",
+            "E11"
+          ],
+          "limitation": null
+        }
+      }
+    },
+    {
+      "id": "LD-04",
+      "domain": "LD",
+      "requirement": "حارس سلسلة قاعدة البيانات موجود في الإنتاج",
+      "baseline_status": "F",
+      "baseline_evidence": "Neon pg_proc: chain_guard=0",
+      "remeasured": {
+        "source": {
+          "status": "F",
+          "evidence_ref": [
+            "E19",
+            "E04"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "S",
+          "evidence_ref": [
+            "E11"
+          ],
+          "limitation": null
+        },
+        "live": {
+          "status": "F",
+          "evidence_ref": [
+            "E12",
+            "E11"
+          ],
+          "limitation": null
+        }
+      }
+    },
+    {
+      "id": "LD-05",
+      "domain": "LD",
+      "requirement": "تصدير مختبر الحوكمة نفسه يتضمن سلسلة hash قابلة لإعادة التحقق",
+      "baseline_status": "F",
+      "baseline_evidence": "src/scripts/governance-demo.ts:171–177 يصدر JSON.stringify(state)؛ events لا تحمل hash chain",
+      "remeasured": {
+        "source": {
+          "status": "F",
+          "evidence_ref": [
+            "E19",
+            "E04"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline F is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "LD-06",
+      "domain": "LD",
+      "requirement": "تحقق مستقل من حزمة الإصدار النهائي في البيئة المستهدفة",
+      "baseline_status": "U",
+      "baseline_evidence": "تقرير محلي على مرشح سابق؛ لا إعادة اختبار",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline U is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "AI-01",
+      "domain": "AI",
+      "requirement": "Gateway بخادم وميزانية وحدود ومهلة",
+      "baseline_status": "S",
+      "baseline_evidence": "src/server/ai/groq-gateway.mjs:49–75,99–145",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "AI-02",
+      "domain": "AI",
+      "requirement": "حماية اسم المفتاح ومنع PUBLIC_GROQ",
+      "baseline_status": "S",
+      "baseline_evidence": "src/server/kernel/env.mjs:16–22",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "AI-03",
+      "domain": "AI",
+      "requirement": "قائمتا اعتماد نموذج ومزود غير فارغتين وصالحتين",
+      "baseline_status": "F",
+      "baseline_evidence": "secure-chat/models.mjs:3؛ firewall/provider.mjs:9",
+      "remeasured": {
+        "source": {
+          "status": "F",
+          "evidence_ref": [
+            "E19",
+            "E04"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "F",
+          "evidence_ref": [
+            "E04",
+            "E09",
+            "E19"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline F is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "AI-04",
+      "domain": "AI",
+      "requirement": "المسار العام متاح لإرسال اصطناعي معتمد",
+      "baseline_status": "F",
+      "baseline_evidence": "public-sandbox-limiter.mjs:3–4؛ 503 DISABLED",
+      "remeasured": {
+        "source": {
+          "status": "F",
+          "evidence_ref": [
+            "E19",
+            "E04"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "F",
+          "evidence_ref": [
+            "E04",
+            "E09",
+            "E19"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline F is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "AI-05",
+      "domain": "AI",
+      "requirement": "Blueprint يصرح بأسماء اعتماد المفتاح المخصص والميزانية المطلوبة",
+      "baseline_status": "F",
+      "baseline_evidence": "render.yaml:39–42: GROQ_API_KEY وGROQ_MODEL فقط؛ env.mjs:17؛ gateway.mjs:102–104",
+      "remeasured": {
+        "source": {
+          "status": "F",
+          "evidence_ref": [
+            "E19",
+            "E04"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "F",
+          "evidence_ref": [
+            "E04",
+            "E09",
+            "E19"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline F is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "AI-06",
+      "domain": "AI",
+      "requirement": "إثبات مفتاح ونموذج وميزانية صالحة واستدعاء حي مصرح",
+      "baseline_status": "U",
+      "baseline_evidence": "لا .env متاح ولا اختبار خارجي",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline U is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "INT-01",
+      "domain": "INT",
+      "requirement": "سياق أحداث مشترك حسب الأصل والإصدار في المختبر",
+      "baseline_status": "S",
+      "baseline_evidence": "src/demo/governance.mjs:21–110",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "INT-02",
+      "domain": "INT",
+      "requirement": "محاكاة agent تستدعي core وguard وHuman Gate binding",
+      "baseline_status": "S",
+      "baseline_evidence": "src/server/governance/synthetic-agent.mjs:1–90",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "INT-03",
+      "domain": "INT",
+      "requirement": "المراجعة في المختبر ترتبط بفحص أو خطر من النسخة الحالية",
+      "baseline_status": "S",
+      "baseline_evidence": "src/demo/governance.mjs:89–99",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "INT-04",
+      "domain": "INT",
+      "requirement": "مسار عام حي يوقف Groq ثم يستأنفه بإذن صالح",
+      "baseline_status": "F",
+      "baseline_evidence": "demo prerender وCSP connect-src none؛ publicSandbox disabled",
+      "remeasured": {
+        "source": {
+          "status": "F",
+          "evidence_ref": [
+            "E19",
+            "E04"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "F",
+          "evidence_ref": [
+            "E04",
+            "E09",
+            "E19"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline F is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "INT-05",
+      "domain": "INT",
+      "requirement": "تسجيل كل حدث عام في سلسلة Ledger قابلة للتحقق",
+      "baseline_status": "F",
+      "baseline_evidence": "governance.mjs:104–108 + governance-demo.ts:174",
+      "remeasured": {
+        "source": {
+          "status": "F",
+          "evidence_ref": [
+            "E19",
+            "E04"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "F",
+          "evidence_ref": [
+            "E04",
+            "E09",
+            "E19"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline F is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "INT-06",
+      "domain": "INT",
+      "requirement": "رحلة أصل→حزمة تنظيمية→فحص→معالجة→قرار→دليل في الهدف",
+      "baseline_status": "U",
+      "baseline_evidence": "لا E2E للبيئة المستهدفة",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline U is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "UX-01",
+      "domain": "UX",
+      "requirement": "صفحة Overview وجرد وحزم وأربعة أقسام متاحة",
+      "baseline_status": "C",
+      "baseline_evidence": "Firecrawl /demo/governance/ 200",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline C is not carried forward."
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline C is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline C is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "UX-02",
+      "domain": "UX",
+      "requirement": "صفحات المنتجات الأربعة تعرض تجارب متخصصة وروابط",
+      "baseline_status": "C",
+      "baseline_evidence": "Firecrawl 4/4 HTTP200",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline C is not carried forward."
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline C is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline C is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "UX-03",
+      "domain": "UX",
+      "requirement": "تفاعل كامل مستقل لجميع الشاشات والأحجام",
+      "baseline_status": "U",
+      "baseline_evidence": "Browser Use تحقق بصريًا من صفحتين على 1440 و390؛ لا اختبار كل الشاشات أو المهام",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline U is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "UX-04",
+      "domain": "UX",
+      "requirement": "إمكانية الوصول والأداء عبر CI ناجح على HEAD",
+      "baseline_status": "F",
+      "baseline_evidence": "GitHub Actions 45666864721: failure",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline F is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "UX-05",
+      "domain": "UX",
+      "requirement": "مطابقة بصرية وسلوكية للـHero قبل وبعد",
+      "baseline_status": "U",
+      "baseline_evidence": "لا مرجع لقطات Hero متطابقة",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline U is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "UX-06",
+      "domain": "UX",
+      "requirement": "جودة RTL وkeyboard وWCAG 2.2 AA مثبتة لكامل النطاق",
+      "baseline_status": "U",
+      "baseline_evidence": "لا قياس شامل",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline U is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "PUB-01",
+      "domain": "PUB",
+      "requirement": "4/4 صفحات المنتجات العامة تفتح",
+      "baseline_status": "C",
+      "baseline_evidence": "Firecrawl HTTP200",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline C is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline C is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline C is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline C is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "PUB-02",
+      "domain": "PUB",
+      "requirement": "4/4 مختبرات مستقلة تفتح دون حساب",
+      "baseline_status": "C",
+      "baseline_evidence": "Firecrawl HTTP200",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline C is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline C is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline C is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline C is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "PUB-03",
+      "domain": "PUB",
+      "requirement": "المختبر الموحد يفتح دون حساب",
+      "baseline_status": "C",
+      "baseline_evidence": "Firecrawl /demo/governance/ 200",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline C is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline C is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline C is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline C is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "PUB-04",
+      "domain": "PUB",
+      "requirement": "بوابة التطبيق وKernel تفتحان",
+      "baseline_status": "F",
+      "baseline_evidence": "/app/ و/app/kernel/ 404",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "live": {
+          "status": "F",
+          "evidence_ref": [
+            "E12",
+            "E11"
+          ],
+          "limitation": null
+        }
+      }
+    },
+    {
+      "id": "PUB-05",
+      "domain": "PUB",
+      "requirement": "طلب الوصول يعمل من CTA العام",
+      "baseline_status": "F",
+      "baseline_evidence": "/request-access/ 404؛ governance.astro:139",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "local": {
+          "status": "F",
+          "evidence_ref": [
+            "E04",
+            "E09",
+            "E19"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "live": {
+          "status": "C",
+          "evidence_ref": [
+            "E12",
+            "E11"
+          ],
+          "limitation": null
+        }
+      }
+    },
+    {
+      "id": "PUB-06",
+      "domain": "PUB",
+      "requirement": "تجربة 48 ساعة وعملية التسجيل مثبتتان في الهدف",
+      "baseline_status": "F",
+      "baseline_evidence": "جدولا trial وexploration غائبان؛ بوابة 404",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "live": {
+          "status": "F",
+          "evidence_ref": [
+            "E12",
+            "E11"
+          ],
+          "limitation": null
+        }
+      }
+    },
+    {
+      "id": "SEC-01",
+      "domain": "SEC",
+      "requirement": "RLS enabled على جداول الإنتاج",
+      "baseline_status": "C",
+      "baseline_evidence": "Neon 31/31 flags",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline C is not carried forward."
+        },
+        "local": {
+          "status": "C",
+          "evidence_ref": [
+            "E04"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "C",
+          "evidence_ref": [
+            "E11"
+          ],
+          "limitation": null
+        },
+        "live": {
+          "status": "C",
+          "evidence_ref": [
+            "E12",
+            "E11"
+          ],
+          "limitation": null
+        }
+      }
+    },
+    {
+      "id": "SEC-02",
+      "domain": "SEC",
+      "requirement": "جميع جداول Staging لها سياسات RLS",
+      "baseline_status": "C",
+      "baseline_evidence": "Neon 43/43؛ 93 سياسة",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline C is not carried forward."
+        },
+        "local": {
+          "status": "C",
+          "evidence_ref": [
+            "E04"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "C",
+          "evidence_ref": [
+            "E11"
+          ],
+          "limitation": null
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline C is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "SEC-03",
+      "domain": "SEC",
+      "requirement": "جميع جداول الإنتاج لها سياسات RLS مناسبة",
+      "baseline_status": "F",
+      "baseline_evidence": "Neon 2/31 فقط؛ لا ادعاء تسريب",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "staging": {
+          "status": "S",
+          "evidence_ref": [
+            "E11"
+          ],
+          "limitation": null
+        },
+        "live": {
+          "status": "F",
+          "evidence_ref": [
+            "E12",
+            "E11"
+          ],
+          "limitation": null
+        }
+      }
+    },
+    {
+      "id": "SEC-04",
+      "domain": "SEC",
+      "requirement": "دور تشغيل aigas_runtime موجود في الإنتاج",
+      "baseline_status": "F",
+      "baseline_evidence": "Neon pg_roles: 0",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "staging": {
+          "status": "S",
+          "evidence_ref": [
+            "E11"
+          ],
+          "limitation": null
+        },
+        "live": {
+          "status": "F",
+          "evidence_ref": [
+            "E12",
+            "E11"
+          ],
+          "limitation": null
+        }
+      }
+    },
+    {
+      "id": "SEC-05",
+      "domain": "SEC",
+      "requirement": "اختبار عزل مؤسسات وجلسات في الهدف",
+      "baseline_status": "U",
+      "baseline_evidence": "لم ينفذ اختبار مصرح",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline U is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "SEC-06",
+      "domain": "SEC",
+      "requirement": "اعتماد معالجة البيانات وإقامتها وسياسة الحذف والمزود",
+      "baseline_status": "U",
+      "baseline_evidence": "لا دليل اعتماد الهدف",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline U is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "ARC-01",
+      "domain": "ARC",
+      "requirement": "Blueprint يحدد Node SSR وreadiness",
+      "baseline_status": "S",
+      "baseline_evidence": "render.yaml:6–16",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline S is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline S is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "ARC-02",
+      "domain": "ARC",
+      "requirement": "محول Astro في إصدار يعالج GHSA-qh8j-hqjv-7m4x",
+      "baseline_status": "F",
+      "baseline_evidence": "package-lock.json @astrojs/node 10.1.4؛ fixed 11.1.3",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline F is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "ARC-03",
+      "domain": "ARC",
+      "requirement": "مدير حزم البناء المنشور يطابق lockfile المقصود",
+      "baseline_status": "F",
+      "baseline_evidence": "Render pnpm install؛ render.yaml npm ci؛ package-lock موجود",
+      "remeasured": {
+        "source": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E10",
+            "E19",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline F is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "ARC-04",
+      "domain": "ARC",
+      "requirement": "npm build والتحقق الأمني المستقل على HEAD",
+      "baseline_status": "U",
+      "baseline_evidence": "لا checkout أو تشغيل مستقل",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline U is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "ARC-05",
+      "domain": "ARC",
+      "requirement": "نظافة الملفات مثبتة بعد تحليل الاعتماديات",
+      "baseline_status": "U",
+      "baseline_evidence": "7 ملفات بلواحق 2؛ ليست دليل حذف",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline U is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "ARC-06",
+      "domain": "ARC",
+      "requirement": "LCP/INP/CLS مقاسة على كل رحلة",
+      "baseline_status": "U",
+      "baseline_evidence": "لا قياس ميداني أو مختبري شامل",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline U is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "DEP-01",
+      "domain": "DEP",
+      "requirement": "Deploy مطابق SHA الحالي",
+      "baseline_status": "C",
+      "baseline_evidence": "Render dep-dc3hq2m8bjmc73bvuan0 live",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline C is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline C is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline C is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline C is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "DEP-02",
+      "domain": "DEP",
+      "requirement": "خدمة النشر الفعلية Node وتعرض readiness",
+      "baseline_status": "F",
+      "baseline_evidence": "Render static_site dist/client؛ /readyz/ 404",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "live": {
+          "status": "F",
+          "evidence_ref": [
+            "E12",
+            "E11"
+          ],
+          "limitation": null
+        }
+      }
+    },
+    {
+      "id": "DEP-03",
+      "domain": "DEP",
+      "requirement": "مصالحة سجل ترحيلات Staging مع 45 ملفًا",
+      "baseline_status": "F",
+      "baseline_evidence": "32 APPLIED؛ 13 بلا سجل APPLIED، ليس إثبات عدم تطبيقها",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline F is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "DEP-04",
+      "domain": "DEP",
+      "requirement": "robots.txt وsitemap.xml متاحان",
+      "baseline_status": "C",
+      "baseline_evidence": "Firecrawl كلاهما 200؛ robots يشير sitemap-index.xml",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline C is not carried forward."
+        },
+        "local": {
+          "status": "S",
+          "evidence_ref": [
+            "E01",
+            "E02",
+            "E03",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E10",
+            "E20"
+          ],
+          "limitation": null
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline C is not carried forward."
+        },
+        "live": {
+          "status": "C",
+          "evidence_ref": [
+            "E12",
+            "E11"
+          ],
+          "limitation": null
+        }
+      }
+    },
+    {
+      "id": "DEP-05",
+      "domain": "DEP",
+      "requirement": "قياس GA4 للحركة الحية دون اختلاط تطوير",
+      "baseline_status": "F",
+      "baseline_evidence": "Windsor: 48 جلسة localhost/127.0.0.1 ضمن الخاصية",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline F is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline F is not carried forward."
+        }
+      }
+    },
+    {
+      "id": "DEP-06",
+      "domain": "DEP",
+      "requirement": "مراقبة أخطاء وتنبيهات وفهرسة شاملة مثبتة",
+      "baseline_status": "U",
+      "baseline_evidence": "GSC يقيس البحث فقط؛ Sentry/PostHog لم تثبت وجهتهما",
+      "remeasured": {
+        "source": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current source evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "local": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current local evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "staging": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current staging evidence collected in this independent pass; historical baseline U is not carried forward."
+        },
+        "live": {
+          "status": "U",
+          "evidence_ref": [],
+          "limitation": "No current live evidence collected in this independent pass; historical baseline U is not carried forward."
+        }
+      }
+    }
+  ],
+  "scores": {
+    "source": {
+      "method": "S,C=1; F,U=0; equal within each domain, published domain weights. Coverage includes S,C,F. Not directly comparable to R2 74 checks.",
+      "counts": {
+        "S": 26,
+        "C": 0,
+        "F": 11,
+        "U": 41
+      },
+      "score": 36.5,
+      "coverage": 52.83333333333334,
+      "domains": [
+        {
+          "id": "REG",
+          "name": "سجل الأصول والوكلاء",
+          "weight": 8,
+          "denominator": 6,
+          "S": 3,
+          "C": 0,
+          "F": 0,
+          "U": 3,
+          "pass": 3,
+          "coverage": 3,
+          "score": 50,
+          "coverage_percent": 50
+        },
+        {
+          "id": "POL",
+          "name": "حزم السياسات والتتبع التنظيمي",
+          "weight": 8,
+          "denominator": 6,
+          "S": 3,
+          "C": 0,
+          "F": 1,
+          "U": 2,
+          "pass": 3,
+          "coverage": 4,
+          "score": 50,
+          "coverage_percent": 66.66666666666667
+        },
+        {
+          "id": "FW",
+          "name": "Firewall",
+          "weight": 10,
+          "denominator": 6,
+          "S": 3,
+          "C": 0,
+          "F": 2,
+          "U": 1,
+          "pass": 3,
+          "coverage": 5,
+          "score": 50,
+          "coverage_percent": 83.33333333333333
+        },
+        {
+          "id": "HG",
+          "name": "Human Gate",
+          "weight": 8,
+          "denominator": 6,
+          "S": 3,
+          "C": 0,
+          "F": 0,
+          "U": 3,
+          "pass": 3,
+          "coverage": 3,
+          "score": 50,
+          "coverage_percent": 50
+        },
+        {
+          "id": "RE",
+          "name": "Risk Engine وتقييم النماذج",
+          "weight": 12,
+          "denominator": 6,
+          "S": 4,
+          "C": 0,
+          "F": 0,
+          "U": 2,
+          "pass": 4,
+          "coverage": 4,
+          "score": 66.66666666666667,
+          "coverage_percent": 66.66666666666667
+        },
+        {
+          "id": "LD",
+          "name": "Ledger وسلامة الأدلة",
+          "weight": 10,
+          "denominator": 6,
+          "S": 2,
+          "C": 0,
+          "F": 3,
+          "U": 1,
+          "pass": 2,
+          "coverage": 5,
+          "score": 33.333333333333336,
+          "coverage_percent": 83.33333333333333
+        },
+        {
+          "id": "AI",
+          "name": "Groq",
+          "weight": 8,
+          "denominator": 6,
+          "S": 2,
+          "C": 0,
+          "F": 3,
+          "U": 1,
+          "pass": 2,
+          "coverage": 5,
+          "score": 33.333333333333336,
+          "coverage_percent": 83.33333333333333
+        },
+        {
+          "id": "INT",
+          "name": "تكامل المنتجات الأربعة",
+          "weight": 8,
+          "denominator": 6,
+          "S": 3,
+          "C": 0,
+          "F": 2,
+          "U": 1,
+          "pass": 3,
+          "coverage": 5,
+          "score": 50,
+          "coverage_percent": 83.33333333333333
+        },
+        {
+          "id": "UX",
+          "name": "التصميم وتجربة المستخدم وRTL",
+          "weight": 10,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 0,
+          "U": 6,
+          "pass": 0,
+          "coverage": 0,
+          "score": 0,
+          "coverage_percent": 0
+        },
+        {
+          "id": "PUB",
+          "name": "الإتاحة والتحويل التجاري",
+          "weight": 5,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 0,
+          "U": 6,
+          "pass": 0,
+          "coverage": 0,
+          "score": 0,
+          "coverage_percent": 0
+        },
+        {
+          "id": "SEC",
+          "name": "الأمان والخصوصية",
+          "weight": 8,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 0,
+          "U": 6,
+          "pass": 0,
+          "coverage": 0,
+          "score": 0,
+          "coverage_percent": 0
+        },
+        {
+          "id": "ARC",
+          "name": "المعمارية والاعتماديات والأداء",
+          "weight": 3,
+          "denominator": 6,
+          "S": 3,
+          "C": 0,
+          "F": 0,
+          "U": 3,
+          "pass": 3,
+          "coverage": 3,
+          "score": 50,
+          "coverage_percent": 50
+        },
+        {
+          "id": "DEP",
+          "name": "النشر وSEO والقياس والمراقبة",
+          "weight": 2,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 0,
+          "U": 6,
+          "pass": 0,
+          "coverage": 0,
+          "score": 0,
+          "coverage_percent": 0
+        }
+      ]
+    },
+    "local": {
+      "method": "S,C=1; F,U=0; equal within each domain, published domain weights. Coverage includes S,C,F. Not directly comparable to R2 74 checks.",
+      "counts": {
+        "S": 37,
+        "C": 2,
+        "F": 7,
+        "U": 32
+      },
+      "score": 54,
+      "coverage": 63.16666666666667,
+      "domains": [
+        {
+          "id": "REG",
+          "name": "سجل الأصول والوكلاء",
+          "weight": 8,
+          "denominator": 6,
+          "S": 3,
+          "C": 0,
+          "F": 0,
+          "U": 3,
+          "pass": 3,
+          "coverage": 3,
+          "score": 50,
+          "coverage_percent": 50
+        },
+        {
+          "id": "POL",
+          "name": "حزم السياسات والتتبع التنظيمي",
+          "weight": 8,
+          "denominator": 6,
+          "S": 3,
+          "C": 0,
+          "F": 0,
+          "U": 3,
+          "pass": 3,
+          "coverage": 3,
+          "score": 50,
+          "coverage_percent": 50
+        },
+        {
+          "id": "FW",
+          "name": "Firewall",
+          "weight": 10,
+          "denominator": 6,
+          "S": 3,
+          "C": 0,
+          "F": 1,
+          "U": 2,
+          "pass": 3,
+          "coverage": 4,
+          "score": 50,
+          "coverage_percent": 66.66666666666667
+        },
+        {
+          "id": "HG",
+          "name": "Human Gate",
+          "weight": 8,
+          "denominator": 6,
+          "S": 5,
+          "C": 0,
+          "F": 0,
+          "U": 1,
+          "pass": 5,
+          "coverage": 5,
+          "score": 83.33333333333333,
+          "coverage_percent": 83.33333333333333
+        },
+        {
+          "id": "RE",
+          "name": "Risk Engine وتقييم النماذج",
+          "weight": 12,
+          "denominator": 6,
+          "S": 4,
+          "C": 0,
+          "F": 0,
+          "U": 2,
+          "pass": 4,
+          "coverage": 4,
+          "score": 66.66666666666667,
+          "coverage_percent": 66.66666666666667
+        },
+        {
+          "id": "LD",
+          "name": "Ledger وسلامة الأدلة",
+          "weight": 10,
+          "denominator": 6,
+          "S": 4,
+          "C": 0,
+          "F": 0,
+          "U": 2,
+          "pass": 4,
+          "coverage": 4,
+          "score": 66.66666666666667,
+          "coverage_percent": 66.66666666666667
+        },
+        {
+          "id": "AI",
+          "name": "Groq",
+          "weight": 8,
+          "denominator": 6,
+          "S": 2,
+          "C": 0,
+          "F": 3,
+          "U": 1,
+          "pass": 2,
+          "coverage": 5,
+          "score": 33.333333333333336,
+          "coverage_percent": 83.33333333333333
+        },
+        {
+          "id": "INT",
+          "name": "تكامل المنتجات الأربعة",
+          "weight": 8,
+          "denominator": 6,
+          "S": 3,
+          "C": 0,
+          "F": 2,
+          "U": 1,
+          "pass": 3,
+          "coverage": 5,
+          "score": 50,
+          "coverage_percent": 83.33333333333333
+        },
+        {
+          "id": "UX",
+          "name": "التصميم وتجربة المستخدم وRTL",
+          "weight": 10,
+          "denominator": 6,
+          "S": 4,
+          "C": 0,
+          "F": 0,
+          "U": 2,
+          "pass": 4,
+          "coverage": 4,
+          "score": 66.66666666666667,
+          "coverage_percent": 66.66666666666667
+        },
+        {
+          "id": "PUB",
+          "name": "الإتاحة والتحويل التجاري",
+          "weight": 5,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 1,
+          "U": 5,
+          "pass": 0,
+          "coverage": 1,
+          "score": 0,
+          "coverage_percent": 16.666666666666668
+        },
+        {
+          "id": "SEC",
+          "name": "الأمان والخصوصية",
+          "weight": 8,
+          "denominator": 6,
+          "S": 1,
+          "C": 2,
+          "F": 0,
+          "U": 3,
+          "pass": 3,
+          "coverage": 3,
+          "score": 50,
+          "coverage_percent": 50
+        },
+        {
+          "id": "ARC",
+          "name": "المعمارية والاعتماديات والأداء",
+          "weight": 3,
+          "denominator": 6,
+          "S": 4,
+          "C": 0,
+          "F": 0,
+          "U": 2,
+          "pass": 4,
+          "coverage": 4,
+          "score": 66.66666666666667,
+          "coverage_percent": 66.66666666666667
+        },
+        {
+          "id": "DEP",
+          "name": "النشر وSEO والقياس والمراقبة",
+          "weight": 2,
+          "denominator": 6,
+          "S": 1,
+          "C": 0,
+          "F": 0,
+          "U": 5,
+          "pass": 1,
+          "coverage": 1,
+          "score": 16.666666666666668,
+          "coverage_percent": 16.666666666666668
+        }
+      ]
+    },
+    "staging": {
+      "method": "S,C=1; F,U=0; equal within each domain, published domain weights. Coverage includes S,C,F. Not directly comparable to R2 74 checks.",
+      "counts": {
+        "S": 5,
+        "C": 2,
+        "F": 0,
+        "U": 71
+      },
+      "score": 10.000000000000002,
+      "coverage": 10.000000000000002,
+      "domains": [
+        {
+          "id": "REG",
+          "name": "سجل الأصول والوكلاء",
+          "weight": 8,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 0,
+          "U": 6,
+          "pass": 0,
+          "coverage": 0,
+          "score": 0,
+          "coverage_percent": 0
+        },
+        {
+          "id": "POL",
+          "name": "حزم السياسات والتتبع التنظيمي",
+          "weight": 8,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 0,
+          "U": 6,
+          "pass": 0,
+          "coverage": 0,
+          "score": 0,
+          "coverage_percent": 0
+        },
+        {
+          "id": "FW",
+          "name": "Firewall",
+          "weight": 10,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 0,
+          "U": 6,
+          "pass": 0,
+          "coverage": 0,
+          "score": 0,
+          "coverage_percent": 0
+        },
+        {
+          "id": "HG",
+          "name": "Human Gate",
+          "weight": 8,
+          "denominator": 6,
+          "S": 1,
+          "C": 0,
+          "F": 0,
+          "U": 5,
+          "pass": 1,
+          "coverage": 1,
+          "score": 16.666666666666668,
+          "coverage_percent": 16.666666666666668
+        },
+        {
+          "id": "RE",
+          "name": "Risk Engine وتقييم النماذج",
+          "weight": 12,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 0,
+          "U": 6,
+          "pass": 0,
+          "coverage": 0,
+          "score": 0,
+          "coverage_percent": 0
+        },
+        {
+          "id": "LD",
+          "name": "Ledger وسلامة الأدلة",
+          "weight": 10,
+          "denominator": 6,
+          "S": 2,
+          "C": 0,
+          "F": 0,
+          "U": 4,
+          "pass": 2,
+          "coverage": 2,
+          "score": 33.333333333333336,
+          "coverage_percent": 33.333333333333336
+        },
+        {
+          "id": "AI",
+          "name": "Groq",
+          "weight": 8,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 0,
+          "U": 6,
+          "pass": 0,
+          "coverage": 0,
+          "score": 0,
+          "coverage_percent": 0
+        },
+        {
+          "id": "INT",
+          "name": "تكامل المنتجات الأربعة",
+          "weight": 8,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 0,
+          "U": 6,
+          "pass": 0,
+          "coverage": 0,
+          "score": 0,
+          "coverage_percent": 0
+        },
+        {
+          "id": "UX",
+          "name": "التصميم وتجربة المستخدم وRTL",
+          "weight": 10,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 0,
+          "U": 6,
+          "pass": 0,
+          "coverage": 0,
+          "score": 0,
+          "coverage_percent": 0
+        },
+        {
+          "id": "PUB",
+          "name": "الإتاحة والتحويل التجاري",
+          "weight": 5,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 0,
+          "U": 6,
+          "pass": 0,
+          "coverage": 0,
+          "score": 0,
+          "coverage_percent": 0
+        },
+        {
+          "id": "SEC",
+          "name": "الأمان والخصوصية",
+          "weight": 8,
+          "denominator": 6,
+          "S": 2,
+          "C": 2,
+          "F": 0,
+          "U": 2,
+          "pass": 4,
+          "coverage": 4,
+          "score": 66.66666666666667,
+          "coverage_percent": 66.66666666666667
+        },
+        {
+          "id": "ARC",
+          "name": "المعمارية والاعتماديات والأداء",
+          "weight": 3,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 0,
+          "U": 6,
+          "pass": 0,
+          "coverage": 0,
+          "score": 0,
+          "coverage_percent": 0
+        },
+        {
+          "id": "DEP",
+          "name": "النشر وSEO والقياس والمراقبة",
+          "weight": 2,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 0,
+          "U": 6,
+          "pass": 0,
+          "coverage": 0,
+          "score": 0,
+          "coverage_percent": 0
+        }
+      ]
+    },
+    "live": {
+      "method": "S,C=1; F,U=0; equal within each domain, published domain weights. Coverage includes S,C,F. Not directly comparable to R2 74 checks.",
+      "counts": {
+        "S": 0,
+        "C": 3,
+        "F": 8,
+        "U": 67
+      },
+      "score": 2.5000000000000004,
+      "coverage": 11.833333333333336,
+      "domains": [
+        {
+          "id": "REG",
+          "name": "سجل الأصول والوكلاء",
+          "weight": 8,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 0,
+          "U": 6,
+          "pass": 0,
+          "coverage": 0,
+          "score": 0,
+          "coverage_percent": 0
+        },
+        {
+          "id": "POL",
+          "name": "حزم السياسات والتتبع التنظيمي",
+          "weight": 8,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 0,
+          "U": 6,
+          "pass": 0,
+          "coverage": 0,
+          "score": 0,
+          "coverage_percent": 0
+        },
+        {
+          "id": "FW",
+          "name": "Firewall",
+          "weight": 10,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 0,
+          "U": 6,
+          "pass": 0,
+          "coverage": 0,
+          "score": 0,
+          "coverage_percent": 0
+        },
+        {
+          "id": "HG",
+          "name": "Human Gate",
+          "weight": 8,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 1,
+          "U": 5,
+          "pass": 0,
+          "coverage": 1,
+          "score": 0,
+          "coverage_percent": 16.666666666666668
+        },
+        {
+          "id": "RE",
+          "name": "Risk Engine وتقييم النماذج",
+          "weight": 12,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 0,
+          "U": 6,
+          "pass": 0,
+          "coverage": 0,
+          "score": 0,
+          "coverage_percent": 0
+        },
+        {
+          "id": "LD",
+          "name": "Ledger وسلامة الأدلة",
+          "weight": 10,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 2,
+          "U": 4,
+          "pass": 0,
+          "coverage": 2,
+          "score": 0,
+          "coverage_percent": 33.333333333333336
+        },
+        {
+          "id": "AI",
+          "name": "Groq",
+          "weight": 8,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 0,
+          "U": 6,
+          "pass": 0,
+          "coverage": 0,
+          "score": 0,
+          "coverage_percent": 0
+        },
+        {
+          "id": "INT",
+          "name": "تكامل المنتجات الأربعة",
+          "weight": 8,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 0,
+          "U": 6,
+          "pass": 0,
+          "coverage": 0,
+          "score": 0,
+          "coverage_percent": 0
+        },
+        {
+          "id": "UX",
+          "name": "التصميم وتجربة المستخدم وRTL",
+          "weight": 10,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 0,
+          "U": 6,
+          "pass": 0,
+          "coverage": 0,
+          "score": 0,
+          "coverage_percent": 0
+        },
+        {
+          "id": "PUB",
+          "name": "الإتاحة والتحويل التجاري",
+          "weight": 5,
+          "denominator": 6,
+          "S": 0,
+          "C": 1,
+          "F": 2,
+          "U": 3,
+          "pass": 1,
+          "coverage": 3,
+          "score": 16.666666666666668,
+          "coverage_percent": 50
+        },
+        {
+          "id": "SEC",
+          "name": "الأمان والخصوصية",
+          "weight": 8,
+          "denominator": 6,
+          "S": 0,
+          "C": 1,
+          "F": 2,
+          "U": 3,
+          "pass": 1,
+          "coverage": 3,
+          "score": 16.666666666666668,
+          "coverage_percent": 50
+        },
+        {
+          "id": "ARC",
+          "name": "المعمارية والاعتماديات والأداء",
+          "weight": 3,
+          "denominator": 6,
+          "S": 0,
+          "C": 0,
+          "F": 0,
+          "U": 6,
+          "pass": 0,
+          "coverage": 0,
+          "score": 0,
+          "coverage_percent": 0
+        },
+        {
+          "id": "DEP",
+          "name": "النشر وSEO والقياس والمراقبة",
+          "weight": 2,
+          "denominator": 6,
+          "S": 0,
+          "C": 1,
+          "F": 1,
+          "U": 4,
+          "pass": 1,
+          "coverage": 2,
+          "score": 16.666666666666668,
+          "coverage_percent": 33.333333333333336
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Historical baseline statuses are preserved separately and are not accepted as current evidence.",
+    "No owner permission was granted for Groq spend; AI-06 remains NOT_VERIFIED.",
+    "Render MCP authorization is unavailable; deploy SHA and live build logs are NOT_VERIFIED."
+  ]
+}

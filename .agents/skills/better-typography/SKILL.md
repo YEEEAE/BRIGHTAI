@@ -11,7 +11,7 @@ When reviewing, read the rendered page instead of scanning the code. Bad wrappin
 
 Write every fix in the project's styling system, and use the exact values below rather than familiar-looking equivalents. The [cheat sheet](css-cheat-sheet.md) maps each declaration to its Tailwind equivalent.
 
-The words themselves belong to `better-writing`. Semantic heading structure belongs to `better-accessibility`. Spatial RTL layout and logical properties belong to `better-layout`. Contrast measurement belongs to `better-colors`. This skill owns how text renders, wraps and behaves in mixed-direction content.
+The words themselves belong to `ux-writing-content-design`. Semantic heading structure belongs to `better-accessibility`. Spatial RTL layout and logical properties belong to `better-layout`. Contrast measurement belongs to `better-colors`. This skill owns how text renders, wraps and behaves in mixed-direction content.
 
 ## Serve the right format
 

@@ -1,0 +1,367 @@
+{
+  "schema_version": 1,
+  "scope": "phase-09-independent-remeterminant",
+  "recorded_at": "2026-11-26",
+  "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+  "baseline_sha": "d42f658c7543024025ba8f8c9416a8bebd37d8fe",
+  "baseline_measurement": "NOT_MEASURED",
+  "method": "Four independent levels per condition. PASS_VERIFIED=1; FAILED/BLOCKED/NOT_VERIFIED=0. Axis percent = pass/5 with numerator and denominator shown. Local results never counted as staging or live.",
+  "axes": {
+    "BE_source": {
+      "pass": 4,
+      "denominator": 5,
+      "percent": 80
+    },
+    "BE_local": {
+      "pass": 5,
+      "denominator": 5,
+      "percent": 100
+    },
+    "BE_staging": {
+      "pass": 1,
+      "denominator": 5,
+      "percent": 20
+    },
+    "BE_live": {
+      "pass": 0,
+      "denominator": 5,
+      "percent": 0
+    },
+    "API_source": {
+      "pass": 5,
+      "denominator": 5,
+      "percent": 100
+    },
+    "API_local": {
+      "pass": 5,
+      "denominator": 5,
+      "percent": 100
+    },
+    "API_staging": {
+      "pass": 0,
+      "denominator": 5,
+      "percent": 0
+    },
+    "API_live": {
+      "pass": 0,
+      "denominator": 5,
+      "percent": 0
+    },
+    "ORC_source": {
+      "pass": 4,
+      "denominator": 5,
+      "percent": 80
+    },
+    "ORC_local": {
+      "pass": 2,
+      "denominator": 5,
+      "percent": 40
+    },
+    "ORC_staging": {
+      "pass": 0,
+      "denominator": 5,
+      "percent": 0
+    },
+    "ORC_live": {
+      "pass": 0,
+      "denominator": 5,
+      "percent": 0
+    },
+    "E2E_source": {
+      "pass": 5,
+      "denominator": 5,
+      "percent": 100
+    },
+    "E2E_local": {
+      "pass": 3,
+      "denominator": 5,
+      "percent": 60
+    },
+    "E2E_staging": {
+      "pass": 0,
+      "denominator": 5,
+      "percent": 0
+    },
+    "E2E_live": {
+      "pass": 0,
+      "denominator": 5,
+      "percent": 0
+    }
+  },
+  "criteria": [
+    {
+      "id": "BE-01",
+      "source_status": "NOT_VERIFIED",
+      "local_status": "PASS_VERIFIED",
+      "staging_status": "NOT_VERIFIED",
+      "live_status": "NOT_VERIFIED",
+      "evidence_ref": [
+        "E17"
+      ],
+      "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+      "environment": "source/local/staging/live separated",
+      "limitation": "Graphify graph.json absent; source contracts inspected (E20) but dependency graph not independently mapped"
+    },
+    {
+      "id": "BE-02",
+      "source_status": "PASS_VERIFIED",
+      "local_status": "PASS_VERIFIED",
+      "staging_status": "PASS_VERIFIED",
+      "live_status": "NOT_VERIFIED",
+      "evidence_ref": [
+        "E05",
+        "E06",
+        "E11"
+      ],
+      "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+      "environment": "source/local/staging/live separated",
+      "limitation": "Kernel identity and policy version contracts verified in source and local runtime"
+    },
+    {
+      "id": "BE-03",
+      "source_status": "PASS_VERIFIED",
+      "local_status": "PASS_VERIFIED",
+      "staging_status": "NOT_VERIFIED",
+      "live_status": "NOT_VERIFIED",
+      "evidence_ref": [
+        "E06"
+      ],
+      "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+      "environment": "source/local/staging/live separated",
+      "limitation": "Public synthetic isolation asserted in browser E2E; enterprise target not exercised"
+    },
+    {
+      "id": "BE-04",
+      "source_status": "PASS_VERIFIED",
+      "local_status": "PASS_VERIFIED",
+      "staging_status": "NOT_VERIFIED",
+      "live_status": "FAILED",
+      "evidence_ref": [
+        "E01",
+        "E03",
+        "E12"
+      ],
+      "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+      "environment": "source/local/staging/live separated",
+      "limitation": "Build and health PASS locally; live healthz/readyz 404"
+    },
+    {
+      "id": "BE-05",
+      "source_status": "PASS_VERIFIED",
+      "local_status": "PASS_VERIFIED",
+      "staging_status": "NOT_VERIFIED",
+      "live_status": "NOT_VERIFIED",
+      "evidence_ref": [
+        "E06"
+      ],
+      "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+      "environment": "source/local/staging/live separated",
+      "limitation": "Four products pass independently in local governance E2E"
+    },
+    {
+      "id": "API-01",
+      "source_status": "PASS_VERIFIED",
+      "local_status": "PASS_VERIFIED",
+      "staging_status": "NOT_VERIFIED",
+      "live_status": "NOT_VERIFIED",
+      "evidence_ref": [
+        "E20"
+      ],
+      "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+      "environment": "source/local/staging/live separated",
+      "limitation": "40 API route files inventoried; 177/177 contract tests PASS locally"
+    },
+    {
+      "id": "API-02",
+      "source_status": "PASS_VERIFIED",
+      "local_status": "PASS_VERIFIED",
+      "staging_status": "NOT_VERIFIED",
+      "live_status": "NOT_VERIFIED",
+      "evidence_ref": [
+        "E20"
+      ],
+      "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+      "environment": "source/local/staging/live separated",
+      "limitation": "Request/response/error validation PASS locally"
+    },
+    {
+      "id": "API-03",
+      "source_status": "PASS_VERIFIED",
+      "local_status": "PASS_VERIFIED",
+      "staging_status": "NOT_VERIFIED",
+      "live_status": "FAILED",
+      "evidence_ref": [
+        "E05",
+        "E12"
+      ],
+      "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+      "environment": "source/local/staging/live separated",
+      "limitation": "Auth E2E PASS locally; live /app/ and /app/kernel/ 404"
+    },
+    {
+      "id": "API-04",
+      "source_status": "PASS_VERIFIED",
+      "local_status": "PASS_VERIFIED",
+      "staging_status": "NOT_VERIFIED",
+      "live_status": "NOT_VERIFIED",
+      "evidence_ref": [
+        "E04"
+      ],
+      "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+      "environment": "source/local/staging/live separated",
+      "limitation": "Idempotency DB test PASS on local PG18"
+    },
+    {
+      "id": "API-05",
+      "source_status": "PASS_VERIFIED",
+      "local_status": "PASS_VERIFIED",
+      "staging_status": "NOT_VERIFIED",
+      "live_status": "NOT_VERIFIED",
+      "evidence_ref": [
+        "E20",
+        "E10"
+      ],
+      "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+      "environment": "source/local/staging/live separated",
+      "limitation": "Decision and version contract tests PASS locally"
+    },
+    {
+      "id": "ORC-01",
+      "source_status": "PASS_VERIFIED",
+      "local_status": "PASS_VERIFIED",
+      "staging_status": "NOT_VERIFIED",
+      "live_status": "NOT_VERIFIED",
+      "evidence_ref": [
+        "E06"
+      ],
+      "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+      "environment": "source/local/staging/live separated",
+      "limitation": "Shared context verified in local governance E2E"
+    },
+    {
+      "id": "ORC-02",
+      "source_status": "PASS_VERIFIED",
+      "local_status": "FAILED",
+      "staging_status": "NOT_VERIFIED",
+      "live_status": "NOT_VERIFIED",
+      "evidence_ref": [
+        "E04",
+        "E19"
+      ],
+      "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+      "environment": "source/local/staging/live separated",
+      "limitation": "Firewall binding test PASS; authorized escalation execution remains gated by policy, so no verified end-to-end decision path"
+    },
+    {
+      "id": "ORC-03",
+      "source_status": "PASS_VERIFIED",
+      "local_status": "FAILED",
+      "staging_status": "NOT_VERIFIED",
+      "live_status": "NOT_VERIFIED",
+      "evidence_ref": [
+        "E04",
+        "E11"
+      ],
+      "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+      "environment": "source/local/staging/live separated",
+      "limitation": "Human Gate approval consumption is source-gated and production lacks delegation tables"
+    },
+    {
+      "id": "ORC-04",
+      "source_status": "PASS_VERIFIED",
+      "local_status": "PASS_VERIFIED",
+      "staging_status": "NOT_VERIFIED",
+      "live_status": "NOT_VERIFIED",
+      "evidence_ref": [
+        "E04"
+      ],
+      "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+      "environment": "source/local/staging/live separated",
+      "limitation": "Atomic rollback and idempotency tests PASS locally"
+    },
+    {
+      "id": "ORC-05",
+      "source_status": "NOT_VERIFIED",
+      "local_status": "NOT_VERIFIED",
+      "staging_status": "NOT_VERIFIED",
+      "live_status": "NOT_VERIFIED",
+      "evidence_ref": [
+        "E19"
+      ],
+      "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+      "environment": "source/local/staging/live separated",
+      "limitation": "Groq budget/egress permission not granted; NOT_VERIFIED, not PASS",
+      "severity": "P0"
+    },
+    {
+      "id": "E2E-01",
+      "source_status": "PASS_VERIFIED",
+      "local_status": "PASS_VERIFIED",
+      "staging_status": "NOT_VERIFIED",
+      "live_status": "NOT_VERIFIED",
+      "evidence_ref": [
+        "E06"
+      ],
+      "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+      "environment": "source/local/staging/live separated",
+      "limitation": "Asset-to-evidence journey PASS locally"
+    },
+    {
+      "id": "E2E-02",
+      "source_status": "PASS_VERIFIED",
+      "local_status": "PASS_VERIFIED",
+      "staging_status": "NOT_VERIFIED",
+      "live_status": "NOT_VERIFIED",
+      "evidence_ref": [
+        "E06"
+      ],
+      "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+      "environment": "source/local/staging/live separated",
+      "limitation": "Four independent product journeys PASS locally"
+    },
+    {
+      "id": "E2E-03",
+      "source_status": "PASS_VERIFIED",
+      "local_status": "NOT_VERIFIED",
+      "staging_status": "NOT_VERIFIED",
+      "live_status": "NOT_VERIFIED",
+      "evidence_ref": [
+        "E06",
+        "E19"
+      ],
+      "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+      "environment": "source/local/staging/live separated",
+      "limitation": "Export marker PASS; independent hash-chain verification of exported artifact not re-executed"
+    },
+    {
+      "id": "E2E-04",
+      "source_status": "PASS_VERIFIED",
+      "local_status": "FAILED",
+      "staging_status": "NOT_VERIFIED",
+      "live_status": "NOT_VERIFIED",
+      "evidence_ref": [
+        "E04",
+        "E09"
+      ],
+      "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+      "environment": "source/local/staging/live separated",
+      "limitation": "Conversion and Secure Chat browser assertions FAIL locally",
+      "severity": "P0"
+    },
+    {
+      "id": "E2E-05",
+      "source_status": "PASS_VERIFIED",
+      "local_status": "PASS_VERIFIED",
+      "staging_status": "NOT_VERIFIED",
+      "live_status": "NOT_VERIFIED",
+      "evidence_ref": [
+        "E05",
+        "E06"
+      ],
+      "sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+      "environment": "source/local/staging/live separated",
+      "limitation": "Auth, isolation, replay and reset PASS locally"
+    }
+  ],
+  "decision": "NOT_ACCEPTED: ORC-05 NOT_VERIFIED (no Groq permission), ORC-02/ORC-03 not end-to-end verified, E2E-04 local FAIL, and staging/live coverage incomplete."
+}

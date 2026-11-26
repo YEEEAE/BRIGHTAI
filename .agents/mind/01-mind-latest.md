@@ -1,6 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
+- 2026-11-26 NO-GO بوابة إطلاق مستقلة 13 على SHA `961836f8`: source 36.5% / local 54% / staging 10% / live 2.5%؛ بناء وSEO16 وhealth15 وAPI177 وauth/governance/design PASS، DB 16/18، conversion CTA مخفي ≤768 وSecure Chat E2E FAIL؛ Neon prod بلا `aigas_runtime` و2/31 سياسات؛ MagicPath 50/50 وRender unauthorized؛ `Audit/release-gate-13-2026-11-26/REPORT.md`.
 - 2026-11-25 PARTIAL SEO/GEO/AEO: 315/315 عناوين الإنتاج GET200 وcanonical ذاتي؛ 251 خارج مسار الرئيسية و152 alias بلا 301؛ محليًا 67 عنوانًا و3 مراكز و5 رحلات منتج، Node16/16 وChrome FAQ76/76؛ النشر وCWV الميداني NOT VERIFIED؛ `Audit/seo-geo-2026-11-25/REPORT.md`.
 - 2026-11-25 VERIFIED LOCAL UX: مراحل DEMO/PREVIEW/PILOT/PRODUCTION وحالات Contact وترتيب Ledger؛ Playwright 64/64 عبر 320/375/768/1440 وaxe صفر عند 375؛ App 503 محليًا وVoiceOver/NVDA والنشر NOT VERIFIED؛ `Audit/ux-audit-2026-11-25/REPORT.md`.
 - 2026-11-25 PARTIAL P2: OIDC إضافي لكل مؤسسة مع Neon؛ 0045 يثبت الفرض عند غياب إعدادات IdP؛ اختبارات الهوية والترحيلات 18/18 وPG18 وبناء محلي PASS؛ موفر العميل والمتصفح ومسار الطوارئ والنشر NOT VERIFIED. `docs/IDENTITY-AND-INVITATION-RUNBOOK.md`.
@@ -23,6 +24,24 @@
 - 2026-11-26 PARTIAL Analytics/SEO: GA4 مقصور على brightai.live/www بلا وسم مكرر وتجزئة CSP محدَّثة بلا توسيع؛ README يبدأ بـCurrent Architecture وأرشيف تاريخي واضح؛ build PASS و67 صفحة واختبارات 65/66 (فشل قديم في ga4-attribution:30)؛ Windsor/GSC/OpenSEO/Firecrawl/Linear غير متاحة هنا، وstream مخصص وموافقة أحداث MagicPath والنشر NOT VERIFIED؛ `Audit/analytics-seo-2026-11-26/REPORT.md`.
 
 ## Ledger (الأحدث أولًا)
+## [2026-11-26] — دمج مجموعات إضافية من مهارات الإتاحة
+- **تم:** جمع استراتيجية وخطة اختبار الإتاحة؛ وتوحيد هيكلة المحتوى ومراجعته وإعادة كتابته. حُذفت المداخل القديمة الثمانية بعد تحديث الإحالات.
+- **التحقق:** `quick_validate.py` للمهارتين PASS؛ لا إحالات قديمة في `.agents/skills/`؛ `git diff --check` PASS.
+- **الحالة:** DONE.
+- **ملفات:** `.agents/skills/accessibility-testing-strategy/SKILL.md`, `.agents/skills/accessible-content-review/SKILL.md`.
+
+## [2026-11-26] — بوابة إطلاق مستقلة 13
+- **تم:** تثبيت SHA `961836f8` وإعادة قياس 78 شرطًا + 20 خلفيًا + 12 تصميميًا بمقاماتها؛ تقارير ومصفوفات محلية فقط.
+- **التحقق:** build/seo/healthz/API/auth/governance/design PASS؛ DB 16/18؛ conversion وSecure Chat FAIL؛ Neon prod parity فاشل؛ MagicPath/Render BLOCKED.
+- **الحالة:** NO-GO؛ لا نشر ولا كتابة GitHub/Neon/Render؛ Groq NOT_VERIFIED بلا إذن.
+- **ملفات:** `Audit/release-gate-13-2026-11-26/REPORT.md`, `SCORECARD-78-MEASURED.json`.
+- **مفتوح:** إذن Groq/Render/MagicPath/النشر؛ إصلاح CTA والفيكسات وتأكيد CSP.
+## [2026-11-26] — توحيد المهارات المتداخلة
+- **تم:** توحيد مسار SEO العام، دورة قرارات الوصول (توثيق/مراجعة/تسليم)، ومرجع UX writing؛ مداخل التوافق القديمة حُذفت لاحقًا بعد تحديث الإحالات.
+- **التحقق:** 6 ملفات SKILL validation PASS؛ route/content assertions و`git diff --check` PASS.
+- **الحالة:** DONE.
+- **ملفات:** `.agents/skills/seo-optimizer/SKILL.md`, `.agents/skills/accessibility-decisions-document/SKILL.md`, `.agents/skills/ux-writing-content-design/SKILL.md`.
+
 ## [2026-11-26] — procurement/self-hosted readiness pack
 - **تم:** حزمة أدلة محلية في `Audit/procurement-selfhost-2026-11-26/` — تقرير عربي، manifest بتجزئات، خريطة بطاقات مركز الثقة، أدلة مشتريات، مسودة DPA، وخطة قبول/استعادة؛ بلا نشر أو شراء أو توقيع.
 - **التحقق:** SHA-256 من الملفات الفعلية PASS؛ Render MCP BLOCKED (لا workspace مختار)؛ MagicPath BLOCKED (الحصة 50/50)؛ لا تثبيت أو استعادة أو فحص egress.

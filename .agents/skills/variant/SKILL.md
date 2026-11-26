@@ -22,7 +22,7 @@ So each variant is a different answer to the same brief, on an axis this collect
 | Density | `better-layout` | Spacing scale, hit areas, how much fits |
 | Emphasis | `better-colors` | Where filled color goes, what recedes |
 | Type | `better-typography` | Scale steps, weight contrast, measure |
-| Voice | `better-writing` | Labels, tone, how much copy |
+| Voice | `ux-writing-content-design` | Labels, tone, how much copy |
 
 Pick **one primary axis** and give each variant a different position on it. Secondary choices follow from it rather than varying on their own. A dense variant may need a smaller type step, and that is coherence, not a second axis.
 

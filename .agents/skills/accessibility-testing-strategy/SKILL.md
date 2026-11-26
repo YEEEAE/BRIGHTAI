@@ -1,124 +1,76 @@
 ---
 name: accessibility-testing-strategy
-description: "Plan what to test, how to test, and who should test for accessibility. Use when defining a testing approach, planning QA, setting up automated and manual testing, or deciding what level of accessibility testing a project needs. Triggers on: accessibility testing, how to test, test plan, automated testing, manual testing, screen reader testing, user testing, accessibility QA, what to test, testing strategy."
+description: Use when planning accessibility QA, choosing automated and manual coverage, preparing assistive-technology testing, or organizing sessions with disabled participants.
 ---
 
-# Accessibility Testing Strategy
+# Accessibility Testing Strategy and Test Planning
 
-Plan a testing approach that catches real accessibility barriers —
-because automated tools find roughly 30% of issues. The other 70%
-require human judgment.
+Plan evidence-based accessibility testing that combines automation, expert review, assistive technology, and testing with disabled people. Select only the layers and participants appropriate to the product, risk, and release; do not treat a checklist or automated scan as proof of conformance.
 
-## The Testing Pyramid
+## Choose the scope
 
-### Layer 1: Automated Testing (Catches ~30%)
-What it finds:
-- Missing alt text
-- Colour contrast failures
-- Missing form labels
-- Missing language attribute
-- Empty headings and buttons
-- Duplicate IDs
+- **Test strategy:** decide what to test, by whom, with which methods, and when.
+- **Test plan:** turn an agreed strategy into flows, environments, assistive-technology combinations, participant criteria, session protocol, and reporting fields.
+- **Regression plan:** identify repeatable checks for changed components, critical paths, and known defects.
 
-What it misses:
-- Whether alt text is meaningful
-- Whether focus order is logical
-- Whether content makes sense
-- Whether interactions work with keyboard
-- Whether the experience is usable
+Use `accessibility-audit` to assess an existing interface and report current findings. Use `accessibility-decisions-document` for the decision lifecycle. This skill plans testing; it does not claim that testing has happened or that a product conforms.
 
-Tools: axe, Lighthouse, WAVE, Pa11y, jest-axe
-When: on every build, in CI/CD pipeline
-Who: automated — no human needed
+## 1. Define goals and risk
 
-### Layer 2: Manual Expert Testing (Catches ~50%)
-What it finds:
-- Keyboard navigation issues
-- Focus management problems
-- Logical reading order failures
-- Meaningful alt text assessment
-- Cognitive accessibility barriers
-- Interaction pattern issues
+Record the product, user groups, critical tasks, platforms, supported input methods, applicable standard and level (if specified), release timing, constraints, and evidence needed. Prioritize barriers that block core tasks, cause harm, prevent recovery, or affect many users. Mark unknowns explicitly rather than inventing coverage.
 
-Method:
-- Tab through every interactive element
-- Test with screen reader (VoiceOver or NVDA)
-- Test at 200% zoom
-- Test with system preferences enabled
-- Review content for plain language
+## 2. Select complementary testing layers
 
-When: before each release, on major feature changes
-Who: someone trained in accessibility testing
+| Layer | Useful coverage | Limits | Typical timing |
+|---|---|---|---|
+| Automated checks | Missing names/labels, invalid ARIA patterns, contrast flags, duplicate IDs, basic semantics | Cannot judge meaning, task usability, logical focus/order, or full conformance | During development and CI, on representative states |
+| Manual expert checks | Keyboard operation, focus order/visibility, zoom/reflow, content clarity, state announcements, preference settings | Depends on tester skill and may miss real-world workflows | Before release and after high-impact changes |
+| Assistive-technology checks | Screen-reader names, roles, states, announcements; voice/switch/magnification paths when relevant | Results vary by OS, browser, AT version, and user configuration | On supported platform combinations and critical paths |
+| Sessions with disabled people | Real task completion, workarounds, compatibility, unexpected barriers | Small samples are qualitative, not prevalence estimates or certification | During discovery, major redesigns, and high-risk launches |
 
-### Layer 3: User Testing With Disabled People (Catches remaining ~20%)
-What it finds:
-- Real-world usability barriers that experts miss
-- Assistive technology compatibility issues
-- Unexpected workflows and workarounds
-- Cognitive and emotional barriers
-- Issues that only appear with actual AT proficiency
+Use automation as one layer, never as a substitute for manual or user testing. Avoid generic percentages for issues detected; results depend on product and test design.
 
-Method:
-- Recruit participants with diverse disabilities
-- Test core tasks with their own devices and AT
-- Observe — don't guide or explain
-- Record what works, what fails, and what frustrates
+## 3. Choose flows, states, and combinations
 
-When: quarterly, or before major launches
-Who: users with disabilities using their own setup
+Start with primary tasks and high-risk journeys, then include navigation/input, content comprehension, and edge states. Cover relevant loading, empty, validation, error, success, permission, offline, destructive, and recovery states. Include responsive layouts, zoom/reflow, high contrast or forced colors, reduced motion, and text enlargement where supported.
 
-## What to Test First
+Build a matrix with one row per critical flow and columns for platform/browser, keyboard, screen reader, zoom/reflow, contrast/preferences, automated checks, and owner. Select combinations from actual support commitments and risk; do not attempt every permutation blindly. Include VoiceOver on supported Apple platforms and NVDA on supported Windows configurations where applicable; add TalkBack, switch control, voice control, magnification, or braille workflows when they match users and product support.
 
-### Priority 1: Core Tasks
-- Can users complete the primary tasks the product exists for?
-- Test the critical path end to end
-- Any failure here is a launch blocker
+## 4. Plan participant sessions when needed
 
-### Priority 2: Input and Navigation
-- Keyboard-only navigation through the core flow
-- Screen reader navigation through the core flow
-- Touch interaction on mobile for the core flow
+Define participant criteria around the relevant tasks and access needs, not diagnosis alone. Include people with varied experience using their own devices and assistive technology when feasible. State recruitment constraints and gaps. Obtain informed consent, protect personal data, compensate fairly where applicable, and make participation accessible.
 
-### Priority 3: Content and Comprehension
-- Is content understandable at the target reading level?
-- Are error messages helpful?
-- Is help available and findable?
+Prepare a neutral protocol:
 
-### Priority 4: Edge Cases and Preferences
-- Zoom to 200%
-- System preferences (reduced motion, high contrast, dark mode)
-- Long content, empty states, error states
+1. Explain the purpose, recording, privacy, and right to stop.
+2. Ask the participant to complete realistic tasks without teaching the interface.
+3. Observe task outcome, errors, pauses, workarounds, and participant interpretation.
+4. Ask open follow-up questions; distinguish observed behavior from opinion and researcher inference.
+5. Close with a debrief and accessible way to share later feedback.
 
-## Screen Reader Testing Basics
+Do not frame participants as testers of their own ability. Do not infer broad prevalence from a small qualitative sample.
 
-For teams new to screen reader testing:
+## 5. Write executable test cases
 
-### Start With VoiceOver (Mac)
-- Turn on: Cmd + F5
-- Navigate: VO + arrow keys (VO = Ctrl + Option)
-- Headings: VO + Cmd + H
-- Links: VO + Cmd + L
-- Forms: VO + Cmd + J
-- Turn off: Cmd + F5
+For each case record: ID, user task, preconditions, platform/browser/AT versions, steps, expected result, observed result, evidence, severity/impact, reproducibility, and status. For screen readers, check accessible name/role/state, reading and focus order, dynamic announcements, and recovery after actions. For keyboard, check all controls, visible focus, no traps, logical movement, and operable alternatives. For zoom/reflow, check content and functionality without unintended two-dimensional scrolling where applicable.
 
-### Start With NVDA (Windows)
-- Download free from nvaccess.org
-- Navigate: Tab, arrow keys
-- Headings: H
-- Links: K
-- Forms: F
-- Stop speech: Ctrl
+Separate automated assertions from expert judgments and participant observations. Map cases to WCAG criteria only when the criterion is applicable; a test mapping is not itself a conformance claim.
 
-### What to Listen For
-- Does every interactive element have a name?
-- Are state changes announced (expanded, selected, checked)?
-- Does focus move to the right place after actions?
-- Can you understand the page reading only the headings?
+## 6. Report and prioritize
 
-## Assessment Questions
+Report each issue with location, affected task and users, environment, steps, evidence, applicable criterion (if assessed), severity, workaround, and actionable remediation. Prioritize by user impact and task blockage, not criterion level alone. Track unresolved issues, owners, retest conditions, and accepted risks without inventing owners or deadlines.
 
-1. Is automated testing running on every build?
-2. Is manual expert testing happening before each release?
-3. Has the product been tested by people with disabilities?
-4. Are core tasks tested with keyboard and screen reader?
-5. Is there a clear priority for what to test first?
+Deliver the mode-appropriate artifact:
+
+- **Strategy:** scope, risk-based layers, responsibilities, timing, and evidence limits.
+- **Test plan:** flow/environment matrix, case list, participant criteria, session protocol, and reporting template.
+- **Regression plan:** repeatable checks linked to changed areas, critical paths, and known issues.
+
+## Quality checks
+
+- Critical tasks and failure/recovery states are covered.
+- Keyboard and relevant assistive technologies are represented.
+- Automated, expert, and participant evidence are clearly distinguished.
+- Test environments and AT versions are recorded.
+- Gaps and unsupported combinations remain visible.
+- No testing, WCAG conformance, or user-research result is claimed without evidence.

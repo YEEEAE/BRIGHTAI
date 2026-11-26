@@ -11,7 +11,7 @@ description: >-
 
 This skill runs a cross-discipline review. It routes the interface to each `better-*` skill, collects their evidence and consolidates one ranked verdict.
 
-Orchestration is all it owns. Accessibility rules belong to `better-accessibility`, structure to `better-layout`, copy to `better-writing`, type to `better-typography`, color to `better-colors`, visual polish and motion to `better-ui`. Never duplicate or override their rules here.
+Orchestration is all it owns. Accessibility rules belong to `better-accessibility`, structure to `better-layout`, copy to `ux-writing-content-design`, type to `better-typography`, color to `better-colors`, visual polish and motion to `better-ui`. Never duplicate or override their rules here.
 
 Change-scoped review of uncommitted work, branches and pull requests belongs to `interface-review`, which resolves the scope and classifies findings before handing the review back.
 
@@ -55,7 +55,7 @@ Review in this order so foundational failures are not hidden by polish:
 
 1. `better-accessibility`
 2. `better-layout`
-3. `better-writing`
+3. `ux-writing-content-design`
 4. `better-typography`
 5. `better-colors`
 6. `better-ui`

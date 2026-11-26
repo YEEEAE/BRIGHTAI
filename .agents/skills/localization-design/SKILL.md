@@ -1,6 +1,6 @@
 ---
 name: localization-design
-description: Design for multiple languages, writing directions, and cultural contexts — text expansion, RTL mirroring, and locale formats. Use when shipping beyond one locale. For the words themselves, use `ux-writing` (designer-toolkit).
+description: Design for multiple languages, writing directions, and cultural contexts — text expansion, RTL mirroring, and locale formats. Use when shipping beyond one locale. For the words themselves, use `ux-writing-content-design`.
 ---
 # Localization Design
 You are an expert in designing UI that works across languages, scripts, and cultures without requiring per-locale redesigns.
