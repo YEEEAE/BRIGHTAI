@@ -1,5 +1,6 @@
 import { exportEvidence, verifyEvidence } from '../demo/governance-evidence.mjs';
 import { assetPurposes, assetTemplates, createGovernanceSession, SESSION_DURATION } from '../demo/governance.mjs';
+import { decide } from '../demo/engine.mjs';
 
 const get = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 const lab = get('governance-lab');
@@ -43,7 +44,7 @@ function close(message: string, focus = false) {
   session.close();
   clearTimeout(timer);
   for (const id of ['governance-summary', 'governance-detail', 'governance-inventory', 'governance-evidence',
-    'firewall-result', 'risk-result', 'replay-summary', 'replay-history', 'replay-findings', 'review-result', 'governance-asset', 'review-source']) {
+    'firewall-result', 'risk-result', 'replay-summary', 'replay-history', 'replay-findings', 'review-result', 'governance-asset', 'review-source', 'governance-kernel-result']) {
     get(id).replaceChildren();
   }
   for (const form of lab.querySelectorAll('form')) form.reset();
@@ -93,6 +94,10 @@ function render() {
   if ([...reviewSelect.options].some(option => option.value === previousSource)) reviewSelect.value = previousSource;
   get<HTMLSelectElement>('policy-pack').value = asset.pack;
   get('governance-summary').textContent = `الأصول ${state.assets.length} · أحداث الجلسة ${state.events.length} · الإحالات المفتوحة للأصل المحدد ${pending.length}`;
+  get('metric-assets').textContent = String(state.assets.length);
+  get('metric-events').textContent = String(state.events.length);
+  get('metric-risks').textContent = String(state.events.filter(item => item.type === 'risk.assessed').length);
+  get('metric-pending').textContent = String(pending.length);
   get('governance-detail').textContent = `${name(asset.template)} · النسخة ${asset.version} · ${labels[asset.pack]}. ${assetPurposes[asset.template as keyof typeof assetPurposes]}`;
   list('governance-inventory', state.assets.map(item => `#${item.id} · ${name(item.template)} · النسخة ${item.version}`));
   const check = last('firewall.checked');
@@ -155,6 +160,16 @@ for (const form of lab.querySelectorAll('form')) {
     }
   });
 }
+
+get<HTMLFormElement>('governance-kernel-form').addEventListener('submit', event => {
+  event.preventDefault();
+  try {
+    const result = decide('kernel', get<HTMLSelectElement>('governance-kernel-role').value);
+    get('governance-kernel-result').textContent = `${result.decision} · ${result.explanation}`;
+  } catch {
+    get('governance-kernel-result').textContent = 'تعذر تقييم المثال المحلي.';
+  }
+});
 
 for (const link of links) {
   link.addEventListener('click', () => { if (link.hash === location.hash) navigate(true); });

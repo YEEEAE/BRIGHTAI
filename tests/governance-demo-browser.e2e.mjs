@@ -28,17 +28,25 @@ try {
   const submit = action => page.locator(`form[data-action="${action}"] button`).click();
 
   await visit('#firewall');
+  assert.equal(await page.locator('#metric-assets').innerText(), '1');
+  assert.equal(await page.locator('#metric-events').innerText(), '0');
   await submit('check');
   assert.match(await page.locator('#firewall-result').innerText(), /مسموح/);
+  assert.equal(await page.locator('#metric-events').innerText(), '1');
   await visit('#risk-engine');
+  assert.equal(await page.locator('#metric-events').innerText(), '0');
   await submit('assess');
   assert.match(await page.locator('#risk-result').innerText(), /منخفض/);
+  assert.equal(await page.locator('#metric-events').innerText(), '1');
+  assert.equal(await page.locator('#metric-risks').innerText(), '1');
   await visit('#human-gate');
   await submit('review');
   assert.match(await page.locator('#review-result').innerText(), /معتمد/);
   await visit('#ledger');
   await submit('record');
   assert.equal(await page.locator('#governance-evidence li').count(), 1);
+  await page.locator('#governance-verify').click();
+  await page.waitForFunction(() => document.getElementById('governance-status')?.textContent?.includes('متسقة وغير موقّعة'));
 
   await nav('inventory').focus();
   await page.keyboard.press('Enter');
@@ -60,6 +68,11 @@ try {
   await nav('ledger').click();
   assert.equal(await page.locator('#governance-evidence li').count(), 4);
   assert.match(await page.locator('#governance-evidence li').last().innerText(), /مرجع #4/);
+  await nav('overview').click();
+  assert.equal(await page.locator('#metric-assets').innerText(), '2');
+  assert.equal(await page.locator('#metric-events').innerText(), '5');
+  assert.equal(await page.locator('#metric-risks').innerText(), '0');
+  assert.equal(await page.locator('#metric-pending').innerText(), '0');
 
   const other = await context.newPage();
   await other.goto(origin + '/demo/governance/#ledger');
@@ -70,10 +83,22 @@ try {
 
   for (const width of [320, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
-    assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+    const layout = await page.evaluate(() => ({
+      width: innerWidth,
+      scrollWidth: document.documentElement.scrollWidth,
+      overflow: [...document.querySelectorAll('body *')].map(element => {
+        const rect = element.getBoundingClientRect();
+        return { tag: element.tagName, id: element.id, className: String(element.className), left: Math.round(rect.left), right: Math.round(rect.right) };
+      }).filter(element => element.right > innerWidth + 1 || element.left < -1).slice(0, 12),
+    }));
+    assert(layout.scrollWidth <= layout.width, `Horizontal overflow at ${width}px: ${JSON.stringify(layout)}`);
     const results = await new AxeBuilder({ page }).analyze();
     assert.deepEqual(results.violations.map(item => item.id), []);
   }
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.screenshot({ path: 'Audit/magicpath-p10-2026-11-26/candidate-overview-1440x900.png' });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.screenshot({ path: 'Audit/magicpath-p10-2026-11-26/candidate-overview-390x844.png' });
   assert(await page.locator('#governance-export').isDisabled());
   await page.locator('#governance-consent').check();
   const saved = page.waitForEvent('download');

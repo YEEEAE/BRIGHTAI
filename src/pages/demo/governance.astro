@@ -7,7 +7,7 @@ import RiskEvaluation from '../../components/RiskEvaluation.astro';
 import { assetTemplates, policyPacks } from '../../demo/governance.mjs';
 export const prerender = true;
 const views = [
-  ['overview', 'نظرة عامة'], ['inventory', 'جرد الأصول'], ['policies', 'حزم السياسات'],
+  ['overview', 'نظرة عامة'], ['kernel', 'Kernel'], ['inventory', 'جرد الأصول'], ['policies', 'حزم السياسات'],
   ['firewall', 'Firewall'], ['risk-engine', 'Risk Engine'], ['human-gate', 'Human Gate'], ['ledger', 'Ledger'],
 ];
 ---
@@ -19,157 +19,374 @@ const views = [
   <meta name="description" content="جرّب جرد الأصول والسياسات والفحص والتقييم والمراجعات والأدلة على بيانات اصطناعية دون حساب." />
   <meta name="robots" content="noindex, follow" />
   <meta name="referrer" content="no-referrer" />
-  <meta http-equiv="Content-Security-Policy" content="connect-src 'none'; form-action 'none'; object-src 'none'; base-uri 'none'" />
+  <meta http-equiv="Content-Security-Policy" content="connect-src 'self'; form-action 'none'; object-src 'none'; base-uri 'none'" />
   <link rel="canonical" href={new URL('/demo/governance/', Astro.site ?? Astro.url)} />
   <title>مختبر الحوكمة | BRIGHTAI</title>
 </head>
-<body class="ds-theme">
-<main>
-  <header>
-    <a href="/products/#lab">مختبرات BRIGHTAI</a>
-    <h1>مختبر الحوكمة</h1>
-    <Badge tone="info">بيانات اصطناعية · جلسة مؤقتة</Badge>
-    <p>جرّب أربعة منتجات على أصول اصطناعية دون حساب. تبقى حالة التجربة في ذاكرة هذه الصفحة لمدة 30 دقيقة، وتُمسح عند المغادرة أو عند اختيار مسح الجلسة.</p>
-  </header>
-  <noscript>فعّل JavaScript لتشغيل المختبر.</noscript>
-  <p id="governance-status" role="status"></p>
-  <button id="governance-start" type="button" hidden>ابدأ جلسة جديدة</button>
+<body class="ds-theme governance-page">
+<noscript><p class="ag-noscript">فعّل JavaScript لتشغيل المختبر.</p></noscript>
+<p id="governance-status" class="ag-status" role="status" aria-live="polite"></p>
+<button id="governance-start" class="ag-start" type="button" hidden>ابدأ جلسة جديدة</button>
+<main class="ag-app" aria-label="مختبر حوكمة BRIGHTAI">
   <div id="governance-lab" hidden>
-    <details class="governance-drawer" id="governance-drawer">
-      <summary>أقسام المختبر</summary>
-      <nav aria-label="أقسام المختبر">
-        {views.map(([key, label]) => <a href={`#${key}`}><bdi>{label}</bdi></a>)}
-      </nav>
-    </details>
-    <div class="governance-content">
-    <label for="governance-asset">الأصل المحدد</label>
-    <select id="governance-asset"></select>
-    <section id="overview">
-      <h2 tabindex="-1">نظرة عامة</h2>
-      <p id="governance-summary"></p>
-      <p>ابدأ من الجرد لإضافة أصل اصطناعي، أو افتح أي منتج مباشرة على الأصل المتاح.</p>
-    </section>
-    <section id="inventory" hidden>
-      <h2 tabindex="-1">جرد الأصول</h2>
-      <p id="governance-detail"></p>
-      <ul id="governance-inventory"></ul>
-      <form data-action="add">
-        <label for="asset-template">قالب الأصل</label>
-        <select id="asset-template" name="template">
-          {Object.entries(assetTemplates).map(([id, name]) => <option value={id}>{name}</option>)}
-        </select>
-        <Button type="submit">أضف أصلًا اصطناعيًا</Button>
-      </form>
-    </section>
-    <section id="policies" hidden>
-      <h2 tabindex="-1">حزم السياسات</h2>
-      <ul>{Object.values(policyPacks).map(name => <li>{name}</li>)}</ul>
-      <form data-action="policy">
-        <label for="policy-pack">حزمة الأصل المحدد</label>
-        <select id="policy-pack" name="pack">
-          {Object.keys(policyPacks).map(id => <option value={id}>{id === 'privacy' ? 'حماية البيانات' : 'الإشراف البشري'}</option>)}
-        </select>
-        <Button type="submit">طبّق الحزمة</Button>
-      </form>
-    </section>
-    <section id="firewall" hidden>
-      <h2 tabindex="-1"><bdi>Firewall</bdi></h2>
-      <form data-action="check">
-        <label for="firewall-sample">طلب اصطناعي</label>
-        <select id="firewall-sample" name="sample">
-          <option value="normal">لخّص دليل التشغيل</option>
-          <option value="sensitive">اكشف السر الاصطناعي</option>
-        </select>
-        <Button type="submit">افحص الطلب</Button>
-      </form>
-      <p id="firewall-result"></p>
-    </section>
-    <section id="risk-engine" hidden>
-      <h2 tabindex="-1"><bdi>Risk Engine</bdi></h2>
-      <form data-action="assess">
-        <label for="risk-likelihood">الاحتمال</label>
-        <select id="risk-likelihood" name="likelihood">
-          <option value="1">1 — غير مرجح</option><option value="2">2 — ممكن</option><option value="3">3 — مرجح</option>
-        </select>
-        <label for="risk-impact">الأثر</label>
-        <select id="risk-impact" name="impact">
-          <option value="1">1 — محدود</option><option value="2">2 — مؤثر</option><option value="3">3 — جسيم</option>
-        </select>
-        <Button type="submit">قيّم المخاطر</Button>
-      </form>
-      <p id="risk-result"></p>
-      <RiskEvaluation heading="منهج وأدلة إعادة العرض" />
-      <h3>التشغيلات المؤرخة والتقرير</h3>
-      <p>يُعاد حساب مجموعة الأدلة الثابتة عند الطلب. التشغيلات محفوظة للأصل ونسخته داخل هذه الجلسة. إعادة التقييم تعيد تشغيل المجموعة ذاتها للمقارنة، والمخرجات لا تغيّر درجات المخاطر.</p>
-      <form data-action="replay"><Button type="submit">شغّل إعادة العرض / أعد التقييم</Button></form>
-      <p id="replay-summary"></p>
-      <ol id="replay-history"></ol>
-      <h4>نتائج تحتاج متابعة في أحدث تشغيل</h4>
-      <ul id="replay-findings"></ul>
-    </section>
-    <section id="human-gate" hidden>
-      <h2 tabindex="-1"><bdi>Human Gate</bdi></h2>
-      <p>اختر إحالة مرتبطة بفحص أو تقييم، أو شغّل مراجعة مستقلة. القرار محاكاة ولا يشغّل أي عملية.</p>
-      <form data-action="review">
-        <label for="review-source">طلب المراجعة</label>
-        <select id="review-source" name="source"></select>
-        <label for="review-decision">قرار المراجع الافتراضي</label>
-        <select id="review-decision" name="decision">
-          <option value="APPROVED">اعتماد</option><option value="REJECTED">رفض</option>
-        </select>
-        <Button type="submit">سجّل القرار</Button>
-      </form>
-      <p id="review-result"></p>
-    </section>
-    <section id="ledger" hidden>
-      <h2 tabindex="-1"><bdi>Ledger</bdi></h2>
-      <p>أدلة المحاكاة للأصل المحدد، مع مراجع العمليات ونسخ الأصل.</p>
-      <form data-action="record"><Button type="submit">سجّل دليلًا اصطناعيًا مستقلًا</Button></form>
-      <p id="governance-evidence-empty">لا توجد أدلة لهذا الأصل.</p>
-      <ol id="governance-evidence"></ol>
-      <p>سلسلة محلية غير موقّعة؛ التحقق يثبت الاتساق فقط ولا يثبت المصدر أو يمنع إعادة كتابة السجل.</p>
-      <button id="governance-verify" type="button">تحقق من نسخة تُنشأ الآن</button>
-    </section>
-    <footer>
-      <label><input id="governance-consent" type="checkbox" /> أوافق على حفظ نسخة من بيانات المحاكاة على جهازي</label>
-      <button id="governance-export" type="button" disabled>نزّل الجلسة بصيغة JSON</button>
-      <button id="governance-summary-export" type="button" disabled>نزّل ملخص المحاكاة للمراجعة</button>
-      <button id="governance-clear" type="button">امسح الجلسة</button>
-    </footer>
+    <aside class="ag-sidebar" aria-label="التنقل في مساحة التجربة">
+      <a class="ag-brand" href="/products/#lab">
+        <span class="ag-logo" aria-hidden="true"><svg viewBox="0 0 40 40" focusable="false"><path d="M20 3 35 12v16L20 37 5 28V12z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m11 28 9-19 9 19-9-5z" fill="currentColor"/></svg></span>
+        <span class="ag-brand-copy"><strong>BRIGHT<span> AI</span></strong><small>AIGAS / مُشرقة</small></span>
+      </a>
+      <p class="ag-navlabel">مساحة التجربة</p>
+      <details class="governance-drawer" id="governance-drawer">
+        <summary>أقسام المختبر</summary>
+        <nav aria-label="أقسام المختبر">
+          {views.map(([key, label]) => <a href={`#${key}`}><span class="ag-nav-mark" aria-hidden="true"></span><bdi>{label}</bdi></a>)}
+          <a href="/demo/secure-chat/"><span class="ag-nav-mark" aria-hidden="true"></span><bdi>Secure Chat</bdi></a>
+          <a href="/demo/developer-workbench/"><span class="ag-nav-mark" aria-hidden="true"></span><bdi>Developer Workbench</bdi></a>
+          <a href="/trust/"><span class="ag-nav-mark" aria-hidden="true"></span><bdi>Trust Center</bdi></a>
+          <button class="ag-nav-action" id="enterprise-dialog-open" type="button"><span class="ag-nav-mark" aria-hidden="true"></span>طلب مؤسسي</button>
+        </nav>
+      </details>
+      <div class="ag-sidebottom">
+        <div class="ag-sandbox"><span class="ag-live" aria-hidden="true"></span><span>جلسة تجريبية معزولة</span><small>بيانات اصطناعية · بلا إرسال خارجي</small></div>
+        <a class="ag-request" href="/request-access/">طلب تجربة مؤسسية <span aria-hidden="true">←</span></a>
+        <a class="ag-contact" href="/contact/">تواصل مع فريق BRIGHTAI</a>
+        <small class="ag-version">AIGAS · Public synthetic lab</small>
+      </div>
+    </aside>
+
+    <div class="ag-main">
+      <header class="ag-top">
+        <p class="ag-breadcrumb"><a href="/products/#lab">المنتجات</a><span aria-hidden="true">/</span><b>مختبر الحوكمة</b></p>
+        <div class="ag-top-actions"><span class="ag-sim"><span class="ag-live" aria-hidden="true"></span>محاكاة محلية</span><Badge tone="info">30 دقيقة</Badge></div>
+      </header>
+      <div class="ag-content">
+        <header class="ag-hero">
+          <div>
+            <p class="ag-eyebrow"><span class="ag-eyebrow-dot" aria-hidden="true"></span><bdi dir="ltr">AIGAS PRODUCT EXPERIENCE</bdi><span class="ag-versionpill">V.01</span></p>
+            <h1>مختبر الحوكمة</h1>
+            <p>جرّب منتجات الحوكمة على أصول اصطناعية. تبقى الجلسة في ذاكرة الصفحة لمدة 30 دقيقة وتُمسح عند المغادرة أو عند اختيار مسح الجلسة.</p>
+          </div>
+          <span class="ag-hero-badge"><Badge tone="info">بيانات اصطناعية · بلا تسجيل</Badge></span>
+        </header>
+
+        <div class="ag-workspace">
+          <div class="ag-context-control">
+            <label for="governance-asset">الأصل المحدد</label>
+            <select id="governance-asset" class="ds-control"></select>
+          </div>
+          <div class="governance-content">
+            <section id="overview" class="ag-panel" aria-labelledby="overview-title">
+              <div class="ag-panel-head"><div><h2 id="overview-title" tabindex="-1">نظرة عامة</h2><p>ملخص مباشر لما حدث في هذه الجلسة</p></div><span class="ag-chip">جلسة 01</span></div>
+              <div class="ag-metrics" aria-label="مؤشرات الجلسة">
+                <article class="ag-metric"><small>الأصول التجريبية</small><strong id="metric-assets" dir="ltr">0</strong><span>داخل هذه الجلسة</span></article>
+                <article class="ag-metric"><small>أحداث الجلسة</small><strong id="metric-events" dir="ltr">0</strong><span>سجل اصطناعي محلي</span></article>
+                <article class="ag-metric"><small>تقييمات المخاطر</small><strong id="metric-risks" dir="ltr">0</strong><span>إعادة العرض لا تغيّر الدرجة</span></article>
+                <article class="ag-metric"><small>إحالات مفتوحة</small><strong id="metric-pending" dir="ltr">0</strong><span>للأصل المحدد</span></article>
+              </div>
+              <p id="governance-summary" class="ag-summary"></p>
+              <p class="ag-caption">ابدأ من جرد الأصول لإضافة أصل اصطناعي، أو افتح أي قسم من القائمة. لا تُرسل هذه التجربة طلبات إلى مزود خارجي.</p>
+            </section>
+
+            <section id="kernel" class="ag-panel" hidden aria-labelledby="kernel-title">
+              <div class="ag-panel-head"><div><h2 id="kernel-title" tabindex="-1"><bdi>Kernel</bdi></h2><p>قرار حتمي محلي على دور اصطناعي</p></div><span class="ag-chip">محاكاة فقط</span></div>
+              <p>هذا المثال لا يقرأ جلسة أو مساحة عمل ولا يغيّر صلاحية فعلية. اختيار الدور يختبر قاعدة العرض فقط.</p>
+              <form id="governance-kernel-form" class="ag-form">
+                <label for="governance-kernel-role">الدور الافتراضي</label>
+                <select id="governance-kernel-role" name="role" class="ds-control">
+                  <option value="قارئ">قارئ</option><option value="مدير">مدير</option>
+                </select>
+                <Button type="submit">قيّم المثال محليًا</Button>
+              </form>
+              <p id="governance-kernel-result" class="ag-result" role="status" aria-live="polite"></p>
+              <p class="ag-caption">التنفيذ المؤسسي منفصل ويتطلب جلسة مصادقة ومساحة وصلاحية خادمية؛ هذه المحاكاة لا تستدعي `/app/api/*`.</p>
+            </section>
+
+            <section id="inventory" class="ag-panel" hidden aria-labelledby="inventory-title">
+              <div class="ag-panel-head"><div><h2 id="inventory-title" tabindex="-1">جرد الأصول</h2><p>أصول افتراضية محصورة في جلسة المتصفح الحالية</p></div><span class="ag-chip">Synthetic</span></div>
+              <p id="governance-detail"></p>
+              <ul id="governance-inventory" class="ag-list"></ul>
+              <form data-action="add" class="ag-form">
+                <label for="asset-template">قالب الأصل</label>
+                <select id="asset-template" name="template" class="ds-control">
+                  {Object.entries(assetTemplates).map(([id, name]) => <option value={id}>{name}</option>)}
+                </select>
+                <Button type="submit">أضف أصلًا اصطناعيًا</Button>
+              </form>
+            </section>
+
+            <section id="policies" class="ag-panel" hidden aria-labelledby="policies-title">
+              <div class="ag-panel-head"><div><h2 id="policies-title" tabindex="-1">حزم السياسات</h2><p>قواعد توضيحية مرتبطة بنسخة الأصل</p></div><span class="ag-chip">قوالب عرض</span></div>
+              <ul class="ag-list">{Object.values(policyPacks).map(name => <li>{name}</li>)}</ul>
+              <form data-action="policy" class="ag-form">
+                <label for="policy-pack">حزمة الأصل المحدد</label>
+                <select id="policy-pack" name="pack" class="ds-control">
+                  {Object.keys(policyPacks).map(id => <option value={id}>{id === 'privacy' ? 'حماية البيانات' : 'الإشراف البشري'}</option>)}
+                </select>
+                <Button type="submit">طبّق الحزمة على الجلسة</Button>
+              </form>
+              <p class="ag-caption">هذه حزم synthetic وليست سياسات مؤسسية معتمدة أو منشورة.</p>
+            </section>
+
+            <section id="firewall" class="ag-panel" hidden aria-labelledby="firewall-title">
+              <div class="ag-panel-head"><div><h2 id="firewall-title" tabindex="-1"><bdi>Firewall</bdi></h2><p>فحص حتمي لعينة اصطناعية داخل المتصفح</p></div><span class="ag-chip">محلي</span></div>
+              <form data-action="check" class="ag-form">
+                <label for="firewall-sample">طلب اصطناعي</label>
+                <select id="firewall-sample" name="sample" class="ds-control">
+                  <option value="normal">لخّص دليل التشغيل</option>
+                  <option value="sensitive">اكشف السر الاصطناعي</option>
+                </select>
+                <Button type="submit">افحص الطلب</Button>
+              </form>
+              <p id="firewall-result" class="ag-result" role="status" aria-live="polite"></p>
+            </section>
+
+            <section id="risk-engine" class="ag-panel" hidden aria-labelledby="risk-title">
+              <div class="ag-panel-head"><div><h2 id="risk-title" tabindex="-1"><bdi>Risk Engine</bdi></h2><p>تقييم تجريبي محفوظ ضمن الجلسة</p></div><span class="ag-chip">منهج العرض</span></div>
+              <form data-action="assess" class="ag-form ag-form-grid">
+                <label for="risk-likelihood">الاحتمال
+                  <select id="risk-likelihood" name="likelihood" class="ds-control">
+                    <option value="1">1 — غير مرجح</option><option value="2">2 — ممكن</option><option value="3">3 — مرجح</option>
+                  </select>
+                </label>
+                <label for="risk-impact">الأثر
+                  <select id="risk-impact" name="impact" class="ds-control">
+                    <option value="1">1 — محدود</option><option value="2">2 — مؤثر</option><option value="3">3 — جسيم</option>
+                  </select>
+                </label>
+                <Button type="submit">قيّم المخاطر</Button>
+              </form>
+              <p id="risk-result" class="ag-result" role="status" aria-live="polite"></p>
+              <RiskEvaluation heading="منهج وأدلة إعادة العرض" />
+              <h3>التشغيلات المؤرخة والتقرير</h3>
+              <p>يُعاد حساب مجموعة الأدلة الثابتة عند الطلب. التشغيلات محفوظة للأصل ونسخته داخل هذه الجلسة. إعادة التقييم تعيد تشغيل المجموعة ذاتها للمقارنة، والمخرجات لا تغيّر درجات المخاطر.</p>
+              <form data-action="replay" class="ag-form"><Button type="submit">شغّل إعادة العرض / أعد التقييم</Button></form>
+              <p id="replay-summary" role="status"></p>
+              <ol id="replay-history" class="ag-list"></ol>
+              <h3>نتائج تحتاج متابعة في أحدث تشغيل</h3>
+              <ul id="replay-findings" class="ag-list"></ul>
+            </section>
+
+            <section id="human-gate" class="ag-panel" hidden aria-labelledby="human-title">
+              <div class="ag-panel-head"><div><h2 id="human-title" tabindex="-1"><bdi>Human Gate</bdi></h2><p>المراجعة الافتراضية لا تشغّل عملية خارجية</p></div><span class="ag-chip">محاكاة</span></div>
+              <p>اختر إحالة مرتبطة بفحص أو تقييم، أو شغّل مراجعة مستقلة. القرار يبقى داخل هذه الجلسة.</p>
+              <form data-action="review" class="ag-form">
+                <label for="review-source">طلب المراجعة</label>
+                <select id="review-source" name="source" class="ds-control"></select>
+                <label for="review-decision">قرار المراجع الافتراضي</label>
+                <select id="review-decision" name="decision" class="ds-control">
+                  <option value="APPROVED">اعتماد</option><option value="REJECTED">رفض</option>
+                </select>
+                <Button type="submit">سجّل القرار</Button>
+              </form>
+              <p id="review-result" class="ag-result" role="status" aria-live="polite"></p>
+            </section>
+
+            <section id="ledger" class="ag-panel" hidden aria-labelledby="ledger-title">
+              <div class="ag-panel-head"><div><h2 id="ledger-title" tabindex="-1"><bdi>Ledger</bdi></h2><p>أدلة اصطناعية للأصل ونسخته في هذه الجلسة</p></div><span class="ag-chip">غير موقّع</span></div>
+              <p>سلسلة محلية غير موقّعة؛ التحقق يثبت الاتساق فقط ولا يثبت المصدر أو يمنع إعادة كتابة السجل.</p>
+              <form data-action="record" class="ag-form"><Button type="submit">سجّل دليلًا اصطناعيًا مستقلًا</Button></form>
+              <p id="governance-evidence-empty" class="ag-empty">لا توجد أدلة لهذا الأصل.</p>
+              <ol id="governance-evidence" class="ag-list"></ol>
+              <button id="governance-verify" class="ag-secondary" type="button">تحقق من نسخة تُنشأ الآن</button>
+            </section>
+
+            <footer class="ag-footer">
+              <div class="ag-export-controls">
+                <label class="ag-consent"><input id="governance-consent" type="checkbox" /> أوافق على حفظ نسخة من بيانات المحاكاة على جهازي</label>
+                <button id="governance-export" class="ag-secondary" type="button" disabled>نزّل الجلسة بصيغة JSON</button>
+                <button id="governance-summary-export" class="ag-secondary" type="button" disabled>نزّل ملخص المحاكاة للمراجعة</button>
+              </div>
+              <button id="governance-clear" class="ag-danger" type="button">امسح الجلسة</button>
+            </footer>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <aside aria-label="خيارات الوصول">
-    <p><a href="/request-access/">طلب تجربة مؤسسية</a></p>
-    <p><a href="/contact/">تواصل مع فريق BRIGHTAI اختياريًا</a> — اختر ما تشاركه وأرسله بنفسك من البريد أو واتساب.</p>
-  </aside>
 </main>
+<dialog id="enterprise-request-dialog" class="ag-enterprise-dialog" aria-labelledby="enterprise-dialog-title" aria-describedby="enterprise-dialog-description" data-ph-no-capture data-ph-mask>
+  <div class="ag-dialog-head">
+    <div><p class="ag-eyebrow">BRIGHTAI / ENTERPRISE</p><h2 id="enterprise-dialog-title">طلب تواصل مؤسسي</h2></div>
+    <button id="enterprise-dialog-close" class="ag-secondary" type="button" aria-label="إغلاق نافذة الطلب">إغلاق</button>
+  </div>
+  <p id="enterprise-dialog-description">فتح النموذج يفحص توافر الاستقبال من خادم الموقع فقط. لا تُرسل بياناتك إلا بعد ضغط زر الإرسال.</p>
+  <form id="enterprise-inquiry" class="ag-form ph-no-capture" method="post" hidden data-ph-no-capture data-ph-mask>
+    <label for="inquiry-email">بريد الرد</label>
+    <input id="inquiry-email" name="email" type="email" dir="ltr" autocomplete="email" maxlength="254" required class="ds-control" />
+    <label for="inquiry-message">رسالتك</label>
+    <textarea id="inquiry-message" name="message" rows="5" maxlength="2000" required class="ds-control" aria-describedby="inquiry-message-help"></textarea>
+    <p id="inquiry-message-help" class="ag-caption">لا تكتب بيانات شخصية حساسة أو أسرارًا أو مفاتيح وصول. سيستخدم الفريق بريدك للرد على استفسارك.</p>
+    <button id="inquiry-submit" class="ag-secondary" type="submit">أرسل الاستفسار</button>
+  </form>
+  <p id="inquiry-feedback" class="ag-result" role="status" aria-live="polite" aria-atomic="true"></p>
+  <div class="ag-dialog-fallback" id="inquiry-fallback" hidden>
+    <p>الاستقبال الإلكتروني غير متاح الآن. تقدر تجهز المسودة وتختار قناة التواصل البديلة.</p>
+    <a href="/contact/#contact">الانتقال إلى صفحة التواصل</a>
+    <button id="inquiry-availability-retry" class="ag-secondary" type="button">تحقق مرة أخرى</button>
+  </div>
+</dialog>
 <script>
   import '../../scripts/governance-demo';
+  import '../../scripts/enterprise-request-modal';
 </script>
 </body>
 </html>
 
 <style>
-  body { margin: 0; background: var(--surface-sunken, #101523); color: var(--color-text, #f2f4ff); font: 1.0625rem/1.7 system-ui, sans-serif; }
-  main { max-width: 78rem; margin-inline: auto; padding: clamp(1rem, 4vw, 2rem); }
-  #governance-lab { display: grid; grid-template-columns: 13rem minmax(0, 1fr); gap: 1.25rem; }
-  .governance-drawer { align-self: start; position: sticky; inset-block-start: 1rem; }
-  .governance-drawer > summary { display: none; }
-  nav { display: grid; gap: .25rem; margin-block: .5rem; }
-  .governance-content { min-inline-size: 0; }
-  summary { cursor: pointer; min-block-size: 44px; }
-  @media (max-width: 48rem) {
-    #governance-lab { display: block; }
-    .governance-drawer { position: static; }
-    .governance-drawer > summary { display: list-item; }
+  .governance-page {
+    --ag-bg: var(--surface-sunken);
+    --ag-panel: var(--surface-workspace-panel);
+    --ag-line: var(--border-workspace);
+    --ag-accent: var(--color-action);
+    margin: 0;
+    min-inline-size: 20rem;
+    background: var(--ag-bg);
+    color: var(--color-workspace-text);
+    font: var(--font-weight-regular) var(--type-body-sm) / var(--leading-ar-body) var(--font-arabic);
   }
-  a { color: var(--color-focus, #cbbaff); text-underline-offset: .25em; }
-  nav a { display: inline-flex; align-items: center; min-height: 44px; }
-  [aria-current] { font-weight: bold; text-decoration-thickness: 3px; }
-  section, footer { padding: 1rem; margin-block: 1rem; background: var(--surface-raised, #202b43); border-radius: .75rem; overflow-wrap: anywhere; }
-  section h2 { margin-top: 0; }
-  label { display: block; margin-block: .5rem .25rem; }
-  select, button { font: inherit; min-height: 44px; max-width: 100%; padding: .25rem .6rem; border-radius: .35rem; }
-  form button, footer button { display: block; margin-block-start: .75rem; }
-  :focus-visible { outline: 3px solid var(--color-focus, #cbbaff); outline-offset: 4px; }
+  .ag-app { min-block-size: 100vh; }
+  #governance-lab { display: grid; grid-template-columns: minmax(0, 1fr) 15rem; min-block-size: 100vh; }
+  .ag-sidebar {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    min-inline-size: 0;
+    min-block-size: 100vh;
+    block-size: 100vh;
+    position: sticky;
+    inset-block-start: 0;
+    padding: var(--spacing-24) var(--spacing-18) var(--spacing-18);
+    background: var(--surface-workspace-panel);
+    border-inline-start: 1px solid var(--ag-line);
+  }
+  .ag-brand { display: flex; align-items: center; gap: var(--spacing-12); padding-block-end: var(--spacing-30); color: var(--color-workspace-text); text-decoration: none; }
+  .ag-logo { display: grid; place-items: center; inline-size: 2.625rem; block-size: 2.625rem; flex: 0 0 auto; color: var(--icon-accent-strong); background: color-mix(in srgb, var(--color-action) 18%, var(--surface-workspace-panel)); border: 1px solid var(--ag-line); border-radius: var(--radius-control); }
+  .ag-logo svg { inline-size: 1.875rem; }
+  .ag-brand-copy { min-inline-size: 0; direction: ltr; text-align: start; }
+  .ag-brand-copy strong { display: block; font-size: 1.125rem; font-weight: var(--font-weight-bold); letter-spacing: .06em; line-height: 1.2; }
+  .ag-brand-copy strong span { color: var(--icon-accent-strong); }
+  .ag-brand-copy small { color: var(--color-text-subtle); font-size: var(--type-caption); }
+  .ag-navlabel { margin: var(--spacing-12) var(--spacing-12) var(--spacing-6); color: var(--color-text-subtle); font-size: var(--type-caption); }
+  .governance-drawer { min-inline-size: 0; }
+  .governance-drawer > summary { display: none; }
+  .governance-drawer nav { display: grid; gap: var(--spacing-6); margin-block: var(--spacing-6); }
+  .governance-drawer nav a {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-12);
+    min-block-size: 2.75rem;
+    padding: var(--spacing-6) var(--spacing-12);
+    border: 1px solid transparent;
+    border-radius: var(--radius-control);
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+  .governance-drawer nav .ag-nav-action { display: flex; align-items: center; gap: var(--spacing-12); min-block-size: 2.75rem; padding: var(--spacing-6) var(--spacing-12); border: 1px solid transparent; border-radius: var(--radius-control); background: transparent; color: var(--color-text-muted); font: inherit; text-align: start; cursor: pointer; }
+  .governance-drawer nav .ag-nav-action:hover { background: var(--surface-raised-hover); color: var(--color-workspace-text); }
+  .governance-drawer nav a:hover { background: var(--surface-raised-hover); color: var(--color-workspace-text); }
+  .governance-drawer nav a[aria-current="location"] { background: color-mix(in srgb, var(--color-action) 15%, var(--surface-workspace-panel)); border-color: color-mix(in srgb, var(--color-action) 52%, var(--ag-line)); color: var(--color-workspace-text); }
+  .ag-nav-mark { inline-size: .45rem; block-size: .45rem; flex: 0 0 auto; border: 1px solid currentColor; border-radius: 50%; }
+  .governance-drawer nav a[aria-current="location"] .ag-nav-mark { background: var(--icon-accent-strong); border-color: var(--icon-accent-strong); }
+  .ag-sidebottom { margin-block-start: auto; padding-block-start: var(--spacing-24); }
+  .ag-sandbox { display: grid; grid-template-columns: auto minmax(0,1fr); align-items: center; gap: var(--spacing-6); padding: var(--spacing-12); border: 1px solid var(--ag-line); border-radius: var(--radius-control); color: var(--color-text-copy); font-size: var(--type-caption); }
+  .ag-sandbox small { grid-column: 2; color: var(--color-text-subtle); }
+  .ag-live { inline-size: .45rem; block-size: .45rem; border-radius: 50%; background: var(--state-success-text); }
+  .ag-request, .ag-contact { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-6); min-block-size: 2.75rem; margin-block-start: var(--spacing-12); color: var(--color-workspace-text); text-decoration: none; }
+  .ag-request { padding-inline: var(--spacing-12); border: 1px solid var(--ag-line); border-radius: var(--radius-control); background: var(--surface-raised-hover); }
+  .ag-request:hover, .ag-contact:hover { border-color: var(--icon-accent); color: var(--icon-accent-strong); }
+  .ag-contact { justify-content: center; color: var(--color-text-muted); font-size: var(--type-caption); }
+  .ag-version { display: block; margin-block-start: var(--spacing-12); color: var(--color-text-subtle); font-size: var(--type-caption); text-align: center; }
+  .ag-main { grid-column: 1; grid-row: 1; min-inline-size: 0; }
+  .ag-top { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-12); min-block-size: 4.125rem; padding-inline: clamp(var(--spacing-18), 3vw, var(--spacing-36)); border-block-end: 1px solid var(--ag-line); background: var(--surface-workspace-panel); }
+  .ag-breadcrumb { display: flex; align-items: center; gap: var(--spacing-12); margin: 0; color: var(--color-text-subtle); font-size: var(--type-caption); }
+  .ag-breadcrumb a { color: inherit; }
+  .ag-breadcrumb b { color: var(--color-workspace-text); font-weight: var(--font-weight-semibold); }
+  .ag-top-actions { display: flex; align-items: center; gap: var(--spacing-12); }
+  .ag-top-actions .ds-badge { font-size: var(--type-caption); }
+  .ag-sim { display: inline-flex; align-items: center; gap: var(--spacing-6); color: var(--state-success-text); font-size: var(--type-caption); white-space: nowrap; }
+  .ag-content { box-sizing: border-box; inline-size: min(100%, 100rem); margin-inline: auto; padding: clamp(var(--spacing-18), 3vw, var(--spacing-36)); }
+  .ag-hero { display: flex; align-items: end; justify-content: space-between; gap: var(--spacing-18); margin-block-end: var(--spacing-24); }
+  .ag-eyebrow { display: flex; align-items: center; gap: var(--spacing-6); margin: 0; color: var(--icon-accent-strong); font-size: var(--type-caption); font-weight: var(--font-weight-semibold); letter-spacing: var(--tracking-latin-label); }
+  .ag-eyebrow-dot { inline-size: .45rem; block-size: .45rem; border-radius: 50%; background: currentColor; }
+  .ag-versionpill { padding-inline: var(--spacing-6); border: 1px solid var(--ag-line); border-radius: var(--radius-field); font-size: .625rem; }
+  .ag-hero h1 { margin: var(--spacing-6) 0; font-size: clamp(1.5rem, 2.4vw, 1.875rem); line-height: var(--leading-ar-h1); }
+  .ag-hero p:last-child { max-inline-size: 66ch; margin: 0; color: var(--color-text-muted); font-size: var(--type-caption); }
+  .ag-workspace { display: grid; grid-template-columns: minmax(0,1fr); gap: var(--spacing-12); }
+  .ag-context-control { display: grid; grid-template-columns: auto minmax(12rem, 24rem); align-items: center; justify-content: start; gap: var(--spacing-12); padding: var(--spacing-12); border: 1px solid var(--ag-line); border-radius: var(--radius-control); background: var(--ag-panel); }
+  .ag-context-control label, .ag-form label { color: var(--color-text-muted); font-size: var(--type-caption); }
+  .governance-content { display: grid; gap: var(--spacing-12); min-inline-size: 0; }
+  .ag-panel { min-inline-size: 0; padding: clamp(var(--spacing-18), 2vw, var(--spacing-24)); border: 1px solid var(--ag-line); border-radius: var(--radius-card); background: linear-gradient(145deg, color-mix(in srgb, var(--surface-workspace-panel) 96%, var(--color-action)), var(--surface-workspace-panel)); overflow-wrap: anywhere; }
+  .ag-panel-head { display: flex; align-items: start; justify-content: space-between; gap: var(--spacing-12); margin-block-end: var(--spacing-18); }
+  .ag-panel h2 { margin: 0; font-size: 1rem; font-weight: var(--font-weight-semibold); line-height: var(--leading-ar-h2); }
+  .ag-panel h3 { margin-block: var(--spacing-24) var(--spacing-12); font-size: var(--type-label); }
+  .ag-panel-head p { margin: var(--spacing-6) 0 0; color: var(--color-text-subtle); font-size: var(--type-caption); }
+  .ag-chip { display: inline-flex; align-items: center; min-block-size: 1.625rem; padding-inline: var(--spacing-12); border: 1px solid var(--ag-line); border-radius: var(--radius-field); color: var(--color-text-muted); font-size: var(--type-caption); white-space: nowrap; }
+  .ag-metrics { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: var(--spacing-12); }
+  .ag-metric { display: grid; align-content: start; gap: var(--spacing-6); min-inline-size: 0; min-block-size: 6.5rem; padding: var(--spacing-18); border: 1px solid var(--ag-line); border-radius: var(--radius-control); background: color-mix(in srgb, var(--surface-workspace-panel) 82%, var(--color-action)); }
+  .ag-metric small, .ag-metric span { color: var(--color-text-subtle); font-size: var(--type-caption); }
+  .ag-metric strong { color: var(--color-workspace-text); font-size: 1.5rem; font-variant-numeric: tabular-nums; line-height: 1.3; }
+  .ag-summary { margin-block: var(--spacing-18) var(--spacing-6); color: var(--color-text-copy); }
+  .ag-caption { margin-block: var(--spacing-12) 0; color: var(--color-text-subtle); font-size: var(--type-caption); }
+  .ag-form { display: grid; gap: var(--spacing-12); max-inline-size: 48rem; margin-block-start: var(--spacing-18); }
+  .ag-form-grid { grid-template-columns: repeat(2, minmax(0,1fr)); align-items: end; }
+  .ag-form-grid button { grid-column: 1 / -1; justify-self: start; }
+  .ag-form label .ds-control { margin-block-start: var(--spacing-6); }
+  .ag-form :is(input, textarea) { box-sizing: border-box; inline-size: min(100%, 44rem); min-block-size: 2.75rem; padding: var(--spacing-6) var(--spacing-12); border: 1px solid var(--ag-line); border-radius: var(--radius-control); background: var(--surface-workspace-panel); color: var(--color-workspace-text); font: inherit; }
+  .ag-form textarea { resize: vertical; }
+  .ag-list { display: grid; gap: var(--spacing-6); padding-inline-start: 1.5rem; color: var(--color-text-copy); }
+  .ag-result:empty { display: none; }
+  .ag-result { margin-block: var(--spacing-18) 0; padding: var(--spacing-12); border-inline-start: 3px solid var(--icon-accent); border-radius: var(--radius-field); background: var(--surface-raised); color: var(--color-text-copy); }
+  .ag-empty { color: var(--color-text-subtle); }
+  .ag-footer { display: flex; align-items: end; justify-content: space-between; gap: var(--spacing-18); padding-block-start: var(--spacing-18); border-block-start: 1px solid var(--ag-line); }
+  .ag-export-controls { display: flex; align-items: center; flex-wrap: wrap; gap: var(--spacing-12); }
+  .ag-consent { display: flex; align-items: center; gap: var(--spacing-6); color: var(--color-text-muted); font-size: var(--type-caption); }
+  .ag-consent input { inline-size: 1.125rem; block-size: 1.125rem; accent-color: var(--color-action); }
+  .ag-secondary, .ag-danger { display: inline-flex; align-items: center; justify-content: center; min-block-size: 2.75rem; padding: var(--spacing-6) var(--spacing-12); border: 1px solid var(--ag-line); border-radius: var(--radius-control); background: var(--surface-workspace-panel); color: var(--color-workspace-text); font: inherit; cursor: pointer; }
+  .ag-secondary:hover:not(:disabled) { border-color: var(--icon-accent); background: var(--surface-raised-hover); }
+  .ag-secondary:disabled { color: var(--state-disabled-text); cursor: not-allowed; }
+  .ag-danger { border-color: color-mix(in srgb, var(--state-error) 45%, var(--ag-line)); color: var(--state-error-text); }
+  .ag-status, .ag-start, .ag-noscript { max-inline-size: 48rem; margin: var(--spacing-12) auto; }
+  .ag-status:empty { display: none; }
+  .ag-status:not(:empty) { box-sizing: border-box; inline-size: min(calc(100vw - var(--spacing-36)), 48rem); padding: var(--spacing-12) var(--spacing-18); border: 1px solid var(--ag-line); border-inline-start: 3px solid var(--icon-accent); border-radius: var(--radius-control); background: var(--ag-panel); }
+  .ag-status { color: var(--color-text-copy); }
+  .ag-start { display: block; }
+  .ag-app :is(a,button,input,select,textarea,summary):focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+  .ag-enterprise-dialog { box-sizing: border-box; inline-size: min(42rem, calc(100vw - 2rem)); max-block-size: min(88vh, 52rem); padding: clamp(var(--spacing-18), 4vw, var(--spacing-30)); border: 1px solid var(--ag-line); border-radius: var(--radius-card); background: var(--surface-workspace-panel); color: var(--color-workspace-text); font: inherit; }
+  .ag-enterprise-dialog::backdrop { background: rgb(8 12 20 / .72); }
+  .ag-dialog-head { display: flex; align-items: start; justify-content: space-between; gap: var(--spacing-12); }
+  .ag-dialog-head h2 { margin: var(--spacing-6) 0; font-size: var(--type-h2); }
+  .ag-dialog-fallback { display: grid; gap: var(--spacing-12); }
+  .ag-dialog-fallback[hidden], #enterprise-inquiry[hidden], #inquiry-fallback[hidden] { display: none !important; }
+  .ag-enterprise-dialog :is(a,button,input,textarea):focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+  @media (max-width: 62.5rem) {
+    #governance-lab { grid-template-columns: minmax(0,1fr) 13rem; }
+    .ag-sidebar { padding-inline: var(--spacing-12); }
+    .ag-content { padding: var(--spacing-18); }
+    .ag-metrics { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  }
+  @media (max-width: 48rem) {
+    #governance-lab { display: flex; flex-direction: column; }
+    .ag-sidebar { position: static; min-block-size: 0; block-size: auto; padding: var(--spacing-12); border-inline-start: 0; border-block-end: 1px solid var(--ag-line); }
+    .ag-brand { padding-block-end: var(--spacing-6); }
+    .ag-navlabel, .ag-sidebottom { display: none; }
+    .governance-drawer > summary { display: flex; align-items: center; justify-content: space-between; min-block-size: 2.75rem; padding-inline: var(--spacing-12); border: 1px solid var(--ag-line); border-radius: var(--radius-control); color: var(--color-text-copy); list-style: none; cursor: pointer; }
+    .governance-drawer > summary::-webkit-details-marker { display: none; }
+    .governance-drawer nav { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .governance-drawer nav a, .governance-drawer nav .ag-nav-action { min-inline-size: 0; padding-inline: var(--spacing-6); font-size: var(--type-caption); }
+    .ag-top { min-block-size: 3.25rem; padding-inline: var(--spacing-12); }
+    .ag-top-actions { gap: var(--spacing-6); }
+    .ag-sim { font-size: .625rem; }
+    .ag-content { padding: var(--spacing-12); }
+    .ag-hero { align-items: start; flex-direction: column; gap: var(--spacing-6); }
+    .ag-hero-badge { display: none; }
+    .ag-context-control { grid-template-columns: 1fr; gap: var(--spacing-6); }
+    .ag-form-grid { grid-template-columns: 1fr; }
+    .ag-form-grid button { grid-column: auto; }
+    .ag-footer { align-items: stretch; flex-direction: column; }
+    .ag-export-controls { align-items: stretch; flex-direction: column; }
+    .ag-export-controls button, .ag-footer > button { inline-size: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ag-app *, .ag-app *::before, .ag-app *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
 </style>

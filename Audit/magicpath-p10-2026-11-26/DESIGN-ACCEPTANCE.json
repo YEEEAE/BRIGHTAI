@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "task": "MagicPath P10 exact UI implementation and functional binding",
+  "checked_at": "2026-11-26",
+  "overall_status": "PARTIAL",
+  "reference": {
+    "project_id": "476406002938429440",
+    "component_id": "476406049398726656",
+    "revision_id": "476467892385353728",
+    "source_preview_screenshot": "BLOCKED",
+    "reason": "No inspectable or saved preview image was available in the MagicPath reading session."
+  },
+  "candidate": {
+    "head": "a72d8af5982885619779be637a95928d31d9c250",
+    "candidate_source": "HEAD plus local uncommitted working-tree changes",
+    "working_tree_before_audit": "CLEAN",
+    "working_tree_after_candidate": "MODIFIED_UNCOMMITTED",
+    "candidate_screenshots": "CAPTURED_LOCAL_ONLY",
+    "build": "PASS",
+    "unit_tests": "PASS_5_OF_5",
+    "browser_e2e": "PASS",
+    "responsive_overflow_smoke": "PASS_AT_320_768_1440",
+    "axe": "PASS_ZERO_VIOLATIONS_AT_320_768_1440",
+    "api_contract_tests": "PASS_177_OF_177",
+    "enterprise_authenticated_e2e": "NOT_RUN"
+  },
+  "status_legend": ["PASS_VERIFIED", "FAILED", "BLOCKED", "NOT_VERIFIED"],
+  "acceptance": {
+    "public_synthetic_functional": {"pass": 7, "denominator": 12, "percent": 58.3, "unverified": 5},
+    "enterprise_authenticated_functional": {"pass": 0, "denominator": 12, "percent": 0, "unverified": 12},
+    "public_visual_parity": {"pass": 0, "denominator": 12, "percent": 0, "blocked": 12},
+    "enterprise_visual_parity": {"pass": 0, "denominator": 12, "percent": 0, "blocked": 12},
+    "note": "Seven public synthetic capabilities (overview, firewall, risk, human gate, ledger, registry, policy packs) have local E2E evidence. The 177 HTTP contract tests do not prove authenticated enterprise workflows. All visual comparisons remain blocked because the reference screenshot is unavailable. Overall P10 is partial, not accepted or closed."
+  },
+  "screens": [
+    {"id": "overview", "public_route": "/demo/governance/#overview", "enterprise_route": "/app/api/kernel (GET)", "public_functional": "PASS_VERIFIED", "enterprise_functional": "NOT_VERIFIED", "visual": "BLOCKED"},
+    {"id": "kernel", "public_route": "/demo/governance/", "enterprise_route": "/app/api/kernel (GET, POST)", "public_functional": "NOT_VERIFIED", "enterprise_functional": "NOT_VERIFIED", "visual": "BLOCKED"},
+    {"id": "firewall", "public_route": "/demo/governance/#firewall; /demo/firewall/", "enterprise_route": "/app/api/firewall/evaluate; /app/api/firewall/guarded-executions; /app/api/firewall/rules", "public_functional": "PASS_VERIFIED", "enterprise_functional": "NOT_VERIFIED", "visual": "BLOCKED"},
+    {"id": "risk-engine", "public_route": "/demo/governance/#risk-engine; /demo/risk-engine/", "enterprise_route": "/app/api/risk-engine/assets and child routes", "public_functional": "PASS_VERIFIED", "enterprise_functional": "NOT_VERIFIED", "visual": "BLOCKED"},
+    {"id": "human-gate", "public_route": "/demo/governance/#human-gate; /demo/human-gate/", "enterprise_route": "/app/api/human-gate/requests and child routes", "public_functional": "PASS_VERIFIED", "enterprise_functional": "NOT_VERIFIED", "visual": "BLOCKED"},
+    {"id": "ledger", "public_route": "/demo/governance/#ledger; /demo/ledger/", "enterprise_route": "/app/api/ledger/events and child routes", "public_functional": "PASS_VERIFIED", "enterprise_functional": "NOT_VERIFIED", "visual": "BLOCKED"},
+    {"id": "secure-chat", "public_route": "/demo/secure-chat/", "enterprise_route": "/app/api/secure-chat/models; /app/api/secure-chat/messages", "public_functional": "NOT_VERIFIED", "enterprise_functional": "NOT_VERIFIED", "visual": "BLOCKED"},
+    {"id": "registry", "public_route": "/demo/governance/#inventory", "enterprise_route": "/app/api/risk-engine/assets and revisions", "public_functional": "PASS_VERIFIED", "enterprise_functional": "NOT_VERIFIED", "visual": "BLOCKED"},
+    {"id": "policy-packs", "public_route": "/demo/governance/#policies", "enterprise_route": "/app/api/kernel/policies; /app/api/firewall/rules", "public_functional": "PASS_VERIFIED", "enterprise_functional": "NOT_VERIFIED", "visual": "BLOCKED"},
+    {"id": "developer-workbench", "public_route": null, "enterprise_route": "Generated examples must derive from routes.mjs and request-schemas.mjs", "public_functional": "NOT_VERIFIED", "enterprise_functional": "NOT_VERIFIED", "visual": "BLOCKED"},
+    {"id": "trust-center", "public_route": "/trust/", "enterprise_route": "Public evidence only; no tenant API mapped", "public_functional": "NOT_VERIFIED", "enterprise_functional": "NOT_VERIFIED", "visual": "BLOCKED"},
+    {"id": "enterprise-request-modal", "public_route": "/request-access/; /contact/; POST /api/enterprise-inquiry", "enterprise_route": "/app/api/trial (GET, POST) after authentication and readiness", "public_functional": "NOT_VERIFIED", "enterprise_functional": "NOT_VERIFIED", "visual": "BLOCKED"}
+  ],
+  "screenshots": {
+    "before_reference": [],
+    "candidate_after": [
+      "candidate-overview-1440x900.png",
+      "candidate-overview-390x844.png"
+    ],
+    "hero_before_after": [],
+    "status": "CANDIDATE_ONLY_REFERENCE_BLOCKED"
+  },
+  "verification_limits": [
+    "MagicPath code-context output was truncated before all component source was returned.",
+    "Candidate screenshots are local only; no reference screenshots or screenshot comparison are available.",
+    "The 177 HTTP contract tests do not exercise complete authenticated enterprise workflows or all 12 screens.",
+    "Build, focused unit tests, browser E2E and axe smoke do not prove UAT, enterprise authorization, visual parity, or production readiness."
+  ]
+}

@@ -11,6 +11,7 @@
 - 2026-11-24 VERIFIED LOCAL Secure Chat: سجل النماذج فارغ؛ الإرسال يتطلب اعتمادًا ساريًا ومفتاحًا مخصصًا وسياسات وحصة وتدقيقًا وميزانية ودور aigas_runtime؛ Chrome وPG18 و60 اختبارًا PASS؛ أدلة المزوّد وسجلات الحافة NOT VERIFIED؛ `SECURITY-SECURE-CHAT.md`.
 - 2026-11-24 VERIFIED LOCAL Design System: 16 مكونًا وtokens مشتركة ضمن `.ds-theme` في App Portal و`/docs/design-system/` المرجعية خارج الفهرسة؛ Chrome RTL/keyboard/focus وbuild 64 صفحة PASS؛ قارئات الشاشة والمطابقة الشاملة والنشر غير متحققة.
 - 2026-11-26 PARTIAL وصول المنتج: `/request-access/` و`/contact/` ‏200 حيان؛ 90 رحلة CTA محليًا وAuth/PG18 وإيصال HTTPS اصطناعي PASS؛ MagicPath review مكتملة؛ واجهتا الإرسال وإتاحة التجربة 404 حيًا وتحويل contact القديم غير مطبق؛ `Audit/conversion-recovery-2026-11-26.md`.
+- 2026-11-26 PARTIAL MagicPath P10: shell RTL responsive ومؤشرات Overview مشتقة من session في `/demo/governance/`; build/unit 5/5 وChrome E2E/axe/no-overflow 320/768/1440 وAPI contract 177/177 PASS؛ لقطتا المرشح 1440×900 و390×844؛ public functional 7/12، enterprise 0/12، visual parity 0/12 لغياب صورة المرجع. `Audit/magicpath-p10-2026-11-26/README.md`.
 - 2026-11-24 VERIFIED LOCAL Trial: `0040` يحفظ نافذة PostgreSQL واحدة غير متجددة لكل حساب موثّق في مساحة اصطناعية؛ يبدأ بدور `aigas_runtime` وبعد فحوص الاعتماديات؛ قراءة فقط وعزل مستقل عن المنح الإدارية؛ PG18/Chrome محليان، والنشر وNeon الحي غير متحققين.
 - 2026-11-24 VERIFIED LOCAL Auth: SDK عبر `/auth/api/` من نفس النطاق بكوكيز `__Host-` وحارس Origin؛ Chrome/PostgreSQL18/dور `aigas_runtime` يغطي التسجيل والرموز والجلسة والدعوة والوجهات؛ Neon حي قرأ جلسة فارغة 200، وتسليم البريد الفعلي والنشر غير متحققين.
 - 2026-11-25 VERIFIED LOCAL probes: `/healthz` liveness 200 و`/readyz` readiness 200/503؛ GET/HEAD بصيغتي slash مباشرة، version/SHA؛ Blueprint يختبر `/readyz/`؛ Node16/16 وruntime21/21 مع PostgreSQL18 محلي؛ منشأ Render العام 404 للفحصين ونطاقا apex/www ‏403 من نقطة الفحص؛ SHA المنشور وإعدادات اللوحة NOT VERIFIED. `docs/HEALTHZ-READINESS.md`.
@@ -20,6 +21,17 @@
 
 
 ## Ledger (الأحدث أولًا)
+
+## [2026-11-26] — تنفيذ shell محلي لـMagicPath P10
+- **تم:** shell RTL responsive ومؤشرات جلسة اصطناعية في مختبر الحوكمة؛ بلا ربط enterprise API.
+- **التحقق:** build PASS؛ unit 5/5؛ Chrome E2E/axe/no-overflow عند 320/768/1440 PASS؛ API contract 177/177؛ لقطتا مرشح 1440×900 و390×844.
+- **الحالة:** PARTIAL؛ public 7/12، enterprise 0/12، visual parity 0/12 لغياب screenshot المرجع.
+- **ملفات:** `src/pages/demo/governance.astro`, `src/scripts/governance-demo.ts`, `Audit/magicpath-p10-2026-11-26/README.md`.
+
+## [2026-11-26] — MagicPath P10 baseline والقبول الجزئي
+- **تم:** تثبيت project/component/revision وإعداد mapping وroute/action register وقبول 12 عنصرًا؛ لا تعديل لمصدر التطبيق أو مرجع MagicPath.
+- **التحقق:** build PASS؛ unit 5/5 PASS؛ API contract E2E BLOCKED بسبب منع local network bind؛ لقطات المرجع/المرشح NOT CAPTURED.
+- **الحالة:** PARTIAL؛ P10 غير مغلقة، visual parity وfunctional E2E NOT VERIFIED. `Audit/magicpath-p10-2026-11-26/README.md`.
 
 ## [2026-11-26] — إغلاق دورة Human Gate وLedger
 - **تم:** مراجعة عقد lifecycle الحالي وتوثيق حدود التحقق؛ لا تعديل كود دون إعادة إنتاج فشل 403.
