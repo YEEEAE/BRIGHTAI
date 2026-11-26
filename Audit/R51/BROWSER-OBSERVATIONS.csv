@@ -1,0 +1,13 @@
+﻿surface,browser_observation,status,visual_parity,evidence
+overview,"initial state 1 synthetic asset, 0 events/risks/referrals",RENDER_OBSERVED,NOT_VERIFIED,E51
+kernel,deterministic reader/manager; local only,VISIBLE_NOT_EXECUTED,NOT_VERIFIED,E51
+firewall,sample and local scan controls,VISIBLE_NOT_EXECUTED,NOT_VERIFIED,E51
+risk-engine,likelihood and impact 1–3; replay available,VISIBLE_NOT_EXECUTED,NOT_VERIFIED,E51
+human-gate,local approve/reject controls; no external execution,VISIBLE_NOT_EXECUTED,NOT_VERIFIED,E51
+ledger,unsigned local evidence chain; record and verify controls,VISIBLE_NOT_EXECUTED,NOT_VERIFIED,E51
+secure-chat,separate public demo; local browser replies only,VISIBLE_NOT_EXECUTED,NOT_VERIFIED,E51
+registry,synthetic asset controls; no persistence proven,VISIBLE_NOT_EXECUTED,NOT_VERIFIED,E51
+policy-packs,synthetic privacy and supervision packs,VISIBLE_NOT_EXECUTED,NOT_VERIFIED,E51
+developer-workbench,rendered 404 desktop and mobile,FAIL_VERIFIED,NOT_VERIFIED,E51
+trust-center,public 200; no operational or certification claims verified,RENDER_OBSERVED,NOT_VERIFIED,E51
+enterprise-request-modal,opened locally; electronic reception unavailable; no form submission,FAIL_VERIFIED_AVAILABILITY,NOT_VERIFIED,E51

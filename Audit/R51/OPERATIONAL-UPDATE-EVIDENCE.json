@@ -1,0 +1,44 @@
+[
+  {
+    "id": "E48",
+    "tool": "Render",
+    "date": "2026-11-26",
+    "source": "https://dashboard.render.com/web/srv-dc400fk9v7es73df3cc0",
+    "observation": "Created independent free Ohio Node web service srv-dc400fk9v7es73df3cc0; deploy dep-dc400g49v7es73df3dq0 live at 09:48:49.765226Z; exact SHA 5387cdf6282cc3775f73ade30c82f199967d9409; npm build succeeded; automatic deploy off; portal explicitly false; no DB/provider secrets configured; production static service retained."
+  },
+  {
+    "id": "E49",
+    "tool": "Firecrawl HTTP",
+    "date": "2026-11-26",
+    "source": "https://brightai-r51-audit.onrender.com/healthz/",
+    "observation": "Eight candidate GET checks recorded in NODE-CANDIDATE-HTTP.csv; liveness 200 exact SHA, readiness 503, availability false, app 503 closed."
+  },
+  {
+    "id": "E50",
+    "tool": "Firecrawl isolated HTTP replay",
+    "date": "2026-11-26",
+    "source": "https://github.com/YEEEAE/BRIGHTAI/blob/5387cdf6282cc3775f73ade30c82f199967d9409/redirects.json",
+    "observation": "159 source-declared redirects on each origin; 318 GET no-follow; candidate 159/159 301 exact Location; production 68 HTTP200 and 91 HTTP404, no 301; row register transcribed from tool result, not raw HTTP capture."
+  },
+  {
+    "id": "E51",
+    "tool": "Browser Use",
+    "date": "2026-11-26",
+    "source": "https://brightai.live/demo/governance/",
+    "observation": "Completed run 7d82467c-7dd3-4841-a95d-6588a9e3ac8f; public DOM/render at 1440×1000 and 390×844; no horizontal overflow observed; local modal opened and mobile nav opened; product controls not executed; workbench 404; reception unavailable. No authentication, AI call or remote writes. Reference PNG is different state, parity not established."
+  },
+  {
+    "id": "E52",
+    "tool": "Plugin Creator / tool discovery",
+    "date": "2026-11-26",
+    "source": "Groq Cloud Connector, owned private plugin version 1.0.0",
+    "observation": "Plugin metadata and MCP configuration structure found; no callable Groq action registered in this conversation (zero matching tools). No model list or completion returned; no key read or transmitted. Connector transport metadata is not evidence of inference."
+  },
+  {
+    "id": "E53",
+    "tool": "Firecrawl / Code Mode",
+    "date": "2026-11-26",
+    "source": "https://brightai.live",
+    "observation": "Attempted follow-up for all discovered historical URLs interrupted: previous Code Mode continuation no longer available. No terminal per-URL result; do not mark additional URLs verified."
+  }
+]

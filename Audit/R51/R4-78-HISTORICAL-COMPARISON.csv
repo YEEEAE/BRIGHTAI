@@ -1,0 +1,79 @@
+﻿id,domain,weight,requirement,R31,R4_source,R4_local,R4_staging,R4_live,current_status,current_environment,current_evidence,comparison
+REG-01,REG,8,عقد يميز النظام والنموذج والوكيل والمورد وحالة الاستخدام,S,S,S,U,U,S,SOURCE,E42,observed on named layer only
+REG-02,REG,8,إصدارات ومراجع مستقلة وحدود أدوات للأصل الاصطناعي,S,S,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+REG-03,REG,8,جرد وتغيير الأصل في جلسة الحوكمة المشتركة,S,S,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+REG-04,REG,8,سجل مؤسسي دائم ومشترك بين جلسات المستخدم,U,U,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+REG-05,REG,8,دورة حياة Intake واعتماد وإعادة مراجعة مكتملة في البيئة المستهدفة,U,U,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+REG-06,REG,8,اكتشاف Shadow AI من مصادر مؤسسية موصولة,U,U,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+POL-01,POL,8,حزمة داخلية محددة الإصدار والانطباق,S,S,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+POL-02,POL,8,متطلبات وفحوص ودليل متوقع ومالك,S,S,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+POL-03,POL,8,تتبع وتصدير بصمة assessment للحزمة الداخلية,S,S,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+POL-04,POL,8,حزم خارجية قابلة للتطبيق من PDPL/SDAIA وغيرها,F,F,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+POL-05,POL,8,مرجع تنظيمي خارجي موثق مرتبط بفحص وFinding,U,U,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+POL-06,POL,8,اعتماد تغيير السياسة وتطبيقه حيًا عبر المؤسسات,U,U,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+FW-01,FW,10,القرارات الخمسة الحتمية في المحرك,S,S,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+FW-02,FW,10,تقديم DENY والإقفال عند سياسة غير صالحة,S,S,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+FW-03,FW,10,الفحص العام يتجاوز أربع مطابقات حرفية إلى كاشف بيانات حساس متحقق,F,F,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+FW-04,FW,10,محاكاة فعل وكيل بقيود ثابتة وربط طلب مراجعة,S,S,S,U,U,S,SOURCE,E26;E27,observed on named layer only
+FW-05,FW,10,مزود Firewall معتمد,F,F,F,U,U,F,SOURCE,E24,observed on named layer only
+FW-06,FW,10,فحص المدخل والمخرج مع مزود فعلي ومعالجة القرارات الخمسة,U,U,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+HG-01,HG,8,ربط تصعيد اصطناعي ببصمة طلب وسياسة,S,S,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+HG-02,HG,8,عقد مراجع مستقل داخل سجل الحوكمة,S,S,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+HG-03,HG,8,واجهة مراجعة وقبول ورفض للجلسة,S,S,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+HG-04,HG,8,جدولا delegations وgrants موجودان في الإنتاج,F,U,S,S,F,F,PRODUCTION_CATALOG,E40,observed on named layer only
+HG-05,HG,8,استئناف موثق بعد الموافقة مع منع إعادة الاستخدام في الهدف,U,U,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+HG-06,HG,8,موافقات متعددة أدوار بمسار قانوني وأمني وتجاري حي,U,U,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+RE-01,RE,12,حساب خطر من الاحتمال والأثر داخل المختبر,S,S,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+RE-02,RE,12,مقاييس تصنيف مفصلة: precision/recall/FPR/FNR/accuracy,S,S,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+RE-03,RE,12,معالجة المقام الصفري والعينة الصغيرة,S,S,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+RE-04,RE,12,Finding مؤرخ وإعادة عرض تقييم سابق,S,S,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+RE-05,RE,12,تقييم نموذج موصول على بيانات مستقلة مصرح بها ومراقبة drift,F,U,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+RE-06,RE,12,منهج الخطر المتبقي مع قبول مخول ومكتبة قطاعية كاملة في الهدف,U,U,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+LD-01,LD,10,SHA-256 وملف تعريف سلسلة في الكود,S,S,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+LD-02,LD,10,عقد تصدير assessment ببصمة داخل سجل الحوكمة,S,S,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+LD-03,LD,10,قيد إنتاج Ledger يطابق القرارات الخمسة,F,F,S,S,F,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+LD-04,LD,10,حارس سلسلة قاعدة البيانات موجود في الإنتاج,F,F,S,S,F,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+LD-05,LD,10,تصدير مختبر الحوكمة نفسه يتضمن سلسلة hash قابلة لإعادة التحقق,F,F,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+LD-06,LD,10,تحقق مستقل من حزمة الإصدار النهائي في البيئة المستهدفة,U,U,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+AI-01,AI,8,Gateway بخادم وميزانية وحدود ومهلة,S,S,S,U,U,S,SOURCE,E17;E22,observed on named layer only
+AI-02,AI,8,حماية اسم المفتاح ومنع PUBLIC_GROQ,S,S,S,U,U,S,SOURCE,E28,observed on named layer only
+AI-03,AI,8,قائمتا اعتماد نموذج ومزود غير فارغتين وصالحتين,F,F,F,U,U,F,SOURCE,E06;E24,observed on named layer only
+AI-04,AI,8,المسار العام متاح لإرسال اصطناعي معتمد,F,F,F,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+AI-05,AI,8,Blueprint يصرح بأسماء اعتماد المفتاح المخصص والميزانية المطلوبة,F,F,F,U,U,F,SOURCE,E28,observed on named layer only
+AI-06,AI,8,إثبات مفتاح ونموذج وميزانية صالحة واستدعاء حي مصرح,U,U,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+INT-01,INT,8,سياق أحداث مشترك حسب الأصل والإصدار في المختبر,S,S,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+INT-02,INT,8,محاكاة agent تستدعي core وguard وHuman Gate binding,S,S,S,U,U,S,SOURCE,E26;E27,observed on named layer only
+INT-03,INT,8,المراجعة في المختبر ترتبط بفحص أو خطر من النسخة الحالية,S,S,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+INT-04,INT,8,مسار عام حي يوقف Groq ثم يستأنفه بإذن صالح,F,F,F,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+INT-05,INT,8,تسجيل كل حدث عام في سلسلة Ledger قابلة للتحقق,F,F,F,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+INT-06,INT,8,رحلة أصل→حزمة تنظيمية→فحص→معالجة→قرار→دليل في الهدف,U,U,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+UX-01,UX,10,صفحة Overview وجرد وحزم وأربعة أقسام متاحة,C,U,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+UX-02,UX,10,صفحات المنتجات الأربعة تعرض تجارب متخصصة وروابط,C,U,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+UX-03,UX,10,تفاعل كامل مستقل لجميع الشاشات والأحجام,U,U,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+UX-04,UX,10,إمكانية الوصول والأداء عبر CI ناجح على HEAD,F,U,S,U,U,F,CI,E43,observed on named layer only
+UX-05,UX,10,مطابقة بصرية وسلوكية للـHero قبل وبعد,U,U,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+UX-06,UX,10,جودة RTL وkeyboard وWCAG 2.2 AA مثبتة لكامل النطاق,U,U,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+PUB-01,PUB,5,4/4 صفحات المنتجات العامة تفتح,C,U,U,U,U,C,LIVE_HTTP,E38,observed on named layer only
+PUB-02,PUB,5,4/4 مختبرات مستقلة تفتح دون حساب,C,U,U,U,U,C,LIVE_HTTP,E39,observed on named layer only
+PUB-03,PUB,5,المختبر الموحد يفتح دون حساب,C,U,U,U,U,C,LIVE_HTTP,E39,observed on named layer only
+PUB-04,PUB,5,بوابة التطبيق وKernel تفتحان,F,U,U,U,F,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+PUB-05,PUB,5,طلب الوصول يعمل من CTA العام,F,U,F,U,C,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+PUB-06,PUB,5,تجربة 48 ساعة وعملية التسجيل مثبتتان في الهدف,F,U,U,U,F,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+SEC-01,SEC,8,RLS enabled على جداول الإنتاج,C,U,C,C,C,C,PRODUCTION_CATALOG,E40,observed on named layer only
+SEC-02,SEC,8,جميع جداول Staging لها سياسات RLS,C,U,C,C,U,C,STAGING_CATALOG,E40,observed on named layer only
+SEC-03,SEC,8,جميع جداول الإنتاج لها سياسات RLS مناسبة,F,U,U,S,F,F,PRODUCTION_CATALOG,E40,observed on named layer only
+SEC-04,SEC,8,دور تشغيل aigas_runtime موجود في الإنتاج,F,U,U,S,F,F,PRODUCTION_CATALOG,E04;E20,observed on named layer only
+SEC-05,SEC,8,اختبار عزل مؤسسات وجلسات في الهدف,U,U,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+SEC-06,SEC,8,اعتماد معالجة البيانات وإقامتها وسياسة الحذف والمزود,U,U,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+ARC-01,ARC,3,Blueprint يحدد Node SSR وreadiness,S,S,S,U,U,S,SOURCE,E31,observed on named layer only
+ARC-02,ARC,3,محول Astro في إصدار يعالج GHSA-qh8j-hqjv-7m4x,F,S,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+ARC-03,ARC,3,مدير حزم البناء المنشور يطابق lockfile المقصود,F,S,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+ARC-04,ARC,3,npm build والتحقق الأمني المستقل على HEAD,U,U,S,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+ARC-05,ARC,3,نظافة الملفات مثبتة بعد تحليل الاعتماديات,U,U,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+ARC-06,ARC,3,LCP/INP/CLS مقاسة على كل رحلة,U,U,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+DEP-01,DEP,2,Deploy مطابق SHA الحالي,C,U,U,U,U,C,RENDER,E35;E36,observed on named layer only
+DEP-02,DEP,2,خدمة النشر الفعلية Node وتعرض readiness,F,U,U,U,F,F,RENDER+LIVE_HTTP,E36;E39,observed on named layer only
+DEP-03,DEP,2,مصالحة سجل ترحيلات Staging مع 45 ملفًا,F,U,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+DEP-04,DEP,2,robots.txt وsitemap.xml متاحان,C,U,S,U,C,F,LIVE_HTTP,E39;E45,observed on named layer only
+DEP-05,DEP,2,قياس GA4 للحركة الحية دون اختلاط تطوير,F,U,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING
+DEP-06,DEP,2,مراقبة أخطاء وتنبيهات وفهرسة شاملة مثبتة,U,U,U,U,U,U,NOT_REMEASURED,,NOT_COMPARABLE_CURRENT_EVIDENCE_MISSING

@@ -1,0 +1,13 @@
+﻿section,tsx_lines,control,observed,acceptance,source_status,visual_status,interaction_status,evidence
+Overview,329–330,"metrics, product cards",local counts/navigation,real metrics/tenant scope,READ,NOT_VERIFIED,NOT_VERIFIED,E41
+Kernel,331–333,"scenario, pipeline, events",local scenario state,orchestrator and correlated run,READ,NOT_VERIFIED,NOT_VERIFIED,E41
+Firewall,334–339,"inspect, result, app link",local rule matcher; protected app link,real policy/agent outcome,READ,NOT_VERIFIED,NOT_VERIFIED,E41
+Risk Engine,340–342,"sliders, controls, export",local residual and export,versioned risk computation/real evidence,READ,NOT_VERIFIED,NOT_VERIFIED,E41
+Human Gate,"303,343","reason, approve/reject",local; stage===5 APPROVED label requires check,bound independent decision; reject must stay rejected,READ,NOT_VERIFIED,NOT_VERIFIED,E41
+Ledger,344–347,"digest, tamper, export",local digest; demo only,"server ledger, independent verification",READ,NOT_VERIFIED,NOT_VERIFIED,E41
+Secure Chat,348,"send, access request",send blocked in copy,entitled real Groq/tool loop,READ,NOT_VERIFIED,NOT_VERIFIED,E41
+Registry,349–354,"search, add",local array,persisted tenant asset/agent registry,READ,NOT_VERIFIED,NOT_VERIFIED,E41
+Policy Packs,355–358,select pack,local selection,versioned approvals/activation,READ,NOT_VERIFIED,NOT_VERIFIED,E41
+Developer,359–369,"copy, try request",example POST /api/governance/evaluate not in central registry,actual registered contract; example labelled,READ,NOT_VERIFIED,NOT_VERIFIED,E41
+Trust,370,trust information,no production claim,evidence-backed controls,READ,NOT_VERIFIED,NOT_VERIFIED,E41
+Enterprise modal,374–379,"dialog, contact, request links",dialog.showModal; links,"keyboard/focus, real route/availability",READ,NOT_VERIFIED,NOT_VERIFIED,E41

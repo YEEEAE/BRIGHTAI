@@ -1,0 +1,9 @@
+﻿path,previous_production_http,candidate_http,observation,candidate_result,evidence
+/healthz/,404,200,status=ok; exact commit verified,PASS_VERIFIED,E49
+/readyz/,404,503,SERVICE_UNAVAILABLE; dependencies not ready; no detailed raw readiness report,FAIL_VERIFIED,E49
+/api/trial-availability/,404,200,available=false,PASS_CONTRACT_ONLY,E49
+/api/measurement-status/,404,200,enabled=true; analytics ingestion not proven,PASS_CONTRACT_ONLY,E49
+/api/enterprise-inquiry/,404,200,available=false,PASS_CONTRACT_ONLY,E49
+/status/,404,200,portal closed,PASS_CONTRACT_ONLY,E49
+/app/,404,503,APP_UNAVAILABLE; expected closed flag; prior 404 from earlier live evidence,PASS_FAIL_CLOSED_ONLY,E49
+/sitemap.xml,404,200,final path /sitemap-index.xml; direct 301 separately verified,PASS_VERIFIED,E49

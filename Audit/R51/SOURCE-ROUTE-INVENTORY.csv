@@ -1,0 +1,108 @@
+﻿source,type,route_pattern,status,sha,evidence
+src/pages/404.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/about.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/compliance.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/contact.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/docs.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/index.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/kernel.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/pricing.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/privacy.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/request-access.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/services.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/status.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/terms.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/trust.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/app/firewall/index.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/app/human-gate/index.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/app/index.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/app/kernel/index.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/app/ledger/index.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/app/operator/trials/index.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/app/risk-engine/[assetId].astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/app/risk-engine/index.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/app/secure-chat/index.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/app/trial/index.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/auth/accept-invitation.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/auth/sign-in.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/auth/sign-up.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/authors/[author].astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/authors/index.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/demo/[product].astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/demo/governance.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/demo/workshop-preview/[view] 2.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/demo/workshop-preview/[view].astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/docs/design-system/index.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/docs/topics/[topic].astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/knowledge/[article].astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/knowledge/ai-governance-saudi.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/knowledge/ai-risk-assessment.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/knowledge/ai-use-policy-employees.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/knowledge/iso-42001-saudi.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/knowledge/pdpl-and-ai.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/knowledge/prompt-injection.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/knowledge/protect-company-data-chatgpt.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/knowledge/saudi-ai-ethics-principles.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/knowledge/saudi-ai-law-binding-vs-guidance.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/knowledge/sdaia-ai-adoption-framework.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/knowledge/sdaia-ai-ethics-self-assessment.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/knowledge/sdaia-generative-ai-guidelines.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/pillars/[pillar].astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/products/[product].astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/products/[product]/complaint.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/products/index.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/resources/[slug].astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/resources/index.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/solutions/[sector].astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/solutions/index.astro,Astro,source file,INVENTORIED,5387cdf6282cc3775f73ade30c82f199967d9409,E35;E37
+src/pages/api/enterprise-inquiry (TS wrapper; logical route),TS,/api/enterprise-inquiry,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/api/trial-availability (TS wrapper; logical route),TS,/api/trial-availability,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/api/measurement-status (TS wrapper; logical route),TS,/api/measurement-status,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/api/observability (TS wrapper; logical route),TS,/api/observability,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/api/public-demo/groq-sandbox (TS wrapper; logical route),TS,/api/public-demo/groq-sandbox,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/api/security/csp-report (TS wrapper; logical route),TS,/api/security/csp-report,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/firewall/evaluate (TS wrapper; logical route),TS,/app/api/firewall/evaluate,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/firewall/guarded-executions (TS wrapper; logical route),TS,/app/api/firewall/guarded-executions,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/firewall/rules (TS wrapper; logical route),TS,/app/api/firewall/rules,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/human-gate/delegations (TS wrapper; logical route),TS,/app/api/human-gate/delegations,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/human-gate/delegations/[delegationId]/revoke (TS wrapper; logical route),TS,/app/api/human-gate/delegations/[delegationId]/revoke,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/human-gate/policy (TS wrapper; logical route),TS,/app/api/human-gate/policy,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/human-gate/requests (TS wrapper; logical route),TS,/app/api/human-gate/requests,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/human-gate/requests/[requestId]/cancel (TS wrapper; logical route),TS,/app/api/human-gate/requests/[requestId]/cancel,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/human-gate/requests/[requestId]/decide (TS wrapper; logical route),TS,/app/api/human-gate/requests/[requestId]/decide,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/human-gate/requests/[requestId]/execute (TS wrapper; logical route),TS,/app/api/human-gate/requests/[requestId]/execute,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/kernel (TS wrapper; logical route),TS,/app/api/kernel,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/kernel/health (TS wrapper; logical route),TS,/app/api/kernel/health,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/kernel/invitations (TS wrapper; logical route),TS,/app/api/kernel/invitations,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/kernel/members (TS wrapper; logical route),TS,/app/api/kernel/members,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/kernel/pilot-report (TS wrapper; logical route),TS,/app/api/kernel/pilot-report,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/kernel/policies (TS wrapper; logical route),TS,/app/api/kernel/policies,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/kernel/products (TS wrapper; logical route),TS,/app/api/kernel/products,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/kernel/trials (TS wrapper; logical route),TS,/app/api/kernel/trials,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/kernel/trials/[trialId]/cancel (TS wrapper; logical route),TS,/app/api/kernel/trials/[trialId]/cancel,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/kernel/trials/[trialId]/submit (TS wrapper; logical route),TS,/app/api/kernel/trials/[trialId]/submit,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/ledger/events (TS wrapper; logical route),TS,/app/api/ledger/events,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/ledger/events/[eventId] (TS wrapper; logical route),TS,/app/api/ledger/events/[eventId],WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/ledger/events/[eventId]/export (TS wrapper; logical route),TS,/app/api/ledger/events/[eventId]/export,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/ledger/events/[eventId]/verify (TS wrapper; logical route),TS,/app/api/ledger/events/[eventId]/verify,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/operator/trials (TS wrapper; logical route),TS,/app/api/operator/trials,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/operator/trials/[trialId]/activate (TS wrapper; logical route),TS,/app/api/operator/trials/[trialId]/activate,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/operator/trials/[trialId]/close (TS wrapper; logical route),TS,/app/api/operator/trials/[trialId]/close,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/operator/trials/[trialId]/decide (TS wrapper; logical route),TS,/app/api/operator/trials/[trialId]/decide,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/operator/trials/[trialId]/expire (TS wrapper; logical route),TS,/app/api/operator/trials/[trialId]/expire,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/risk-engine/actions (TS wrapper; logical route),TS,/app/api/risk-engine/actions,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/risk-engine/assets (TS wrapper; logical route),TS,/app/api/risk-engine/assets,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/risk-engine/assets/[assetId] (TS wrapper; logical route),TS,/app/api/risk-engine/assets/[assetId],WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/risk-engine/assets/[assetId]/assessments (TS wrapper; logical route),TS,/app/api/risk-engine/assets/[assetId]/assessments,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/risk-engine/assets/[assetId]/revisions (TS wrapper; logical route),TS,/app/api/risk-engine/assets/[assetId]/revisions,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/risk-engine/assets/[assetId]/treatments (TS wrapper; logical route),TS,/app/api/risk-engine/assets/[assetId]/treatments,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/risk-engine/assist (TS wrapper; logical route),TS,/app/api/risk-engine/assist,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/risk-engine/export (TS wrapper; logical route),TS,/app/api/risk-engine/export,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/secure-chat/messages (TS wrapper; logical route),TS,/app/api/secure-chat/messages,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/secure-chat/models (TS wrapper; logical route),TS,/app/api/secure-chat/models,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/app/api/trial (TS wrapper; logical route),TS,/app/api/trial,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/healthz (TS wrapper; logical route),TS,/healthz,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/readyz (TS wrapper; logical route),TS,/readyz,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/auth/api/[...operation].ts,TS,auth/api/[...operation].ts,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/auth/sso/start.ts,TS,auth/sso/start.ts,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37
+src/pages/auth/sso/callback.ts,TS,auth/sso/callback.ts,WRAPPER_READ,5387cdf6282cc3775f73ade30c82f199967d9409,E37

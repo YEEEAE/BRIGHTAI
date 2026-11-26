@@ -1,0 +1,12 @@
+﻿source,target,path,observed,source_status,runtime_status,evidence
+Kernel,DB,"db.mjs 27–30,67–80,86–87","SET LOCAL ROLE, transaction, lock",READ,BLOCKED_OR_NOT_VERIFIED,E42;E22;E23;E41
+Kernel,product access,access.mjs 123–185,membership/reference/entitlement,READ,BLOCKED_OR_NOT_VERIFIED,E42;E22;E23;E41
+Kernel,Firewall,firewall/service.mjs 73–86,tenantGuard/role/rules,READ,BLOCKED_OR_NOT_VERIFIED,E42;E22;E23;E41
+Kernel,Human Gate,"human-gate/service.mjs 42–56,98–126",guard/entitlement/audit/expiry,READ,BLOCKED_OR_NOT_VERIFIED,E42;E22;E23;E41
+Kernel,Risk Engine,risk-engine/service.mjs 53–68,tenant guard/role/audit,READ,BLOCKED_OR_NOT_VERIFIED,E42;E22;E23;E41
+Kernel,Ledger,"ledger/writer.mjs 28–55,86–112",member/lock/idempotency/tail/evidence,READ,BLOCKED_OR_NOT_VERIFIED,E42;E22;E23;E41
+Kernel,Secure Chat,secure-chat/service.mjs 18–66,guard/access,READ,BLOCKED_OR_NOT_VERIFIED,E42;E22;E23;E41
+Kernel,policy,"kernel/policies.mjs 53–61,75–88",lock/role/approval transaction,READ,BLOCKED_OR_NOT_VERIFIED,E42;E22;E23;E41
+Registry,synthetic agent,governance/contract.mjs; synthetic-agent.mjs,fixture-only; Secure Chat absent in product enum,READ,BLOCKED_OR_NOT_VERIFIED,E42;E22;E23;E41
+Groq,agent runtime,groq gateway; secure-chat adapter,text-only; rejects tools,READ,BLOCKED_OR_NOT_VERIFIED,E42;E22;E23;E41
+Developer UI,API registry,MagicPath TSX 359–369; routes.mjs,example /api/governance/evaluate not registered,READ,BLOCKED_OR_NOT_VERIFIED,E42;E22;E23;E41

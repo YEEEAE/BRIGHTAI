@@ -1,0 +1,34 @@
+﻿id,layer,scenario,expected,observed,status,evidence,limitation
+DB01,PostgreSQL,fresh order,42 applied with SHA-256 receipts,42/42; 47 tables; 98 policies,PASS_VERIFIED,E54,Fresh synthetic project only
+DB02,PostgreSQL,role SET permission,non-bypass effective role,initial 42501; explicit SET TRUE fixed; NOBYPASSRLS,PASS_VERIFIED_AFTER_FIX,E55,Audit project only
+DB03,PostgreSQL,dedicated login,no direct application privileges; SET role,0 direct SELECT/write tables; SET true; inherit false,PASS_VERIFIED,E55,No owner credential in Render
+DB04,PostgreSQL,A own,own scope only; foreign scope no data,A_products=5; B_products=0; A_memberships=1; B_memberships=0,PASS_VERIFIED,E56,Effective runtime role; sample tables
+DB05,PostgreSQL,A forged B,own scope only; foreign scope no data,A_products=0; B_products=0; A_memberships=1; B_memberships=0,PASS_VERIFIED,E56,Effective runtime role; sample tables
+DB06,PostgreSQL,B own,own scope only; foreign scope no data,A_products=0; B_products=5; A_memberships=0; B_memberships=1,PASS_VERIFIED,E56,Effective runtime role; sample tables
+DB07,PostgreSQL,B forged A,own scope only; foreign scope no data,A_products=0; B_products=0; A_memberships=0; B_memberships=1,PASS_VERIFIED,E56,Effective runtime role; sample tables
+DB08,PostgreSQL,no scope,own scope only; foreign scope no data,A_products=0; B_products=0; A_memberships=0; B_memberships=0,PASS_VERIFIED,E56,Effective runtime role; sample tables
+DB09,PostgreSQL,cross_tenant_update,denied or zero rows,0 rows,PASS_VERIFIED,E56,Effective runtime role; no production data
+DB10,PostgreSQL,cross_tenant_membership_insert,denied or zero rows,42501 RLS violation,PASS_VERIFIED,E56,Effective runtime role; no production data
+DB11,PostgreSQL,ledger_update,denied or zero rows,42501 permission denied,PASS_VERIFIED,E56,Effective runtime role; no production data
+TR01,PostgreSQL,unverified identity,deny,42501 IDENTITY_NOT_VERIFIED,PASS_VERIFIED,E59,Synthetic account
+TR02,PostgreSQL,start 48h trial,48-hour exact window,ACTIVE / 48h,PASS_VERIFIED,E59,Admin-set synthetic verified flag
+TR03,PostgreSQL,repeat start,same trial ID,same UUID returned,PASS_VERIFIED,E59,DB function only
+TR04,PostgreSQL,six product dependencies,all ready,6/6 true,PASS_VERIFIED,E59,Schema/ACL only
+TR05,PostgreSQL,expired access,denied,EXPLORATION_EXPIRED,PASS_VERIFIED,E59,Fixture timestamps shifted
+TR06,PostgreSQL,expiry transition,EXPIRED and one event despite repeat,EXPIRED twice; event count 1,PASS_VERIFIED,E59,Fixture timestamps shifted
+HTTP01,Render,liveness,200 and pinned SHA,200 and exact SHA,PASS_VERIFIED,E57,Candidate only
+HTTP02,Render,readiness,200 READY DB/auth,200 READY; auth probe active; consistent release,PASS_VERIFIED,E57,Portal disabled; endpoint not SLA
+HTTP03,Render,closed portal,503,503 APP_UNAVAILABLE,PASS_VERIFIED,E57,Fail-closed only
+HTTP04,Render,trial availability,false while closed,false,PASS_VERIFIED,E57,No live activation
+AUTH01,HTTP browser,"real login, JWT, protected actions",valid token and tenant-isolated HTTP workflow,not executed,NOT_VERIFIED,E57 E59,Only Auth probe and DB synthetic identities
+AI01,Groq,zero-cost live inference,proven free and provider output,0 calls; no callable tool; $0 audit spend,BLOCKED,E61,No model call made
+UI01,Browser Use,Firewall allow/block,correct local UI behavior,both pass,PASS_VERIFIED,E58,"Synthetic, not institutional backend"
+UI02,Browser Use,Risk score and invalid input,correct local UI behavior,6 high; invalid rejected,PASS_VERIFIED,E58,"Synthetic, not institutional backend"
+UI03,Browser Use,Human Gate local decisions,correct local UI behavior,approve and reject observed,PASS_VERIFIED,E58,"Synthetic, not institutional backend"
+UI04,Browser Use,Registry and policies,correct local UI behavior,asset added; version advanced,PASS_VERIFIED,E58,"Synthetic, not institutional backend"
+UI05,Browser Use,Ledger record/verify,correct local UI behavior,consistent unsigned evidence,PASS_VERIFIED,E58,"Synthetic, not institutional backend"
+UI06,Browser Use,Secure Chat local samples,correct local UI behavior,"general, redaction, block, reset pass",PASS_VERIFIED,E58,"Synthetic, not institutional backend"
+UI07,Browser Use,Five-product complaint chain,correct local UI behavior,5 linked synthetic events,PASS_VERIFIED,E58,"Synthetic, not institutional backend"
+UI08,Browser Use,Responsive sample,correct local UI behavior,desktop and 390px no overflow,PASS_VERIFIED,E58,"Synthetic, not institutional backend"
+UI09,Browser Use,Reset counters,correct local UI behavior,stale until new session,FAIL_VERIFIED,E58,"Synthetic, not institutional backend"
+UI10,Browser Use,Ledger empty state,correct local UI behavior,stale empty message after evidence,FAIL_VERIFIED,E58,"Synthetic, not institutional backend"

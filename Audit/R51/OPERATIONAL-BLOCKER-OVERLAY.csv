@@ -1,0 +1,17 @@
+﻿finding,closure_state,latest_observation,evidence,remaining
+F01,PARTIAL_ISOLATED_VERIFIED,47 tables/98 RLS policies; 8 scoped isolation tests; dedicated login,E54 E55 E56,Production/Staging untouched; full 47-table/HTTP auth/backup/security acceptance pending.
+F02,PARTIAL_ISOLATED_READY,"Node candidate readyz=200, auth active; production static",E48 E57,"Canonical-domain cutover not authorized; verify platform health-check, SLA, rollback."
+F03,OPEN,Groq approved registry empty on pinned source; no live provider call,E61,"Approve provider/model, source changes, prove free quota/connector or obtain budget."
+F04,OPEN,Prior failed CI evidence unchanged,E43,Source/CI fixes and successful same-SHA checks.
+F05,OPEN,Isolated Ohio environment synthetic only; no production residency approval,E54 E57,"Explicit residency decision, branch protections, restore exercise."
+F06,PARTIAL,Browser synthetic actions and responsive checks; two defects; MagicPath same-state parity not verified,E51 E58,"Fix UI defects, same-state reference screenshots and full accessibility checks."
+F07,OPEN,327 discovered URLs tested: 75 200; 252 404,E60,"Classify retired pages, GSC sitemap error, canonicals and link value."
+F08,PARTIAL_DB_TRIAL_AND_LOCAL_UI,Synthetic local flow works; DB trial 48h and expiry pass; portal closed,E58 E59 E57,"Real login/JWT and protected E2E, quotas/cancel/enterprise activation, inquiry availability."
+F09,PARTIAL_ISOLATED_VERIFIED,"Required start/read(uuid) functions present, exercised in isolated branch",E54 E59,Reconcile production and prior staging migrations with approvals.
+F10,OPEN_SOURCE_CHANGE,No agent implementation or live tool loop,E61 E62,P03–P10 implement deterministic governed agent runtime; independent proof.
+F11,OPEN_SOURCE_CHANGE,No Groq key on candidate; conflicting source secret names retained,E61,"Canonical protected name, safe migration; no exposed key reuse."
+F12,OPEN,RLS sample verified; agent memory/coordination/budget not implemented or tested,E56 E61 E62,Durable scoped agent run/tool/FinOps/recovery evidence.
+F13,PARTIAL_ISOLATED_VERIFIED,159/159 redirects in candidate; 0/159 in production; status route candidate 200,E50 E57 E60,Safe canonical deployment and validate all targets and indexation.
+F14,OPEN,Prior disabled ruleset and failed CI unchanged,E43,Enforce release protection with approval; pass current candidate CI.
+F15,PARTIAL,Local reject path works in complaint chain; Developer Workbench still unavailable on prior live; enum gap unmodified,E51 E58 E62,Source contract parity; real reject/binding and workbench route; no fabricated endpoints.
+F16,PARTIAL,All 327 discovered URLs GET checked; 7 browser pages exercised; authenticated/visual completeness not verified,E58 E60,"Full auth/role-based HTTP tests, full MagicPath parity, comprehensive crawl/indexation scope."
