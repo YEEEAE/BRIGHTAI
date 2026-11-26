@@ -1,38 +1,6 @@
 #
 ---
 
-
----
-
-## P09 — Ledger AI Agent وأدلة قابلة للتحقق
-
-**التبعيات:** P02 P03 P04 P08. **معايير الإغلاق:** LD-01 LD-02 LD-03 LD-04.
-
-**الملفات المستهدفة من شجرة المصدر:**
-- `src/server/ledger/core.mjs`
-- `src/server/ledger/writer.mjs`
-- `src/server/ledger/service.mjs`
-- `src/server/ledger/http.mjs`
-- `src/pages/app/api/ledger/**`
-- `src/scripts/ledger.ts`
-- `src/demo/governance-evidence.mjs`
-- `tests/ledger*.mjs`
-- `tests/governance-evidence.test.mjs`
-
-**حدود التنفيذ:** نفّذ أساس هذه المهمة؛ أكمل التحقق والتعديلات المتخصصة في P20, P21, P27. لا تعِد تنفيذ إصلاح أو اختبار ثبت على نفس النسخة والبيئة.
-
-**أوامر العمل:**
-
-أضف ledger-agent.mjs لتحليل واسترجاع أدلة مأذونة وتفسيرها، لا توليد hashes أو تغيير السجلات بواسطة LLM. اربط كل run/step/tool/provider usage وقرار بشري بـcorrelation وtenant وإصدار؛ canonical digest وتوقيع/مفتاح معتمد حسب سياسة البيئة وسجل append-only. اجعل verify يفشل عند غياب crypto أو key أو chain أو tamper؛ لا تعتبر قيمة ثابتة دليل صحة. أضف export مصرحًا به مع redaction وmanifest وverification مستقل. اربط retention/authorized export مع audit trail. اختبر tamper/deletion/reorder/replay/cross-tenant/export/no-crypto، عدم ازدواج evidence عند retry، وانقطاع Ledger يجب أن يوقف التنفيذ المتأثر.
-
-**معيار التسليم:**
-- `LD-01` — Ledger service وevent queries موجودة في المصدر → دليل PASS_VERIFIED في البيئة المطلوبة.
-- `LD-02` — agent يسترجع أدلة مأذونة ويحللها دون صنع بصمات → دليل PASS_VERIFIED في البيئة المطلوبة.
-- `LD-03` — append/verify/export وtamper check وسلسلة canonical E2E → دليل PASS_VERIFIED في البيئة المطلوبة.
-- `LD-04` — أدلة كل agent step وtool call وprovider usage مرتبطة → دليل PASS_VERIFIED في البيئة المطلوبة.
-
----
-
 ## P10 — Secure Chat AI Agent وربط الوكلاء
 
 **التبعيات:** P03 P04 P05 P06 P07 P08 P09. **معايير الإغلاق:** SC-03 SC-05 KE-02 KE-03 KE-04.

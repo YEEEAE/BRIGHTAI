@@ -19,19 +19,19 @@ const config=authConfig();
   <noscript><p class="notice">يلزم JavaScript لاستعادة جلسة Kernel وعرض بيانات المؤسسة.</p></noscript>
   <div data-private hidden>
    <Card class="panel"><Select label="المؤسسة" id="hg-workspace" data-workspace></Select><p data-role></p><p>المالك والمسؤول يطلبان تغيير اسم المساحة ويراجعان طلبات غيرهما فقط. العضو ينشئ ملاحظة تجريبية ويعرض طلباته. التنفيذ لمقدم الطلب بعد إعادة فحص صلاحية الطرفين وإذن التنفيذ. يمكن للمالك أو المسؤول تفويض مراجعة مؤقتة عند تفعيلها في السياسة، دون تجاوز صلاحية المفوّض أو فصل المهام.</p></Card>
-   <Card class="panel"><h2>سياسة المدة والنطاق</h2><p data-policy-summary></p><p>تغيير الاسم متاح للمالك والمسؤول فقط؛ المراجعة تتطلب المستوى المحدد في السياسة، ومراجعًا مستقلًا عند اشتراط فصل المهام. التفويض المؤقت يبقى محدد العملية والمستوى والمدة، ولا يتجاوز صلاحية المفوّض.</p>
+   <Card class="panel"><h2>سياسة المدة والنطاق</h2><p data-policy-summary></p><p>تغيير الاسم متاح للمالك والمسؤول فقط؛ المراجعة تتطلب المستوى المحدد في السياسة ومراجعًا مستقلًا. التفويض المؤقت يبقى محدد العملية والمستوى والمدة، ولا يتجاوز صلاحية المفوّض.</p>
     <form data-policy class="hg-form" hidden>
      <div><Input label="المهلة القصوى للطلب بالدقائق" id="hg-pending" name="pending_minutes" type="number" required min="1" max="1440" step="1" /></div>
      <div><Input label="صلاحية الموافقة بالدقائق" id="hg-approval" name="approval_minutes" type="number" required min="1" max="1440" step="1" /></div>
      <div><Select label="الحد الأدنى لمستوى المراجع" id="hg-level" name="review_level"><option value="ADMIN">مدير أو مالك</option><option value="OWNER">مالك المؤسسة فقط</option></Select></div>
      <label class="hg-check"><input name="enabled" type="checkbox" /> تفعيل استقبال الطلبات والتنفيذ ضمن هذه السياسة</label>
-     <label class="hg-check"><input name="separation_of_duties" type="checkbox" /> اشتراط فصل المهام: لا يعتمد مقدم الطلب طلبه (يبقى إلزاميًا لتغيير اسم المساحة)</label>
+     <p>فصل المهام إلزامي: لا يعتمد مقدم الطلب طلبه أو يرفضه.</p>
      <label class="hg-check"><input name="delegation_enabled" type="checkbox" /> السماح بتفويض مراجعة مؤقت محدد العملية والمدة</label>
      <p>اختر القيم حسب سياسة مؤسستك؛ النطاق من دقيقة إلى 1440 حد تقني، وليس مدة ترخيص أو SLA. الموافقة لا تمدد مهلة الطلب الأصلية. أي حفظ للسياسة يبطل الطلبات المعلقة والموافقات وأذونات التنفيذ السابقة.</p>
      <Button type="submit">حفظ السياسة وإبطال الطلبات السابقة</Button>
     </form>
    </Card>
-   <Card class="panel" data-delegation-panel hidden><h2>تفويض مراجعة مؤقت</h2><p>التفويض محدد بمؤسسة وعملية ومستوى ومدة وتاريخ انتهاء من الخادم. لا يتجاوز صلاحية المفوّض، ولا يسمح باعتماد صاحب الطلب طلبه عند اشتراط فصل المهام. الإلغاء يمنع القرارات الجديدة فورًا.</p>
+   <Card class="panel" data-delegation-panel hidden><h2>تفويض مراجعة مؤقت</h2><p>التفويض محدد بمؤسسة وعملية ومستوى ومدة وتاريخ انتهاء من الخادم. لا يتجاوز صلاحية المفوّض، ولا يسمح بمراجعة صاحب الطلب طلبه. الإلغاء يمنع القرارات الجديدة فورًا.</p>
     <form data-delegate class="hg-form">
      <div><Select label="العضو المفوّض" id="hg-delegate-user" name="delegatee_id" required data-delegate-user></Select></div>
      <div><Select label="نطاق التفويض" id="hg-delegate-scope" name="operation_type"><option value="KERNEL_WORKSPACE_RENAME">تغيير اسم مساحة العمل</option><option value="INTERNAL_DEMO_NOTE">الملاحظة التجريبية</option></Select></div>

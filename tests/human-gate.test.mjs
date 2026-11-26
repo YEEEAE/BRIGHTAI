@@ -13,7 +13,7 @@ test('Human Gate input and separation of duties',()=>{
  assert.equal(decisionAllowed(pending,'b',{}, {allowed:false}),false);
  assert.equal(decisionAllowed(pending,'b',{}),false);
  assert.equal(decisionAllowed({...pending,status:'APPROVED'},'b',{}, {allowed:true}),false);
- assert.equal(decisionAllowed(pending,'a',{separation_of_duties:false},{allowed:true}),true);
+ assert.equal(decisionAllowed(pending,'a',{separation_of_duties:false},{allowed:true}),false);
 });
 test('Human Gate HTTP: auth first, origin, size, JSON and private errors',async()=>{
  let calls=0;const service=async()=>{calls++;return {persisted:true};};

@@ -67,11 +67,9 @@ export async function kernelEvidence(tx, identity, tenantId, { action, correlati
   return { auditId, recorded: ledger.recorded === true, dependencyStatus: ledger.dependencyStatus ?? null };
 }
 export async function kernelApproval(tx, identity, tenantId, { approvalRef, fingerprint: expected }) {
-  const row = (await tx.db.query('SELECT status,payload_digest,policy_version FROM public.aigas_hg_requests WHERE tenant_id=$1 AND id=$2 AND requester_id=$3 AND expires_at>now()', [tenantId, approvalRef, identity.userId])).rows[0];
-  if (!row || row.status !== 'APPROVED' || typeof row.payload_digest !== 'string') return { approved: false, reason: 'APPROVAL_NOT_ACTIVE' };
-  if (row.payload_digest.slice(0, 32) !== expected) return { approved: false, reason: 'APPROVAL_TARGET_CHANGED' };
-  const decision = (await tx.db.query("SELECT 1 FROM public.aigas_hg_decisions WHERE tenant_id=$1 AND request_id=$2 AND decision='APPROVE' LIMIT 1", [tenantId, approvalRef])).rowCount > 0;
-  return decision ? { approved: true, reason: 'APPROVAL_VERIFIED' } : { approved: false, reason: 'APPROVAL_DECISION_MISSING' };
+  // A digest prefix and an APPROVE row do not prove a current, one-use grant.
+  // Resume remains closed until the checkpoint has a transactional HG binding.
+  return { approved: false, reason: 'APPROVAL_BINDING_NOT_CONFIGURED' };
 }
 
 export function createAgentRuntime({
@@ -253,6 +251,9 @@ export function createAgentRuntime({
         if (!checkpoint) throw new KernelError(409, 'CHECKPOINT_MISSING', 'نقطة الاستئناف غير موجودة.');
         const approval = await verifyApproval(tx, identity, tenantId, { approvalRef: input.approvalRef, fingerprint: checkpoint.approval_fingerprint });
         if (approval.approved !== true) throw new KernelError(403, 'APPROVAL_NOT_VERIFIED', approval.reason ?? 'لم يتم التحقق من الاعتماد البشري.');
+        const decision = await evaluatePolicy(tx, identity, tenantId, { productSlug: manifestFor(run.agent_key).product,
+          operation: 'agent.resume', resource_type: 'agent-step' });
+        if (!decision || decision.decision !== 'ALLOW' || decision.obligations?.length) throw new KernelError(403, 'AGENT_POLICY_DENIED', 'سياسة Kernel لا تسمح بالاستئناف.');
         await tx.updateRun(tenantId, runId, { status: 'RUNNING' }, 'PAUSED');
         await writeEvidence(tx, identity, tenantId, { runId, action: 'kernel.agent.run.resumed', correlationId: input.correlationId,
           idempotencyKey: 'resume:' + input.idempotencyKey, eventType: 'agent.run.resumed', causationId: input.approvalRef });

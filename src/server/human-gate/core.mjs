@@ -5,8 +5,7 @@ import { KernelError } from '../kernel/core.mjs';
 export const statuses = ['PENDING','APPROVED','REJECTED','EXPIRED','CANCELLED','EXECUTED'];
 export const riskReviewOperation = 'RISK_ASSESSMENT_REVIEW';
 export const operations = ['KERNEL_WORKSPACE_RENAME','INTERNAL_DEMO_NOTE','FIREWALL_ESCALATION_REVIEW',riskReviewOperation];
-export const requiresIndependence = (type, policy) => policy?.separation_of_duties !== false ||
- ['KERNEL_WORKSPACE_RENAME','FIREWALL_ESCALATION_REVIEW',riskReviewOperation].includes(type);
+export const requiresIndependence = () => true;
 export const reviewLevels = ['ADMIN','OWNER'];
 export const terminalReasons = ['TIMEOUT','POLICY_CHANGED','TARGET_CHANGED','AUTHORITY_CHANGED','LEGACY_UNBOUND','BINDING_UPGRADED','CANCELLED_BY_REQUESTER','CANCELLED_BY_REVIEWER'];
 // Only these transitions are accepted by the server; the database guard repeats them.

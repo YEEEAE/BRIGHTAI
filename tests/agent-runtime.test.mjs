@@ -143,14 +143,16 @@ test('a denied policy step is recorded as evidence and a REQUEST_APPROVAL obliga
 });
 
 test('pause and resume require a verified Human Gate approval bound to the checkpoint', async () => {
-  let approved = false;
-  const { runtime } = harness({ policy: async () => ({ decision: 'BLOCK', reason: 'REQUEST_APPROVAL', obligations: ['REQUEST_APPROVAL'] }),
+  let approved = false, policyAllows = false;
+  const { runtime } = harness({ policy: async () => policyAllows ? allow() : ({ decision: 'BLOCK', reason: 'REQUEST_APPROVAL', obligations: ['REQUEST_APPROVAL'] }),
     approval: async () => approved ? { approved: true, reason: 'APPROVAL_VERIFIED' } : { approved: false, reason: 'APPROVAL_NOT_ACTIVE' } });
   const run = await runtime.start(identity, tenant, startBody());
   await runtime.step(identity, tenant, run.run_id, { kind: 'HUMAN_GATE', correlationId: correlation(), idempotencyKey: 'hg-1' });
   const resumeBody = () => ({ approvalRef: randomUUID(), correlationId: correlation(), idempotencyKey: 'resume-' + randomUUID() });
   await assert.rejects(runtime.resume(identity, tenant, run.run_id, resumeBody()), { code: 'APPROVAL_NOT_VERIFIED' });
   approved = true;
+  await assert.rejects(runtime.resume(identity, tenant, run.run_id, resumeBody()), { code: 'AGENT_POLICY_DENIED' });
+  policyAllows = true;
   const resumed = await runtime.resume(identity, tenant, run.run_id, resumeBody());
   assert.equal(resumed.status, 'RUNNING');
   assert.equal(isUuid(resumed.handoff.approval_ref), true);
