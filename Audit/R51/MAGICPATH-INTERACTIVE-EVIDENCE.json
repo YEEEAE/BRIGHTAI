@@ -1,0 +1,103 @@
+{
+  "reference": {
+    "project": "476546341477171200",
+    "component": "476546341477171202",
+    "revision": "476546341477171201",
+    "url": "https://designs.magicpath.ai/v1/smartly-home-5770",
+    "embed_url": "https://designs.magicpath.ai/v1/smartly-home-5770?embed=true",
+    "source_files": 6,
+    "http_status": 200,
+    "tested_navigation_sections": 11,
+    "tested_modal": true,
+    "navigation_names": [
+      "Overview",
+      "Kernel",
+      "Firewall",
+      "Risk Engine",
+      "Human Gate",
+      "Ledger",
+      "Secure Chat",
+      "Registry",
+      "Policy Packs",
+      "Developer Workbench",
+      "Trust Center"
+    ],
+    "firewall_results": [
+      "REDACT",
+      "BLOCK",
+      "ESCALATE",
+      "ALLOW",
+      "WARN"
+    ],
+    "risk_observations": [
+      "25/25",
+      "22/25",
+      "19/25"
+    ],
+    "reject_badge": "APPROVED (incorrect after rejection)",
+    "ledger_verify": "local chain consistent",
+    "ledger_tamper": "detected",
+    "registry": "add/search passed",
+    "policy": "ISO 42001 applied",
+    "modal": "opened and closed",
+    "developer": "local try navigated Kernel; explicitly proposed example only",
+    "reset": "events 00, risk 16/25 retained",
+    "desktop": {
+      "iframe_viewport": [
+        1440,
+        952
+      ],
+      "doc_width": 1425,
+      "sidebar_x": 1189,
+      "sidebar_width": 236,
+      "bg": "rgb(16,16,25)",
+      "font": "IBM Plex Sans Arabic, Noto Sans Arabic, Tahoma, Arial",
+      "h1_px": 30
+    },
+    "mobile": {
+      "iframe_viewport": [
+        390,
+        796
+      ],
+      "doc_width": 375,
+      "sidebar_width": 375,
+      "h1_px": 24
+    }
+  },
+  "candidate": {
+    "url": "https://brightai-r51-audit.onrender.com/demo/governance/",
+    "desktop": {
+      "viewport": [
+        1440,
+        1000
+      ],
+      "doc_width": 1425,
+      "nav_x": 18,
+      "nav_width": 203,
+      "lab_bg": "transparent",
+      "font": "Plex Arabic, IBM Plex Sans Arabic, Arial",
+      "h1_px": 30
+    },
+    "mobile": {
+      "viewport": [
+        390,
+        844
+      ],
+      "doc_width": 375,
+      "nav_x": 12,
+      "nav_width": 351,
+      "h1_px": 24
+    },
+    "developer_status": 404,
+    "trust_status": 200,
+    "secure_chat_status": 200
+  },
+  "method": "MagicPath MCP read pinned source; Firecrawl rendered HTTP GET and Playwright interaction, two successful sessions; Browser Use run ea356d7e-b1f1-4117-ada3-d228d07a42d7 failed terminal; earlier candidate browser E58 retained",
+  "limitations": [
+    "No screenshot pixel comparison across all states; iframe heights differ",
+    "No full keyboard/focus/animation audit",
+    "No actual protected auth or live Groq invocation",
+    "No MagicPath or GitHub edits",
+    "No remote form submissions"
+  ]
+}

@@ -1,0 +1,1075 @@
+# BRIGHT AI / AIGAS — R5.1 | التقرير الموحّد ومهام الإغلاق والنشر
+
+**قرار:** NO-GO للإطلاق التجاري إلى حين تنفيذ المهام وإثبات البوابات. مرشح Node المعزول READY؛ المصدر المرجعي 5387cdf6282cc3775f73ade30c82f199967d9409. الدومين والإنتاج لم يتغيرا.
+
+## 1 | تحديث MagicPath الفعلي — E63/E64
+
+تم فتح [التصميم التفاعلي](https://designs.magicpath.ai/v1/smartly-home-5770) وتأكيد HTTP200، وقراءة 6 ملفات من revision 476546341477171201. نفّذ Playwright التنقل في 11/11 أقسام وفتح/إغلاق المودال. نفّذ خمس fixtures Firewall، ومصفوفة Risk، وHuman Gate approve/reject، وLedger verify/tamper، وRegistry، وPolicy Packs، وDeveloper local action، وReset. **جلسة Browser Use للمقارنة فشلت**؛ تم استكمال هذا النطاق ببديل Firecrawl/Playwright دون تغييرات في المرجع. لا يدّعى أن كل زر/حالة أو لقطة متطابقة بصريًا.
+
+| القسم | المرجع الفعلي | المرشح / الفرق | الحالة | المهمة |
+|---|---|---|---|---|
+| Overview | Navigation renders اكتشف منظومة AIGAS; cards and initial metrics | Overview available, initial metrics 1 asset, 0 events/risks/referrals | DIFFERENT | P12 |
+| Kernel | Default مركز التحكم بالحوكمة; safe ALLOW, injection BLOCK, external ESCALATE, Secure Chat SKIPPED | Local governance tabs and isolated synthetic flow; no real agent runtime | DIFFERENT | P03 P12 |
+| Firewall | Five samples returned REDACT/BLOCK/ESCALATE/ALLOW/WARN | Prior local tests allowed/blocked/redacted; full five-state same-fixture parity not verified | PARTIAL | P06 P12 |
+| Risk Engine | 5x5 matrix 25/25, residual 22/25 then 19/25 when control added | Prior candidate 3x3 and 3×2=6 high; invalid input rejected | DIFFERENT | P07 P12 |
+| Human Gate | Approve records APPROVED; reject records local rejection but UI badge incorrectly APPROVED | Local approve/reject passed; complaint chain return passed | REFERENCE_DEFECT | P08 P12 |
+| Ledger | Local chain verifies, tamper detected; unsigned; no-WebCrypto placeholder risk from source | Local 5 linked events verified; stale empty message after record | DIFFERENT | P09 P12 |
+| Secure Chat | Reference explicitly blocks sending in public lab | Candidate public chat runs browser-only simulation, no Groq | DIFFERENT_INTENTIONAL | P10 P12 |
+| Registry | Added and filtered R51 Synthetic Asset | Prior candidate added synthetic asset/version | PARTIAL | P05 P12 |
+| Policy Packs | Selected ISO 42001, applied to Kernel selector | Prior candidate supervision pack applied and version advanced | DIFFERENT | P05 P12 |
+| Developer Workbench | Renders proposed POST /api/governance/evaluate explicitly not connected; local try navigates Kernel | Candidate GET /demo/developer-workbench/ 404 | FAIL_VERIFIED | P12 |
+| Trust Center | Navigation renders الثقة والشفافية; capability tiles not verified in reference | Candidate /trust/ 200; evidence-backed scope remains limited | PARTIAL | P12 P14 |
+| Enterprise modal | Opened and closed; external contact/access links; no submission | Prior candidate modal opens/closes and makes read-only availability GET; reception unavailable | DIFFERENT | P11 P12 |
+| Desktop layout | At iframe 1440×952 doc 1425, sidebar x1189 width236; dark rgb(16,16,25); h1 30px weight800 | At 1440×1000 doc1425; nav x18 width203; lab bg transparent; h1 30px | FAIL_VERIFIED | P12 |
+| Mobile layout | At iframe390×796 doc375 sidebar x0 width375 h1 24px | At390×844 doc375 nav x12 width351; collapsed drawer; h1 24px | PARTIAL | P12 |
+| Reset | After reset event count 00, risk remained 16/25; source reset does not clear all state | Prior candidate close leaves stale counters until new session | FAIL_VERIFIED | P12 |
+| Typography/animation/pixel parity | Computed family IBM Plex Sans Arabic/Noto Sans Arabic/Tahoma/Arial, RTL; h1 30/24px | Computed family Plex Arabic/IBM Plex Sans Arabic/Arial, RTL; h1 30/24px | NOT_VERIFIED | P12 |
+
+المرجع يعرض APPROVED بعد الرفض فعليًا، ومخاطر 5×5 مقابل 3×3 في المختبر. لا تُنسخ أخطاء المرجع. لا يوجد overflow في المقاسات المفحوصة، لكن الأبعاد الرأسية مختلفة بسبب iframe؛ لم تُحفظ صور مقارنة pixel-diff أو يكتمل فحص keyboard/animations. UX-02 وUX-07 فشل مثبت في نطاق مقارنة المرشح؛ لا يعني فشل كل 12 شاشة.
+
+## 2 | النسب والمقامات — مؤشر تخطيط الإغلاق للمصفوفة الجزئية
+
+**المقام الجزئي 83** وليس كل المشروع. في الأصل 19 PASS، 21 FAIL، 24 NOT_VERIFIED، 19 BLOCKED. بعد تسجيل فرقين مؤكدين بقي PASS=19 وتحوّل شرطان من NOT_VERIFIED إلى FAIL: {'NOT_VERIFIED': 22, 'FAIL_VERIFIED': 23, 'BLOCKED': 19, 'PASS_VERIFIED': 19}. لا تنقل جاهزية SQL أو local synthetic إلى production. أوزان المحاور الأصلية مجموعها 100؛ أوزان الشروط داخل كل محور متساوية هنا بقرار معلن لاحق للتخطيط، لا تجميد مستقل نهائي.
+
+المعدل الخام الناجح 19/83 = 22.89%. مؤشر الاستيفاء الموزون الجزئي 22.29%؛ تغطية الأدلة 47.27% (كانت 45.27%). المتبقي الخام 64/83. لا نسبة جاهزية تشغيل حي شاملة حتى اكتمال المقام.
+
+| المحور | الوزن | PASS/المقام | الاستيفاء الجزئي | تغطية الأدلة | المتبقي إلى 100% |
+|---|---:|---:|---:|---:|---:|
+| Backend & API | 10% | 2/8 | 25.00% | 62.50% | 75.00 نقطة |
+| Kernel & orchestration | 10% | 1/4 | 25.00% | 25.00% | 75.00 نقطة |
+| Neon / RLS / migrations | 9% | 0/7 | 0.00% | 57.14% | 100.00 نقطة |
+| Security / identity / privacy | 10% | 1/6 | 16.67% | 33.33% | 83.33 نقطة |
+| Registry & Policy Packs | 6% | 1/5 | 20.00% | 40.00% | 80.00 نقطة |
+| Firewall Agent | 6% | 1/4 | 25.00% | 50.00% | 75.00 نقطة |
+| Human Gate Agent | 5% | 1/4 | 25.00% | 25.00% | 75.00 نقطة |
+| Risk Engine Agent | 7% | 1/4 | 25.00% | 25.00% | 75.00 نقطة |
+| Ledger Agent | 6% | 1/4 | 25.00% | 25.00% | 75.00 نقطة |
+| Secure Chat & Groq / FinOps | 7% | 1/5 | 20.00% | 80.00% | 80.00 نقطة |
+| MagicPath / RTL / A11y | 7% | 2/7 | 28.57% | 57.14% | 71.43 نقطة |
+| Public journey / trial / commercial | 5% | 2/6 | 33.33% | 66.67% | 66.67 نقطة |
+| Infrastructure / deploy / recovery | 5% | 3/6 | 50.00% | 83.33% | 50.00 نقطة |
+| Performance / dependencies / quality | 4% | 0/6 | 0.00% | 33.33% | 100.00 نقطة |
+| SEO/GEO / analytics / observability | 3% | 2/7 | 28.57% | 57.14% | 71.43 نقطة |
+
+كل المعايير الـ83 مرتبطة بمهام P01–P15 في EXECUTION-REQUIREMENT-MAP.csv. لا يُعلن 100% بمجرد كتابة برومبت؛ وكيل التنفيذ يُغلق الصف بالدليل في البيئة المنطبقة. لا يعاد تنفيذ 42 ترحيلًا على المرشح لمجرد الوصول إلى نسبة.
+
+## 3 | بوابات النشر
+
+- المرشح المعزول: Node/Neon/Auth readiness مثبتة 200، 42/42 ترحيل و8/8 اختبارات RLS ذات نطاق محدد. البوابة مغلقة.
+- Public Synthetic: يعمل في المختبرات المفحوصة؛ إصلاح reset وLedger وDeveloper Workbench ومقارنة الحالة.
+- Public Live AI / 48H Enterprise / Commercial: NO-GO حتى Groq المعتمد وtool loops الحقيقي وAuth E2E ومخطط الإنتاج وقرار الإقامة.
+- P15 ينشر فقط بعد إذن مالك الإنتاج وتحقق البوابات، مع static rollback. صفر ميزانية Groq؛ لا ادعاء inference.
+
+## 4 | ملفات القياس والأدلة
+
+- [مصفوفة مقارنة MagicPath](MAGICPATH-INTERACTIVE-COMPARISON.csv) · [دليل التشغيل](MAGICPATH-INTERACTIVE-EVIDENCE.json)
+- [مصفوفة النسب](SCOPED-CLOSURE-SCORECARD.csv) · [JSON](SCOPED-CLOSURE-SCORECARD.json) · [تحديث حالات المعايير](REQUIREMENTS-CLOSURE-OVERLAY.csv)
+- [ربط كل معيار بمهمة](EXECUTION-REQUIREMENT-MAP.csv) · [البرومبتات التنفيذية](BRIGHTAI-R51-DIRECT-EXECUTION-PROMPTS.md)
+
+---
+
+# الأدلة السابقة المحفوظة — سياق تاريخي، التحديث أعلاه مقدم على الوصف السابق
+
+# BRIGHT AI / AIGAS — R5.1 | التدقيق التشغيلي الموحّد بعد التحقق المعزول
+
+**26 نوفمبر 2026 · SHA `5387cdf6282cc3775f73ade30c82f199967d9409` · المرشح المعزول READY · الإنتاج التجاري NO-GO**
+
+هذه مقدمة الحالة الأحدث وهي المرجع الحاكم لجميع التعارضات مع اللقطات التاريخية المحفوظة أدناه. لا يُعاد احتساب نسب الإنتاج من نجاح بيئة معزولة. طلب المالك: اختبار اصطناعي فقط، Groq بميزانية صفر دولار، GitHub قراءة فقط، لا تعديل للإنتاج أو الدومين. تم التنفيذ ضمن هذا النطاق؛ الإصلاحات المصدرية في البرومبتات فقط.
+
+## 1 | الملخص التنفيذي
+
+| النطاق | حالة مثبتة | حدود النتيجة |
+|---|---|---|
+| Node candidate | **LIVE / healthz=200 / readyz=200** | deploy متطابق؛ portal DISABLED؛ الإنتاج static |
+| Neon PostgreSQL 18 | **42/42 fresh migrations** | مشروع جديد من الصفر؛ 47 جدولًا، 98 سياسة، كل الجداول لديها RLS وسياسات |
+| RLS isolation | **8/8 scoped cases passed** | اختبارات قاعدة البيانات بعينتين، ليست HTTP/JWT أو جميع الجداول |
+| Neon Auth | **READY + active JWKS probe** | حسابان اصطناعيان؛ لم يتم sign-in حقيقي أو تحقق بريد |
+| 48h DB trial | **PASS scoped** | 48h/idempotency/expiry بالأزمنة الاصطناعية؛ لا E2E حقيقي |
+| Browser Use | **MIXED** | 7 صفحات، رحلة خماسية ناجحة؛ عيبان قابلان للتكرار |
+| Redirects | **159/159 candidate؛ 0/159 production** | 327 URL مكتشفًا: 75 HTTP200 و252 HTTP404؛ ليست كلها أخطاء |
+| Groq live AI | **BLOCKED / 0 calls / $0 audit spend** | لا callable tool ولا ضمان مجانية الطلب ولا نموذج معتمد |
+| Multi-agent | **FAIL/NOT_VERIFIED** | لم يتغير المصدر؛ يلزم تنفيذ الوكلاء والأدوات والأمان |
+| Production | **NO-GO** | لا تغيير في المصدر أو DNS أو بيانات الإنتاج |
+
+## 2 | قاعدة Neon المعزولة
+
+[المشروع الجديد](https://console.neon.tech/app/projects/raspy-surf-09603889) `raspy-surf-09603889`، branch `br-noisy-frog-bdwi4d6d`، PostgreSQL 18، AWS Ohio. بدأ public schema بصفر جدول، مع Neon Auth Better Auth. رفضت المنصة تغيير suspend interval في الخطة الحالية، فأُنشئ المشروع بالإعدادات الافتراضية؛ لا استنتاج لتكلفة موارد Neon من هذا الدليل. لم تُنسخ أي بيانات من Production أو Staging.
+
+طبقنا ترتيب fresh المعتمد في `scripts/migration-order.mjs`: 42 من أصل 46 ملفًا. استبعدت 0011 و0012 و0013 و0019 لأنها upgrade-only/superseded. تمت تجزئة SQL باستخدام محلل يحترم dollar quotes والتعليقات، بعد رفض connector multiple commands in prepared statement (42601)، مع معاملة مستقلة لكل ملف وإيصال SHA-256 في ledger في نفس المعاملة. كل الـ42 حالة APPLIED؛ كل البصمات 64 خانة. `NEON-MIGRATION-RECEIPTS-42.csv` نقلٌ لسجل قاعدة البيانات، لا ملف raw export. مدة الترحيل `duration_ms=0` placeholder غير مقاسة. لم تُنشأ client-role stubs الاختيارية؛ owner `audit_owner` غير الافتراضي، لذلك فروع 0018 الخاصة بـneondb_owner/stubs تحتاج rehearsal منفصل. لا يُعاد تنفيذ الترحيلات في البيئة نفسها بلا مطابقة السجل.
+
+| الكتالوج | Production (سابق) | Staging (سابق) | Audit isolated (فعلي) |
+|---|---:|---:|---:|
+| public tables | 31 | 43 | 47 |
+| RLS enabled | 31 | 43 | 47 |
+| tables with policies | 2 | 43 | 47 |
+| policies | 2 | 93 | 98 |
+| FORCE RLS | 0 | 2 | 2 |
+| start/read trial(uuid) | ناقصة | ناقصة | موجودة ومختبرة |
+
+### اكتشاف صلاحية PostgreSQL 18 وإصلاحها في المرشح
+
+الدور `audit_owner` عضو بـadmin option في `aigas_runtime` لكن `set_option=false`؛ تنفيذ SET LOCAL ROLE أعاد 42501. نُفّذ GRANT مع SET TRUE في المشروع المعزول فنجح. أنشأنا `r51_app_login` كدور تسجيل دخول محدود، read-only ضمن schema فارغة مخصصة، ثم GRANT aigas_runtime WITH INHERIT FALSE, SET TRUE. النتيجة: superuser=false، bypassrls=false، لا صلاحيات مباشرة SELECT أو write على جداول public (0)، can SET=true، inherited=false. الـeffective runtime `aigas_runtime` لا يتجاوز RLS. تم ربط هذا الحساب لا حساب المالك بـRender، عبر تمرير سر الاتصال مباشرة بين الأدوات دون طباعته أو حفظه في التقارير. لا تعديل للأدوار الإنتاجية. دليل E54–E56.
+
+### 8 حالات عزل
+
+| الحالة | الملاحظة |
+|---|---|
+| A own | 5 منتجات A، صفر B، عضوية A فقط |
+| A forged B | صفر منتجات A/B، لا عضوية B |
+| B own | 5 منتجات B، صفر A، عضوية B فقط |
+| B forged A | صفر منتجات A/B، لا عضوية A |
+| no actor/tenant | صفر صفوف في العينة |
+| cross-tenant UPDATE | صفر صفوف محدثة |
+| forged membership INSERT | 42501 RLS violation |
+| ledger UPDATE | 42501 permission denied |
+
+هذي عينات ضمن effective aigas_runtime عبر SQL؛ ليست إثباتًا شاملاً لكل الجداول/الأدوار/المسارات أو JWT. حسابان ومؤسستان اصطناعيان تم إنشاؤهما، ثم مؤسستا تجربة منفصلتان للـtrial fixtures.
+
+## 3 | جاهزية Render الفعلية
+
+[الخادم المعزول](https://brightai-r51-audit.onrender.com) · [readyz JSON](https://brightai-r51-audit.onrender.com/readyz/) · [Render dashboard](https://dashboard.render.com/web/srv-dc400fk9v7es73df3cc0).
+
+- `service=srv-dc400fk9v7es73df3cc0`, `deploy=dep-dc40a2t6e07s73dpro4g`, live at 2026-11-26T10:09:10.248048Z، exact commit أعلاه.
+- `readyz` بعد الربط: HTTP200، schema=1، status/state=ready، database=READY، auth=READY، authProbe=ACTIVE، portal=DISABLED، release.consistent=true، checkedAt 10:09:21.058 UTC.
+- `healthz` HTTP200 pinned SHA؛ `/api/trial-availability/` HTTP200 available=false؛ `/app/` HTTP503 APP_UNAVAILABLE (إقفال متعمد).
+- أسماء env المستخدمة فقط: DATABASE_URL، NEON_AUTH_BASE_URL، NEON_AUTH_JWKS_URL، AIGAS_REQUIRE_RLS=true، AIGAS_DB_RUNTIME_ROLE=aigas_runtime، AIGAS_HEALTH_AUTH_PROBE=true، AIGAS_APP_ENABLED=false. لم يضبط Groq. المنصة المجانية/Ohio للبيانات الاصطناعية فقط، لا تصريح لاستضافة بيانات العملاء أو SLA؛ لم يثبت إعداد HTTP health-check path في Render.
+
+## 4 | دورة التجربة 48 ساعة — SQL فعلي، لا ادعاء Auth E2E
+
+1. حساب Neon Auth اصطناعي غير موثق: `aigas_start_self_service_trial(NULL)` يرفض بـ`IDENTITY_NOT_VERIFIED`، SQLSTATE 42501.
+2. حُدد `emailVerified=true` مباشرة فقط لحساب اصطناعي داخل القاعدة المعزولة لاختبار الدالة (fixture، ليس تحقق بريد فعلي). بدء التجربة ACTIVE، فرق الوقت بين started/expires 48.000000 ساعة؛ تكرار البدء أعاد نفس المعرّف.
+3. التحقق من `aigas_self_service_dependencies()` أعاد ready=true لكل الستة: Kernel والخمسة منتجات.
+4. حساب اصطناعي ثانٍ وُثق كـfixture، ثم تم تحريك started_at/expiry إلى -49h/-1h. Access state=EXPLORATION_EXPIRED، قراءتان متتاليتان EXPIRED، عدد حدث انتهاء التجربة=1.
+
+لا تسجيل دخول حقيقي أو تحقق JWT أو مرور 48 ساعة فعلية. لا إثبات لحدود الحصص والإلغاء والـenterprise workflow الحقيقي. Portal يبقى مغلقًا. الحالتان الاصطناعيتان محفوظتان للمراجعة؛ لا بيانات مستخدمين حقيقية. دليل E59.
+
+## 5 | Browser Use: نتيجة وظيفية مباشرة
+
+Run `48cfda62-8d12-4ebc-8606-fcaaaaa1983f` completed. [Governance](https://brightai-r51-audit.onrender.com/demo/governance/)، [Secure Chat](https://brightai-r51-audit.onrender.com/demo/secure-chat/)، وصفحات الشكاوى [Firewall](https://brightai-r51-audit.onrender.com/products/firewall/complaint/)، [Secure Chat](https://brightai-r51-audit.onrender.com/products/secure-chat/complaint/)، [Risk](https://brightai-r51-audit.onrender.com/products/risk-engine/complaint/)، [Human Gate](https://brightai-r51-audit.onrender.com/products/human-gate/complaint/)، [Ledger](https://brightai-r51-audit.onrender.com/products/ledger/complaint/).
+
+| الملاحظة | الحكم |
+|---|---|
+| Firewall allowed/blocked، Risk 3×2=6 ورفض blank input | PASS local |
+| Human Gate approve/reject، registry asset add وpolicy version advance | PASS local |
+| Ledger record/verify، unsigned consistency only | PASS local |
+| Secure Chat general/redaction/block/reset | PASS local |
+| Complaint chain: redaction → fixed draft → high risk → supervisor return → 5 linked events | PASS local |
+| Desktop 1920 و390px، 7 صفحات، لا تجاوز أفقي أو console/runtime errors مرصودة | PASS sample |
+| Governance reset hides details but counters stay 2/2 until new session | FAIL؛ P12 |
+| Ledger empty-state message remains alongside recorded evidence | FAIL؛ P09/P12 |
+| Modal open/close: GET availability only؛ لا submit | PASS scoped، availability ليست مثبتة |
+| MagicPath same-state parity، كل 12 screen/modal، full WCAG، real auth وlive AI | NOT_VERIFIED/BLOCKED |
+
+المحاكاة تعمل في المتصفح؛ لا يصح اعتمادها كأداء وكلاء AI أو سجل تشفيري موقّع. مرجع MagicPath الأصلي غير متاح، النسخة المحددة لا تثبت تطابق الأصل. لا تعديل للواجهة في المصدر.
+
+## 6 | الروابط والتسويق وGroq
+
+159 تحويلًا في المصدر اختُبرت على مضيفين (318 طلب GET)، 159/159 exact 301+Location في candidate مقابل صفر في production. إعادة فحص 327 رابطًا مكتشفًا من Firecrawl: 75 HTTP200، 252 HTTP404؛ بعض الـ404 قد يكون مقصودًا لتقاعد المحتوى. لم تثبت صحة كل canonical أو indexation أو قيمة backlinks؛ لا redirect عشوائي إلى الصفحة الرئيسية. لا تغيير على بيانات GA4/GSC السابقة. نتيجة E60.
+
+Groq Cloud Connector v1.0.0 موجود لكنه لم يصدّر دوال قابلة للاستدعاء للجلسة. لم تُجرَ أي inference أو model call، ولا يثبت هذا فشل المزود نفسه. **تكلفة Groq الناتجة من هذه الجولة صفر دولار**؛ لا ضمان بأن أي طلب لاحق مجاني؛ لا إعادة استخدام مفتاح مكشوف ولا إخراج سر. في المصدر سجل النماذج فارغ والـGateway text-only وعقد agent tools غير مكتمل. P03–P10 تعالج التنفيذ، وإثبات live provider يبقى مشروطًا بمسار مجاني مثبت أو تفويض ميزانية جديد. لا مفتاح Groq في المرشح. E61.
+
+## 7 | سجل الموانع المحدث وقرار الإطلاق
+
+| ID | الحالة | الدليل/الإجراء المتبقي |
+|---|---|---|
+| F01 | PARTIAL_ISOLATED_VERIFIED | 47 tables/98 RLS policies; 8 scoped isolation tests; dedicated login؛ E54 E55 E56؛ Production/Staging untouched; full 47-table/HTTP auth/backup/security acceptance pending. |
+| F02 | PARTIAL_ISOLATED_READY | Node candidate readyz=200, auth active; production static؛ E48 E57؛ Canonical-domain cutover not authorized; verify platform health-check, SLA, rollback. |
+| F03 | OPEN | Groq approved registry empty on pinned source; no live provider call؛ E61؛ Approve provider/model, source changes, prove free quota/connector or obtain budget. |
+| F04 | OPEN | Prior failed CI evidence unchanged؛ E43؛ Source/CI fixes and successful same-SHA checks. |
+| F05 | OPEN | Isolated Ohio environment synthetic only; no production residency approval؛ E54 E57؛ Explicit residency decision, branch protections, restore exercise. |
+| F06 | PARTIAL | Browser synthetic actions and responsive checks; two defects; MagicPath same-state parity not verified؛ E51 E58؛ Fix UI defects, same-state reference screenshots and full accessibility checks. |
+| F07 | OPEN | 327 discovered URLs tested: 75 200; 252 404؛ E60؛ Classify retired pages, GSC sitemap error, canonicals and link value. |
+| F08 | PARTIAL_DB_TRIAL_AND_LOCAL_UI | Synthetic local flow works; DB trial 48h and expiry pass; portal closed؛ E58 E59 E57؛ Real login/JWT and protected E2E, quotas/cancel/enterprise activation, inquiry availability. |
+| F09 | PARTIAL_ISOLATED_VERIFIED | Required start/read(uuid) functions present, exercised in isolated branch؛ E54 E59؛ Reconcile production and prior staging migrations with approvals. |
+| F10 | OPEN_SOURCE_CHANGE | No agent implementation or live tool loop؛ E61 E62؛ P03–P10 implement deterministic governed agent runtime; independent proof. |
+| F11 | OPEN_SOURCE_CHANGE | No Groq key on candidate; conflicting source secret names retained؛ E61؛ Canonical protected name, safe migration; no exposed key reuse. |
+| F12 | OPEN | RLS sample verified; agent memory/coordination/budget not implemented or tested؛ E56 E61 E62؛ Durable scoped agent run/tool/FinOps/recovery evidence. |
+| F13 | PARTIAL_ISOLATED_VERIFIED | 159/159 redirects in candidate; 0/159 in production; status route candidate 200؛ E50 E57 E60؛ Safe canonical deployment and validate all targets and indexation. |
+| F14 | OPEN | Prior disabled ruleset and failed CI unchanged؛ E43؛ Enforce release protection with approval; pass current candidate CI. |
+| F15 | PARTIAL | Local reject path works in complaint chain; Developer Workbench still unavailable on prior live; enum gap unmodified؛ E51 E58 E62؛ Source contract parity; real reject/binding and workbench route; no fabricated endpoints. |
+| F16 | PARTIAL | All 327 discovered URLs GET checked; 7 browser pages exercised; authenticated/visual completeness not verified؛ E58 E60؛ Full auth/role-based HTTP tests, full MagicPath parity, comprehensive crawl/indexation scope. |
+
+**بوابات الإصدار:** Node infrastructure candidate = PASS scoped؛ Local synthetic = MIXED (عيبان)؛ Authenticated enterprise trial = NOT_VERIFIED؛ Public Live AI = NO-GO؛ Commercial production = NO-GO؛ Deploy authorization = منفصل. لا توجد نسبة جاهزية نهائية: مصفوفة الـ83 معيارًا السابقة مقام جزئي غير شامل، والنتائج الحالية طبقة تشغيلية مستقلة. لا استنتاج بأن جميع P0 أغلقت في الإنتاج. يبقى المعيار النهائي ≥80% لكل محور ومنتج، 100% للضوابط الحرجة، صفر P0 مؤثر، وآثار اختبار حقيقية في البيئة الهدف.
+
+**ما تغير فعليًا:** إنشاء مشروع Neon معزول وAuth ودور اتصال واختبارات synthetic وتغيير env لخدمة Render المعزولة فقط. تم حفظ DB fixtures. لم يُكتب أو يُدفع أي ملف GitHub، ولا تعديل Production/Staging أو DNS أو MagicPath. لا تنفيذ إصلاحات الكود أو فتح البوابة العامة. لم تُختبر الاستعادة وSSO/MFA أو كل عقود HTTP. لا يدعي التقرير انتهاء R5.1 كله.
+
+## 8 | الملفات والأدلة
+
+- `LATEST-OPERATIONAL-EVIDENCE-E54-E62.json` — سجل أحدث الأدلة، نقل من نتائج الأدوات لا captures خام.
+- `NEON-MIGRATION-RECEIPTS-42.csv` — بصمات سجل الترحيل.
+- `R51-ISOLATED-TEST-RESULTS.csv` — الحالات والحدود حسب طبقة التنفيذ.
+- `OPERATIONAL-BLOCKER-OVERLAY.csv` — أحدث موقف من جميع F01–F16؛ الأصل المجمد محفوظ.
+- `BRIGHTAI-R5-FINAL-LAUNCH-EXECUTION-PROMPTS.md` — 15 برومبت فقط، أحدث حالة، تظل إصلاحات المصدر لوكيل التنفيذ المفوض.
+
+---
+
+# اللقطات التاريخية المحفوظة (ليست الحالة الحالية)
+
+**تنبيه:** كل عبارات «readiness 503»، «لا DB أو Auth»، «الأفعال لم تُنفّذ» و«الزحف لم يكتمل» في الجزء التاريخي أدناه تصف أزمنة سابقة. الحالة الأحدث فوقها، E54–E62، هي الحاكمة. لم تُمح نتائج أو نسب تاريخية ولم تُحوّل إلى نجاحات تشغيلية جديدة.
+
+# BRIGHT AI / AIGAS — R5.1 | تحديث التدقيق التشغيلي الموحّد
+
+**26 نوفمبر 2026 · SHA `5387cdf6282cc3775f73ade30c82f199967d9409` · قرار الإنتاج المؤسسي: NO-GO · التشغيل المعزول: مثبت جزئيًا**
+
+هذا الإصدار يدمج نتائج التفويض الجديد مع التقرير السابق والبرومبتات الـ15. لا يغيّر المصفوفة المجمدة أو يمنح PASS للإنتاج بسبب نجاح مرشح معزول. لا يُعد تدقيقًا تشغيليًا شاملًا منتهيًا.
+
+## أ | نتائج الجولة الجديدة
+
+| نطاق | نتيجة | قيد الإثبات |
+|---|---|---|
+| Render Node | LIVE، بناء ناجح، نفس SHA | خدمة معزولة مجانية في Ohio؛ لا قاعدة بيانات أو مفاتيح؛ autoDeploy off |
+| Liveness | HTTP 200، commit مطابق | تشغيل الخادم فقط |
+| Readiness | HTTP 503 | لا جاهزية مؤسسية؛ البوابة مغلقة |
+| Status / availability | HTTP 200 | trial وenterprise inquiry كلاهما false؛ measurement enabled لا يثبت ingest |
+| التحويلات المعرّفة | 159/159 مرشح؛ 0/159 إنتاج | GET دون follow، تحقق 301 وLocation، وليس فحص كامل بقية التاريخ |
+| Browser Use | اكتمل فحص العرض في مقاسين | ليست مطابقة MagicPath ولا E2E؛ لم تنفذ عناصر المنتجات |
+| Groq | الإضافة موجودة؛ الاستدعاء محجوب | لا أداة Groq ظاهرة، لا نموذج أو completion أو usage مثبت |
+| Enterprise E2E | BLOCKED | لا حسابات اختبار مخولة ولا اتصال قاعدة معزولة مهيأ |
+
+**Render:** [مرشح Node](https://brightai-r51-audit.onrender.com)، [لوحة Render](https://dashboard.render.com/web/srv-dc400fk9v7es73df3cc0)؛ service `srv-dc400fk9v7es73df3cc0`، deploy `dep-dc400g49v7es73df3dq0`؛ live في 09:48:49.765226 UTC. الإنتاج `srv-d7m5bcjbc2fs73826v20` بقي على Static Site ولم يجر تغيير DNS أو GitHub أو قاعدة بيانات. اخترنا عزله وحصره بالخطة المجانية وOhio لمقاربة منطقة Neon المعروفة، دون اعتماد المنطقة لمعالجة بيانات العملاء. لا أسرار أو بيانات حقيقية في المرشح. Free plan ليس SLA إنتاج. Health-check HTTP path غير مضبوط في استجابة إنشاء الخدمة؛ لا يفترض readiness platform gate.
+
+## ب | إثبات HTTP والتحويلات
+
+| المسار | إنتاج سابق | مرشح | تفسير |
+|---|---:|---:|---|
+| `/healthz/` | 404 | 200 | status=ok; exact commit verified |
+| `/readyz/` | 404 | 503 | SERVICE_UNAVAILABLE; dependencies not ready; no detailed raw readiness report |
+| `/api/trial-availability/` | 404 | 200 | available=false |
+| `/api/measurement-status/` | 404 | 200 | enabled=true; analytics ingestion not proven |
+| `/api/enterprise-inquiry/` | 404 | 200 | available=false |
+| `/status/` | 404 | 200 | portal closed |
+| `/app/` | 404 | 503 | APP_UNAVAILABLE; expected closed flag; prior 404 from earlier live evidence |
+| `/sitemap.xml` | 404 | 200 | final path /sitemap-index.xml; direct 301 separately verified |
+
+جميع **159** قواعد المصدر فحصت على المضيفين؛ **318 GET** دون اتباع التحويل. الإنتاج: 68 HTTP200 دون Location و91 HTTP404؛ المرشح: 159 HTTP301 مع Location المطابق. سجل `REDIRECT-REPLAY-159.csv` منقول من ترتيب المصدر ونتائج الأداة، وليس capture خام. لا يجوز تسمية 200 في alias نجاحًا للتحويل. بقي فحص الروابط المكتشفة خارج القواعد والـcanonical النهائي والفهرسة غير مكتمل. محاولة الاستكمال انقطعت بانتهاء جلسة Code Mode ولم ترجع نتيجة terminal.
+
+## ج | Browser Use / MagicPath
+
+المصدر الحي [مختبر الحوكمة](https://brightai.live/demo/governance/)، [Secure Chat](https://brightai.live/demo/secure-chat/)، [Developer Workbench](https://brightai.live/demo/developer-workbench/)، [Trust](https://brightai.live/trust/)، [PNG المرجعي](https://storage.googleapis.com/storage.magicpath.ai/component-previews/59a9def5-3eac-49fe-b849-5a0bae086247.png). Run `7d82467c-7dd3-4841-a95d-6588a9e3ac8f` completed. Desktop 1440×1000 وmobile 390×844؛ لم يظهر تجاوز أفقي في المقاسات المفحوصة. فتحت قائمة الجوال ونافذة الطلب محليًا؛ لم تنفذ إجراءات المنتجات أو ترسل طلبات.
+
+| القسم | الملاحظة | الحالة |
+|---|---|---|
+| overview | initial state 1 synthetic asset, 0 events/risks/referrals | RENDER_OBSERVED |
+| kernel | deterministic reader/manager; local only | VISIBLE_NOT_EXECUTED |
+| firewall | sample and local scan controls | VISIBLE_NOT_EXECUTED |
+| risk-engine | likelihood and impact 1–3; replay available | VISIBLE_NOT_EXECUTED |
+| human-gate | local approve/reject controls; no external execution | VISIBLE_NOT_EXECUTED |
+| ledger | unsigned local evidence chain; record and verify controls | VISIBLE_NOT_EXECUTED |
+| secure-chat | separate public demo; local browser replies only | VISIBLE_NOT_EXECUTED |
+| registry | synthetic asset controls; no persistence proven | VISIBLE_NOT_EXECUTED |
+| policy-packs | synthetic privacy and supervision packs | VISIBLE_NOT_EXECUTED |
+| developer-workbench | rendered 404 desktop and mobile | FAIL_VERIFIED |
+| trust-center | public 200; no operational or certification claims verified | RENDER_OBSERVED |
+| enterprise-request-modal | opened locally; electronic reception unavailable; no form submission | FAIL_VERIFIED_AVAILABILITY |
+
+لا قبول بصري نهائي: الصورة المرجعية 1200×630 ثابتة بحالة Kernel، والموقع يبدأ Overview؛ لا مقارنة same-state أو screenshots للمرجع الأصلي الكامل. لا دليل للـHero/Header parity أو WCAG الكامل. سجل الأفعال البصرية `BROWSER-OBSERVATIONS.csv`.
+
+## د | Groq والوكلاء
+
+وجدت Groq Cloud Connector الخاص بالمستخدم v1.0.0 في قائمة الإضافات المملوكة؛ وفحصت هيكل إعداد الاتصال دون إظهار أسرار. **لم تتوفر أي دالة تنفيذ Groq في هذه الجلسة**؛ لم أختبر `/models` أو inference، ولم أضع مفتاحًا على Render. لا يمكن اعتبار metadata أو وجود plugin دليلاً على نجاح الاتصال. التفويض الحالي يسمح باستدعاء اصطناعي محدود عند توفر الأداة الفعلية؛ الوصول التقني غير متحقق. ربط المزود بالـBackend يجب إثباته مستقلاً؛ الوكلاء الخمسة وKernel orchestrator لا يصبحون مكتملين لمجرد نشر الكود الحالي. استخدم سرًا جديدًا آمنًا إذا كان المفتاح السابق قد ظهر في محادثة؛ لا تدرجه في GitHub أو التقرير.
+
+## هـ | أثر الجولة على سجل الموانع
+
+| المانع | حالة الإغلاق | نتيجة جديدة | المطلوب |
+|---|---|---|---|
+| F02 | PARTIAL | Node candidate live exact SHA and liveness passed; production still static; readiness 503 | Complete isolated auth/DB/readiness; approved cutover only after gates. |
+| F03 | OPEN | Groq callable tool unavailable; provider/model registry not changed | Enable actual connector and run bounded synthetic proof; verify model/registry in candidate. |
+| F06 | PARTIAL | Browser rendered live desktop/mobile and preview image; full same-state parity and actions not proven | Same reference revision and matched states; execute all local synthetic controls. |
+| F08 | OPEN | Browser controls visible; trial availability and reception false; no authenticated workflow | Synthetic role-separated staging accounts; trial lifecycle and safe CTA. |
+| F10 | OPEN | No new source code; agentic tool loop still not demonstrated | Implement and verify governed agent runtime and five agents. |
+| F11 | OPEN | No Groq secret configured on candidate; connector not callable | Inject approved server-side secret through protected configuration; no disclosure. |
+| F13 | PARTIAL | 159/159 candidate redirect contract, status 200; production 0/159 correct 301 | Retest on canonical domain after approved cutover. |
+| F16 | PARTIAL | 159 configured aliases complete; browser rendering evidence available; historical URL follow-up interrupted, functional and auth E2E unexecuted | Resume remaining URLs and actual interactions; matched visual parity and auth E2E. |
+
+بقية F01–F16 تبقى على حالات السجل السابق، بما فيها فجوات Neon، الدور، وظائف UUID، CI والأمان. لم تتغير درجات الإنتاج ولم يُحسب score جديد. لا GO قبل صفر P0، 100% critical و≥80% لكل محور/منتج بعد تجميد مقام ذري صالح. قرار المرشح: liveness PASS / readiness FAIL. Public synthetic: render observed / functional NOT_VERIFIED. Public live AI، 48H enterprise، commercial: NO-GO.
+
+## و | سجلات الجولة المضافة
+
+- `OPERATIONAL-UPDATE-EVIDENCE.json`: E48–E53.
+- `NODE-CANDIDATE-HTTP.csv`: 8 صفوف.
+- `REDIRECT-REPLAY-159.csv`: 159 صفًا × مضيفين.
+- `BROWSER-OBSERVATIONS.csv`: 12 سطحًا.
+- `OPERATIONAL-BLOCKER-OVERLAY.csv`: تحديثات ثمانية موانع، لا يحل محل المصفوفة المجمدة.
+
+---
+
+# الجزء التاريخي المحفوظ — نتيجة التدقيق قبل التشغيل المعزول
+
+**تنبيه:** كل عبارات عدم نشر Node وعدم اتصال المتصفح وعدم اكتمال التحويلات في الجزء التالي تصف الجولة السابقة، لا الحالة الحالية؛ يُرجع للتحديث أعلاه للحالة التشغيلية الأحدث. أرقام المصفوفة والتاريخ محفوظة بدون تعديل.
+
+# BRIGHT AI / AIGAS — R5.1 UNIFIED AGENTIC CLOSURE AUDIT
+
+**26 نوفمبر 2026 | قراءة فقط | SHA `5387cdf6282cc3775f73ade30c82f199967d9409` | قرار إطلاق NO-GO**
+
+هذا التقرير يحل محل مسودة التقرير الموحد السابقة. اكتمل جرد مسارات المصدر وعقود API على مستوى registry/wrappers، وفحص كل صفحات Sitemap الحالية، ومقارنة صفوف R4 الأصلية، وتشغيل replay محلي محدود. **التدقيق التشغيلي الكامل غير مكتمل**: لا خادم Node منشور، لا حسابات اختبار مؤسسية مخولة، ولا وصول بصري موثوق للمرجع الأصلي. لذلك البرومبتات خطة إغلاق محدثة للأدلة وليست إثبات إغلاق الفجوات أو تصريح إطلاق.
+
+## 01 | الحكم التنفيذي
+
+| المؤشر | نتيجة مثبتة | حدود الإثبات |
+|---|---:|---|
+| ملفات مسارات المصدر | 107/107 | 56 Astro + 51 TS؛ جرد وليس تشغيل |
+| API wrappers | 51/51 | 64 route patterns و108 method rows، تشمل HEAD وSSO |
+| صفحات Sitemap الحالية | 67/67 | HTTP 200 ومحتوى، لا فهرسة أو وظيفة |
+| إجمالي GET الفريدة في الجولة الحالية | 93 | 84 HTTP200، 9 HTTP404؛ 1 منها blog تاريخي غير محسوم |
+| وحدات replay اصطناعية محلية | 16/16 | Git blob matched، Node 22.16.0، لا IO/DB/Groq |
+| أقسام MagicPath في كود النسخة | 12/12 | لا screenshot أو E2E مثبت |
+| المقام التاريخي R4 | 78/78 صفًا مسترجعًا | 21 حالة مقابلة مباشرة عبر طبقات مختلفة؛ لا score delta |
+| مصفوفة العمل الحالية | 83 صفًا | 19 PASS، 21 FAIL، 24 NOT_VERIFIED، 19 BLOCKED |
+| سجل الموانع | 16 | 3 P0، 12 P1، 1 P2 |
+| الأدلة | 47 | 45 في freeze + 2 post-freeze؛ ليست 47 اختبارًا مستقلاً |
+
+**لا درجة إطلاق كلية:** 83 شرطًا تشمل شروطًا مركبة ومتداخلة جُمعت بعد قراءة جزء من الأدلة، وليست المقام الذري المستقل الشامل. لا نحسب نسبة من هذه الصفوف. الأوزان 15 محورًا ومجموعها 100% محفوظة. لا تُخلط نسبة الصفحات مع نسبة جاهزية النظام. 
+
+HEAD الجديد أضاف ملفين فقط تحت `.manus/mcp-results/` مقارنة بـ`9ad3c57e0ed9da265fb99955b04c5637eeadd998`؛ لا تغيّر تطبيقي في diff المرصود. شجرة 8019 entries، 5886 blobs، 337 src، 83 server، 46 migrations، 75 test files. Render deployment `dep-dc3uplgae00c73cukvcg` LIVE 08:25:17.016Z (11:25:17 Riyadh) مطابق للـSHA. خدمة `srv-d7m5bcjbc2fs73826v20` لا تزال static_site تنشر dist/client. Cloudflare origin السابق موثق؛ لم أغير أي إعداد.
+
+| Release scope | القرار | شرط الإغلاق |
+|---|---|---|
+| Local candidate | NO-GO | build/suite/security/CI على مرشح واحد |
+| Public synthetic | NOT_VERIFIED | 16 replay ناجحة، يلزم browser/CTA/negative checks |
+| Public live AI | NO-GO | خادم Node + registry + tool loop + approved provider |
+| 48H enterprise trial | NO-GO | DB parity، UUID functions، role، auth، quotas/expiry |
+| Commercial production | NO-GO | صفر P0، 100% critical، ≥80% كل محور/منتج، أدلة كاملة |
+| Deploy authorization | REQUIRED | لا نشر أو كتابة ضمن التفويض الحالي |
+
+## 02 | ما تمت إعادة معاينته في هذه الجولة
+
+### API وRoute census
+
+51 wrapper TS قُرئت من المصدر. 48 pattern مركزي +14 auth operations +2 SSO =64؛ 108 صفوف method/route، HEAD ضمن العقد حيث يضاف آليًا. `routes.mjs` 5–116؛ `boundary.mjs` 34–79 يعالج 404/405/400 والتحقق من query وidempotency وcorrelation؛ request/response schemas مقروءة. لا دليل تشغيل لكل mapping/handler؛ خمس GET عامة من الخادم تعيد 404 HTML (`healthz`, `readyz`, `trial-availability`, `measurement-status`, `enterprise-inquiry`). 107 source rows في SOURCE-ROUTE-INVENTORY؛ أسماء wrapper المعروضة كمسارات منطقية حيث مسار الملف الكامل لم يُحفظ. سجل 159 redirect aliases من redirects.json لا يعني أنها مطبقة. ملفا preview يشبهان بعضهما لكن كلاهما dev-only؛ لا دعوى build collision.
+
+### HTTPS وSEO
+
+67 صفحة من sitemap الفعلية كلها 200؛ 7 مختبرات، 5 complaint routes، request-access وdesign-system ترجع 200. `/status/` (SSR non-prerender) 404 بينما روابط المختبرات تشير إليه. `/sitemap.xml` و`/solutions/ai-firewall/` معلنان كتحويلات ويعيدان 404؛ `/blog/ai-governance/` 404 وقد يكون مقصودًا كمسار متقاعد. `robots.txt` و`/sitemap-index.xml` و`/sitemap-0.xml` تعمل. 327 URL discovery لا يمثل مقام الموقع؛ الزحف العام انتهت مهلته دون نتائج terminal، لم أعتبر المتبقي ناجحًا أو فاشلًا. سجل graph جزئي. لا إرسال POST أو تعبئة نموذج أو signup.
+
+### Neon / CI / ضوابط النشر
+
+43/31 جداول public، 93/2 policies، FORCE 2/0؛ 12 جدولًا موجودة في Staging فقط؛ 29/31 في Production بلا سياسات. Staging دور NOBYPASSRLS، Production لا دور؛ الدالتان start/read(uuid) مطلوبتان وغير موجودتين في القراءات السابقة، لم يثبت سجل تنفيذ migrations. هذا لا يثبت تسربًا. GitHub Actions الحالي 45782955105 انتهى failure؛ job 139782608686 steps فارغة، سبب الفشل غير محسوم. main غير protected، ruleset disabled. لا اعتماد إصلاح من تحديث CI دون مرور checks.
+
+### Replay وظيفي محدود بعد التجميد
+
+تمت قراءة `src/demo/engine.mjs` ومطابقة bytes مع Git blob `2462b23568e4463ee10d2722103e17f5fbcb38c6` ثم تشغيل الملف المعزول عبر Node v22.16.0. 12 حالات عادية (allow/block, valid/tampered, approve/reject, low/high, reply/block, deny/permit) و4 غير صالحة (scenario مجهول، فارغ، طول 501، risk خارج النطاق)؛ **16/16**. نتيجة `DEMO-UNIT-REPLAY.json`؛ لا خادم، لا network، لا كتابة DB، لا Groq. لا تدخل النتيجة في scorecard المجمد ولا تعوض عن E2E.
+
+### MagicPath
+
+النسخة 476546341477171200/component 476546341477171202/revision 476546341477171201. جردنا 12 قسمًا في TSX (382 سطرًا)، مع خط تحكم ووظيفة في MAGICPATH-ACTION-REGISTER.csv. الأصل غير متاح؛ لا screenshots مقارنة، Opera disconnected. حالات خاصة: developer endpoint غير مسجل، risk residual محلي، Human Gate stage label يحتاج negative test، Ledger digest محلي، Secure Chat send مغلق في النسخة. لا اعتبار ذلك إخفاقًا في إنتاج غير مختبر أو تطابقًا بصريًا. Hero/header/Constellation محفوظان بلا تعديل.
+
+## 03 | المعمارية والمنتجات
+
+## 02 | البيانات الفعلية والتفريق بين البيئات
+
+| البند | Production | Staging |
+|---|---:|---:|
+| public tables | 31 | 43 |
+| RLS enabled | 31 | 43 |
+| tables with policies | 2 | 43 |
+| total policies | 2 | 93 |
+| FORCE RLS | 0 | 2 |
+| aigas_runtime | absent | present, NOLOGIN/NOBYPASSRLS |
+| start(uuid) / read(uuid) | absent / absent | absent / absent |
+| legacy start() | absent | present |
+| protected Neon branch | false | false |
+| region | aws-us-east-2 | aws-us-east-2 |
+
+تغطية السياسات: 2/31 = 6.45% مقابل 43/43 = 100%؛ ليست درجة أمان أو إثبات تسريب. مالك قاعدة البيانات BYPASSRLS في البيئتين؛ لا يُستنتج منه دور التطبيق الفعلي. منطقتا Ohio لا تحققان افتراض إقامة سعودية دون مسار معتمد؛ الموافقة غير مثبتة. لا توجد ربط بيئة Node→Neon فعلي مثبت حتى الآن. الاستعلامات كانت على الكتالوج فقط. لا تشغيل SQL تعديلًا.
+
+## 03 | المعمارية AS-IS وTARGET
+
+AS-IS المرصود: Browser → Cloudflare → Render Static (dist/client). مصدر GitHub يحتوي SSR/API → Kernel → services → PostgreSQL / Groq، لكن هذا لا يعني نشر الخادم. 83 ملف server و46 SQL migration و75 ملف tests و337 ملف src و5886 blobs جُردت أسماءها؛ لا ادعاء قراءة جميع الملفات. Groq الحالي يستخدم approved registry فارغ وميزانية ملف؛ Firewall registry مزودين فارغة؛ Risk Assist موجود كمساعد صياغة؛ Secure Chat text adapter؛ Human Gate وLedger منطق حتمي موجود. E01–E07 E17–E31 E34 E35 E36.
+
+TARGET (اقتراح تنفيذ لا وصف قائم): Browser/Arabic RTL → SSR routes/auth boundary → Kernel Orchestrator + policy/entitlements → 5 agents → shared tool executor & Groq gateway → approved Groq model. Neon stores tenant-scoped runs, steps, grants, asset versions, bounded memory, reservations and evidence references. Deterministic Firewall pre/post checks, Human Gate review and Ledger evidence surround **every applicable action**, including actions proposed by Firewall Agent itself. Kernel not a paid sixth product. No microservices migration required by evidence. Prefer local tool calling, which Groq documents as application-owned execution/orchestration; actual account capability and approval not tested. E32 E33.
+
+| Agent | وظيفة مستقلة | أمثلة أدوات مقترحة (ليست أسماء APIs موجودة) | السلطة الممنوعة |
+|---|---|---|---|
+| Firewall | شرح القرار، تحليل التهديد، اقتراح قاعدة | read_effective_policy / evaluate_synthetic_request / draft_rule_proposal | تجاوز DENY أو تعديل policy |
+| Risk Engine | تحليل أصل، مسودة معالجة، تفسير تقييم | read_asset_revision / calculate_risk / propose_treatment | تغيير الحساب أو قبول الخطر |
+| Human Gate | تلخيص سياق الموافقة والتوصية للمراجع | read_review_context / explain_policy / draft_review_note | اعتماد/رفض أو تزوير grant |
+| Ledger | البحث في الدليل وتحليل التناقض والتقرير | read_evidence / verify_chain / draft_report | صنع hash أو تعديل سجل |
+| Secure Chat | محادثة محكومة وتوجيه مهام مسموحة | read_conversation / request_agent_handoff / summarize_result | تجاوز صلاحيات أو إرسال بيانات ممنوعة |
+| Kernel Orchestrator | routing, context, permission, state, handoff | resolve_context / authorize_tool / schedule_step (داخل الخادم) | تغيير السياسة أو منح سلطة ذاتية |
+
+### تعريف «وكيل حقيقي» وشروط التوقف
+
+الـLLM يقترح tool call من schema محدد، والخادم يتحقق من هوية المستخدم والمستأجر، والمنتج المرخص، ونسخة الأصل والسياسة والأداة، ونوع العملية والحصة. الأداة تنفذ محليًا ضمن صلاحية ضيقة وتعيد نتيجة منقحة؛ model receives result ويمكنه اقتراح خطوة أخرى ضمن حد. تنتهي الحالة بنتيجة أو توقف للموافقة أو منع أو انتهاء مهلة أو فشل؛ ليس مجرد system prompt مختلف. التخطيط يُحفظ كخطة إجراءات مختصرة قابلة للتدقيق، لا hidden chain-of-thought. لا shell/SQL/URL عامة، لا MCP خارجي أو web access تلقائيًا، لا تمرير أسرار أو tenant من النموذج، لا وثوق بمحتوى الأداة. Tool calls ليست تفويضًا. لا حاجة لاستدعاء Groq في قرار حتمي لا يحتاجه.
+
+**State machine مقترحة:** CREATED → AUTHORIZED → RUNNING → WAITING_HUMAN (عند الانطباق) → RUNNING بعد إعادة فحص grant → COMPLETED. حالات نهائية FAILED / DENIED / CANCELLED / EXPIRED / BUDGET_EXHAUSTED. إعادة فحص السياسة/العضوية/الحصة قبل كل خطوة. حدود max_steps/max_depth/fanout/time/tokens/cost يقرها المالك وفق قياس معزول؛ لا أرقام مفترضة. نفس idempotency key لا يكرر أثرًا؛ عدم تأكيد نتيجة خارجية لا يعني إعادة التنفيذ. Outbox/compensation حيث يلزم؛ لا transaction مفتوحة أثناء انتظار Groq.
+
+**Agent run contract مقترح:** run_id، tenant_id/actor_id (server-derived)، agent_id/version، asset_id/version، policy_version، trace_id/parent_run_id، step_no، tool_id/version، idempotency_key، input_digest/minimized metadata، decision، approval_ref (optional)، state، timestamps، model_id، token usage، reservation/settlement refs، evidence_event_id. تخزين الذاكرة لكل tenant/actor/agent/session وscope/TTL/retention، تمرير سياق منقح فقط، منع تسريب بيانات عميل لآخر. لا raw prompt أو مفاتيح أو reasoning مخفي في سجل الدليل. تحقق من استقلالية المنتجات وتكاملها اختياريًا، دون تكرار المنطق أو الالتفاف على Kernel.
+
+### Groq والـ.env — عقد واحد
+
+`.env.example` يحتوي `GROQ_API_KEY` و`AIGAS_SC_GROQ_API_KEY` و`GROQ_MODEL` و`AIGAS_GROQ_*`. `resolveProviderSecret` يقبل نمط AIGAS_SC_*_API_KEY، بينما Render blueprint يعلن GROQ_API_KEY؛ فرق أسماء مثبت. المقترح استخدام `AIGAS_SC_GROQ_API_KEY` كاسم canonical مراعاة للتوافق الحالي، مع alias انتقالي واضح إذا كان المفتاح المحلي باسم GROQ_API_KEY، ورفض تعارض القيم دون تسجيلها. الاختيار النهائي بعد فحص presence-only في بيئة مخولة؛ **لم أقرأ .env الفعلي أو قيمة مفتاح**. لا خمسة مفاتيح، لا مفتاح client، لا بديل صامت. النموذج المرجعي qwen/qwen3.8-27b بحسب التكليف الأصلي؛ موثق دعم tools في Groq docs، لا إثبات وصول الحساب أو موافقة استخدامه. السجل الحالي APPROVED_MODELS فارغ. اعتماد per tenant/model/region/expiry/retention/no-training قبل Live؛ شروط Groq المنشورة لا تعني موافقة العميل أو قبول إقامة البيانات. Shared gateway مع provider abstraction لخيارات on-prem مستقبلًا؛ لا ادعاء air-gap عند اتصال Groq الخارجي. الميزانية لكل run/agent/user/tenant + global، reserve/settle ذرّي مشترك، لا double charge بسبب retry، circuit breaker/429/cancel/timeout/reconcile بعد crash. حفظ text-only adapter القديم للخدمات غير agentic ومنفصل عن عقد tools الجديد. E06 E17 E22 E23 E28 E32 E33.
+
+## 04 | حالة المنتجات ومسارات الربط
+
+| المنتج | المصدر المقروء | حالة الوكيل المطلوبة | إثبات التشغيل |
+|---|---|---|---|
+| Firewall | deterministic/synthetic registry + advisory، provider registry فارغة | tool loop وعزل مطلوبان | BLOCKED للإتاحة الحية |
+| Risk Engine | Groq advisory JSON + role/idempotency | agent tool plan/calc/treatment غير متحقق | BLOCKED |
+| Human Gate | state machine وbinding | agent review assistant غير متحقق | BLOCKED |
+| Ledger | service وappend/query | agent query/verify/report غير متحقق | BLOCKED |
+| Secure Chat | text adapter يرفض tool_calls | عقد agent الحالي غير مستوفى | BLOCKED |
+| Kernel | tenant guard/dashboard وpolicy foundations | handoff/run orchestration غير متحقق | BLOCKED |
+
+لا نسبة منتج نهائية: لا جرد feature-level كامل ولا مقام منطبق مجمد. لا يكفي اسم Agent في ملف أو UI. لا نعلن أن كامل المصدر خالٍ من أي orchestration اعتمادًا على أسماء الملفات.
+
+| Edge مطلوب | الحالة/الدليل |
+|---|---|
+| Registry → policy pack → Risk | synthetic evidence E27؛ production NOT_VERIFIED |
+| Policy → Firewall → Human Gate | fixture binding E26 E27 E29؛ runtime BLOCKED |
+| Human Gate → Guarded execution | state/one-use design E29؛ real E2E BLOCKED |
+| Firewall/Risk/Secure Chat → Groq | source advisory/text موجود E22–E25؛ live BLOCKED |
+| Model → typed tool executor → next model step | FAIL_VERIFIED على عقد gateway المقروء E22 E23؛ target مطلوب |
+| Kernel → 5 agents → Kernel handoff | NOT_VERIFIED، E34 جرد أسماء لا نفي كامل |
+| كل agent/run/tool → Ledger | NOT_VERIFIED؛ fixture evidence E27 E30 لا production proof |
+| Ledger evidence → Risk/Chat report | NOT_VERIFIED |
+| trial expiry/revocation → block all actions | BLOCKED؛ E20 E21 |
+| output check → response | source contract يحتاج تتبع كامل؛ live BLOCKED |
+
+مسار قبول مركزي: synthetic asset → registry/approved policy → risk assessment → Firewall input/tool check → escalation إن لزم → human grant binding/revalidation → Groq/tool execution → output check → Ledger evidence/export. الاستقلال: تشغيل Agent منفرد عبر Kernel، ثم رحلة تكامل دون شراء كل المنتجات حين يسمح الترخيص. لا E2E مؤسسي مثبت حتى الآن.
+
+
+## 04 | مصفوفة العمل وتغطية الأدلة
+
+| المجال | الوزن | PASS | FAIL | NOT_VERIFIED | BLOCKED |
+|---|---:|---:|---:|---:|---:|
+| BE Backend & API | 10 | 2 | 3 | 1 | 2 |
+| KE Kernel & orchestration | 10 | 1 | 0 | 2 | 1 |
+| DB Neon / RLS / migrations | 9 | 0 | 4 | 2 | 1 |
+| SE Security / identity / privacy | 10 | 1 | 1 | 1 | 3 |
+| RG Registry & Policy Packs | 6 | 1 | 1 | 2 | 1 |
+| FW Firewall Agent | 6 | 1 | 1 | 1 | 1 |
+| HG Human Gate Agent | 5 | 1 | 0 | 1 | 2 |
+| RE Risk Engine Agent | 7 | 1 | 0 | 2 | 1 |
+| LD Ledger Agent | 6 | 1 | 0 | 2 | 1 |
+| SC Secure Chat & Groq / FinOps | 7 | 1 | 3 | 0 | 1 |
+| UX MagicPath / RTL / A11y | 7 | 2 | 0 | 4 | 1 |
+| PJ Public journey / trial / commercial | 5 | 2 | 2 | 1 | 1 |
+| IN Infrastructure / deploy / recovery | 5 | 3 | 2 | 1 | 0 |
+| QA Performance / dependencies / quality | 4 | 0 | 2 | 1 | 3 |
+| SEO SEO/GEO / analytics / observability | 3 | 2 | 2 | 3 | 0 |
+
+لا نسب مجال/منتج لأن المقامات الذرية غير مكتملة. شروط الصفوف كاملة في CSV/JSON، وتجميد هذه اللقطة فقط سبق قراءة R4. لا نعيد وزنها لإخفاء الفشل.
+
+## 05 | المقارنة التاريخية R4 بعد تجميد R5 الجزئي
+
+تم استرجاع R4 من GitHub بعد PRE-R4-SCOPED-FREEZE.json: 78 صفًا و13 محورًا، كل محور 6 شروط. أُعيد الحساب بطريقة S,C=1، F,U=0، الأوزان التاريخية. ليست طريقة R5 الجديدة، ولا نقارن البيئات المختلفة كتحسن سببي.
+
+| القياس التاريخي | الدرجة المعاد حسابها | التغطية المعاد حسابها |
+|---|---:|---:|
+| R31 | 44.67% | 73.17% |
+| R4_source | 36.50% | 52.83% |
+| R4_local | 54.00% | 63.17% |
+| R4_staging | 10.00% | 10.00% |
+| R4_live | 2.50% | 11.83% |
+
+R4 يستند إلى قياس محفوظ عند `961836f8…` وليس HEAD الحالي. جدول 78 صفًا بالنص والحالات السابقة والحالية موجود في R4-78-HISTORICAL-COMPARISON.csv. تم ربط 21 صفًا بدليل حالي مباشر في طبقات SOURCE/CATALOG/HTTP/CI؛ باقي 57 صفًا لا يحمل دليلًا كافيًا. لا حساب نسبة حالية تاريخية على أساس مختلط. أهم الاستمرارية: static Site، RLS gap، role absent، نموذج/مزود فارغ، عدم تحقق العزل والمطابقة. التطور المثبت: SHA deployment حديث مطابق، فحص 67/67 sitemap، واسترجاع نسخة MagicPath. تاريخيًا كانت 7/12 وظائف عامة مثبتة في R13 فقط؛ لا ننقلها إلى الحالي.
+
+## 06 | SEO والتحليلات والمنافسون
+
+GSC 27 أكتوبر–23 نوفمبر 2026: 779 impressions، 12 clicks، CTR 1.54%، average position 15.36؛ sitemap.xml السابق 264 submitted و1 error. GA4: 190 sessions و1642 views؛ hostname/تحويل غير مثبتين؛ لا ادعاء أمان أو نمو. E12 E13.
+
+### مقارنة السوق — القدرات المعلنة فقط، 26 نوفمبر 2026
+
+هذه مراجعة مكتبية مختصرة للمصادر الرسمية التسع، لم نختبر خدمات المنافسين ولا نفترض تسعيرهم أو deployment model إلا إن أعلن صراحة. لا نسبة تفوق. عدم ظهور ميزة في الصفحة لا يعني غيابها. لا نسخ واجهاتهم.
+
+| منافس | قدرات معلنة في المصدر الرسمي | دلالة لـAIGAS |
+|---|---|---|
+| [Credo AI](https://www.credo.ai/product) | registry، policy packs، workflows، evidence؛ [agent/MCP governance](https://www.credo.ai/blog/agentic-ai-governance-govern-agents-mcp-servers-and-platforms) | ربط أصل/agent/tool بسياسة ودليل واحد |
+| [Holistic AI](https://www.holisticai.com/ai-governance-platform) | discovery/inventory، risk monitoring، enforcement | لا يكفي سجل يدوي لإثبات اكتشاف وتشغيل مستمر |
+| [Trustible](https://trustible.ai/platform-overview/) | intake، risk/lifecycle، regulatory mapping، inventory | رحلة intake → review → reporting قابلة للقياس |
+| [Enzai](https://www.enz.ai/product/agentic-ai-governance) | autonomy classification، allowlists، escalation، multi-agent coordination | حوكمة الإجراء وقت التنفيذ |
+| [Saidot](https://www.saidot.ai/product) | agent inventory، risks/controls inheritance، governance APIs | agent owner/mandate ونسخ السياسات |
+| [Lumenova AI](https://www.lumenova.ai/) | discovery/enforcement، evaluations، experiments | تقييم الوكلاء وrelease gates |
+| [Monitaur](https://www.monitaur.ai/platform) | model lifecycle، policy، evidence، validation/monitoring | دليل دورة الحياة ومصداقية القياس |
+| [Asenion](https://asenion.ai/ai-control-system) | machine-executable controls، assessment/verification/runtime evidence | requirement→control→execution→witness |
+| [VerifyWise](https://verifywise.ai/user-guide/getting-started/welcome) | inventory، vendor oversight، risk، policy؛ source-available/self-hosted | إثبات خيار نشر داخل العميل لا مجرد شعار |
+
+ميزة AIGAS المستهدفة: وكلاء عربية + kernel policy-controlled tools + evidence وموافقة بشرية + خيارات نشر. هذه فرضية قيمة وليست تفوقًا مثبتًا. PoV المقترح: نفس حالة اصطناعية (طلب تلخيص/معالجة خطر) يدويًا ومقابل AIGAS؛ قياس زمن الحصول على دليل قابل للتحقق، اكتمال trace، عدد الإجراءات غير المصرح بها المحجوبة، وزمن المراجعة وتكلفة run. لا هدف رقمي مخترع ولا ضمان مبيعات. البدائل: منصة جاهزة، أدوات داخلية، source-available بحسب الترخيص، إجراء يدوي، نطاق اصطناعي أضيق؛ يتحدد الاختيار بالسعر/الأمان/التكامل/الوقت وإثبات القيمة.
+
+## 07 | الموانع وملكية الإغلاق
+
+| ID | الأولوية | الحالة | الفجوة | الأدلة | البرومبت |
+|---|---|---|---|---|---|
+| F01 | P0 | FAIL_VERIFIED | Production/Staging drift + absent least-privilege role | E03, E04, E05, E20, E21, E40 | P02 |
+| F02 | P0 | FAIL_VERIFIED | Render static_site بدل Node SSR؛ SHA مطابق | E10, E18, E19, E31, E35, E36, E39 | P01, P14, P15 |
+| F03 | P1 | FAIL_VERIFIED | سجل النماذج والمزودين فارغ في المصدر | E06, E24, E32, E33 | P04 |
+| F04 | P1 | FAIL_VERIFIED | آخر CI accessibility/performance فاشل؛ سبب الفشل مجهول | E07, E43 | P13 |
+| F05 | P1 | NOT_VERIFIED | فرعا Neon غير محميين؛ Ohio، لا دليل موافقة الإقامة/الاستعادة | E04 | P02, P14 |
+| F06 | P1 | NOT_VERIFIED | نسخة MagicPath مقروءة؛ الأصل والمطابقة البصرية والوظيفية غير مثبتة | E08, E15, E16, E41, E44 | P12 |
+| F07 | P2 | FAIL_VERIFIED | خطأ sitemap مسجل؛ حالة الفهرسة التفصيلية غير متحققة | E12, E38, E45 | P13 |
+| F08 | P1 | NOT_VERIFIED | المختبرات تظهر؛ التشغيل التفاعلي والتجربة والتحويل غير مثبتة | E09, E10, E13, E16, E38, E39, E44 | P11, P12, P15 |
+| F09 | P0 | FAIL_VERIFIED | حتى Staging تفتقد start(uuid) وread(uuid) المطلوبتين | E20, E21 | P02 |
+| F10 | P1 | FAIL_VERIFIED | عقد Groq الحالي text-only وSecure Chat يرفض tool calls؛ شرط agentic loop الجديد غير مستوفى عبر المسار المقروء | E22, E23, E26, E27, E32 | P03, P04, P05, P10 |
+| F11 | P1 | FAIL_VERIFIED | اختلاف أسماء اعتماد Groq في عقد التشغيل وRender blueprint؛ وجود السر الحقيقي غير متحقق | E28, E31 | P04, P14 |
+| F12 | P1 | NOT_VERIFIED | مشاركة الميزانية متعددة العمال وذاكرة الوكلاء والعزل والتنسيق الفعلي لم تثبت | E17, E22, E25, E29, E30, E34 | P03, P04, P05, P06, P07, P08, P09, P10, P14 |
+| F13 | P1 | FAIL_VERIFIED | Live status route and two declared redirects 404; static service lacks SSR/redirect execution | E39, E45 | P01, P11, P13, P14 |
+| F14 | P1 | FAIL_VERIFIED | main ruleset disabled; branch unprotected; current same-SHA CI failed | E43 | P13, P14, P15 |
+| F15 | P1 | NOT_VERIFIED | Governance product enum omits Secure Chat; developer example route not registered; local Human Gate status label needs negative validation | E37, E41, E42 | P03, P05, P08, P10, P12 |
+| F16 | P1 | NOT_VERIFIED | Full crawl/visual/functional verification incomplete; no authenticated running backend or browser available | E44, E39, E41 | P11, P12, P13, P15 |
+
+ملكية ومعيار إغلاق كل finding في RELEASE-BLOCKERS.csv وJSON. ليس هذا ادعاء أن الموانع أغلقت.
+
+## 09 | IDEA DESTROYER — دورتان، Self-review مستقل المنطق لا وكيل بشري مستقل
+
+### Cycle 1: المشروع الحالي مع نطاق Agentic
+
+**Surface scan:** 1. Static Site رغم SSR (F02). 2. قاعدة البيانات حتى Staging لا تفي بالدوال المطلوبة (F01/F09). 3. Gateway text-only مع اعتماد فارغ؛ إطلاق Agentic كأنه متاح سيكون ادعاء غير مثبت (F03/F10/F11).
+
+**Assumption hunt:** نفس المفتاح لا يجعل كل منتج agent. وجود fixtures لا يثبت أدوات حية؛ 93 سياسة لا تثبت tenant isolation. كون الموقع يعمل 200 لا يعني تشغيل الخادم. الطلب السوقي غير مثبت من 12 نقرة. **Worst case:** تحويل DNS قبل DB parity يؤدي لتعطل تجربة العميل؛ وكيل متعدد الخطوات يكرر أدوات أو يستهلك quota ويُسجل نجاحًا كاذبًا؛ بيانات حساسة تنتقل في tool result؛ احتواء عبر flags, default deny, budget/step caps, review, evidence, rollback. **Competition/alternatives:** تسعة منافسين يعلنون حوكمة فعلية متفاوتة؛ الأفضل إثبات PoV محدد بدل مطاردة المزايا. **Resource reality:** لا ميزانية مثبتة أو حساب Groq معتمد أو SLA؛ احسب تكلفة run بعد usage الفعلي وعالج fan-out. **Second-order:** نمو الطلب يضاعف الاستدعاءات، reservations العالقة، سجلات الحوادث والخصوصية؛ مالك SRE/FinOps يراقب quota/timeout/recovery، ويغلق المسار عند الفشل.
+
+Q1: هل تريد agent live في 48h trial أم تجربة اصطناعية مستقلة حتى اعتماد Groq؟ الأثر: scope والتكلفة؛ دليل approval وentitlements.
+
+Q2: هل موقع معالجة البيانات Ohio/Groq مسموح للعميل المستهدف، أم يجب تقديم تشغيل داخل بيئته؟ الأثر: residency/provider؛ دليل موافقة وتعهدات معالجة.
+
+Q3: ما أول رحلة مشتركة قابلة للشراء تثبت القيمة مقارنة بحوكمة يدوية؟ الأثر: PoV والأولويات؛ دليل مقابلات/تقييم اصطناعي.
+
+**VERDICT: WOUNDED** — إصلاحان غير قابلين للتفاوض: توافق قاعدة البيانات وخادم Node، وفرض boundary حتمي للأدوات قبل أي agent live. لا إطلاق تجاري.
+
+### Cycle 2: خطة الإغلاق والبرومبتات الموحّدة
+
+**Surface scan:** 1. تنفيذ البوابة قبل تثبيت scope/DB قد يكرر الفجوات؛ 2. استخدام alias تلقائي بلا فحص قد يخلق تعارض مفتاح؛ 3. الإطلاق قبل إثبات tool executor والـagent-specific permissions يؤدي إلى مخاطر أوسع.
+
+**Assumption hunt:** لا إذن تعديل أو Groq فعلي؛ لا نفترض الوصول للـ.env؛ عدم اكتمال المقام يمنع اعتماد التقرير الكامل. **Worst case:** migration غير قابلة للرجوع ثم قطع DNS؛ العلاج candidate منفصل وrestore مثبت قبل القطع. **Competition:** عدم استبدال MagicPath أو بناء microservices لسبب تسويقي. **Resource reality:** P01–P15 ليست تقدير ساعات، لا وعد بتكلفة أو اكتمال. **Second-order:** shared key يوحّد billing لا يمنح quotas معزولة؛ per-agent budgets وcorrelation والمصالحة إلزامية. التحسينات في الصياغة: P01 يمنع نشرًا مبكرًا؛ P02 يثبت 0040 وعقود DB؛ P04 يفصل text/agentic؛ P15 يفصل GO وإذن النشر.
+
+Q1: هل توجد بيئة معزولة وأدوار اختبار مصرح بها لرحلات agent/tool؟ الأثر: إمكانية إثبات E2E؛ دليل التفويض/حسابات synthetic.
+
+Q2: ما اسم الاعتماد الفعلي داخل .env دون كشف قيمته، ومن يملك اعتماد النموذج والحصص؟ الأثر: secret migration وFinOps؛ دليل presence-only وmodel approval.
+
+Q3: ما سياسة الميزانية وحدود الاستقلال والتوقف وSLA المقبولة للوكيل؟ الأثر: caps وrelease scope؛ دليل قرار مالك واعتماد تشغيلي.
+
+**VERDICT: WOUNDED** — خطة مشروطة بالإثبات والتفويض؛ لا تغيير درجات أو إخفاء P0، ولا claims اكتمال من البرومبتات.
+
+## 10 | ترتيب الإغلاق والـRollback
+
+P01 تثبيت بيئة النشر (خطة فقط) → P02 مطابقة Neon وعقد persistence → P03 Kernel runtime/tool executor → P04 Groq gateway → P05 registry/policy → P06 Firewall → P07 Risk → P08 Human Gate → P09 Ledger → P10 Secure Chat/handoffs → P11 رحلة trial/commercial → P12 UI → P13 QA/SEO → P14 مرشح Node وأمن واستعادة → P15 re-audit + موافقة منفصلة. يمكن موازاة أعمال القراءة لا تجاوز dependencies. كل مرحلة لها owner وتوقف وrollback. عدم نشر Node الآن؛ حفظ Static Site والـdeploy السابق كاستمرارية. لا تنفيذ migration أو تغيير DNS حتى مرشح معزول وbackup/restore/rollback مثبت، schema compatible، موافقة منفصلة؛ أي فشل critical يعيد حالة NO-GO ويغلق الوظائف الحية. لا تكفي نسبة مرتفعة لتجاوز الموانع.
+
+
+**مراجعة إضافية على الدورتين:** الـ16 replay ليست أداة تسويقية للإعلان عن AI؛ التغطية الحقيقية تحتاج authenticated Node وapproved Groq. الإصدار الجديد يضيف F13–F16 إلى مسارات P01/P03/P05/P08/P10/P11/P12/P13/P14/P15؛ لا تكرار وزن لموانع مشتركة.
+
+## 08 | سجلات الدليل والحدود
+
+- لم يكتمل فحص كل URL قديمة أو 159 تحويلًا، أو كل ربط داخلي وحالة UI؛ Firecrawl full crawl انتهت مهلة الأداة وOpera غير متصل. لا إثبات E2E مؤسسي، provider call، CI ناجح، أو visual parity.
+- لا أسرار، لا customer rows، لا GitHub commit/push، لا تغيير Render/Neon/Cloudflare/MagicPath. استُخدمت حصص القراءة، لم يُجر استدعاء Groq مدفوع.
+- تغيير SHA لاحق يبطل نقل الأدلة التشغيلية دون تحقق. ما تبقى لا يُغلق بإعادة صياغة البرومبتات؛ يحتاج بيئة اختبار Node معزولة، أدوار synthetic معتمدة، browser ومرجع بصري، وموافقات المزود/البيانات والميزانية.
+- هذا تسليم مكتمل للتوثيق الذي أمكن إنتاجه، وليس ادعاء اكتمال المهمة الأصلية 100%.
+
+| سجل | الوظيفة |
+|---|---|
+| `SOURCE-ROUTE-INVENTORY.csv` | 107 source rows |
+| `API-OPERATION-REGISTER.csv` | 108 method rows |
+| `ROUTE-VERIFICATION.csv` | 93 GET observations |
+| `NEON-CATALOG-PARITY.csv` | 43 catalog rows |
+| `MAGICPATH-ACTION-REGISTER.csv` | 12 source sections |
+| `INTEGRATION-MATRIX.csv` | 11 source edges |
+| `LINK-GRAPH-PARTIAL.json` | directly observed examples only |
+| `R4-78-HISTORICAL-COMPARISON.csv` | 78 historical rows |
+| `R4-HISTORICAL-RECONCILIATION.json` | historical calculation |
+| `DEMO-UNIT-REPLAY.json` | 16 replay results |
+| `R5-REQUIREMENTS-BASELINE.json` | scoped requirements |
+| `R5-INDEPENDENT-SCORECARD.json` | scoped freeze; no total score |
+| `PRE-R4-SCOPED-FREEZE.json` | hashes before opening R4 |
+| `REQUIREMENTS-TRACKER.csv` | 83 scoped checks |
+| `RELEASE-BLOCKERS.csv` | 16 findings |
+| `EVIDENCE-REGISTER.json` | 45 evidence records |
+| `POST-FREEZE-EVIDENCE.json` | 2 addendum records |
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+# المهام التنفيذية الـ15 — النسخة الحالية الوحيدة
+
+# BRIGHT AI / AIGAS — R5.1 DIRECT EXECUTION & CONTROLLED LAUNCH
+
+**نسخة تنفيذية واحدة — 15 مهمة مباشرة على الملفات.** موجّهة لوكيل التطوير الذي يملك تفويض تعديل checkout، لا لهذا المساعد. كل مهمة تنفّذ الكود وتثبت نتائجه. نطاق الوكلاء الخمسة جزء من نفس المقام. لا تغيير في المستودع قام به معدّ هذه الحزمة.
+
+## طريقة التشغيل
+
+نفّذ P01→P15 وفق التبعيات؛ لا تبدأ العمل بالتوازي على الملفات المشتركة (P03→P04→P05→P06…→P10، P11→P12→P13→P14→P15). انسخ تعليمات التنفيذ العامة مع المهمة المحددة. بعد كل مهمة احتفظ بـdiff والنتائج والـSHA ودليل القبول. الفشل في مورد خارجي لا يمنع إصلاح الكود المحلي؛ يمنع ادعاء إغلاق ذلك المعيار. لا تنفذ انتقال الإنتاج قبل بوابات P15.
+
+## تعليمات التنفيذ العامة (تُرفق بكل مهمة)
+
+أنت وكيل التطوير المنفّذ في checkout مشروع YEEEAE/BRIGHTAI. المطلوب **تعديل الملفات وتنفيذ الإصلاحات فعليًا**، وليس إعداد تقرير اقتراحات. استعمل HEAD الحالي بعد مقارنته بالمرجع `5387cdf6282cc3775f73ade30c82f199967d9409`، وافحص الملفات قبل تعديلها. لا تعِد بناء ما ثبت عمله، ولا تستبدل منطقًا حقيقيًا بمحاكاة. نفّذ التغييرات في فرع عمل محلي مفوض، مع الحفاظ على Hero/Header/Constellation والهوية والنص والترتيب. لا تلمس ملفات غير منطبقة؛ مسارات النجمة نطاق عمل وليست أمرًا بتعديل كل ملف. المسارات الجديدة المذكورة مقترحة لإنشاء التنفيذ إن لم يوجد نظير فعلي. استخدم MCP المناسبة للتحقق؛ لا تعرض أسرارًا أو بيانات عملاء. الميزانية المصرح بها لـGroq صفر دولار حتى تفويض جديد. لا تفتح production/DNS/paid services دون تصريح المالك المحدد. في نهاية المهمة شغّل الاختبارات المتأثرة بالفعل، أصلح failures، ثم سلّم diff، قائمة الملفات، أوامر ونتائج التحقق، أرقام المعايير المغلقة ودليلًا لكل منها، rollback، وما تعذر. لا تسجل PASS من وجود الكود فقط؛ عند غياب إذن خارجي أكمل الإصلاح المحلي ولا تتجاوز البوابة. لا تضيع الجولة بتحليل منفصل عن تنفيذ التغيير.
+
+## P01 — تثبيت مرشح Node وخط النشر
+
+**التبعيات:** -. **معايير الإغلاق:** BE-02 BE-05 BE-06 BE-07 IN-01 IN-02 IN-03 IN-06.
+
+**الملفات المستهدفة من شجرة المصدر:**
+- `render.yaml`
+- `astro.config.mjs`
+- `package.json`
+- `scripts/server.mjs`
+- `scripts/build-version.mjs`
+- `src/pages/healthz.ts`
+- `src/pages/readyz.ts`
+- `src/server/kernel/readiness.mjs`
+- `src/server/kernel/health-endpoint.mjs`
+
+**أوامر العمل:**
+
+عدّل إعدادات البناء والنشر لتوحيد Node SSR وartifact identity؛ استخدم خدمة المرشح القائمة brightai-r51-audit بدل إنشاء خدمة ثالثة. اجعل health check مناسبًا لسياسة إتاحة الخدمة، وافصل liveness وreadiness، وثبّت build SHA وNode/lockfile. أصلح أي تناقض بين render.yaml وواقع الإعدادات. احمِ preview من الفهرسة والتكرار ولا تغيّر canonical للصفحات الرئيسية. أبقِ static origin الحالي كخيار rollback إلى P15. لا تربط المرشح ببيانات إنتاج.
+نفّذ npm ci ثم npm run build، ثم شغّل npm start وتحقق من healthz/readyz وعقود JSON وno-store؛ ارفع المرشح في البيئة المعزولة فقط بعد إذنها. سجل SHA، deploy ID، body/hash ونتائج GET؛ readiness السابق 200 دليل مرجعي لا يغني عن إعادة التحقق على الإصدار الجديد.
+
+**معيار التسليم:**
+- `BE-02` — واجهات health/readiness/trial تعيد العقد المتوقع على النطاق → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `BE-05` — جرد 107 ملفات مسارات المصدر من الشجرة المثبتة → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `BE-06` — قراءة 51 wrapper TS و64 pattern بما فيها SSO → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `BE-07` — فحص GET لعقود الصحة والجاهزية والتجربة والقياس والاستفسار على النشر الحالي → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `IN-01` — SHA Render live يطابق main المثبت → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `IN-02` — نوع خدمة Render يوافق Node SSR → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `IN-03` — ربط Cloudflare إلى الخدمة الفعلية معلوم → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `IN-06` — SHA الحالي مطابق لآخر نشر Render → دليل PASS_VERIFIED في البيئة المطلوبة.
+
+---
+
+## P02 — ترحيلات Neon وعزل المؤسسات والذاكرة
+
+**التبعيات:** P01. **معايير الإغلاق:** DB-01 DB-02 DB-03 DB-04 DB-05 DB-06 DB-07.
+
+**الملفات المستهدفة من شجرة المصدر:**
+- `migrations/*.sql`
+- `scripts/apply-migrations.mjs`
+- `scripts/migration-order.mjs`
+- `scripts/db-migration-rehearsal.mjs`
+- `scripts/audit-runtime-posture.mjs`
+- `src/server/kernel/db.mjs`
+- `src/server/kernel/access.mjs`
+- `tests/migration-order.test.mjs`
+- `tests/kernel-db.test.mjs`
+
+**أوامر العمل:**
+
+عدّل runner لتضمين 0046 في خطة delta بعد التحقق من baseline الحقيقي؛ لا تعِد تشغيل upgrade-only 0011/0012/0013/0019 على fresh. أصلح اعتماد 0018 على اسم neondb_owner إن كان غير موجود مع الحفاظ على revocations، واختبر authenticated/anonymous. أضف migration جديدًا بعد آخر رقم فعلي، additive، لجداول agent_runs/agent_steps/tool_invocations/checkpoints/tenant_memory/budget_reservations/outbox عند غيابها؛ tenant_id وFKs وunique idempotency keys وRLS وسياسة expiry وACL؛ لا تخزن chain-of-thought أو أسرارًا. اجعل provision دور login محدود بلا direct table grants، SET TRUE/INHERIT FALSE إلى aigas_runtime مع اختبار PG18؛ لا تستخدم owner DSN في التطبيق. لا تعِد إنشاء raspy-surf-09603889: 42/42 و47 جدولًا و98 سياسة و8/8 حالات مثبتة، أعد فقط ما يتأثر بالتغيير. جهّز خطة delta منفصلة للـStaging والإنتاج تعتمد checksum وcatalog diff وbackup/restore، لا تطبقها على الإنتاج قبل بوابة P15.
+تحقق بالـSQL من signatures start/read(uuid)، عدم تجاوز RLS، سياسات كل جدول، محاولات cross-tenant لجميع أنواع الوصول، grants/SECURITY DEFINER/search_path، replay وconcurrency وrollback. سجّل migration receipts حقيقية لا قيم مصطنعة.
+
+**معيار التسليم:**
+- `DB-01` — توافق جداول Production وStaging مع العقد المطلوب → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `DB-02` — دور runtime المطلوب موجود في Production → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `DB-03` — الدالتان start/read(uuid) في Staging → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `DB-04` — عزل مؤسستين وroles/grants/SECURITY DEFINER وFORCE حسب الانطباق → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `DB-05` — agent persistence وmemory ACL وbudget atomicity → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `DB-06` — تغطية جداول public بالسياسات RLS في Production → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `DB-07` — مطابقة 46 migration مع سجل تنفيذ وchecksum وقيود الدوال → دليل PASS_VERIFIED في البيئة المطلوبة.
+
+---
+
+## P03 — بناء Kernel Agent Runtime وAPI
+
+**التبعيات:** P01 P02. **معايير الإغلاق:** BE-01 BE-03 BE-04 BE-08 KE-01 KE-02 KE-03 KE-04.
+
+**الملفات المستهدفة من شجرة المصدر:**
+- `src/server/kernel/service.mjs`
+- `src/server/kernel/access.mjs`
+- `src/server/kernel/policies.mjs`
+- `src/server/kernel/contracts.mjs`
+- `src/server/kernel/http.mjs`
+- `src/server/api/routes.mjs`
+- `src/server/api/boundary.mjs`
+- `src/server/api/request-schemas.mjs`
+- `src/server/api/response-schemas.mjs`
+- `src/pages/app/api/kernel.ts`
+- `src/pages/app/api/kernel/**`
+
+**أوامر العمل:**
+
+أنشئ ملفات جديدة تحت src/server/agents/ (runtime.mjs, orchestrator.mjs, tool-executor.mjs, contracts.mjs, repository.mjs) واستخدم وظائف Kernel الحالية بدل إعادة بناء الهوية. عرف run/step/tool lifecycle بحالات واضحة، bounded loop/max steps/deadline/cancel، tenant context مستمد من JWT/session فقط، capability manifests وschema validation، tool allowlist وpre/post policy check، Human Gate pause/resume، append evidence وoutbox ذري مع P02. أضف endpoints فعلية تحت src/pages/app/api/agents/ عند الحاجة وحدّث registry/schema مع كل method وHEAD/error/idempotency. كل handoff يحمل run_id/parent_step/tenant/agent+policy versions/correlation دون تمرير أسرار أو سياق مؤسسة أخرى. اجعل المنتجات قابلة للتشغيل منفردة وفق entitlement وعبر orchestrator.
+نفّذ اختبارات عقد 108 عمليات الأصلية زائد الجديدة، رفض الأدوار/النطاقات/المدخلات، انقطاع المزود والـoutbox والـretry/cancel/revocation؛ لا تعرض JSON وهميًا أو نجاحًا عبر HTTP200 غير مطابق.
+
+**معيار التسليم:**
+- `BE-01` — عقد HTTP/JSON/error لكل method مع correlation وvalidation → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `BE-03` — عقد agent tool messages ونتائج tools على البوابة الحالية → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `BE-04` — Idempotency/transactions/outbox والتعافي من الفشل الجزئي في E2E → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `BE-08` — مطابقة جميع API methods سلوكياً بما فيها HEAD/auth/validation/error → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `KE-01` — مصدر سياق وهوية وصلاحيات Kernel في المصدر → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `KE-02` — خطة وتنفيذ متعدد الوكلاء محدود الخطوات بإعادة فحص السياسة → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `KE-03` — handoff مرتبط بالمؤسسة والنسخة وcorrelation وrevocation → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `KE-04` — استقلال المنتج دون تجاوز Kernel أو فرض شراء باقي المنتجات → دليل PASS_VERIFIED في البيئة المطلوبة.
+
+---
+
+## P04 — Groq Gateway واحد وخمس وكلاء وFinOps
+
+**التبعيات:** P02 P03. **معايير الإغلاق:** SC-01 SC-02 SC-03 SC-04 SC-05 FW-02.
+
+**الملفات المستهدفة من شجرة المصدر:**
+- `src/server/ai/groq-gateway.mjs`
+- `src/server/ai/public-sandbox-limiter.mjs`
+- `src/server/secure-chat/models.mjs`
+- `src/server/secure-chat/adapter.mjs`
+- `src/server/kernel/env.mjs`
+- `.env.example`
+- `render.yaml`
+- `tests/helpers/secure-chat-model.mjs`
+- `tests/secure-chat.test.mjs`
+
+**أوامر العمل:**
+
+حوّل البوابة إلى typed provider adapter يدعم رسائل tools/tool_calls/tool results، strict schemas وtool argument parsing، مع إبقاء مسار النص الحالي متوافقًا. وحد GROQ_API_KEY كاسم خادمي canonical مع alias مؤقت AIGAS_SC_GROQ_API_KEY؛ عند اختلاف القيم fail closed بلا طباعة، لا تكرر المفاتيح. حدّث .env.example بالأسماء فقط لا الأسرار. املأ سجل النماذج من موافقة موثقة وموديل Groq متاح فعليًا، لا تختلق موافقة أو نموذجًا. طبق policy pre/post، reservation ذري على DB بدل file-only في multi-worker، tenant/user/agent/global limits وtoken costs/timeout/429/backoff/cancel/reconciliation. مزود واحد مشترك ولا خمس مفاتيح، ولا client-side keys.
+نفّذ mock replay لأداة واحدة وعدة أدوات وmalformed tool/رفض/expiry/429/timeout، إثبات صفر provider calls عند الحجب. اربط كل وكيل لاحقًا عبر نفس gateway. في الميزانية الحالية 0 USD، لا inference مدفوع؛ نفّذ probe حقيقي فقط إن أمكن إثبات أنه مجاني ضمن الحساب وباعتماد صالح، وإلا احتفظ BLOCKED كمانع للنشر الحي؛ لا تعتبر mock أو connector health دليل inference.
+
+**معيار التسليم:**
+- `SC-01` — حدود الميزانية وtimeouts/circuit breaker في المصدر → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `SC-02` — model approved registry في المصدر غير فارغ → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `SC-03` — Secure Chat adapter يقبل tool_calls وفق العقد الآمن الجديد → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `SC-04` — توحيد اسم secret بين gateway وblueprint → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `SC-05` — shared key والاتصال والـusage فعليًا وbudgets متعددة العمال → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `FW-02` — provider registry معتمد غير فارغ في المصدر → دليل PASS_VERIFIED في البيئة المطلوبة.
+
+---
+
+## P05 — Registry وPolicy Packs وهوية Agent
+
+**التبعيات:** P02 P03. **معايير الإغلاق:** RG-01 RG-02 RG-03 RG-04 RG-05.
+
+**الملفات المستهدفة من شجرة المصدر:**
+- `src/server/governance/contract.mjs`
+- `src/server/governance/registry.mjs`
+- `src/server/governance/internal-pack.mjs`
+- `src/server/governance/reference-catalog.mjs`
+- `src/server/kernel/policies.mjs`
+- `src/pages/app/api/kernel/policies.ts`
+- `src/pages/app/api/kernel/products.ts`
+- `tests/governance-packs.test.mjs`
+- `tests/governance-reference.test.mjs`
+
+**أوامر العمل:**
+
+أصلح product enum وتطابق جميع العقود لتشمل Secure Chat، وعرّف سجلات agent/tool/model/vendor/asset بمالك وmandate ونسخة وscope وapproval expiry/revocation. افصل governing agents عن governed third-party agents. اربط Policy Packs بنسخ وsource references وapproval workflow وprecedence deterministic وhard deny. أضف عمليات CRUD المصرح بها وقراءة فقط للآخرين عبر Kernel؛ اربط واجهة Registry إلى سجلات حقيقية، ولا تعتمد local arrays. أضف tests للانتهاء، self-approval، تعارض النسخ، ترخيص منتج واحد وrevocation؛ لا تنشر نص قانوني مولد آليًا أو ادعاء شهادة.
+
+**معيار التسليم:**
+- `RG-01` — registry لمحاكاة الأصل/التقييم والإصدار موجود في المصدر → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `RG-02` — asset/model/agent/vendor lifecycle وowner/mandate/capabilities → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `RG-03` — سياسات versioned مراجع وربط requirement/control/finding/evidence → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `RG-04` — تعديل policy بمراجعة ومنع self-approval وإلغاء التفويض → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `RG-05` — تغطية سجل الحوكمة لمنتج Secure Chat بعقد متسق → دليل PASS_VERIFIED في البيئة المطلوبة.
+
+---
+
+## P06 — Firewall AI Agent
+
+**التبعيات:** P03 P04 P05. **معايير الإغلاق:** FW-01 FW-03 FW-04.
+
+**الملفات المستهدفة من شجرة المصدر:**
+- `src/server/firewall/core.mjs`
+- `src/server/firewall/agent-registry.mjs`
+- `src/server/firewall/provider.mjs`
+- `src/server/firewall/guard.mjs`
+- `src/server/firewall/binding.mjs`
+- `src/server/firewall/escalation.mjs`
+- `src/server/firewall/service.mjs`
+- `src/server/firewall/http.mjs`
+- `src/pages/app/api/firewall/**`
+- `src/scripts/firewall.ts`
+- `src/components/FirewallWorkspace.astro`
+- `tests/firewall*.mjs`
+- `tests/fixtures/firewall-governance-corpus.mjs`
+
+**أوامر العمل:**
+
+أضف firewall-agent.mjs ضمن src/server/agents/ واربطه بـKernel runtime وGroq gateway؛ tools محددة inspect_input/read_policy/classify/recommend_redaction/explain_decision، لا تجعل توصية النموذج تتجاوز engine الحتمي. حافظ على حالات القرار الخمس الفعلية من core، وحماية prompt injection/PII/tool egress/SSRF/data disclosure، input+output+tool checks، escalation مرتبط بنسخة payload/grant وعند deny لا خروج. عدّل واجهة workspace لتعرض decision/reason/evidence دون معلومات حساسة. اختبر corpus مع المقامات FP/FN، replay، رفض المزود والحجب، الحالات الخمس، إعادة التحقق بعد تعديل payload أو policy؛ لا تختلق نسبة دقة.
+
+**معيار التسليم:**
+- `FW-01` — سجل أدوات اصطناعي default deny موجود بالمصدر → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `FW-03` — agent tool loop حي مع five-state وinput/output checks وredact → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `FW-04` — تغطية matchers وPII/injection ونتائج FPR/FNR بمقام → دليل PASS_VERIFIED في البيئة المطلوبة.
+
+---
+
+## P07 — Risk Engine AI Agent
+
+**التبعيات:** P03 P04 P05. **معايير الإغلاق:** RE-01 RE-02 RE-03 RE-04.
+
+**الملفات المستهدفة من شجرة المصدر:**
+- `src/server/risk-engine/core.mjs`
+- `src/server/risk-engine/assist.mjs`
+- `src/server/risk-engine/service.mjs`
+- `src/server/risk-engine/evaluation.mjs`
+- `src/server/risk-engine/review.mjs`
+- `src/server/risk-engine/http.mjs`
+- `src/pages/app/api/risk-engine/**`
+- `src/components/RiskWorkspace.astro`
+- `src/scripts/risk-engine.ts`
+- `tests/risk*.mjs`
+
+**أوامر العمل:**
+
+أضف risk-agent.mjs بأدوات read_asset/read_policy/assess/propose_treatment/read_evidence؛ حوّل assist من اقتراح منفرد إلى run محدود متعدد الأدوات. احسب الدرجات في deterministic engine وفق نسخة المقياس المعتمدة؛ لا تخصم رقمًا ثابتًا لكل control كما في prototype. اربط evidence/version وresidual risk وowner/due date وhuman acceptance، ومنع الوكيل من قبول الخطر بنفسه. حدّث صفحة الأصل ونتائج API. نفّذ حالات boundary/invalid input, concurrent revision, expired acceptance، replay/fairness/drift بمقام وsample disclosure؛ لا تعرض نتائج model حية من replay اصطناعي.
+
+**معيار التسليم:**
+- `RE-01` — advisory synthetic JSON وrole/idempotency في المصدر → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `RE-02` — agent متعدد الأدوات لتقييم الأصل والمعالجات مع مصادر → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `RE-03` — درجات مخاطر موثقة وresidual وقبول بشري E2E → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `RE-04` — evaluation/drift/fairness ومقامات النتائج → دليل PASS_VERIFIED في البيئة المطلوبة.
+
+---
+
+## P08 — Human Gate AI Agent
+
+**التبعيات:** P03 P04 P05 P06 P07. **معايير الإغلاق:** HG-01 HG-02 HG-03 HG-04.
+
+**الملفات المستهدفة من شجرة المصدر:**
+- `src/server/human-gate/core.mjs`
+- `src/server/human-gate/service.mjs`
+- `src/server/human-gate/integration.mjs`
+- `src/server/human-gate/http.mjs`
+- `src/pages/app/api/human-gate/**`
+- `src/scripts/human-gate.ts`
+- `src/pages/app/human-gate/index.astro`
+- `tests/human-gate*.mjs`
+- `tests/firewall-review-binding.test.mjs`
+
+**أوامر العمل:**
+
+أضف human-gate-agent.mjs لتلخيص الطلب وشرح المخاطر وتقديم توصية فقط، بأدوات قراءة مأذونة. نفّذ workflow binding لهوية المراجع وصلاحياته ونسخة القرار وdigest والمدة، one-time grant وseparation of duties، منع self-approval، revoke/cancel/expire/replay، إعادة تقييم السياسة بعد الاستئناف؛ لا تجعل stage completed يعني APPROVED عند الرفض. اربط UI approve/reject/return/reason بالحالة الفعلية. اختبر الرفض والتعليق والقبول والانتهاء وتغيير payload وتزامن قرارين والتفويض الموقوف؛ إثبات no execution before authorized approval.
+
+**معيار التسليم:**
+- `HG-01` — state machine/grant binding في المصدر → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `HG-02` — agent تلخيص الطلب بالأدوات والمراجع مع فصل المهام → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `HG-03` — approve/reject/expiry/replay/one-time grant E2E → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `HG-04` — اعتماد بشري لا يمكن للوكيل تزويره أو استئنافه دون إعادة فحص → دليل PASS_VERIFIED في البيئة المطلوبة.
+
+---
+
+## P09 — Ledger AI Agent وأدلة قابلة للتحقق
+
+**التبعيات:** P02 P03 P04 P08. **معايير الإغلاق:** LD-01 LD-02 LD-03 LD-04.
+
+**الملفات المستهدفة من شجرة المصدر:**
+- `src/server/ledger/core.mjs`
+- `src/server/ledger/writer.mjs`
+- `src/server/ledger/service.mjs`
+- `src/server/ledger/http.mjs`
+- `src/pages/app/api/ledger/**`
+- `src/scripts/ledger.ts`
+- `src/demo/governance-evidence.mjs`
+- `tests/ledger*.mjs`
+- `tests/governance-evidence.test.mjs`
+
+**أوامر العمل:**
+
+أضف ledger-agent.mjs لتحليل واسترجاع أدلة مأذونة وتفسيرها، لا توليد hashes أو تغيير السجلات بواسطة LLM. اربط كل run/step/tool/provider usage وقرار بشري بـcorrelation وtenant وإصدار؛ canonical digest وتوقيع/مفتاح معتمد حسب سياسة البيئة وسجل append-only. اجعل verify يفشل عند غياب crypto أو key أو chain أو tamper؛ لا تعتبر قيمة ثابتة دليل صحة. أضف export مصرحًا به مع redaction وmanifest وverification مستقل. اربط retention/authorized export مع audit trail. اختبر tamper/deletion/reorder/replay/cross-tenant/export/no-crypto، عدم ازدواج evidence عند retry، وانقطاع Ledger يجب أن يوقف التنفيذ المتأثر.
+
+**معيار التسليم:**
+- `LD-01` — Ledger service وevent queries موجودة في المصدر → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `LD-02` — agent يسترجع أدلة مأذونة ويحللها دون صنع بصمات → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `LD-03` — append/verify/export وtamper check وسلسلة canonical E2E → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `LD-04` — أدلة كل agent step وtool call وprovider usage مرتبطة → دليل PASS_VERIFIED في البيئة المطلوبة.
+
+---
+
+## P10 — Secure Chat AI Agent وربط الوكلاء
+
+**التبعيات:** P03 P04 P05 P06 P07 P08 P09. **معايير الإغلاق:** SC-03 SC-05 KE-02 KE-03 KE-04.
+
+**الملفات المستهدفة من شجرة المصدر:**
+- `src/server/secure-chat/service.mjs`
+- `src/server/secure-chat/adapter.mjs`
+- `src/server/secure-chat/integration.mjs`
+- `src/server/secure-chat/policy.mjs`
+- `src/server/secure-chat/requests.mjs`
+- `src/pages/app/api/secure-chat/**`
+- `src/pages/app/secure-chat/index.astro`
+- `src/scripts/secure-chat.ts`
+- `tests/secure-chat*.mjs`
+
+**أوامر العمل:**
+
+أضف secure-chat-agent.mjs الذي يستخدم gateway الموحد ويملك tools حصرًا مسجلة في Kernel لاستدعاء الوكلاء الآخرين وفق entitlement. اعرض run status/tool results/references وpause/approve/cancel دون كشف hidden reasoning. افرض message/session ownership وtenant memory scope وredaction وإلغاء الطلب وquota؛ لا تخزن raw secrets. نفّذ رحلة متكاملة: registry→risk→firewall→human approval→groq/tool→output gate→ledger؛ نفّذ كل منتج منفردًا كذلك. اختبر رفض cross-tenant/context poisoning، malicious tool results، permission change mid-run، cancellation، provider failure، evidence consistency. لا تفعّل live AI حتى موافقة النموذج والميزانية وإثبات provider؛ المحاكاة تبقى مميزة.
+
+**معيار التسليم:**
+- `SC-03` — Secure Chat adapter يقبل tool_calls وفق العقد الآمن الجديد → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `SC-05` — shared key والاتصال والـusage فعليًا وbudgets متعددة العمال → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `KE-02` — خطة وتنفيذ متعدد الوكلاء محدود الخطوات بإعادة فحص السياسة → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `KE-03` — handoff مرتبط بالمؤسسة والنسخة وcorrelation وrevocation → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `KE-04` — استقلال المنتج دون تجاوز Kernel أو فرض شراء باقي المنتجات → دليل PASS_VERIFIED في البيئة المطلوبة.
+
+---
+
+## P11 — تجربة 48 ساعة والرحلة التجارية والمصادقة
+
+**التبعيات:** P02 P03 P05 P10. **معايير الإغلاق:** PJ-01 PJ-02 PJ-03 PJ-04 PJ-05 PJ-06 SE-02.
+
+**الملفات المستهدفة من شجرة المصدر:**
+- `src/server/kernel/auth.mjs`
+- `src/server/kernel/auth-proxy.mjs`
+- `src/server/kernel/sso.mjs`
+- `src/server/kernel/self-service-trial.mjs`
+- `src/server/kernel/trial-service.mjs`
+- `src/server/kernel/operator-exploration.mjs`
+- `src/pages/auth/**`
+- `src/pages/app/trial/index.astro`
+- `src/pages/app/operator/trials/index.astro`
+- `src/pages/api/trial-availability.ts`
+- `src/pages/api/enterprise-inquiry.ts`
+- `src/scripts/trial-home.ts`
+- `src/scripts/enterprise-request-modal.ts`
+- `src/pages/request-access.astro`
+- `src/pages/pricing.astro`
+- `src/pages/contact.astro`
+- `tests/auth-browser.e2e.mjs`
+- `tests/trial*.mjs`
+
+**أوامر العمل:**
+
+أكمل رحلة sign-in/verified identity/JWT issuer/expiry/CSRF/origin/SSO والمصادقة الإضافية حسب السياسة، دون تعطيل gate للتحقق من البريد. على البيئة المعزولة استخدم حسابات اختبار مخصصة وتحقق حقيقي من التوكن لا fixture emailVerified؛ اختبر عضوًا ومالكًا ومؤسسة أخرى. اربط trial availability والتفعيل الحقيقي وquota/cancel/expire/one per identity وoperator review وامتناع auto-charge؛ 48h SQL والexpiry/idempotency ثبتت سابقًا، أعد الاختبارات المتأثرة وأثبت HTTP E2E. اقفل المسار عند الإلغاء والانتهاء. اجعل الاستقبال الإلكتروني حقيقيًا عبر قناة معتمدة أو اعرض البديل صراحة ولا تسجل نجاح إرسال وهميًا. حدّث صفحات العرض والسعر وPoV/SLA/consent/deletion/عدم تدريب دون ادعاء غير معتمد. لا ترسل طلبات حقيقية للعميل أثناء التحقق.
+
+**معيار التسليم:**
+- `PJ-01` — المختبرات الخمسة والموحد تظهر محتوى عام → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `PJ-02` — إتاحة trial JSON على النطاق → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `PJ-03` — 48h synthetic read-only، انتهاء/إلغاء/حصص وعدم دفع تلقائي E2E → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `PJ-04` — PoV وعرض تجاري وSLA/دعم وقنوات التواصل مثبتة → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `PJ-05` — مسارات المختبرات 7 وcomplaint 5 وrequest-access متاحة HTTP → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `PJ-06` — رابط status المعلن في المختبرات يعمل على النشر → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `SE-02` — SSO/MFA/RBAC وCSRF/session/origin في بيئة مستهدفة → دليل PASS_VERIFIED في البيئة المطلوبة.
+
+---
+
+## P12 — مطابقة MagicPath وإصلاح كل تفاعل RTL
+
+**التبعيات:** P03 P05 P06 P07 P08 P09 P10 P11. **معايير الإغلاق:** UX-01 UX-02 UX-03 UX-04 UX-05 UX-06 UX-07.
+
+**الملفات المستهدفة من شجرة المصدر:**
+- `src/pages/demo/governance.astro`
+- `src/scripts/governance-demo.ts`
+- `src/demo/governance.mjs`
+- `src/demo/governance-evidence.mjs`
+- `src/pages/demo/[product].astro`
+- `src/pages/demo/workshop-preview/[view].astro`
+- `src/scripts/complaint-journey.ts`
+- `src/scripts/product-showcase.ts`
+- `src/components/design-system/Modal.astro`
+- `src/layouts/AppLayout.astro`
+- `src/styles/design-system.css`
+- `src/styles/experience-hub.css`
+- `src/styles/experience.css`
+- `src/styles/theme.css`
+- `src/styles/tokens.json`
+- `src/pages/app/**`
+- `tests/governance-demo-browser.e2e.mjs`
+- `tests/secure-chat-browser.e2e.mjs`
+
+**أوامر العمل:**
+
+نفّذ المقارنة مع المرجع التفاعلي المثبت smartly-home-5770/revision 476546341477171201؛ استخرج من TSX/CSS actual tokens/layout، لا تنسخ المحاكاة كمنتج مؤسسي. حافظ على Hero/Header/Constellation والنص وترتيب الصفحة الرئيسية قبل/بعد بصور baseline. طابق الشاشات الـ12 بنفس state والبيانات والمقاس؛ RTL/sidebar/tabs/cards/typography/spacing/status/empty/loading/error/animations/reduced motion/keyboard/focus/modal، واستخدم ألوان المرجع مع contrast. أصلح reset في governance-demo.ts: close() lines43–59 يمسح التفاصيل لكن العدادات تبقى؛ صفر جميع metrics والـcorrelation والـderived state وأخفِ السجل قبل new session؛ أصلح ledger empty-state في render() line123 وCSS specificity/hidden في governance.astro، بحيث لا يظهر مع وجود events. أنشئ route فعلي /demo/developer-workbench/ إذا غاب، استخدم registry لعروض API الحقيقية أو label مثال غير قابل للتشغيل؛ لا تخلق endpoint وهميًا. حل تناقض prototype stage=5→APPROVED حتى بعد رفض وdigest placeholder عند crypto غير متاح؛ أضف الرفض/blocked verification كحالات صريحة. لا تغير مرجع MagicPath؛ اصلح التطبيق.
+نفّذ جميع حالات الشاشات بـ1440/390 وkeyboard، مقارنة screenshot same-state بأبعاد ثابتة، diff لكل شاشة ومراجعة بشرية للمناطق المتحركة. اعتمد الوظائف الحتمية الحقيقية لا نسخ سلوك المرجع الخاطئ. اكتب سجل 12 بندًا مع expected/actual/screenshots/action statuses؛ UX-02 لا PASS إلا بعد تحقق كامل.
+
+**دلائل E63–E64 / تعديلات إلزامية من تشغيل MagicPath:** 11/11 tabs plus modal actually opened. Desktop reference sidebar x1189 width236 vs candidate left x18 width203; reference dark #101019 vs candidate lab transparent (verify body background); same h1 sizes 30/24 but different computed font stacks. Mobile reference full-width nav vs candidate collapsible drawer; both no overflow in measured viewport, iframe heights differ. Preserve mobile usability rather than forcing a less usable pattern. Risk 5×5 vs live demo 3×3: document owner-approved scale and display version, no silent conversion; use deterministic calculation, not fixed 3-point reduction. Reference five fixtures REDACT/BLOCK/ESCALATE/ALLOW/WARN verified; candidate repeat same five. Reference rejection actually shows erroneous APPROVED badge; explicit REJECTED required. Reference Ledger tamper detection passed locally; target must fail closed without crypto, no empty-state contradiction. Reference Developer local action works and labels example proposed; candidate route 404 — implement route and examples from central API contract. Reference chat is disabled while candidate simulation is local: keep synthetic capability, present distinction explicitly. Modal opened/closed in reference; no submission. Compare all rows in `MAGICPATH-INTERACTIVE-COMPARISON.csv`; Browser Use comparison run failed, fallback Playwright succeeded; missing pixel/animation/keyboard evidence remains mandatory.
+
+**معيار التسليم:**
+- `UX-01` — قراءة كود revision المنسوخ المرجعي → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `UX-02` — تطابق 12 بندًا بصريًا ووظيفيًا → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `UX-03` — Hero/header والهوية والترتيب محمية بbaseline بصري → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `UX-04` — حالات agent tool/approval/timeout/error/accessibility قابلة للاستخدام → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `UX-05` — جرد 12 أقسام/شاشات مرجع MagicPath من المصدر → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `UX-06` — مطابقة viewport والفوكس/keyboard وحالات error لكل action → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `UX-07` — مثال Developer يشير لمسار API معرف أو يوضح عدم تشغيله → دليل PASS_VERIFIED في البيئة المطلوبة.
+
+---
+
+## P13 — جودة المصدر والمسارات وSEO وObservability
+
+**التبعيات:** P01 P10 P11 P12. **معايير الإغلاق:** QA-01 QA-02 QA-03 QA-04 QA-05 QA-06 SEO-01 SEO-02 SEO-03 SEO-04 SEO-05 SEO-06 SEO-07.
+
+**الملفات المستهدفة من شجرة المصدر:**
+- `.github/workflows/accessibility-performance.yml`
+- `package.json`
+- `package-lock.json`
+- `scripts/seo-build.mjs`
+- `scripts/audit-sitemap-contract.mjs`
+- `redirects.json`
+- `sitemap.xml`
+- `src/layouts/BaseLayout.astro`
+- `src/middleware.ts`
+- `src/scripts/measurement.ts`
+- `src/scripts/monitoring.ts`
+- `src/data/structured-data.ts`
+- `src/pages/api/measurement-status.ts`
+- `src/pages/api/observability.ts`
+- `tests/accessibility-performance-smoke.mjs`
+- `tests/seo*.mjs`
+
+**أوامر العمل:**
+
+استرجع سجل CI الفاشل الفعلي وحدد السبب ولا تخمّنه؛ أصلح source/workflow/lockfile على أساس السبب، شغّل build/typecheck/scripts الموجودة في package.json وsuite الأمن/المتصفح/الأداء على SHA النهائي. تحقق من advisories مع remediation لا تحديثات عمياء. 159 redirect rules مثبتة على Node؛ 327 discovered GET: 75 200 و252 404 على القديم؛ صنّف كل 404 عبر قيمة GSC/backlinks/intended retire (لا تحويل جماعي للرئيسية). أصلح التحويلات والـcanonical/sitemap/indexability/soft404/link graph وبنية المقالات، وأزل duplicate routes/styles فقط بعد إثبات أنها غير مستخدمة. راجع GSC sitemap error وإشارات GA4 من بيئة الإنتاج فقط، Sentry/PostHog/PII/consent وأحداث تحويل لا محتوى محادثة. لا تزور نتائج Lighthouse أو بيانات ترتيب. نفّذ حملًا محدودًا مع bounded cost/failure/cancellation وقارن same-SHA CI evidence؛ route inventory 107 ملفات/108 عمليات سابقًا وليس مقامًا ثابتًا بعد التعديل.
+
+**معيار التسليم:**
+- `QA-01` — آخر CI accessibility/performance اجتاز → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `QA-02` — cause مثبت من سجل CI → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `QA-03` — dependency advisory/lockfile وbuild/check على مرشح → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `QA-04` — load/cost/fault/recovery للحلقات agentic وإلغاء الطلبات → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `QA-05` — CI accessibility/performance لنفس SHA ناجح → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `QA-06` — نتائج suite محلية/متصفح على نفس SHA مثبتة → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `SEO-01` — GA4/GSC استرجاع فترة مكتملة → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `SEO-02` — sitemap بلا أخطاء مسجلة → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `SEO-03` — canonical/redirect/link/visual crawl كامل → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `SEO-04` — Sentry/PostHog trace وPII minimization وconversion → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `SEO-05` — جميع 67 صفحات sitemap الحالية HTTP200 بمحتوى → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `SEO-06` — التحويلات المعلنة /sitemap.xml و/solutions/ai-firewall/ تعمل → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `SEO-07` — كل 159 redirect aliases و327 URL discovered مفحوصة مع graph كامل → دليل PASS_VERIFIED في البيئة المطلوبة.
+
+---
+
+## P14 — الأمان المؤسسي والجاهزية والاستعادة
+
+**التبعيات:** P01 P02 P03 P04 P10 P11 P13. **معايير الإغلاق:** SE-01 SE-03 SE-04 SE-05 SE-06 IN-04 IN-05.
+
+**الملفات المستهدفة من شجرة المصدر:**
+- `src/middleware.ts`
+- `src/server/kernel/auth.mjs`
+- `src/server/kernel/db.mjs`
+- `src/server/kernel/access.mjs`
+- `src/server/api/boundary.mjs`
+- `src/server/ai/groq-gateway.mjs`
+- `src/pages/api/security/csp-report.ts`
+- `render.yaml`
+- `.github/workflows/accessibility-performance.yml`
+- `SECURITY-SECURE-CHAT.md`
+- `tests/secure-chat-security.e2e.mjs`
+
+**أوامر العمل:**
+
+أغلق security gates: Origin/CSRF/session fixation/SSRF/tool injection/XSS/cross-tenant/deny-on-evidence-failure؛ مراجعة grants/role/policy، no client secret/PII في logs، no-store للمسارات الخاصة وCSP. حدّث الوثائق وتكوين secret manager بأسماء فقط؛ دوّر الاعتماد السابق عند مالكه إذا تعرّض دون عرضه. فعّل قواعد main المطلوبة وrequired checks بعد إذن مالك GitHub (لا تعطّل حماية لتجاوز CI). اختبر backup/restore في بيئة جديدة، RTO/RPO موثقة وخطة incident/kill switch وrollback وversioned signed artifact. احسم إقامة البيانات السعودية أو استثناء مصرح؛ Ohio اصطناعي فقط لا دليل قبول production. راجع اتفاقيات مزود Groq/عدم التدريب/احتفاظ/حذف قبل أي بيانات حقيقية. وثّق negative tests وrestore receipt؛ كل critical gate 100%، بلا استثناءات صامتة.
+
+**معيار التسليم:**
+- `SE-01` — منع مفتاح provider العام في resolver المصدر → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `SE-03` — tool allowlist + injection وSSRF وdata egress checks فعليًا → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `SE-04` — موافقة الإقامة وعدم التدريب والاحتفاظ والحذف → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `SE-05` — حجب التنفيذ عند فشل السياسة/الدليل ومنع تسريب الذاكرة → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `SE-06` — حماية main فعالة وتمنع bypass لبوابات الإطلاق → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `IN-04` — حماية الفروع وفق الإعداد المرصود → دليل PASS_VERIFIED في البيئة المطلوبة.
+- `IN-05` — restore/rollback وsecrets presence وprivate caching verified → دليل PASS_VERIFIED في البيئة المطلوبة.
+
+---
+
+## P15 — إغلاق النسب وإطلاق المشروع والنشر المحكوم
+
+**التبعيات:** P01–P14. **معايير الإغلاق:** جميع الـ83 وأي معيار جديد معتمد.
+
+**الملفات المستهدفة من شجرة المصدر:**
+- `render.yaml`
+- `redirects.json`
+- `scripts/build-version.mjs`
+- `scripts/smoke-healthz.mjs`
+- `scripts/audit-runtime-posture.mjs`
+- `scripts/audit-sitemap-contract.mjs`
+- `.github/workflows/accessibility-performance.yml`
+
+**أوامر العمل:**
+
+نفّذ تدقيق قبول نهائي مستقل على HEAD النهائي: استورد REQUIREMENTS-TRACKER.csv وEXECUTION-REQUIREMENT-MAP.csv، أعد جرد المتطلبات الجديدة قبل القياس، لا تحذف FAIL/BLOCKED ولا تغير المقام لتجميل الدرجة؛ تحقق من كل شرط في البيئة المطلوبة. اكتب خارج ملفات التطبيق تقرير scorecard بصفوف PASS_VERIFIED/FAIL_VERIFIED/NOT_VERIFIED/BLOCKED وSHA/UTC/evidence وenvironment، احسب الأوزان حسب 15 محورًا، raw numerator/denominator/evidence coverage، كل منتج/Backend/API/Integration/Design/Trial/Production منفصل. ارفع كل محور/منتج إلى 100% من المتطلبات المستهدفة، 100% critical وzero P0؛ 80% بوابة حد أدنى سابقة وليست بديلًا عن استكمال الوعود؛ أي residual يظل معلنًا ولا نشر مؤثر عليه. نفّذ Idea Destroyer دورتين وإعادة التحقق، لا تقبل self-reported نجاحات.
+عند اجتياز البوابات، نفّذ sequence النشر بتفويض مالك الإنتاج المحدد: backup+restore rehearsal وموافقة residency/model/budget، تطبيق delta ledger على Staging ثم production وفق خطة P02، تجهيز Node service بالإعدادات والأسرار المعتمدة، نشر SHA النهائي، فحص readiness وAuth وnegative tenant tests، verified 159 redirects والـSitemap والرحلة العامة، cutover Cloudflare إلى Node مع static origin محفوظ وTTL/rollback؛ تحقق من HTTPS وcanonical وreadyz وall live promises وسجل CI وobservability. افتح flags تدريجيًا وفق gates (public synthetic ثم live AI/trial/commercial). إن فشل أي critical check أعد origin/feature flags للنسخة السابقة، ولا تنفذ rollback DB مدمرًا؛ احتفظ بالدليل. لا تنقل DNS ولا تعدل بيانات الإنتاج دون إذن نشر صريح منفصل؛ الهدف نشر فعلي عند تحقق الشروط وليس توصية نشر فقط.
+
+**معيار التسليم:**
+- كل معيار مرتبط بدليل مباشر؛ سجل النشر الفعلي أو سبب حجبه، وقرار GO/NO-GO لكل نطاق.
+
+---
+

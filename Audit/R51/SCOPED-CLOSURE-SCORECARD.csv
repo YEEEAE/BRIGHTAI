@@ -1,0 +1,16 @@
+﻿domain,name,weight,n,passed,failed,unknown,blocked,completion,coverage,gap,upper
+BE,Backend & API,10.0,8,2,3,1,2,25.0,62.5,75.0,62.5
+KE,Kernel & orchestration,10.0,4,1,0,2,1,25.0,25.0,75.0,100.0
+DB,Neon / RLS / migrations,9.0,7,0,4,2,1,0.0,57.14285714285714,100.0,42.857142857142854
+SE,Security / identity / privacy,10.0,6,1,1,1,3,16.666666666666664,33.33333333333333,83.33333333333334,83.33333333333334
+RG,Registry & Policy Packs,6.0,5,1,1,2,1,20.0,40.0,80.0,80.0
+FW,Firewall Agent,6.0,4,1,1,1,1,25.0,50.0,75.0,75.0
+HG,Human Gate Agent,5.0,4,1,0,1,2,25.0,25.0,75.0,100.0
+RE,Risk Engine Agent,7.0,4,1,0,2,1,25.0,25.0,75.0,100.0
+LD,Ledger Agent,6.0,4,1,0,2,1,25.0,25.0,75.0,100.0
+SC,Secure Chat & Groq / FinOps,7.0,5,1,3,0,1,20.0,80.0,80.0,40.0
+UX,MagicPath / RTL / A11y,7.0,7,2,2,2,1,28.57142857142857,57.14285714285714,71.42857142857143,71.42857142857143
+PJ,Public journey / trial / commercial,5.0,6,2,2,1,1,33.33333333333333,66.66666666666666,66.66666666666667,66.66666666666666
+IN,Infrastructure / deploy / recovery,5.0,6,3,2,1,0,50.0,83.33333333333334,50.0,66.66666666666666
+QA,Performance / dependencies / quality,4.0,6,0,2,1,3,0.0,33.33333333333333,100.0,66.66666666666666
+SEO,SEO/GEO / analytics / observability,3.0,7,2,2,3,0,28.57142857142857,57.14285714285714,71.42857142857143,71.42857142857143
