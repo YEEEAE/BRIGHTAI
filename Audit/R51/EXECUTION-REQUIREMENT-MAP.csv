@@ -1,84 +1,84 @@
 ﻿id,domain,acceptance,original_status,execution_prompts,final_acceptance_target
-BE-01,BE,عقد HTTP/JSON/error لكل method مع correlation وvalidation,NOT_VERIFIED,P03 P15,PASS_VERIFIED in required environment
-BE-02,BE,واجهات health/readiness/trial تعيد العقد المتوقع على النطاق,FAIL_VERIFIED,P01 P15,PASS_VERIFIED in required environment
-BE-03,BE,عقد agent tool messages ونتائج tools على البوابة الحالية,FAIL_VERIFIED,P03 P15,PASS_VERIFIED in required environment
-BE-04,BE,Idempotency/transactions/outbox والتعافي من الفشل الجزئي في E2E,BLOCKED,P03 P15,PASS_VERIFIED in required environment
-KE-01,KE,مصدر سياق وهوية وصلاحيات Kernel في المصدر,PASS_VERIFIED,P03 P15,PASS_VERIFIED in required environment
-KE-02,KE,خطة وتنفيذ متعدد الوكلاء محدود الخطوات بإعادة فحص السياسة,NOT_VERIFIED,P03 P10 P15,PASS_VERIFIED in required environment
-KE-03,KE,handoff مرتبط بالمؤسسة والنسخة وcorrelation وrevocation,BLOCKED,P03 P10 P15,PASS_VERIFIED in required environment
-KE-04,KE,استقلال المنتج دون تجاوز Kernel أو فرض شراء باقي المنتجات,NOT_VERIFIED,P03 P10 P15,PASS_VERIFIED in required environment
-DB-01,DB,توافق جداول Production وStaging مع العقد المطلوب,FAIL_VERIFIED,P02 P15,PASS_VERIFIED in required environment
-DB-02,DB,دور runtime المطلوب موجود في Production,FAIL_VERIFIED,P02 P15,PASS_VERIFIED in required environment
-DB-03,DB,الدالتان start/read(uuid) في Staging,FAIL_VERIFIED,P02 P15,PASS_VERIFIED in required environment
-DB-04,DB,عزل مؤسستين وroles/grants/SECURITY DEFINER وFORCE حسب الانطباق,BLOCKED,P02 P15,PASS_VERIFIED in required environment
-DB-05,DB,agent persistence وmemory ACL وbudget atomicity,NOT_VERIFIED,P02 P15,PASS_VERIFIED in required environment
-SE-01,SE,منع مفتاح provider العام في resolver المصدر,PASS_VERIFIED,P14 P15,PASS_VERIFIED in required environment
-SE-02,SE,SSO/MFA/RBAC وCSRF/session/origin في بيئة مستهدفة,BLOCKED,P11 P15,PASS_VERIFIED in required environment
-SE-03,SE,tool allowlist + injection وSSRF وdata egress checks فعليًا,BLOCKED,P14 P15,PASS_VERIFIED in required environment
-SE-04,SE,موافقة الإقامة وعدم التدريب والاحتفاظ والحذف,NOT_VERIFIED,P14 P15,PASS_VERIFIED in required environment
-SE-05,SE,حجب التنفيذ عند فشل السياسة/الدليل ومنع تسريب الذاكرة,BLOCKED,P14 P15,PASS_VERIFIED in required environment
-RG-01,RG,registry لمحاكاة الأصل/التقييم والإصدار موجود في المصدر,PASS_VERIFIED,P05 P15,PASS_VERIFIED in required environment
-RG-02,RG,asset/model/agent/vendor lifecycle وowner/mandate/capabilities,NOT_VERIFIED,P05 P15,PASS_VERIFIED in required environment
-RG-03,RG,سياسات versioned مراجع وربط requirement/control/finding/evidence,NOT_VERIFIED,P05 P15,PASS_VERIFIED in required environment
-RG-04,RG,تعديل policy بمراجعة ومنع self-approval وإلغاء التفويض,BLOCKED,P05 P15,PASS_VERIFIED in required environment
-FW-01,FW,سجل أدوات اصطناعي default deny موجود بالمصدر,PASS_VERIFIED,P06 P15,PASS_VERIFIED in required environment
-FW-02,FW,provider registry معتمد غير فارغ في المصدر,FAIL_VERIFIED,P04 P15,PASS_VERIFIED in required environment
-FW-03,FW,agent tool loop حي مع five-state وinput/output checks وredact,BLOCKED,P06 P15,PASS_VERIFIED in required environment
-FW-04,FW,تغطية matchers وPII/injection ونتائج FPR/FNR بمقام,NOT_VERIFIED,P06 P15,PASS_VERIFIED in required environment
-HG-01,HG,state machine/grant binding في المصدر,PASS_VERIFIED,P08 P15,PASS_VERIFIED in required environment
-HG-02,HG,agent تلخيص الطلب بالأدوات والمراجع مع فصل المهام,NOT_VERIFIED,P08 P15,PASS_VERIFIED in required environment
-HG-03,HG,approve/reject/expiry/replay/one-time grant E2E,BLOCKED,P08 P15,PASS_VERIFIED in required environment
-HG-04,HG,اعتماد بشري لا يمكن للوكيل تزويره أو استئنافه دون إعادة فحص,BLOCKED,P08 P15,PASS_VERIFIED in required environment
-RE-01,RE,advisory synthetic JSON وrole/idempotency في المصدر,PASS_VERIFIED,P07 P15,PASS_VERIFIED in required environment
-RE-02,RE,agent متعدد الأدوات لتقييم الأصل والمعالجات مع مصادر,NOT_VERIFIED,P07 P15,PASS_VERIFIED in required environment
-RE-03,RE,درجات مخاطر موثقة وresidual وقبول بشري E2E,BLOCKED,P07 P15,PASS_VERIFIED in required environment
-RE-04,RE,evaluation/drift/fairness ومقامات النتائج,NOT_VERIFIED,P07 P15,PASS_VERIFIED in required environment
-LD-01,LD,Ledger service وevent queries موجودة في المصدر,PASS_VERIFIED,P09 P15,PASS_VERIFIED in required environment
-LD-02,LD,agent يسترجع أدلة مأذونة ويحللها دون صنع بصمات,NOT_VERIFIED,P09 P15,PASS_VERIFIED in required environment
-LD-03,LD,append/verify/export وtamper check وسلسلة canonical E2E,BLOCKED,P09 P15,PASS_VERIFIED in required environment
-LD-04,LD,أدلة كل agent step وtool call وprovider usage مرتبطة,NOT_VERIFIED,P09 P15,PASS_VERIFIED in required environment
-SC-01,SC,حدود الميزانية وtimeouts/circuit breaker في المصدر,PASS_VERIFIED,P04 P15,PASS_VERIFIED in required environment
-SC-02,SC,model approved registry في المصدر غير فارغ,FAIL_VERIFIED,P04 P15,PASS_VERIFIED in required environment
-SC-03,SC,Secure Chat adapter يقبل tool_calls وفق العقد الآمن الجديد,FAIL_VERIFIED,P04 P10 P15,PASS_VERIFIED in required environment
-SC-04,SC,توحيد اسم secret بين gateway وblueprint,FAIL_VERIFIED,P04 P15,PASS_VERIFIED in required environment
-SC-05,SC,shared key والاتصال والـusage فعليًا وbudgets متعددة العمال,BLOCKED,P04 P10 P15,PASS_VERIFIED in required environment
-UX-01,UX,قراءة كود revision المنسوخ المرجعي,PASS_VERIFIED,P12 P15,PASS_VERIFIED in required environment
-UX-02,UX,تطابق 12 بندًا بصريًا ووظيفيًا,NOT_VERIFIED,P12 P15,PASS_VERIFIED in required environment
-UX-03,UX,Hero/header والهوية والترتيب محمية بbaseline بصري,NOT_VERIFIED,P12 P15,PASS_VERIFIED in required environment
-UX-04,UX,حالات agent tool/approval/timeout/error/accessibility قابلة للاستخدام,NOT_VERIFIED,P12 P15,PASS_VERIFIED in required environment
-PJ-01,PJ,المختبرات الخمسة والموحد تظهر محتوى عام,PASS_VERIFIED,P11 P15,PASS_VERIFIED in required environment
-PJ-02,PJ,إتاحة trial JSON على النطاق,FAIL_VERIFIED,P11 P15,PASS_VERIFIED in required environment
-PJ-03,PJ,48h synthetic read-only، انتهاء/إلغاء/حصص وعدم دفع تلقائي E2E,BLOCKED,P11 P15,PASS_VERIFIED in required environment
-PJ-04,PJ,PoV وعرض تجاري وSLA/دعم وقنوات التواصل مثبتة,NOT_VERIFIED,P11 P15,PASS_VERIFIED in required environment
-IN-01,IN,SHA Render live يطابق main المثبت,PASS_VERIFIED,P01 P15,PASS_VERIFIED in required environment
-IN-02,IN,نوع خدمة Render يوافق Node SSR,FAIL_VERIFIED,P01 P15,PASS_VERIFIED in required environment
-IN-03,IN,ربط Cloudflare إلى الخدمة الفعلية معلوم,PASS_VERIFIED,P01 P15,PASS_VERIFIED in required environment
-IN-04,IN,حماية الفروع وفق الإعداد المرصود,FAIL_VERIFIED,P14 P15,PASS_VERIFIED in required environment
-IN-05,IN,restore/rollback وsecrets presence وprivate caching verified,NOT_VERIFIED,P14 P15,PASS_VERIFIED in required environment
-QA-01,QA,آخر CI accessibility/performance اجتاز,FAIL_VERIFIED,P13 P15,PASS_VERIFIED in required environment
-QA-02,QA,cause مثبت من سجل CI,BLOCKED,P13 P15,PASS_VERIFIED in required environment
-QA-03,QA,dependency advisory/lockfile وbuild/check على مرشح,NOT_VERIFIED,P13 P15,PASS_VERIFIED in required environment
-QA-04,QA,load/cost/fault/recovery للحلقات agentic وإلغاء الطلبات,BLOCKED,P13 P15,PASS_VERIFIED in required environment
-SEO-01,SEO,GA4/GSC استرجاع فترة مكتملة,PASS_VERIFIED,P13 P15,PASS_VERIFIED in required environment
-SEO-02,SEO,sitemap بلا أخطاء مسجلة,FAIL_VERIFIED,P13 P15,PASS_VERIFIED in required environment
-SEO-03,SEO,canonical/redirect/link/visual crawl كامل,NOT_VERIFIED,P13 P15,PASS_VERIFIED in required environment
-SEO-04,SEO,Sentry/PostHog trace وPII minimization وconversion,NOT_VERIFIED,P13 P15,PASS_VERIFIED in required environment
-BE-05,BE,جرد 107 ملفات مسارات المصدر من الشجرة المثبتة,PASS_VERIFIED,P01 P15,PASS_VERIFIED in required environment
-BE-06,BE,قراءة 51 wrapper TS و64 pattern بما فيها SSO,PASS_VERIFIED,P01 P15,PASS_VERIFIED in required environment
-BE-07,BE,فحص GET لعقود الصحة والجاهزية والتجربة والقياس والاستفسار على النشر الحالي,FAIL_VERIFIED,P01 P15,PASS_VERIFIED in required environment
-BE-08,BE,مطابقة جميع API methods سلوكياً بما فيها HEAD/auth/validation/error,BLOCKED,P03 P15,PASS_VERIFIED in required environment
-DB-06,DB,تغطية جداول public بالسياسات RLS في Production,FAIL_VERIFIED,P02 P15,PASS_VERIFIED in required environment
-DB-07,DB,مطابقة 46 migration مع سجل تنفيذ وchecksum وقيود الدوال,NOT_VERIFIED,P02 P15,PASS_VERIFIED in required environment
-SE-06,SE,حماية main فعالة وتمنع bypass لبوابات الإطلاق,FAIL_VERIFIED,P14 P15,PASS_VERIFIED in required environment
-RG-05,RG,تغطية سجل الحوكمة لمنتج Secure Chat بعقد متسق,FAIL_VERIFIED,P05 P15,PASS_VERIFIED in required environment
-UX-05,UX,جرد 12 أقسام/شاشات مرجع MagicPath من المصدر,PASS_VERIFIED,P12 P15,PASS_VERIFIED in required environment
-UX-06,UX,مطابقة viewport والفوكس/keyboard وحالات error لكل action,BLOCKED,P12 P15,PASS_VERIFIED in required environment
-UX-07,UX,مثال Developer يشير لمسار API معرف أو يوضح عدم تشغيله,NOT_VERIFIED,P12 P15,PASS_VERIFIED in required environment
-PJ-05,PJ,مسارات المختبرات 7 وcomplaint 5 وrequest-access متاحة HTTP,PASS_VERIFIED,P11 P15,PASS_VERIFIED in required environment
-PJ-06,PJ,رابط status المعلن في المختبرات يعمل على النشر,FAIL_VERIFIED,P11 P15,PASS_VERIFIED in required environment
-IN-06,IN,SHA الحالي مطابق لآخر نشر Render,PASS_VERIFIED,P01 P15,PASS_VERIFIED in required environment
-QA-05,QA,CI accessibility/performance لنفس SHA ناجح,FAIL_VERIFIED,P13 P15,PASS_VERIFIED in required environment
-QA-06,QA,نتائج suite محلية/متصفح على نفس SHA مثبتة,BLOCKED,P13 P15,PASS_VERIFIED in required environment
-SEO-05,SEO,جميع 67 صفحات sitemap الحالية HTTP200 بمحتوى,PASS_VERIFIED,P13 P15,PASS_VERIFIED in required environment
-SEO-06,SEO,التحويلات المعلنة /sitemap.xml و/solutions/ai-firewall/ تعمل,FAIL_VERIFIED,P13 P15,PASS_VERIFIED in required environment
-SEO-07,SEO,كل 159 redirect aliases و327 URL discovered مفحوصة مع graph كامل,NOT_VERIFIED,P13 P15,PASS_VERIFIED in required environment
+BE-01,BE,عقد HTTP/JSON/error لكل method مع correlation وvalidation,NOT_VERIFIED,P03 P23 P34 P15,PASS_VERIFIED in required environment
+BE-02,BE,واجهات health/readiness/trial تعيد العقد المتوقع على النطاق,FAIL_VERIFIED,P01 P34 P15,PASS_VERIFIED in required environment
+BE-03,BE,عقد agent tool messages ونتائج tools على البوابة الحالية,FAIL_VERIFIED,P03 P34 P15,PASS_VERIFIED in required environment
+BE-04,BE,Idempotency/transactions/outbox والتعافي من الفشل الجزئي في E2E,BLOCKED,P03 P21 P34 P15,PASS_VERIFIED in required environment
+KE-01,KE,مصدر سياق وهوية وصلاحيات Kernel في المصدر,PASS_VERIFIED,P03 P34 P15,PASS_VERIFIED in required environment
+KE-02,KE,خطة وتنفيذ متعدد الوكلاء محدود الخطوات بإعادة فحص السياسة,NOT_VERIFIED,P03 P10 P21 P34 P15,PASS_VERIFIED in required environment
+KE-03,KE,handoff مرتبط بالمؤسسة والنسخة وcorrelation وrevocation,BLOCKED,P03 P10 P20 P21 P34 P15,PASS_VERIFIED in required environment
+KE-04,KE,استقلال المنتج دون تجاوز Kernel أو فرض شراء باقي المنتجات,NOT_VERIFIED,P03 P10 P19 P21 P33 P34 P15,PASS_VERIFIED in required environment
+DB-01,DB,توافق جداول Production وStaging مع العقد المطلوب,FAIL_VERIFIED,P02 P16 P34 P15,PASS_VERIFIED in required environment
+DB-02,DB,دور runtime المطلوب موجود في Production,FAIL_VERIFIED,P02 P16 P34 P15,PASS_VERIFIED in required environment
+DB-03,DB,الدالتان start/read(uuid) في Staging,FAIL_VERIFIED,P02 P16 P34 P15,PASS_VERIFIED in required environment
+DB-04,DB,عزل مؤسستين وroles/grants/SECURITY DEFINER وFORCE حسب الانطباق,BLOCKED,P02 P34 P15,PASS_VERIFIED in required environment
+DB-05,DB,agent persistence وmemory ACL وbudget atomicity,NOT_VERIFIED,P02 P20 P34 P15,PASS_VERIFIED in required environment
+SE-01,SE,منع مفتاح provider العام في resolver المصدر,PASS_VERIFIED,P26 P14 P34 P15,PASS_VERIFIED in required environment
+SE-02,SE,SSO/MFA/RBAC وCSRF/session/origin في بيئة مستهدفة,BLOCKED,P11 P17 P34 P15,PASS_VERIFIED in required environment
+SE-03,SE,tool allowlist + injection وSSRF وdata egress checks فعليًا,BLOCKED,P26 P14 P34 P15,PASS_VERIFIED in required environment
+SE-04,SE,موافقة الإقامة وعدم التدريب والاحتفاظ والحذف,NOT_VERIFIED,P27 P33 P14 P34 P15,PASS_VERIFIED in required environment
+SE-05,SE,حجب التنفيذ عند فشل السياسة/الدليل ومنع تسريب الذاكرة,BLOCKED,P20 P26 P27 P28 P14 P34 P15,PASS_VERIFIED in required environment
+RG-01,RG,registry لمحاكاة الأصل/التقييم والإصدار موجود في المصدر,PASS_VERIFIED,P05 P34 P15,PASS_VERIFIED in required environment
+RG-02,RG,asset/model/agent/vendor lifecycle وowner/mandate/capabilities,NOT_VERIFIED,P05 P34 P15,PASS_VERIFIED in required environment
+RG-03,RG,سياسات versioned مراجع وربط requirement/control/finding/evidence,NOT_VERIFIED,P05 P27 P34 P15,PASS_VERIFIED in required environment
+RG-04,RG,تعديل policy بمراجعة ومنع self-approval وإلغاء التفويض,BLOCKED,P05 P34 P15,PASS_VERIFIED in required environment
+FW-01,FW,سجل أدوات اصطناعي default deny موجود بالمصدر,PASS_VERIFIED,P06 P34 P15,PASS_VERIFIED in required environment
+FW-02,FW,provider registry معتمد غير فارغ في المصدر,FAIL_VERIFIED,P04 P22 P34 P15,PASS_VERIFIED in required environment
+FW-03,FW,agent tool loop حي مع five-state وinput/output checks وredact,BLOCKED,P06 P22 P26 P34 P15,PASS_VERIFIED in required environment
+FW-04,FW,تغطية matchers وPII/injection ونتائج FPR/FNR بمقام,NOT_VERIFIED,P06 P34 P15,PASS_VERIFIED in required environment
+HG-01,HG,state machine/grant binding في المصدر,PASS_VERIFIED,P08 P34 P15,PASS_VERIFIED in required environment
+HG-02,HG,agent تلخيص الطلب بالأدوات والمراجع مع فصل المهام,NOT_VERIFIED,P08 P34 P15,PASS_VERIFIED in required environment
+HG-03,HG,approve/reject/expiry/replay/one-time grant E2E,BLOCKED,P08 P34 P15,PASS_VERIFIED in required environment
+HG-04,HG,اعتماد بشري لا يمكن للوكيل تزويره أو استئنافه دون إعادة فحص,BLOCKED,P08 P26 P34 P15,PASS_VERIFIED in required environment
+RE-01,RE,advisory synthetic JSON وrole/idempotency في المصدر,PASS_VERIFIED,P07 P34 P15,PASS_VERIFIED in required environment
+RE-02,RE,agent متعدد الأدوات لتقييم الأصل والمعالجات مع مصادر,NOT_VERIFIED,P07 P34 P15,PASS_VERIFIED in required environment
+RE-03,RE,درجات مخاطر موثقة وresidual وقبول بشري E2E,BLOCKED,P07 P34 P15,PASS_VERIFIED in required environment
+RE-04,RE,evaluation/drift/fairness ومقامات النتائج,NOT_VERIFIED,P07 P34 P15,PASS_VERIFIED in required environment
+LD-01,LD,Ledger service وevent queries موجودة في المصدر,PASS_VERIFIED,P09 P34 P15,PASS_VERIFIED in required environment
+LD-02,LD,agent يسترجع أدلة مأذونة ويحللها دون صنع بصمات,NOT_VERIFIED,P09 P34 P15,PASS_VERIFIED in required environment
+LD-03,LD,append/verify/export وtamper check وسلسلة canonical E2E,BLOCKED,P09 P27 P34 P15,PASS_VERIFIED in required environment
+LD-04,LD,أدلة كل agent step وtool call وprovider usage مرتبطة,NOT_VERIFIED,P09 P21 P28 P34 P15,PASS_VERIFIED in required environment
+SC-01,SC,حدود الميزانية وtimeouts/circuit breaker في المصدر,PASS_VERIFIED,P04 P34 P15,PASS_VERIFIED in required environment
+SC-02,SC,model approved registry في المصدر غير فارغ,FAIL_VERIFIED,P04 P22 P34 P15,PASS_VERIFIED in required environment
+SC-03,SC,Secure Chat adapter يقبل tool_calls وفق العقد الآمن الجديد,FAIL_VERIFIED,P04 P10 P34 P15,PASS_VERIFIED in required environment
+SC-04,SC,توحيد اسم secret بين gateway وblueprint,FAIL_VERIFIED,P04 P22 P34 P15,PASS_VERIFIED in required environment
+SC-05,SC,shared key والاتصال والـusage فعليًا وbudgets متعددة العمال,BLOCKED,P04 P10 P22 P34 P15,PASS_VERIFIED in required environment
+UX-01,UX,قراءة كود revision المنسوخ المرجعي,PASS_VERIFIED,P12 P34 P15,PASS_VERIFIED in required environment
+UX-02,UX,تطابق 12 بندًا بصريًا ووظيفيًا,NOT_VERIFIED,P12 P24 P34 P15,PASS_VERIFIED in required environment
+UX-03,UX,Hero/header والهوية والترتيب محمية بbaseline بصري,NOT_VERIFIED,P12 P25 P34 P15,PASS_VERIFIED in required environment
+UX-04,UX,حالات agent tool/approval/timeout/error/accessibility قابلة للاستخدام,NOT_VERIFIED,P12 P24 P34 P15,PASS_VERIFIED in required environment
+PJ-01,PJ,المختبرات الخمسة والموحد تظهر محتوى عام,PASS_VERIFIED,P11 P34 P15,PASS_VERIFIED in required environment
+PJ-02,PJ,إتاحة trial JSON على النطاق,FAIL_VERIFIED,P11 P18 P34 P15,PASS_VERIFIED in required environment
+PJ-03,PJ,48h synthetic read-only، انتهاء/إلغاء/حصص وعدم دفع تلقائي E2E,BLOCKED,P11 P18 P34 P15,PASS_VERIFIED in required environment
+PJ-04,PJ,PoV وعرض تجاري وSLA/دعم وقنوات التواصل مثبتة,NOT_VERIFIED,P11 P19 P31 P33 P34 P15,PASS_VERIFIED in required environment
+IN-01,IN,SHA Render live يطابق main المثبت,PASS_VERIFIED,P01 P34 P15,PASS_VERIFIED in required environment
+IN-02,IN,نوع خدمة Render يوافق Node SSR,FAIL_VERIFIED,P01 P34 P15,PASS_VERIFIED in required environment
+IN-03,IN,ربط Cloudflare إلى الخدمة الفعلية معلوم,PASS_VERIFIED,P01 P34 P15,PASS_VERIFIED in required environment
+IN-04,IN,حماية الفروع وفق الإعداد المرصود,FAIL_VERIFIED,P29 P14 P34 P15,PASS_VERIFIED in required environment
+IN-05,IN,restore/rollback وsecrets presence وprivate caching verified,NOT_VERIFIED,P16 P28 P32 P33 P14 P34 P15,PASS_VERIFIED in required environment
+QA-01,QA,آخر CI accessibility/performance اجتاز,FAIL_VERIFIED,P29 P13 P34 P15,PASS_VERIFIED in required environment
+QA-02,QA,cause مثبت من سجل CI,BLOCKED,P29 P13 P34 P15,PASS_VERIFIED in required environment
+QA-03,QA,dependency advisory/lockfile وbuild/check على مرشح,NOT_VERIFIED,P29 P13 P34 P15,PASS_VERIFIED in required environment
+QA-04,QA,load/cost/fault/recovery للحلقات agentic وإلغاء الطلبات,BLOCKED,P21 P29 P32 P13 P34 P15,PASS_VERIFIED in required environment
+SEO-01,SEO,GA4/GSC استرجاع فترة مكتملة,PASS_VERIFIED,P31 P32 P13 P34 P15,PASS_VERIFIED in required environment
+SEO-02,SEO,sitemap بلا أخطاء مسجلة,FAIL_VERIFIED,P30 P13 P34 P15,PASS_VERIFIED in required environment
+SEO-03,SEO,canonical/redirect/link/visual crawl كامل,NOT_VERIFIED,P25 P30 P31 P13 P34 P15,PASS_VERIFIED in required environment
+SEO-04,SEO,Sentry/PostHog trace وPII minimization وconversion,NOT_VERIFIED,P32 P13 P34 P15,PASS_VERIFIED in required environment
+BE-05,BE,جرد 107 ملفات مسارات المصدر من الشجرة المثبتة,PASS_VERIFIED,P01 P30 P34 P15,PASS_VERIFIED in required environment
+BE-06,BE,قراءة 51 wrapper TS و64 pattern بما فيها SSO,PASS_VERIFIED,P01 P30 P34 P15,PASS_VERIFIED in required environment
+BE-07,BE,فحص GET لعقود الصحة والجاهزية والتجربة والقياس والاستفسار على النشر الحالي,FAIL_VERIFIED,P01 P18 P30 P34 P15,PASS_VERIFIED in required environment
+BE-08,BE,مطابقة جميع API methods سلوكياً بما فيها HEAD/auth/validation/error,BLOCKED,P03 P17 P23 P26 P30 P34 P15,PASS_VERIFIED in required environment
+DB-06,DB,تغطية جداول public بالسياسات RLS في Production,FAIL_VERIFIED,P02 P16 P34 P15,PASS_VERIFIED in required environment
+DB-07,DB,مطابقة 46 migration مع سجل تنفيذ وchecksum وقيود الدوال,NOT_VERIFIED,P02 P16 P34 P15,PASS_VERIFIED in required environment
+SE-06,SE,حماية main فعالة وتمنع bypass لبوابات الإطلاق,FAIL_VERIFIED,P29 P14 P34 P15,PASS_VERIFIED in required environment
+RG-05,RG,تغطية سجل الحوكمة لمنتج Secure Chat بعقد متسق,FAIL_VERIFIED,P05 P34 P15,PASS_VERIFIED in required environment
+UX-05,UX,جرد 12 أقسام/شاشات مرجع MagicPath من المصدر,PASS_VERIFIED,P12 P34 P15,PASS_VERIFIED in required environment
+UX-06,UX,مطابقة viewport والفوكس/keyboard وحالات error لكل action,BLOCKED,P12 P24 P25 P34 P15,PASS_VERIFIED in required environment
+UX-07,UX,مثال Developer يشير لمسار API معرف أو يوضح عدم تشغيله,NOT_VERIFIED,P12 P23 P34 P15,PASS_VERIFIED in required environment
+PJ-05,PJ,مسارات المختبرات 7 وcomplaint 5 وrequest-access متاحة HTTP,PASS_VERIFIED,P11 P19 P34 P15,PASS_VERIFIED in required environment
+PJ-06,PJ,رابط status المعلن في المختبرات يعمل على النشر,FAIL_VERIFIED,P11 P18 P34 P15,PASS_VERIFIED in required environment
+IN-06,IN,SHA الحالي مطابق لآخر نشر Render,PASS_VERIFIED,P01 P34 P15,PASS_VERIFIED in required environment
+QA-05,QA,CI accessibility/performance لنفس SHA ناجح,FAIL_VERIFIED,P25 P29 P13 P34 P15,PASS_VERIFIED in required environment
+QA-06,QA,نتائج suite محلية/متصفح على نفس SHA مثبتة,BLOCKED,P29 P13 P34 P15,PASS_VERIFIED in required environment
+SEO-05,SEO,جميع 67 صفحات sitemap الحالية HTTP200 بمحتوى,PASS_VERIFIED,P30 P13 P34 P15,PASS_VERIFIED in required environment
+SEO-06,SEO,التحويلات المعلنة /sitemap.xml و/solutions/ai-firewall/ تعمل,FAIL_VERIFIED,P30 P13 P34 P15,PASS_VERIFIED in required environment
+SEO-07,SEO,كل 159 redirect aliases و327 URL discovered مفحوصة مع graph كامل,NOT_VERIFIED,P30 P13 P34 P15,PASS_VERIFIED in required environment
