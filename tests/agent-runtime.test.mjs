@@ -248,3 +248,34 @@ test('tool executor rejects malformed messages, unknown capabilities and oversiz
   assert.equal(runtime.schemas.message.safeParse({ ...toolMessage(), extra: true }).success, false);
   assert.equal(manifestFor('unknown-agent'), null);
 });
+
+test('unrecorded Ledger evidence blocks run creation and tools before invocation', async () => {
+  let available = true, calls = 0;
+  const evidence = { fn: async () => ({ recorded: available }) };
+  const { runtime, store } = harness({ evidence, tools: { 'policy-check': async () => { calls++; return { outcome: 'ALLOW', summary: 'ok' }; } } });
+  available = false;
+  await assert.rejects(runtime.start(identity, tenant, startBody()), { code: 'MANDATORY_EVIDENCE_UNAVAILABLE' });
+  assert.equal(store.inspect().runs.size, 0);
+  available = true;
+  const run = await runtime.start(identity, tenant, startBody());
+  available = false;
+  await assert.rejects(runtime.step(identity, tenant, run.run_id, { kind: 'TOOL', message: toolMessage(), correlationId: correlation(), idempotencyKey: 'no-evidence' }), { code: 'MANDATORY_EVIDENCE_UNAVAILABLE' });
+  assert.equal(calls, 0);
+  assert.equal(store.inspect().tools.size, 0);
+});
+
+test('provider evidence binds run and usage and fails closed without Ledger', async () => {
+  const { runtime, evidence }=harness();
+  const run=await runtime.start(identity,tenant,startBody());
+  const attemptId=randomUUID(), correlationId=correlation();
+  const base={attemptId,correlationId,provider:'groq',model:'fixture-model'};
+  await runtime.providerEvidence(identity,tenant,run.run_id,{...base,phase:'started'});
+  await runtime.providerEvidence(identity,tenant,run.run_id,{...base,phase:'completed',usage:{prompt_tokens:4,completion_tokens:2,total_tokens:6}});
+  const row=evidence.rows.at(-1);
+  assert.equal(row.runId,run.run_id); assert.equal(row.causationId,attemptId);
+  assert.deepEqual(row.providerUsage,{provider_name:'groq',provider_model:'fixture-model',usage_input:4,usage_output:2,usage_total:6});
+  await assert.rejects(runtime.providerEvidence(identity,tenant,run.run_id,{...base,phase:'completed',usage:{prompt_tokens:4,completion_tokens:2,total_tokens:7}}),{code:'INVALID_PROVIDER_USAGE'});
+  await assert.rejects(runtime.providerEvidence(identity,randomUUID(),run.run_id,{...base,phase:'started'}),{code:'RUN_NOT_FOUND'});
+  const failure=harness({evidence:{fn:async()=>({recorded:false})}});
+  await assert.rejects(failure.runtime.start(identity,tenant,startBody()),{code:'MANDATORY_EVIDENCE_UNAVAILABLE'});
+});

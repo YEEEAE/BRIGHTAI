@@ -1,0 +1,7 @@
+# Ledger agent foundation — 2026-11-26
+
+Status: PARTIAL. The read-only agent delegates identity, workspace selection and event access to the existing Ledger service and reports unsigned prefix checks as UNVERIFIED for signed assurance. It does not invoke an LLM or create or alter evidence. It is a server module, not yet connected to an agent runtime or HTTP endpoint.
+
+Local focused tests: `node --test tests/ledger-agent.test.mjs tests/ledger.test.mjs tests/governance-evidence.test.mjs` — 7 PASS, 0 FAIL. The test doubles do not establish real database authorization or tenant isolation. Existing export is a minimized metadata prefix bundle with an independent verifier and an audit entry; it is unsigned and does not prove an omitted tail. Existing operational verification can still report VERIFIED for the limited unsigned prefix; the agent explicitly distinguishes that from signed assurance.
+
+LD-01 through LD-04: NOT PASS_VERIFIED in the required environment. Outstanding: approved signing/key lifecycle and no-crypto failure; signed canonical chain and independent verification; authorized redaction and retention policy/audit; run, step, tool, provider usage and human decision linkage; required fail-closed Ledger integration and idempotent retries; database and end-to-end tamper, deletion, reorder, replay, tenant isolation and export tests. Runtime and deployment were not changed or verified. P20, P21 and P27 remain responsible for their specialized work; this partial foundation does not substitute for it.

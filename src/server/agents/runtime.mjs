@@ -60,10 +60,9 @@ const publicRun = (run, { replayed = false } = {}) => Object.freeze({
 
 export const kernelAuthorize = (tx, identity, tenantId, product, operation) => requireProductAccess(tx.db, identity, tenantId, product, operation);
 export const kernelPolicy = (tx, identity, tenantId, context) => evaluateKernelPolicy(tx.db, identity, tenantId, context);
-export async function kernelEvidence(tx, identity, tenantId, { action, correlationId, policyVersion, idempotencyKey }) {
-  const auditId = randomUUID();
-  await audit(tx.db, identity, tenantId, action, { correlationId, policyVersion, idempotencyKey });
-  const ledger = await recordKernelAuditEvidence(tx.db, identity, tenantId, { auditId, correlationId, policyVersion, action: 'kernel.' + action });
+export async function kernelEvidence(tx, identity, tenantId, { action, correlationId, policyVersion, idempotencyKey, runId, causationId, agentVersion: version, providerUsage }) {
+  const auditId = await audit(tx.db, identity, tenantId, action, { correlationId, policyVersion, idempotencyKey });
+  const ledger = await recordKernelAuditEvidence(tx.db, identity, tenantId, { auditId, correlationId, policyVersion, action: 'kernel.' + action, runId, causationId, agentVersion: version, providerUsage });
   return { auditId, recorded: ledger.recorded === true, dependencyStatus: ledger.dependencyStatus ?? null };
 }
 export async function kernelApproval(tx, identity, tenantId, { approvalRef, fingerprint: expected }) {
@@ -87,9 +86,10 @@ export function createAgentRuntime({
   const controllers = new Map();
   const abort = runId => controllers.get(runId)?.abort();
 
-  const writeEvidence = async (tx, identity, tenantId, { runId, action, correlationId, idempotencyKey, eventType, causationId = null }) => {
+  const writeEvidence = async (tx, identity, tenantId, { runId, action, correlationId, idempotencyKey, eventType, causationId = null, providerUsage = null }) => {
     const policy = policyVersion(tx.agentKey);
-    const evidence = await appendEvidence(tx, identity, tenantId, { action, correlationId, policyVersion: policy, idempotencyKey });
+    const evidence = await appendEvidence(tx, identity, tenantId, { action, correlationId, policyVersion: policy, idempotencyKey, runId, causationId, agentVersion: agentVersion(tx.agentKey), providerUsage });
+    if (evidence?.recorded !== true) throw new KernelError(503, 'MANDATORY_EVIDENCE_UNAVAILABLE', 'تعذر تسجيل دليل Ledger؛ لم تكتمل العملية.');
     const event = outboxEvent({ tenantId, aggregateType: 'AGENT_RUN', aggregateId: runId, eventType,
       correlationId, causationId, payloadRef: reference(tenantId, 'run', runId), idempotencyKey: 'outbox:' + idempotencyKey });
     if (!event) throw new KernelError(400, 'INVALID_OUTBOX_EVENT', 'مرجع حدث غير صالح.');
@@ -191,6 +191,8 @@ export function createAgentRuntime({
               toolName: message.tool ?? 'unknown', toolVersion: String(message.version ?? 0), argumentsRef: null,
               resultRef: null, status: 'PENDING', idempotencyKey: input.idempotencyKey,
               requestFingerprint: shortReference([runId, message, input.correlationId]), expiresAt: run.expires_at });
+            await writeEvidence(tx, identity, tenantId, { runId, action: 'kernel.agent.tool.started', correlationId: input.correlationId,
+              idempotencyKey: 'tool:' + input.idempotencyKey, eventType: 'agent.tool.started', causationId: toolId });
             toolResult = await executor.execute({ tx, identity, tenantId, agentKey: run.agent_key, toolId,
               message, signal: controller.signal, deadlineMs: Math.max(1000, Math.min(5000, new Date(run.expires_at).getTime() - now().getTime())) });
             await tx.updateTool(tenantId, toolId, { status: toolResult.status, resultRef: toolResult.result_ref }, 'PENDING');
@@ -200,6 +202,8 @@ export function createAgentRuntime({
               const step = await tx.appendStep({ tenantId, runId, stepNo, kind: 'HUMAN_GATE', status: 'DONE',
                 summary: summarize('tool', 'approval required'), policyVersion: run.policy_version,
                 idempotencyKey: 'hg:' + input.idempotencyKey, expiresAt: run.expires_at });
+              await writeEvidence(tx, identity, tenantId, { runId, action: 'kernel.agent.step.paused', correlationId: input.correlationId,
+                idempotencyKey: 'step:' + input.idempotencyKey, eventType: 'agent.step.paused', causationId: step.id });
               await tx.updateRun(tenantId, runId, { status: 'PAUSED' }, 'RUNNING');
               return { status: 'PAUSED', step_id: step.id, step_no: stepNo, reason: 'APPROVAL_REQUIRED',
                 approval_fingerprint: checkpoint.approval_fingerprint, tool: toolResult, handoff: run.handoff ?? null };
@@ -210,6 +214,8 @@ export function createAgentRuntime({
             const step = await tx.appendStep({ tenantId, runId, stepNo, kind: 'HUMAN_GATE', status: 'DONE',
               summary: summarize('human-gate', 'paused'), policyVersion: run.policy_version,
               idempotencyKey: input.idempotencyKey, expiresAt: run.expires_at });
+            await writeEvidence(tx, identity, tenantId, { runId, action: 'kernel.agent.step.paused', correlationId: input.correlationId,
+              idempotencyKey: 'step:' + input.idempotencyKey, eventType: 'agent.step.paused', causationId: step.id });
             await tx.updateRun(tenantId, runId, { status: 'PAUSED' }, 'RUNNING');
             return { status: 'PAUSED', step_id: step.id, step_no: stepNo, reason: 'APPROVAL_REQUIRED',
               approval_fingerprint: checkpoint.approval_fingerprint, handoff: run.handoff ?? null };
@@ -238,6 +244,22 @@ export function createAgentRuntime({
       });
       if (outcome?.error) throw new KernelError(outcome.error.status, outcome.error.code, outcome.error.message);
       return outcome;
+    },
+    async providerEvidence(identity, tenantId, runId, body) {
+      const schema=z.strictObject({ correlationId:z.uuidv4(), attemptId:z.uuidv4(), phase:z.enum(['started','completed','failed']), provider:z.literal('groq'), model:z.string().regex(/^[A-Za-z0-9_.:/-]{1,100}$/), usage:z.object({prompt_tokens:z.number().int().min(0).max(999999999),completion_tokens:z.number().int().min(0).max(999999999),total_tokens:z.number().int().min(0).max(999999999)}).strict().optional() });
+      const input=parse(schema,body);
+      if (!isUuid(identity?.userId) || !isUuid(tenantId)) throw new KernelError(401,'UNAUTHORIZED','يلزم سياق مؤسسة موثّق.');
+      if ((input.phase==='completed') !== !!input.usage || (input.usage && input.usage.total_tokens!==input.usage.prompt_tokens+input.usage.completion_tokens)) throw new KernelError(400,'INVALID_PROVIDER_USAGE','بيانات استخدام المزوّد غير صالحة.');
+      return store.transact(async tx => {
+        const run=await load(tx,identity,tenantId,runId,'agent.step');
+        if (run.status!=='RUNNING') throw new KernelError(409,'AGENT_NOT_RUNNING','التشغيل ليس قيد التنفيذ.');
+        tx.agentKey=run.agent_key;
+        const decision=await evaluatePolicy(tx,identity,tenantId,{productSlug:manifestFor(run.agent_key).product,operation:'agent.provider.'+input.phase,resource_type:'agent-provider'});
+        if (!decision || decision.decision!=='ALLOW' || decision.obligations?.length) throw new KernelError(403,'AGENT_POLICY_DENIED','سياسة Kernel لا تسمح بعملية المزوّد.');
+        const usage={provider_name:input.provider,provider_model:input.model,...(input.usage?{usage_input:input.usage.prompt_tokens,usage_output:input.usage.completion_tokens,usage_total:input.usage.total_tokens}:{})};
+        await writeEvidence(tx,identity,tenantId,{runId,action:'kernel.agent.provider.'+input.phase,correlationId:input.correlationId,idempotencyKey:'provider:'+input.attemptId+':'+input.phase,eventType:'agent.provider.'+input.phase,causationId:input.attemptId,providerUsage:usage});
+        return {recorded:true};
+      });
     },
     async resume(identity, tenantId, runId, body) {
       const input = parse(approveSchema, body);
@@ -295,6 +317,9 @@ export function createAgentRuntime({
         const run = await load(tx, identity, tenantId, runId, 'agent.outbox.retry');
         if (['COMPLETED','CANCELLED','EXPIRED'].includes(run.status)) throw new KernelError(409, 'AGENT_TERMINAL', 'لا يمكن إعادة إرسال أحداث تشغيل منتهٍ.');
         tx.agentKey = run.agent_key;
+        const evidence = await appendEvidence(tx, identity, tenantId, { action: 'kernel.agent.outbox.retried', correlationId: input.correlationId,
+          policyVersion: policyVersion(run.agent_key), idempotencyKey: 'retry:' + input.idempotencyKey, runId, agentVersion: agentVersion(run.agent_key) });
+        if (evidence?.recorded !== true) throw new KernelError(503, 'MANDATORY_EVIDENCE_UNAVAILABLE', 'تعذر تسجيل دليل Ledger؛ لم تكتمل العملية.');
         let dispatched = 0, failed = 0, dead = 0;
         for (const event of (await tx.listOutbox(tenantId)).filter(item => item.aggregate_id === runId && ['PENDING','FAILED'].includes(item.status))) {
           const attempts = (event.attempts ?? 0) + 1;
@@ -310,8 +335,6 @@ export function createAgentRuntime({
           else failed += 1;
           await tx.updateOutbox(tenantId, event.event_id, { status, attempts, nextAttemptAt: new Date(now().getTime() + 1000 * attempts) });
         }
-        await appendEvidence(tx, identity, tenantId, { action: 'kernel.agent.outbox.retried', correlationId: input.correlationId,
-          policyVersion: policyVersion(run.agent_key), idempotencyKey: 'retry:' + input.idempotencyKey });
         return { dispatched, failed, dead, remaining: failed };
       });
     },

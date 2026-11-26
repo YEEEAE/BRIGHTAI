@@ -5,6 +5,9 @@ import { KernelError, requireRole } from '../kernel/core.mjs';
 import { HTTP_CONTRACT_VERSION } from '../kernel/contracts.mjs';
 import { chainVersion, canonical, exactObject, filters, profile, publicMetadata, syntheticTypes, uuid, verificationState, verifyEvent } from './core.mjs';
 import { appendEvent, columns } from './writer.mjs';
+import { signExport, signingKey, verifyEventSignature } from './signing.mjs';
+import { redactBundle } from './redacted-export.mjs';
+import { retentionPolicy } from './retention.mjs';
 import { FORMAT, MAX_EVENTS, VERIFIER_VERSION, verifyBundle } from '../../../public/downloads/aigas-ledger-verifier.mjs';
 
 function bundleFor(events, tenantId, targetId) {
@@ -23,8 +26,25 @@ async function chainThrough(db,tenantId,event) {
   if (events.some(row=>row.hash_profile!==profile)) return {events,report:{result:'INDETERMINATE',reason:'UNSUPPORTED_HASH_PROFILE',state:'BLOCKED'}};
   try {
     const bundle=bundleFor(events,tenantId,event.event_id);
-    return {events,bundle,report:verifyBundle(bundle)};
+    const report=verifyBundle(bundle);
+    if (report.result !== 'MATCH') return {events,bundle,report};
+    const signatures=(await db.query('SELECT event_id,key_id,signature FROM public.aigas_ld_event_signatures WHERE tenant_id=$1 AND event_id=ANY($2::uuid[])',[tenantId,events.map(row=>row.event_id)])).rows;
+    const byId=new Map(signatures.map(row=>[row.event_id,row]));
+    let signer; try { signer=signingKey(); } catch { return {events,bundle,report:{result:'INDETERMINATE',reason:'SIGNING_KEY_UNAVAILABLE'}}; }
+    for (const entry of bundle.entries) {
+      const receipt=byId.get(entry.event.event_id);
+      if (!receipt) return {events,bundle,report:{result:'INDETERMINATE',reason:'SIGNATURE_MISSING'}};
+      if (!verifyEventSignature(entry.event,receipt,signer)) return {events,bundle,report:{result:'MISMATCH',reason:'SIGNATURE_INVALID'}};
+      entry.signature={key_id:receipt.key_id,signature:receipt.signature};
+    }
+    return {events,bundle,report:{...report, signed_events:true}};
   } catch { return {events,report:{result:'INDETERMINATE',reason:'INVALID_EVENT',state:'BLOCKED'}}; }
+}
+// Historical rows have no append-time signature. Hash consistency alone cannot
+// satisfy signed evidence verification, even when a later export is signed.
+function unsignedVerification(integrity, chain) {
+  const value = verificationState(integrity, chain);
+  return value.state === 'VERIFIED' && chain?.signed_events !== true ? { state:'UNVERIFIED', mismatch:false, reasons:['SIGNATURE_NOT_VERIFIED'], prefix_state:'VERIFIED' } : value;
 }
 // One public shape: allowlisted metadata only, plus the derived integrity facts.
 // verification_state combines the stored row hash with the supplied-prefix
@@ -33,7 +53,7 @@ function publicEvent(event, chainReport) {
   const safe=publicMetadata(event.metadata_json,event.source,event.event_type);
   const integrity=verifyEvent(event);
   const chain=chainReport??{result:'INDETERMINATE'};
-  const verification=verificationState(integrity,chain);
+  const verification=unsignedVerification(integrity,chain);
   return {...event,metadata_json:safe.value,metadata_valid:safe.valid,integrity,chain_integrity:chain.result??null,verification_state:verification.state,verification_mismatch:verification.mismatch,verification_reasons:verification.reasons};
 }
 export function createLedgerService(transact = transaction) {
@@ -61,7 +81,7 @@ export function createLedgerService(transact = transaction) {
         const events=rows.slice(0,25);
         // Verify the unfiltered prefix, so filtering cannot disguise missing links.
         const chain=events.length?await chainThrough(db,tenantId,events[0]):{report:{result:'EMPTY',state:'EMPTY'},events:[]};
-        const summary=chain.report.result==='EMPTY'?{state:'UNVERIFIED',mismatch:false,reasons:['NO_EVIDENCE']}:verificationState('MATCH',chain.report);
+        const summary=chain.report.result==='EMPTY'?{state:'UNVERIFIED',mismatch:false,reasons:['NO_EVIDENCE']}:unsignedVerification('MATCH',chain.report);
         return {tenant:{...scope.tenant,role:member.role},memberships:scope.memberships,permissions,events:events.map(event=>publicEvent(event,chain.report)),chain:chain.report,verification:summary,chain_version:chainVersion,page:filter.page,hasMore:rows.length>25 && filter.page<100,maxVerificationEvents:MAX_EVENTS,verifier:{version:VERIFIER_VERSION},contract_version:HTTP_CONTRACT_VERSION};
       }
       const event=(await db.query(`SELECT ${columns} FROM public.aigas_ld_events WHERE tenant_id=$1 AND event_id=$2`,[tenantId,id])).rows[0];
@@ -70,20 +90,27 @@ export function createLedgerService(transact = transaction) {
       const stored=publicEvent(event,chain.report);
       if (operation==='verify') {
         const integrity=verifyEvent(event,body.candidate);
-        const verification=verificationState(integrity,chain.report);
-        return {result:integrity,state:verification.state,mismatch:verification.mismatch,reasons:verification.reasons,chain:chain.report,profile:event.hash_profile,chain_version:chainVersion,assurance:'INTEGRITY_ONLY_NO_SIGNATURE',scope:'SUPPLIED_PREFIX_ONLY',independentSignature:false,verifier:{version:VERIFIER_VERSION}};
+        const verification=unsignedVerification(integrity,chain.report);
+        return {result:verification.state==='UNVERIFIED'?'INDETERMINATE':integrity,prefix_result:integrity,state:verification.state,mismatch:verification.mismatch,reasons:verification.reasons,chain:chain.report,profile:event.hash_profile,chain_version:chainVersion,assurance:chain.report.signed_events?'SIGNED_EVENTS':'UNVERIFIED_SIGNATURE',scope:'SUPPLIED_PREFIX_ONLY',independentSignature:chain.report.signed_events===true,verifier:{version:VERIFIER_VERSION}};
       }
       if (operation==='export') {
+        if (chain.report.reason==='SIGNING_KEY_UNAVAILABLE') throw new KernelError(503,'LEDGER_SIGNING_UNAVAILABLE','مفتاح التحقق غير مهيأ؛ لم يُصدّر الدليل.');
         if (chain.report.reason==='PREFIX_LIMIT') throw new KernelError(413,'LEDGER_EXPORT_LIMIT','يتجاوز التسلسل حد الحزمة الأساسية (10000 حدث)؛ يلزم مسار تصدير أكبر معتمد. لم تُنشأ حزمة ناقصة.');
         if (chain.report.reason==='UNSUPPORTED_HASH_PROFILE') throw new KernelError(409,'LEDGER_EXPORT_UNSUPPORTED_PROFILE','تحتوي البادئة على حدث بإصدار بصمة غير مدعوم؛ لا تُصدَّر حزمة يتعذر التحقق منها مستقلًا. يلزم مسار ترحيل/فحص معتمد لهذا الإصدار.');
         if (!chain.bundle) throw new KernelError(409,'LEDGER_INTEGRITY_INVALID','تعذر تكوين حزمة قابلة للفحص بسبب بيانات غير صالحة. لم تُعد حزمة تدّعي السلامة.');
-        // Export even a hash mismatch for investigation, with an explicit status.
-        await audit(db,identity,tenantId,`ledger.event.exported:${id}`);
         const verification=verificationState(verifyEvent(event),chain.report);
-        return {...chain.bundle,verification:{...chain.report,state:verification.state,mismatch:verification.mismatch,reasons:verification.reasons,assurance:'INTEGRITY_ONLY_NO_SIGNATURE',scope:'SUPPLIED_PREFIX_ONLY'}};
+        if (verification.state !== 'VERIFIED') throw new KernelError(409,'LEDGER_INTEGRITY_INVALID','تعذر تأكيد سلامة السلسلة؛ لم يُصدّر الدليل.');
+        const policyReference=retentionPolicy();
+        const mode=params.get('redacted');
+        if (mode!==null && mode!=='1') throw new KernelError(400,'INVALID_EXPORT_MODE','نوع التصدير غير صالح.');
+        const payload=mode==='1'?redactBundle(chain.bundle):{...chain.bundle, verification:{...chain.report,state:verification.state,mismatch:false,reasons:[],assurance:'SIGNED_EVENTS',scope:'SUPPLIED_PREFIX_ONLY'}};
+        payload.manifest={...payload.manifest, retention_policy_ref:policyReference};
+        const signed = signExport(payload, signingKey());
+        await audit(db,identity,tenantId,`ledger.event.exported${mode==='1'?'.redacted':''}:${id}:${policyReference}`);
+        return signed;
       }
       const verification={state:stored.verification_state,mismatch:stored.verification_mismatch,reasons:stored.verification_reasons};
-      return {event:stored,profile:event.hash_profile,chain_version:chainVersion,permissions,integrity:stored.integrity,chain:chain.report,state:verification.state,mismatch:verification.mismatch,reasons:verification.reasons,verification,assurance:'INTEGRITY_ONLY_NO_SIGNATURE',verifier:{version:VERIFIER_VERSION}};
+      return {event:stored,profile:event.hash_profile,chain_version:chainVersion,permissions,integrity:stored.integrity,chain:chain.report,state:verification.state,mismatch:verification.mismatch,reasons:verification.reasons,verification,assurance:chain.report.signed_events?'SIGNED_EVENTS':'UNVERIFIED_SIGNATURE',verifier:{version:VERIFIER_VERSION}};
     });
   };
 }

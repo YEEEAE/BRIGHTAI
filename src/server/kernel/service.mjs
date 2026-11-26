@@ -175,7 +175,7 @@ export async function audit(db, identity, tenantId, action, context = {}) {
   if (idempotencyKey) {
     const member = (await db.query('SELECT 1 FROM public.aigas_lock_member($1,$2)', [tenantId, identity.userId])).rows[0];
     if (!member) throw new KernelError(403, 'FORBIDDEN', 'صلاحياتك لا تسمح بهذه العملية.');
-    const previous = (await db.query('SELECT id,actor_user_id,action,correlation_id,policy_version FROM public.aigas_audit_events WHERE tenant_id=$1 AND idempotency_key=$2 FOR SHARE', [tenantId, idempotencyKey])).rows[0];
+    const previous = (await db.query('SELECT id,actor_user_id,action,correlation_id,policy_version FROM public.aigas_audit_events WHERE tenant_id=$1 AND idempotency_key=$2', [tenantId, idempotencyKey])).rows[0];
     if (previous && previous.actor_user_id === identity.userId && previous.action === action && previous.correlation_id === correlationId && previous.policy_version === policyVersion) return previous.id;
     throw new KernelError(409, 'AUDIT_IDEMPOTENCY_CONFLICT', 'مفتاح سجل Kernel مرتبط بعملية مختلفة؛ لم تُكرر العملية.');
   }

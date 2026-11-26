@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto';
+import { signingKey, signEvent, verifyEventSignature } from './signing.mjs';
 import { assertTenantMembership, productGrants } from '../kernel/access.mjs';
 import { KernelError, requireRole } from '../kernel/core.mjs';
 import { buildProductEvent, eventDefinition, eventLedgerFields, publicEventEnvelope } from '../kernel/events.mjs';
@@ -11,14 +12,14 @@ export function ledgerDependency(evidence) {
   return dependencyEntry('ledger', evidence.dependencyStatus, { required: evidence.required, reason: evidence.dependencyCode });
 }
 
-export function recordKernelAuditEvidence(db, identity, tenantId, { auditId, correlationId, policyVersion, action }) {
+export function recordKernelAuditEvidence(db, identity, tenantId, { auditId, correlationId, policyVersion, action, runId, causationId, agentVersion, providerUsage }) {
   return recordProductEvent(db, identity, tenantId, {
     source: 'kernel',
     event_type: 'kernel.audit.recorded',
     correlation_id: correlationId,
     decision_id: auditId,
     policy_version: policyVersion,
-    metadata_json: { synthetic: false, audit_ref: auditId, action },
+    metadata_json: { synthetic: false, audit_ref: auditId, action, ...(runId ? { run_ref: runId, agent_version: agentVersion } : {}), ...(runId || causationId ? { correlation_ref: correlationId } : {}), ...(causationId ? { causation_ref: causationId } : {}), ...(providerUsage ?? {}) },
     idempotency_key: `audit:${auditId}`,
   });
 }
@@ -39,21 +40,30 @@ export async function appendEvent(db, identity, tenantId, input) {
 // hash_profile is the chain version recorded on every row.
   await db.query("SELECT pg_advisory_xact_lock(hashtextextended('ledger:' || $1,0))",[tenantId]);
   const event = {event_id:randomUUID(),tenant_id:tenantId,source:input.source,event_type:input.event_type,policy_version:input.policy_version,metadata_json:metadata(input.metadata_json,input.source,input.event_type),created_by:identity.userId,hash_profile:profile,idempotency_key:input.idempotency_key};
+  const signer = signingKey();
   const existing = (await db.query(`SELECT ${columns} FROM public.aigas_ld_events WHERE tenant_id=$1 AND source=$2 AND idempotency_key=$3`,[tenantId,event.source,event.idempotency_key])).rows[0];
   if (existing) {
     // A legacy v1 row with the same scoped key is not a replay of a v2 event.
     // Treat any profile drift as a conflicting key, never as success.
     if (existing.hash_profile!==event.hash_profile || existing.created_by!==event.created_by || existing.event_type!==event.event_type || existing.policy_version!==event.policy_version || JSON.stringify(metadata(existing.metadata_json,existing.source,existing.event_type))!==JSON.stringify(event.metadata_json) || verifyEvent(existing)!=='MATCH') throw new KernelError(409,'EVIDENCE_KEY_CONFLICT','مرجع العملية مرتبط بدليل مختلف أو تعذر فحصه.');
+    const receipt = (await db.query('SELECT key_id,signature FROM public.aigas_ld_event_signatures WHERE tenant_id=$1 AND event_id=$2',[tenantId,existing.event_id])).rows[0];
+    if (!verifyEventSignature(existing,receipt,signer)) throw new KernelError(503,'LEDGER_SIGNATURE_UNAVAILABLE','تعذر التحقق من توقيع الحدث السابق.');
     return {...existing,replayed:true};
   }
   const tail = (await db.query(`SELECT ${columns} FROM public.aigas_ld_events WHERE tenant_id=$1 ORDER BY sequence_no DESC LIMIT 1`,[tenantId])).rows[0];
-  if (tail && verifyEvent(tail)!=='MATCH') throw new KernelError(503,'LEDGER_INTEGRITY_UNAVAILABLE','تعذر فحص آخر دليل؛ لم تكتمل العملية.');
+  if (tail) {
+    const receipt=(await db.query('SELECT key_id,signature FROM public.aigas_ld_event_signatures WHERE tenant_id=$1 AND event_id=$2',[tenantId,tail.event_id])).rows[0];
+    if (verifyEvent(tail)!=='MATCH' || !verifyEventSignature(tail,receipt,signer)) throw new KernelError(503,'LEDGER_INTEGRITY_UNAVAILABLE','تعذر فحص آخر دليل وتوقيعه؛ لم تكتمل العملية.');
+  }
   event.sequence_no = String(BigInt(tail?.sequence_no ?? 0)+1n);
   event.previous_hash = tail?.integrity_hash ?? null;
   event.created_at = new Date((await db.query('SELECT clock_timestamp() AS time')).rows[0].time).toISOString();
   event.integrity_hash = hashEvent(event);
   const result = await db.query(`INSERT INTO public.aigas_ld_events (${columns}) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)`,[event.event_id,tenantId,event.source,event.event_type,event.policy_version,event.metadata_json,event.created_at,event.created_by,event.hash_profile,event.sequence_no,event.previous_hash,event.idempotency_key,event.integrity_hash]);
   if (result.rowCount!==1) throw new KernelError(503,'EVIDENCE_UNAVAILABLE','تعذر حفظ الدليل؛ لم تكتمل العملية.');
+  const receipt = signEvent(event,signer);
+  const saved = await db.query('INSERT INTO public.aigas_ld_event_signatures(tenant_id,event_id,key_id,signature) VALUES($1,$2,$3,$4)',[tenantId,event.event_id,receipt.key_id,receipt.signature]);
+  if (saved.rowCount!==1) throw new KernelError(503,'EVIDENCE_UNAVAILABLE','تعذر حفظ توقيع الدليل.');
   return event;
 }
 
@@ -129,7 +139,7 @@ export async function recordProductEvent(db, identity, tenantId, input) {
     });
     await db.query('RELEASE SAVEPOINT aig_optional_ledger_event');
     return {
-      ...event, dependencyStatus:dependencyClasses.AVAILABLE, dependencyCode:'LEDGER_AVAILABLE',
+      ...event, recorded:true, dependencyStatus:dependencyClasses.AVAILABLE, dependencyCode:'LEDGER_AVAILABLE',
       entitled:true, required:!!requirement, contract: envelope.contract, event: publicEventEnvelope(envelope),
     };
   } catch (error) {

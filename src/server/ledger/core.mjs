@@ -25,7 +25,7 @@ export function metadata(value, source = 'ledger.synthetic-lab', eventType) {
     firewall: ['synthetic', 'decision_ref', 'action', 'mode', 'rule_ref', 'rule_version', 'request_fingerprint'],
     'human-gate': ['synthetic', 'request_ref', 'decision_ref', 'decision', 'operation_scope'],
     'risk-engine': ['synthetic', 'asset_ref', 'asset_version', 'assessment_ref', 'risk_level'],
-    kernel: ['synthetic', 'audit_ref', 'action'],
+    kernel: ['synthetic', 'audit_ref', 'action', 'correlation_ref', 'run_ref', 'causation_ref', 'agent_version', 'provider_name', 'provider_model', 'usage_input', 'usage_output', 'usage_total'],
   }[source];
   if (!keys) throw new Error('Unknown source');
   exactObject(value, [...keys,'evidence_policy_version']);
@@ -40,6 +40,12 @@ export function metadata(value, source = 'ledger.synthetic-lab', eventType) {
   if (source === 'firewall' && (value.synthetic !== true || !uuid(value.decision_ref) || !['ALLOW','WARN','REDACT','ESCALATE','DENY'].includes(value.action) || !['LAB','GUARD'].includes(value.mode) || !(value.rule_ref === null || uuid(value.rule_ref)) || !(value.rule_version === null || Number.isSafeInteger(value.rule_version)) || !(value.request_fingerprint === undefined || (typeof value.request_fingerprint === 'string' && /^[0-9a-f]{64}$/.test(value.request_fingerprint))))) throw new Error('Invalid firewall metadata');
   if (source === 'human-gate' && (value.synthetic !== true || !uuid(value.request_ref) || value.operation_scope !== 'INTERNAL_DEMO_NOTE' || (eventType === 'human_gate.decision.recorded' && (!uuid(value.decision_ref) || !['APPROVE','REJECT'].includes(value.decision))))) throw new Error('Invalid approval metadata');
   if (source === 'risk-engine' && (value.synthetic !== false || !uuid(value.asset_ref) || !Number.isSafeInteger(value.asset_version) || (eventType === 'risk_engine.assessment.created' && (!uuid(value.assessment_ref) || !['LOW','MEDIUM','HIGH'].includes(value.risk_level))))) throw new Error('Invalid risk metadata');
+  if (source === 'kernel') {
+    for (const key of ['provider_name','provider_model']) if (value[key] !== undefined && (typeof value[key] !== 'string' || !/^[A-Za-z0-9_.:/-]{1,100}$/.test(value[key]))) throw new Error('Invalid provider metadata');
+    for (const key of ['usage_input','usage_output','usage_total']) if (value[key] !== undefined && (!Number.isSafeInteger(value[key]) || value[key] < 0 || value[key] > 999999999)) throw new Error('Invalid usage');
+    if (value.usage_total !== undefined && value.usage_total !== value.usage_input + value.usage_output) throw new Error('Invalid usage total');
+  }
+  if (source === 'kernel' && value.agent_version !== undefined && (typeof value.agent_version !== 'string' || !/^[a-zA-Z0-9_.:-]{1,120}$/.test(value.agent_version))) throw new Error('Invalid agent version');
   if (source === 'kernel' && (value.synthetic !== false || !uuid(value.audit_ref) || typeof value.action !== 'string' || !/^(workspace\.created|kernel\.[a-z_.-]+)$/.test(value.action) || value.action.length > 100)) throw new Error('Invalid kernel metadata');
   return sortedMetadata(value);
 }

@@ -53,7 +53,7 @@ test('injection fixture reports false positives and negatives with denominators'
 
 test('model tool loop uses Kernel runtime tools and never sends the input to the model', async () => {
   const executor = createToolExecutor({ tools:firewallTools, evaluatePolicy:async () => ({ decision:'ALLOW' }) });
-  const runtime = { async start() { return { status:'RUNNING', run_id:randomUUID() }; },
+  const runtime = { async start() { return { status:'RUNNING', run_id:randomUUID() }; }, async providerEvidence() { return {recorded:true}; },
     async step(_id, _tenant, _run, input) {
       if (input.kind === 'RESULT') return { status:'COMPLETED' };
       const tool = await execute(executor, input.message);
@@ -65,11 +65,11 @@ test('model tool loop uses Kernel runtime tools and never sends the input to the
     if (count++ === 0) {
       const call = { id:'call1', type:'function', function:{ name:'recommend_redaction', arguments:'{"scope":"metadata"}' } };
       assert.equal(await toolPolicy.post([{ name:'recommend_redaction' }]), true);
-      return { choices:[{ finish_reason:'tool_calls', message:{ role:'assistant', content:null, tool_calls:[call] } }] };
+      return { usage:{prompt_tokens:1,completion_tokens:1,total_tokens:2}, choices:[{ finish_reason:'tool_calls', message:{ role:'assistant', content:null, tool_calls:[call] } }] };
     }
-    return { choices:[{ finish_reason:'stop', message:{ role:'assistant', content:'مراجعة مكتملة' } }] };
+    return { usage:{prompt_tokens:1,completion_tokens:1,total_tokens:2}, choices:[{ finish_reason:'stop', message:{ role:'assistant', content:'مراجعة مكتملة' } }] };
   };
-  const agent = createFirewallAgent({ runtime, request, providerFor:() => ({model:'fixture', region:'local'}), modelFor:() => ({region:'local'}) });
+  const agent = createFirewallAgent({ runtime, request, providerFor:() => ({model:'fixture', region:'local'}), modelFor:() => ({region:'local',providerModel:'fixture'}) });
   const result = await agent.run(identity, tenantId, { text:'trusted marker demo@example.test', correlationId:randomUUID(), idempotencyKey:'agent-test' });
   assert.equal(result.action, 'REDACT');
   assert.equal(count, 2);
@@ -88,16 +88,16 @@ test('denied input, replay and unavailable provider stop before provider calls',
 
 test('provider failure and changed decisions cannot produce an advisory', async () => {
   let current = `Firewall: ALLOW · RULE_ALLOW · ${evaluatorReference(rules)}`;
-  const runtime = { async start() { return { status:'RUNNING', run_id:randomUUID() }; },
+  const runtime = { async start() { return { status:'RUNNING', run_id:randomUUID() }; }, async providerEvidence() { return {recorded:true}; },
     async step(_id, _tenant, _run, input) { return input.kind === 'RESULT' ? {status:'COMPLETED'} :
       {status:'RUNNING', tool:{status:'EXECUTED', summary:current}}; } };
-  const options = { runtime, providerFor:() => ({model:'fixture',region:'local'}), modelFor:() => ({region:'local'}) };
+  const options = { runtime, providerFor:() => ({model:'fixture',region:'local'}), modelFor:() => ({region:'local',providerModel:'fixture'}) };
   const input = { text:'trusted marker', correlationId:randomUUID(), idempotencyKey:'provider-failure' };
   const failed = createFirewallAgent({ ...options, request:async () => { throw Error('PROVIDER_REJECTED'); } });
   await assert.rejects(failed.run(identity, tenantId, input), /PROVIDER_REJECTED/);
   const changed = createFirewallAgent({ ...options, request:async () => {
     current = `Firewall: REDACT · RULE_REDACT · ${evaluatorReference(rules)}`;
-    return {choices:[{finish_reason:'stop',message:{content:'مراجعة'}}]};
+    return {usage:{prompt_tokens:1,completion_tokens:1,total_tokens:2},choices:[{finish_reason:'stop',message:{content:'مراجعة'}}]};
   } });
   await assert.rejects(changed.run(identity, tenantId, {...input,idempotencyKey:'policy-changed'}), /FIREWALL_DECISION_CHANGED/);
 });
@@ -116,4 +116,14 @@ test('review commitment changes with the exact payload or grant and requires a s
   const reviewGrant = reviewGrantCommitment(context,key);
   assert.notEqual(decisionFingerprint({...params,reviewCommitment:commitment,reviewGrant}),
     decisionFingerprint({...params,reviewCommitment:reviewCommitment({...context,payload:'changed'},key),reviewGrant}));
+});
+
+test('provider is not called if the pre-call evidence cannot commit', async () => {
+  let calls=0;
+  const runtime={async start(){return {status:'RUNNING',run_id:randomUUID()};},
+    async step(){return {status:'RUNNING',tool:{status:'EXECUTED',summary:`Firewall: ALLOW · RULE_ALLOW · ${evaluatorReference(rules)}`}};},
+    async providerEvidence(){throw Error('LEDGER_UNAVAILABLE');}};
+  const agent=createFirewallAgent({runtime,request:async()=>{calls++;},providerFor:()=>({model:'fixture',region:'local'}),modelFor:()=>({region:'local',providerModel:'fixture'})});
+  await assert.rejects(agent.run(identity,tenantId,{text:'trusted marker',correlationId:randomUUID(),idempotencyKey:'unavailable-evidence'}),/LEDGER_UNAVAILABLE/);
+  assert.equal(calls,0);
 });

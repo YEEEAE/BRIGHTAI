@@ -3,6 +3,7 @@
 import { evaluate, inputText } from '../firewall/core.mjs';
 import { evaluatorReference } from '../firewall/binding.mjs';
 import { z } from 'zod';
+import { randomUUID } from 'node:crypto';
 import { groqRequest } from '../ai/groq-gateway.mjs';
 import { prepareTools, parseToolReply } from '../ai/tool-contract.mjs';
 import { approvedProvider } from '../firewall/provider.mjs';
@@ -72,8 +73,19 @@ export function createFirewallAgent({ runtime, request = groqRequest, providerFo
       { role:'user', content:JSON.stringify({ action:match[1], reason:match[2] }) }];
     for (let round = 0; round < 2; round++) {
       // Gateway applies its own approval, budget, schema, input and output gates.
-      const reply = await request({ model, messages, tools:definitions, retryRateLimit:false,
-        toolPolicy:{ pre:async () => true, post:async value => typeof value === 'string' ? clean(value) : Array.isArray(value) && value.length <= 2 } });
+      if (typeof runtime.providerEvidence !== 'function') throw Error('PROVIDER_EVIDENCE_NOT_CONFIGURED');
+      const attemptId=randomUUID(), modelId=model.providerModel;
+      const evidence={correlationId,attemptId,provider:'groq',model:modelId};
+      await runtime.providerEvidence(identity,tenantId,run.run_id,{...evidence,phase:'started'});
+      let reply;
+      try {
+        reply = await request({ model, messages, tools:definitions, retryRateLimit:false,
+          toolPolicy:{ pre:async () => true, post:async value => typeof value === 'string' ? clean(value) : Array.isArray(value) && value.length <= 2 } });
+      } catch (error) {
+        await runtime.providerEvidence(identity,tenantId,run.run_id,{...evidence,phase:'failed'});
+        throw error;
+      }
+      await runtime.providerEvidence(identity,tenantId,run.run_id,{...evidence,phase:'completed',usage:reply?.usage});
       if (await invoke('classify') !== summary) throw Error('FIREWALL_DECISION_CHANGED');
       const choice = reply?.choices?.[0];
       if (choice?.finish_reason === 'stop') {

@@ -88,10 +88,16 @@ export function createHumanGateService(transact=transaction) {
      // in the allowlisted metadata, so a delegation event cannot be rejected by
      // the evidence constraint after the real change was already made.
      const kernelEventAction=/^(workspace\.created|kernel\.[a-z_.-]+)$/.test(auditAction??'')?auditAction:`kernel.human_gate.${action}`;
+     let decisionId;
+     if (request && ['APPROVED','REJECTED'].includes(event)) {
+      decisionId=(await db.query('SELECT id FROM public.aigas_hg_decisions WHERE tenant_id=$1 AND request_id=$2',[tenantId,request.id])).rows[0]?.id;
+      if (!decisionId) throw new KernelError(503,'AUDIT_UNAVAILABLE','تعذر ربط القرار بسجله.');
+     }
      evidence=await recordKernelAuditEvidence(db,identity,tenantId,{
-      auditId,correlationId,policyVersion:request?.policy_version||policy?.version||'human-gate-policy-v3',action:kernelEventAction,
+      auditId,correlationId,policyVersion:request?.policy_version||policy?.version||'human-gate-policy-v3',action:kernelEventAction,causationId:decisionId,
      });
     }
+    if (['APPROVED','REJECTED'].includes(event) && evidence?.recorded !== true) throw new KernelError(503,'MANDATORY_EVIDENCE_UNAVAILABLE','تعذر تسجيل دليل القرار البشري؛ لم يُحفظ القرار.');
     await assertAccessFresh(db,tenantId);
     return evidence;
    };

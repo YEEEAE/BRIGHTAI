@@ -3,11 +3,13 @@ import { localDatabaseUrl, installSchema, grantProduct, runtime } from './helper
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import pg from 'pg';
-import { randomUUID } from 'node:crypto';
+import { randomUUID, generateKeyPairSync } from 'node:crypto';
 import { createHumanGateService } from '../src/server/human-gate/service.mjs';
 import { createHandler } from '../src/server/human-gate/http.mjs';
 const url=localDatabaseUrl('HUMAN_GATE_TEST_DATABASE_URL');
 test('Human Gate: durable decisions, independent reviewer, isolation, concurrency, enforced effect, audit rollback',{skip:!url},async()=>{
+ const previousKey=process.env.AIGAS_LEDGER_SIGNING_PRIVATE_KEY, previousId=process.env.AIGAS_LEDGER_SIGNING_KEY_ID;
+ const keys=generateKeyPairSync('ed25519'); process.env.AIGAS_LEDGER_SIGNING_PRIVATE_KEY=keys.privateKey.export({type:'pkcs8',format:'pem'}); process.env.AIGAS_LEDGER_SIGNING_KEY_ID='test-key';
  const pool=new pg.Pool({connectionString:url,max:5});
  try{
  await installSchema(pool);
@@ -15,7 +17,7 @@ test('Human Gate: durable decisions, independent reviewer, isolation, concurrenc
  for(const user of [owner,reviewer,member,outsider])await pool.query('INSERT INTO neon_auth."user"(id) VALUES($1)',[user.userId]);
  await pool.query("INSERT INTO aigas_tenants(id,name) VALUES($1,'Synthetic A'),($2,'Synthetic B')",[tenant,other]);
  for(const [u,t,role] of [[owner,tenant,'OWNER'],[reviewer,tenant,'ADMIN'],[member,tenant,'MEMBER'],[outsider,other,'OWNER']])await pool.query('INSERT INTO aigas_memberships(tenant_id,user_id,role) VALUES($1,$2,$3)',[t,u.userId,role]);
- await grantProduct(pool,tenant,'human-gate'); await grantProduct(pool,other,'human-gate');
+ await grantProduct(pool,tenant,'human-gate'); await grantProduct(pool,other,'human-gate'); await grantProduct(pool,tenant,'ledger'); await grantProduct(pool,other,'ledger');
  const transact=async work=>{const c=await pool.connect();try{await c.query('BEGIN');await runtime(c);const result=await work(c);await c.query('COMMIT');return result;}catch(e){await c.query('ROLLBACK'); throw e;}finally{c.release();}};
  const service=createHumanGateService(transact);
  const send=async(user,op='list',body={},id,scope=tenant,status='PENDING',key)=>{
@@ -67,8 +69,13 @@ test('Human Gate: durable decisions, independent reviewer, isolation, concurrenc
  const decisions=await Promise.all([send(owner,'decide',{decision:'APPROVE',reason:'First decision'},race),send(reviewer,'decide',{decision:'REJECT',reason:'Second decision'},race)]);
  assert.deepEqual(decisions.map(r=>r.status).sort(),[200,409]);
  assert.equal(Number((await pool.query('SELECT count(*) AS n FROM aigas_hg_decisions WHERE request_id=$1',[race])).rows[0].n),1);
- // Ledger is installed without an access grant: basic auditing stays independent.
+ // Decisions include mandatory signed Ledger evidence.
  assert.ok((await pool.query("SELECT id FROM aigas_audit_events WHERE action LIKE 'human_gate.decision.%'")).rowCount);
+ assert.ok((await pool.query("SELECT event_id FROM aigas_ld_events WHERE tenant_id=$1 AND event_type='human_gate.decision.recorded' AND metadata_json->>'decision_ref' IS NOT NULL",[tenant])).rowCount);
+ const unavailable=await create(); await pool.query("UPDATE aigas_product_access SET status='FOUNDATION' WHERE tenant_id=$1 AND product_slug='ledger'",[tenant]);
+ assert.equal((await send(reviewer,'decide',{decision:'APPROVE',reason:'Evidence outage'},unavailable)).status,503);
+ assert.equal((await pool.query('SELECT count(*)::int AS n FROM aigas_hg_decisions WHERE request_id=$1',[unavailable])).rows[0].n,0);
+ await pool.query("UPDATE aigas_product_access SET status='ENABLED' WHERE tenant_id=$1 AND product_slug='ledger'",[tenant]);
  await pool.query("UPDATE aigas_memberships SET role='MEMBER' WHERE tenant_id=$1 AND user_id=$2",[tenant,reviewer.userId]);
  const pending=await create();assert.equal((await send(reviewer,'decide',{decision:'APPROVE',reason:'Revoked role'},pending)).status,404);
  await pool.query("UPDATE aigas_memberships SET role='ADMIN' WHERE tenant_id=$1 AND user_id=$2",[tenant,reviewer.userId]);
@@ -148,5 +155,5 @@ test('Human Gate: durable decisions, independent reviewer, isolation, concurrenc
  const rollback=(await pool.query(`SELECT t.name,r.status,g.status AS grant_status FROM aigas_hg_requests r JOIN aigas_tenants t ON t.id=r.tenant_id JOIN aigas_hg_grants g ON g.request_id=r.id WHERE r.id=$1`,[rollbackRename])).rows[0];
  assert.deepEqual(rollback,{name:'Synthetic externally changed',status:'APPROVED',grant_status:'ACTIVE'});
  await pool.query('UPDATE neon_auth."user" SET banned=true WHERE id=$1',[owner.userId]);assert.equal((await send(owner)).status,401);
- }finally{await pool.end();}
+ }finally{await pool.end(); if(previousKey===undefined) delete process.env.AIGAS_LEDGER_SIGNING_PRIVATE_KEY; else process.env.AIGAS_LEDGER_SIGNING_PRIVATE_KEY=previousKey; if(previousId===undefined) delete process.env.AIGAS_LEDGER_SIGNING_KEY_ID; else process.env.AIGAS_LEDGER_SIGNING_KEY_ID=previousId;}
 });
