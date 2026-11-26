@@ -1,7 +1,7 @@
 # Project Mind — BRIGHTAI / AIGAS
 
 ## Current State
-- 2026-11-26 NO-GO بوابة إطلاق مستقلة 13 على SHA `961836f8`: source 36.5% / local 54% / staging 10% / live 2.5%؛ بناء وSEO16 وhealth15 وAPI177 وauth/governance/design PASS، DB 16/18، conversion CTA مخفي ≤768 وSecure Chat E2E FAIL؛ Neon prod بلا `aigas_runtime` و2/31 سياسات؛ MagicPath 50/50 وRender unauthorized؛ `Audit/release-gate-13-2026-11-26/REPORT.md`.
+- 2026-11-26 NO-GO بوابة إطلاق مستقلة 13 على SHA `961836f8`: source 36.5% / local 54% / staging 10% / live 2.5%؛ بناء وSEO16 وhealth15 وAPI177 وauth/governance/design PASS، DB 16/18، conversion CTA وSecure Chat E2E FAIL؛ Neon prod بلا `aigas_runtime` و2/31 سياسات؛ MagicPath 50/50 وRender unauthorized. R4 أثبت تطابق R3.1/78 معيارًا و13 وزنًا؛ لا إعادة قياس عند HEAD `8e879ba…`؛ revision MagicPath غير مطابق، البصري BLOCKED؛ `Audit/outhers/release-gate-13-2026-11-26/REPORT.md`, `Audit/BRIGHTAI-R4-FORENSIC-AUDIT-MAGICPATH.md`.
 - 2026-11-25 PARTIAL SEO/GEO/AEO: 315/315 عناوين الإنتاج GET200 وcanonical ذاتي؛ 251 خارج مسار الرئيسية و152 alias بلا 301؛ محليًا 67 عنوانًا و3 مراكز و5 رحلات منتج، Node16/16 وChrome FAQ76/76؛ النشر وCWV الميداني NOT VERIFIED؛ `Audit/seo-geo-2026-11-25/REPORT.md`.
 - 2026-11-25 VERIFIED LOCAL UX: مراحل DEMO/PREVIEW/PILOT/PRODUCTION وحالات Contact وترتيب Ledger؛ Playwright 64/64 عبر 320/375/768/1440 وaxe صفر عند 375؛ App 503 محليًا وVoiceOver/NVDA والنشر NOT VERIFIED؛ `Audit/ux-audit-2026-11-25/REPORT.md`.
 - 2026-11-25 PARTIAL P2: OIDC إضافي لكل مؤسسة مع Neon؛ 0045 يثبت الفرض عند غياب إعدادات IdP؛ اختبارات الهوية والترحيلات 18/18 وPG18 وبناء محلي PASS؛ موفر العميل والمتصفح ومسار الطوارئ والنشر NOT VERIFIED. `docs/IDENTITY-AND-INVITATION-RUNBOOK.md`.
@@ -23,7 +23,14 @@
 
 - 2026-11-26 PARTIAL Analytics/SEO: GA4 مقصور على brightai.live/www بلا وسم مكرر وتجزئة CSP محدَّثة بلا توسيع؛ README يبدأ بـCurrent Architecture وأرشيف تاريخي واضح؛ build PASS و67 صفحة واختبارات 65/66 (فشل قديم في ga4-attribution:30)؛ Windsor/GSC/OpenSEO/Firecrawl/Linear غير متاحة هنا، وstream مخصص وموافقة أحداث MagicPath والنشر NOT VERIFIED؛ `Audit/analytics-seo-2026-11-26/REPORT.md`.
 
+
 ## Ledger (الأحدث أولًا)
+## [2026-11-26] — R4 مطابقة أصول R3.1 ومخرجات التدقيق
+- **تم:** استعادة المقارنة الأصلية 78/78 و13/13؛ Scorecard منفصلة source/local/staging/live؛ قبول MagicPath يثبت mismatch revision والبصري BLOCKED.
+- **التحقق:** إعادة الحساب تطابق قياس R13؛ JSON/HTML تُفحص؛ لا إعادة تشغيل عند HEAD الحالي.
+- **الحالة:** PARTIAL / NO-GO؛ أصول R3.1 لم تُعدّل.
+- **ملفات:** `Audit/BRIGHTAI-R4-FORENSIC-AUDIT-MAGICPATH.md`, `Audit/BRIGHTAI-R4-SCORECARD-PARTIAL.json`.
+
 ## [2026-11-26] — دمج مجموعات إضافية من مهارات الإتاحة
 - **تم:** جمع استراتيجية وخطة اختبار الإتاحة؛ وتوحيد هيكلة المحتوى ومراجعته وإعادة كتابته. حُذفت المداخل القديمة الثمانية بعد تحديث الإحالات.
 - **التحقق:** `quick_validate.py` للمهارتين PASS؛ لا إحالات قديمة في `.agents/skills/`؛ `git diff --check` PASS.

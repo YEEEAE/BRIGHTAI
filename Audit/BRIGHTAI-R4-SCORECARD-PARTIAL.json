@@ -1,813 +1,206 @@
 {
-  "schema_version": "R4-PARTIAL-1",
-  "audit_status": "PARTIAL_NOT_FINAL",
-  "baseline": {
-    "source": "User-provided R3.1 brief; original R3.1-SCORECARD.json was not found",
-    "sha": "773fb6bc5e420ee70e811d5509aceefcaec32a8c",
-    "score_percent": 44.66666666666667,
-    "evidence_coverage_percent": 73.16666666666667,
-    "comparability": "UNVERIFIED: original criteria IDs/text/weights unavailable for exact parity check"
+  "date": "2026-11-25",
+  "head": "773fb6bc5e420ee70e811d5509aceefcaec32a8c",
+  "scope": "R3 selected evidence-driven 78-check mixed source/configuration baseline, not full repository or runtime certification",
+  "method": "S,C=1; F,U=0; equal within each domain, published domain weights. Coverage includes S,C,F. Not directly comparable to R2 74 checks.",
+  "overall": 44.66666666666667,
+  "coverage": 73.16666666666667,
+  "counts": {
+    "S": 24,
+    "U": 21,
+    "F": 24,
+    "C": 9
   },
-  "current_evidence": {
-    "measured_sha": "961836f8010bfe6527dac75376ef15b386b1a818",
-    "measured_date": "2026-11-26",
-    "local_head": "8abaa3cb9b88ca0205b961b386b19b45eaa486a4",
-    "code_change_since_measured_sha": "NOT_FOUND in scoped source/config/docs diff; current score remains the latest measured evidence, not a new execution",
-    "scores": {
-      "source": {
-        "method": "S,C=1; F,U=0; equal within each domain, published domain weights. Coverage includes S,C,F. Not directly comparable to R2 74 checks.",
-        "counts": {
-          "S": 26,
-          "C": 0,
-          "F": 11,
-          "U": 41
-        },
-        "score": 36.5,
-        "coverage": 52.83333333333334,
-        "domains": [
-          {
-            "id": "REG",
-            "name": "سجل الأصول والوكلاء",
-            "weight": 8,
-            "denominator": 6,
-            "S": 3,
-            "C": 0,
-            "F": 0,
-            "U": 3,
-            "pass": 3,
-            "coverage": 3,
-            "score": 50,
-            "coverage_percent": 50
-          },
-          {
-            "id": "POL",
-            "name": "حزم السياسات والتتبع التنظيمي",
-            "weight": 8,
-            "denominator": 6,
-            "S": 3,
-            "C": 0,
-            "F": 1,
-            "U": 2,
-            "pass": 3,
-            "coverage": 4,
-            "score": 50,
-            "coverage_percent": 66.66666666666667
-          },
-          {
-            "id": "FW",
-            "name": "Firewall",
-            "weight": 10,
-            "denominator": 6,
-            "S": 3,
-            "C": 0,
-            "F": 2,
-            "U": 1,
-            "pass": 3,
-            "coverage": 5,
-            "score": 50,
-            "coverage_percent": 83.33333333333333
-          },
-          {
-            "id": "HG",
-            "name": "Human Gate",
-            "weight": 8,
-            "denominator": 6,
-            "S": 3,
-            "C": 0,
-            "F": 0,
-            "U": 3,
-            "pass": 3,
-            "coverage": 3,
-            "score": 50,
-            "coverage_percent": 50
-          },
-          {
-            "id": "RE",
-            "name": "Risk Engine وتقييم النماذج",
-            "weight": 12,
-            "denominator": 6,
-            "S": 4,
-            "C": 0,
-            "F": 0,
-            "U": 2,
-            "pass": 4,
-            "coverage": 4,
-            "score": 66.66666666666667,
-            "coverage_percent": 66.66666666666667
-          },
-          {
-            "id": "LD",
-            "name": "Ledger وسلامة الأدلة",
-            "weight": 10,
-            "denominator": 6,
-            "S": 2,
-            "C": 0,
-            "F": 3,
-            "U": 1,
-            "pass": 2,
-            "coverage": 5,
-            "score": 33.333333333333336,
-            "coverage_percent": 83.33333333333333
-          },
-          {
-            "id": "AI",
-            "name": "Groq",
-            "weight": 8,
-            "denominator": 6,
-            "S": 2,
-            "C": 0,
-            "F": 3,
-            "U": 1,
-            "pass": 2,
-            "coverage": 5,
-            "score": 33.333333333333336,
-            "coverage_percent": 83.33333333333333
-          },
-          {
-            "id": "INT",
-            "name": "تكامل المنتجات الأربعة",
-            "weight": 8,
-            "denominator": 6,
-            "S": 3,
-            "C": 0,
-            "F": 2,
-            "U": 1,
-            "pass": 3,
-            "coverage": 5,
-            "score": 50,
-            "coverage_percent": 83.33333333333333
-          },
-          {
-            "id": "UX",
-            "name": "التصميم وتجربة المستخدم وRTL",
-            "weight": 10,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 0,
-            "U": 6,
-            "pass": 0,
-            "coverage": 0,
-            "score": 0,
-            "coverage_percent": 0
-          },
-          {
-            "id": "PUB",
-            "name": "الإتاحة والتحويل التجاري",
-            "weight": 5,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 0,
-            "U": 6,
-            "pass": 0,
-            "coverage": 0,
-            "score": 0,
-            "coverage_percent": 0
-          },
-          {
-            "id": "SEC",
-            "name": "الأمان والخصوصية",
-            "weight": 8,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 0,
-            "U": 6,
-            "pass": 0,
-            "coverage": 0,
-            "score": 0,
-            "coverage_percent": 0
-          },
-          {
-            "id": "ARC",
-            "name": "المعمارية والاعتماديات والأداء",
-            "weight": 3,
-            "denominator": 6,
-            "S": 3,
-            "C": 0,
-            "F": 0,
-            "U": 3,
-            "pass": 3,
-            "coverage": 3,
-            "score": 50,
-            "coverage_percent": 50
-          },
-          {
-            "id": "DEP",
-            "name": "النشر وSEO والقياس والمراقبة",
-            "weight": 2,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 0,
-            "U": 6,
-            "pass": 0,
-            "coverage": 0,
-            "score": 0,
-            "coverage_percent": 0
-          }
-        ]
+  "domains": [
+    {
+      "id": "REG",
+      "name": "سجل الأصول والوكلاء",
+      "weight": 8,
+      "total": 6,
+      "passed": 3,
+      "counts": {
+        "S": 3,
+        "U": 3
       },
-      "local": {
-        "method": "S,C=1; F,U=0; equal within each domain, published domain weights. Coverage includes S,C,F. Not directly comparable to R2 74 checks.",
-        "counts": {
-          "S": 37,
-          "C": 2,
-          "F": 7,
-          "U": 32
-        },
-        "score": 54,
-        "coverage": 63.16666666666667,
-        "domains": [
-          {
-            "id": "REG",
-            "name": "سجل الأصول والوكلاء",
-            "weight": 8,
-            "denominator": 6,
-            "S": 3,
-            "C": 0,
-            "F": 0,
-            "U": 3,
-            "pass": 3,
-            "coverage": 3,
-            "score": 50,
-            "coverage_percent": 50
-          },
-          {
-            "id": "POL",
-            "name": "حزم السياسات والتتبع التنظيمي",
-            "weight": 8,
-            "denominator": 6,
-            "S": 3,
-            "C": 0,
-            "F": 0,
-            "U": 3,
-            "pass": 3,
-            "coverage": 3,
-            "score": 50,
-            "coverage_percent": 50
-          },
-          {
-            "id": "FW",
-            "name": "Firewall",
-            "weight": 10,
-            "denominator": 6,
-            "S": 3,
-            "C": 0,
-            "F": 1,
-            "U": 2,
-            "pass": 3,
-            "coverage": 4,
-            "score": 50,
-            "coverage_percent": 66.66666666666667
-          },
-          {
-            "id": "HG",
-            "name": "Human Gate",
-            "weight": 8,
-            "denominator": 6,
-            "S": 5,
-            "C": 0,
-            "F": 0,
-            "U": 1,
-            "pass": 5,
-            "coverage": 5,
-            "score": 83.33333333333333,
-            "coverage_percent": 83.33333333333333
-          },
-          {
-            "id": "RE",
-            "name": "Risk Engine وتقييم النماذج",
-            "weight": 12,
-            "denominator": 6,
-            "S": 4,
-            "C": 0,
-            "F": 0,
-            "U": 2,
-            "pass": 4,
-            "coverage": 4,
-            "score": 66.66666666666667,
-            "coverage_percent": 66.66666666666667
-          },
-          {
-            "id": "LD",
-            "name": "Ledger وسلامة الأدلة",
-            "weight": 10,
-            "denominator": 6,
-            "S": 4,
-            "C": 0,
-            "F": 0,
-            "U": 2,
-            "pass": 4,
-            "coverage": 4,
-            "score": 66.66666666666667,
-            "coverage_percent": 66.66666666666667
-          },
-          {
-            "id": "AI",
-            "name": "Groq",
-            "weight": 8,
-            "denominator": 6,
-            "S": 2,
-            "C": 0,
-            "F": 3,
-            "U": 1,
-            "pass": 2,
-            "coverage": 5,
-            "score": 33.333333333333336,
-            "coverage_percent": 83.33333333333333
-          },
-          {
-            "id": "INT",
-            "name": "تكامل المنتجات الأربعة",
-            "weight": 8,
-            "denominator": 6,
-            "S": 3,
-            "C": 0,
-            "F": 2,
-            "U": 1,
-            "pass": 3,
-            "coverage": 5,
-            "score": 50,
-            "coverage_percent": 83.33333333333333
-          },
-          {
-            "id": "UX",
-            "name": "التصميم وتجربة المستخدم وRTL",
-            "weight": 10,
-            "denominator": 6,
-            "S": 4,
-            "C": 0,
-            "F": 0,
-            "U": 2,
-            "pass": 4,
-            "coverage": 4,
-            "score": 66.66666666666667,
-            "coverage_percent": 66.66666666666667
-          },
-          {
-            "id": "PUB",
-            "name": "الإتاحة والتحويل التجاري",
-            "weight": 5,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 1,
-            "U": 5,
-            "pass": 0,
-            "coverage": 1,
-            "score": 0,
-            "coverage_percent": 16.666666666666668
-          },
-          {
-            "id": "SEC",
-            "name": "الأمان والخصوصية",
-            "weight": 8,
-            "denominator": 6,
-            "S": 1,
-            "C": 2,
-            "F": 0,
-            "U": 3,
-            "pass": 3,
-            "coverage": 3,
-            "score": 50,
-            "coverage_percent": 50
-          },
-          {
-            "id": "ARC",
-            "name": "المعمارية والاعتماديات والأداء",
-            "weight": 3,
-            "denominator": 6,
-            "S": 4,
-            "C": 0,
-            "F": 0,
-            "U": 2,
-            "pass": 4,
-            "coverage": 4,
-            "score": 66.66666666666667,
-            "coverage_percent": 66.66666666666667
-          },
-          {
-            "id": "DEP",
-            "name": "النشر وSEO والقياس والمراقبة",
-            "weight": 2,
-            "denominator": 6,
-            "S": 1,
-            "C": 0,
-            "F": 0,
-            "U": 5,
-            "pass": 1,
-            "coverage": 1,
-            "score": 16.666666666666668,
-            "coverage_percent": 16.666666666666668
-          }
-        ]
+      "score": 50.0,
+      "coverage": 50.0
+    },
+    {
+      "id": "POL",
+      "name": "حزم السياسات والتتبع التنظيمي",
+      "weight": 8,
+      "total": 6,
+      "passed": 3,
+      "counts": {
+        "S": 3,
+        "F": 1,
+        "U": 2
       },
-      "staging": {
-        "method": "S,C=1; F,U=0; equal within each domain, published domain weights. Coverage includes S,C,F. Not directly comparable to R2 74 checks.",
-        "counts": {
-          "S": 5,
-          "C": 2,
-          "F": 0,
-          "U": 71
-        },
-        "score": 10.000000000000002,
-        "coverage": 10.000000000000002,
-        "domains": [
-          {
-            "id": "REG",
-            "name": "سجل الأصول والوكلاء",
-            "weight": 8,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 0,
-            "U": 6,
-            "pass": 0,
-            "coverage": 0,
-            "score": 0,
-            "coverage_percent": 0
-          },
-          {
-            "id": "POL",
-            "name": "حزم السياسات والتتبع التنظيمي",
-            "weight": 8,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 0,
-            "U": 6,
-            "pass": 0,
-            "coverage": 0,
-            "score": 0,
-            "coverage_percent": 0
-          },
-          {
-            "id": "FW",
-            "name": "Firewall",
-            "weight": 10,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 0,
-            "U": 6,
-            "pass": 0,
-            "coverage": 0,
-            "score": 0,
-            "coverage_percent": 0
-          },
-          {
-            "id": "HG",
-            "name": "Human Gate",
-            "weight": 8,
-            "denominator": 6,
-            "S": 1,
-            "C": 0,
-            "F": 0,
-            "U": 5,
-            "pass": 1,
-            "coverage": 1,
-            "score": 16.666666666666668,
-            "coverage_percent": 16.666666666666668
-          },
-          {
-            "id": "RE",
-            "name": "Risk Engine وتقييم النماذج",
-            "weight": 12,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 0,
-            "U": 6,
-            "pass": 0,
-            "coverage": 0,
-            "score": 0,
-            "coverage_percent": 0
-          },
-          {
-            "id": "LD",
-            "name": "Ledger وسلامة الأدلة",
-            "weight": 10,
-            "denominator": 6,
-            "S": 2,
-            "C": 0,
-            "F": 0,
-            "U": 4,
-            "pass": 2,
-            "coverage": 2,
-            "score": 33.333333333333336,
-            "coverage_percent": 33.333333333333336
-          },
-          {
-            "id": "AI",
-            "name": "Groq",
-            "weight": 8,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 0,
-            "U": 6,
-            "pass": 0,
-            "coverage": 0,
-            "score": 0,
-            "coverage_percent": 0
-          },
-          {
-            "id": "INT",
-            "name": "تكامل المنتجات الأربعة",
-            "weight": 8,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 0,
-            "U": 6,
-            "pass": 0,
-            "coverage": 0,
-            "score": 0,
-            "coverage_percent": 0
-          },
-          {
-            "id": "UX",
-            "name": "التصميم وتجربة المستخدم وRTL",
-            "weight": 10,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 0,
-            "U": 6,
-            "pass": 0,
-            "coverage": 0,
-            "score": 0,
-            "coverage_percent": 0
-          },
-          {
-            "id": "PUB",
-            "name": "الإتاحة والتحويل التجاري",
-            "weight": 5,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 0,
-            "U": 6,
-            "pass": 0,
-            "coverage": 0,
-            "score": 0,
-            "coverage_percent": 0
-          },
-          {
-            "id": "SEC",
-            "name": "الأمان والخصوصية",
-            "weight": 8,
-            "denominator": 6,
-            "S": 2,
-            "C": 2,
-            "F": 0,
-            "U": 2,
-            "pass": 4,
-            "coverage": 4,
-            "score": 66.66666666666667,
-            "coverage_percent": 66.66666666666667
-          },
-          {
-            "id": "ARC",
-            "name": "المعمارية والاعتماديات والأداء",
-            "weight": 3,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 0,
-            "U": 6,
-            "pass": 0,
-            "coverage": 0,
-            "score": 0,
-            "coverage_percent": 0
-          },
-          {
-            "id": "DEP",
-            "name": "النشر وSEO والقياس والمراقبة",
-            "weight": 2,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 0,
-            "U": 6,
-            "pass": 0,
-            "coverage": 0,
-            "score": 0,
-            "coverage_percent": 0
-          }
-        ]
+      "score": 50.0,
+      "coverage": 66.66666666666667
+    },
+    {
+      "id": "FW",
+      "name": "Firewall",
+      "weight": 10,
+      "total": 6,
+      "passed": 3,
+      "counts": {
+        "S": 3,
+        "F": 2,
+        "U": 1
       },
-      "live": {
-        "method": "S,C=1; F,U=0; equal within each domain, published domain weights. Coverage includes S,C,F. Not directly comparable to R2 74 checks.",
-        "counts": {
-          "S": 0,
-          "C": 3,
-          "F": 8,
-          "U": 67
-        },
-        "score": 2.5000000000000004,
-        "coverage": 11.833333333333336,
-        "domains": [
-          {
-            "id": "REG",
-            "name": "سجل الأصول والوكلاء",
-            "weight": 8,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 0,
-            "U": 6,
-            "pass": 0,
-            "coverage": 0,
-            "score": 0,
-            "coverage_percent": 0
-          },
-          {
-            "id": "POL",
-            "name": "حزم السياسات والتتبع التنظيمي",
-            "weight": 8,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 0,
-            "U": 6,
-            "pass": 0,
-            "coverage": 0,
-            "score": 0,
-            "coverage_percent": 0
-          },
-          {
-            "id": "FW",
-            "name": "Firewall",
-            "weight": 10,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 0,
-            "U": 6,
-            "pass": 0,
-            "coverage": 0,
-            "score": 0,
-            "coverage_percent": 0
-          },
-          {
-            "id": "HG",
-            "name": "Human Gate",
-            "weight": 8,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 1,
-            "U": 5,
-            "pass": 0,
-            "coverage": 1,
-            "score": 0,
-            "coverage_percent": 16.666666666666668
-          },
-          {
-            "id": "RE",
-            "name": "Risk Engine وتقييم النماذج",
-            "weight": 12,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 0,
-            "U": 6,
-            "pass": 0,
-            "coverage": 0,
-            "score": 0,
-            "coverage_percent": 0
-          },
-          {
-            "id": "LD",
-            "name": "Ledger وسلامة الأدلة",
-            "weight": 10,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 2,
-            "U": 4,
-            "pass": 0,
-            "coverage": 2,
-            "score": 0,
-            "coverage_percent": 33.333333333333336
-          },
-          {
-            "id": "AI",
-            "name": "Groq",
-            "weight": 8,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 0,
-            "U": 6,
-            "pass": 0,
-            "coverage": 0,
-            "score": 0,
-            "coverage_percent": 0
-          },
-          {
-            "id": "INT",
-            "name": "تكامل المنتجات الأربعة",
-            "weight": 8,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 0,
-            "U": 6,
-            "pass": 0,
-            "coverage": 0,
-            "score": 0,
-            "coverage_percent": 0
-          },
-          {
-            "id": "UX",
-            "name": "التصميم وتجربة المستخدم وRTL",
-            "weight": 10,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 0,
-            "U": 6,
-            "pass": 0,
-            "coverage": 0,
-            "score": 0,
-            "coverage_percent": 0
-          },
-          {
-            "id": "PUB",
-            "name": "الإتاحة والتحويل التجاري",
-            "weight": 5,
-            "denominator": 6,
-            "S": 0,
-            "C": 1,
-            "F": 2,
-            "U": 3,
-            "pass": 1,
-            "coverage": 3,
-            "score": 16.666666666666668,
-            "coverage_percent": 50
-          },
-          {
-            "id": "SEC",
-            "name": "الأمان والخصوصية",
-            "weight": 8,
-            "denominator": 6,
-            "S": 0,
-            "C": 1,
-            "F": 2,
-            "U": 3,
-            "pass": 1,
-            "coverage": 3,
-            "score": 16.666666666666668,
-            "coverage_percent": 50
-          },
-          {
-            "id": "ARC",
-            "name": "المعمارية والاعتماديات والأداء",
-            "weight": 3,
-            "denominator": 6,
-            "S": 0,
-            "C": 0,
-            "F": 0,
-            "U": 6,
-            "pass": 0,
-            "coverage": 0,
-            "score": 0,
-            "coverage_percent": 0
-          },
-          {
-            "id": "DEP",
-            "name": "النشر وSEO والقياس والمراقبة",
-            "weight": 2,
-            "denominator": 6,
-            "S": 0,
-            "C": 1,
-            "F": 1,
-            "U": 4,
-            "pass": 1,
-            "coverage": 2,
-            "score": 16.666666666666668,
-            "coverage_percent": 33.333333333333336
-          }
-        ]
-      }
+      "score": 50.0,
+      "coverage": 83.33333333333333
+    },
+    {
+      "id": "HG",
+      "name": "Human Gate",
+      "weight": 8,
+      "total": 6,
+      "passed": 3,
+      "counts": {
+        "S": 3,
+        "F": 1,
+        "U": 2
+      },
+      "score": 50.0,
+      "coverage": 66.66666666666667
+    },
+    {
+      "id": "RE",
+      "name": "Risk Engine وتقييم النماذج",
+      "weight": 12,
+      "total": 6,
+      "passed": 4,
+      "counts": {
+        "S": 4,
+        "F": 1,
+        "U": 1
+      },
+      "score": 66.66666666666667,
+      "coverage": 83.33333333333333
+    },
+    {
+      "id": "LD",
+      "name": "Ledger وسلامة الأدلة",
+      "weight": 10,
+      "total": 6,
+      "passed": 2,
+      "counts": {
+        "S": 2,
+        "F": 3,
+        "U": 1
+      },
+      "score": 33.333333333333336,
+      "coverage": 83.33333333333333
+    },
+    {
+      "id": "AI",
+      "name": "Groq",
+      "weight": 8,
+      "total": 6,
+      "passed": 2,
+      "counts": {
+        "S": 2,
+        "F": 3,
+        "U": 1
+      },
+      "score": 33.333333333333336,
+      "coverage": 83.33333333333333
+    },
+    {
+      "id": "INT",
+      "name": "تكامل المنتجات الأربعة",
+      "weight": 8,
+      "total": 6,
+      "passed": 3,
+      "counts": {
+        "S": 3,
+        "F": 2,
+        "U": 1
+      },
+      "score": 50.0,
+      "coverage": 83.33333333333333
+    },
+    {
+      "id": "UX",
+      "name": "التصميم وتجربة المستخدم وRTL",
+      "weight": 10,
+      "total": 6,
+      "passed": 2,
+      "counts": {
+        "C": 2,
+        "U": 3,
+        "F": 1
+      },
+      "score": 33.333333333333336,
+      "coverage": 50.0
+    },
+    {
+      "id": "PUB",
+      "name": "الإتاحة والتحويل التجاري",
+      "weight": 5,
+      "total": 6,
+      "passed": 3,
+      "counts": {
+        "C": 3,
+        "F": 3
+      },
+      "score": 50.0,
+      "coverage": 100.0
+    },
+    {
+      "id": "SEC",
+      "name": "الأمان والخصوصية",
+      "weight": 8,
+      "total": 6,
+      "passed": 2,
+      "counts": {
+        "C": 2,
+        "F": 2,
+        "U": 2
+      },
+      "score": 33.333333333333336,
+      "coverage": 66.66666666666667
+    },
+    {
+      "id": "ARC",
+      "name": "المعمارية والاعتماديات والأداء",
+      "weight": 3,
+      "total": 6,
+      "passed": 1,
+      "counts": {
+        "S": 1,
+        "F": 2,
+        "U": 3
+      },
+      "score": 16.666666666666668,
+      "coverage": 50.0
+    },
+    {
+      "id": "DEP",
+      "name": "النشر وSEO والقياس والمراقبة",
+      "weight": 2,
+      "total": 6,
+      "passed": 2,
+      "counts": {
+        "C": 2,
+        "F": 3,
+        "U": 1
+      },
+      "score": 33.333333333333336,
+      "coverage": 83.33333333333333
     }
-  },
-  "provisional_delta": {
-    "local_score_pp": 9.333333333333329,
-    "local_coverage_pp": -10,
-    "status": "INDICATIVE_ONLY_NOT_CERTIFIED"
-  },
+  ],
   "criteria": [
     {
       "id": "REG-01",
       "domain": "REG",
       "requirement": "عقد يميز النظام والنموذج والوكيل والمورد وحالة الاستخدام",
-      "baseline_status": "S",
-      "baseline_evidence": "src/server/governance/contract.mjs:6–26",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/governance/contract.mjs:6–26",
       "remeasured": {
         "source": {
           "status": "S",
@@ -850,8 +243,9 @@
       "id": "REG-02",
       "domain": "REG",
       "requirement": "إصدارات ومراجع مستقلة وحدود أدوات للأصل الاصطناعي",
-      "baseline_status": "S",
-      "baseline_evidence": "src/server/governance/registry.mjs؛ contract.mjs:15–26",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/governance/registry.mjs؛ contract.mjs:15–26",
       "remeasured": {
         "source": {
           "status": "S",
@@ -894,8 +288,9 @@
       "id": "REG-03",
       "domain": "REG",
       "requirement": "جرد وتغيير الأصل في جلسة الحوكمة المشتركة",
-      "baseline_status": "S",
-      "baseline_evidence": "src/demo/governance.mjs:21–55",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/demo/governance.mjs:21–55",
       "remeasured": {
         "source": {
           "status": "S",
@@ -938,8 +333,9 @@
       "id": "REG-04",
       "domain": "REG",
       "requirement": "سجل مؤسسي دائم ومشترك بين جلسات المستخدم",
-      "baseline_status": "U",
-      "baseline_evidence": "المختبر في ذاكرة المستند؛ لا إثبات تشغيل سجل دائم",
+      "status": "U",
+      "score": 0,
+      "evidence": "المختبر في ذاكرة المستند؛ لا إثبات تشغيل سجل دائم",
       "remeasured": {
         "source": {
           "status": "U",
@@ -967,8 +363,9 @@
       "id": "REG-05",
       "domain": "REG",
       "requirement": "دورة حياة Intake واعتماد وإعادة مراجعة مكتملة في البيئة المستهدفة",
-      "baseline_status": "U",
-      "baseline_evidence": "لا E2E مخول",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا E2E مخول",
       "remeasured": {
         "source": {
           "status": "U",
@@ -996,8 +393,9 @@
       "id": "REG-06",
       "domain": "REG",
       "requirement": "اكتشاف Shadow AI من مصادر مؤسسية موصولة",
-      "baseline_status": "U",
-      "baseline_evidence": "لا تكامل اكتشاف متحقق",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا تكامل اكتشاف متحقق",
       "remeasured": {
         "source": {
           "status": "U",
@@ -1025,8 +423,9 @@
       "id": "POL-01",
       "domain": "POL",
       "requirement": "حزمة داخلية محددة الإصدار والانطباق",
-      "baseline_status": "S",
-      "baseline_evidence": "src/server/governance/internal-pack.mjs:10–41",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/governance/internal-pack.mjs:10–41",
       "remeasured": {
         "source": {
           "status": "S",
@@ -1069,8 +468,9 @@
       "id": "POL-02",
       "domain": "POL",
       "requirement": "متطلبات وفحوص ودليل متوقع ومالك",
-      "baseline_status": "S",
-      "baseline_evidence": "src/server/governance/contract.mjs:28–48",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/governance/contract.mjs:28–48",
       "remeasured": {
         "source": {
           "status": "S",
@@ -1113,8 +513,9 @@
       "id": "POL-03",
       "domain": "POL",
       "requirement": "تتبع وتصدير بصمة assessment للحزمة الداخلية",
-      "baseline_status": "S",
-      "baseline_evidence": "src/server/governance/registry.mjs:63–113",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/governance/registry.mjs:63–113",
       "remeasured": {
         "source": {
           "status": "S",
@@ -1157,8 +558,9 @@
       "id": "POL-04",
       "domain": "POL",
       "requirement": "حزم خارجية قابلة للتطبيق من PDPL/SDAIA وغيرها",
-      "baseline_status": "F",
-      "baseline_evidence": "packSchema.source.type = INTERNAL فقط",
+      "status": "F",
+      "score": 0,
+      "evidence": "packSchema.source.type = INTERNAL فقط",
       "remeasured": {
         "source": {
           "status": "F",
@@ -1189,8 +591,9 @@
       "id": "POL-05",
       "domain": "POL",
       "requirement": "مرجع تنظيمي خارجي موثق مرتبط بفحص وFinding",
-      "baseline_status": "U",
-      "baseline_evidence": "لم يثبت عقد خارجي أو خريطة قانونية",
+      "status": "U",
+      "score": 0,
+      "evidence": "لم يثبت عقد خارجي أو خريطة قانونية",
       "remeasured": {
         "source": {
           "status": "U",
@@ -1218,8 +621,9 @@
       "id": "POL-06",
       "domain": "POL",
       "requirement": "اعتماد تغيير السياسة وتطبيقه حيًا عبر المؤسسات",
-      "baseline_status": "U",
-      "baseline_evidence": "لا تشغيل مؤسسي",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا تشغيل مؤسسي",
       "remeasured": {
         "source": {
           "status": "U",
@@ -1247,8 +651,9 @@
       "id": "FW-01",
       "domain": "FW",
       "requirement": "القرارات الخمسة الحتمية في المحرك",
-      "baseline_status": "S",
-      "baseline_evidence": "src/server/firewall/core.mjs:10–13",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/firewall/core.mjs:10–13",
       "remeasured": {
         "source": {
           "status": "S",
@@ -1291,8 +696,9 @@
       "id": "FW-02",
       "domain": "FW",
       "requirement": "تقديم DENY والإقفال عند سياسة غير صالحة",
-      "baseline_status": "S",
-      "baseline_evidence": "src/server/firewall/core.mjs:63–75",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/firewall/core.mjs:63–75",
       "remeasured": {
         "source": {
           "status": "S",
@@ -1335,8 +741,9 @@
       "id": "FW-03",
       "domain": "FW",
       "requirement": "الفحص العام يتجاوز أربع مطابقات حرفية إلى كاشف بيانات حساس متحقق",
-      "baseline_status": "F",
-      "baseline_evidence": "src/shared/firewall-demo.mjs:1–19",
+      "status": "F",
+      "score": 0,
+      "evidence": "src/shared/firewall-demo.mjs:1–19",
       "remeasured": {
         "source": {
           "status": "F",
@@ -1367,8 +774,9 @@
       "id": "FW-04",
       "domain": "FW",
       "requirement": "محاكاة فعل وكيل بقيود ثابتة وربط طلب مراجعة",
-      "baseline_status": "S",
-      "baseline_evidence": "src/server/governance/synthetic-agent.mjs:16–90",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/governance/synthetic-agent.mjs:16–90",
       "remeasured": {
         "source": {
           "status": "S",
@@ -1411,8 +819,9 @@
       "id": "FW-05",
       "domain": "FW",
       "requirement": "مزود Firewall معتمد",
-      "baseline_status": "F",
-      "baseline_evidence": "src/server/firewall/provider.mjs:9؛ approvedProviders=[]",
+      "status": "F",
+      "score": 0,
+      "evidence": "src/server/firewall/provider.mjs:9؛ approvedProviders=[]",
       "remeasured": {
         "source": {
           "status": "F",
@@ -1447,8 +856,9 @@
       "id": "FW-06",
       "domain": "FW",
       "requirement": "فحص المدخل والمخرج مع مزود فعلي ومعالجة القرارات الخمسة",
-      "baseline_status": "U",
-      "baseline_evidence": "لم يرسل طلب Groq ولم ينفذ E2E",
+      "status": "U",
+      "score": 0,
+      "evidence": "لم يرسل طلب Groq ولم ينفذ E2E",
       "remeasured": {
         "source": {
           "status": "U",
@@ -1476,8 +886,9 @@
       "id": "HG-01",
       "domain": "HG",
       "requirement": "ربط تصعيد اصطناعي ببصمة طلب وسياسة",
-      "baseline_status": "S",
-      "baseline_evidence": "src/server/governance/synthetic-agent.mjs:30–71",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/governance/synthetic-agent.mjs:30–71",
       "remeasured": {
         "source": {
           "status": "S",
@@ -1520,8 +931,9 @@
       "id": "HG-02",
       "domain": "HG",
       "requirement": "عقد مراجع مستقل داخل سجل الحوكمة",
-      "baseline_status": "S",
-      "baseline_evidence": "src/server/governance/contract.mjs:22–26",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/governance/contract.mjs:22–26",
       "remeasured": {
         "source": {
           "status": "S",
@@ -1564,8 +976,9 @@
       "id": "HG-03",
       "domain": "HG",
       "requirement": "واجهة مراجعة وقبول ورفض للجلسة",
-      "baseline_status": "S",
-      "baseline_evidence": "src/demo/governance.mjs:89–99",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/demo/governance.mjs:89–99",
       "remeasured": {
         "source": {
           "status": "S",
@@ -1608,8 +1021,9 @@
       "id": "HG-04",
       "domain": "HG",
       "requirement": "جدولا delegations وgrants موجودان في الإنتاج",
-      "baseline_status": "F",
-      "baseline_evidence": "Neon SELECT to_regclass: كلاهما NULL",
+      "status": "F",
+      "score": 0,
+      "evidence": "Neon SELECT to_regclass: كلاهما NULL",
       "remeasured": {
         "source": {
           "status": "U",
@@ -1652,8 +1066,9 @@
       "id": "HG-05",
       "domain": "HG",
       "requirement": "استئناف موثق بعد الموافقة مع منع إعادة الاستخدام في الهدف",
-      "baseline_status": "U",
-      "baseline_evidence": "تقرير الوكيل: فشل firewall-review-binding؛ لم يعد الاختبار",
+      "status": "U",
+      "score": 0,
+      "evidence": "تقرير الوكيل: فشل firewall-review-binding؛ لم يعد الاختبار",
       "remeasured": {
         "source": {
           "status": "U",
@@ -1691,8 +1106,9 @@
       "id": "HG-06",
       "domain": "HG",
       "requirement": "موافقات متعددة أدوار بمسار قانوني وأمني وتجاري حي",
-      "baseline_status": "U",
-      "baseline_evidence": "لا اختبار مخول",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا اختبار مخول",
       "remeasured": {
         "source": {
           "status": "U",
@@ -1720,8 +1136,9 @@
       "id": "RE-01",
       "domain": "RE",
       "requirement": "حساب خطر من الاحتمال والأثر داخل المختبر",
-      "baseline_status": "S",
-      "baseline_evidence": "src/demo/governance.mjs:71–75",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/demo/governance.mjs:71–75",
       "remeasured": {
         "source": {
           "status": "S",
@@ -1764,8 +1181,9 @@
       "id": "RE-02",
       "domain": "RE",
       "requirement": "مقاييس تصنيف مفصلة: precision/recall/FPR/FNR/accuracy",
-      "baseline_status": "S",
-      "baseline_evidence": "src/server/risk-engine/evaluation.mjs:25–35",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/risk-engine/evaluation.mjs:25–35",
       "remeasured": {
         "source": {
           "status": "S",
@@ -1808,8 +1226,9 @@
       "id": "RE-03",
       "domain": "RE",
       "requirement": "معالجة المقام الصفري والعينة الصغيرة",
-      "baseline_status": "S",
-      "baseline_evidence": "src/server/risk-engine/evaluation.mjs:17–35",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/risk-engine/evaluation.mjs:17–35",
       "remeasured": {
         "source": {
           "status": "S",
@@ -1852,8 +1271,9 @@
       "id": "RE-04",
       "domain": "RE",
       "requirement": "Finding مؤرخ وإعادة عرض تقييم سابق",
-      "baseline_status": "S",
-      "baseline_evidence": "src/demo/governance.mjs:77–87",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/demo/governance.mjs:77–87",
       "remeasured": {
         "source": {
           "status": "S",
@@ -1896,8 +1316,9 @@
       "id": "RE-05",
       "domain": "RE",
       "requirement": "تقييم نموذج موصول على بيانات مستقلة مصرح بها ومراقبة drift",
-      "baseline_status": "F",
-      "baseline_evidence": "evaluation.mjs:1,55–60 synthetic replay ثابت، لا اتصال في المختبر",
+      "status": "F",
+      "score": 0,
+      "evidence": "evaluation.mjs:1,55–60 synthetic replay ثابت، لا اتصال في المختبر",
       "remeasured": {
         "source": {
           "status": "U",
@@ -1925,8 +1346,9 @@
       "id": "RE-06",
       "domain": "RE",
       "requirement": "منهج الخطر المتبقي مع قبول مخول ومكتبة قطاعية كاملة في الهدف",
-      "baseline_status": "U",
-      "baseline_evidence": "لا تشغيل مؤسسي أو اعتماد منهج في هذه الجولة",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا تشغيل مؤسسي أو اعتماد منهج في هذه الجولة",
       "remeasured": {
         "source": {
           "status": "U",
@@ -1954,8 +1376,9 @@
       "id": "LD-01",
       "domain": "LD",
       "requirement": "SHA-256 وملف تعريف سلسلة في الكود",
-      "baseline_status": "S",
-      "baseline_evidence": "src/server/ledger/core.mjs:4–17,46–60",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/ledger/core.mjs:4–17,46–60",
       "remeasured": {
         "source": {
           "status": "S",
@@ -1998,8 +1421,9 @@
       "id": "LD-02",
       "domain": "LD",
       "requirement": "عقد تصدير assessment ببصمة داخل سجل الحوكمة",
-      "baseline_status": "S",
-      "baseline_evidence": "src/server/governance/registry.mjs:113",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/governance/registry.mjs:113",
       "remeasured": {
         "source": {
           "status": "S",
@@ -2042,8 +1466,9 @@
       "id": "LD-03",
       "domain": "LD",
       "requirement": "قيد إنتاج Ledger يطابق القرارات الخمسة",
-      "baseline_status": "F",
-      "baseline_evidence": "Neon aigas_ld_events_check يقبل ALLOW/BLOCK/REDACT فقط",
+      "status": "F",
+      "score": 0,
+      "evidence": "Neon aigas_ld_events_check يقبل ALLOW/BLOCK/REDACT فقط",
       "remeasured": {
         "source": {
           "status": "F",
@@ -2089,8 +1514,9 @@
       "id": "LD-04",
       "domain": "LD",
       "requirement": "حارس سلسلة قاعدة البيانات موجود في الإنتاج",
-      "baseline_status": "F",
-      "baseline_evidence": "Neon pg_proc: chain_guard=0",
+      "status": "F",
+      "score": 0,
+      "evidence": "Neon pg_proc: chain_guard=0",
       "remeasured": {
         "source": {
           "status": "F",
@@ -2136,8 +1562,9 @@
       "id": "LD-05",
       "domain": "LD",
       "requirement": "تصدير مختبر الحوكمة نفسه يتضمن سلسلة hash قابلة لإعادة التحقق",
-      "baseline_status": "F",
-      "baseline_evidence": "src/scripts/governance-demo.ts:171–177 يصدر JSON.stringify(state)؛ events لا تحمل hash chain",
+      "status": "F",
+      "score": 0,
+      "evidence": "src/scripts/governance-demo.ts:171–177 يصدر JSON.stringify(state)؛ events لا تحمل hash chain",
       "remeasured": {
         "source": {
           "status": "F",
@@ -2168,8 +1595,9 @@
       "id": "LD-06",
       "domain": "LD",
       "requirement": "تحقق مستقل من حزمة الإصدار النهائي في البيئة المستهدفة",
-      "baseline_status": "U",
-      "baseline_evidence": "تقرير محلي على مرشح سابق؛ لا إعادة اختبار",
+      "status": "U",
+      "score": 0,
+      "evidence": "تقرير محلي على مرشح سابق؛ لا إعادة اختبار",
       "remeasured": {
         "source": {
           "status": "U",
@@ -2197,8 +1625,9 @@
       "id": "AI-01",
       "domain": "AI",
       "requirement": "Gateway بخادم وميزانية وحدود ومهلة",
-      "baseline_status": "S",
-      "baseline_evidence": "src/server/ai/groq-gateway.mjs:49–75,99–145",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/ai/groq-gateway.mjs:49–75,99–145",
       "remeasured": {
         "source": {
           "status": "S",
@@ -2241,8 +1670,9 @@
       "id": "AI-02",
       "domain": "AI",
       "requirement": "حماية اسم المفتاح ومنع PUBLIC_GROQ",
-      "baseline_status": "S",
-      "baseline_evidence": "src/server/kernel/env.mjs:16–22",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/kernel/env.mjs:16–22",
       "remeasured": {
         "source": {
           "status": "S",
@@ -2285,8 +1715,9 @@
       "id": "AI-03",
       "domain": "AI",
       "requirement": "قائمتا اعتماد نموذج ومزود غير فارغتين وصالحتين",
-      "baseline_status": "F",
-      "baseline_evidence": "secure-chat/models.mjs:3؛ firewall/provider.mjs:9",
+      "status": "F",
+      "score": 0,
+      "evidence": "secure-chat/models.mjs:3؛ firewall/provider.mjs:9",
       "remeasured": {
         "source": {
           "status": "F",
@@ -2321,8 +1752,9 @@
       "id": "AI-04",
       "domain": "AI",
       "requirement": "المسار العام متاح لإرسال اصطناعي معتمد",
-      "baseline_status": "F",
-      "baseline_evidence": "public-sandbox-limiter.mjs:3–4؛ 503 DISABLED",
+      "status": "F",
+      "score": 0,
+      "evidence": "public-sandbox-limiter.mjs:3–4؛ 503 DISABLED",
       "remeasured": {
         "source": {
           "status": "F",
@@ -2357,8 +1789,9 @@
       "id": "AI-05",
       "domain": "AI",
       "requirement": "Blueprint يصرح بأسماء اعتماد المفتاح المخصص والميزانية المطلوبة",
-      "baseline_status": "F",
-      "baseline_evidence": "render.yaml:39–42: GROQ_API_KEY وGROQ_MODEL فقط؛ env.mjs:17؛ gateway.mjs:102–104",
+      "status": "F",
+      "score": 0,
+      "evidence": "render.yaml:39–42: GROQ_API_KEY وGROQ_MODEL فقط؛ env.mjs:17؛ gateway.mjs:102–104",
       "remeasured": {
         "source": {
           "status": "F",
@@ -2393,8 +1826,9 @@
       "id": "AI-06",
       "domain": "AI",
       "requirement": "إثبات مفتاح ونموذج وميزانية صالحة واستدعاء حي مصرح",
-      "baseline_status": "U",
-      "baseline_evidence": "لا .env متاح ولا اختبار خارجي",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا .env متاح ولا اختبار خارجي",
       "remeasured": {
         "source": {
           "status": "U",
@@ -2422,8 +1856,9 @@
       "id": "INT-01",
       "domain": "INT",
       "requirement": "سياق أحداث مشترك حسب الأصل والإصدار في المختبر",
-      "baseline_status": "S",
-      "baseline_evidence": "src/demo/governance.mjs:21–110",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/demo/governance.mjs:21–110",
       "remeasured": {
         "source": {
           "status": "S",
@@ -2466,8 +1901,9 @@
       "id": "INT-02",
       "domain": "INT",
       "requirement": "محاكاة agent تستدعي core وguard وHuman Gate binding",
-      "baseline_status": "S",
-      "baseline_evidence": "src/server/governance/synthetic-agent.mjs:1–90",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/server/governance/synthetic-agent.mjs:1–90",
       "remeasured": {
         "source": {
           "status": "S",
@@ -2510,8 +1946,9 @@
       "id": "INT-03",
       "domain": "INT",
       "requirement": "المراجعة في المختبر ترتبط بفحص أو خطر من النسخة الحالية",
-      "baseline_status": "S",
-      "baseline_evidence": "src/demo/governance.mjs:89–99",
+      "status": "S",
+      "score": 1,
+      "evidence": "src/demo/governance.mjs:89–99",
       "remeasured": {
         "source": {
           "status": "S",
@@ -2554,8 +1991,9 @@
       "id": "INT-04",
       "domain": "INT",
       "requirement": "مسار عام حي يوقف Groq ثم يستأنفه بإذن صالح",
-      "baseline_status": "F",
-      "baseline_evidence": "demo prerender وCSP connect-src none؛ publicSandbox disabled",
+      "status": "F",
+      "score": 0,
+      "evidence": "demo prerender وCSP connect-src none؛ publicSandbox disabled",
       "remeasured": {
         "source": {
           "status": "F",
@@ -2590,8 +2028,9 @@
       "id": "INT-05",
       "domain": "INT",
       "requirement": "تسجيل كل حدث عام في سلسلة Ledger قابلة للتحقق",
-      "baseline_status": "F",
-      "baseline_evidence": "governance.mjs:104–108 + governance-demo.ts:174",
+      "status": "F",
+      "score": 0,
+      "evidence": "governance.mjs:104–108 + governance-demo.ts:174",
       "remeasured": {
         "source": {
           "status": "F",
@@ -2626,8 +2065,9 @@
       "id": "INT-06",
       "domain": "INT",
       "requirement": "رحلة أصل→حزمة تنظيمية→فحص→معالجة→قرار→دليل في الهدف",
-      "baseline_status": "U",
-      "baseline_evidence": "لا E2E للبيئة المستهدفة",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا E2E للبيئة المستهدفة",
       "remeasured": {
         "source": {
           "status": "U",
@@ -2655,8 +2095,9 @@
       "id": "UX-01",
       "domain": "UX",
       "requirement": "صفحة Overview وجرد وحزم وأربعة أقسام متاحة",
-      "baseline_status": "C",
-      "baseline_evidence": "Firecrawl /demo/governance/ 200",
+      "status": "C",
+      "score": 1,
+      "evidence": "Firecrawl /demo/governance/ 200",
       "remeasured": {
         "source": {
           "status": "U",
@@ -2694,8 +2135,9 @@
       "id": "UX-02",
       "domain": "UX",
       "requirement": "صفحات المنتجات الأربعة تعرض تجارب متخصصة وروابط",
-      "baseline_status": "C",
-      "baseline_evidence": "Firecrawl 4/4 HTTP200",
+      "status": "C",
+      "score": 1,
+      "evidence": "Firecrawl 4/4 HTTP200",
       "remeasured": {
         "source": {
           "status": "U",
@@ -2733,8 +2175,9 @@
       "id": "UX-03",
       "domain": "UX",
       "requirement": "تفاعل كامل مستقل لجميع الشاشات والأحجام",
-      "baseline_status": "U",
-      "baseline_evidence": "Browser Use تحقق بصريًا من صفحتين على 1440 و390؛ لا اختبار كل الشاشات أو المهام",
+      "status": "U",
+      "score": 0,
+      "evidence": "Browser Use تحقق بصريًا من صفحتين على 1440 و390؛ لا اختبار كل الشاشات أو المهام",
       "remeasured": {
         "source": {
           "status": "U",
@@ -2772,8 +2215,9 @@
       "id": "UX-04",
       "domain": "UX",
       "requirement": "إمكانية الوصول والأداء عبر CI ناجح على HEAD",
-      "baseline_status": "F",
-      "baseline_evidence": "GitHub Actions 45666864721: failure",
+      "status": "F",
+      "score": 0,
+      "evidence": "GitHub Actions 45666864721: failure",
       "remeasured": {
         "source": {
           "status": "U",
@@ -2811,8 +2255,9 @@
       "id": "UX-05",
       "domain": "UX",
       "requirement": "مطابقة بصرية وسلوكية للـHero قبل وبعد",
-      "baseline_status": "U",
-      "baseline_evidence": "لا مرجع لقطات Hero متطابقة",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا مرجع لقطات Hero متطابقة",
       "remeasured": {
         "source": {
           "status": "U",
@@ -2840,8 +2285,9 @@
       "id": "UX-06",
       "domain": "UX",
       "requirement": "جودة RTL وkeyboard وWCAG 2.2 AA مثبتة لكامل النطاق",
-      "baseline_status": "U",
-      "baseline_evidence": "لا قياس شامل",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا قياس شامل",
       "remeasured": {
         "source": {
           "status": "U",
@@ -2869,8 +2315,9 @@
       "id": "PUB-01",
       "domain": "PUB",
       "requirement": "4/4 صفحات المنتجات العامة تفتح",
-      "baseline_status": "C",
-      "baseline_evidence": "Firecrawl HTTP200",
+      "status": "C",
+      "score": 1,
+      "evidence": "Firecrawl HTTP200",
       "remeasured": {
         "source": {
           "status": "U",
@@ -2898,8 +2345,9 @@
       "id": "PUB-02",
       "domain": "PUB",
       "requirement": "4/4 مختبرات مستقلة تفتح دون حساب",
-      "baseline_status": "C",
-      "baseline_evidence": "Firecrawl HTTP200",
+      "status": "C",
+      "score": 1,
+      "evidence": "Firecrawl HTTP200",
       "remeasured": {
         "source": {
           "status": "U",
@@ -2927,8 +2375,9 @@
       "id": "PUB-03",
       "domain": "PUB",
       "requirement": "المختبر الموحد يفتح دون حساب",
-      "baseline_status": "C",
-      "baseline_evidence": "Firecrawl /demo/governance/ 200",
+      "status": "C",
+      "score": 1,
+      "evidence": "Firecrawl /demo/governance/ 200",
       "remeasured": {
         "source": {
           "status": "U",
@@ -2956,8 +2405,9 @@
       "id": "PUB-04",
       "domain": "PUB",
       "requirement": "بوابة التطبيق وKernel تفتحان",
-      "baseline_status": "F",
-      "baseline_evidence": "/app/ و/app/kernel/ 404",
+      "status": "F",
+      "score": 0,
+      "evidence": "/app/ و/app/kernel/ 404",
       "remeasured": {
         "source": {
           "status": "U",
@@ -2988,8 +2438,9 @@
       "id": "PUB-05",
       "domain": "PUB",
       "requirement": "طلب الوصول يعمل من CTA العام",
-      "baseline_status": "F",
-      "baseline_evidence": "/request-access/ 404؛ governance.astro:139",
+      "status": "F",
+      "score": 0,
+      "evidence": "/request-access/ 404؛ governance.astro:139",
       "remeasured": {
         "source": {
           "status": "U",
@@ -3024,8 +2475,9 @@
       "id": "PUB-06",
       "domain": "PUB",
       "requirement": "تجربة 48 ساعة وعملية التسجيل مثبتتان في الهدف",
-      "baseline_status": "F",
-      "baseline_evidence": "جدولا trial وexploration غائبان؛ بوابة 404",
+      "status": "F",
+      "score": 0,
+      "evidence": "جدولا trial وexploration غائبان؛ بوابة 404",
       "remeasured": {
         "source": {
           "status": "U",
@@ -3056,8 +2508,9 @@
       "id": "SEC-01",
       "domain": "SEC",
       "requirement": "RLS enabled على جداول الإنتاج",
-      "baseline_status": "C",
-      "baseline_evidence": "Neon 31/31 flags",
+      "status": "C",
+      "score": 1,
+      "evidence": "Neon 31/31 flags",
       "remeasured": {
         "source": {
           "status": "U",
@@ -3092,8 +2545,9 @@
       "id": "SEC-02",
       "domain": "SEC",
       "requirement": "جميع جداول Staging لها سياسات RLS",
-      "baseline_status": "C",
-      "baseline_evidence": "Neon 43/43؛ 93 سياسة",
+      "status": "C",
+      "score": 1,
+      "evidence": "Neon 43/43؛ 93 سياسة",
       "remeasured": {
         "source": {
           "status": "U",
@@ -3125,8 +2579,9 @@
       "id": "SEC-03",
       "domain": "SEC",
       "requirement": "جميع جداول الإنتاج لها سياسات RLS مناسبة",
-      "baseline_status": "F",
-      "baseline_evidence": "Neon 2/31 فقط؛ لا ادعاء تسريب",
+      "status": "F",
+      "score": 0,
+      "evidence": "Neon 2/31 فقط؛ لا ادعاء تسريب",
       "remeasured": {
         "source": {
           "status": "U",
@@ -3159,8 +2614,9 @@
       "id": "SEC-04",
       "domain": "SEC",
       "requirement": "دور تشغيل aigas_runtime موجود في الإنتاج",
-      "baseline_status": "F",
-      "baseline_evidence": "Neon pg_roles: 0",
+      "status": "F",
+      "score": 0,
+      "evidence": "Neon pg_roles: 0",
       "remeasured": {
         "source": {
           "status": "U",
@@ -3193,8 +2649,9 @@
       "id": "SEC-05",
       "domain": "SEC",
       "requirement": "اختبار عزل مؤسسات وجلسات في الهدف",
-      "baseline_status": "U",
-      "baseline_evidence": "لم ينفذ اختبار مصرح",
+      "status": "U",
+      "score": 0,
+      "evidence": "لم ينفذ اختبار مصرح",
       "remeasured": {
         "source": {
           "status": "U",
@@ -3232,8 +2689,9 @@
       "id": "SEC-06",
       "domain": "SEC",
       "requirement": "اعتماد معالجة البيانات وإقامتها وسياسة الحذف والمزود",
-      "baseline_status": "U",
-      "baseline_evidence": "لا دليل اعتماد الهدف",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا دليل اعتماد الهدف",
       "remeasured": {
         "source": {
           "status": "U",
@@ -3261,8 +2719,9 @@
       "id": "ARC-01",
       "domain": "ARC",
       "requirement": "Blueprint يحدد Node SSR وreadiness",
-      "baseline_status": "S",
-      "baseline_evidence": "render.yaml:6–16",
+      "status": "S",
+      "score": 1,
+      "evidence": "render.yaml:6–16",
       "remeasured": {
         "source": {
           "status": "S",
@@ -3305,8 +2764,9 @@
       "id": "ARC-02",
       "domain": "ARC",
       "requirement": "محول Astro في إصدار يعالج GHSA-qh8j-hqjv-7m4x",
-      "baseline_status": "F",
-      "baseline_evidence": "package-lock.json @astrojs/node 10.1.4؛ fixed 11.1.3",
+      "status": "F",
+      "score": 0,
+      "evidence": "package-lock.json @astrojs/node 10.1.4؛ fixed 11.1.3",
       "remeasured": {
         "source": {
           "status": "S",
@@ -3349,8 +2809,9 @@
       "id": "ARC-03",
       "domain": "ARC",
       "requirement": "مدير حزم البناء المنشور يطابق lockfile المقصود",
-      "baseline_status": "F",
-      "baseline_evidence": "Render pnpm install؛ render.yaml npm ci؛ package-lock موجود",
+      "status": "F",
+      "score": 0,
+      "evidence": "Render pnpm install؛ render.yaml npm ci؛ package-lock موجود",
       "remeasured": {
         "source": {
           "status": "S",
@@ -3393,8 +2854,9 @@
       "id": "ARC-04",
       "domain": "ARC",
       "requirement": "npm build والتحقق الأمني المستقل على HEAD",
-      "baseline_status": "U",
-      "baseline_evidence": "لا checkout أو تشغيل مستقل",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا checkout أو تشغيل مستقل",
       "remeasured": {
         "source": {
           "status": "U",
@@ -3432,8 +2894,9 @@
       "id": "ARC-05",
       "domain": "ARC",
       "requirement": "نظافة الملفات مثبتة بعد تحليل الاعتماديات",
-      "baseline_status": "U",
-      "baseline_evidence": "7 ملفات بلواحق 2؛ ليست دليل حذف",
+      "status": "U",
+      "score": 0,
+      "evidence": "7 ملفات بلواحق 2؛ ليست دليل حذف",
       "remeasured": {
         "source": {
           "status": "U",
@@ -3461,8 +2924,9 @@
       "id": "ARC-06",
       "domain": "ARC",
       "requirement": "LCP/INP/CLS مقاسة على كل رحلة",
-      "baseline_status": "U",
-      "baseline_evidence": "لا قياس ميداني أو مختبري شامل",
+      "status": "U",
+      "score": 0,
+      "evidence": "لا قياس ميداني أو مختبري شامل",
       "remeasured": {
         "source": {
           "status": "U",
@@ -3490,8 +2954,9 @@
       "id": "DEP-01",
       "domain": "DEP",
       "requirement": "Deploy مطابق SHA الحالي",
-      "baseline_status": "C",
-      "baseline_evidence": "Render dep-dc3hq2m8bjmc73bvuan0 live",
+      "status": "C",
+      "score": 1,
+      "evidence": "Render dep-dc3id8bm8hqs73c8ao60 live; matches 67aa03b0dc6c0284c261aa478fec902ed958dc2a; old deploy deactivated.",
       "remeasured": {
         "source": {
           "status": "U",
@@ -3519,8 +2984,9 @@
       "id": "DEP-02",
       "domain": "DEP",
       "requirement": "خدمة النشر الفعلية Node وتعرض readiness",
-      "baseline_status": "F",
-      "baseline_evidence": "Render static_site dist/client؛ /readyz/ 404",
+      "status": "F",
+      "score": 0,
+      "evidence": "Render static_site dist/client؛ /readyz/ 404",
       "remeasured": {
         "source": {
           "status": "U",
@@ -3551,8 +3017,9 @@
       "id": "DEP-03",
       "domain": "DEP",
       "requirement": "مصالحة سجل ترحيلات Staging مع 45 ملفًا",
-      "baseline_status": "F",
-      "baseline_evidence": "32 APPLIED؛ 13 بلا سجل APPLIED، ليس إثبات عدم تطبيقها",
+      "status": "F",
+      "score": 0,
+      "evidence": "32 APPLIED؛ 13 بلا سجل APPLIED، ليس إثبات عدم تطبيقها",
       "remeasured": {
         "source": {
           "status": "U",
@@ -3580,8 +3047,9 @@
       "id": "DEP-04",
       "domain": "DEP",
       "requirement": "robots.txt وsitemap.xml متاحان",
-      "baseline_status": "C",
-      "baseline_evidence": "Firecrawl كلاهما 200؛ robots يشير sitemap-index.xml",
+      "status": "C",
+      "score": 1,
+      "evidence": "Firecrawl كلاهما 200؛ robots يشير sitemap-index.xml",
       "remeasured": {
         "source": {
           "status": "U",
@@ -3622,8 +3090,9 @@
       "id": "DEP-05",
       "domain": "DEP",
       "requirement": "قياس GA4 للحركة الحية دون اختلاط تطوير",
-      "baseline_status": "F",
-      "baseline_evidence": "Windsor: 48 جلسة localhost/127.0.0.1 ضمن الخاصية",
+      "status": "F",
+      "score": 0,
+      "evidence": "Windsor: 48 جلسة localhost/127.0.0.1 ضمن الخاصية",
       "remeasured": {
         "source": {
           "status": "U",
@@ -3651,8 +3120,9 @@
       "id": "DEP-06",
       "domain": "DEP",
       "requirement": "مراقبة أخطاء وتنبيهات وفهرسة شاملة مثبتة",
-      "baseline_status": "U",
-      "baseline_evidence": "GSC يقيس البحث فقط؛ Sentry/PostHog لم تثبت وجهتهما",
+      "status": "U",
+      "score": 0,
+      "evidence": "GSC يقيس البحث فقط؛ Sentry/PostHog لم تثبت وجهتهما",
       "remeasured": {
         "source": {
           "status": "U",
@@ -3677,10 +3147,825 @@
       }
     }
   ],
-  "limitations": [
-    "Original R3.1 HTML, MD, scorecard, 12-prompt file and launch ZIP were not found in the checked workspace/Desktop/Downloads/upload folders.",
-    "This is a derivative of the Nov 26 release-gate scorecard, not an independently remeasured R4 scorecard.",
-    "No production/staging Neon schema query, MagicPath reference inspection, Groq invocation, or end-to-end write test was performed.",
-    "Current live deployment SHA is available from Render MCP; this does not verify SSR/API behavior."
-  ]
+  "revision": "R3.1",
+  "baseline_head": "773fb6bc5e420ee70e811d5509aceefcaec32a8c",
+  "current_head": "67aa03b0dc6c0284c261aa478fec902ed958dc2a",
+  "implementation_status": "PENDING_OWNER_CONFIRMED_NOT_EXECUTED",
+  "after_score": null,
+  "update_scope": "MagicPath reference read, GitHub audit-only diff, Render live deploy and Neon catalog subset rechecked; other baseline findings carried forward, not rerun.",
+  "magicpath": {
+    "url": "https://www.magicpath.ai/files/476406002938429440",
+    "project_id": "476406002938429440",
+    "component_id": "476406049398726656",
+    "revision_id": "476406049398726657",
+    "generated_name": "eagerly-air-5180",
+    "acceptance_status": "NOT_MEASURED",
+    "scope": "12 screen/modal acceptance entries, supplementary; no change to 78 checks"
+  },
+  "r4_evidence": {
+    "status": "PARTIAL_NOT_RELEASE_AUTHORIZATION",
+    "measured_at": "2026-11-26",
+    "current_repository_head_at_report": "8e879ba24db2082f7d74978e1072c8da851201ba",
+    "measurement_sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+    "baseline_source": "R3.1 original supplied archive; definitions and published weights preserved",
+    "parity": {
+      "criteria_ids": "78/78 exact",
+      "requirements_and_domains": "78/78 exact",
+      "domain_weights": "13/13 exact",
+      "weight_sum": 100
+    },
+    "environment_summaries": {
+      "source": {
+        "score": 36.5,
+        "coverage": 52.83333333333333,
+        "counts": {
+          "S": 26,
+          "C": 0,
+          "F": 11,
+          "U": 41
+        },
+        "domains": [
+          {
+            "id": "REG",
+            "name": "سجل الأصول والوكلاء",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 3,
+              "C": 0,
+              "F": 0,
+              "U": 3
+            },
+            "score": 50.0,
+            "coverage": 50.0
+          },
+          {
+            "id": "POL",
+            "name": "حزم السياسات والتتبع التنظيمي",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 3,
+              "C": 0,
+              "F": 1,
+              "U": 2
+            },
+            "score": 50.0,
+            "coverage": 66.66666666666667
+          },
+          {
+            "id": "FW",
+            "name": "Firewall",
+            "weight": 10,
+            "total": 6,
+            "counts": {
+              "S": 3,
+              "C": 0,
+              "F": 2,
+              "U": 1
+            },
+            "score": 50.0,
+            "coverage": 83.33333333333333
+          },
+          {
+            "id": "HG",
+            "name": "Human Gate",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 3,
+              "C": 0,
+              "F": 0,
+              "U": 3
+            },
+            "score": 50.0,
+            "coverage": 50.0
+          },
+          {
+            "id": "RE",
+            "name": "Risk Engine وتقييم النماذج",
+            "weight": 12,
+            "total": 6,
+            "counts": {
+              "S": 4,
+              "C": 0,
+              "F": 0,
+              "U": 2
+            },
+            "score": 66.66666666666667,
+            "coverage": 66.66666666666667
+          },
+          {
+            "id": "LD",
+            "name": "Ledger وسلامة الأدلة",
+            "weight": 10,
+            "total": 6,
+            "counts": {
+              "S": 2,
+              "C": 0,
+              "F": 3,
+              "U": 1
+            },
+            "score": 33.333333333333336,
+            "coverage": 83.33333333333333
+          },
+          {
+            "id": "AI",
+            "name": "Groq",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 2,
+              "C": 0,
+              "F": 3,
+              "U": 1
+            },
+            "score": 33.333333333333336,
+            "coverage": 83.33333333333333
+          },
+          {
+            "id": "INT",
+            "name": "تكامل المنتجات الأربعة",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 3,
+              "C": 0,
+              "F": 2,
+              "U": 1
+            },
+            "score": 50.0,
+            "coverage": 83.33333333333333
+          },
+          {
+            "id": "UX",
+            "name": "التصميم وتجربة المستخدم وRTL",
+            "weight": 10,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 0,
+              "U": 6
+            },
+            "score": 0.0,
+            "coverage": 0.0
+          },
+          {
+            "id": "PUB",
+            "name": "الإتاحة والتحويل التجاري",
+            "weight": 5,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 0,
+              "U": 6
+            },
+            "score": 0.0,
+            "coverage": 0.0
+          },
+          {
+            "id": "SEC",
+            "name": "الأمان والخصوصية",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 0,
+              "U": 6
+            },
+            "score": 0.0,
+            "coverage": 0.0
+          },
+          {
+            "id": "ARC",
+            "name": "المعمارية والاعتماديات والأداء",
+            "weight": 3,
+            "total": 6,
+            "counts": {
+              "S": 3,
+              "C": 0,
+              "F": 0,
+              "U": 3
+            },
+            "score": 50.0,
+            "coverage": 50.0
+          },
+          {
+            "id": "DEP",
+            "name": "النشر وSEO والقياس والمراقبة",
+            "weight": 2,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 0,
+              "U": 6
+            },
+            "score": 0.0,
+            "coverage": 0.0
+          }
+        ],
+        "basis_sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+        "status": "HISTORICAL_EVIDENCE_NOT_RERUN_AT_CURRENT_HEAD",
+        "source_file": "Audit/outhers/release-gate-13-2026-11-26/SCORECARD-78-MEASURED.json"
+      },
+      "local": {
+        "score": 54.0,
+        "coverage": 63.16666666666667,
+        "counts": {
+          "S": 37,
+          "C": 2,
+          "F": 7,
+          "U": 32
+        },
+        "domains": [
+          {
+            "id": "REG",
+            "name": "سجل الأصول والوكلاء",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 3,
+              "C": 0,
+              "F": 0,
+              "U": 3
+            },
+            "score": 50.0,
+            "coverage": 50.0
+          },
+          {
+            "id": "POL",
+            "name": "حزم السياسات والتتبع التنظيمي",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 3,
+              "C": 0,
+              "F": 0,
+              "U": 3
+            },
+            "score": 50.0,
+            "coverage": 50.0
+          },
+          {
+            "id": "FW",
+            "name": "Firewall",
+            "weight": 10,
+            "total": 6,
+            "counts": {
+              "S": 3,
+              "C": 0,
+              "F": 1,
+              "U": 2
+            },
+            "score": 50.0,
+            "coverage": 66.66666666666667
+          },
+          {
+            "id": "HG",
+            "name": "Human Gate",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 5,
+              "C": 0,
+              "F": 0,
+              "U": 1
+            },
+            "score": 83.33333333333333,
+            "coverage": 83.33333333333333
+          },
+          {
+            "id": "RE",
+            "name": "Risk Engine وتقييم النماذج",
+            "weight": 12,
+            "total": 6,
+            "counts": {
+              "S": 4,
+              "C": 0,
+              "F": 0,
+              "U": 2
+            },
+            "score": 66.66666666666667,
+            "coverage": 66.66666666666667
+          },
+          {
+            "id": "LD",
+            "name": "Ledger وسلامة الأدلة",
+            "weight": 10,
+            "total": 6,
+            "counts": {
+              "S": 4,
+              "C": 0,
+              "F": 0,
+              "U": 2
+            },
+            "score": 66.66666666666667,
+            "coverage": 66.66666666666667
+          },
+          {
+            "id": "AI",
+            "name": "Groq",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 2,
+              "C": 0,
+              "F": 3,
+              "U": 1
+            },
+            "score": 33.333333333333336,
+            "coverage": 83.33333333333333
+          },
+          {
+            "id": "INT",
+            "name": "تكامل المنتجات الأربعة",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 3,
+              "C": 0,
+              "F": 2,
+              "U": 1
+            },
+            "score": 50.0,
+            "coverage": 83.33333333333333
+          },
+          {
+            "id": "UX",
+            "name": "التصميم وتجربة المستخدم وRTL",
+            "weight": 10,
+            "total": 6,
+            "counts": {
+              "S": 4,
+              "C": 0,
+              "F": 0,
+              "U": 2
+            },
+            "score": 66.66666666666667,
+            "coverage": 66.66666666666667
+          },
+          {
+            "id": "PUB",
+            "name": "الإتاحة والتحويل التجاري",
+            "weight": 5,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 1,
+              "U": 5
+            },
+            "score": 0.0,
+            "coverage": 16.666666666666668
+          },
+          {
+            "id": "SEC",
+            "name": "الأمان والخصوصية",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 1,
+              "C": 2,
+              "F": 0,
+              "U": 3
+            },
+            "score": 50.0,
+            "coverage": 50.0
+          },
+          {
+            "id": "ARC",
+            "name": "المعمارية والاعتماديات والأداء",
+            "weight": 3,
+            "total": 6,
+            "counts": {
+              "S": 4,
+              "C": 0,
+              "F": 0,
+              "U": 2
+            },
+            "score": 66.66666666666667,
+            "coverage": 66.66666666666667
+          },
+          {
+            "id": "DEP",
+            "name": "النشر وSEO والقياس والمراقبة",
+            "weight": 2,
+            "total": 6,
+            "counts": {
+              "S": 1,
+              "C": 0,
+              "F": 0,
+              "U": 5
+            },
+            "score": 16.666666666666668,
+            "coverage": 16.666666666666668
+          }
+        ],
+        "basis_sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+        "status": "HISTORICAL_EVIDENCE_NOT_RERUN_AT_CURRENT_HEAD",
+        "source_file": "Audit/outhers/release-gate-13-2026-11-26/SCORECARD-78-MEASURED.json"
+      },
+      "staging": {
+        "score": 10.000000000000002,
+        "coverage": 10.000000000000002,
+        "counts": {
+          "S": 5,
+          "C": 2,
+          "F": 0,
+          "U": 71
+        },
+        "domains": [
+          {
+            "id": "REG",
+            "name": "سجل الأصول والوكلاء",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 0,
+              "U": 6
+            },
+            "score": 0.0,
+            "coverage": 0.0
+          },
+          {
+            "id": "POL",
+            "name": "حزم السياسات والتتبع التنظيمي",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 0,
+              "U": 6
+            },
+            "score": 0.0,
+            "coverage": 0.0
+          },
+          {
+            "id": "FW",
+            "name": "Firewall",
+            "weight": 10,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 0,
+              "U": 6
+            },
+            "score": 0.0,
+            "coverage": 0.0
+          },
+          {
+            "id": "HG",
+            "name": "Human Gate",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 1,
+              "C": 0,
+              "F": 0,
+              "U": 5
+            },
+            "score": 16.666666666666668,
+            "coverage": 16.666666666666668
+          },
+          {
+            "id": "RE",
+            "name": "Risk Engine وتقييم النماذج",
+            "weight": 12,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 0,
+              "U": 6
+            },
+            "score": 0.0,
+            "coverage": 0.0
+          },
+          {
+            "id": "LD",
+            "name": "Ledger وسلامة الأدلة",
+            "weight": 10,
+            "total": 6,
+            "counts": {
+              "S": 2,
+              "C": 0,
+              "F": 0,
+              "U": 4
+            },
+            "score": 33.333333333333336,
+            "coverage": 33.333333333333336
+          },
+          {
+            "id": "AI",
+            "name": "Groq",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 0,
+              "U": 6
+            },
+            "score": 0.0,
+            "coverage": 0.0
+          },
+          {
+            "id": "INT",
+            "name": "تكامل المنتجات الأربعة",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 0,
+              "U": 6
+            },
+            "score": 0.0,
+            "coverage": 0.0
+          },
+          {
+            "id": "UX",
+            "name": "التصميم وتجربة المستخدم وRTL",
+            "weight": 10,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 0,
+              "U": 6
+            },
+            "score": 0.0,
+            "coverage": 0.0
+          },
+          {
+            "id": "PUB",
+            "name": "الإتاحة والتحويل التجاري",
+            "weight": 5,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 0,
+              "U": 6
+            },
+            "score": 0.0,
+            "coverage": 0.0
+          },
+          {
+            "id": "SEC",
+            "name": "الأمان والخصوصية",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 2,
+              "C": 2,
+              "F": 0,
+              "U": 2
+            },
+            "score": 66.66666666666667,
+            "coverage": 66.66666666666667
+          },
+          {
+            "id": "ARC",
+            "name": "المعمارية والاعتماديات والأداء",
+            "weight": 3,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 0,
+              "U": 6
+            },
+            "score": 0.0,
+            "coverage": 0.0
+          },
+          {
+            "id": "DEP",
+            "name": "النشر وSEO والقياس والمراقبة",
+            "weight": 2,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 0,
+              "U": 6
+            },
+            "score": 0.0,
+            "coverage": 0.0
+          }
+        ],
+        "basis_sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+        "status": "HISTORICAL_EVIDENCE_NOT_RERUN_AT_CURRENT_HEAD",
+        "source_file": "Audit/outhers/release-gate-13-2026-11-26/SCORECARD-78-MEASURED.json"
+      },
+      "live": {
+        "score": 2.5000000000000004,
+        "coverage": 11.833333333333334,
+        "counts": {
+          "S": 0,
+          "C": 3,
+          "F": 8,
+          "U": 67
+        },
+        "domains": [
+          {
+            "id": "REG",
+            "name": "سجل الأصول والوكلاء",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 0,
+              "U": 6
+            },
+            "score": 0.0,
+            "coverage": 0.0
+          },
+          {
+            "id": "POL",
+            "name": "حزم السياسات والتتبع التنظيمي",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 0,
+              "U": 6
+            },
+            "score": 0.0,
+            "coverage": 0.0
+          },
+          {
+            "id": "FW",
+            "name": "Firewall",
+            "weight": 10,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 0,
+              "U": 6
+            },
+            "score": 0.0,
+            "coverage": 0.0
+          },
+          {
+            "id": "HG",
+            "name": "Human Gate",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 1,
+              "U": 5
+            },
+            "score": 0.0,
+            "coverage": 16.666666666666668
+          },
+          {
+            "id": "RE",
+            "name": "Risk Engine وتقييم النماذج",
+            "weight": 12,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 0,
+              "U": 6
+            },
+            "score": 0.0,
+            "coverage": 0.0
+          },
+          {
+            "id": "LD",
+            "name": "Ledger وسلامة الأدلة",
+            "weight": 10,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 2,
+              "U": 4
+            },
+            "score": 0.0,
+            "coverage": 33.333333333333336
+          },
+          {
+            "id": "AI",
+            "name": "Groq",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 0,
+              "U": 6
+            },
+            "score": 0.0,
+            "coverage": 0.0
+          },
+          {
+            "id": "INT",
+            "name": "تكامل المنتجات الأربعة",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 0,
+              "U": 6
+            },
+            "score": 0.0,
+            "coverage": 0.0
+          },
+          {
+            "id": "UX",
+            "name": "التصميم وتجربة المستخدم وRTL",
+            "weight": 10,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 0,
+              "U": 6
+            },
+            "score": 0.0,
+            "coverage": 0.0
+          },
+          {
+            "id": "PUB",
+            "name": "الإتاحة والتحويل التجاري",
+            "weight": 5,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 1,
+              "F": 2,
+              "U": 3
+            },
+            "score": 16.666666666666668,
+            "coverage": 50.0
+          },
+          {
+            "id": "SEC",
+            "name": "الأمان والخصوصية",
+            "weight": 8,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 1,
+              "F": 2,
+              "U": 3
+            },
+            "score": 16.666666666666668,
+            "coverage": 50.0
+          },
+          {
+            "id": "ARC",
+            "name": "المعمارية والاعتماديات والأداء",
+            "weight": 3,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 0,
+              "F": 0,
+              "U": 6
+            },
+            "score": 0.0,
+            "coverage": 0.0
+          },
+          {
+            "id": "DEP",
+            "name": "النشر وSEO والقياس والمراقبة",
+            "weight": 2,
+            "total": 6,
+            "counts": {
+              "S": 0,
+              "C": 1,
+              "F": 1,
+              "U": 4
+            },
+            "score": 16.666666666666668,
+            "coverage": 33.333333333333336
+          }
+        ],
+        "basis_sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+        "status": "HISTORICAL_EVIDENCE_NOT_RERUN_AT_CURRENT_HEAD",
+        "source_file": "Audit/outhers/release-gate-13-2026-11-26/SCORECARD-78-MEASURED.json"
+      }
+    },
+    "comparability_note": "R3.1 baseline is source/configuration at its historical baseline; Local is a separately reported local test/evidence layer at the R13 measurement SHA. Difference is descriptive, not causal. Staging and Live are evidence snapshots, not reruns at current HEAD.",
+    "original_archive_sha256": "3f31771b20fde60c926ccc4b17d729849c37a54d8b0d2ff6fa2ec3017b1626c8",
+    "measured_scorecard_sha256": "7eaa8170e42c7c06a34952d3aa626c301041169e22f37181f860bce4becfb4cb"
+  }
 }

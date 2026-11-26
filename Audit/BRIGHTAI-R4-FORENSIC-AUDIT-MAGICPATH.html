@@ -1,0 +1,316 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>BRIGHT AI / &#65; R4 Forensic Audit</title><style>:root{--ink:#17212b;--line:#d8e0e8;--accent:#155e75;--wash:#f4f7fa}*{box-sizing:border-box}body{margin:0;background:var(--wash);color:var(--ink);font:16px/1.75 -apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif}main{max-width:1120px;margin:36px auto;padding:42px 52px;background:white;border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 48px #10203012}h1{font-size:2rem;border-bottom:3px solid var(--accent);padding-bottom:18px}h2{margin-top:2.4rem;border-bottom:1px solid var(--line);padding-bottom:8px;color:#164e63}table{border-collapse:collapse;width:100%;margin:18px 0;font-size:.92rem;display:block;overflow-x:auto}th,td{border:1px solid var(--line);padding:8px 10px;text-align:right;vertical-align:top}th{background:#eaf2f6}tr:nth-child(even){background:#fafcfd}code{font-family:ui-monospace,Menlo,monospace;background:#f1f5f9;padding:.12em .35em;border-radius:4px;direction:ltr;unicode-bidi:embed}blockquote{background:#fff3df;border-right:4px solid #d97706;padding:12px 18px}@media(max-width:700px){main{margin:0;padding:24px 18px;border:0;border-radius:0}body{font-size:15px}}</style></head><body><main><h1>BRIGHT AI / AIGAS — R4 | إعادة تدقيق الأدلة ومخرجات الإغلاق</h1>
+<p><strong>الحالة:</strong> PARTIAL — مقارنة بنيوية موثقة، وإعادة القياس التشغيلية عند HEAD الحالي NOT VERIFIED. <strong>قرار الإطلاق: NO-GO.</strong><br />
+<strong>التاريخ:</strong> 2026-11-26 (+03:00).<br />
+<strong>المستودع المحلي:</strong> <code>main</code>، HEAD <code>8e879ba24db2082f7d74978e1072c8da851201ba</code>؛ <code>origin/main</code> مطابق عند الفحص.<br />
+<strong>آخر scorecard measured:</strong> SHA <code>961836f8010bfe6527dac75376ef15b386b1a818</code>، لا HEAD الحالي.<br />
+<strong>الأصل R3.1:</strong> الحزمة الأصلية التي زود بها المالك، ZIP SHA-256 <code>3f31771b20fde60c926ccc4b17d729849c37a54d8b0d2ff6fa2ec3017b1626c8</code>. لم تُعدّل الأصول الأصلية.</p>
+<h2>1. الحكم التنفيذي</h2>
+<p>R4 يثبت أن قياس بوابة الإطلاق 13 يستخدم <strong>المقام نفسه تمامًا</strong> في R3.1: 78/78 معرفًا، ونصوص المتطلبات والمجالات متطابقة، مع 13 محورًا وأوزان 100% متطابقة. كما أُعيد احتساب نتائج source/local/staging/live من الحالات الـ78، وتطابقت حسابيًا مع المجاميع المنشورة.</p>
+<p>هذا لا يجعل الأرقام قياسًا جديدًا على HEAD الحالي: القياس المتاح عند <code>961836f8…</code>، بينما HEAD الآن <code>8e879ba…</code>. تغيّرات Git بينهما تشمل نقل/إضافة مواد التدقيق والمهارات؛ لا يظهر فرق في النطاق الموجّه للمصدر/المخطط/الإعدادات/الاختبارات/التبعيات/النشر. لذلك يمكن استخدام النتائج كأحدث دليل متاح على تلك الملفات، لكن لا يجوز وصفها بأنها إعادة تنفيذ كاملة على SHA الحالي أو تحقق حي جديد.</p>
+<p><strong>لا يوجد أساس لإغلاق بوابة إطلاق:</strong> محليًا 54.00% فقط، ولا محور من المحاور الثلاثة عشر يبلغ 80% سوى HG؛ Staging 10.00% وLive 2.50%. كما أن secure-chat E2E فشل محليًا، وواجهات health/ready/app/trial كانت 404 في عينة القياس الحي، وNeon Production لا يملك دور <code>aigas_runtime</code> وتوجد فجوات موثقة في RLS/schema. MagicPath visual parity محجوب، وقبول التصميم الوظيفي الذي بلغ 7/12 مرتبط بسجل بوابة أقدم ولم يُعَدّ قياسه هنا. النتيجة <strong>NO-GO</strong> لجميع مستويات الإطلاق؛ ليست <code>LIVE_VERIFIED</code> ولا <code>READY_TO_REQUEST_DEPLOY_APPROVAL</code>.</p>
+<h2>2. النسب والمقامات — baseline مقابل آخر قياس متاح</h2>
+<p>طريقة R3.1 محفوظة: <code>S,C=1</code> و<code>F,U=0</code>؛ التغطية تشمل S/C/F؛ أوزان المحاور كما في الأصل. إعادة الحساب المستقلة من الصفوف أعطت تطابقًا مع <code>SCORECARD-78-MEASURED.json</code> لكل بيئة.</p>
+<table>
+<thead>
+<tr>
+  <th>المستوى</th>
+  <th style="text-align:right">النتيجة</th>
+  <th style="text-align:right">التغطية</th>
+  <th style="text-align:right">S</th>
+  <th style="text-align:right">C</th>
+  <th style="text-align:right">F</th>
+  <th style="text-align:right">U</th>
+  <th>SHA/النطاق</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>R3.1 baseline</td>
+  <td style="text-align:right">44.67%</td>
+  <td style="text-align:right">73.17%</td>
+  <td style="text-align:right">24</td>
+  <td style="text-align:right">9</td>
+  <td style="text-align:right">24</td>
+  <td style="text-align:right">21</td>
+  <td>baseline <code>773fb6bc…</code>؛ قياس R3.1 المنشور عند <code>67aa03b…</code></td>
+</tr>
+<tr>
+  <td>Source</td>
+  <td style="text-align:right">36.50%</td>
+  <td style="text-align:right">52.83%</td>
+  <td style="text-align:right">26</td>
+  <td style="text-align:right">0</td>
+  <td style="text-align:right">11</td>
+  <td style="text-align:right">41</td>
+  <td>measured <code>961836f8…</code></td>
+</tr>
+<tr>
+  <td>Local</td>
+  <td style="text-align:right">54.00%</td>
+  <td style="text-align:right">63.17%</td>
+  <td style="text-align:right">37</td>
+  <td style="text-align:right">2</td>
+  <td style="text-align:right">7</td>
+  <td style="text-align:right">32</td>
+  <td>measured <code>961836f8…</code></td>
+</tr>
+<tr>
+  <td>Staging</td>
+  <td style="text-align:right">10.00%</td>
+  <td style="text-align:right">10.00%</td>
+  <td style="text-align:right">5</td>
+  <td style="text-align:right">2</td>
+  <td style="text-align:right">0</td>
+  <td style="text-align:right">71</td>
+  <td>قراءة Neon محفوظة في دليل بوابة 13؛ ليست إعادة اتصال R4</td>
+</tr>
+<tr>
+  <td>Live</td>
+  <td style="text-align:right">2.50%</td>
+  <td style="text-align:right">11.83%</td>
+  <td style="text-align:right">0</td>
+  <td style="text-align:right">3</td>
+  <td style="text-align:right">8</td>
+  <td style="text-align:right">67</td>
+  <td>HTTPS/Neon ضمن القياس المحفوظ؛ ليس فحصًا جديدًا الآن</td>
+</tr>
+</tbody>
+</table>
+<p>الفرق الحسابي بين baseline المنشور وLocal هو <strong>+9.33 نقطة</strong> في الدرجة و<strong>−10.00 نقاط</strong> في التغطية. المقام والوزن متطابقان، لكن الأساس البيئي مختلف (baseline R3.1 مقابل Local في R13) والقياس ليس عند HEAD الحالي؛ لذلك الفرق <strong>وصفي فقط، لا يثبت تحسنًا سببيًا أو تراجعًا في المنتج</strong>.</p>
+<table>
+<thead>
+<tr>
+  <th>المحور</th>
+  <th style="text-align:right">الوزن</th>
+  <th style="text-align:right">baseline R3.1</th>
+  <th style="text-align:right">Local عند SHA المقاس</th>
+  <th style="text-align:right">تغطية Local</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>REG</td>
+  <td style="text-align:right">8%</td>
+  <td style="text-align:right">50.00%</td>
+  <td style="text-align:right">50.00%</td>
+  <td style="text-align:right">50.00%</td>
+</tr>
+<tr>
+  <td>POL</td>
+  <td style="text-align:right">8%</td>
+  <td style="text-align:right">50.00%</td>
+  <td style="text-align:right">50.00%</td>
+  <td style="text-align:right">50.00%</td>
+</tr>
+<tr>
+  <td>FW</td>
+  <td style="text-align:right">10%</td>
+  <td style="text-align:right">50.00%</td>
+  <td style="text-align:right">50.00%</td>
+  <td style="text-align:right">66.67%</td>
+</tr>
+<tr>
+  <td>HG</td>
+  <td style="text-align:right">8%</td>
+  <td style="text-align:right">50.00%</td>
+  <td style="text-align:right">83.33%</td>
+  <td style="text-align:right">83.33%</td>
+</tr>
+<tr>
+  <td>RE</td>
+  <td style="text-align:right">12%</td>
+  <td style="text-align:right">66.67%</td>
+  <td style="text-align:right">66.67%</td>
+  <td style="text-align:right">66.67%</td>
+</tr>
+<tr>
+  <td>LD</td>
+  <td style="text-align:right">10%</td>
+  <td style="text-align:right">33.33%</td>
+  <td style="text-align:right">66.67%</td>
+  <td style="text-align:right">66.67%</td>
+</tr>
+<tr>
+  <td>AI</td>
+  <td style="text-align:right">8%</td>
+  <td style="text-align:right">33.33%</td>
+  <td style="text-align:right">33.33%</td>
+  <td style="text-align:right">83.33%</td>
+</tr>
+<tr>
+  <td>INT</td>
+  <td style="text-align:right">8%</td>
+  <td style="text-align:right">50.00%</td>
+  <td style="text-align:right">50.00%</td>
+  <td style="text-align:right">83.33%</td>
+</tr>
+<tr>
+  <td>UX</td>
+  <td style="text-align:right">10%</td>
+  <td style="text-align:right">33.33%</td>
+  <td style="text-align:right">66.67%</td>
+  <td style="text-align:right">66.67%</td>
+</tr>
+<tr>
+  <td>PUB</td>
+  <td style="text-align:right">5%</td>
+  <td style="text-align:right">50.00%</td>
+  <td style="text-align:right">0.00%</td>
+  <td style="text-align:right">16.67%</td>
+</tr>
+<tr>
+  <td>SEC</td>
+  <td style="text-align:right">8%</td>
+  <td style="text-align:right">33.33%</td>
+  <td style="text-align:right">50.00%</td>
+  <td style="text-align:right">50.00%</td>
+</tr>
+<tr>
+  <td>ARC</td>
+  <td style="text-align:right">3%</td>
+  <td style="text-align:right">16.67%</td>
+  <td style="text-align:right">66.67%</td>
+  <td style="text-align:right">66.67%</td>
+</tr>
+<tr>
+  <td>DEP</td>
+  <td style="text-align:right">2%</td>
+  <td style="text-align:right">33.33%</td>
+  <td style="text-align:right">16.67%</td>
+  <td style="text-align:right">16.67%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>فحص التطابق:</strong> المعرّفات والمجالات ونصوص الشروط <code>78/78</code> مطابقة؛ أسماء المجالات والأوزان والمقامات <code>13/13</code> مطابقة؛ مجموع الأوزان <code>100%</code>. التحقق الحسابي للحالات في البيئات الأربع PASS. لا توجد إعادة صياغة أو إسقاط لمعيار R3.1 في ملف scorecard الناتج.</p>
+<h2>3. دليل القياس وحداثته</h2>
+<table>
+<thead>
+<tr>
+  <th>المرجع</th>
+  <th>ما يثبته</th>
+  <th>القيد</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>Audit/outhers/release-gate-13-2026-11-26/SCORECARD-78-MEASURED.json</code></td>
+  <td>القياس المستقل السابق، SHA <code>961836f8…</code>؛ source/local/staging/live ومراجع أدلة لكل صف. SHA-256: <code>7eaa8170e42c7c06a34952d3aa626c301041169e22f37181f860bce4becfb4cb</code>.</td>
+  <td>محفوظ كما هو؛ ليس قياسًا جديدًا عند HEAD الحالي.</td>
+</tr>
+<tr>
+  <td><code>Audit/outhers/release-gate-13-2026-11-26/REPORT.md</code></td>
+  <td>نتائج الاختبارات والبوابات والـNeon/HTTPS وMagicPath المسجلة في R13.</td>
+  <td>لا تُعامل نتيجة الاتصال بأداة كإثبات خارج حدودها؛ لا إعادة تشغيل هنا.</td>
+</tr>
+<tr>
+  <td>Git الحالي</td>
+  <td><code>HEAD=8e879ba…</code> يساوي <code>origin/main</code> عند الفحص. فروق <code>961836f8..HEAD</code> ضمن النطاق الموجّه للمصدر والإعدادات والاختبارات لا تظهر تغييرات.</td>
+  <td>ظهر تحذير <code>fsmonitor_ipc</code> في status. الفحص لا يثبت كل ما في الأنظمة الخارجية، والتغييرات بين SHA تشمل مواد تدقيق/نقل ملفات.</td>
+</tr>
+<tr>
+  <td>سجلات R4 الجزئية السابقة</td>
+  <td>Render قُرئ آنذاك كـStatic Site وآخر deploy على <code>8abaa3c…</code>; بحث Neon بمعرّفين تاريخيين أعاد نتائج فارغة؛ صفحة <code>/request-access/</code> قُرئت.</td>
+  <td>هذه اللقطة ليست عند HEAD الحالي. نتيجة Neon الفارغة بمعرّفات مختلفة لا تنقض وحدها سجل R13 الذي يذكر branch refs أخرى. لا تُسقط حالة خدمة حالية من اللقطتين.</td>
+</tr>
+<tr>
+  <td><code>DESIGN-ACCEPTANCE-13.json</code></td>
+  <td>7/12 public functional، 0/12 enterprise، والتكافؤ المرئي 0/12 مع BLOCKED بسبب حصة MagicPath.</td>
+  <td>ملف R13 يثبت <code>revision_pinned=476467892385353728</code>، بينما R3.1 الأصلي يحدد <code>476406049398726657</code>. عدم التطابق هذا يمنع إسناد قبول R13 إلى مرجع R3.1 نفسه.</td>
+</tr>
+</tbody>
+</table>
+<h2>4. نتائج تشغيلية ذات أثر على القرار</h2>
+<ul>
+<li><strong>اختبارات محلية محفوظة (SHA <code>961836f8…</code>):</strong> build PASS، SEO 16/16 PASS، healthz 15 PASS و1 SKIP، API contract 177/177 PASS، auth/governance/design browser PASS ضمن نطاقها. DB: 16 PASS / 2 FAIL؛ focused units: 98 PASS / 1 FAIL / 1 SKIP؛ conversion CTA E2E FAIL على المقاسات الصغيرة؛ Secure Chat E2E فشل في فحص الأمان وCSP. هذه ليست نتائج CI أو live.</li>
+<li><strong>HTTPS في دليل R13:</strong> <code>/</code> و<code>/request-access/</code> و<code>sitemap-index.xml</code> تفتح؛ <code>/healthz/</code> و<code>/readyz/</code> و<code>/app/</code> و<code>/app/kernel/</code> و<code>/api/trial-availability/</code> تعيد 404. هذه عينة مؤرخة وليست فحصًا جديدًا عند كتابة هذا التقرير.</li>
+<li><strong>Neon في دليل R13 (قراءة فقط):</strong> Staging: 43 جدولًا و43 RLS و93 policy، <code>aigas_runtime</code> موجود؛ Production: 31 جدولًا و31 RLS flags لكن سياستان فقط، <code>aigas_runtime</code> غائب، وغياب chain guard وجداول Human Gate موثق. لا استنتاج بوجود تسرب من عدد السياسات وحده، لكن التكافؤ والجاهزية غير مثبتين.</li>
+<li><strong>Groq:</strong> لم يُرسل استدعاء في R4. دليل R13 يذكر أن قوائم المزود والنموذج فارغة وأن ميزانية الاستدعاء غير ممنوحة؛ Live AI يبقى NO-GO.</li>
+<li><strong>MagicPath:</strong> الحصة منعت قراءة المشروع/المرجع. لا لقطات مرجعية ولا pixel parity في هذه الدورة. فضلاً عن ذلك، revision ID في سجل R13 لا يطابق revision R3.1. لا تمنح visual PASS.</li>
+<li><strong>Analytics/monitoring:</strong> PostHog/Sentry/GA4 ليست أدلة تشغيل كافية على استقبال أحداث BRIGHTAI أو التغطية؛ لا تنسب المشروع الافتراضي إلى المنتج دون إثبات الربط.</li>
+</ul>
+<h2>5. سجل الموانع والقرارات</h2>
+<table>
+<thead>
+<tr>
+  <th>الأولوية</th>
+  <th>المانع</th>
+  <th>دليل الإغلاق المطلوب</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>P0</td>
+  <td>SSR/health/ready/app/trial غير مثبتة حيًا، وRender حالة/نشر حالية غير متحققين عند HEAD</td>
+  <td>إثبات origin وRender على SHA مرشح مصرح به، readiness/auth، no-store، مسارات محمية، rollback؛ دون نشر تلقائي.</td>
+</tr>
+<tr>
+  <td>P0</td>
+  <td>Neon Production: runtime role/schema/RLS parity غير مكتملة في دليل R13</td>
+  <td>تعريف بيئة Neon الصحيحة وتأكيد الفرع read-only أولًا؛ بعدها خطة delta وstaging معزول، اختبار عزل وrollback مصرح. لا كتابة إنتاج.</td>
+</tr>
+<tr>
+  <td>P0</td>
+  <td>Secure Chat محليًا FAIL وGroq غير معتمد/غير مستدعى</td>
+  <td>إعادة إنتاج فشل الاختبار وإصلاح العقد/السياسة دون إضعاف assertions؛ موافقة مالك مستقلة قبل egress وميزانية محدودة.</td>
+</tr>
+<tr>
+  <td>P0</td>
+  <td>MagicPath reference blocked، وrevision mismatch</td>
+  <td>فتح الإصدار المحدد في R3.1 أو تأكيد مكتوب لتغيير المرجع؛ صور أصلية/مرشح و12/12 register قبل قبول التصميم.</td>
+</tr>
+<tr>
+  <td>P1</td>
+  <td>CTA التحويل مفقود من شجرة الوصول على أحجام صغيرة وفق R13 رغم أن مسار <code>/request-access/</code> قُرئ في رصد آخر</td>
+  <td>إعادة فحص الروابط/المودال على مرشح وlive منفصلين، إثبات submit أو إبقاء النتيجة صريحة؛ لا رسائل فعلية دون إذن.</td>
+</tr>
+<tr>
+  <td>P1</td>
+  <td>تفاوت تاريخ الأدلة بين R3.1 وR13 ولقطات R4 السابقة</td>
+  <td>سجل أدلة موحد يربط كل claim بـSHA/بيئة/وقت/أداة ومحدداتها.</td>
+</tr>
+<tr>
+  <td>P1</td>
+  <td>لم يثبت وصول أحداث analytics أو مراقبة أخطاء مرتبطة بالموقع</td>
+  <td>تعريف property/project رسميًا، اختبار synthetic مصرح، لا إرسال prompt أو PII أو IDs حساسة.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+  <th>بوابة</th>
+  <th>القرار</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>PUBLIC SYNTHETIC</td>
+  <td><strong>NO-GO حاليًا</strong> — لا تدل النسبة وحدها على وظيفة؛ R13 يذكر 7/12 بوظائف عامة وCTA/secure-chat failures، وقياس live قديم.</td>
+</tr>
+<tr>
+  <td>PUBLIC LIVE AI</td>
+  <td><strong>NO-GO</strong> — لا اعتماد موثق ولا ميزانية ولا استدعاء مصرح.</td>
+</tr>
+<tr>
+  <td>48H ENTERPRISE</td>
+  <td><strong>NO-GO</strong> — الجاهزية الحية والدور والمخطط غير مثبتة عند HEAD الحالي.</td>
+</tr>
+<tr>
+  <td>COMMERCIAL PRODUCTION</td>
+  <td><strong>NO-GO</strong> — P0 مفتوحة، isolation/readiness/monitoring والتكافؤ الوظيفي غير مغلق.</td>
+</tr>
+<tr>
+  <td>DEPLOY</td>
+  <td><strong>غير مصرح به</strong> — لا commit/push/merge/deploy/DNS/Neon write أو MagicPath edits أُجريت أو تُستنتج من هذه المراجعة.</td>
+</tr>
+</tbody>
+</table>
+<h2>6. ملفات الإغلاق المرفقة</h2>
+<ul>
+<li><code>BRIGHTAI-R4-SCORECARD-PARTIAL.json</code>: baseline R3.1 الأصلي محفوظ، الصفوف/الأوزان موثقة التطابق، وقياسات R13 في حقول منفصلة مع المصدر والـSHA والحدود؛ لا تحويلها إلى نتائج عند HEAD الحالي.</li>
+<li><code>BRIGHTAI-R4-MAGICPATH-ACCEPTANCE.json</code>: قبول مستقل 12 بندًا، مع عدم تطابق revision ID مسجل صراحة.</li>
+<li><code>BRIGHTAI-R4-CLOSURE-PROMPTS.md</code>: قائمة مهام إغلاق محددة بالترتيب والأدلة المطلوبة والحدود.</li>
+<li><code>BRIGHTAI-R4-FORENSIC-AUDIT-MAGICPATH.html</code>: نسخة HTML من هذا التقرير.</li>
+</ul>
+<p><strong>النتيجة الختامية:</strong> <code>NO-GO</code>. أُغلقت مقارنة المصفوفة بنيويًا وحسابيًا، ولم تُغلق بوابة الإطلاق ولا تحقق التشغيل الحي الجديد. لا تغييرات على المصدر أو الخدمات الخارجية، ولا commit أو push.</p>
+</main></body></html>

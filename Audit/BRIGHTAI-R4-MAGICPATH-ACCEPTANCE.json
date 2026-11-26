@@ -1,0 +1,43 @@
+{
+  "schema_version": "R4-acceptance-evidence-1",
+  "status": "NOT_VERIFIED_FOR_R3_1_REFERENCE",
+  "as_of": "2026-11-26",
+  "latest_evidence_sha": "961836f8010bfe6527dac75376ef15b386b1a818",
+  "current_repository_head_at_report": "8e879ba24db2082f7d74978e1072c8da851201ba",
+  "reference": {
+    "project_id": "476406002938429440",
+    "component_id": "476406049398726656",
+    "r3_1_required_revision": "476406049398726657",
+    "release_gate_13_revision_pinned": "476467892385353728",
+    "revision_alignment": "MISMATCH",
+    "magicpath_read_status": "BLOCKED_BY_QUOTA",
+    "reason": "R13 record reports MagicPath API quota 50/50; this R4 pass did not obtain project code or reference screenshots."
+  },
+  "acceptance_from_release_gate_13_historical_evidence": {
+    "public_synthetic_functional": {"pass": 7, "denominator": 12, "percent": 58.3, "status": "PARTIAL_HISTORICAL_NOT_REMEASURED"},
+    "enterprise_authenticated_functional": {"pass": 0, "denominator": 12, "percent": 0, "status": "NOT_VERIFIED"},
+    "public_visual_parity": {"pass": 0, "denominator": 12, "blocked": 12, "percent": 0, "status": "BLOCKED"},
+    "enterprise_visual_parity": {"pass": 0, "denominator": 12, "blocked": 12, "percent": 0, "status": "BLOCKED"}
+  },
+  "screens": [
+    {"id":"overview","public_functional":"PASS_VERIFIED_HISTORICAL","enterprise_functional":"NOT_VERIFIED","visual_parity":"BLOCKED"},
+    {"id":"kernel","public_functional":"NOT_VERIFIED","enterprise_functional":"NOT_VERIFIED","visual_parity":"BLOCKED"},
+    {"id":"firewall","public_functional":"PASS_VERIFIED_HISTORICAL","enterprise_functional":"NOT_VERIFIED","visual_parity":"BLOCKED"},
+    {"id":"risk-engine","public_functional":"PASS_VERIFIED_HISTORICAL","enterprise_functional":"NOT_VERIFIED","visual_parity":"BLOCKED"},
+    {"id":"human-gate","public_functional":"PASS_VERIFIED_HISTORICAL","enterprise_functional":"NOT_VERIFIED","visual_parity":"BLOCKED"},
+    {"id":"ledger","public_functional":"PASS_VERIFIED_HISTORICAL","enterprise_functional":"NOT_VERIFIED","visual_parity":"BLOCKED"},
+    {"id":"secure-chat","public_functional":"FAILED_HISTORICAL","enterprise_functional":"NOT_VERIFIED","visual_parity":"BLOCKED"},
+    {"id":"registry","public_functional":"PASS_VERIFIED_HISTORICAL","enterprise_functional":"NOT_VERIFIED","visual_parity":"BLOCKED"},
+    {"id":"policy-packs","public_functional":"PASS_VERIFIED_HISTORICAL","enterprise_functional":"NOT_VERIFIED","visual_parity":"BLOCKED"},
+    {"id":"developer-workbench","public_functional":"NOT_VERIFIED","enterprise_functional":"NOT_VERIFIED","visual_parity":"BLOCKED"},
+    {"id":"trust-center","public_functional":"NOT_VERIFIED","enterprise_functional":"NOT_VERIFIED","visual_parity":"BLOCKED"},
+    {"id":"enterprise-request-modal","public_functional":"NOT_VERIFIED","enterprise_functional":"NOT_VERIFIED","visual_parity":"BLOCKED"}
+  ],
+  "limitations": [
+    "The 7/12 public functional count is carried from P10/R13 evidence and was not re-executed in this R4 pass.",
+    "The reference revision in R13 differs from the revision pinned by the original R3.1 pack; functional evidence does not prove design parity.",
+    "No reference screenshots were available; no visual PASS is assigned.",
+    "This acceptance record is an evidence summary, not a release approval."
+  ],
+  "source_file": "Audit/outhers/release-gate-13-2026-11-26/DESIGN-ACCEPTANCE-13.json"
+}
